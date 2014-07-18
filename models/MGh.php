@@ -10,7 +10,7 @@ CREATE TABLE wx_gh (
 	token VARCHAR(32) NOT NULL DEFAULT '',
 	partnerid VARCHAR(32) NOT NULL DEFAULT '',
 	partnerkey VARCHAR(64) NOT NULL DEFAULT '',
-	paysignkey VARCHAR(128) NOT NULL DEFAULT '',
+	paysignkey VARCHAR(200) NOT NULL DEFAULT '',
 	wxname VARCHAR(32) NOT NULL DEFAULT '',	
 	nickname VARCHAR(32) NOT NULL DEFAULT '',
 	menu text,
@@ -19,8 +19,8 @@ CREATE TABLE wx_gh (
 	PRIMARY KEY (gh_id)	
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO wx_gh (gh_id,appid,appsecret,token,partnerid,partnerkey,paysignkey,wxname,nickname) VALUES ('gh_1ad98f5481f3','wx79c2bf0249ede62a','c4d53595acf30e9caf09c155b3d95253','HY09uB1h','1201111111','partnerkey111','paysignkey111','xiangyangwoso','wosotech');
-INSERT INTO wx_gh (gh_id,appid,appsecret,token,partnerid,partnerkey,paysignkey,wxname,nickname) VALUES ('gh_78539d18fdcc','wx4190748b840f102d','a5c3d42268d8b1a470fad26f9808198e','HY09uB1h','1202222222','partnerkey222','paysignkey222','hoyatech-cn','hoyakejiguanhao');
+INSERT INTO wx_gh (gh_id,appid,appsecret,token,partnerid,partnerkey,paysignkey,wxname,nickname) VALUES ('gh_1ad98f5481f3','wx79c2bf0249ede62a','c4d53595acf30e9caf09c155b3d95253','HY09uB1h','1220047701','wosotech20140526huyajun197310070','Yat5dfJA2M8v8kZXH9rDk9q7Ae8dqmxRVApfsoiVxUrhvk8DFipBILgDzNFvVPSBJkZctFbqw0LNhfijqE8R8RLZfW04RGk8MkDXQoDES1Ac84LEtjdAt6hzJTNKG7on','xiangyangwoso','wosotech');
+INSERT INTO wx_gh (gh_id,appid,appsecret,token,partnerid,partnerkey,paysignkey,wxname,nickname) VALUES ('gh_78539d18fdcc','wx4190748b840f102d','a5c3d42268d8b1a470fad26f9808198e','HY09uB1h','1200000000','partnerkey222','paysignkey222','hoyatech-cn','hoyakejiguanhao');
 */
 
 use Yii;
