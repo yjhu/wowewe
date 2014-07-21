@@ -12,7 +12,7 @@ $this->title = '手机运程预测';
     
     <div class="page-bizinfo">
       <div class="header">
-      <h1 id="activity-name">手机运程</h1>
+   
       <p class="activity-info">
           <span id="post-date" class="activity-meta no-extra">2014-07-21</span>
               <a href="javascript:viewProfile();" id="post-user" class="activity-meta">
@@ -65,7 +65,8 @@ $this->title = '手机运程预测';
 
         var msg_title = "手机运程测试";
         var msg_desc = "通过手机号码测试您的手机归属地及运程信息...";
-        var msg_cdn_url = "http://mmbiz.qpic.cn/mmbiz/nEhrLYrvloQ5dxZibmZzqNzDsEkhxSBOAklp8MpcAbObtkf8CiaTnlrnDiaqLKzJWib4U7JBWQFf0cF43w6cE39l4Q/0";
+        
+        var msg_cdn_url = "http://pic4.nipic.com/20090821/3259043_144134093_2.jpg"; //水晶球 favicon
         var msg_link = "http://mp.weixin.qq.com/s?__biz=MjM5MDIyNDcyMQ==&amp;mid=200391948&amp;idx=2&amp;sn=dc8afad5476525260d6f57cb055c0cc6#rd";
         var msg_source_url = 'http://mp.weixin.qq.com/s?__biz=MjM5MDIyNDcyMQ==&amp;mid=200391088&amp;idx=4&amp;sn=d888c56aeb01e2d9bb46ead6395256c6#rd';
         var networkType;
