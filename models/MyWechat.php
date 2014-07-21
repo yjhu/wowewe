@@ -34,22 +34,11 @@ class MyWechat extends Wechat
 		}
 		else
 		{
-			// Normal subscribe without qr parameter, get the user Info and save to db
 			$FromUserName = $this->getRequest('FromUserName');
-			$arr = $this->WxGetUserInfo($FromUserName);	
-			$model = MUser::findOne($FromUserName);
-			if (!$model)
-				$model = new MUser;
-			$model->setAttributes($arr, false);
-			$model->gh_id = $this->getRequest('ToUserName');			
-			$model->openid = $FromUserName;
-			if (!$model->save(false))
-				U::W([__METHOD__, $model->getErrors()]);
-				
-			//return $this->responseText(" {$model->nickname}, thank you subscribe us!");
+			$model = MUser::findOne($FromUserName);		
 			$items = array(
-				//new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微时代", '欢迎进入襄阳联通微时代', Url::to('images/onsubscribe.jpg',true), Url::to(['site/about'],true)),
 				new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), Url::to(['site/about'],true)),
+				//new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), 'weixin://wxpay/bizpayurl?timestamp=1405737068&appid=wx79c2bf0249ede62a&noncestr=PSottf4eivpHqKlV&productid=1234&sign=e1f9bca3625bfd1bdb4753906753c9f13917f0ec'),
 			);
 			return $this->responseNews($items);
 		}
@@ -70,8 +59,8 @@ class MyWechat extends Wechat
 	protected function onText() 
 	{ 
 		$Content = $this->getRequest('Content');
-		//return $this->responseText("you sent $Content"); 
-		return $this->responseText("you sent $Content, ".$this->WxGetOauth2Url('snsapi_userinfo')); 
+		//return $this->responseText("you sent $Content, ".$this->WxGetOauth2Url('snsapi_userinfo')); 
+		return $this->responseText('weixin://wxpay/bizpayurl?appid=wx79c2bf0249ede62a&noncestr=PSottf4eivpHqKlV&productid=1234&sign=e1f9bca3625bfd1bdb4753906753c9f13917f0ec&timestamp=1405737068'); 
 	}
 	
 	protected function onImage() 
@@ -128,14 +117,16 @@ class MyWechat extends Wechat
 			return '';
 
 		//test native url begin		
-		$productId = 'item1';
-		$url = Yii::$app->wx->create_native_url($productId);
+		$productId = '1234';
+		$url = Yii::$app->wx->create_native_url($productId);		
 		//$tag = Html::a('click here to pay', $url);
 		//U::W($tag);
+		$url = 'weixin://wxpay/bizpayurl?appid=wx79c2bf0249ede62a&noncestr=Vs7Roypb122HLZCh&productid=1234&sign=1ae0ca345323847ec8684254535c1157522e8e02&timestamp=1405751645';
 		$tag = "<a href=\"$url\">click here to pay</a>";
 		U::W($tag);		
 		//end
-		return $this->responseText("{$model->nickname}, your fee is ".rand(0, 1000). $tag);
+//		return $this->responseText("{$model->nickname}, your fee is ".rand(0, 1000). ' '.$tag.' '.$url);
+		return $this->responseText("{$model->nickname}, your fee is ".rand(0, 1000). ' '.$url);
 	}	
 
 	public function FuncSignon() 

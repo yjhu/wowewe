@@ -123,12 +123,40 @@ class U
 		return $str;  
 	}
 
-
 	public static function D($str) 
 	{
 		U::W($str);
 		die($str);	
 	}
+
+/*
+	public static function getMobileLuck($pn)
+	{
+		$result = '';
+
+		//$loca = U::curl("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$pn."&output=json");
+		//$loca = json_decode($loca, true);	
+		//U::W($loca);
+
+		$loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$pn."&output=json&callback=querycallback");
+		$loca = substr($loca, 14, -2);  
+		$loca = json_decode($loca, true);	
+		U::W($loca);
+
+		
+
+		$lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$pn."&output=json&callback=querycallback");
+		$lucy_msg = substr($lucy_msg, 14, -2);  
+		$lucy_msg = json_decode($lucy_msg, true);	
+		U::W($lucy_msg);
+		$result .= "<b>vendor</b><br/>";
+
+		return $result;
+		
+	}
+*/
+
+
 }
 
 /*

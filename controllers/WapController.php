@@ -40,6 +40,16 @@ class WapController extends Controller
 		];
 	}
 
+	public function init()
+	{
+		//U::W(['init....', $_GET,$_POST, $GLOBALS]);
+	}
+
+	public function beforeAction($action)
+	{
+		return true;
+	}
+
 	public function actions()
 	{
 		return [
@@ -55,14 +65,12 @@ class WapController extends Controller
 		return $this->render('index');
 	}
 
-	// http://127.0.0.1/wx/web/index.php?r=wap/oauth2callback
-	public function actionOauth2callback()
+	public function actionOauth2cb()
 	{
 		if (Yii::$app->wx->localTest)
 		{
 			$openid = Wechat::OPENID_TESTER1;
 			U::W('snsapi_base.....');
-			$_GET['state'] = 'wap/mall:gh_1ad98f5481f3';
 			list($routeId, $gh_id) = explode(':', $_GET['state']);
 			$route = [$routeId, 'gh_id'=>$gh_id];
 			$user = MUser::findIdentity($openid);
@@ -128,18 +136,36 @@ class WapController extends Controller
 	//http://127.0.0.1/wx/web/index.php?r=wap/nativepackage
 	public function actionNativepackage()
 	{		
+		U::W([__METHOD__, $GLOBALS]);
+		include_once("WxPayHelper.php");		
+		$commonUtil = new \CommonUtil();
+		$wxPayHelper = new \WxPayHelper();
+		$wxPayHelper->setParameter("bank_type", "WX");
+		$wxPayHelper->setParameter("body", "test");
+		$wxPayHelper->setParameter("partner", "1220047701");
+		$wxPayHelper->setParameter("out_trade_no", $commonUtil->create_noncestr());
+		$wxPayHelper->setParameter("total_fee", "1");
+		$wxPayHelper->setParameter("fee_type", "1");
+		$wxPayHelper->setParameter("notify_url", "http://www.hoyatech.net/wx/web/index.php?r=wap/paynotify");
+		$wxPayHelper->setParameter("spbill_create_ip", "127.0.0.1");
+		$wxPayHelper->setParameter("input_charset", "UTF-8");
+		$xmlStr = $wxPayHelper->create_native_package();
+		U::W($xmlStr);
+		return $xmlStr;
+
+	
 		if (Yii::$app->wx->localTest)
 		{
 			$postStr = <<<EOD
 			<xml>
-			<OpenId><![CDATA[111222]]></OpenId>
+			<OpenId><![CDATA[oSHFKsycXkOO3JNwifurCR7Z9-qc]]></OpenId>
 			<AppId><![CDATA[wx79c2bf0249ede62a]]></AppId>
 			<IsSubscribe>1</IsSubscribe>
-			<ProductId><![CDATA[777111666]]></ProductId>
-			<TimeStamp>1369743908</TimeStamp>
-			<NonceStr><![CDATA[YvMZOX28YQkoU1i4NdOnlXB1]]></NonceStr>
-			<AppSignature><![CDATA[a9274e4032a0fec8285f147730d88400392acb9e]]></AppSignature>
-			<SignMethod><![CDATA[sha1]]></SignMethod >
+			<ProductId><![CDATA[1234]]></ProductId>
+			<TimeStamp>1405827894</TimeStamp>
+			<NonceStr><![CDATA[rz1yehZmknd4i6CN]]></NonceStr>
+			<AppSignature><![CDATA[583934d2393f0d27c0b6aab4230cb16a1d1f291a]]></AppSignature>
+			<SignMethod><![CDATA[sha1]]></SignMethod>
 			</xml>
 EOD;
 		}
@@ -288,6 +314,7 @@ EOD;
 	}
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/mall&gh_id=gh_1ad98f5481f3
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mall:gh_1ad98f5481f3
 	public function actionMall($gh_id)
 	{		
 		Yii::$app->wx->setGhId($gh_id);
@@ -326,8 +353,11 @@ EOD;
  		return $this->render('mall', ['dataProvider' => $dataProvider]);
 	}    
         
-	//http://127.0.0.1/wx/web/index.php?r=wap/promotion&gh_id=gh_1ad98f5481f3
-	public function actionPromotion($gh_id)
+	//http://127.0.0.1/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prom:gh_1ad98f5481f3
+	//http://www.hoyatech.net/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
+	//http://www.hoyatech.net/wx/webtest/wxpay-jsapi-demo.html
+	public function actionProm($gh_id)
 	{
 		$this->layout = false;
 		
@@ -342,7 +372,52 @@ EOD;
 		$tag = Html::a('click here to pay', $url);		
 		*/
 		$item = ['iid'=>'4198489411','title'=>'K-Touch/天语 U90 kiss 初恋四核双卡智能 可ROOT 800万像素手机','price'=>'169900', 'new_price'=>'119900', 'url'=>'http://baidu.com', 'pic_url'=>'53a95055dcf97_b.png', 'seller_cids'=>'100'];
- 		return $this->render('promotion', ['item' => $item]);
+ 		return $this->render('prom', ['item' => $item]);
+	}	
+
+	//http://127.0.0.1/wx/web/index.php?r=wap/luck&gh_id=gh_1ad98f5481f3
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_1ad98f5481f3
+	public function actionLuck($gh_id)
+	{
+		//U::W([$_GET,$_POST]);
+		//$this->layout = false;	
+		//Yii::$app->wx->setGhId($gh_id);		
+		$openid = Yii::$app->user->identity->id;
+		$username = Yii::$app->user->identity->username;
+		U::W($openid);
+		$model = MUser::findOne($openid);
+		//U::W($model->getAttributes());
+		$result = '';
+		if ($model->load(Yii::$app->request->post())) 
+		{
+			//U::W($model->getAttributes());
+			//$result = U::getMobileLuck($model->mobile);		
+			$pn = $model->mobile;
+			$loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$pn."&output=json&callback=querycallback");
+			$loca = substr($loca, 14, -2);  
+			$loca = json_decode($loca, true);	
+			U::W($loca);
+
+			$lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$pn."&output=json&callback=querycallback");
+			$lucy_msg = substr($lucy_msg, 14, -2);  
+			$lucy_msg = json_decode($lucy_msg, true);	
+
+			$result = $this->renderPartial('luck_result', ['loca'=>$loca]);
+			
+		}		
+ 		return $this->render('luck', ['model' => $model, 'result'=>$result]);
+	}	
+
+        
+	//http://127.0.0.1/wx/web/index.php?r=wap/diy&gh_id=gh_1ad98f5481f3
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/diy:gh_1ad98f5481f3
+	//http://114.215.178.32/wx/web/index.php?r=wap/diy&gh_id=gh_1ad98f5481f3
+	public function actionDiy($gh_id)
+	{
+		$this->layout = false;
+		
+		Yii::$app->wx->setGhId($gh_id);		
+ 		return $this->render('diy');
 	}	
  
         	public function actionAccount($openid, $gh_id, $reason)

@@ -29,10 +29,12 @@ $this->title = 'Musers';
 	'tableOptions' => ['class' => 'table table-striped'],
         
         'columns' => [
+/*
 			[
 				//'id'=>'chk',
 				'class'=>'yii\grid\CheckBoxColumn',
 			],
+*/
             'id',            
             'openid',            
 			'nickname', 

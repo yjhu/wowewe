@@ -4,8 +4,10 @@
 	http://hoyatech.net/wx/web/index.php	
 	http://hoyatech.net/wx/web/index.php?r=msg&gh_id=gh_1ad98f5481f3		//woso
 	http://hoyatech.net/wx/web/index.php?r=msg&gh_id=gh_78539d18fdcc		//hoya	
+	http://wosotech.com/wx/web/index.php?r=msg&gh_id=gh_1ad98f5481f3
 	http://127.0.0.1/wx/web/index.php?r=msg&gh_id=gh_1ad98f5481f3			//woso
 	http://127.0.0.1/wx/web/index.php?r=msg&gh_id=gh_78539d18fdcc			//hoya
+	
 */
 
 namespace app\controllers;

@@ -21,14 +21,17 @@ CREATE TABLE wx_user (
 	create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	update_time TIMESTAMP NOT NULL DEFAULT 0,
 	mobile VARCHAR(16) NOT NULL DEFAULT '',
+	msg_time int(10) unsigned NOT NULL DEFAULT '0',	
 	KEY idx_gh_id(gh_id),	
 	PRIMARY KEY (openid)	
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_78539d18fdcc', 'admin', 'admin','1', 1);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_78539d18fdcc', 'root', 'root','1', 9);
+
+
 INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_78539d18fdcc', 'o6biBt5yaB7d3i0YTSkgFSAHmpdo','hoya-hehbhehb','1');
 INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_1ad98f5481f3', 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o','woso-hehbhehb','1');
-ALTER TABLE wx_user ADD mobile VARCHAR(16) NOT NULL DEFAULT '';
+
 */
 
 use Yii;
@@ -126,9 +129,9 @@ class MUser extends ActiveRecord implements IdentityInterface
 			['password', 'required'],
 			['password', 'string', 'min' => 1, 'max' => 16],
                                                             
-                                                            ['mobile', 'filter', 'filter' => 'trim'],
-                                                            ['mobile', 'required'], 
-                                                            ['mobile', 'match', 'pattern' => '/((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/' ],
+			['mobile', 'filter', 'filter' => 'trim'],
+			['mobile', 'required'], 
+			['mobile', 'match', 'pattern' => '/((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/' ],
                                                            
 		];
 	}

@@ -8,12 +8,19 @@ use yii\web\HttpException;
 
 use app\models\U;
 use app\models\WxException;
+use app\models\MUser;
 
 use app\models\RespText;
 use app\models\RespImage;
 use app\models\RespNews;
 use app\models\RespNewsItem;
 use app\models\RespMusic;
+
+define('APPID', "wx79c2bf0249ede62a");  //woso appid
+define('APPKEY',"Yat5dfJA2M8v8kZXH9rDk9q7Ae8dqmxRVApfsoiVxUrhvk8DFipBILgDzNFvVPSBJkZctFbqw0LNhfijqE8R8RLZfW04RGk8MkDXQoDES1Ac84LEtjdAt6hzJTNKG7on"); //paysign key
+define('SIGNTYPE', "sha1"); //method
+define('PARTNERKEY', "wosotech20140526huyajun197310070");//ͨ���ܴ�
+define('APPSERCERT', "c4d53595acf30e9caf09c155b3d95253");	// woso
 
 class Wechat extends \yii\base\Object
 {
@@ -43,7 +50,8 @@ class Wechat extends \yii\base\Object
 	public $debug =  false;
 	public $localTest = false;
 	
-	public $oauth2Callback = ['wap/oauth2callback'];		
+	public $oauth2cb = ['wap/oauth2cb'];		
+//	public $oauth2cb = 'wap/oauth2cb';			
 	public $paynotifyUrl = ['wap/paynotify'];			
 
 	private $_request;
@@ -53,7 +61,8 @@ class Wechat extends \yii\base\Object
 	private $_accessToken;	
 
 	// wxpay package parameters
-	private $_parameters;
+	//private $_parameters;
+	public $parameters;
 	
 	public function init()
 	{
@@ -102,9 +111,9 @@ class Wechat extends \yii\base\Object
 			$command = $db->createCommand("SELECT * FROM $tableName WHERE gh_id=:gh_id", [':gh_id'=>$this->_gh_id]);
 		else
 			$command = $db->createCommand("SELECT * FROM $tableName WHERE appid=:appid", [':appid'=>$this->_appid]);
-		$db->beginCache(YII_DEBUG ? 10 : 3600);
+		//$db->beginCache(YII_DEBUG ? 10 : 3600);
 		$row = $command->queryOne();
-		$db->endCache();		
+		//$db->endCache();		
 		if ($row === false)
 			U::D("no exists in db!, gh_id={$this->_gh_id}, appid={$this->_appid}");
 		$this->_gh = $row;
@@ -179,8 +188,8 @@ class Wechat extends \yii\base\Object
 	{
 		if ($this->localTest)		
 		{
-				//return self::getDemoRequestXml(Wechat::MSGTYPE_TEXT);
-				return self::getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_CLICK);
+				return self::getDemoRequestXml(Wechat::MSGTYPE_TEXT);
+				//return self::getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_CLICK, 'FuncQueryAccount');	// FuncQueryFee
 				//return self::getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_SUBSCRIBE);
 				//return self::getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_UNSUBSCRIBE);				
 				//return self::getDemoRequestXml(Wechat::MSGTYPE_IMAGE);
@@ -258,6 +267,23 @@ class Wechat extends \yii\base\Object
 		throw new \Exception(U::toString(['Invalid MsgType or Event', __METHOD__, $this->getRequest()]));	
 	}
 
+	public function checkOpenid() 
+	{
+		$FromUserName = $this->getRequest('FromUserName');
+		$model = MUser::findOne($FromUserName);
+		if ($model === null ||empty($model->nickname))
+		{
+			$model = new MUser;
+			$arr = $this->WxGetUserInfo($FromUserName);	
+			$model->setAttributes($arr, false);
+			$model->gh_id = $this->getRequest('ToUserName');			
+			$model->openid = $FromUserName;			
+		}
+		$model->msg_time = time();
+		if (!$model->save(false))
+			U::W([__METHOD__, $model->getErrors()]);	
+	}
+	
 	public function run($gh_id) 
 	{
 		try
@@ -266,6 +292,7 @@ class Wechat extends \yii\base\Object
 			$this->valid();		
 			$MsgType = $this->getRequest('MsgType');
 			//$this->setGhId($this->getRequest('ToUserName'));
+			$this->checkOpenid();
 			switch ($MsgType) 
 			{
 				case Wechat::MSGTYPE_TEXT:
@@ -361,13 +388,10 @@ class Wechat extends \yii\base\Object
 		return new RespNews($this->getRequest('FromUserName'), $this->getRequest('ToUserName'), $items, $funcFlag);
 	}
 
-	public static function getDemoRequestXml($MsgType, $Event=Wechat::EVENT_SUBSCRIBE) 
+	public static function getDemoRequestXml($MsgType, $Event=Wechat::EVENT_SUBSCRIBE, $EventKey = 'FuncQueryAccount') 
 	{
 		$openid = Wechat::OPENID_TESTER1;
 		$gh_id = Yii::$app->wx->getGhid();
-//		$EventKey = 'FuncQueryFee';
-		$EventKey = 'FuncQueryAccount';
-		
 		switch ($MsgType) 
 		{
 			case Wechat::MSGTYPE_TEXT:
@@ -634,9 +658,15 @@ EOD;
 	{
 		$appid = $this->gh['appid'];
 		//snsapi_base, snsapi_userinfo
-		//$redirect_uri = urlencode("http://hoyatech.net/wx/web/index.php?r=site/oauth2callback");
-		$redirect_uri = urlencode(Url::to($this->oauth2Callback, true));		
+		//$redirect_uri = urlencode("http://hoyatech.net/wx/web/index.php?r=wap/oauth2cb");
+		//$redirect_uri = urlencode("http://wosotech.com/wx/web/index.php?r=wap/oauth2cb");		
+		//U::W(Url::to($this->oauth2cb, true));
+		$redirect_uri = urlencode(Url::to($this->oauth2cb, true));	
+		//$redirect_uri = Url::to($this->oauth2cb, true);	
+		//U::W($redirect_uri);
+		//exit;		
 		$url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri={$redirect_uri}&response_type=code&scope={$scope}&state={$state}#wechat_redirect";
+		//$url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$appid}&redirect_uri={$redirect_uri}&response_type=code&scope={$scope}#wechat_redirect";		
 		return $url;
 	}
 	
@@ -866,6 +896,7 @@ EOD;
 	}
 	
 	// ------------------------ Wxpay ------------------------
+/*	
 	protected static function sign($content, $key) 
 	{
 		if (empty($key))
@@ -996,17 +1027,6 @@ EOD;
 		$this->setParameter("notify_url", Url::to($this->paynotifyUrl, true));
 	}
 	
-	/*
-	生成jsapi支付请求json
-	"appId" : "wxf8b4f85f3a794e77",
-	"timeStamp" : "189026618",
-	"nonceStr" : "adssdasssd13d",
-	"package" : "bank_type=WX&body=XXX&fee_type=1&input_charset=GBK&notify_url=http%3a%2f
-	%2fwww.qq.com&out_trade_no=16642817866003386000&partner=1900000109&spbill_create_i
-	p=127.0.0.1&total_fee=1&sign=BEEF37AD19575D92E191C1E4B1474CA9",
-	"signType" : "SHA1",
-	"paySign" : "7717231c335a05165b1874658306fa431fe9a0de"
-	*/
 	public function create_biz_package()
 	{
 		$appid = $this->gh['appid'];
@@ -1015,16 +1035,13 @@ EOD;
 		$nativeObj["appId"] = $appid;
 		$nativeObj["package"] = $this->get_cft_package();
 		$nativeObj["timeStamp"] = strval(time());
+		//$nativeObj["timeStamp"] = time();
 		$nativeObj["nonceStr"] = self::create_noncestr();
 		$nativeObj["paySign"] = $this->get_biz_sign($nativeObj);
 		$nativeObj["signType"] = self::SIGNTYPE;		   
 		return json_encode($nativeObj);		   
 	}
 
-	/*
-	generate NATIVE url
-	weixin://wxpay/bizpayurl?sign=XXXXX&appid=XXXXXX&productid=XXXXXX&timestamp=XXXXXX&noncestr=XXXXXX
-	*/
 	public function create_native_url($productid)
 	{
 		$appid = $this->gh['appid'];	
@@ -1037,20 +1054,6 @@ EOD;
 		return "weixin://wxpay/bizpayurl?".$bizString;
 	}
 
-	/*
-	Native XML response to Wechat server:
-	<xml>
-	<AppId><![CDATA[wwwwb4f85f3a797777]]></AppId>
-	<Package><![CDATA[a=1&url=http%3A%2F%2Fwww.qq.com]]></Package>
-	<TimeStamp> 1369745073</TimeStamp>
-	<NonceStr><![CDATA[iuytxA0cH6PyTAVISB28]]></NonceStr>
-	<RetCode>0</RetCode>
-	<RetErrMsg><![CDATA[ok]]></ RetErrMsg>
-	<AppSignature><![CDATA[53cca9d47b883bd4a5c85a9300df3da0cb48565c]]>
-	</AppSignature>
-	<SignMethod><![CDATA[sha1]]></ SignMethod >
-	</xml>
-	*/
 	public function create_native_package($retcode=0, $reterrmsg="ok")
 	{
 		$appid = $this->gh['appid'];	
@@ -1066,6 +1069,228 @@ EOD;
 		$nativeObj["SignMethod"] = self::SIGNTYPE;
 		return  self::arrayToXml($nativeObj);
 	}
+*/
+
+	function sign($content, $key) {
+		    if (null == $key) {
+		    }
+			if (null == $content) {
+		    }
+		    $signStr = $content . "&key=" . $key;
+		
+		    return strtoupper(md5($signStr));
+	}
+	
+	function verifySignature($content, $sign, $md5Key) {
+		$signStr = $content . "&key=" . $md5Key;
+		$calculateSign = strtolower(md5($signStr));
+		$tenpaySign = strtolower($sign);
+		return $calculateSign == $tenpaySign;
+	}
+
+	function genAllUrl($toURL, $paras) {
+		$allUrl = null;
+		if(null == $toURL){
+			die("toURL is null");
+		}
+		if (strripos($toURL,"?") =="") {
+			$allUrl = $toURL . "?" . $paras;
+		}else {
+			$allUrl = $toURL . "&" . $paras;
+		}
+
+		return $allUrl;
+	}
+	/**
+	 * 
+	 * 
+	 * @param src
+	 * @param token
+	 * @return
+	 */
+	function splitParaStr($src, $token) {
+		$resMap = array();
+		$items = explode($token,$src);
+		foreach ($items as $item){
+			$paraAndValue = explode("=",$item);
+			if ($paraAndValue != "") {
+				$resMap[$paraAndValue[0]] = $parameterValue[1];
+			}
+		}
+		return $resMap;
+	}
+	
+	/**
+	 * trim 
+	 * 
+	 * @param value
+	 * @return
+	 */
+	static function trimString($value){
+		$ret = null;
+		if (null != $value) {
+			$ret = $value;
+			if (strlen($ret) == 0) {
+				$ret = null;
+			}
+		}
+		return $ret;
+	}
+	
+	function formatQueryParaMap($paraMap, $urlencode){
+		$buff = "";
+		ksort($paraMap);
+		foreach ($paraMap as $k => $v){
+			if (null != $v && "null" != $v && "sign" != $k) {
+			    if($urlencode){
+				   $v = urlencode($v);
+				}
+				$buff .= $k . "=" . $v . "&";
+			}
+		}
+		$reqPar;
+		if (strlen($buff) > 0) {
+			$reqPar = substr($buff, 0, strlen($buff)-1);
+		}
+		return $reqPar;
+	}
+	function formatBizQueryParaMap($paraMap, $urlencode){
+		$buff = "";
+		ksort($paraMap);
+		foreach ($paraMap as $k => $v){
+		//	if (null != $v && "null" != $v && "sign" != $k) {
+			    if($urlencode){
+				   $v = urlencode($v);
+				}
+				$buff .= strtolower($k) . "=" . $v . "&";
+			//}
+		}
+		$reqPar;
+		if (strlen($buff) > 0) {
+			$reqPar = substr($buff, 0, strlen($buff)-1);
+		}
+		return $reqPar;
+	}
+	
+	function arrayToXml($arr)
+    {
+        $xml = "<xml>";
+        foreach ($arr as $key=>$val)
+        {
+        	 if (is_numeric($val))
+        	 {
+        	 	$xml.="<".$key.">".$val."</".$key.">"; 
+
+        	 }
+        	 else
+        	 	$xml.="<".$key."><![CDATA[".$val."]]></".$key.">";  
+        }
+        $xml.="</xml>";
+        return $xml; 
+    }
+
+	function setParameter($parameter, $parameterValue) {
+		$this->parameters[self::trimString($parameter)] = self::trimString($parameterValue);
+	}
+	function getParameter($parameter) {
+		return $this->parameters[$parameter];
+	}
+	
+	function create_noncestr( $length = 16 ) {  
+		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";  
+		$str ="";  
+		for ( $i = 0; $i < $length; $i++ )  {  
+			$str.= substr($chars, mt_rand(0, strlen($chars)-1), 1);  
+		}  
+		return $str;  
+	}
+	
+	function check_cft_parameters(){
+		if($this->parameters["bank_type"] == null || $this->parameters["body"] == null || $this->parameters["partner"] == null || 
+			$this->parameters["out_trade_no"] == null || $this->parameters["total_fee"] == null || $this->parameters["fee_type"] == null ||
+			$this->parameters["notify_url"] == null || $this->parameters["spbill_create_ip"] == null || $this->parameters["input_charset"] == null
+			)
+		{
+			return false;
+		}
+		return true;
+
+	}
+	protected function get_cft_package(){
+			//$commonUtil = new CommonUtil();
+			$partnerkey = $this->gh['partnerkey'];
+			
+			ksort($this->parameters);
+			$unSignParaString = $this->formatQueryParaMap($this->parameters, false);
+			$paraString = $this->formatQueryParaMap($this->parameters, true);
+
+			//$md5SignUtil = new MD5SignUtil();
+			return $paraString . "&sign=" . $this->sign($unSignParaString,self::trimString(PARTNERKEY));
+	}
+	
+	protected function get_biz_sign($bizObj){
+		 	$appkey = $this->gh['paysignkey'];	
+		 	$bizParameters["appkey"] = APPKEY;
+		 	ksort($bizParameters);
+		 	//var_dump($bizParameters);
+		 	//$commonUtil = new CommonUtil();
+		 	$bizString = $this->formatBizQueryParaMap($bizParameters, false);
+		 	//var_dump($bizString);
+		 	return sha1($bizString);
+	}
+
+	function create_biz_package(){
+		  
+			if($this->check_cft_parameters() == false) {   
+		    }
+		 	$appid = $this->gh['appid'];	
+		    
+		    $nativeObj["appId"] = APPID;
+		    $nativeObj["package"] = $this->get_cft_package();
+		    $nativeObj["timeStamp"] = time();
+		    $nativeObj["nonceStr"] = $this->create_noncestr();
+		    $nativeObj["paySign"] = $this->get_biz_sign($nativeObj);
+		    $nativeObj["signType"] = self::SIGNTYPE;
+		   
+		    return   json_encode($nativeObj);
+		   
+		
+	}
+
+	function create_native_url($productid){
+
+			//$commonUtil = new CommonUtil();
+		 	$appid = $this->gh['appid'];				
+		    $nativeObj["appid"] = $appid;
+		    $nativeObj["productid"] = urlencode($productid);
+		    $nativeObj["timestamp"] = time();
+		    $nativeObj["noncestr"] = $this->create_noncestr();
+		    $nativeObj["sign"] = $this->get_biz_sign($nativeObj);
+		    $bizString = $this->formatBizQueryParaMap($nativeObj, false);
+		    return "weixin://wxpay/bizpayurl?".$bizString;
+		    
+	}
+
+	function create_native_package($retcode = 0, $reterrmsg = "ok")
+	{
+		   if($this->check_cft_parameters() == false && $retcode == 0) 
+		   {
+		    }
+		 	$appid = $this->gh['appid'];						    
+		    $nativeObj["AppId"] = $appid;
+		    $nativeObj["Package"] = $this->get_cft_package();
+		    $nativeObj["TimeStamp"] = time();
+		    $nativeObj["NonceStr"] = $this->create_noncestr();
+		    $nativeObj["RetCode"] = $retcode;
+		    $nativeObj["RetErrMsg"] = $reterrmsg;
+		    $nativeObj["AppSignature"] = $this->get_biz_sign($nativeObj);
+		    $nativeObj["SignMethod"] = self::SIGNTYPE;
+		    //$commonUtil = new CommonUtil();
+
+		    return  $this->arrayToXml($nativeObj);
+		   
+	}
+
 }
 
 
