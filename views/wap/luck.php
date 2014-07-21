@@ -38,7 +38,7 @@ $this->title = '手机运程预测';
 
     <div class="form-group">
         <div class="col-lg-offset-1 col-lg-11 col-sm-11">
-            <?= Html::submitButton('马上测算手机运程！', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+            <?= Html::submitButton('马上测算手机运程！', ['class' => 'btn btn-primary btn-success btn-block btn-lg', 'name' => 'login-button']) ?>
         </div>
     </div>
 
