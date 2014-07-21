@@ -402,7 +402,7 @@ EOD;
 			$lucy_msg = substr($lucy_msg, 14, -2);  
 			$lucy_msg = json_decode($lucy_msg, true);	
 
-			$result = $this->renderPartial('luck_result', ['loca'=>$loca]);
+			$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);
 			
 		}		
  		return $this->render('luck', ['model' => $model, 'result'=>$result]);
