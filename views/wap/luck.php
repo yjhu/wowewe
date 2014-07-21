@@ -48,13 +48,29 @@ $this->title = '手机运程预测';
     var mid = "200279951";  //???????????????
     var idx = "3";   //??????????????
     //var nickname = "掌上余杭";
-
     var nickname = "沃手科技";
-    var user_name = "gh_bbce9ae97f05"; //????????????????
+    
+    //var user_name = "gh_bbce9ae97f05"; //????????????????
+    var user_name = "gh_1ad98f5481f3";
+    
     var fakeid   = "MTM4NDU2MjAyMg=="; //??????????????????????????
     var version   = "";
     var is_limit_user   = "0";
 
+
+    /*
+        {img_url: t,img_width: "640",img_height: "640",link: share_scene(n, 2),desc: i,title: r}, 
+
+        "title": "36氪",
+        "link": "http://www.36kr.com",
+        "desc": "关注互联网创业",
+        "img_url": "http://www.36kr.com/assets/images/apple-touch-icon.png"
+     */
+    var r = "不看后悔一辈子？"; 
+    var t = "http://pic4.nipic.com/20090821/3259043_144134093_2.jpg";  //水晶球
+    var i = "沃手科技-关注互联网创业";
+    
+    
     var msg_title = "看看你的手机运程如何？"; 
     var msg_desc = "";
     var msg_cdn_url = "http://view.jquerymobile.com/master/demos/_assets/img/jquery-logo.png";
