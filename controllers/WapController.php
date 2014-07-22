@@ -65,28 +65,24 @@ class WapController extends Controller
 		return $this->render('index');
 	}
 
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_1ad98f5481f3
 	public function actionOauth2cb()
 	{
 		if (Yii::$app->wx->localTest)
 		{
 			$openid = Wechat::OPENID_TESTER1;
-			U::W('snsapi_base.....');
-			list($routeId, $gh_id) = explode(':', $_GET['state']);
-			$route = [$routeId, 'gh_id'=>$gh_id];
-			$user = MUser::findIdentity($openid);
-			if ($user === null)
-			{
-				U::W("This identity does not exist, openid={$openid}");
-				throw new \yii\web\HttpException(500, "This identity does not exist, openid={$openid}");
-			}
-			Yii::$app->user->login($user);
-			return $this->redirect($route);			
+			list($route, $gh_id) = explode(':', $_GET['state']);
+			Yii::$app->session['gh_id'] = $gh_id;
+			Yii::$app->session['openid'] = $openid;			
+			$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+			if ($user !== null)
+				Yii::$app->user->login($user);
+			return $this->redirect([$route]);
 		}
 	
-		//U::W($_GET);
 		if (empty($_GET['code']))
 		{
-			U::W([__FUNCTION__, $_GET, 'no code']);
+			U::W([__METHOD__, $_GET, 'no code']);
 			return;
 		}		
 		$code = $_GET['code'];
@@ -95,13 +91,12 @@ class WapController extends Controller
 			return 'Sorry, we can not do anything for you without your authrization!';
 		}
 
-		list($routeId, $gh_id) = explode(':', $_GET['state']);
-		$route = [$routeId, 'gh_id'=>$gh_id];
+		list($route, $gh_id) = explode(':', $_GET['state']);
 		Yii::$app->wx->setGhId($gh_id);
 		$token = Yii::$app->wx->WxGetOauth2AccessToken($code);
 		if (!isset($token['access_token']))
 		{
-			U::W([__FUNCTION__, $token]);
+			U::W([__METHOD__, $token]);
 			return null;
 		}
 		$oauth2AccessToken = $token['access_token'];
@@ -111,26 +106,15 @@ class WapController extends Controller
 		{
 			$oauth2UserInfo = Yii::$app->wx->WxGetOauth2UserInfo($oauth2AccessToken, $openid);
 			U::W($oauth2UserInfo);
-			//return U::toString($oauth2UserInfo);		
-			//Yii::$app->getSession()->set('sns_user_info', $oauth2UserInfo);
+			Yii::$app->session->set('oauth2UserInfo', $oauth2UserInfo);
 		}
-		else
-		{
-			//U::W('snsapi_base.....');
-			//U::W($token);
-			//U::W($_GET);
-			//$route = Yii::$app->request->get('state', 'index');
-			//U::W("route=$route");
-		}
-		$user = MUser::findIdentity($openid);
-		if ($user === null)
-		{
-			U::W("This identity does not exist, openid={$openid}");
-			throw new \yii\web\HttpException(500, "This identity does not exist, openid={$openid}");
-		}
-		U::W([$route, $openid]);		
-		Yii::$app->user->login($user);
-		return $this->redirect($route);		
+
+		Yii::$app->session['gh_id'] = $gh_id;
+		Yii::$app->session['openid'] = $openid;
+		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+		if ($user !== null)
+			Yii::$app->user->login($user);
+		return $this->redirect([$route]);
 	}
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/nativepackage
@@ -315,10 +299,11 @@ EOD;
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/mall&gh_id=gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mall:gh_1ad98f5481f3
-	public function actionMall($gh_id)
+	public function actionMall()
 	{		
+		$gh_id = Yii::$app->session['gh_id'];	
+		$openid = Yii::$app->session['openid'];
 		Yii::$app->wx->setGhId($gh_id);
-
 		//U::W($_GET);	
 		if (Yii::$app->user->isGuest)
 		{
@@ -333,9 +318,9 @@ EOD;
 		//return $openid.$username;
 		
 		$rawData = array(
-			['iid'=>'4198489411','title'=>'K-Touch/天语 U90 kiss 初恋四核双卡智能 可ROOT 800万像素手机','price'=>'169900', 'new_price'=>'119900', 'url'=>'http://baidu.com', 'pic_url'=>'53a95055dcf97_b.png', 'seller_cids'=>'100'],
-			['iid'=>'4198489412','title'=>'官方超快充—湖北联通20元手机话费充值','price'=>'20100', 'new_price'=>'18800', 'url'=>'http://baidu.com', 'pic_url'=>'53a957d22b5e8_b.png', 'seller_cids'=>'100'],			
-			['iid'=>'4198489413','title'=>'联通3g流量卡全国通用纯上网流量卡手机电脑永久包月1G套','price'=>'30100', 'new_price'=>'28800', 'url'=>'http://baidu.com', 'pic_url'=>'53a9611ab18ab_b.png', 'seller_cids'=>'100'],						
+			['iid'=>'4198489411','title'=>'K-Touch titl1','price'=>'169900', 'new_price'=>'119900', 'url'=>'http://baidu.com', 'pic_url'=>'53a95055dcf97_b.png', 'seller_cids'=>'100'],
+			['iid'=>'4198489412','title'=>'title2','price'=>'20100', 'new_price'=>'18800', 'url'=>'http://baidu.com', 'pic_url'=>'53a957d22b5e8_b.png', 'seller_cids'=>'100'],			
+			['iid'=>'4198489413','title'=>'title3','price'=>'30100', 'new_price'=>'28800', 'url'=>'http://baidu.com', 'pic_url'=>'53a9611ab18ab_b.png', 'seller_cids'=>'100'],						
 		);		
 
 	        $dataProvider = new ArrayDataProvider([
@@ -357,53 +342,86 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prom:gh_1ad98f5481f3
 	//http://www.hoyatech.net/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
 	//http://www.hoyatech.net/wx/webtest/wxpay-jsapi-demo.html
-	public function actionProm($gh_id)
+	public function actionProm()
 	{
-		$this->layout = false;
-		
+		$this->layout = false;		
+		$gh_id = Yii::$app->session['gh_id'];	
+		$openid = Yii::$app->session['openid'];
 		Yii::$app->wx->setGhId($gh_id);
-
-		
-		/*
 		//test native url begin		
-		$productId = 'item1';
-		$url = Yii::$app->wx->create_native_url($productId);	
-		U::W($url);		
-		$tag = Html::a('click here to pay', $url);		
-		*/
-		$item = ['iid'=>'4198489411','title'=>'K-Touch/天语 U90 kiss 初恋四核双卡智能 可ROOT 800万像素手机','price'=>'169900', 'new_price'=>'119900', 'url'=>'http://baidu.com', 'pic_url'=>'53a95055dcf97_b.png', 'seller_cids'=>'100'];
+		//$productId = 'item1';
+		//$url = Yii::$app->wx->create_native_url($productId);	
+		//U::W($url);		
+		//$tag = Html::a('click here to pay', $url);		
+		$item = ['iid'=>'4198489411','title'=>'title1','price'=>'169900', 'new_price'=>'119900', 'url'=>'http://baidu.com', 'pic_url'=>'53a95055dcf97_b.png', 'seller_cids'=>'100'];
  		return $this->render('prom', ['item' => $item]);
 	}	
 
-	//http://127.0.0.1/wx/web/index.php?r=wap/luck&gh_id=gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_1ad98f5481f3
-	public function actionLuck($gh_id)
+	public function actionLuck()
 	{
-		//U::W([$_GET,$_POST]);
-		//$this->layout = false;	
-		Yii::$app->wx->setGhId($gh_id);		
-		$openid = Yii::$app->user->identity->id;
-		$username = Yii::$app->user->identity->username;
-		U::W($openid);
-		$model = MUser::findOne($openid);
-		//U::W($model->getAttributes());
+		$this->layout = 'wap';
+		$gh_id = Yii::$app->session['gh_id'];	
+		$openid = Yii::$app->session['openid'];
+		Yii::$app->wx->setGhId($gh_id);
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+		if ($model === null)
+		{
+			$model = new MUser;		
+			$subscribed = false;			
+		}
+		else if ($model->subscribe)
+			$subscribed = true;
+		else
+			$subscribed = false;
+
+		if (!Yii::$app->user->isGuest)
+		{
+			$openid = Yii::$app->user->identity->openid;
+			$username = Yii::$app->user->identity->username;
+			U::W($openid);		
+		}
+		
 		$result = '';
                                         $lucy_msg = [];
 		if ($model->load(Yii::$app->request->post())) 
 		{
-			//U::W($model->getAttributes());
-			//$result = U::getMobileLuck($model->mobile);		
 			$pn = $model->mobile;
 			$loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$pn."&output=json&callback=querycallback");
 			$loca = substr($loca, 14, -2);  
 			$loca = json_decode($loca, true);	
-			U::W($loca);
 
 			$lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$pn."&output=json&callback=querycallback");
 			$lucy_msg = substr($lucy_msg, 14, -2);  
 			$lucy_msg = json_decode($lucy_msg, true);	
 
+			//$lucy_msg = U::getMobileLuck($pn);
+			//$lucy_msg['Mobile'] = $pn;
+
 			$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);
+			
+			$msg = [
+				'touser'=>$openid, 
+				'msgtype'=>'news', 
+				'news'=> [
+					'articles'=>[
+						['title'=>"test your mobile", 'description'=>"{$username}: {$lucy_msg['JXDetail']},{$lucy_msg['GX']},{$lucy_msg['GXDetail']}", 'url'=>'http://mp.weixin.qq.com/s?__biz=MzAwODAwMDMyOA==&mid=200371259&idx=1&sn=a9bb6f76733b66122f4fff0a3e50c6f0#rd', 'picurl'=>'http://hoyatech.net/wx/web/images/earth.jpg'],
+					]				
+				]
+			];
+
+			//if ($subscribed)
+			{
+				try
+				{
+					$arr = Yii::$app->wx->WxMessageCustomSend($msg);
+					U::W($arr);		
+				}
+				catch (Exception $e)
+				{
+					U::W($e->getCode().':'.$e->getMessage());
+				}
+			}
 			
 		}		
  		return $this->render('luck', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg] );
@@ -413,53 +431,44 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/diy&gh_id=gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/diy:gh_1ad98f5481f3
 	//http://114.215.178.32/wx/web/index.php?r=wap/diy&gh_id=gh_1ad98f5481f3
-	public function actionDiy($gh_id)
+	public function actionDiy()
 	{
-		$this->layout = false;
-		
-		Yii::$app->wx->setGhId($gh_id);		
+		$this->layout = false;		
+		Yii::$app->wx->setGhId();		
  		return $this->render('diy');
 	}	
  
-        	public function actionAccount($openid, $gh_id, $reason)
-                    {
-                            //$openid = $_GET['openid'];
-                            //$gh_id = $_GET['gh_id'];
-                 
-                            $model = MUser::findOne($openid);
-                            if ($model === null) {
-                                    U::W([ 'model does not exists', __METHOD__, $_GET]);
-                                    throw new \yii\web\HttpException(500, "This identity does not exist, openid={$openid}");
-                            }
-                           
-                            if (\Yii::$app->request->isPost) 
-                            {
-                                    //U::W([ '11111111', __METHOD__, $_GET]);
-                                    //U::W(\Yii::$app->request->post());
-                                    $model->load(\Yii::$app->request->post());
-                                    
-                                    //U::W($model->getAttributes());
-                                    if ($model->save(true, ['mobile'])) {
-                                            //return $this->redirect(['wap/accountOk']);	
-                                        if($reason=="FuncQueryAccount")
-                                        {
-                                              //return "绑定成功";
-                                              return $this->redirect(['wap/billdetail', 'mobile' => $model->mobile]);
-                                        }
-                                    }
-                                    else
-                                        U::W($model->getErrors());
-                                   
-                            }       
-                             
-                            return $this->render('account',['model' => $model]);
+	public function actionAccount($openid, $gh_id, $reason)
+	{
+		//$openid = $_GET['openid'];
+		//$gh_id = $_GET['gh_id'];
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);		
+		if ($model === null) {
+			U::W([ 'model does not exists', __METHOD__, $_GET]);
+			throw new \yii\web\HttpException(500, "This identity does not exist, openid={$openid}");
+		}
+
+		if (\Yii::$app->request->isPost) 
+		{
+			$model->load(\Yii::$app->request->post());
+			//U::W($model->getAttributes());
+			if ($model->save(true, ['mobile'])) 
+			{
+				if($reason=="FuncQueryAccount")
+				{
+					return $this->redirect(['wap/billdetail', 'mobile' => $model->mobile]);
+				}
+			}
+			else
+				U::W($model->getErrors());
+		}       
+		return $this->render('account',['model' => $model]);
 	}
-        
-        
-              	public function actionBilldetail($mobile)
-                    {
-                         return $this->render('billDetail', ['mobile'=>$mobile]);
-                    }
+                
+	public function actionBilldetail($mobile)
+	{
+		return $this->render('billDetail', ['mobile'=>$mobile]);
+	}
           
 }
 
@@ -478,12 +487,12 @@ $oauth2UserInfo
 (
     [subscribe] => 1
     [openid] => oySODt2YXO_JMcFWpFO5wyuEYX-0
-    [nickname] => 何华斌
+    [nickname] =>1111
     [sex] => 1
     [language] => zh_CN
-    [city] => 武汉
-    [province] => 湖北
-    [country] => 中国
+    [city] =>111
+    [province] =>11
+    [country] =>11
     [headimgurl] => http://wx.qlogo.cn/mmopen/KBRNPfvbbrVbucASwD74Dric6NSCnVDycQNgicHwpYdFT74jhT7T6t6jT62zcOTtmumN7ia8QRtbRmvFRuzXPrBGqTQ22XuFk4w/0
     [subscribe_time] => 1402976898
 )

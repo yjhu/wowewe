@@ -4,6 +4,7 @@ namespace app\models;
 /*
 DROP TABLE IF EXISTS wx_user;
 CREATE TABLE wx_user (
+	id int(10) unsigned NOT NULL AUTO_INCREMENT  PRIMARY KEY,
 	gh_id VARCHAR(32) NOT NULL DEFAULT '',
 	openid VARCHAR(32) NOT NULL DEFAULT '',
 	nickname VARCHAR(32) NOT NULL DEFAULT '',	
@@ -23,12 +24,10 @@ CREATE TABLE wx_user (
 	mobile VARCHAR(16) NOT NULL DEFAULT '',
 	msg_time int(10) unsigned NOT NULL DEFAULT '0',	
 	KEY idx_gh_id(gh_id),	
-	PRIMARY KEY (openid)	
+	UNIQUE KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_78539d18fdcc', 'admin', 'admin','1', 1);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_78539d18fdcc', 'root', 'root','1', 9);
-
-
 INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_78539d18fdcc', 'o6biBt5yaB7d3i0YTSkgFSAHmpdo','hoya-hehbhehb','1');
 INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_1ad98f5481f3', 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o','woso-hehbhehb','1');
 
@@ -92,8 +91,8 @@ class MUser extends ActiveRecord implements IdentityInterface
 
 	public function getId()
 	{
-		//return $this->id;
-		return $this->openid;
+		return $this->id;
+		//return $this->openid;
 	}
 
 	public function getAuthKey()
@@ -136,6 +135,13 @@ class MUser extends ActiveRecord implements IdentityInterface
 		];
 	}
 
+	public function attributeLabels()
+	{
+		return [
+			'mobile'=>'手机号',
+		];
+	}
+
 /*
 	public function scenarios()
 	{
@@ -164,6 +170,35 @@ class MUser extends ActiveRecord implements IdentityInterface
 }
 
 /*
+
+DROP TABLE IF EXISTS wx_user;
+CREATE TABLE wx_user (
+	gh_id VARCHAR(32) NOT NULL DEFAULT '',
+	openid VARCHAR(32) NOT NULL DEFAULT '',
+	nickname VARCHAR(32) NOT NULL DEFAULT '',	
+	sex tinyint(3) unsigned NOT NULL DEFAULT 0,		
+	city VARCHAR(32) NOT NULL DEFAULT '',
+	country VARCHAR(32) NOT NULL DEFAULT '',
+	province VARCHAR(32) NOT NULL DEFAULT '',
+	headimgurl VARCHAR(256) NOT NULL DEFAULT '',
+	subscribe tinyint(3) unsigned NOT NULL DEFAULT 0,
+	subscribe_time int(10) unsigned NOT NULL DEFAULT '0',
+	password CHAR(16) NOT NULL DEFAULT '',
+	email VARCHAR(32) NOT NULL DEFAULT '',	
+	role tinyint(3) NOT NULL DEFAULT 0,
+	status int(10) unsigned NOT NULL DEFAULT '0',
+	create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	update_time TIMESTAMP NOT NULL DEFAULT 0,
+	mobile VARCHAR(16) NOT NULL DEFAULT '',
+	msg_time int(10) unsigned NOT NULL DEFAULT '0',	
+	KEY idx_gh_id(gh_id),	
+	PRIMARY KEY (openid)	
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_78539d18fdcc', 'admin', 'admin','1', 1);
+INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_78539d18fdcc', 'root', 'root','1', 9);
+INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_78539d18fdcc', 'o6biBt5yaB7d3i0YTSkgFSAHmpdo','hoya-hehbhehb','1');
+INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_1ad98f5481f3', 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o','woso-hehbhehb','1');
+
 CREATE TABLE wx_user (
 	id int(10) unsigned NOT NULL AUTO_INCREMENT,
 	openid VARCHAR(64) NOT NULL DEFAULT '',	

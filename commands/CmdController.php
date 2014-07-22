@@ -168,7 +168,7 @@ class CmdController extends Controller
 			]),
 			new \app\models\ButtonView('自由组合', 'http://m.10010.com/mobilegoodsdetail/981405149472.html'),
 			new \app\models\ButtonComplex('沃服务', [
-				new \app\models\ButtonView('账单查询', 'http://iservice.10010.com/index_.html'),
+				new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
 				//new \app\models\ButtonView('靓号运程', 'http://m.10010.com/'),
 				new \app\models\ButtonView('襄阳沃社区', 'http://m.10010.com/'),
 				
