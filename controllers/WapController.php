@@ -381,13 +381,14 @@ EOD;
 	{
 		//U::W([$_GET,$_POST]);
 		//$this->layout = false;	
-		//Yii::$app->wx->setGhId($gh_id);		
+		Yii::$app->wx->setGhId($gh_id);		
 		$openid = Yii::$app->user->identity->id;
 		$username = Yii::$app->user->identity->username;
 		U::W($openid);
 		$model = MUser::findOne($openid);
 		//U::W($model->getAttributes());
 		$result = '';
+                                        $lucy_msg = [];
 		if ($model->load(Yii::$app->request->post())) 
 		{
 			//U::W($model->getAttributes());
@@ -405,7 +406,7 @@ EOD;
 			$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);
 			
 		}		
- 		return $this->render('luck', ['model' => $model, 'result'=>$result]);
+ 		return $this->render('luck', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg] );
 	}	
 
         
