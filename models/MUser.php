@@ -135,6 +135,13 @@ class MUser extends ActiveRecord implements IdentityInterface
 		];
 	}
 
+	public function attributeLabels()
+	{
+		return [
+			'mobile'=>'手机号',
+		];
+	}
+
 /*
 	public function scenarios()
 	{
