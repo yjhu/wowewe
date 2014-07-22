@@ -65,21 +65,24 @@ class WapController extends Controller
 		return $this->render('index');
 	}
 
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_1ad98f5481f3
 	public function actionOauth2cb()
 	{
 		if (Yii::$app->wx->localTest)
 		{
 			$openid = Wechat::OPENID_TESTER1;
-			U::W('snsapi_base.....');
 			list($routeId, $gh_id) = explode(':', $_GET['state']);
 			$route = [$routeId, 'gh_id'=>$gh_id];
-			$user = MUser::findIdentity($openid);
+			$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 			if ($user === null)
 			{
 				U::W("This identity does not exist, openid={$openid}");
 				throw new \yii\web\HttpException(500, "This identity does not exist, openid={$openid}");
 			}
-			Yii::$app->user->login($user);
+			else
+			{
+				Yii::$app->user->login($user);
+			}
 			return $this->redirect($route);			
 		}
 	
