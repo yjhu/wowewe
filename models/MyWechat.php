@@ -35,7 +35,8 @@ class MyWechat extends Wechat
 		else
 		{
 			$FromUserName = $this->getRequest('FromUserName');
-			$model = MUser::findOne($FromUserName);		
+			$gh_id = $this->getRequest('ToUserName');			
+			$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
 			$items = array(
 				new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), Url::to(['site/about'],true)),
 				//new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), 'weixin://wxpay/bizpayurl?timestamp=1405737068&appid=wx79c2bf0249ede62a&noncestr=PSottf4eivpHqKlV&productid=1234&sign=e1f9bca3625bfd1bdb4753906753c9f13917f0ec'),
@@ -47,7 +48,9 @@ class MyWechat extends Wechat
 	protected function onUnsubscribe() 
 	{ 
 		$FromUserName = $this->getRequest('FromUserName');
-		if (($model = MUser::findOne($FromUserName)) !== null)
+		$gh_id = $this->getRequest('ToUserName');
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);		
+		if ($model !== null)
 		{
 			//$model->delete();		
 			$model->subscribe = 0;
@@ -112,7 +115,8 @@ class MyWechat extends Wechat
 	public function FuncQueryFee() 
 	{ 
 		$FromUserName = $this->getRequest('FromUserName');
-		$model = MUser::findOne($FromUserName);
+		$gh_id = $this->getRequest('ToUserName');
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
 		if ($model === null)
 			return '';
 
@@ -132,48 +136,47 @@ class MyWechat extends Wechat
 	public function FuncSignon() 
 	{ 
 		$FromUserName = $this->getRequest('FromUserName');
-		$model = MUser::findOne($FromUserName);		
+		$gh_id = $this->getRequest('ToUserName');
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
 		return $this->responseText("{$model->nickname}, Thanks for your Signon today");
 	}	
 
 	public function FuncChargeOnline() 
 	{ 
 		$FromUserName = $this->getRequest('FromUserName');
-		$model = MUser::findOne($FromUserName);		
+		$gh_id = $this->getRequest('ToUserName');
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
 		return $this->responseText("{$model->nickname}, Charge online, are you sure?");
 	}
 
 
-    public function FuncQueryAccount()
-    {
-        $FromUserName = $this->getRequest('FromUserName');
-        $gh_id = $this->getRequest('ToUserName');
-        $model = MUser::findOne($FromUserName);
-        if ($model === null)
-        {
-            //return $this->responseText("openid 不存在.");
-            U::W("This identity does not exist, openid={$FromUserName}");
-            throw new \yii\web\HttpException(500, "This identity does not exist, openid={$FromUserName}");
-        }
-        else
-        {
-            //a($text, $url = null, $options = [])
-            $url = Html::a('请先绑定',Url::to(['wap/account','openid'=>$FromUserName, 'gh_id'=>$gh_id],true));
-            if(empty($model->mobile))
-                return $this->responseText("{$model->nickname}, 您的手机还未绑定{$url}.");
-            else
-            {
-               // return $this->responseText("{$model->nickname}, 您绑定的手机号码是 ". $model->mobile);
-                //返回图文消息
-                
-                $items = array(
-                                new RespNewsItem('话费账单', '话费账单概况：168元', Url::to('images/item/53a9477b995e3.png',true), Url::to(['wap/billDetail', 'openid'=>$FromUserName, 'gh_id'=>$gh_id],true)),
-                        );
-                        return $this->responseNews($items);                
-                
-            }
-        }
-    }
+	public function FuncQueryAccount()
+	{
+		$FromUserName = $this->getRequest('FromUserName');
+		$gh_id = $this->getRequest('ToUserName');
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);		        
+		if ($model === null)
+		{
+			//return $this->responseText("openid 不存在.");
+			U::W("This identity does not exist, openid={$FromUserName}");
+			throw new \yii\web\HttpException(500, "This identity does not exist, openid={$FromUserName}");
+		}
+		else
+		{
+			$url = Html::a('请先绑定',Url::to(['wap/account','openid'=>$FromUserName, 'gh_id'=>$gh_id],true));
+			if(empty($model->mobile))
+				return $this->responseText("{$model->nickname}, 您的手机还未绑定{$url}.");
+			else
+			{
+				// return $this->responseText("{$model->nickname}, 您绑定的手机号码是 ". $model->mobile);
+				//返回图文消息
+				$items = array(
+					new RespNewsItem('话费账单', '话费账单概况：168元', Url::to('images/item/53a9477b995e3.png',true), Url::to(['wap/billDetail', 'openid'=>$FromUserName, 'gh_id'=>$gh_id],true)),
+				);
+				return $this->responseNews($items);                
+			}
+		}
+	}
 
 }
 

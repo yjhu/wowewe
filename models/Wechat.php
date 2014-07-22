@@ -269,12 +269,14 @@ class Wechat extends \yii\base\Object
 
 	public function checkOpenid() 
 	{
+		$gh_id = $this->getGhId();	
 		$FromUserName = $this->getRequest('FromUserName');
-		$model = MUser::findOne($FromUserName);
-		if ($model === null ||empty($model->nickname))
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
+		if ($model === null)
+			$model = new MUser;		
+		if (empty($model->nickname) ||!$model->subscribe)
 		{
-			$model = new MUser;
-			$arr = $this->WxGetUserInfo($FromUserName);	
+			$arr = $this->WxGetUserInfo($FromUserName);
 			$model->setAttributes($arr, false);
 			$model->gh_id = $this->getRequest('ToUserName');			
 			$model->openid = $FromUserName;			

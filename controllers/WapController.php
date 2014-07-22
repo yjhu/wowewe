@@ -114,6 +114,8 @@ class WapController extends Controller
 		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 		if ($user !== null)
 			Yii::$app->user->login($user);
+		else
+			U::W("not found, $openid");
 		return $this->redirect([$route]);
 	}
 
@@ -376,55 +378,54 @@ EOD;
 			$subscribed = false;
 
 		if (!Yii::$app->user->isGuest)
-		{
-			$openid = Yii::$app->user->identity->openid;
 			$username = Yii::$app->user->identity->username;
-			U::W($openid);		
-		}
+		else
+			$username = '';
 		
 		$result = '';
-                                        $lucy_msg = [];
+		$lucy_msg = [];
 		if ($model->load(Yii::$app->request->post())) 
 		{
-			$pn = $model->mobile;
-			$loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$pn."&output=json&callback=querycallback");
+			if (Yii::$app->user->isGuest)
+				$username = $model->mobile;
+		
+			$loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$model->mobile."&output=json&callback=querycallback");
 			$loca = substr($loca, 14, -2);  
 			$loca = json_decode($loca, true);	
-
-			$lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$pn."&output=json&callback=querycallback");
-			$lucy_msg = substr($lucy_msg, 14, -2);  
-			$lucy_msg = json_decode($lucy_msg, true);	
-
-			//$lucy_msg = U::getMobileLuck($pn);
-			//$lucy_msg['Mobile'] = $pn;
+			//$lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$model->mobile."&output=json&callback=querycallback");
+			//$lucy_msg = substr($lucy_msg, 14, -2);  
+			//$lucy_msg = json_decode($lucy_msg, true);	
+			$lucy_msg = U::getMobileLuck($model->mobile);
+			$lucy_msg['Mobile'] = $model->mobile;
 
 			$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);
 			
-			$msg = [
-				'touser'=>$openid, 
-				'msgtype'=>'news', 
-				'news'=> [
-					'articles'=>[
-						['title'=>"test your mobile", 'description'=>"{$username}: {$lucy_msg['JXDetail']},{$lucy_msg['GX']},{$lucy_msg['GXDetail']}", 'url'=>'http://mp.weixin.qq.com/s?__biz=MzAwODAwMDMyOA==&mid=200371259&idx=1&sn=a9bb6f76733b66122f4fff0a3e50c6f0#rd', 'picurl'=>'http://hoyatech.net/wx/web/images/earth.jpg'],
-					]				
-				]
-			];
-
 			//if ($subscribed)
+			if (1)
 			{
+				$msg = [
+					'touser'=>$openid, 
+					'msgtype'=>'news', 
+					'news'=> [
+						'articles'=>[
+							['title'=>"手机运程预测", 'description'=>"{$username}: {$lucy_msg['JXDetail']},{$lucy_msg['GX']},{$lucy_msg['GXDetail']}", 'url'=>'http://mp.weixin.qq.com/s?__biz=MzAwODAwMDMyOA==&mid=200371259&idx=1&sn=a9bb6f76733b66122f4fff0a3e50c6f0#rd', 'picurl'=>'http://hoyatech.net/wx/web/images/earth.jpg'],
+						]				
+					]
+				];
+			
 				try
 				{
 					$arr = Yii::$app->wx->WxMessageCustomSend($msg);
 					U::W($arr);		
 				}
-				catch (Exception $e)
+				catch (\Exception $e)
 				{
 					U::W($e->getCode().':'.$e->getMessage());
 				}
 			}
 			
 		}		
- 		return $this->render('luck', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg] );
+ 		return $this->render('luck', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 	}	
 
         
@@ -547,5 +548,8 @@ $oauth2UserInfo
 			['iid'=>'4198489412','title'=>'item2 title','price'=>'25300', 'new_price'=>'20000', 'url'=>'http://baidu.com', 'pic_url'=>'53a957d22b5e8_b.png', 'seller_cids'=>'100'],			
 			['iid'=>'4198489413','title'=>'item3 title','price'=>'35300', 'new_price'=>'30000', 'url'=>'http://baidu.com', 'pic_url'=>'53a9611ab18ab_b.png', 'seller_cids'=>'100'],						
 		);		
+
+			$openid = Yii::$app->user->identity->openid;
+		
 */
 
