@@ -6,7 +6,7 @@ use yii\helpers\Url;
 
 $this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js?v0.1');
 
-$this->title = '手机运程预测';
+$this->title = '靓号运程';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -18,7 +18,7 @@ $this->title = '手机运程预测';
 			<?= $form->field($model, 'mobile')->textInput(['maxlength' => 11, 'placeholder'=>'请输入手机号码', 'class'=>'form-control input-lg'])->label(false); ?>
 
 			<div class="form-group">
-				<?= Html::submitButton('马上测算手机运程！', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'contact-button']) ?>
+				<?= Html::submitButton('马上查看靓号运程！', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'contact-button']) ?>
 			</div>
 		<?php ActiveForm::end(); ?>
 	</div>
@@ -27,12 +27,13 @@ $this->title = '手机运程预测';
 <?php 
 	$show = empty($lucy_msg) ? false : true;
 	yii\bootstrap\Modal::begin([
-		//'header' => '<h>Hello world</h2>',
+		//'header' => '<h2>靓号运程</h2>',
 		'options' => [
 			//'style' => 'opacity:0.9;color:#ffffff;bgcolor:#000000;width:90%;',
                                                             'style' => 'opacity:0.9;',
 		],
-		'header' => Html::img(Url::to('images/earth.jpg'), ['width'=>'200']),
+		//'header' => Html::img(Url::to('images/earth.jpg'), ['width'=>'200']),
+                                        'header' => Html::img(Url::to('images/share.png'), ['class'=>'img-responsive']),       
 		'footer' => "&copy; <span style='color:#d71920'>襄阳联通</span> ".date('Y'),
 		//'size' => 'modal-lg',
 		'size' => 'modal-sm',
@@ -41,7 +42,8 @@ $this->title = '手机运程预测';
 			'show' => $show,
 		],
 		'closeButton' => [
-			'label' => '&times;',
+			//'label' => '&times;',
+                                                            'label' => '',
 		]
 	]);
 ?>
@@ -56,8 +58,8 @@ $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/luck:'.Yii::$app->wx->g
 if (empty($lucy_msg))
 {
 	$myImg = Url::to('images/magic_blue.jpg');
-	$title = '手机运程';
-	$desc = '手机运程预测，准的很，不信你试试！';
+	$title = '靓号运程';
+	$desc = '靓号运程，准的很，不信你试试！';
 }
 else
 {
