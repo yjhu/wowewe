@@ -19,13 +19,14 @@ use app\models\RespMusic;
 define('APPID', "wx79c2bf0249ede62a");  //woso appid
 define('APPKEY',"Yat5dfJA2M8v8kZXH9rDk9q7Ae8dqmxRVApfsoiVxUrhvk8DFipBILgDzNFvVPSBJkZctFbqw0LNhfijqE8R8RLZfW04RGk8MkDXQoDES1Ac84LEtjdAt6hzJTNKG7on"); //paysign key
 define('SIGNTYPE', "sha1"); //method
-define('PARTNERKEY', "wosotech20140526huyajun197310070");//Í¨¼ÓÃÜ´®
+define('PARTNERKEY', "wosotech20140526huyajun197310070");
 define('APPSERCERT', "c4d53595acf30e9caf09c155b3d95253");	// woso
 
 class Wechat extends \yii\base\Object
 {
 	//const OPENID_TESTER1 = 'o6biBt5yaB7d3i0YTSkgFSAHmpdo';		// hoya hehb
 	const OPENID_TESTER1 = 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o';		// woso hehb	
+	//const OPENID_TESTER1 = '';		// xiangyangunicom hehb		
 	
 	const MSGTYPE_TEXT = 'text';
 	const MSGTYPE_IMAGE = 'image';
@@ -188,18 +189,18 @@ class Wechat extends \yii\base\Object
 	{
 		if ($this->localTest)		
 		{
-				return self::getDemoRequestXml(Wechat::MSGTYPE_TEXT);
-				//return self::getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_CLICK, 'FuncQueryAccount');	// FuncQueryFee
-				//return self::getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_SUBSCRIBE);
-				//return self::getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_UNSUBSCRIBE);				
-				//return self::getDemoRequestXml(Wechat::MSGTYPE_IMAGE);
-				//return self::getDemoRequestXml(Wechat::MSGTYPE_LOCATION);
-				//return self::getDemoRequestXml(Wechat::MSGTYPE_LINK);
-				//return self::getDemoRequestXml(Wechat::MSGTYPE_VOICE);
-				//return self::getDemoRequestXml(Wechat::MSGTYPE_VIDEO);				
-				//return self::getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_SCAN);
-				//return self::getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_LOCATION);
-				//return self::getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_VIEW);
+				return $this->getDemoRequestXml(Wechat::MSGTYPE_TEXT);
+				//return $this->getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_CLICK, 'FuncQueryAccount');	// FuncQueryFee
+				//return $this->getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_SUBSCRIBE);
+				//return $this->getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_UNSUBSCRIBE);				
+				//return $this->getDemoRequestXml(Wechat::MSGTYPE_IMAGE);
+				//return $this->getDemoRequestXml(Wechat::MSGTYPE_LOCATION);
+				//return $this->getDemoRequestXml(Wechat::MSGTYPE_LINK);
+				//return $this->getDemoRequestXml(Wechat::MSGTYPE_VOICE);
+				//return $this->getDemoRequestXml(Wechat::MSGTYPE_VIDEO);				
+				//return $this->getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_SCAN);
+				//return $this->getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_LOCATION);
+				//return $this->getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_VIEW);
 		}
 		else
 		{
@@ -390,10 +391,11 @@ class Wechat extends \yii\base\Object
 		return new RespNews($this->getRequest('FromUserName'), $this->getRequest('ToUserName'), $items, $funcFlag);
 	}
 
-	public static function getDemoRequestXml($MsgType, $Event=Wechat::EVENT_SUBSCRIBE, $EventKey = 'FuncQueryAccount') 
+	public function getDemoRequestXml($MsgType, $Event=Wechat::EVENT_SUBSCRIBE, $EventKey = 'FuncQueryAccount') 
 	{
 		$openid = Wechat::OPENID_TESTER1;
-		$gh_id = Yii::$app->wx->getGhid();
+		//$gh_id = Yii::$app->wx->getGhid();
+		$gh_id = $this->getGhId();
 		switch ($MsgType) 
 		{
 			case Wechat::MSGTYPE_TEXT:

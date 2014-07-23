@@ -25,12 +25,11 @@ class CmdController extends Controller
 	public function init()
 	{		
 		Yii::$app->getUrlManager()->setBaseUrl('/wx/web/index.php');
-		//Yii::$app->getUrlManager()->setHostInfo('http://hoyatech.net');
 		Yii::$app->getUrlManager()->setHostInfo('http://www.hoyatech.net');
 		//Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
-		//Yii::$app->wx->setGhId('gh_78539d18fdcc');		// hoya
-		Yii::$app->wx->setGhId('gh_1ad98f5481f3');		// woso		
-		//Yii::$app->wx->setGhId('gh_03a74ac96138');		// xiangyangtiant				
+		//Yii::$app->wx->setGhId(MGh::GH_HOYA);
+		Yii::$app->wx->setGhId(MGh::GH_WOSO);
+		//Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
 	}
 
 	public function actionIndex()

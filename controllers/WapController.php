@@ -325,17 +325,17 @@ EOD;
 			['iid'=>'4198489413','title'=>'title3','price'=>'30100', 'new_price'=>'28800', 'url'=>'http://baidu.com', 'pic_url'=>'53a9611ab18ab_b.png', 'seller_cids'=>'100'],						
 		);		
 
-	        $dataProvider = new ArrayDataProvider([
-	            'allModels' => $rawData,
-	            'pagination' => [
-	                'pageSize' => 2,
-	            ],
-	            'sort' => [
-	                'attributes' => ['price', 'title'],
-	            ],
-	            'key'=>'iid',
-	            
-	        ]);
+		$dataProvider = new ArrayDataProvider([
+			'allModels' => $rawData,
+			'pagination' => [
+				'pageSize' => 2,
+			],
+			'sort' => [
+				'attributes' => ['price', 'title'],
+			],
+			'key'=>'iid',
+			
+		]);
 
  		return $this->render('mall', ['dataProvider' => $dataProvider]);
 	}    
@@ -401,14 +401,14 @@ EOD;
 			$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);
 			
 			//if ($subscribed)
-			if (1)
+			if (0)
 			{
 				$msg = [
 					'touser'=>$openid, 
 					'msgtype'=>'news', 
 					'news'=> [
 						'articles'=>[
-							['title'=>"手机运程预测", 'description'=>"{$username}: {$lucy_msg['JXDetail']},{$lucy_msg['GX']},{$lucy_msg['GXDetail']}", 'url'=>'http://mp.weixin.qq.com/s?__biz=MzAwODAwMDMyOA==&mid=200371259&idx=1&sn=a9bb6f76733b66122f4fff0a3e50c6f0#rd', 'picurl'=>'http://hoyatech.net/wx/web/images/earth.jpg'],
+							['title'=>"手机运程预测", 'description'=>"{$username}: {$lucy_msg['JXDetail']},{$lucy_msg['GX']},{$lucy_msg['GXDetail']}", 'url'=>'http://mp.weixin.qq.com/s?__biz=MzAwODAwMDMyOA==&mid=200371259&idx=1&sn=a9bb6f76733b66122f4fff0a3e50c6f0#rd', 'picurl'=>''],
 						]				
 					]
 				];

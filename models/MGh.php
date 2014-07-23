@@ -32,6 +32,10 @@ use yii\behaviors\TimestampBehavior;
 
 class MGh extends ActiveRecord
 {
+	const GH_WOSO = 'gh_1ad98f5481f3';
+	const GH_XIANGYANGUNICOM = 'gh_03a74ac96138';	
+	const GH_HOYA = 'gh_78539d18fdcc';
+	
 	public function behaviors()
 	{
 		return [

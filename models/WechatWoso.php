@@ -19,7 +19,7 @@ use app\models\RespNews;
 use app\models\RespNewsItem;
 use app\models\RespMusic;
 
-class MyWechat extends Wechat
+class WechatWoso extends Wechat
 {
 	protected function onSubscribe() 
 	{
