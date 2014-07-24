@@ -28,8 +28,8 @@ class CmdController extends Controller
 		Yii::$app->getUrlManager()->setHostInfo('http://www.hoyatech.net');
 		//Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
 		//Yii::$app->wx->setGhId(MGh::GH_HOYA);
-		Yii::$app->wx->setGhId(MGh::GH_WOSO);
-		//Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
+		//Yii::$app->wx->setGhId(MGh::GH_WOSO);
+		Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
 	}
 
 	public function actionIndex()
@@ -129,6 +129,7 @@ class CmdController extends Controller
 	public function actionCreateMenu()
 	{	
 
+            /*
 		$menu = new \app\models\WxMenu([
 			new \app\models\ButtonComplex('产品', [
 				//new \app\models\ButtonView('精品靓号', 'http://m.10010.com/mobilegoodsdetail/981405149472.html'),
@@ -156,7 +157,9 @@ class CmdController extends Controller
 			]),
 		]);
 
-/*
+*/
+                
+
 		$menu = new \app\models\WxMenu([
 			new \app\models\ButtonComplex('沃商城', [
 				new \app\models\ButtonView('微信沃卡', 'http://m.10010.com/mall-mobile/chseSearchList/init?keyword=%E5%BE%AE%E4%BF%A1%E6%B2%83%E5%8D%A1'),
@@ -168,12 +171,12 @@ class CmdController extends Controller
 			new \app\models\ButtonView('自由组合', 'http://m.10010.com/mobilegoodsdetail/981405149472.html'),
 			new \app\models\ButtonComplex('沃服务', [
 				new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
-				//new \app\models\ButtonView('靓号运程', 'http://m.10010.com/'),
 				new \app\models\ButtonView('襄阳沃社区', 'http://m.10010.com/'),
-				
+                                                                                new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/luck:'.Yii::$app->wx->getGhid())),
+				new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.php'),
 			]),
 		]);
-*/
+
 		$menu_json = Wechat::json_encode($menu);
 		U::W([$menu, $menu_json]);
 		$arr = Yii::$app->wx->WxMenuCreate($menu);

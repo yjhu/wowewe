@@ -3,7 +3,7 @@ html, body {
   margin: 0;
   padding: 0;
   background: #faf8ef;
-  color: #776e65;
+  color: #d61418;
   font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
   font-size: 18px; }
 
@@ -20,7 +20,7 @@ input {
   height: 40px;
   line-height: 42px;
   cursor: pointer;
-  font: inherit;
+  font: inherit;ss
   border: none;
   outline: none;
   box-sizing: border-box;
@@ -33,7 +33,7 @@ input {
     cursor: auto;
     background: #fcfbf9;
     font-weight: normal;
-    color: #776e65;
+    color: #d61418;
     padding: 0 15px; }
     input[type="text"]::-webkit-input-placeholder, input[type="email"]::-webkit-input-placeholder {
       color: #9d948c; }
@@ -85,7 +85,7 @@ h1.title {
 .score-container, .best-container {
   position: relative;
   display: inline-block;
-  background: #bbada0;
+  background: #0a47bb;
   padding: 15px 25px;
   font-size: 25px;
   height: 25px;
@@ -112,7 +112,7 @@ h1.title {
     font-size: 25px;
     line-height: 25px;
     font-weight: bold;
-    color: rgba(119, 110, 101, 0.9);
+    color: rgba(214, 20, 24, 0.90);
     z-index: 100;
     -webkit-animation: move-up 600ms ease-in;
     -moz-animation: move-up 600ms ease-in;
@@ -122,10 +122,10 @@ h1.title {
     animation-fill-mode: both; }
 
 .score-container:after {
-  content: "Score"; }
+  content: "总分"; }
 
 .best-container:after {
-  content: "Best"; }
+  content: "记录"; }
 
 p {
   margin-top: 0;
@@ -199,7 +199,7 @@ hr {
   -ms-user-select: none;
   -ms-touch-action: none;
   touch-action: none;
-  background: #bbada0;
+  background: #0a47bb;
   border-radius: 6px;
   width: 500px;
   height: 500px;
@@ -259,7 +259,7 @@ hr {
     vertical-align: middle;
     margin-left: 10px; }
   .game-message.game-won {
-    background: rgba(237, 194, 46, 0.5);
+    background: rgba(255, 138, 0, 0.50);
     color: #f9f6f2; }
     .game-message.game-won a.keep-playing-button {
       display: inline-block; }
@@ -402,7 +402,7 @@ hr {
     background: #f2b179; }
   .tile.tile-16 .tile-inner {
     color: #f9f6f2;
-    background: #f59563; }
+    background: #ff8a00; }
   .tile.tile-32 .tile-inner {
     color: #f9f6f2;
     background: #f67c5f; }
@@ -451,7 +451,7 @@ hr {
         font-size: 15px; } }
   .tile.tile-super .tile-inner {
     color: #f9f6f2;
-    background: #3c3a32;
+    background: #f7ea45;
     font-size: 30px; }
     @media screen and (max-width: 520px) {
       .tile.tile-super .tile-inner {
@@ -567,7 +567,7 @@ hr {
 
 .restart-button {
   display: inline-block;
-  background: #8f7a66;
+  background: #007529;
   border-radius: 3px;
   padding: 0 20px;
   text-decoration: none;
@@ -638,7 +638,7 @@ hr {
     -ms-user-select: none;
     -ms-touch-action: none;
     touch-action: none;
-    background: #bbada0;
+    background: #0a47bb;
     border-radius: 6px;
     width: 280px;
     height: 280px;
@@ -682,7 +682,7 @@ hr {
         margin-right: 5px; }
     .game-message a {
       display: inline-block;
-      background: #8f7a66;
+      background: #0a47bb;
       border-radius: 3px;
       padding: 0 20px;
       text-decoration: none;
@@ -698,7 +698,7 @@ hr {
       vertical-align: middle;
       margin-left: 10px; }
     .game-message.game-won {
-      background: rgba(237, 194, 46, 0.5);
+      background: rgba(0, 4, 119, 0.50);
       color: #f9f6f2; }
       .game-message.game-won a.keep-playing-button {
         display: inline-block; }
@@ -849,7 +849,7 @@ hr {
   font: inherit;
   color: inherit;
   display: inline-block;
-  background: #8f7a66;
+  background: #d61418;
   border-radius: 3px;
   padding: 0 20px;
   text-decoration: none;
@@ -865,7 +865,7 @@ hr {
   position: relative;
   margin-left: 10px;
   display: inline-block;
-  background: #8f7a66;
+  background: #d61418;
   border-radius: 3px;
   padding: 0 20px;
   text-decoration: none;
@@ -898,7 +898,7 @@ hr {
     transition-property: top, opacity; }
     .btc-donate .address:after {
       position: absolute;
-      border-top: 10px solid #bbada0;
+      border-top: 10px solid #f7ea45;
       border-right: 7px solid transparent;
       border-left: 7px solid transparent;
       content: "";
@@ -1020,7 +1020,7 @@ hr {
   -webkit-animation: pop-in-big 700ms ease 2s both;
   -moz-animation: pop-in-big 700ms ease 2s both;
   animation: pop-in-big 700ms ease 2s both;
-  background: #edc53f;
+  background: #0a47bb;
   color: white;
   padding: 18px;
   margin-top: 30px;
