@@ -21,6 +21,7 @@ window.fakeStorage = {
 function LocalStorageManager() {
   this.bestScoreKey     = "bestScore";
   this.gameStateKey     = "gameState";
+  this.myGameStateKey     = "myGameStateKey"; //kzeng added
   this.noticeClosedKey  = "noticeClosed";
 
   var supported = this.localStorageSupported();

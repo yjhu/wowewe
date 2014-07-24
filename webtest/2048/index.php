@@ -47,10 +47,8 @@ use yii\helpers\Url;
     <div class="heading">
       <h1 class="title">2048</h1>
       <div class="scores-container">
-	  <!--
-		<img src="./2048_files/10010-logo.png">
-	   -->
-	   
+	
+        <img src="./2048_files/10010-logo.png">
         <div class="score-container">8<div class="score-addition">+8</div></div>
         <div class="best-container">8</div>
       </div>
@@ -61,7 +59,7 @@ use yii\helpers\Url;
 	  <!--
 	  Join the numbers and get to the <strong>2048 tile!</strong>
 	  -->
-	  全球最火益智游戏.你今天<strong>2048</strong>了吗？
+	  全球最火益智游戏，今天你<strong>2048</strong>了吗？
 	  <!--
 	  合并数字直到<strong>2048！</strong>
 	  -->
@@ -77,9 +75,9 @@ use yii\helpers\Url;
         <div class="lower">
 	        <a class="keep-playing-button">继续玩</a>
           <a class="retry-button">重新开始</a>
-		  <!--
+	
           <div class="score-sharing"></div>
-		  -->
+	
 		  
 		  <!--
           <div class="mailing-list">
@@ -151,32 +149,8 @@ use yii\helpers\Url;
 			-->
     </div>
   </div>
-
-  <script src="./2048_files/bind_polyfill.js"></script>
-  <script src="./2048_files/classlist_polyfill.js"></script>
-  <script src="./2048_files/animframe_polyfill.js"></script>
-  <script src="./2048_files/keyboard_input_manager.js"></script>
-  <script src="./2048_files/html_actuator.js"></script>
-  <script src="./2048_files/grid.js"></script>
-  <script src="./2048_files/tile.js"></script>
-  <script src="./2048_files/local_storage_manager.js"></script>
-  <script src="./2048_files/game_manager.js"></script>
-  <script src="./2048_files/application.js"></script>
-  
   <script src="../../web/js/wechat.js"></script>
-  <script>
-  /*
-    (function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,"script","//www.google-analytics.com/analytics.js","ga");
-
-    ga("create", "UA-42620757-2", "gabrielecirulli.github.io");
-    ga("send", "pageview");
-	*/
-</script>
-
-
+  
 <?php 
 //$appid = Yii::$app->wx->gh['appid'];
 $appid = 'wx1b122a21f985ea18';
@@ -228,10 +202,39 @@ var dataForWeixin={
 	}
 };
 </script>
+  
+  <script src="./2048_files/bind_polyfill.js"></script>
+  <script src="./2048_files/classlist_polyfill.js"></script>
+  <script src="./2048_files/animframe_polyfill.js"></script>
+  <script src="./2048_files/keyboard_input_manager.js"></script>
+  <script src="./2048_files/html_actuator.js"></script>
+  <script src="./2048_files/grid.js"></script>
+  <script src="./2048_files/tile.js"></script>
+  <script src="./2048_files/local_storage_manager.js"></script>
+  <script src="./2048_files/game_manager.js"></script>
+  <script src="./2048_files/application.js"></script>
+  
+  
+  <script>
+  /*
+    (function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,"script","//www.google-analytics.com/analytics.js","ga");
+
+    ga("create", "UA-42620757-2", "gabrielecirulli.github.io");
+    ga("send", "pageview");
+	*/
+</script>
+
+
 
 <?php 
-	//if (!$subscribed)
-	//	echo Html::img(Url::to('images/wx-tuiguang1.png'), ['class'=>'img-responsive']); 
+
+        $subscribed = true;
+        if (!$subscribed)
+        //echo Html::img(Url::to('images/wx-tuiguang1.png'), ['class'=>'img-responsive']); 
+                            echo "<img scr=\"http://www.hoyatech.net/wx/web/images/wx-tuiguang1.png\" width=\"100%\">";
 ?>
 </body>
 </html>
