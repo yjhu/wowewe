@@ -151,7 +151,6 @@ HTMLActuator.prototype.clearMessage = function () {
   this.messageContainer.classList.remove("game-over");
 };
 
-
 function showScore()
 {
 		var myScore;
@@ -162,16 +161,15 @@ function showScore()
 		
 		//create JSON Object
 		var myGameStateObj = eval('('+myGameState+')');
-		
-		alert("hello world");
-		alert("myScore:" + myScore);
-		alert("myBestScore:" + myGameStateObj.score);
-		dataForWeixin.desc = '你的总分是'+myGameStateObj.score+"最好记录是"+myScore;
+
+		//alert("myScore:" + myScore);
+		//alert("myBestScore:" + myGameStateObj.score);
+		alert("可点击‘...’ 深度分享到朋友圈或转发给朋友 ;-)");
+		dataForWeixin.desc = '我的总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...";
 }
 
+
 HTMLActuator.prototype.scoreTweetButton = function () {
-
-
   var tweet = document.createElement("a");
   tweet.classList.add("twitter-share-button");
   //tweet.setAttribute("href", "https://twitter.com/share");

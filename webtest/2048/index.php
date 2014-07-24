@@ -48,7 +48,7 @@ use yii\helpers\Url;
       <h1 class="title">2048</h1>
       <div class="scores-container">
 	
-        <img src="./2048_files/10010-logo.png">
+          <img src="./2048_files/10010-logo.png">
         <div class="score-container">8<div class="score-addition">+8</div></div>
         <div class="best-container">8</div>
       </div>
