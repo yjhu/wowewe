@@ -23,7 +23,7 @@ use app\models\U;
 use app\models\WxException;
 use app\models\MGh;
 use app\models\MUser;
-use app\models\MyWechat;
+use app\models\Wechat;
 
 class MsgController extends Controller
 {
@@ -44,6 +44,24 @@ class MsgController extends Controller
 		}
 		$wechat = \Yii::createObject($wxConfig);		
 		return $wechat->run($gh_id);	
+	}
+
+	//http://wosotech.com/wx/web/index.php?r=msg/valid&token=HY09uB1h
+	//http://127.0.0.1/wx/web/index.php?r=msg/valid&token=HY09uB1h
+	public function actionValid($token)
+	{
+		if (0)
+		{
+			$_GET['signature'] = '228c2744ce651fb61cceb461c48fa03c608c1299';
+			$_GET['echostr'] = '6372428126615300095';
+			$_GET['timestamp'] = '1402529705';
+			$_GET['nonce'] = '1023195716';
+		}
+		if (Wechat::checkSignature($token))
+		{
+			U::W(['Invalid Signature in actionValid()', $_GET]);
+		}
+		die($_GET['echostr']);
 	}
 
 }

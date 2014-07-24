@@ -287,7 +287,7 @@ EOD;
 		$arr = (array)simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
 		if (Yii::$app->wx->debug)
 			U::W($arr);
-		\app\models\MWarn::insertOne($arr['AppId'], $arr['ErrorType'], $arr['Description'], $arr['AlarmContent'], $arr['TimeStamp']);
+		//\app\models\MWarn::insertOne($arr['AppId'], $arr['ErrorType'], $arr['Description'], $arr['AlarmContent'], $arr['TimeStamp']);
 		return 'success';	
 	}
 
@@ -358,35 +358,6 @@ EOD;
 		//$tag = Html::a('click here to pay', $url);		
 		$item = ['iid'=>'4198489411','title'=>'title1','price'=>'169900', 'new_price'=>'119900', 'url'=>'http://baidu.com', 'pic_url'=>'53a95055dcf97_b.png', 'seller_cids'=>'100'];
  		return $this->render('prom', ['item' => $item]);
-	}	
-
-	public function actionLuck1()
-	{
-		$this->layout = 'wap';
-		$gh_id = MGh::GH_XIANGYANGUNICOM;	
-		Yii::$app->wx->setGhId($gh_id);		
-		$model = new MUser;		
-		$subscribed = false;			
-		$username = '';		
-		$result = '';
-		$lucy_msg = [];
-		if ($model->load(Yii::$app->request->post())) 
-		{
-			$username = $model->mobile;
-		
-			$loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$model->mobile."&output=json&callback=querycallback");
-			$loca = substr($loca, 14, -2);  
-			$loca = json_decode($loca, true);	
-			//$lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$model->mobile."&output=json&callback=querycallback");
-			//$lucy_msg = substr($lucy_msg, 14, -2);  
-			//$lucy_msg = json_decode($lucy_msg, true);	
-			$lucy_msg = U::getMobileLuck($model->mobile);
-			$lucy_msg['Mobile'] = $model->mobile;
-
-			$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);
-			
-		}		
- 		return $this->render('luck', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 	}	
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_1ad98f5481f3

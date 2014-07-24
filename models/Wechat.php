@@ -52,7 +52,6 @@ class Wechat extends \yii\base\Object
 	public $localTest = false;
 	
 	public $oauth2cb = ['wap/oauth2cb'];		
-//	public $oauth2cb = 'wap/oauth2cb';			
 	public $paynotifyUrl = ['wap/paynotify'];			
 
 	private $_request;
@@ -147,7 +146,7 @@ class Wechat extends \yii\base\Object
 
 	public function valid()
 	{
-		if ($this->localTest)		    	
+		if ($this->localTest)
 		{
 			$_GET['signature'] = '228c2744ce651fb61cceb461c48fa03c608c1299';
 			//$_GET['echostr'] = '6372428126615300095';
@@ -155,29 +154,29 @@ class Wechat extends \yii\base\Object
 			$_GET['nonce'] = '1023195716';
 		}
 		$echoStr = isset($_GET["echostr"]) ? $_GET["echostr"]: '';
+		$token = $this->gh['token'];	
 		if (!empty($echoStr)) 
 		{
-			if ($this->checkSignature())
+			if (self::checkSignature($token))
 				die($echoStr);
 			else 
 				U::D('Invalid Signature in valid()');
 		}  
 		else 
 		{
-			if ($this->checkSignature())
+			if (self::checkSignature($token))
 				return true;
 			else
 				U::D('Invalid Signature in valid().');			
 		}
 		return false;
 	}
-
-	private function checkSignature()
+	
+	public static function checkSignature($token)
 	{
 		$signature = isset($_GET["signature"])?$_GET["signature"]:'';
 		$timestamp = isset($_GET["timestamp"])?$_GET["timestamp"]:'';
 		$nonce = isset($_GET["nonce"])?$_GET["nonce"]:'';
-		$token = $this->gh['token'];		
 		$tmpArr = array($token, $timestamp, $nonce);
 		sort($tmpArr, SORT_STRING);
 		$tmpStr = implode($tmpArr);
