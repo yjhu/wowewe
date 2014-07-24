@@ -38,8 +38,8 @@ class WechatWoso extends Wechat
 			$gh_id = $this->getRequest('ToUserName');			
 			$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
 			$items = array(
-				new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), Url::to(['site/about'],true)),
-				//new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), 'weixin://wxpay/bizpayurl?timestamp=1405737068&appid=wx79c2bf0249ede62a&noncestr=PSottf4eivpHqKlV&productid=1234&sign=e1f9bca3625bfd1bdb4753906753c9f13917f0ec'),
+				new RespNewsItem("{$model->nickname}，欢迎进入沃手科技官方微信号", '欢迎进入沃手科技官方微信号', Url::to('images/onsubscribe.jpg',true), Url::to(['site/about'],true)),
+				//new RespNewsItem("{$model->nickname}，欢迎进入沃手科技官方微信号", '欢迎进入沃手科技官方微信号', Url::to('images/onsubscribe.jpg',true), 'weixin://wxpay/bizpayurl?timestamp=1405737068&appid=wx79c2bf0249ede62a&noncestr=PSottf4eivpHqKlV&productid=1234&sign=e1f9bca3625bfd1bdb4753906753c9f13917f0ec'),
 			);
 			return $this->responseNews($items);
 		}
