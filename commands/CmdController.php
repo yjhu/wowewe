@@ -28,8 +28,8 @@ class CmdController extends Controller
 		Yii::$app->getUrlManager()->setHostInfo('http://www.hoyatech.net');
 		//Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
 		//Yii::$app->wx->setGhId(MGh::GH_HOYA);
-		//Yii::$app->wx->setGhId(MGh::GH_WOSO);
-		Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
+		Yii::$app->wx->setGhId(MGh::GH_WOSO);
+		//Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
 	}
 
 	public function actionIndex()
