@@ -181,9 +181,9 @@ use yii\helpers\Url;
 //$appid = Yii::$app->wx->gh['appid'];
 $appid = 'wx1b122a21f985ea18';
 //$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/luck:'.Yii::$app->wx->getGhid());
-$url = 'http://www.hoyatech.net/wx/webtest/2048/index.php
+$url = 'http://www.hoyatech.net/wx/webtest/2048/index.php';
 //$myImg = Url::to('images/game_2048.jpg');
-$myImg = 'http://www.hoyatech.net/wx/webtest/2048/2048_files/game_2048.jpg';    
+$myImg = 'http://www.hoyatech.net/wx/webtest/2048/2048_files/game_2048.png';
 $title = '游戏2048';
 $desc = '游戏2048, 全球最火益智游戏. 今天你2048了吗?';
 
