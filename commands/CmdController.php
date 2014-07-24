@@ -28,8 +28,8 @@ class CmdController extends Controller
 		Yii::$app->getUrlManager()->setHostInfo('http://www.hoyatech.net');
 		//Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
 		//Yii::$app->wx->setGhId(MGh::GH_HOYA);
-		//Yii::$app->wx->setGhId(MGh::GH_WOSO);
-		Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
+		Yii::$app->wx->setGhId(MGh::GH_WOSO);
+		//Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
 	}
 
 	public function actionIndex()
@@ -140,20 +140,21 @@ class CmdController extends Controller
 					new \app\models\ButtonView('demo', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf0e81c3bee622d60&redirect_uri=http%3A%2F%2Fnba.bluewebgame.com%2Foauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'),
 					new \app\models\ButtonView('沃商城', Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mall:'.Yii::$app->wx->getGhid())),
 					//new \app\models\ButtonView('lucynew', 'http://www.hoyatech.net/wx/webtest/lucyNew.php'),
-					new \app\models\ButtonView('2048', 'http://www.hoyatech.net/wx/webtest/2048/index.htm'),
+					
 				]),
 				//new \app\models\ButtonView('★促销商品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/prom:'.Yii::$app->wx->getGhid())),
 				new \app\models\ButtonView('★促销商品', 'http://www.hoyatech.net/wx/webtest/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3'),
 				new \app\models\ButtonComplex('我的服务', [
 					//new \app\models\ButtonClick('个性化账单', 'FuncQueryAccount'),
 					new \app\models\ButtonClick('本地生活', 'FuncQueryFee'),
-					new \app\models\ButtonClick('关注', 'FuncSignon'),
+					//new \app\models\ButtonClick('关注', 'FuncSignon'),
 					//new \app\models\ButtonClick('吐槽', 'FuncCustomService'),
 					//new \app\models\ButtonView('我要维权', Url::to(['site/index'],true)),
 					new \app\models\ButtonView('jsnative', 'http://www.hoyatech.net/wx/webtest/jsnative.php'),
 					new \app\models\ButtonView('jsphp', 'http://www.hoyatech.net/wx/webtest/jsphp.php'),
 					//new \app\models\ButtonView('jsjs', 'http://www.hoyatech.net/wx/webtest/jsjs.php'),
 					new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/luck:'.Yii::$app->wx->getGhid())),
+                                                                                                    new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.php'),
 				]),
 			]);
 		}    		

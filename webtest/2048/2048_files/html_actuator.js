@@ -151,14 +151,35 @@ HTMLActuator.prototype.clearMessage = function () {
   this.messageContainer.classList.remove("game-over");
 };
 
+
+function showScore()
+{
+		var myScore;
+		var myGameState;	
+		var storage = window.localStorage;
+		myScore = storage.getItem("bestScore");
+		myGameState = storage.getItem("gameState");
+		
+		//create JSON Object
+		var myGameStateObj = eval('('+myGameState+')');
+		
+		alert("hello world");
+		alert("myScore:" + myScore);
+		alert("myBestScore:" + myGameStateObj.score);
+		dataForWeixin.desc = '你的总分是'+myGameStateObj.score+"最好记录是"+myScore;
+}
+
 HTMLActuator.prototype.scoreTweetButton = function () {
+
+
   var tweet = document.createElement("a");
   tweet.classList.add("twitter-share-button");
-  tweet.setAttribute("href", "https://twitter.com/share");
+  //tweet.setAttribute("href", "https://twitter.com/share");
+  tweet.setAttribute("href", "javascript:showScore();");
   tweet.setAttribute("data-via", "gabrielecirulli");
   tweet.setAttribute("data-url", "http://git.io/2048");
   tweet.setAttribute("data-counturl", "http://gabrielecirulli.github.io/2048/");
-  tweet.textContent = "Tweet";
+  tweet.textContent = "我要分享";
 
   var text = "I scored " + this.score + " points at 2048, a game where you " +
              "join numbers to score high! #2048game";
