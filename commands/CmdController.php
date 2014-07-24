@@ -173,7 +173,7 @@ class CmdController extends Controller
 					//new \app\models\ButtonView('襄阳沃社区', 'http://m.10010.com/'),
 					new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base','wap/luck:'.Yii::$app->wx->getGhid())),
 					//new \app\models\ButtonView('靓号运程', 'http://www.hoyatech.net/wx/web/index.php?r=wap/luck1'),
-					new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.php'),
+					new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.htm'),
 				]),
 			]);
 		}
