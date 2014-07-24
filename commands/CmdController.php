@@ -128,55 +128,59 @@ class CmdController extends Controller
 	//C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/create-menu
 	public function actionCreateMenu()
 	{	
-
-            /*
-		$menu = new \app\models\WxMenu([
-			new \app\models\ButtonComplex('产品', [
-				//new \app\models\ButtonView('精品靓号', 'http://m.10010.com/mobilegoodsdetail/981405149472.html'),
-				new \app\models\ButtonView('自由组合', Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/diy:'.Yii::$app->wx->getGhid())),
-				//new \app\models\ButtonView('热销终端', 'http://m.10010.com/MobileList'),
-				//new \app\models\ButtonView('demo0', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx520c15f417810387&redirect_uri=http%3A%2F%2Fchong.qq.com%2Fphp%2Findex.php%3Fd%3D%26c%3DwxAdapter%26m%3DmobileDeal%26showwxpaytitle%3D1%26vb2ctag%3D4_2030_5_1194_60&response_type=code&scope=snsapi_base&state=123#wechat_redirect'),				
-				new \app\models\ButtonView('demo', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf0e81c3bee622d60&redirect_uri=http%3A%2F%2Fnba.bluewebgame.com%2Foauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'),
-				new \app\models\ButtonView('沃商城', Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mall:'.Yii::$app->wx->getGhid())),
-				//new \app\models\ButtonView('lucy', 'http://www.hoyatech.net/wx/webtest/lucy.html'),
-				//new \app\models\ButtonView('lucynew', 'http://www.hoyatech.net/wx/webtest/lucyNew.php'),
-                                                                                new \app\models\ButtonView('2048', 'http://www.hoyatech.net/wx/webtest/2048/index.htm'),
-			]),
-//			new \app\models\ButtonView('★促销商品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/prom:'.Yii::$app->wx->getGhid())),
-			new \app\models\ButtonView('★促销商品', 'http://www.hoyatech.net/wx/webtest/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3'),
-			new \app\models\ButtonComplex('我的服务', [
-				//new \app\models\ButtonClick('个性化账单', 'FuncQueryAccount'),
-				new \app\models\ButtonClick('本地生活', 'FuncQueryFee'),
-				new \app\models\ButtonClick('关注', 'FuncSignon'),
-				//new \app\models\ButtonClick('吐槽', 'FuncCustomService'),
-				//new \app\models\ButtonView('我要维权', Url::to(['site/index'],true)),
-				new \app\models\ButtonView('jsnative', 'http://www.hoyatech.net/wx/webtest/jsnative.php'),
-				new \app\models\ButtonView('jsphp', 'http://www.hoyatech.net/wx/webtest/jsphp.php'),
-				//new \app\models\ButtonView('jsjs', 'http://www.hoyatech.net/wx/webtest/jsjs.php'),
-				new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/luck:'.Yii::$app->wx->getGhid())),
-			]),
-		]);
-
-*/
-                
-
-		$menu = new \app\models\WxMenu([
-			new \app\models\ButtonComplex('沃商城', [
-				new \app\models\ButtonView('微信沃卡', 'http://m.10010.com/mall-mobile/chseSearchList/init?keyword=%E5%BE%AE%E4%BF%A1%E6%B2%83%E5%8D%A1'),
-				new \app\models\ButtonView('精品靓号', 'http://m.10010.com/mall-mobile/NumList/search'),
-				new \app\models\ButtonView('热销终端', 'http://m.10010.com/MobileList'),
-				new \app\models\ButtonView('上网卡', 'http://m.10010.com/CardList'),
-				new \app\models\ButtonView('资费套餐', 'http://m.10010.com/'),
-			]),
-			new \app\models\ButtonView('自由组合', 'http://m.10010.com/mobilegoodsdetail/981405149472.html'),
-			new \app\models\ButtonComplex('沃服务', [
-				new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
-				new \app\models\ButtonView('襄阳沃社区', 'http://m.10010.com/'),
-                                                                                new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/luck:'.Yii::$app->wx->getGhid())),
-				new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.php'),
-			]),
-		]);
-
+		$gh_id = Yii::$app->wx->getGhid();
+		if ($gh_id == MGh::GH_WOSO)
+		{
+			$menu = new \app\models\WxMenu([
+				new \app\models\ButtonComplex('产品', [
+					//new \app\models\ButtonView('精品靓号', 'http://m.10010.com/mobilegoodsdetail/981405149472.html'),
+					new \app\models\ButtonView('自由组合', Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/diy:'.Yii::$app->wx->getGhid())),
+					//new \app\models\ButtonView('热销终端', 'http://m.10010.com/MobileList'),
+					//new \app\models\ButtonView('demo0', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx520c15f417810387&redirect_uri=http%3A%2F%2Fchong.qq.com%2Fphp%2Findex.php%3Fd%3D%26c%3DwxAdapter%26m%3DmobileDeal%26showwxpaytitle%3D1%26vb2ctag%3D4_2030_5_1194_60&response_type=code&scope=snsapi_base&state=123#wechat_redirect'),				
+					new \app\models\ButtonView('demo', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf0e81c3bee622d60&redirect_uri=http%3A%2F%2Fnba.bluewebgame.com%2Foauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'),
+					new \app\models\ButtonView('沃商城', Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mall:'.Yii::$app->wx->getGhid())),
+					//new \app\models\ButtonView('lucynew', 'http://www.hoyatech.net/wx/webtest/lucyNew.php'),
+					new \app\models\ButtonView('2048', 'http://www.hoyatech.net/wx/webtest/2048/index.htm'),
+				]),
+				//new \app\models\ButtonView('★促销商品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/prom:'.Yii::$app->wx->getGhid())),
+				new \app\models\ButtonView('★促销商品', 'http://www.hoyatech.net/wx/webtest/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3'),
+				new \app\models\ButtonComplex('我的服务', [
+					//new \app\models\ButtonClick('个性化账单', 'FuncQueryAccount'),
+					new \app\models\ButtonClick('本地生活', 'FuncQueryFee'),
+					new \app\models\ButtonClick('关注', 'FuncSignon'),
+					//new \app\models\ButtonClick('吐槽', 'FuncCustomService'),
+					//new \app\models\ButtonView('我要维权', Url::to(['site/index'],true)),
+					new \app\models\ButtonView('jsnative', 'http://www.hoyatech.net/wx/webtest/jsnative.php'),
+					new \app\models\ButtonView('jsphp', 'http://www.hoyatech.net/wx/webtest/jsphp.php'),
+					//new \app\models\ButtonView('jsjs', 'http://www.hoyatech.net/wx/webtest/jsjs.php'),
+					new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/luck:'.Yii::$app->wx->getGhid())),
+				]),
+			]);
+		}    		
+		else if ($gh_id == MGh::GH_XIANGYANGUNICOM)
+		{
+			$menu = new \app\models\WxMenu([
+				new \app\models\ButtonComplex('沃商城', [
+					new \app\models\ButtonView('微信沃卡', 'http://m.10010.com/mobilegoodsdetail/711404033449.html'),
+					new \app\models\ButtonView('精品靓号', 'http://m.10010.com/mall-mobile/NumList/search'),
+					new \app\models\ButtonView('热销终端', 'http://m.10010.com/MobileList'),
+					new \app\models\ButtonView('上网卡', 'http://m.10010.com/CardList'),
+					new \app\models\ButtonView('资费套餐', 'http://m.10010.com/'),
+				]),
+				new \app\models\ButtonView('★自由组合', 'http://m.10010.com/mobilegoodsdetail/981405149472.html'),
+				new \app\models\ButtonComplex('沃服务', [
+					new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
+					//new \app\models\ButtonView('襄阳沃社区', 'http://m.10010.com/'),
+					new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base','wap/luck:'.Yii::$app->wx->getGhid())),
+					//new \app\models\ButtonView('靓号运程', 'http://www.hoyatech.net/wx/web/index.php?r=wap/luck1'),
+					new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.htm'),
+				]),
+			]);
+		}
+		else
+		{
+			die("invalid gh_id=$gh_id");
+		}
 		$menu_json = Wechat::json_encode($menu);
 		U::W([$menu, $menu_json]);
 		$arr = Yii::$app->wx->WxMenuCreate($menu);

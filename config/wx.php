@@ -4,8 +4,8 @@ return [
 	//'class' => 'app\models\MyWechat',
 	'class' => 'app\models\Wechat',
 	'debug'=>true,
-	'localTest'=>false,
-	//'localTest' => YII_DEBUG ? true : false,
+	//'localTest'=>false,
+	'localTest' => YII_DEBUG ? true : false,
 ];
 
 /*	
