@@ -17,7 +17,15 @@ use yii\helpers\Url;
   <title>2048</title>
 
   <link href="./2048_files/main.css" rel="stylesheet" type="text/css">
-
+  <style>
+	.sbgshow{display:block;position:fixed;top:0;left:0;width:100%;height:100%;text-align:center;color:#fff;font-size:30px;line-height:1.7em;background:rgba(0,0,0,0.85);}
+	.sbgshow .arron{ position:absolute;top:8px;right:8px;width:100px;height:100px;background:url(http://baby.ci123.com/yunqi/m/weixin/images/arron.png) no-repeat; background-size:100px 100px;}
+	.sbgshow p{padding-top:78px;}
+	.sbg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;text-align:center;color:#fff;font-size:26px;line-height:1.7em;background:rgba(0,0,0,0.85);}
+	.sbg .arron{ position:absolute;top:8px;right:8px;width:100px;height:100px;background:url(http://baby.ci123.com/yunqi/m/weixin/images/arron.png) no-repeat; background-size:100px 100px;}
+	.sbg p{padding-top:78px;}
+          .msgstyle {color:#F7EA45;}/*yellow*/
+</style>
   <!--
   <link rel="shortcut icon" href="http://gabrielecirulli.github.io/2048/favicon.ico">
  
@@ -41,11 +49,24 @@ use yii\helpers\Url;
   <meta property="og:image" content="http://gabrielecirulli.github.io/2048/meta/og_image.png">
   -->
  
+  <script>
+  
+        function share(){
+                document.getElementById("sbg").className="sbgshow";
+                window.setTimeout(hiddenMe, 9000);
+        }
+
+        function hiddenMe(){
+                document.getElementById("sbg").className="sbg";
+        }
+
+  </script>
+  
 </head>
 <body>
   <div class="container">
     <div class="heading">
-      <h1 class="title">2048</h1>
+      <h1 class="title">2048a</h1>
       <div class="scores-container">
 	
           <img src="./2048_files/10010-logo.png">
@@ -149,6 +170,13 @@ use yii\helpers\Url;
 			-->
     </div>
   </div>
+        
+        <div id="sbg" class="sbg">
+                <div class="arron"></div>
+                <p id="msg" class="msgstyle">请点击右上角<br />点击【分享到朋友圈】<br /></p>
+        </div>
+
+        
   <script src="../../web/js/wechat.js"></script>
   
 <?php 
@@ -231,10 +259,10 @@ var dataForWeixin={
 
 <?php 
 
-        $subscribed = true;
+        $subscribed = false;
         if (!$subscribed)
         //echo Html::img(Url::to('images/wx-tuiguang1.png'), ['class'=>'img-responsive']); 
-                            echo "<img scr=\"http://www.hoyatech.net/wx/web/images/wx-tuiguang1.png\" width=\"100%\">";
+                            echo "<img src=\"http://www.hoyatech.net/wx/web/images/wx-tuiguang2.png\" width=\"100%\">";
 ?>
 </body>
 </html>
