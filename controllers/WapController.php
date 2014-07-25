@@ -433,6 +433,53 @@ EOD;
 		}		
  		return $this->render('luck', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 	}	
+
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/g2048:gh_1ad98f5481f3
+	public function actionG2048()
+	{
+		$this->layout = 'wap';
+		$gh_id = Yii::$app->session['gh_id'];	
+		$openid = Yii::$app->session['openid'];
+		Yii::$app->wx->setGhId($gh_id);
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+		if ($model === null)
+		{
+			$model = new MUser;		
+			$subscribed = false;			
+		}
+		else if ($model->subscribe)
+			$subscribed = true;
+		else
+			$subscribed = false;
+
+		if (!Yii::$app->user->isGuest)
+			$username = Yii::$app->user->identity->username;
+		else
+			$username = '';
+		
+		$result = '';
+/*		
+		$lucy_msg = [];
+		if ($model->load(Yii::$app->request->post())) 
+		{
+			if (Yii::$app->user->isGuest)
+				$username = $model->mobile;
+		
+			$loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$model->mobile."&output=json&callback=querycallback");
+			$loca = substr($loca, 14, -2);  
+			$loca = json_decode($loca, true);	
+			//$lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$model->mobile."&output=json&callback=querycallback");
+			//$lucy_msg = substr($lucy_msg, 14, -2);  
+			//$lucy_msg = json_decode($lucy_msg, true);	
+			$lucy_msg = U::getMobileLuck($model->mobile);
+			$lucy_msg['Mobile'] = $model->mobile;
+
+			$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);
+		}		
+*/		
+ 		return $this->render('games/2048/index', ['model' => $model, 'result'=>$result, 'subscribed'=>$subscribed, 'username'=>$username]);
+	}	
+
         
 	//http://127.0.0.1/wx/web/index.php?r=wap/diy&gh_id=gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/diy:gh_1ad98f5481f3

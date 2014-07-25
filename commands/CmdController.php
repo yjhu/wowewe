@@ -151,7 +151,8 @@ class CmdController extends Controller
 					new \app\models\ButtonView('jsphp', 'http://www.hoyatech.net/wx/webtest/jsphp.php'),
 					//new \app\models\ButtonView('jsjs', 'http://www.hoyatech.net/wx/webtest/jsjs.php'),
 					new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/luck:{$gh_id}")),
-					new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.php'),
+					//new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.php'),
+					new \app\models\ButtonView('游戏2048', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}")),
 				]),
 			]);
 		}    		

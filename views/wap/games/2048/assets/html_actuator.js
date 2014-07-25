@@ -152,40 +152,6 @@ HTMLActuator.prototype.clearMessage = function () {
 };
 
 
-function showScore()
-{
-		var i,j;
-		var bigNum = 0;
-		var myScore;
-		var myGameState;	
-		var storage = window.localStorage;
-		myScore = storage.getItem("bestScore");
-		myGameState = storage.getItem("gameState");
-		
-		//create JSON Object
-		var myGameStateObj = eval('('+myGameState+')');
-		
-		for(i=0;i<4;i++)
-		{
-			for(j=0;j<4;j++)
-			{
-				if(myGameStateObj.grid.cells == null )
-					continue;
-					
-				if((myGameStateObj.grid.cells[i][j].value) > bigNum)
-					bigNum = myGameStateObj.grid.cells[i][j].value;
-			}
-		}
-		//alert("bigNum is:"+bigNum);		
-		//alert("myScore:" + myScore);
-		//alert("myBestScore:" + myGameStateObj.score);
-		//alert("可点击...微信菜单\n 深度分享到朋友圈或转发给朋友  ;-)");
-		dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...";
-                 
-                    share(); //pop a mask div 
-}
-
-
 HTMLActuator.prototype.scoreTweetButton = function () {
   var tweet = document.createElement("a");
   tweet.classList.add("twitter-share-button");

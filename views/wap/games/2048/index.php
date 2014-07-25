@@ -8,6 +8,7 @@ use yii\helpers\Url;
 
 //$this->title = '靓号运程';
 //$this->params['breadcrumbs'][] = $this->title;
+$assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets';
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +17,9 @@ use yii\helpers\Url;
   <meta charset="utf-8">
   <title>2048</title>
 
-  <link href="./2048_files/main.css" rel="stylesheet" type="text/css">
+
+  <link href="<?php echo "$assetsPath/main.css"; ?>" rel="stylesheet" type="text/css">
+
   <style>
 	.sbgshow{display:block;position:fixed;top:0;left:0;width:100%;height:100%;text-align:center;color:#fff;font-size:30px;line-height:1.7em;background:rgba(0,0,0,0.85);}
 	.sbgshow .arron{ position:absolute;top:8px;right:8px;width:100px;height:100px;background:url(http://baby.ci123.com/yunqi/m/weixin/images/arron.png) no-repeat; background-size:100px 100px;}
@@ -69,7 +72,7 @@ use yii\helpers\Url;
       <h1 class="title">2048a</h1>
       <div class="scores-container">
 	
-          <img src="./2048_files/10010-logo.png">
+          <img src="<?php echo "$assetsPath/10010-logo.png"; ?>">
         <div class="score-container">8<div class="score-addition">+8</div></div>
         <div class="best-container">8</div>
       </div>
@@ -160,14 +163,6 @@ use yii\helpers\Url;
                       <hr>
 
 	<div class="sharing">
-            <!--
-			<script async="" src="./2048_files/analytics.js"></script>
-			-->
-			<!--
-			<script id="twitter-wjs" src="http://platform.twitter.com/widgets.js"></script>
-			
-			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-			-->
     </div>
   </div>
         
@@ -177,15 +172,12 @@ use yii\helpers\Url;
         </div>
 
         
-  <script src="../../web/js/wechat.js"></script>
-  
+<script src="<?php echo Yii::$app->getRequest()->baseUrl.'/js/wechat.js?v=0.1'; ?> "></script>
+
 <?php 
-//$appid = Yii::$app->wx->gh['appid'];
-$appid = 'wx1b122a21f985ea18';
-//$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/luck:'.Yii::$app->wx->getGhid());
-$url = 'http://www.hoyatech.net/wx/webtest/2048/index.php';
-//$myImg = Url::to('images/game_2048.jpg');
-$myImg = 'http://www.hoyatech.net/wx/webtest/2048/2048_files/game_2048.png';
+$appid = Yii::$app->wx->gh['appid'];
+$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/g2048:'.Yii::$app->wx->getGhid());
+$myImg = Url::to("$assetsPath/game_2048.png", true);
 $title = '游戏2048';
 $desc = '游戏2048, 全球最火益智游戏. 今天你2048了吗?';
 
@@ -229,18 +221,52 @@ var dataForWeixin={
 		}   	
 	}
 };
+
+function showScore()
+{
+		var i,j;
+		var bigNum = 0;
+		var myScore;
+		var myGameState;	
+		var storage = window.localStorage;
+		myScore = storage.getItem("bestScore");
+		myGameState = storage.getItem("gameState");
+		
+		//create JSON Object
+		var myGameStateObj = eval('('+myGameState+')');
+		
+		for(i=0;i<4;i++)
+		{
+			for(j=0;j<4;j++)
+			{
+				if(myGameStateObj.grid.cells == null )
+					continue;
+					
+				if((myGameStateObj.grid.cells[i][j].value) > bigNum)
+					bigNum = myGameStateObj.grid.cells[i][j].value;
+			}
+		}
+		//alert("bigNum is:"+bigNum);		
+		//alert("myScore:" + myScore);
+		//alert("myBestScore:" + myGameStateObj.score);
+		//alert("可点击...微信菜单\n 深度分享到朋友圈或转发给朋友  ;-)");
+		dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...";
+                 
+                    share(); //pop a mask div 
+}
+
 </script>
   
-  <script src="./2048_files/bind_polyfill.js"></script>
-  <script src="./2048_files/classlist_polyfill.js"></script>
-  <script src="./2048_files/animframe_polyfill.js"></script>
-  <script src="./2048_files/keyboard_input_manager.js"></script>
-  <script src="./2048_files/html_actuator.js"></script>
-  <script src="./2048_files/grid.js"></script>
-  <script src="./2048_files/tile.js"></script>
-  <script src="./2048_files/local_storage_manager.js"></script>
-  <script src="./2048_files/game_manager.js"></script>
-  <script src="./2048_files/application.js"></script>
+  <script src="<?php echo "$assetsPath/bind_polyfill.js"; ?> "></script>
+  <script src="<?php echo "$assetsPath/classlist_polyfill.js";?> "></script>
+  <script src="<?php echo "$assetsPath/animframe_polyfill.js"; ?> "></script>
+  <script src="<?php echo "$assetsPath/keyboard_input_manager.js"; ?> " ></script>
+  <script src="<?php echo "$assetsPath/html_actuator.js"; ?> "></script>
+  <script src="<?php echo "$assetsPath/grid.js"; ?> "></script>
+  <script src="<?php echo "$assetsPath/tile.js"; ?> "></script>
+  <script src="<?php echo "$assetsPath/local_storage_manager.js";?>"></script>
+  <script src="<?php echo "$assetsPath/game_manager.js"; ?>"></script>
+  <script src="<?php echo "$assetsPath/application.js"; ?>"></script>
   
   
   <script>
@@ -259,10 +285,48 @@ var dataForWeixin={
 
 <?php 
 
-        $subscribed = false;
+        //$subscribed = false;
         if (!$subscribed)
-        //echo Html::img(Url::to('images/wx-tuiguang1.png'), ['class'=>'img-responsive']); 
-                            echo "<img src=\"http://www.hoyatech.net/wx/web/images/wx-tuiguang2.png\" width=\"100%\">";
+			echo Html::img(Url::to('images/wx-tuiguang2.png'), ['class'=>'img-responsive']); 
+		//echo Html::img(Url::to('images/wx-tuiguang1.png'), ['class'=>'img-responsive']); 
+        //                    echo "<img src=\"http://www.hoyatech.net/wx/web/images/wx-tuiguang2.png\" width=\"100%\">";
 ?>
+
+
+<?php 
+//	$show = empty($lucy_msg) ? false : true;
+	$show = true;
+	yii\bootstrap\Modal::begin([
+		'options' => [
+			//'style' => 'opacity:0.9;color:#ffffff;bgcolor:#000000;width:90%;',
+			'style' => 'opacity:0.9;',
+		],
+        'header' => Html::img(Url::to('images/share.png'), ['class'=>'img-responsive']),   
+		'footer' => "&copy; <span style='color:#d71920'>襄阳联通</span> ".date('Y'),
+		//'size' => 'modal-lg',
+		'size' => 'modal-sm',
+		//'toggleButton' => ['label' => 'click me'],
+		'clientOptions' => [
+			'show' => $show,
+		],
+		'closeButton' => [
+			//'label' => '&times;',
+		'label' => '',
+		]
+	]);
+?>
+<div id="result"><?php echo 'my score is test...' ?></div>
+
+
+<?php yii\bootstrap\Modal::end(); ?>
+
+
 </body>
 </html>
+
+
+<?php
+/*
+
+
+*/
