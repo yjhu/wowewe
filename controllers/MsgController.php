@@ -63,13 +63,5 @@ class MsgController extends Controller
 		}
 		die($_GET['echostr']);
 	}
-
 }
 
-/*
-	public function actionIndex($gh_id)
-	{
-		return Yii::$app->wx->run($gh_id);
-	}
-
-*/

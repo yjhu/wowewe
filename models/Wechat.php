@@ -62,10 +62,13 @@ class Wechat extends \yii\base\Object
 
 	// wxpay package parameters
 	//private $_parameters;
-	public $parameters;
+	//public $parameters;
+	
+	public $_parameters;	
 	
 	public function init()
 	{
+		U::W('Wap init...');
 	}
 
 	private function log($log)
@@ -853,6 +856,7 @@ EOD;
 	public static function generateOutTradeNo()
 	{
 		return uniqid();
+		//return Yii::$app->wx->create_noncestr();
 	}
 
 	public static function supportWeixinPay()
@@ -899,8 +903,7 @@ EOD;
 		return true;
 	}
 	
-	// ------------------------ Wxpay ------------------------
-/*	
+	// ------------------------ Wxpay ------------------------	
 	protected static function sign($content, $key) 
 	{
 		if (empty($key))
@@ -1027,8 +1030,8 @@ EOD;
 		$this->setParameter("bank_type", "WX");
 		$this->setParameter("partner", $this->gh['partnerid']);
 		$this->setParameter("fee_type", "1");
-		$this->setParameter("input_charset", "UTF-8");		
-		$this->setParameter("notify_url", Url::to($this->paynotifyUrl, true));
+		$this->setParameter("input_charset", "UTF-8");
+		$this->setParameter("notify_url", urldecode(Url::to($this->paynotifyUrl, true)));
 	}
 	
 	public function create_biz_package()
@@ -1038,8 +1041,7 @@ EOD;
 			U::D("invalid cft_parameters ".__METHOD__);
 		$nativeObj["appId"] = $appid;
 		$nativeObj["package"] = $this->get_cft_package();
-		$nativeObj["timeStamp"] = strval(time());
-		//$nativeObj["timeStamp"] = time();
+		$nativeObj["timeStamp"] = time();
 		$nativeObj["nonceStr"] = self::create_noncestr();
 		$nativeObj["paySign"] = $this->get_biz_sign($nativeObj);
 		$nativeObj["signType"] = self::SIGNTYPE;		   
@@ -1073,227 +1075,8 @@ EOD;
 		$nativeObj["SignMethod"] = self::SIGNTYPE;
 		return  self::arrayToXml($nativeObj);
 	}
-*/
 
-	function sign($content, $key) {
-		    if (null == $key) {
-		    }
-			if (null == $content) {
-		    }
-		    $signStr = $content . "&key=" . $key;
-		
-		    return strtoupper(md5($signStr));
-	}
-	
-	function verifySignature($content, $sign, $md5Key) {
-		$signStr = $content . "&key=" . $md5Key;
-		$calculateSign = strtolower(md5($signStr));
-		$tenpaySign = strtolower($sign);
-		return $calculateSign == $tenpaySign;
-	}
 
-	function genAllUrl($toURL, $paras) {
-		$allUrl = null;
-		if(null == $toURL){
-			die("toURL is null");
-		}
-		if (strripos($toURL,"?") =="") {
-			$allUrl = $toURL . "?" . $paras;
-		}else {
-			$allUrl = $toURL . "&" . $paras;
-		}
-
-		return $allUrl;
-	}
-	/**
-	 * 
-	 * 
-	 * @param src
-	 * @param token
-	 * @return
-	 */
-	function splitParaStr($src, $token) {
-		$resMap = array();
-		$items = explode($token,$src);
-		foreach ($items as $item){
-			$paraAndValue = explode("=",$item);
-			if ($paraAndValue != "") {
-				$resMap[$paraAndValue[0]] = $parameterValue[1];
-			}
-		}
-		return $resMap;
-	}
-	
-	/**
-	 * trim 
-	 * 
-	 * @param value
-	 * @return
-	 */
-	static function trimString($value){
-		$ret = null;
-		if (null != $value) {
-			$ret = $value;
-			if (strlen($ret) == 0) {
-				$ret = null;
-			}
-		}
-		return $ret;
-	}
-	
-	function formatQueryParaMap($paraMap, $urlencode){
-		$buff = "";
-		ksort($paraMap);
-		foreach ($paraMap as $k => $v){
-			if (null != $v && "null" != $v && "sign" != $k) {
-			    if($urlencode){
-				   $v = urlencode($v);
-				}
-				$buff .= $k . "=" . $v . "&";
-			}
-		}
-		$reqPar;
-		if (strlen($buff) > 0) {
-			$reqPar = substr($buff, 0, strlen($buff)-1);
-		}
-		return $reqPar;
-	}
-	function formatBizQueryParaMap($paraMap, $urlencode){
-		$buff = "";
-		ksort($paraMap);
-		foreach ($paraMap as $k => $v){
-		//	if (null != $v && "null" != $v && "sign" != $k) {
-			    if($urlencode){
-				   $v = urlencode($v);
-				}
-				$buff .= strtolower($k) . "=" . $v . "&";
-			//}
-		}
-		$reqPar;
-		if (strlen($buff) > 0) {
-			$reqPar = substr($buff, 0, strlen($buff)-1);
-		}
-		return $reqPar;
-	}
-	
-	function arrayToXml($arr)
-    {
-        $xml = "<xml>";
-        foreach ($arr as $key=>$val)
-        {
-        	 if (is_numeric($val))
-        	 {
-        	 	$xml.="<".$key.">".$val."</".$key.">"; 
-
-        	 }
-        	 else
-        	 	$xml.="<".$key."><![CDATA[".$val."]]></".$key.">";  
-        }
-        $xml.="</xml>";
-        return $xml; 
-    }
-
-	function setParameter($parameter, $parameterValue) {
-		$this->parameters[self::trimString($parameter)] = self::trimString($parameterValue);
-	}
-	function getParameter($parameter) {
-		return $this->parameters[$parameter];
-	}
-	
-	function create_noncestr( $length = 16 ) {  
-		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";  
-		$str ="";  
-		for ( $i = 0; $i < $length; $i++ )  {  
-			$str.= substr($chars, mt_rand(0, strlen($chars)-1), 1);  
-		}  
-		return $str;  
-	}
-	
-	function check_cft_parameters(){
-		if($this->parameters["bank_type"] == null || $this->parameters["body"] == null || $this->parameters["partner"] == null || 
-			$this->parameters["out_trade_no"] == null || $this->parameters["total_fee"] == null || $this->parameters["fee_type"] == null ||
-			$this->parameters["notify_url"] == null || $this->parameters["spbill_create_ip"] == null || $this->parameters["input_charset"] == null
-			)
-		{
-			return false;
-		}
-		return true;
-
-	}
-	protected function get_cft_package(){
-			//$commonUtil = new CommonUtil();
-			$partnerkey = $this->gh['partnerkey'];
-			
-			ksort($this->parameters);
-			$unSignParaString = $this->formatQueryParaMap($this->parameters, false);
-			$paraString = $this->formatQueryParaMap($this->parameters, true);
-
-			//$md5SignUtil = new MD5SignUtil();
-			return $paraString . "&sign=" . $this->sign($unSignParaString,self::trimString(PARTNERKEY));
-	}
-	
-	protected function get_biz_sign($bizObj){
-		 	$appkey = $this->gh['paysignkey'];	
-		 	$bizParameters["appkey"] = APPKEY;
-		 	ksort($bizParameters);
-		 	//var_dump($bizParameters);
-		 	//$commonUtil = new CommonUtil();
-		 	$bizString = $this->formatBizQueryParaMap($bizParameters, false);
-		 	//var_dump($bizString);
-		 	return sha1($bizString);
-	}
-
-	function create_biz_package(){
-		  
-			if($this->check_cft_parameters() == false) {   
-		    }
-		 	$appid = $this->gh['appid'];	
-		    
-		    $nativeObj["appId"] = APPID;
-		    $nativeObj["package"] = $this->get_cft_package();
-		    $nativeObj["timeStamp"] = time();
-		    $nativeObj["nonceStr"] = $this->create_noncestr();
-		    $nativeObj["paySign"] = $this->get_biz_sign($nativeObj);
-		    $nativeObj["signType"] = self::SIGNTYPE;
-		   
-		    return   json_encode($nativeObj);
-		   
-		
-	}
-
-	function create_native_url($productid){
-
-			//$commonUtil = new CommonUtil();
-		 	$appid = $this->gh['appid'];				
-		    $nativeObj["appid"] = $appid;
-		    $nativeObj["productid"] = urlencode($productid);
-		    $nativeObj["timestamp"] = time();
-		    $nativeObj["noncestr"] = $this->create_noncestr();
-		    $nativeObj["sign"] = $this->get_biz_sign($nativeObj);
-		    $bizString = $this->formatBizQueryParaMap($nativeObj, false);
-		    return "weixin://wxpay/bizpayurl?".$bizString;
-		    
-	}
-
-	function create_native_package($retcode = 0, $reterrmsg = "ok")
-	{
-		   if($this->check_cft_parameters() == false && $retcode == 0) 
-		   {
-		    }
-		 	$appid = $this->gh['appid'];						    
-		    $nativeObj["AppId"] = $appid;
-		    $nativeObj["Package"] = $this->get_cft_package();
-		    $nativeObj["TimeStamp"] = time();
-		    $nativeObj["NonceStr"] = $this->create_noncestr();
-		    $nativeObj["RetCode"] = $retcode;
-		    $nativeObj["RetErrMsg"] = $reterrmsg;
-		    $nativeObj["AppSignature"] = $this->get_biz_sign($nativeObj);
-		    $nativeObj["SignMethod"] = self::SIGNTYPE;
-		    //$commonUtil = new CommonUtil();
-
-		    return  $this->arrayToXml($nativeObj);
-		   
-	}
 
 }
 
@@ -1431,6 +1214,219 @@ errcode errmsg
 			return '[' . $json . ']'; //Return numerical JSON
 		return '{' . $json . '}'; //Return associative JSON
 	}
-*/	
+
+
+	function sign($content, $key) {
+		    if (null == $key) {
+		    }
+			if (null == $content) {
+		    }
+		    $signStr = $content . "&key=" . $key;
+		
+		    return strtoupper(md5($signStr));
+	}
+	
+	function verifySignature($content, $sign, $md5Key) {
+		$signStr = $content . "&key=" . $md5Key;
+		$calculateSign = strtolower(md5($signStr));
+		$tenpaySign = strtolower($sign);
+		return $calculateSign == $tenpaySign;
+	}
+
+	function genAllUrl($toURL, $paras) {
+		$allUrl = null;
+		if(null == $toURL){
+			die("toURL is null");
+		}
+		if (strripos($toURL,"?") =="") {
+			$allUrl = $toURL . "?" . $paras;
+		}else {
+			$allUrl = $toURL . "&" . $paras;
+		}
+
+		return $allUrl;
+	}
+
+	function splitParaStr($src, $token) {
+		$resMap = array();
+		$items = explode($token,$src);
+		foreach ($items as $item){
+			$paraAndValue = explode("=",$item);
+			if ($paraAndValue != "") {
+				$resMap[$paraAndValue[0]] = $parameterValue[1];
+			}
+		}
+		return $resMap;
+	}
+	
+	static function trimString($value){
+		$ret = null;
+		if (null != $value) {
+			$ret = $value;
+			if (strlen($ret) == 0) {
+				$ret = null;
+			}
+		}
+		return $ret;
+	}
+	
+	function formatQueryParaMap($paraMap, $urlencode){
+		$buff = "";
+		ksort($paraMap);
+		foreach ($paraMap as $k => $v){
+			if (null != $v && "null" != $v && "sign" != $k) {
+			    if($urlencode){
+				   $v = urlencode($v);
+				}
+				$buff .= $k . "=" . $v . "&";
+			}
+		}
+		$reqPar;
+		if (strlen($buff) > 0) {
+			$reqPar = substr($buff, 0, strlen($buff)-1);
+		}
+		return $reqPar;
+	}
+	function formatBizQueryParaMap($paraMap, $urlencode){
+		$buff = "";
+		ksort($paraMap);
+		foreach ($paraMap as $k => $v){
+		//	if (null != $v && "null" != $v && "sign" != $k) {
+			    if($urlencode){
+				   $v = urlencode($v);
+				}
+				$buff .= strtolower($k) . "=" . $v . "&";
+			//}
+		}
+		$reqPar;
+		if (strlen($buff) > 0) {
+			$reqPar = substr($buff, 0, strlen($buff)-1);
+		}
+		return $reqPar;
+	}
+	
+	function arrayToXml($arr)
+    {
+        $xml = "<xml>";
+        foreach ($arr as $key=>$val)
+        {
+        	 if (is_numeric($val))
+        	 {
+        	 	$xml.="<".$key.">".$val."</".$key.">"; 
+
+        	 }
+        	 else
+        	 	$xml.="<".$key."><![CDATA[".$val."]]></".$key.">";  
+        }
+        $xml.="</xml>";
+        return $xml; 
+    }
+
+	function setParameter($parameter, $parameterValue) {
+		$this->parameters[self::trimString($parameter)] = self::trimString($parameterValue);
+	}
+	function getParameter($parameter) {
+		return $this->parameters[$parameter];
+	}
+	
+	function create_noncestr( $length = 16 ) {  
+		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";  
+		$str ="";  
+		for ( $i = 0; $i < $length; $i++ )  {  
+			$str.= substr($chars, mt_rand(0, strlen($chars)-1), 1);  
+		}  
+		return $str;  
+	}
+	
+	function check_cft_parameters(){
+		if($this->parameters["bank_type"] == null || $this->parameters["body"] == null || $this->parameters["partner"] == null || 
+			$this->parameters["out_trade_no"] == null || $this->parameters["total_fee"] == null || $this->parameters["fee_type"] == null ||
+			$this->parameters["notify_url"] == null || $this->parameters["spbill_create_ip"] == null || $this->parameters["input_charset"] == null
+			)
+		{
+			return false;
+		}
+		return true;
+
+	}
+	protected function get_cft_package(){
+			//$commonUtil = new CommonUtil();
+			$partnerkey = $this->gh['partnerkey'];
+			ksort($this->parameters);
+			$unSignParaString = $this->formatQueryParaMap($this->parameters, false);
+			$paraString = $this->formatQueryParaMap($this->parameters, true);
+
+			//$md5SignUtil = new MD5SignUtil();
+//			return $paraString . "&sign=" . $this->sign($unSignParaString,self::trimString(PARTNERKEY));
+			\app\models\U::W([$partnerkey, $this->parameters]);
+			return $paraString . "&sign=" . $this->sign($unSignParaString,self::trimString($partnerkey));
+	}
+	
+	protected function get_biz_sign($bizObj){
+		 foreach ($bizObj as $k => $v){
+			 $bizParameters[strtolower($k)] = $v;
+		 }
+	
+		 	$appkey = $this->gh['paysignkey'];	
+		 	$bizParameters["appkey"] = $appkey;
+		 	ksort($bizParameters);
+		 	//var_dump($bizParameters);
+		 	//$commonUtil = new CommonUtil();
+		 	$bizString = $this->formatBizQueryParaMap($bizParameters, false);
+		 	//var_dump($bizString);
+			\app\models\U::W($bizParameters);
+		 	return sha1($bizString);
+	}
+
+	function create_biz_package(){
+		  
+			if($this->check_cft_parameters() == false) {   
+		    }
+		 	$appid = $this->gh['appid'];	
+		    
+		    $nativeObj["appId"] = $appid;		    
+		    $nativeObj["package"] = $this->get_cft_package();
+		    $nativeObj["timeStamp"] = time();
+		    //$nativeObj["timeStamp"] =strval(time());
+		    $nativeObj["nonceStr"] = $this->create_noncestr();
+		    $nativeObj["paySign"] = $this->get_biz_sign($nativeObj);
+		    $nativeObj["signType"] = self::SIGNTYPE;
+		    return   json_encode($nativeObj);
+	}
+
+	function create_native_url($productid){
+
+			//$commonUtil = new CommonUtil();
+		 	$appid = $this->gh['appid'];				
+		    $nativeObj["appid"] = $appid;
+		    $nativeObj["productid"] = urlencode($productid);
+		    $nativeObj["timestamp"] = time();
+		    $nativeObj["noncestr"] = $this->create_noncestr();
+		    $nativeObj["sign"] = $this->get_biz_sign($nativeObj);
+		    $bizString = $this->formatBizQueryParaMap($nativeObj, false);
+		    return "weixin://wxpay/bizpayurl?".$bizString;
+		    
+	}
+
+	function create_native_package($retcode = 0, $reterrmsg = "ok")
+	{
+		   if($this->check_cft_parameters() == false && $retcode == 0) 
+		   {
+		    }
+		 	$appid = $this->gh['appid'];						    
+		    $nativeObj["AppId"] = $appid;
+		    $nativeObj["Package"] = $this->get_cft_package();
+		    $nativeObj["TimeStamp"] = time();
+		    $nativeObj["NonceStr"] = $this->create_noncestr();
+		    $nativeObj["RetCode"] = $retcode;
+		    $nativeObj["RetErrMsg"] = $reterrmsg;
+		    $nativeObj["AppSignature"] = $this->get_biz_sign($nativeObj);
+		    $nativeObj["SignMethod"] = self::SIGNTYPE;
+		    //$commonUtil = new CommonUtil();
+
+		    return  $this->arrayToXml($nativeObj);
+		   
+	}
+*/
 
 

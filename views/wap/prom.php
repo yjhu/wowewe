@@ -14,24 +14,12 @@
 	<?php
 		use app\models\Wechat;
 		use app\models\MyWechat;
-/*
-		Yii::$app->wx->setParameterComm();
-		Yii::$app->wx->setParameter("body", "item: I need a new mobile");
-		Yii::$app->wx->setParameter("out_trade_no", Wechat::generateOutTradeNo());
-		Yii::$app->wx->setParameter("total_fee", "19900");
-		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
-*/
 
-		Yii::$app->wx->setParameter("bank_type", "WX");
-		Yii::$app->wx->setParameter("body", "test");
-		Yii::$app->wx->setParameter("partner", "1220047701");
-		Yii::$app->wx->setParameter("out_trade_no", Yii::$app->wx->create_noncestr());
+		Yii::$app->wx->setParameterComm();
+		Yii::$app->wx->setParameter("body", urlencode("testjsjsjsjs a"));
+		Yii::$app->wx->setParameter("out_trade_no", Wechat::generateOutTradeNo());
 		Yii::$app->wx->setParameter("total_fee", "1");
-		Yii::$app->wx->setParameter("fee_type", "1");
-		Yii::$app->wx->setParameter("notify_url", "http://www.hoyatech.net/wx/web/index.php?r=wap/paynotify");
 		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
-		Yii::$app->wx->setParameter("input_charset", "UTF-8");
-		\app\models\U::W(Yii::$app->wx->create_biz_package());
 	?>
 
 	<script language="javascript">

@@ -123,24 +123,7 @@ class WapController extends Controller
 	//http://127.0.0.1/wx/web/index.php?r=wap/nativepackage
 	public function actionNativepackage()
 	{		
-		U::W([__METHOD__, $GLOBALS]);
-		include_once("WxPayHelper.php");		
-		$commonUtil = new \CommonUtil();
-		$wxPayHelper = new \WxPayHelper();
-		$wxPayHelper->setParameter("bank_type", "WX");
-		$wxPayHelper->setParameter("body", "test");
-		$wxPayHelper->setParameter("partner", "1220047701");
-		$wxPayHelper->setParameter("out_trade_no", $commonUtil->create_noncestr());
-		$wxPayHelper->setParameter("total_fee", "1");
-		$wxPayHelper->setParameter("fee_type", "1");
-		$wxPayHelper->setParameter("notify_url", "http://www.hoyatech.net/wx/web/index.php?r=wap/paynotify");
-		$wxPayHelper->setParameter("spbill_create_ip", "127.0.0.1");
-		$wxPayHelper->setParameter("input_charset", "UTF-8");
-		$xmlStr = $wxPayHelper->create_native_package();
-		U::W($xmlStr);
-		return $xmlStr;
-
-	
+		//U::W([__METHOD__, $GLOBALS]);	
 		if (Yii::$app->wx->localTest)
 		{
 			$postStr = <<<EOD
@@ -175,13 +158,12 @@ EOD;
 		Yii::$app->wx->setAppId($arr['AppId']);
 		$productId = $arr['ProductId'];
 		$openid = $arr['OpenId'];		
-
 		// handle input and return xml response
 		// get row from db by productId, then setParameter 
 		Yii::$app->wx->setParameterComm();
-		Yii::$app->wx->setParameter("body", "item desc");
+		Yii::$app->wx->setParameter("body", urlencode("item desc"));
 		Yii::$app->wx->setParameter("out_trade_no", Wechat::generateOutTradeNo());
-		Yii::$app->wx->setParameter("total_fee", "19900");
+		Yii::$app->wx->setParameter("total_fee", "1");
 		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
 		$xmlStr = Yii::$app->wx->create_native_package();
 		if (Yii::$app->wx->debug)
@@ -208,6 +190,25 @@ EOD;
 			<SignMethod><![CDATA[sha1]]></SignMethod >
 			</xml>
 EOD;
+			/*
+			    	    [r] => wap/paynotify
+			            [bank_type] => 3006
+			            [discount] => 0
+			            [fee_type] => 1
+			            [input_charset] => UTF-8
+			            [notify_id] => 6qgi2XQy3LhVUqQl9Z-MCAIyl_1UpCf2PxD28d5pLgDwZClXXbU-CcaciluYq8jpS_CneAPcLO3AUAN6W4DlcvCizEbVoRDM
+			            [out_trade_no] => 53d1da9fe79ad
+			            [partner] => 1220047701
+			            [product_fee] => 1
+			            [sign] => DD7D0AF2BF3E2CA9606E7367EAF444B9
+			            [sign_type] => MD5
+			            [time_end] => 20140725121856
+			            [total_fee] => 1
+			            [trade_mode] => 1
+			            [trade_state] => 0
+			            [transaction_id] => 1220047701201407253390916061
+			            [transport_fee] => 0
+			*/
 			$_GET['out_trade_no'] = Wechat::generateOutTradeNo();
 			$_GET['sign'] = 'sign';
 			$_GET['trade_mode'] = 1;
@@ -238,14 +239,14 @@ EOD;
 		}		
 		Yii::$app->wx->setAppId($arr['AppId']);
 		$openid = $arr['OpenId'];		
-		
+
 		// GET data
-		if(!isset($_GET['out_trade_no']) || !isset($_GET['sign']) || !isset($_GET['trade_mode']) || 
-			!isset($_GET['trade_state']) || !isset($_GET['partner']) || !isset($_GET['bank_type']) ||
-			!isset($_GET['totel_fee']) || !isset($_GET['fee_type']) || !isset($_GET['notify_id']) ||
-			!isset($_GET['transaction_id']) || !isset($_GET['time_end']))
+		if((!isset($_GET['out_trade_no'])) || (!isset($_GET['sign'])) || (!isset($_GET['trade_mode'])) || 
+			(!isset($_GET['trade_state'])) || (!isset($_GET['partner'])) || (!isset($_GET['bank_type'])) ||
+			(!isset($_GET['total_fee'])) || (!isset($_GET['fee_type'])) || (!isset($_GET['notify_id'])) ||
+			(!isset($_GET['transaction_id'])) || (!isset($_GET['time_end'])))
 		{
-			U::W(['Invalid GET data from wx server', __METHOD__, $_GET]);
+			U::W(['Invalid GET data from wx server...', __METHOD__, $_GET]);
 			exit;
 		}				
 		$out_trade_no = $_GET["out_trade_no"];		
@@ -255,7 +256,8 @@ EOD;
 
 		//save to db
 		//do some things at once?, for example, https://api.weixin.qq.com/pay/delivernotify...
-		//Yii::$app->wx->WxPayDeliverNotify($openid, $transaction_id, $out_trade_no);
+		$arr = Yii::$app->wx->WxPayDeliverNotify($openid, $transaction_id, $out_trade_no);
+		U::W($arr);		
 		return 'success';	
 	}
 
@@ -348,8 +350,10 @@ EOD;
 	public function actionProm()
 	{
 		$this->layout = false;		
-		$gh_id = Yii::$app->session['gh_id'];	
-		$openid = Yii::$app->session['openid'];
+		$gh_id = $_GET['gh_id'];
+		//$gh_id = Yii::$app->session['gh_id'];	
+		//$openid = Yii::$app->session['openid'];
+		
 		Yii::$app->wx->setGhId($gh_id);
 		//test native url begin		
 		//$productId = 'item1';
@@ -498,6 +502,23 @@ $oauth2UserInfo
     [headimgurl] => http://wx.qlogo.cn/mmopen/KBRNPfvbbrVbucASwD74Dric6NSCnVDycQNgicHwpYdFT74jhT7T6t6jT62zcOTtmumN7ia8QRtbRmvFRuzXPrBGqTQ22XuFk4w/0
     [subscribe_time] => 1402976898
 )
+
+include_once("WxPayHelper.php");		
+$commonUtil = new \CommonUtil();
+$wxPayHelper = new \WxPayHelper();
+$wxPayHelper->setParameter("bank_type", "WX");
+$wxPayHelper->setParameter("body", urlencode("test a"));
+$wxPayHelper->setParameter("partner", "1220047701");
+$wxPayHelper->setParameter("out_trade_no", $commonUtil->create_noncestr());
+$wxPayHelper->setParameter("total_fee", "1");
+$wxPayHelper->setParameter("fee_type", "1");
+$wxPayHelper->setParameter("notify_url", "http://www.hoyatech.net/wx/web/index.php?r=wap/paynotify");
+$wxPayHelper->setParameter("spbill_create_ip", "127.0.0.1");
+$wxPayHelper->setParameter("input_charset", "UTF-8");
+$xmlStr = $wxPayHelper->create_native_package();
+U::W($xmlStr);
+return $xmlStr;
+
 	        return Yii::$app->view->render('/wap/mall', [
 	                'dataProvider' => $dataProvider,
 //	                'searchModel' => $searchModel
