@@ -43,7 +43,7 @@ class WapController extends Controller
 
 	public function init()
 	{
-		//U::W(['init....', $_GET,$_POST, $GLOBALS]);
+		U::W(['init....', $_GET,$_POST, $GLOBALS]);
 	}
 
 	public function beforeAction($action)
@@ -481,6 +481,38 @@ EOD;
 	}	
 
         
+    
+    
+          //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/gsave:gh_1ad98f5481f3
+	public function actionG2048save()
+	{
+/*            
+		$this->layout = false;
+		$gh_id = Yii::$app->session['gh_id'];	
+		$openid = Yii::$app->session['openid'];
+		Yii::$app->wx->setGhId($gh_id);
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+		if ($model === null)
+		{
+			$model = new MUser;		
+			$subscribed = false;			
+		}
+		else if ($model->subscribe)
+			$subscribed = true;
+		else
+			$subscribed = false;
+
+		if (!Yii::$app->user->isGuest)
+			$username = Yii::$app->user->identity->username;
+		else
+			$username = '';
+		
+		$result = '';
+*/        
+                        return 'ok';
+	}	
+    
+    
 	//http://127.0.0.1/wx/web/index.php?r=wap/diy&gh_id=gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/diy:gh_1ad98f5481f3
 	//http://114.215.178.32/wx/web/index.php?r=wap/diy&gh_id=gh_1ad98f5481f3
