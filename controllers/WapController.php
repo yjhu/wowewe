@@ -555,8 +555,14 @@ EOD;
 			}
 		}
 		*/
-		
-		$msg = 1038; //ranking of score
+//		$sql = "SELECT * FROM `wx_g2048` ORDER BY `score` ASC ";
+
+		$sql = "SELECT COUNT(*) FROM wx_g2048 WHERE score <= :score";
+		$command = yii::$app->db->createCommand($sql);
+		$command->bindValue(':score', $_GET['score']);
+		$rowCount = $command->queryScalar();
+
+		$msg = $rowCount; //ranking of score
 		
 		//return 'ok';
 		return $msg;
