@@ -520,9 +520,27 @@ EOD;
 			$username = '';
 		
 		$result = '';
-*/        
-		$model = new \app\models\MG2048;
-		$model->best = $_GET['best'];
+*/         
+                              
+                        $gh_id = Yii::$app->session['gh_id'];	
+                        $openid = Yii::$app->session['openid'];
+        
+                        $model = new \app\models\MG2048;
+                        $model->gh_id = $gh_id;
+                        $model->openid = $openid;
+ 
+                        $model->best = $_GET['best'];
+                        $model->score = $_GET['score'];
+                        $model->big_num = $_GET['bigNum'];
+
+                        if ($model->save(false)) {
+                            //return $this->redirect(['index']);			
+                        }
+                        else
+                        {
+                            U::W($model->getErrors());
+                        }
+          
 		//send message to openid
 		return 'ok';
                         
