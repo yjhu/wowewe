@@ -222,7 +222,7 @@ var dataForWeixin={
 	}
 };
 
-function showScore()
+function showScore(msg)
 {
 		var i,j;
 		var bigNum = 0;
@@ -239,9 +239,11 @@ function showScore()
 		{
 			for(j=0;j<4;j++)
 			{
-				if(myGameStateObj.grid.cells == null )
+				if((myGameStateObj.grid.cells == null) || (myGameStateObj.grid.cells[i][j] == null ))
 					continue;
 					
+                   		   if(myGameStateObj.grid.cells == null )
+					continue; 
 				if((myGameStateObj.grid.cells[i][j].value) > bigNum)
 					bigNum = myGameStateObj.grid.cells[i][j].value;
 			}
@@ -250,9 +252,43 @@ function showScore()
 		//alert("myScore:" + myScore);
 		//alert("myBestScore:" + myGameStateObj.score);
 		//alert("可点击...微信菜单\n 深度分享到朋友圈或转发给朋友  ;-)");
+                    //alert('我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...");
 		dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...";
                  
-                    share(); //pop a mask div 
+                 
+                    //submit data to server
+                    $.ajax({
+                        type: "get",
+                        async: true,
+                        cache:false,
+                        url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/g2048save' ; ?>"+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&myScore"+myScore,
+                       // url: "process.php?bigNum="+bigNum+"&score="+myGameStateObj.score+"&myScore"+myScore,
+                        success: function(msg){
+                                /*
+                            var json_data = eval('('+msg+')');
+
+                            if(json_data.err && json_data.err.length == 0)
+                            {
+                                alert("process ok");
+                            }
+                            else
+                            {
+                                alert("process NOT ok");
+                            }
+                            */
+                            if(msg=="ok")
+                            {
+                                alert("process ok");
+                            }
+                            else
+                            {
+                                alert("process NOT ok");
+                            }                           
+                           
+                        }
+                    });/*end ajax*/
+                 
+                    //share(); //pop a mask div 
 }
 
 </script>
@@ -261,7 +297,7 @@ function showScore()
   <script src="<?php echo "$assetsPath/classlist_polyfill.js";?> "></script>
   <script src="<?php echo "$assetsPath/animframe_polyfill.js"; ?> "></script>
   <script src="<?php echo "$assetsPath/keyboard_input_manager.js"; ?> " ></script>
-  <script src="<?php echo "$assetsPath/html_actuator.js"; ?> "></script>
+  <script src="<?php echo "$assetsPath/html_actuator.js?v=11"; ?> "></script>
   <script src="<?php echo "$assetsPath/grid.js"; ?> "></script>
   <script src="<?php echo "$assetsPath/tile.js"; ?> "></script>
   <script src="<?php echo "$assetsPath/local_storage_manager.js";?>"></script>
@@ -319,7 +355,6 @@ function showScore()
 	]);
 ?>
 <div id="result"><?php echo 'my score is test...' ?></div>
-
 
 <?php yii\bootstrap\Modal::end(); ?>
 

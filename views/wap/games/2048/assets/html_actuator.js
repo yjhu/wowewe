@@ -27,9 +27,13 @@ HTMLActuator.prototype.actuate = function (grid, metadata) {
 
     if (metadata.terminated) {
       if (metadata.over) {
-        self.message(false); // You lose
+       // self.message(false); // You lose
+       //alert('game over!!!')
+       showScore(false);
       } else if (metadata.won) {
-        self.message(true); // You win!
+       // self.message(true); // You win!
+       //alert('you win');
+       showScore(true);
       }
     }
 
