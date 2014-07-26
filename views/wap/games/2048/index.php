@@ -19,7 +19,7 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
   <title>2048</title>
 -->
 
-  <link href="<?php echo "$assetsPath/main.css?v=1"; ?>" rel="stylesheet" type="text/css">
+  <link href="<?php echo "$assetsPath/main.css?v=4"; ?>" rel="stylesheet" type="text/css">
 
   <style>
 	.sbgshow{display:block;position:fixed;top:0;left:0;width:100%;height:100%;text-align:center;color:#fff;font-size:30px;line-height:1.7em;background:rgba(0,0,0,0.85);}
