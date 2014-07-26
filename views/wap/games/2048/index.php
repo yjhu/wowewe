@@ -19,7 +19,7 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
   <title>2048</title>
 -->
 
-  <link href="<?php echo "$assetsPath/main.css?v=1"; ?>" rel="stylesheet" type="text/css">
+  <link href="<?php echo "$assetsPath/main.css?v=4"; ?>" rel="stylesheet" type="text/css">
 
   <style>
 	.sbgshow{display:block;position:fixed;top:0;left:0;width:100%;height:100%;text-align:center;color:#fff;font-size:30px;line-height:1.7em;background:rgba(0,0,0,0.85);}
@@ -273,16 +273,21 @@ function showScore(msg)
                                 alert("process NOT ok");
                             }
                             */
-                            if(msg=="ok")
+		       
+                           // if(msg=="ok")
+		       if(msg != 0)
                             {
                                 //alert("process ok");
+			$scoreRanking = msg; 
                             }
                             else
                             {
                                 //alert("process NOT ok");
-                            }       
-							
-                        $("#result").html('<h1>Game over</h1><br>我的盘面最大数是'+bigNum+'<br>总分是'+myGameStateObj.score+"<br>最好记录是"+myScore+"<br>你能有我牛X吗？啊哈哈哈...");
+			  $scoreRanking = 9999; 
+                            }
+		   
+
+                        $("#result").html('<h1>Game over!</h1><br>我的盘面最大数是<b>'+bigNum+'</b><br>总分是<b>'+myGameStateObj.score+"</b><br>最好记录是<b>"+myScore+"</b><br>在所有襄阳联通关注号中游戏排名是<b>"+$scoreRanking+"</b><br><br>你能超过我吗？啊哈哈哈...");
                         $("#modal_id").trigger("click");
                          
                         }
@@ -307,7 +312,7 @@ function showScore(msg)
   
 
 
-<?php //echo Html::img(Url::to('images/wx-tuiguang2.png'), ['class'=>'img-responsive']); ?>
+<?php echo Html::img(Url::to('images/wx-tuiguang1.png'), ['class'=>'img-responsive']); ?>
 
 
 <?php 
