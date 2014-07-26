@@ -58,12 +58,113 @@ class WechatWoso extends Wechat
 		}
 		return '';
 	}
+
+	const STATE_NONE = 'NONE';	
+	const STATE_MOBILE = 'MOBILE';
+	const STATE_DEPARTMENT = 'DEPARTMENT';	
+	const STATE_MENU_1 = 'MENU_1';	
+	
+	protected function getState($gh_id, $openid) 
+	{ 
+		$key = "STATE_{$gh_id}_{$openid}";
+		$state = Yii::$app->cache->get($key);
+		return $state === false ? self::STATE_NONE : $state;
+	}
+	
+	protected function setState($gh_id, $openid, $state) 
+	{ 
+		$key = "STATE_{$gh_id}_{$openid}";
+		Yii::$app->cache->set($key, $state, 3600);	
+	}
+
+	protected function deleteState($gh_id, $openid) 
+	{ 
+		$key = "STATE_{$gh_id}_{$openid}";
+		Yii::$app->cache->delete($key);	
+	}
 	
 	protected function onText() 
 	{ 
-		$Content = $this->getRequest('Content');
+		$openid = $this->getRequest('FromUserName');
+		$gh_id = $this->getRequest('ToUserName');	
+		//$Content = $this->getRequest('Content');
 		//return $this->responseText("you sent $Content, ".$this->WxGetOauth2Url('snsapi_userinfo')); 
-		return $this->responseText('weixin://wxpay/bizpayurl?appid=wx79c2bf0249ede62a&noncestr=PSottf4eivpHqKlV&productid=1234&sign=e1f9bca3625bfd1bdb4753906753c9f13917f0ec&timestamp=1405737068'); 
+		//return $this->responseText('weixin://wxpay/bizpayurl?appid=wx79c2bf0249ede62a&noncestr=PSottf4eivpHqKlV&productid=1234&sign=e1f9bca3625bfd1bdb4753906753c9f13917f0ec&timestamp=1405737068'); 
+		while(1)
+		{
+			$Content = $this->getRequest('Content');
+			$msg = trim($Content);
+
+			$msg = '13545222924';
+
+			if ($msg == '0')
+				$this->deleteState($gh_id, $openid);
+				
+			$state = $this->getState($gh_id, $openid);
+			switch ($state) 
+			{
+				case self::STATE_NONE:
+					if ($msg !== 'xiangyang')
+						return Wechat::NO_RESP;
+					$this->setState($gh_id, $openid, self::STATE_MOBILE); 	
+					return $this->responseText("Please enter your mobile number, 0:exit");
+					
+				case self::STATE_MOBILE:
+					if (substr($msg, 0, 1) !== '1' || strlen($msg) != 11)
+						return $this->responseText("invalid mobile number, please enter again, 0:exit");
+					$this->setState($gh_id, $openid, self::STATE_DEPARTMENT); 	
+					$str = <<<EOD
+					1. wuhange
+					2. hongsan
+					3. hankou
+					0. exit
+EOD;
+					return $this->responseText("$str");
+
+				case self::STATE_DEPARTMENT:
+					if (!($msg > 1 && $msg < 3))
+						return $this->responseText("invalid department, please enter again, 0:exit");
+					$this->setState($gh_id, $openid, self::STATE_MENU_1); 	
+					$str = <<<EOD
+					1. get my personal qr image
+					2. query my score
+					3. get my department qr image
+					4. get my department score
+					5. change my department					
+					0. exit
+EOD;
+					return $this->responseText("$str");
+
+				case self::STATE_MENU_1:
+					if (!($msg > 1 && $msg < 5))
+					{
+						$str = <<<EOD
+						1. get my personal qr image
+						2. query my score
+						3. get my department qr image
+						4. get my department score
+						5. change my department					
+						0. exit
+EOD;
+						return $this->responseText("invalid department, please enter again\n\n{$str}");
+					}						
+
+					switch ($msg) 
+					{
+						case 1:
+							return $this->responseText("this is your qr image");
+						case 2:
+							return $this->responseText("your score is 90");							
+						case 3:
+							return $this->responseText("this is your department qr image");
+						case 4:
+							return $this->responseText("your department score is 90");														
+						default:
+							return $this->responseText("sorry, i don't understand you");
+					}					
+					return $this->responseText("$str");
+				}
+		}
 	}
 	
 	protected function onImage() 

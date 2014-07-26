@@ -492,10 +492,7 @@ EOD;
 */		
  		return $this->render('games/2048/index', ['model' => $model, 'result'=>$result, 'subscribed'=>$subscribed, 'username'=>$username]);
 	}	
-
-        
-    
-    
+               
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/gsave:gh_1ad98f5481f3
 	public function actionG2048save()
 	{            

@@ -407,7 +407,7 @@ class Wechat extends \yii\base\Object
 <FromUserName><![CDATA[$openid]]></FromUserName>
 <CreateTime>1402545118</CreateTime>
 <MsgType><![CDATA[text]]></MsgType>
-<Content><![CDATA[hello,world]]></Content>
+<Content><![CDATA[xiangyang]]></Content>
 <MsgId>6023885413174756692</MsgId>
 </xml>
 EOD;
