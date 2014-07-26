@@ -4,19 +4,20 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
-//$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js?v0.1');
+$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js?v0.1');
 
-//$this->title = '靓号运程';
+$this->title = '2048';
 //$this->params['breadcrumbs'][] = $this->title;
 $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets';
 ?>
 
+<!--
 <!DOCTYPE html>
-<!-- saved from url=(0038)http://gabrielecirulli.github.io/2048/ -->
+
 <html lang="en" manifest="cache.appcache"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <title>2048</title>
-
+-->
 
   <link href="<?php echo "$assetsPath/main.css"; ?>" rel="stylesheet" type="text/css">
 
@@ -34,6 +35,8 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
  
   <link rel="apple-touch-icon" href="http://gabrielecirulli.github.io/2048/meta/apple-touch-icon.png">
   -->
+
+<!--
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
@@ -43,15 +46,7 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
   <meta name="format-detection" content="telephone=no">
 
   <meta name="apple-itunes-app" content="app-id=868076805">
- <!--
-  <meta property="og:title" content="2048 game">
-  <meta property="og:site_name" content="2048 game">
- <link href="2048_files/main.css" rel="stylesheet" type="text/css"/>
- <link href="2048_files/main.css" rel="stylesheet" type="text/css"/>
-  <meta property="og:description" content="Join the numbers and get to the 2048 tile! Careful: this game is extremely addictive!">
-  <meta property="og:image" content="http://gabrielecirulli.github.io/2048/meta/og_image.png">
-  -->
- 
+--> 
   <script>
   
         function share(){
@@ -64,10 +59,13 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
         }
 
   </script>
-  
+
+  <!--
 </head>
 <body>
-  <div class="container">
+-->
+
+  <div class="row">
     <div class="heading">
       <h1 class="title">2048a</h1>
       <div class="scores-container">
@@ -172,7 +170,6 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
         </div>
 
         
-<script src="<?php echo Yii::$app->getRequest()->baseUrl.'/js/wechat.js?v=0.1'; ?> "></script>
 
 <?php 
 $appid = Yii::$app->wx->gh['appid'];
@@ -283,8 +280,11 @@ function showScore(msg)
                             else
                             {
                                 alert("process NOT ok");
-                            }                           
-                           
+                            }       
+							
+							$("#result").html('我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...");
+							$("#modal_id").trigger("click");
+                         
                         }
                     });/*end ajax*/
                  
@@ -305,28 +305,9 @@ function showScore(msg)
   <script src="<?php echo "$assetsPath/application.js"; ?>"></script>
   
   
-  <script>
-  /*
-    (function(i,s,o,g,r,a,m){i["GoogleAnalyticsObject"]=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,"script","//www.google-analytics.com/analytics.js","ga");
-
-    ga("create", "UA-42620757-2", "gabrielecirulli.github.io");
-    ga("send", "pageview");
-	*/
-</script>
 
 
-
-<?php 
-
-        //$subscribed = false;
-        if (!$subscribed)
-			echo Html::img(Url::to('images/wx-tuiguang2.png'), ['class'=>'img-responsive']); 
-		//echo Html::img(Url::to('images/wx-tuiguang1.png'), ['class'=>'img-responsive']); 
-        //                    echo "<img src=\"http://www.hoyatech.net/wx/web/images/wx-tuiguang2.png\" width=\"100%\">";
-?>
+<?php echo Html::img(Url::to('images/wx-tuiguang2.png'), ['class'=>'img-responsive']); ?>
 
 
 <?php 
@@ -336,6 +317,7 @@ function showScore(msg)
 		'options' => [
 			//'style' => 'opacity:0.9;color:#ffffff;bgcolor:#000000;width:90%;',
 			'style' => 'opacity:0.9;',
+//			'id'=>'modal_id',
 		],
         'header' => Html::img(Url::to('images/share.png'), ['class'=>'img-responsive']),   
 		'footer' => "&copy; <span style='color:#d71920'>襄阳联通</span> ".date('Y'),
@@ -347,9 +329,9 @@ function showScore(msg)
 			'show' => $show,
 		],
 */
-		'toggleButton' => ['label' => 'click me'],
+		'toggleButton' => ['label' => 'click me12', 'id'=>'modal_id'],
 		'closeButton' => [
-			//'label' => '&times;',
+		//'label' => '&times;',
 		'label' => '',
 		]
 	]);
@@ -359,12 +341,19 @@ function showScore(msg)
 <?php yii\bootstrap\Modal::end(); ?>
 
 
+
+<?php //$this->registerJs('alert(345);$("#modal_id").trigger("click");', yii\web\View::POS_READY); ?>
+
+
+
+<!--
 </body>
 </html>
-
+-->
 
 <?php
 /*
+<script src="<?php echo Yii::$app->getRequest()->baseUrl.'/js/wechat.js?v=0.1'; ?> "></script>
 
 
 */

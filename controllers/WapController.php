@@ -521,7 +521,11 @@ EOD;
 		
 		$result = '';
 */        
-                        return 'ok';
+		$model = new \app\models\MG2048;
+		$model->best = $_GET['best'];
+		//send message to openid
+		return 'ok';
+                        
 	}	
     
     
