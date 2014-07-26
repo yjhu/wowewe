@@ -522,12 +522,30 @@ EOD;
 		{
 			U::W($model->getErrors());
 		}
-
+		
+		
+		
+		/*
+		$url = "http://baidu.com";
+		$tag = Html::a('来挑战', $url);
+		*/
+		
+		/*
 		if ($user !== null)
 		{
 			try
 			{
-				$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>"{$username}你的成绩为2013，已击败90%的人，再接再励哦!"]];
+				//$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>"我的2048游戏最后得分3600分，简直碉堡了！ 已击败90%的人，小伙伴们{$tag}我吧!"]];
+				$msg = [
+					'touser'=>$openid, 
+					'msgtype'=>'news', 
+					'news'=> [
+						'articles'=>[
+							['title'=>"游戏2048", 'description'=>"我的2048游戏最后得分3600分，简直碉堡了！ 已击败90%的人，小伙伴们来挑战我吧!", 'url'=>Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}"), 'picurl'=>''],
+						]				
+					]
+				];				
+					
 				$arr = Yii::$app->wx->WxMessageCustomSend($msg);
 				U::W($arr);		
 			}
@@ -536,7 +554,12 @@ EOD;
 				U::W($e->getCode().':'.$e->getMessage());
 			}
 		}
-		return 'ok';
+		*/
+		
+		$msg = 1038; //ranking of score
+		
+		//return 'ok';
+		return $msg;
 	}	
     
     
