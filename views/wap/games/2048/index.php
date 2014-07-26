@@ -286,6 +286,9 @@ function showScore(msg)
 			  $scoreRanking = 9999; 
                             }
 		   
+		   
+		   
+		   
 
                         $("#result").html('<h1>Game over!</h1><br>我的盘面最大数是<b>'+bigNum+'</b><br>总分是<b>'+myGameStateObj.score+"</b><br>最好记录是<b>"+myScore+"</b><br>在所有襄阳联通关注号中游戏排名是<b>"+$scoreRanking+"</b><br><br>你能超过我吗？啊哈哈哈...");
                         $("#modal_id").trigger("click");
