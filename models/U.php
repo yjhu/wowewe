@@ -131,10 +131,10 @@ class U
 
 	public static function getMobileLuck($mobile)
 	{
-		for ($sum=0,$i=0;$i<strlen($mobile);$i++)
-			$sum += $mobile[$i];
-		for ($mul=1,$i=0;$i<strlen($mobile);$i++)
-			$mul *= $mobile[$i];
+		srand($mobile);
+		$jx_idx = rand(0,80);
+		$gx_idx = rand(0,8);
+		//U::W("jx_idx=$jx_idx, gx_idx=$gx_idx");		
 		$arr_jx = [
 			['JXDetail'=>'外观昌隆，内隐祸患，克服难关，开出泰运', 'JX'=>'吉带凶'],
 			['JXDetail'=>'事与愿违，终难成功，欲速不达，有始无终', 'JX'=>'凶'],
@@ -229,10 +229,6 @@ class U
 			['GXDetail'=>'对人热情无遮掩，时常梦想可以谈一场戏剧性恋爱，亲身体会个中悲欢离合的动人经历，是个大梦想家。但对于感情却易变卦。', 'GX'=>'热情/善变梦想家型'],
 			['GXDetail'=>'惯于无条件付出，从不祈求有回报，有为了成全他人不惜牺牲自己的情操。但讲到本身的爱情观，却流于被动，往往因为内敛而错过大好姻缘。', 'GX'=>'自我牺牲/性格被动型'],
 		];
-
-		$jx_idx = $sum % 81;
-		$gx_idx = $mul % 9;
-		//U::W("jx_idx=$jx_idx, gx_idx=$gx_idx");
 		return ['JXDetail'=>$arr_jx[$jx_idx]['JXDetail'],'JX'=>$arr_jx[$jx_idx]['JX'],'GXDetail'=>$arr_gx[$gx_idx]['GXDetail'],'GX'=>$arr_gx[$gx_idx]['GX']];
 	}
 
