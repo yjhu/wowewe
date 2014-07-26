@@ -140,16 +140,15 @@ class CmdController extends Controller
 					new \app\models\ButtonView('沃商城', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mall:{$gh_id}")),
 				]),
 				//new \app\models\ButtonView('促销商品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/prom:{$gh_id}")),
-				new \app\models\ButtonView('促销商品', "http://www.hoyatech.net/wx/webtest/index.php?r=wap/prom&gh_id={$gh_id}"),
+				new \app\models\ButtonView('促销商品', "http://www.hoyatech.net/wx/web/index.php?r=wap/prom&gh_id={$gh_id}"),
 				new \app\models\ButtonComplex('我的服务', [
 					//new \app\models\ButtonClick('个性化账单', 'FuncQueryAccount'),
 					new \app\models\ButtonClick('本地生活', 'FuncQueryFee'),
 					//new \app\models\ButtonClick('关注', 'FuncSignon'),
 					//new \app\models\ButtonClick('吐槽', 'FuncCustomService'),
 					//new \app\models\ButtonView('我要维权', Url::to(['site/index'],true)),
-					new \app\models\ButtonView('jsnative', 'http://www.hoyatech.net/wx/webtest/jsnative.php'),
-					new \app\models\ButtonView('jsphp', 'http://www.hoyatech.net/wx/webtest/jsphp.php'),
-					//new \app\models\ButtonView('jsjs', 'http://www.hoyatech.net/wx/webtest/jsjs.php'),
+					new \app\models\ButtonView('jsnative', 'http://www.hoyatech.net/wx/web/jsnative.php'),
+					new \app\models\ButtonView('jsphp', 'http://www.hoyatech.net/wx/web/jsphp.php'),
 					new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/luck:{$gh_id}")),
 					//new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.php'),
 					new \app\models\ButtonView('游戏2048', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}")),
@@ -248,6 +247,32 @@ class CmdController extends Controller
 		//		new \app\models\ButtonView('我要维权', Url::to(['site/index'],true)),
 		//	]),
 		//]);
+
+			$menu = new \app\models\WxMenu([
+				new \app\models\ButtonComplex('产品', [
+					//new \app\models\ButtonView('精品靓号', 'http://m.10010.com/mobilegoodsdetail/981405149472.html'),
+					new \app\models\ButtonView('自由组合', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/diy:{$gh_id}")),
+					//new \app\models\ButtonView('demo0', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx520c15f417810387&redirect_uri=http%3A%2F%2Fchong.qq.com%2Fphp%2Findex.php%3Fd%3D%26c%3DwxAdapter%26m%3DmobileDeal%26showwxpaytitle%3D1%26vb2ctag%3D4_2030_5_1194_60&response_type=code&scope=snsapi_base&state=123#wechat_redirect'),				
+					new \app\models\ButtonView('demo', 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf0e81c3bee622d60&redirect_uri=http%3A%2F%2Fnba.bluewebgame.com%2Foauth_response.php&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'),
+					new \app\models\ButtonView('沃商城', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mall:{$gh_id}")),
+				]),
+				//new \app\models\ButtonView('促销商品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/prom:{$gh_id}")),
+				new \app\models\ButtonView('促销商品', "http://www.hoyatech.net/wx/web/index.php?r=wap/prom&gh_id={$gh_id}"),
+				new \app\models\ButtonComplex('我的服务', [
+					//new \app\models\ButtonClick('个性化账单', 'FuncQueryAccount'),
+					new \app\models\ButtonClick('本地生活', 'FuncQueryFee'),
+					//new \app\models\ButtonClick('关注', 'FuncSignon'),
+					//new \app\models\ButtonClick('吐槽', 'FuncCustomService'),
+					//new \app\models\ButtonView('我要维权', Url::to(['site/index'],true)),
+					new \app\models\ButtonView('jsnative', 'http://www.hoyatech.net/wx/web/jsnative.php'),
+					new \app\models\ButtonView('jsphp', 'http://www.hoyatech.net/wx/web/jsphp.php'),
+					//new \app\models\ButtonView('jsjs', 'http://www.hoyatech.net/wx/webtest/jsjs.php'),
+					new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/luck:{$gh_id}")),
+					//new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.php'),
+					new \app\models\ButtonView('游戏2048', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}")),
+				]),
+			]);
+
 		
 */
 

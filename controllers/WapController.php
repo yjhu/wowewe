@@ -289,6 +289,18 @@ EOD;
 		$arr = (array)simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
 		if (Yii::$app->wx->debug)
 			U::W($arr);
+		/*		
+		Array
+		(			
+		    [AppId] => wx79c2bf0249ede62a
+		    [TimeStamp] => 1406280115
+		    [ErrorType] => 1
+		    [Description] => test
+		    [AlarmContent] => test
+		    [AppSignature] => b44c579c286bf1679b2d1038205f4a75017bf72f
+		    [SignMethod] => sha1
+		)
+		*/
 		//\app\models\MWarn::insertOne($arr['AppId'], $arr['ErrorType'], $arr['Description'], $arr['AlarmContent'], $arr['TimeStamp']);
 		return 'success';	
 	}

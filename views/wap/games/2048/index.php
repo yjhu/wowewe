@@ -306,9 +306,12 @@ function showScore()
 		//'size' => 'modal-lg',
 		'size' => 'modal-sm',
 		//'toggleButton' => ['label' => 'click me'],
+/*
 		'clientOptions' => [
 			'show' => $show,
 		],
+*/
+		'toggleButton' => ['label' => 'click me'],
 		'closeButton' => [
 			//'label' => '&times;',
 		'label' => '',

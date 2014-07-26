@@ -143,10 +143,7 @@ var dataForWeixin={
 };
 </script>
 
-<?php 
-	if (!$subscribed)
-		echo Html::img(Url::to('images/wx-tuiguang1.png'), ['class'=>'img-responsive']); 
-?>
+<?php echo Html::img(Url::to('images/wx-tuiguang1.png'), ['class'=>'img-responsive']); ?>
 
 
 <?php
@@ -155,6 +152,8 @@ var dataForWeixin={
         'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
     ])->checkbox() ?>
 
+	if (!$subscribed)
+		echo Html::img(Url::to('images/wx-tuiguang1.png'), ['class'=>'img-responsive']); 
 
 
 <div class="site-login">
