@@ -19,7 +19,7 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
   <title>2048</title>
 -->
 
-  <link href="<?php echo "$assetsPath/main.css"; ?>" rel="stylesheet" type="text/css">
+  <link href="<?php echo "$assetsPath/main.css?v=1"; ?>" rel="stylesheet" type="text/css">
 
   <style>
 	.sbgshow{display:block;position:fixed;top:0;left:0;width:100%;height:100%;text-align:center;color:#fff;font-size:30px;line-height:1.7em;background:rgba(0,0,0,0.85);}
@@ -67,9 +67,9 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
 
   <div class="row">
     <div class="heading">
-      <h1 class="title">2048a</h1>
+      <h1 class="title">2048</h1>
       <div class="scores-container">
-	
+              <link href="assets/main.css" rel="stylesheet" type="text/css"/>
           <img src="<?php echo "$assetsPath/10010-logo.png"; ?>">
         <div class="score-container">8<div class="score-addition">+8</div></div>
         <div class="best-container">8</div>
@@ -258,7 +258,7 @@ function showScore(msg)
                         type: "get",
                         async: true,
                         cache:false,
-                        url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/g2048save' ; ?>"+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&myScore"+myScore,
+                        url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/g2048save' ; ?>"+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
                        // url: "process.php?bigNum="+bigNum+"&score="+myGameStateObj.score+"&myScore"+myScore,
                         success: function(msg){
                                 /*
@@ -275,15 +275,15 @@ function showScore(msg)
                             */
                             if(msg=="ok")
                             {
-                                alert("process ok");
+                                //alert("process ok");
                             }
                             else
                             {
-                                alert("process NOT ok");
+                                //alert("process NOT ok");
                             }       
 							
-							$("#result").html('我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...");
-							$("#modal_id").trigger("click");
+                        $("#result").html('<h1>Game over</h1><br>我的盘面最大数是'+bigNum+'<br>总分是'+myGameStateObj.score+"<br>最好记录是"+myScore+"<br>你能有我牛X吗？啊哈哈哈...");
+                        $("#modal_id").trigger("click");
                          
                         }
                     });/*end ajax*/
@@ -307,7 +307,7 @@ function showScore(msg)
   
 
 
-<?php echo Html::img(Url::to('images/wx-tuiguang2.png'), ['class'=>'img-responsive']); ?>
+<?php //echo Html::img(Url::to('images/wx-tuiguang2.png'), ['class'=>'img-responsive']); ?>
 
 
 <?php 
@@ -329,7 +329,7 @@ function showScore(msg)
 			'show' => $show,
 		],
 */
-		'toggleButton' => ['label' => 'click me12', 'id'=>'modal_id'],
+		'toggleButton' => ['label' => 'click me12', 'id'=>'modal_id', 'style'=>'display:none' ],
 		'closeButton' => [
 		//'label' => '&times;',
 		'label' => '',
@@ -339,7 +339,6 @@ function showScore(msg)
 <div id="result"><?php echo 'my score is test...' ?></div>
 
 <?php yii\bootstrap\Modal::end(); ?>
-
 
 
 <?php //$this->registerJs('alert(345);$("#modal_id").trigger("click");', yii\web\View::POS_READY); ?>

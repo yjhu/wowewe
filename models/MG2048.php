@@ -24,12 +24,16 @@ use yii\db\Expression;
 
 class MG2048 extends ActiveRecord
 {
+
 	public static function tableName()
 	{
 		return 'wx_g2048';
 	}
 
 }
+
+
+
 
 /*
 
