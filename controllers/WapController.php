@@ -43,7 +43,8 @@ class WapController extends Controller
 
 	public function init()
 	{
-		U::W(['init....', $_GET,$_POST, $GLOBALS]);
+		//U::W(['init....', $_GET,$_POST, $GLOBALS]);
+		U::W(['init....', $_GET,$_POST]);
 	}
 
 	public function beforeAction($action)
