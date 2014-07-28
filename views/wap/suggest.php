@@ -15,10 +15,6 @@ use yii\bootstrap\Alert;
 		
 		<h3>用户吐槽</h3>
 		
-		<?php echo $result; ?>
-
-
-
     <?php if (Yii::$app->session->hasFlash('submit_ok')): ?>
 
 <!--
@@ -31,7 +27,7 @@ use yii\bootstrap\Alert;
 				'class' => 'alert-success',
 			],
 		]); ?>
-		Say hello...111
+		已成功提交, 感谢您的吐槽。
 		<?php Alert::end(); ?>
 
     <?php endif; ?>

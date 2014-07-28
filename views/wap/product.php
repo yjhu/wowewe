@@ -58,7 +58,7 @@ JqmAsset::register($this);
 				<h2>产品编号140729</h2>
 				<p>该产品简单描述...</p>
 				</a>
-			  </li>	
+			  </li>
 
 			  <li>
 				<a href="#page2" data-transition="flip">

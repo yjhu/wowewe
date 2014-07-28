@@ -660,15 +660,13 @@ EOD;
 		else
 			$username = '';
 		
-		$result = '';
-		$msg = "已成功提交, 感谢您的吐槽。";
 		if ($ar->load(Yii::$app->request->post())) 
 		{
 			//if (Yii::$app->user->isGuest)
 			//	$username = $model->mobile;
 			//U::W($ar->getAttributes());
 			//$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);			
-			if ($ar->save(true, ['title', 'mobile','detail'])) {
+			if ($ar->save(true)) {
 				//return $this->redirect(['index']);
 				//U::W(['kkkkkkkkkkkkkkkkkkkk']);
 				//$result = $this->renderPartial('result', ['msg'=>$msg]);
@@ -684,7 +682,7 @@ EOD;
 		}		
  		//return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 		//return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
-		return $this->render('suggest',['ar' => $ar, 'result'=>$result]);
+		return $this->render('suggest',['ar' => $ar]);
 	}	
 }
 
