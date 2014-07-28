@@ -393,6 +393,13 @@ class Wechat extends \yii\base\Object
 		return new RespNews($this->getRequest('FromUserName'), $this->getRequest('ToUserName'), $items, $funcFlag);
 	}
 
+	protected function responseLocalImage($type, $localFile, $funcFlag = 0)
+	{
+		$arr = $this->WxMediaUpload($type, $localFile);
+		$MediaId = $arr['media_id'];
+		return new RespImage($this->getRequest('FromUserName'), $this->getRequest('ToUserName'), $MediaId, $funcFlag);
+	}
+
 	public function getDemoRequestXml($MsgType, $Event=Wechat::EVENT_SUBSCRIBE, $EventKey = 'FuncQueryAccount') 
 	{
 		$openid = Wechat::OPENID_TESTER1;
@@ -407,7 +414,7 @@ class Wechat extends \yii\base\Object
 <FromUserName><![CDATA[$openid]]></FromUserName>
 <CreateTime>1402545118</CreateTime>
 <MsgType><![CDATA[text]]></MsgType>
-<Content><![CDATA[xiangyang]]></Content>
+<Content><![CDATA[Xy]]></Content>
 <MsgId>6023885413174756692</MsgId>
 </xml>
 EOD;
@@ -701,9 +708,15 @@ EOD;
 	//$type: image,voice,video,thumb
 	public function WxMediaUpload($type, $filename)
 	{
-		$arr = self::WxApi("http://file.api.weixin.qq.com/cgi-bin/media/upload", ['access_token'=>$this->accessToken, 'type'=>$type], ['file'=>"@{$filename}"]);		
-		$this->checkWxApiResp($arr, [__METHOD__, $type, $filename]);
-		return $arr;						
+		$key = $type.$filename;
+		$arr = Yii::$app->cache->get($key);
+		if ($arr === false)
+		{
+			$arr = self::WxApi("http://file.api.weixin.qq.com/cgi-bin/media/upload", ['access_token'=>$this->accessToken, 'type'=>$type], ['file'=>"@{$filename}"]);		
+			$this->checkWxApiResp($arr, [__METHOD__, $type, $filename]);
+			Yii::$app->cache->set($key, $arr, YII_DEBUG ? 100 : 2*24*3600);
+		}
+		return $arr;
 	}
 
 	public function WxMediaGetUrl($media_id)

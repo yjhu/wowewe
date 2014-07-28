@@ -60,10 +60,21 @@ class WechatWoso extends Wechat
 	}
 
 	const STATE_NONE = 'NONE';	
-	const STATE_MOBILE = 'MOBILE';
-	const STATE_DEPARTMENT = 'DEPARTMENT';	
-	const STATE_MENU_1 = 'MENU_1';	
-	
+	const STATE_MOBILE = 'MOBILE';	
+	const STATE_CHANGE_MOBILE = 'CHANGE_MOBILE';	
+	const STATE_DEPARTMENT = 'DEPARTMENT';		
+	const STATE_MENU_ONE = 'MENU_ONE';
+	const PROMPT_MENU_ONE = <<<EOD
+Please select:
+1. Get my personal qr image
+2. Query my score
+3. Get my department qr image
+4. Get my department score
+5. Change my mobile number
+6. Change my department
+0. Exit
+EOD;
+
 	protected function getState($gh_id, $openid) 
 	{ 
 		$key = "STATE_{$gh_id}_{$openid}";
@@ -82,87 +93,124 @@ class WechatWoso extends Wechat
 		$key = "STATE_{$gh_id}_{$openid}";
 		Yii::$app->cache->delete($key);	
 	}
+
+	protected function getOfficePrompt($gh_id) 
+	{ 
 	
+		$offices = \app\models\MOffice::find(['gh_id'=>$gh_id])->asArray()->all();		
+		$str = "Please select office:\n";
+		foreach($offices as $office)
+		{
+			$str .= "{$office['office_id']}. {$office['title']}\n";
+		}
+		$str .= "0. Exit";
+		return $str;		
+	}
+
 	protected function onText() 
 	{ 
 		$openid = $this->getRequest('FromUserName');
 		$gh_id = $this->getRequest('ToUserName');	
-		//$Content = $this->getRequest('Content');
-		//return $this->responseText("you sent $Content, ".$this->WxGetOauth2Url('snsapi_userinfo')); 
-		//return $this->responseText('weixin://wxpay/bizpayurl?appid=wx79c2bf0249ede62a&noncestr=PSottf4eivpHqKlV&productid=1234&sign=e1f9bca3625bfd1bdb4753906753c9f13917f0ec&timestamp=1405737068'); 
 		while(1)
 		{
 			$Content = $this->getRequest('Content');
 			$msg = trim($Content);
-
-			$msg = '13545222924';
-
 			if ($msg == '0')
+			{
+				U::W('deleteState');
 				$this->deleteState($gh_id, $openid);
+				return $this->responseText("thank you, bye!");				
+			}
 				
 			$state = $this->getState($gh_id, $openid);
+			//U::W($state);
 			switch ($state) 
 			{
 				case self::STATE_NONE:
-					if ($msg !== 'xiangyang')
+					if ($msg !== 'Xy')
 						return Wechat::NO_RESP;
-					$this->setState($gh_id, $openid, self::STATE_MOBILE); 	
-					return $this->responseText("Please enter your mobile number, 0:exit");
+					$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+					if (empty($model->mobile))
+					{	
+						$this->setState($gh_id, $openid, self::STATE_MOBILE); 	
+						return $this->responseText("Please enter your mobile number, 0:exit...");
+					}
+					else if (empty($model->office_id))
+					{	
+						$this->setState($gh_id, $openid, self::STATE_DEPARTMENT);
+						return $this->responseText($this->getOfficePrompt($gh_id));						
+					}
+					else
+					{
+						$this->setState($gh_id, $openid, self::STATE_MENU_ONE); 	
+						return $this->responseText(self::PROMPT_MENU_ONE);						
+					}
 					
 				case self::STATE_MOBILE:
-					if (substr($msg, 0, 1) !== '1' || strlen($msg) != 11)
-						return $this->responseText("invalid mobile number, please enter again, 0:exit");
-					$this->setState($gh_id, $openid, self::STATE_DEPARTMENT); 	
-					$str = <<<EOD
-					1. wuhange
-					2. hongsan
-					3. hankou
-					0. exit
-EOD;
+					if ((!is_numeric($msg)) ||substr($msg, 0, 1) !== '1' || strlen($msg) != 11)
+						return $this->responseText("invalid mobile#!\n\n"."Please enter your mobile number, 0:exit");
+					$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+					$model->mobile = $msg;
+					$model->save(false);
+					$this->setState($gh_id, $openid, self::STATE_DEPARTMENT);
+					$str = $this->getOfficePrompt($gh_id);
 					return $this->responseText("$str");
 
 				case self::STATE_DEPARTMENT:
-					if (!($msg > 1 && $msg < 3))
-						return $this->responseText("invalid department, please enter again, 0:exit");
-					$this->setState($gh_id, $openid, self::STATE_MENU_1); 	
-					$str = <<<EOD
-					1. get my personal qr image
-					2. query my score
-					3. get my department qr image
-					4. get my department score
-					5. change my department					
-					0. exit
-EOD;
-					return $this->responseText("$str");
+					if ((!is_numeric($msg)) ||$msg < 0 || $msg > 3)
+						return $this->responseText("invalid department!\n\n".$this->getOfficePrompt($gh_id));
+					$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+					$model->office_id = $msg;
+					$model->save(false);
+					$this->setState($gh_id, $openid, self::STATE_MENU_ONE); 	
+					return $this->responseText(self::PROMPT_MENU_ONE);
 
-				case self::STATE_MENU_1:
-					if (!($msg > 1 && $msg < 5))
+				case self::STATE_CHANGE_MOBILE:
+					if ((!is_numeric($msg)) ||substr($msg, 0, 1) !== '1' || strlen($msg) != 11)
+						return $this->responseText("invalid mobile#!\n\n"."Please enter your mobile number, 0:exit");
+					$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+					$model->mobile = $msg;
+					$model->save(false);
+					$this->setState($gh_id, $openid, self::STATE_MENU_ONE); 	
+					return $this->responseText(self::PROMPT_MENU_ONE);
+
+				case self::STATE_MENU_ONE:
+					if ((!is_numeric($msg)) ||$msg < 0 || $msg > 6)					
 					{
-						$str = <<<EOD
-						1. get my personal qr image
-						2. query my score
-						3. get my department qr image
-						4. get my department score
-						5. change my department					
-						0. exit
-EOD;
-						return $this->responseText("invalid department, please enter again\n\n{$str}");
+						return $this->responseText("invalid operator!\n\n".self::PROMPT_MENU_ONE);
 					}						
-
 					switch ($msg) 
 					{
 						case 1:
-							return $this->responseText("this is your qr image");
+							$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+							$scene_id = $model->id;
+							$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."$scene_id.jpg";
+							//U::W($log_file_path);							
+							if (!file_exists($log_file_path))
+							{
+								$arr = $this->WxgetQRCode($scene_id);
+								$url = $this->WxGetQRUrl($arr['ticket']);
+								Wechat::downloadFile($url, $log_file_path);	
+							}
+							$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>'how to use qr image? <a href="http://baidu.com">Click me</a>']];
+							$arr = $this->WxMessageCustomSend($msg);
+							return $this->responseLocalImage('image', $log_file_path);
 						case 2:
 							return $this->responseText("your score is 90");							
 						case 3:
 							return $this->responseText("this is your department qr image");
 						case 4:
-							return $this->responseText("your department score is 90");														
+							return $this->responseText("your department score is 90");
+						case 5:
+							$this->setState($gh_id, $openid, self::STATE_CHANGE_MOBILE);
+							return $this->responseText("Please enter your mobile number, 0:exit");							
+						case 6:
+							$this->setState($gh_id, $openid, self::STATE_DEPARTMENT);
+							return $this->responseText($this->getOfficePrompt($gh_id));
 						default:
 							return $this->responseText("sorry, i don't understand you");
 					}					
-					return $this->responseText("$str");
+					return $this->responseText(self::PROMPT_MENU_ONE);
 				}
 		}
 	}
@@ -280,4 +328,15 @@ EOD;
 	}
 
 }
+
+/*
+		//return $this->responseText("you sent $Content, ".$this->WxGetOauth2Url('snsapi_userinfo')); 
+		//return $this->responseText('weixin://wxpay/bizpayurl?appid=wx79c2bf0249ede62a&noncestr=PSottf4eivpHqKlV&productid=1234&sign=e1f9bca3625bfd1bdb4753906753c9f13917f0ec&timestamp=1405737068'); 
+			//$msg = '13545222924';
+			//$this->setState($gh_id, $openid, self::STATE_MOBILE); 	
+			//$msg = '2';
+			//$this->setState($gh_id, $openid, self::STATE_DEPARTMENT); 	
+
+
+*/
 

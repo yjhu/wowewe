@@ -21,15 +21,26 @@ CREATE TABLE wx_user (
 	status int(10) unsigned NOT NULL DEFAULT '0',
 	create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	update_time TIMESTAMP NOT NULL DEFAULT 0,
-	mobile VARCHAR(16) NOT NULL DEFAULT '',
+	mobile VARCHAR(64) NOT NULL DEFAULT '',
 	msg_time int(10) unsigned NOT NULL DEFAULT '0',	
-	KEY idx_gh_id(gh_id),	
+	pid int(10) unsigned NOT NULL DEFAULT '0',	
+	office_id int(10) unsigned NOT NULL DEFAULT '0',
+	KEY idx_gh_id_pid(gh_id,pid),
 	UNIQUE KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_78539d18fdcc', 'admin', 'admin','1', 1);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_78539d18fdcc', 'root', 'root','1', 9);
 INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_78539d18fdcc', 'o6biBt5yaB7d3i0YTSkgFSAHmpdo','hoya-hehbhehb','1');
 INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_1ad98f5481f3', 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o','woso-hehbhehb','1');
+
+
+ALTER TABLE wx_user CHANGE mobile mobile VARCHAR(64) NOT NULL DEFAULT '';
+ALTER TABLE wx_user ADD pid int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_user ADD office_id int(10) unsigned NOT NULL DEFAULT '0';
+
+
+ALTER TABLE wx_user DROP INDEX idx_gh_id;
+ALTER TABLE wx_user ADD KEY idx_gh_id_pid(gh_id,pid);
 
 */
 
