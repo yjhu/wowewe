@@ -144,9 +144,10 @@ class CmdController extends Controller
 				new \app\models\ButtonView('促销商品', "http://www.hoyatech.net/wx/web/index.php?r=wap/prom&gh_id={$gh_id}"),
 				new \app\models\ButtonComplex('我的服务', [
 					//new \app\models\ButtonClick('个性化账单', 'FuncQueryAccount'),
-					new \app\models\ButtonClick('本地生活', 'FuncQueryFee'),
+					//new \app\models\ButtonClick('本地生活', 'FuncQueryFee'),
 					//new \app\models\ButtonClick('关注', 'FuncSignon'),
 					//new \app\models\ButtonClick('吐槽', 'FuncCustomService'),
+					new \app\models\ButtonView('用户吐槽', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/suggest:{$gh_id}")),
 					//new \app\models\ButtonView('我要维权', Url::to(['site/index'],true)),
 					//new \app\models\ButtonView('jsnative', 'http://www.hoyatech.net/wx/web/jsnative.php'),
 					new \app\models\ButtonView('我要推广', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/tui:{$gh_id}")),

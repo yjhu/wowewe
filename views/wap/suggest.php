@@ -12,7 +12,10 @@ use yii\helpers\Url;
 <div class="row">
 	<div class="col-lg-12 col-md-12 col-sm-12">
 		
-		<h3>吐槽专区</h3>
+		<h3>用户吐槽</h3>
+		
+		<?php echo $result; ?>
+		
 		<?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
 
 			<?= $form->field($ar, 'title')->textInput(['maxlength' => 128, 'placeholder'=>'吐槽标题', 'class'=>'form-control input-lg'])->label(false); ?>

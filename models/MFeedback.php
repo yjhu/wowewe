@@ -30,6 +30,33 @@ class MFeedback extends ActiveRecord
 		return 'wx_feedback';
 	}
 
+	public function rules()
+	{
+		return [      
+				['title', 'filter', 'filter' => 'trim'],
+				['title', 'required'],
+				['title', 'string', 'min' => 2, 'max' => 128],
+
+				['detail', 'filter', 'filter' => 'trim'],
+				['detail', 'required'],
+				['detail', 'string', 'min' => 2, 'max' => 512],
+
+				['mobile', 'filter', 'filter' => 'trim'],
+				['mobile', 'required'], 
+				['mobile', 'match', 'pattern' => '/((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/' ],            
+		];
+	}
+	
+	public function attributeLabels()
+	{
+		return [
+			'mobile'=>'手机号',
+			'title'=>'吐槽标题',
+			'detail'=>'消息内容',
+		];
+	}
+	
+	
 }
 
 
