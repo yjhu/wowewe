@@ -28,9 +28,13 @@ class WechatWoso extends Wechat
 		$EventKey = $this->getRequest('EventKey');
 		if (!empty($EventKey))
 		{
-			//a new user subscribe us with qr parameter, EventKey:qrscene_123123
-			$Ticket = $this->getRequest('Ticket');
-			return $this->responseText($this->getRequestString());			
+			//a new user subscribe us with qr parameter, EventKey:qrscene_3
+			$Ticket = $this->getRequest('Ticket');			
+			$pid = substr($EventKey,8);
+			$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+			$model->pid = $pid;
+			$model->save(false);
+			return $this->responseText($this->getRequestString());
 		}
 		else
 		{
@@ -123,7 +127,7 @@ EOD;
 			}
 				
 			$state = $this->getState($gh_id, $openid);
-			//U::W($state);
+			U::W($state);
 			switch ($state) 
 			{
 				case self::STATE_NONE:
@@ -185,10 +189,10 @@ EOD;
 							$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 							$scene_id = $model->id;
 							$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."$scene_id.jpg";
-							//U::W($log_file_path);							
+							U::W($log_file_path);							
 							if (!file_exists($log_file_path))
 							{
-								$arr = $this->WxgetQRCode($scene_id);
+								$arr = $this->WxgetQRCode($scene_id, true);
 								$url = $this->WxGetQRUrl($arr['ticket']);
 								Wechat::downloadFile($url, $log_file_path);	
 							}
@@ -196,7 +200,9 @@ EOD;
 							$arr = $this->WxMessageCustomSend($msg);
 							return $this->responseLocalImage('image', $log_file_path);
 						case 2:
-							return $this->responseText("your score is 90");							
+							$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);						
+							$count = MUser::find()->where(['gh_id'=>$gh_id, 'pid' => $model->id])->count();
+							return $this->responseText("your score is $count");
 						case 3:
 							return $this->responseText("this is your department qr image");
 						case 4:

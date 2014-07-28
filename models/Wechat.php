@@ -293,14 +293,20 @@ class Wechat extends \yii\base\Object
 	{
 		try
 		{		
+//				U::W('TTTTTTTTTTT111');		
 			$this->setGhId($gh_id);
+//				U::W('2222');					
 			$this->valid();		
+//				U::W('TTTTTTTTTTT33333');					
 			$MsgType = $this->getRequest('MsgType');
+//				U::W('TTTTTTTTTTT44444');					
 			//$this->setGhId($this->getRequest('ToUserName'));
 			$this->checkOpenid();
+//				U::W('TTTTTTTTTTT555');					
 			switch ($MsgType) 
 			{
 				case Wechat::MSGTYPE_TEXT:
+//				U::W('TTTTTTTTTTT6666');
 					$resp = $this->onText();
 					break;
 
@@ -735,14 +741,14 @@ EOD;
 		self::downloadFile($this->WxMediaGetUrl($media_id), $localFileName);
 	}
 
-	public function WxgetQRCode($scene_id, $limit=0)
+	public function WxgetQRCode($scene_id, $forever=0)
 	{
-		if ($limit)
+		if ($forever)
 			$post = ['action_name'=>'QR_LIMIT_SCENE', 'action_info'=>['scene'=>['scene_id'=>$scene_id]]];
 		else
 			$post = ['expire_seconds'=>1800, 'action_name'=>'QR_SCENE', 'action_info'=>['scene'=>['scene_id'=>$scene_id]]];
 		$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/qrcode/create", ['access_token'=>$this->accessToken], self::json_encode($post));
-		$this->checkWxApiResp($arr, [__METHOD__, $scene_id, $limit]);
+		$this->checkWxApiResp($arr, [__METHOD__, $scene_id, $forever]);
 		return $arr;								
 	}
 
