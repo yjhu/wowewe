@@ -496,6 +496,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/gsave:gh_1ad98f5481f3
 	public function actionG2048save()
 	{            
+		$msg = 0;
 		$this->layout = false;
 		$gh_id = Yii::$app->session['gh_id'];
 		$openid = Yii::$app->session['openid'];
@@ -512,15 +513,17 @@ EOD;
 		$model->best = $_GET['best'];
 		$model->score = $_GET['score'];
 		$model->big_num = $_GET['bigNum'];
-		if ($model->save(false)) {
-			//return $this->redirect(['index']);
-		}
-		else
+		
+		$model1 = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+		if ($model1 === null)
 		{
-			U::W($model->getErrors());
+			$model1 = new MUser;		
+			$subscribed = false;			
 		}
-		
-		
+		else if ($model1->subscribe)
+			$subscribed = true;
+		else
+			$subscribed = false;
 		
 		/*
 		$url = "http://baidu.com";
@@ -552,8 +555,25 @@ EOD;
 			}
 		}
 		*/
-		
-		$msg = 1038; //ranking of score
+//		$sql = "SELECT * FROM `wx_g2048` ORDER BY `score` ASC ";
+
+		if($subscribed)
+		{
+			if ($model->save(false)) {
+				//return $this->redirect(['index']);
+			}
+			else
+			{
+				U::W($model->getErrors());
+			}		
+			
+			$sql = "SELECT COUNT(*) FROM wx_g2048 WHERE score >= :score";
+			$command = yii::$app->db->createCommand($sql);
+			$command->bindValue(':score', $_GET['score']);
+			$rowCount = $command->queryScalar();
+
+			$msg = $rowCount; //ranking of score
+		}
 		
 		//return 'ok';
 		return $msg;
@@ -602,6 +622,63 @@ EOD;
 		return $this->render('billDetail', ['mobile'=>$mobile]);
 	}
           
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_1ad98f5481f3
+	public function actionProduct()
+	{
+		$this->layout = false;	
+		return $this->render('product');
+	}
+	
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_1ad98f5481f3
+	public function actionSuggest()
+	{
+		$this->layout = 'wap';
+		$gh_id = Yii::$app->session['gh_id'];	
+		$openid = Yii::$app->session['openid'];
+		Yii::$app->wx->setGhId($gh_id);
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+		
+		$ar = new \app\models\MFeedback;
+		//$model1->gh_id = $gh_id;
+		//$model1->openid = $openid;
+		//$model1->title = $_GET['title'];
+		//$model1->mobile = $_GET['mobile'];
+		//$model1->detail = $_GET['detail'];			
+		
+		if ($model === null)
+		{
+			$model = new MUser;		
+			$subscribed = false;			
+		}
+		else if ($model->subscribe)
+			$subscribed = true;
+		else
+			$subscribed = false;
+
+		if (!Yii::$app->user->isGuest)
+			$username = Yii::$app->user->identity->username;
+		else
+			$username = '';
+		
+		if ($ar->load(Yii::$app->request->post())) 
+		{
+			//if (Yii::$app->user->isGuest)
+			//	$username = $model->mobile;
+		
+			//$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);			
+			if ($ar->save(true,['title', 'mobile','detail'])) {
+				//return $this->redirect(['index']);
+			}
+			else
+			{
+				U::W($ar->getErrors());
+			}	
+
+		}		
+ 		//return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
+		//return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
+		return $this->render('suggest',['ar' => $ar]);
+	}	
 }
 
 /*
