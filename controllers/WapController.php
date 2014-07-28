@@ -638,7 +638,7 @@ EOD;
 		Yii::$app->wx->setGhId($gh_id);
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 		
-		$ar = new \app\models\MFeedback;
+		$ar = new \app\models\MSuggest;
 		$ar->gh_id = $gh_id;
 		$ar->openid = $openid;
 		//$model1->title = $_GET['title'];
@@ -671,12 +671,15 @@ EOD;
 			if ($ar->save(true, ['title', 'mobile','detail'])) {
 				//return $this->redirect(['index']);
 				//U::W(['kkkkkkkkkkkkkkkkkkkk']);
-				$result = $this->renderPartial('result', ['msg'=>$msg]);
+				//$result = $this->renderPartial('result', ['msg'=>$msg]);
 			}
 			else
 			{
 				U::W($ar->getErrors());
 			}	
+			
+			Yii::$app->session->setFlash('submit_ok');
+			return $this->refresh();
 
 		}		
  		//return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);

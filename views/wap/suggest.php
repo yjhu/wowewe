@@ -3,6 +3,7 @@ use yii\helpers\Html;
 //use yii\widgets\ActiveForm;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
+use yii\bootstrap\Alert;
 
 //$this->title = '用户吐槽';
 //$this->params['breadcrumbs'][] = $this->title;
@@ -15,7 +16,26 @@ use yii\helpers\Url;
 		<h3>用户吐槽</h3>
 		
 		<?php echo $result; ?>
-		
+
+
+
+    <?php if (Yii::$app->session->hasFlash('submit_ok')): ?>
+
+<!--
+    <div class="alert alert-success">
+        感谢您的反馈，我们会尽快回复您！
+    </div>
+-->
+		<?php Alert::begin([
+			'options' => [
+				'class' => 'alert-success',
+			],
+		]); ?>
+		Say hello...111
+		<?php Alert::end(); ?>
+
+    <?php endif; ?>
+
 		<?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
 
 			<?= $form->field($ar, 'title')->textInput(['maxlength' => 128, 'placeholder'=>'吐槽标题', 'class'=>'form-control input-lg'])->label(false); ?>
@@ -45,5 +65,12 @@ use yii\helpers\Url;
 
 <?php
 /*
+		<?php Alert::begin([
+			'options' => [
+				'class' => 'alert-success',
+			],
+		]); ?>
+		Say hello...111
+		<?php Alert::end(); ?>
 
 */
