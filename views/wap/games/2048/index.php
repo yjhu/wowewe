@@ -162,6 +162,8 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
 
 	<div class="sharing">
     </div>
+					  
+					  
   </div>
         
         <div id="sbg" class="sbg">
@@ -250,7 +252,7 @@ function showScore(msg)
 		//alert("myBestScore:" + myGameStateObj.score);
 		//alert("可点击...微信菜单\n 深度分享到朋友圈或转发给朋友  ;-)");
                     //alert('我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...");
-		dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...";
+		//dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...";
                  
                  
                     //submit data to server
@@ -274,24 +276,30 @@ function showScore(msg)
                             }
                             */
 		       
-                           // if(msg=="ok")
-		       if(msg != 0)
-                            {
-                                //alert("process ok");
-			$scoreRanking = msg; 
-                            }
-                            else
-                            {
-                                //alert("process NOT ok");
-			  $scoreRanking = 9999; 
-                            }
-		   
-		   
-		   
-		   
+			// if(msg=="ok")
+			if(msg != 0)
+			{
+				 //alert("process ok");
+				$scoreRanking = msg; 
+			}
+			else
+			{
+				//alert("process NOT ok");
+				$scoreRanking = 0; 
+			}
 
-                        $("#result").html('<h1>Game over!</h1><br>我的盘面最大数是<b>'+bigNum+'</b><br>总分是<b>'+myGameStateObj.score+"</b><br>最好记录是<b>"+myScore+"</b><br>在所有襄阳联通关注号中游戏排名是<b>"+$scoreRanking+"</b><br><br>你能超过我吗？啊哈哈哈...");
-                        $("#modal_id").trigger("click");
+			if($scoreRanking == 0) /* not subscribed*/
+			{
+				dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...";
+				$("#result").html('<h1>Game over!</h1><br>我的盘面最大数是<b>'+bigNum+'</b><br>总分是<b>'+myGameStateObj.score+"</b><br>最好记录是<b>"+myScore+"<br><br>你能超过我吗？啊哈哈哈...");
+			}
+			else
+			{
+				dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n游戏排名是"+$scoreRanking +"名";
+				$("#result").html('<h1>Game over!</h1><br>我的盘面最大数是<b>'+bigNum+'</b><br>总分是<b>'+myGameStateObj.score+"</b><br>最好记录是<b>"+myScore+"</b><br>在所有襄阳联通关注号中游戏排名是<b>"+$scoreRanking+"</b><br><br>你能超过我吗？啊哈哈哈...");
+			}
+				
+			$("#modal_id").trigger("click");
                          
                         }
                     });/*end ajax*/
@@ -315,7 +323,7 @@ function showScore(msg)
   
 
 
-<?php echo Html::img(Url::to('images/wx-tuiguang1.png'), ['class'=>'img-responsive']); ?>
+<?php echo Html::img(Url::to('images/wx-tuiguang2.jpg'), ['class'=>'img-responsive']); ?>
 
 
 <?php 
