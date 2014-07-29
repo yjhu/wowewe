@@ -693,7 +693,6 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/productsubmit:gh_1ad98f5481f3
 	public function actionProductsubmit()
 	{       
-		U::W('11111');
 		/*
 		$JSON_OBJS;
 		
