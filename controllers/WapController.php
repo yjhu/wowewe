@@ -621,13 +621,7 @@ EOD;
 	{
 		return $this->render('billDetail', ['mobile'=>$mobile]);
 	}
-          
-	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_1ad98f5481f3
-	public function actionProduct()
-	{
-		$this->layout = false;	
-		return $this->render('product');
-	}
+        
 	
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_1ad98f5481f3
 	public function actionSuggest()
@@ -684,6 +678,55 @@ EOD;
 		//return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
 		return $this->render('suggest',['ar' => $ar]);
 	}	
+	
+	
+	
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_1ad98f5481f3
+	public function actionProduct()
+	{
+		$this->layout =false;
+		return $this->render('product');
+
+	}
+	
+	
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/productsubmit:gh_1ad98f5481f3
+	public function actionProductsubmit()
+	{       
+		U::W('11111');
+		/*
+		$JSON_OBJS;
+		
+		$prdu = $openid;
+		$model->best = $_GET['best'];
+		$model->score = $_GET['score'];	
+		*/
+		$this->layout = 'wap';
+		
+		$msg = "yes";
+		/*
+		$cardType=0;
+		$flowPack=1;
+		$voicePack=1;
+		$msgPack=1;
+		$callshowPack=0;
+		*/		
+		/*
+		$cardType = $_GET["cardType"];
+		$flowPack =$_GET["flowPack"];
+		$voicePack = $_GET["voicePack"];
+		$msgPack = $_GET["msgPack"];
+		$callshowPack = $_GET["callshowPack"];
+		*/
+		
+		//return 'ok';
+		return $msg;
+	}		
+	
+	
+	
+	
+	
 }
 
 /*

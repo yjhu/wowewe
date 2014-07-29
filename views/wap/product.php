@@ -1,11 +1,13 @@
 <?php
-use yii\helpers\Html;
-use yii\widgets\Breadcrumbs;
-use app\assets\JqmAsset;
-JqmAsset::register($this);
+	use yii\helpers\Html;
+	use yii\widgets\Breadcrumbs;
+	use app\assets\JqmAsset;
+	JqmAsset::register($this);
+	//$this->registerJs('alert("test")', yii\web\View::POS_READY); 
+	
 ?>
-
 <?php $this->beginPage() ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -77,10 +79,13 @@ JqmAsset::register($this);
 	</div>		
 		
 	<div data-role="page" id="page2">
+
 		<div data-role="header">
 			<h1>自由组合套餐</h1>
 		</div>
 		
+		<div data-role="content">
+		<form id="productForm">	
 		<div data-role="content" data-theme="d">	
 		<p  align=center>        
 		<img width="60%" src="http://res.mall.10010.com/mall/res/uploader/temp/20140514113951768477440_310_310.jpg" alt=""/>
@@ -96,11 +101,11 @@ JqmAsset::register($this);
 		  <div data-role="fieldcontain">
 			<fieldset data-role="controlgroup" data-type="horizontal">
 			  <legend>卡类型</legend>
-			  <input type="radio" name="radio1" id="radio1_0" value="0" checked />
+			  <input type="radio" name="cardType" id="radio1_0" value="0" checked />
 			  <label for="radio1_0">普通卡</label>
-			  <input type="radio" name="radio1" id="radio1_1" value="1" />
+			  <input type="radio" name="cardType" id="radio1_1" value="1" />
 			  <label for="radio1_1">Micro卡</label>
-			  <input type="radio" name="radio1" id="radio1_2" value="2" />
+			  <input type="radio" name="cardType" id="radio1_2" value="2" />
 			  <label for="radio1_2">Nano卡</label>
 			</fieldset>
 		  </div>
@@ -109,7 +114,7 @@ JqmAsset::register($this);
 			<p id="diy-create">自由组合套餐        月消费:8元</p>
 			<div id="TabbedPanels1" class="TabbedPanels">
 			  <ul class="TabbedPanelsTabGroup">
-				<li class="TabbedPanelsTab" tabindex="0" id="flowPackTabTitle">流量包包<br><span class='tabSumm'>100MB</span></li>
+				<li class="TabbedPanelsTab" tabindex="0" id="flowPackTabTitle">流量包<br><span class='tabSumm'>100MB</span></li>
 				<li class="TabbedPanelsTab" tabindex="0" id="packTabTitle">语音包<br>&nbsp;</li>
 				<li class="TabbedPanelsTab" tabindex="0" id="msgPackTabTitle">短彩信包<br>&nbsp;</li>
 				<li class="TabbedPanelsTab" tabindex="0" id="callshowPackTabTitle">来电显示<br>&nbsp;</li>
@@ -147,18 +152,18 @@ JqmAsset::register($this);
 					<div data-role="fieldcontain">
 					<fieldset data-role="controlgroup">
 					  <legend>语音包</legend>
-					  <input type="radio" name="pack" id="pack_0" value="0" />
-					  <label for="pack_0">200分钟/32元&nbsp;&nbsp;0.16元/1分钟</label>
-					  <input type="radio" name="pack" id="pack_1" value="1" />
-					  <label for="pack_1">300分钟/40元&nbsp;&nbsp;0.13元/1分钟</label>
-					  <input type="radio" name="pack" id="pack_2" value="2" />
-					  <label for="pack_2">500分钟/56元&nbsp;&nbsp;0.11元/1分钟</label>
-					  <input type="radio" name="pack" id="pack_3" value="3" />
-					  <label for="pack_3">1000分钟/112元&nbsp;&nbsp;0.11元/1分钟</label>
-					  <input type="radio" name="pack" id="pack_4" value="4" />
-					  <label for="pack_4">2000分钟/160元&nbsp;&nbsp;0.08元/1分钟</label>
-					  <input type="radio" name="pack" id="pack_5" value="5" />
-					  <label for="pack_5">3000分钟/240元&nbsp;&nbsp;0.08元/1分钟</label>
+					  <input type="radio" name="voicePack" id="voicePack_0" value="0" />
+					  <label for="voicePack_0">200分钟/32元&nbsp;&nbsp;0.16元/1分钟</label>
+					  <input type="radio" name="voicePack" id="voicePack_1" value="1" />
+					  <label for="voicePack_1">300分钟/40元&nbsp;&nbsp;0.13元/1分钟</label>
+					  <input type="radio" name="voicePack" id="voicePack_2" value="2" />
+					  <label for="voicePack_2">500分钟/56元&nbsp;&nbsp;0.11元/1分钟</label>
+					  <input type="radio" name="voicePack" id="voicePack_3" value="3" />
+					  <label for="voicePack_3">1000分钟/112元&nbsp;&nbsp;0.11元/1分钟</label>
+					  <input type="radio" name="voicePack" id="voicePack_4" value="4" />
+					  <label for="voicePack_4">2000分钟/160元&nbsp;&nbsp;0.08元/1分钟</label>
+					  <input type="radio" name="voicePack" id="voicePack_5" value="5" />
+					  <label for="voicePack_5">3000分钟/240元&nbsp;&nbsp;0.08元/1分钟</label>
 					</fieldset>
 					<p>&nbsp;&nbsp;语音包超出后按0.15元/分钟收费</p>
 				  </div> 
@@ -196,14 +201,16 @@ JqmAsset::register($this);
 
 			  </div>
 			</div>
-
-			<button id="apply">确认套餐</button>
-
-
+			<!--	
+			<button id="submitBtn">确认套餐</button>
+			-->
+			<input type="button" value="确认套餐" id="submitBtn">
+			
 			<br>
 			<div id="TabbedPanels2" class="TabbedPanels">
 			  <ul class="TabbedPanelsTabGroup">
 				<li class="TabbedPanelsTab" tabindex="0">图文详情</li>
+	
 				<li class="TabbedPanelsTab" tabindex="0">商品评价</li>
 			  </ul>
 			  <div class="TabbedPanelsContentGroup">
@@ -248,20 +255,40 @@ JqmAsset::register($this);
 			</div>       
 		</div>                
 	</div>
-
+	</form>		
+	</div>
+		
 	<div data-role="footer">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
+		<div id="result"></div>	
+	</div> <!-- page2 end -->
+	
+	
+	<div data-role="page" id="page3">
+		<div data-role="header">
+			<h1>自由组合套餐</h1>
+		</div>
 		
-	</div>
+		<div data-role="content">
+			<h2>订单已经成功提交！</h2>
+			
+			<p><a href="#page2" data-transition="slide">我想重新选择</a> </p>
+		</div>
 
+		<div data-role="footer">
+			<h4>&copy; 襄阳联通 2014</h4>
+		</div>
+	</div>	<!-- page3 end -->	
+
+	
 <?php $this->endBody() ?>
 </body>
 
 </html>
 <?php $this->endPage() ?>
 
-<script type="text/javascript">
+<script>
 var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
 var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
 </script>
@@ -269,8 +296,8 @@ var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
 
 <script>
 $().ready(function() {
-   
-   var feeSum = 0;
+
+	var feeSum = 0;
    
 	var fee_flowPack = 0;
 	var fee_pack = 0;
@@ -288,8 +315,8 @@ $().ready(function() {
 		changeTabTitle("flowPack",$(this).val());
 	});
 	
-   	$("[name=pack]").click(function(){
-		changeTabTitle("pack",$(this).val());
+   	$("[name=voicePack]").click(function(){
+		changeTabTitle("voicePack",$(this).val());
 	});
 	
    	$("[name=msgPack]").click(function(){
@@ -353,7 +380,7 @@ $().ready(function() {
 			else
 				$("#flowPackTabTitle").html("流量包<br>&nbsp");	
 		}
-		else if(v1=="pack")
+		else if(v1=="voicePack")
 		{
 			if(v2==0)
 			{
@@ -426,8 +453,35 @@ $().ready(function() {
 		/**/
 		feeSummary();
 	}
+	
+	
+	//submit form
+	$('#submitBtn').click(function(){
+		
+		$.ajax({
+			//url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/g2048save' ; ?>"+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
+			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/productsubmit' ; ?>",
+			type:"GET",
+			data:$("form#productForm").serialize(),
+			success:function(data){
+				if(data == "yes")
+				{
+					//alert(data);
+					$.mobile.changePage("#page3",{transition:"slide"});
+					
+				}
+				else
+				{
+					return false;
+				}
+			}
+		});
+		
+	   
+		//alert($("form#productForm").serialize());
+		//$("#result").html($("form#productForm").serialize());
+	});
 });
-
 </script>	
 <?php
 /*
