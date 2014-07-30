@@ -630,13 +630,7 @@ EOD;
 	{
 		return $this->render('billDetail', ['mobile'=>$mobile]);
 	}
-          
-	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_1ad98f5481f3
-	public function actionProduct()
-	{
-		$this->layout = false;	
-		return $this->render('product');
-	}
+        
 	
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_1ad98f5481f3
 	public function actionSuggest()
@@ -669,15 +663,13 @@ EOD;
 		else
 			$username = '';
 		
-		$result = '';
-		$msg = "已成功提交, 感谢您的吐槽。";
 		if ($ar->load(Yii::$app->request->post())) 
 		{
 			//if (Yii::$app->user->isGuest)
 			//	$username = $model->mobile;
 			//U::W($ar->getAttributes());
 			//$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);			
-			if ($ar->save(true, ['title', 'mobile','detail'])) {
+			if ($ar->save(true)) {
 				//return $this->redirect(['index']);
 				//U::W(['kkkkkkkkkkkkkkkkkkkk']);
 				//$result = $this->renderPartial('result', ['msg'=>$msg]);
@@ -693,8 +685,56 @@ EOD;
 		}		
  		//return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 		//return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
-		return $this->render('suggest',['ar' => $ar, 'result'=>$result]);
+		return $this->render('suggest',['ar' => $ar]);
 	}	
+	
+	
+	
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_1ad98f5481f3
+	public function actionProduct()
+	{
+		$this->layout =false;
+		return $this->render('product');
+
+	}
+	
+	
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/productsubmit:gh_1ad98f5481f3
+	public function actionProductsubmit()
+	{       
+		/*
+		$JSON_OBJS;
+		
+		$prdu = $openid;
+		$model->best = $_GET['best'];
+		$model->score = $_GET['score'];	
+		*/
+		$this->layout = 'wap';
+		
+		$msg = "yes";
+		/*
+		$cardType=0;
+		$flowPack=1;
+		$voicePack=1;
+		$msgPack=1;
+		$callshowPack=0;
+		*/		
+		/*
+		$cardType = $_GET["cardType"];
+		$flowPack =$_GET["flowPack"];
+		$voicePack = $_GET["voicePack"];
+		$msgPack = $_GET["msgPack"];
+		$callshowPack = $_GET["callshowPack"];
+		*/
+		
+		//return 'ok';
+		return $msg;
+	}		
+	
+	
+	
+	
+	
 }
 
 /*
