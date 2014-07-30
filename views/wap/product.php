@@ -326,6 +326,9 @@
 			<p>
 			<input type="button" value="立即支付" id="submitBtn">
 			</p>	
+			
+			<p id="url">zzz</p>
+			
 			<p align="right">
 			<a href="#page2" data-transition="slide">我想重新选择</a> 
 			</p>
@@ -353,21 +356,18 @@ var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
 var feeSum = 0;
 //$().ready(function() {
 
-//$('#page2').live('pageinit', function(event){
 $(document).on("pagecreate", "#page2", function(){
 
-   
 	var fee_flowPack = 8;
 	var fee_pack = 32;
 	var fee_msgPack = 10;
 	var fee_callshowPack = 6;
 	
-   
    	function feeSummary()
 	{
-			feeSum= fee_flowPack + fee_pack + fee_msgPack + fee_callshowPack;
-			$("#diy-create").html("自由组合套餐    月消费:"+feeSum+"元");
-			//$("#total_fee").val(feeSum);
+		feeSum= fee_flowPack + fee_pack + fee_msgPack + fee_callshowPack;
+		$("#diy-create").html("自由组合套餐    月消费:"+feeSum+"元");
+		//$("#total_fee").val(feeSum);
 	}
 	
 	feeSummary();
@@ -538,7 +538,8 @@ $(document).on("pagecreate", "#page2", function(){
 				if(data.status == 0)
 				{
 					//alert(data.oid);
-					localStorage.setItem("oid",data.oid)
+					localStorage.setItem("oid",data.oid);
+					localStorage.setItem("url",data.pay_url);
 					$.mobile.changePage("#page3",{transition:"slide"});
 				}
 				else
@@ -548,8 +549,6 @@ $(document).on("pagecreate", "#page2", function(){
 			}
 		});
 	   
-		//alert($("form#productForm").serialize());
-		//$("#result").html($("form#productForm").serialize());
 	});
 	
 	
@@ -577,7 +576,6 @@ $(document).on("pageshow", "#page3", function(){
 	eval(item_new);
 	//alert('流量包'+flowPack_name[flowPack]+"费用"+flowPack_fee[flowPack]);
 	
-	
 	$("#flowPack_name").html(flowPack_name[flowPack]);
 	$("#flowPack_fee").html(flowPack_fee[flowPack]+"元");
 	
@@ -594,6 +592,8 @@ $(document).on("pageshow", "#page3", function(){
 	
 	var oid = localStorage.getItem("oid");
 	$("#oid").html("您的订单号: "+oid);
+	
+	$("#url").html("<a href='"+url+"'>Pay</a>");
 	
 });
 
