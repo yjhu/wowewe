@@ -204,7 +204,7 @@
 			<!--	
 			<button id="submitBtn">确认套餐</button>
 			-->
-	
+			<input type="hidden" id="total_fee" value="111">
 			<input type="button" value="确认套餐" id="submitBtn">
 			
 			<br>
@@ -349,11 +349,12 @@ var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
 
 
 <script>
+var feeSum = 0;
 //$().ready(function() {
 
 //$('#page2').live('pageinit', function(event){
 $(document).on("pagecreate", "#page2", function(){
-	var feeSum = 0;
+
    
 	var fee_flowPack = 8;
 	var fee_pack = 32;
@@ -365,6 +366,7 @@ $(document).on("pagecreate", "#page2", function(){
 	{
 			feeSum= fee_flowPack + fee_pack + fee_msgPack + fee_callshowPack;
 			$("#diy-create").html("自由组合套餐    月消费:"+feeSum+"元");
+			//$("#total_fee").val(feeSum);
 	}
 	
 	feeSummary();
@@ -529,7 +531,7 @@ $(document).on("pagecreate", "#page2", function(){
 			//url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/g2048save' ; ?>"+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			type:"GET",
-			data:$("form#productForm").serialize(),
+			data: $("form#productForm").serialize() +"&feeSum="+feeSum,
 			success:function(data){
 				if(data == "yes")
 				{
@@ -568,12 +570,10 @@ $(document).on("pageshow", "#page3", function(){
 	
 	var item = localStorage.getItem("item");
 	item_new = item.replace(/&/g, ";") +';';
-	
+
 	eval(item_new);
 	//alert('流量包'+flowPack_name[flowPack]+"费用"+flowPack_fee[flowPack]);
 	
-	var total = parseInt(flowPack_fee[flowPack]) + parseInt(voicePack_fee[voicePack]) +
-			parseInt(msgPack_fee[msgPack]) + parseInt(callshowPack_fee[callshowPack]);
 	
 	$("#flowPack_name").html(flowPack_name[flowPack]);
 	$("#flowPack_fee").html(flowPack_fee[flowPack]+"元");
@@ -587,7 +587,7 @@ $(document).on("pageshow", "#page3", function(){
 	$("#callshowPack_name").html(callshowPack_name[callshowPack]);
 	$("#callshowPack_fee").html(callshowPack_fee[callshowPack]+"元");
 	
-	$("#total").html("合计:"+total+"元");
+	$("#total").html("合计:"+feeSum+"元");
 });
 
 
