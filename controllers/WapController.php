@@ -377,6 +377,15 @@ EOD;
  		return $this->render('prom', ['item' => $item]);
 	}	
 
+	//http://127.0.0.1/wx/web/index.php?r=wap/aboutqr&name=jack&qrurl=http://wosotech.com/wx/runtime/qr/gh_03a74ac96138_1.jpg
+	public function actionAboutqr()
+	{
+		$name = $_GET['name'];
+		$qrurl = $_GET['qrurl'];
+		$this->layout = 'wap';
+ 		return $this->render('aboutqr', ['name' => $name, 'qrurl'=>$qrurl]);
+	}
+	
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_03a74ac96138	
 	public function actionLuck()

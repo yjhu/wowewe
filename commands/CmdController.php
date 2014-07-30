@@ -172,8 +172,10 @@ class CmdController extends Controller
 				new \app\models\ButtonComplex('沃服务', [
 					new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
 					new \app\models\ButtonView('流量包订购', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
+					new \app\models\ButtonView('用户吐槽', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/suggest:{$gh_id}")),
+					new \app\models\ButtonView('关注有礼', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203635121&idx=1&sn=b47bc2f6a4490819227853e8ffed72c9#rd'),
 					//new \app\models\ButtonView('襄阳沃社区', 'http://m.10010.com/'),
-					new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base','wap/luck:'.Yii::$app->wx->getGhid())),
+					//new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base','wap/luck:'.Yii::$app->wx->getGhid())),
 					//new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.htm'),
 					new \app\models\ButtonView('游戏2048', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}")),
 				]),
@@ -205,6 +207,7 @@ class CmdController extends Controller
 		U::W($arr);
 		return;		
 	}
+
 	
 }
 
@@ -278,6 +281,68 @@ class CmdController extends Controller
 				]),
 			]);
 
+
+	//C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/tmp
+	public function actionTmp()	
+	{
+		set_time_limit(0);	
+//		$filename =  Yii::$app->getRuntimePath()."/a.txt";
+		$filename =  Yii::$app->getRuntimePath()."/b.txt";		
+		$filename1 =  Yii::$app->getRuntimePath()."/b.txt";		
+		$handle = @fopen($filename, "r");
+		if (!$handle)
+			die("fopen $filename failed");
+
+		$i = 0;
+		$rows = array();
+		while (!feof($handle)) 
+		{
+			$data = fgets($handle);
+			$data = trim($data);			
+			if (empty($data))
+				continue;
+	    		if (strlen($data) == 0)
+				continue;
+
+			$arr = explode(' ', $data);
+
+			$mob = $arr[0];
+			$name = $arr[1];				
+			$title = isset($arr[2]) ? $arr[2] : '';							
+
+			$s = new \app\models\MStaff;
+
+			$s->gh_id = 'gh_03a74ac96138';
+			$s->name = $name;
+			$s->mobile = $mob;
+
+			$title = trim($title);
+			if (empty($title))
+			{
+				$s->office_id = 0;			
+				U::W("NO PARTMENT, $name");				
+			}
+			else
+			{
+				$model = \app\models\MOffice::findOne(['title'=>$title]);
+				if ($model === null)
+				{
+					U::W("NOT FOUND THIS PARTMENT $title, $name");
+					$s->office_id = 0;							
+				}
+				else
+					$s->office_id = $model->office_id;
+			}
+			$s->save(false);
+			
+//			$i++;
+//			if ($i>4) break;
+			
+
+		}
+		fclose($handle);
+
+	}
 		
 */
 
