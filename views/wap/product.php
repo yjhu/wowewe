@@ -323,11 +323,11 @@
 			合计:
 			</span>
 			</p>	
-			
+			<!--
 			<p>
 			<textarea cols="40" rows="8" name="address" id="address" placeholder="请输入您的收货地址"></textarea>
 			</P>
-			
+			-->
 			<p>
 			<input type="button" value="立即支付" id="payBtn">
 			</p>	
@@ -574,17 +574,25 @@ $(document).on("pagecreate", "#page2", function(){
 $(document).on("pageshow", "#page3", function(){
 	// alert("page3 create");
 	
-	flowPack_name = {"0":"100MB", "1":"300MB", "2":"500MB", "3":"1GB", "4":"2GB", "5":"3GB", "6":"4GB", "7":"6GB", "8":"11GB"};
-	flowPack_fee = {"0":"8", "1":"16", "2":"24", "3":"48", "4":"72", "5":"96", "6":"120", "7":"152", "8":"232"};
+//	flowPack_name = {"0":"100MB", "1":"300MB", "2":"500MB", "3":"1GB", "4":"2GB", "5":"3GB", "6":"4GB", "7":"6GB", "8":"11GB"};
+//	flowPack_fee = {"0":"8", "1":"16", "2":"24", "3":"48", "4":"72", "5":"96", "6":"120", "7":"152", "8":"232"};
+	flowPack_name = <?php echo \app\models\MOrder::getFlowPackName(); ?>;
+	flowPack_fee =<?php echo \app\models\MOrder::getFlowPackFee(); ?>;
 	
-	voicePack_name = {"0":"200分钟", "1":"300分钟", "2":"500分钟", "3":"1000分钟", "4":"2000分钟", "5":"3000分钟"};
-	voicePack_fee = {"0":"32", "1":"40", "2":"56", "3":"112", "4":"160", "5":"240"};
+	//voicePack_name = {"0":"200分钟", "1":"300分钟", "2":"500分钟", "3":"1000分钟", "4":"2000分钟", "5":"3000分钟"};
+	//voicePack_fee = {"0":"32", "1":"40", "2":"56", "3":"112", "4":"160", "5":"240"};
+	voicePack_name = <?php echo \app\models\MOrder::getVoicePackName(); ?>;
+	voicePack_fee = <?php echo \app\models\MOrder::getVoicePackFee(); ?>;
 	
-	msgPack_name = {"0":"200条", "1":"400条", "2":"600条", "3":"不选"};
-	msgPack_fee = {"0":"10", "1":"20", "2":"30", "3":"0"};
+	//msgPack_name = {"0":"200条", "1":"400条", "2":"600条", "3":"不选"};
+	//msgPack_fee = {"0":"10", "1":"20", "2":"30", "3":"0"};
+	msgPack_name = <?php echo \app\models\MOrder::getMsgPackName(); ?>;
+	msgPack_fee = <?php echo \app\models\MOrder::getMsgPackFee(); ?>;
 	
-	callshowPack_name = {"0":"来显", "1":"不选"};
-	callshowPack_fee = {"0":"6", "1":"0"};
+	//callshowPack_name = {"0":"来显", "1":"不选"};
+	//callshowPack_fee = {"0":"6", "1":"0"};
+	callshowPack_name = <?php echo \app\models\MOrder::getCallShowPackName(); ?>;
+	callshowPack_fee =<?php echo \app\models\MOrder::getCallShowPackFee(); ?>;
 	
 	var item = localStorage.getItem("item");
 	item_new = item.replace(/&/g, ";") +';';
