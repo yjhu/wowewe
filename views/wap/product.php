@@ -284,7 +284,7 @@
 			 <thead>
 			   <tr class="ui-bar-d">
 				 <th data-priority="1">序号</th>
-				 <th data-priority="2">组合项</th>
+				 <th data-priority="1">组合项</th>
 				 <th>详情</th>
 				 <th>费用</th>
 				 <!--
@@ -384,7 +384,7 @@ $(document).on("pagecreate", "#page2", function(){
    	function feeSummary()
 	{
 		feeSum= fee_flowPack + fee_pack + fee_msgPack + fee_callshowPack;
-		$("#diy-create").html("自由组合套餐    月消费:"+feeSum+"元");
+		$("#diy-create").html("自由组合套餐    月消费:<span style='font-size: 18px; color:#ff8600; font-weight:  bolder'>"+feeSum+"元</span>");
 		//$("#total_fee").val(feeSum);
 	}
 	
