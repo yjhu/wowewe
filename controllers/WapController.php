@@ -15,6 +15,7 @@ use app\models\WxException;
 use app\models\Wechat;
 use app\models\MUser;
 use app\models\MGh;
+use app\models\MOrder;
 
 class WapController extends Controller
 {
@@ -701,34 +702,36 @@ EOD;
 	
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodsave:gh_1ad98f5481f3
 	public function actionProdsave()
-	{       U::W('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
-		/*
-		$JSON_OBJS;
-		
-		$prdu = $openid;
-		$model->best = $_GET['best'];
-		$model->score = $_GET['score'];	
-		*/
+	{
 		$this->layout = 'wap';
-		
-		$msg = "yes";
-		/*
-		$cardType=0;
-		$flowPack=1;
-		$voicePack=1;
-		$msgPack=1;
-		$callshowPack=0;
-		*/		
-		/*
+		$gh_id = Yii::$app->session['gh_id'];
+		$openid = Yii::$app->session['openid'];
+//		Yii::$app->wx->setGhId($gh_id);
+		$cardType = 1;
+		$flowPack =2;
+		$voicePack = 3;
+		$msgPack = 9;
+		$callshowPack = 4;
+/*
 		$cardType = $_GET["cardType"];
 		$flowPack =$_GET["flowPack"];
 		$voicePack = $_GET["voicePack"];
 		$msgPack = $_GET["msgPack"];
 		$callshowPack = $_GET["callshowPack"];
-		*/
-		
-		//return 'ok';
-		return $msg;
+*/
+		$total_fee = 19900;
+		$order = new MOrder;
+		$order->oid = MOrder::generateOid();
+		$order->gh_id = $gh_id;
+		$order->openid = $openid;
+		$order->total_fee = $total_fee;
+		$order->title = 'SELF DIY';
+		$order->cid = MOrder::ITEM_CAT_DIY;
+		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack";
+		$order->save(false);
+		return json_encode(['oid'=>$order->oid, 'status'=>0]);
+//		$msg = "yes";
+//		return $msg;
 	}		
 	
 	
