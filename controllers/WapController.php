@@ -158,19 +158,19 @@ EOD;
 			exit;
 		}
 		
-//		$arr['ProductId'] = '53d89b592bfec'; 
+		//$arr['ProductId'] = '53d89b592bfec'; 
 		Yii::$app->wx->setAppId($arr['AppId']);
 		$productId = $arr['ProductId'];
-		$openid = $arr['OpenId'];	
-
+		$openid = $arr['OpenId'];
 		$model = MOrder::findOne($productId);
 		if ($model === null)
 		{
 			U::W(['order does not exist!', __METHOD__, $arr]);
 			exit;		
 		}
-		//$desc = "{$model->title}, {$model->title}";
-		$desc='desc';
+		//$desc = "{$model->title}, {$model->attr}";
+		//$desc='desc';
+		//$desc = "{$model->title}";
 		Yii::$app->wx->setParameterComm();
 /*		
 		Yii::$app->wx->setParameter("body", urlencode("item desc"));
@@ -178,7 +178,9 @@ EOD;
 		Yii::$app->wx->setParameter("total_fee", "1");
 		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
 */
-		Yii::$app->wx->setParameter("body", urlencode($desc));		
+		//Yii::$app->wx->setParameter("body", urlencode($desc));		
+		$detail = $model->detail;
+		Yii::$app->wx->setParameter("body", $detail);
 		Yii::$app->wx->setParameter("out_trade_no", $model->oid);
 		Yii::$app->wx->setParameter("total_fee",  "{$model->total_fee}");
 		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
@@ -719,6 +721,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodsave:gh_1ad98f5481f3
 	public function actionProdsave()
 	{	
+		
 		U::W([$_GET, $_POST]);
 		$this->layout = 'wap';
 		$gh_id = Yii::$app->session['gh_id'];
@@ -745,16 +748,19 @@ EOD;
 		$order->gh_id = $gh_id;
 		$order->openid = $openid;
 		$order->total_fee = $total_fee;
-		$order->title = 'SELFDIY';
+		//$order->title = 'SELFDIY';
+		$order->$title = '自由组合套餐';
+		//str_replace(array('"', "'", "/", "+", " "), '', $title);
 		$order->cid = MOrder::ITEM_CAT_DIY;
 		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack";
+		$order->detail = $order->getDetailStr();
 		$order->save(false);
 
 		//Yii::$app->wx->setGhId($gh_id);
 		Yii::$app->wx->setGhId(MGh::GH_WOSO);
 		$url = Yii::$app->wx->create_native_url($order->oid);
 		//$url = "http://baidu.com";
-		//U::W(json_encode(['oid'=>$order->oid, 'status'=>0]));
+		U::W(json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]));
 		return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
 	}		
 	

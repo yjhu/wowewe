@@ -85,7 +85,7 @@ AppAsset::register($this);
 	<?php if (!\app\models\Wechat::supportWeixinPay()): ?>
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; <?= Yii::$app->params['companyName']; ?> <?= date('Y') ?></p>
+            <p class="pull-left">&copy; 襄阳联通 <?= date('Y') ?></p>
             <p class="pull-right"><?php //echo Yii::powered() ?></p>
         </div>
     </footer>
@@ -95,3 +95,10 @@ AppAsset::register($this);
 </body>
 </html>
 <?php $this->endPage() ?>
+
+
+<?php 
+/*
+<p class="pull-left">&copy; <?= Yii::$app->params['companyName']; ?> <?= date('Y') ?></p>
+*/
+
