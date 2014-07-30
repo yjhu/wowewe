@@ -310,16 +310,16 @@
 			   </tr>	
 			   <tr>
 				 <th>4</th>
-				 <td id="callshowPack_name">来电显示</td>
-				 <td id="callshowPack_fee">来显每月</td>
-				 <td>6元</td>
+				 <td>来电显示</td>
+				 <td id="callshowPack_name">来显每月</td>
+				 <td id="callshowPack_fee">6元</td>
 			   </tr>				   
 		
 			 </tbody>
 		   </table>
 			<p align="right" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
 			<span  id="total">
-			合计:82元
+			合计:
 			</span>
 			</p>	
 			<p>
