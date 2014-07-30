@@ -702,24 +702,29 @@ EOD;
 	
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodsave:gh_1ad98f5481f3
 	public function actionProdsave()
-	{
+	{	
+		//U::W([$_GET, $_POST]);
 		$this->layout = 'wap';
 		$gh_id = Yii::$app->session['gh_id'];
 		$openid = Yii::$app->session['openid'];
-//		Yii::$app->wx->setGhId($gh_id);
-		$cardType = 1;
-		$flowPack =2;
-		$voicePack = 3;
-		$msgPack = 9;
-		$callshowPack = 4;
-/*
+		
+		if (0)
+		{
+			$cardType = 1;
+			$flowPack =2;
+			$voicePack = 3;
+			$msgPack = 9;
+			$callshowPack = 4;
+		}
+		
 		$cardType = $_GET["cardType"];
 		$flowPack =$_GET["flowPack"];
 		$voicePack = $_GET["voicePack"];
 		$msgPack = $_GET["msgPack"];
 		$callshowPack = $_GET["callshowPack"];
-*/
-		$total_fee = 19900;
+		$feeSum =  $_GET["feeSum"];
+
+		$total_fee = $feeSum * 100;
 		$order = new MOrder;
 		$order->oid = MOrder::generateOid();
 		$order->gh_id = $gh_id;
@@ -729,9 +734,13 @@ EOD;
 		$order->cid = MOrder::ITEM_CAT_DIY;
 		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack";
 		$order->save(false);
-		return json_encode(['oid'=>$order->oid, 'status'=>0]);
-//		$msg = "yes";
-//		return $msg;
+
+		//Yii::$app->wx->setGhId($gh_id);
+		//Yii::$app->wx->setGhId(MGh::GH_WOSO);
+		//$url = Yii::$app->wx->create_native_url($order->oid);
+		$url = "http://baidu.com";
+		//U::W(json_encode(['oid'=>$order->oid, 'status'=>0]));
+		return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
 	}		
 	
 	

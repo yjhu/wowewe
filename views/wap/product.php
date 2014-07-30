@@ -533,6 +533,7 @@ $(document).on("pagecreate", "#page2", function(){
 			type:"GET",
 			data: $("form#productForm").serialize() +"&feeSum="+feeSum,
 			success:function(data){
+/*
 				if(data == "yes")
 				{
 					//alert(data);
@@ -542,6 +543,18 @@ $(document).on("pagecreate", "#page2", function(){
 				{
 					return false;
 				}
+*/
+				data = eval('('+data+')');
+				if(data.status == 0)
+				{
+					alert(data.oid);
+					$.mobile.changePage("#page3",{transition:"slide"});
+				}
+				else
+				{
+					return false;
+				}
+
 			}
 		});
 	   
