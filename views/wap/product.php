@@ -323,15 +323,21 @@
 			合计:
 			</span>
 			</p>	
+			
 			<p>
-			<input type="button" value="立即支付" id="submitBtn">
+			<textarea cols="40" rows="8" name="address" id="address" placeholder="请输入您的收货地址"></textarea>
+			</P>
+			
+			<p>
+			<input type="button" value="立即支付" id="payBtn">
 			</p>	
 			
-			<p id="url">zzz</p>
+			<p id="url"></p>
 			
 			<p align="right">
 			<a href="#page2" data-transition="slide">我想重新选择</a> 
 			</p>
+					
 		</div>
 
 		<div data-role="footer">
@@ -593,7 +599,39 @@ $(document).on("pageshow", "#page3", function(){
 	var oid = localStorage.getItem("oid");
 	$("#oid").html("您的订单号: "+oid);
 	
+	var url = localStorage.getItem("url");
 	$("#url").html("<a href='"+url+"'>Pay</a>");
+	
+	
+	$("#payBtn").click(function(){
+		//1.verfy  address
+
+		//2. submit form
+		alert('pay ok');
+		/*
+		$.ajax({
+			url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
+			type:"GET",
+			data: $("form#productForm").serialize() +"&feeSum="+feeSum,
+			success:function(data){
+				data = eval('('+data+')');
+				if(data.status == 0)
+				{
+					//alert(data.oid);
+					localStorage.setItem("oid",data.oid);
+					localStorage.setItem("url",data.pay_url);
+					$.mobile.changePage("#page3",{transition:"slide"});
+				}
+				else
+				{
+					return false;
+				}
+			}
+		});
+		*/
+	   }); /*end of pay submit*/
+	
+	
 	
 });
 
