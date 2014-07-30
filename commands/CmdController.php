@@ -34,6 +34,7 @@ class CmdController extends Controller
 
 	public function actionIndex()
 	{		
+		//U::W(json_encode(['liquid package'=>'4G/$120', 'call'=>'200m/$32', 'sm'=>'600p/$30', 'display caller'=>'$6/month']));
 		echo 'Hello, world!!';
 	}
 
