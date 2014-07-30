@@ -271,6 +271,7 @@
 		</div>
 		
 		<div data-role="content">
+
 			<h2>订单详情</h2>
 			<!--
 			<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
@@ -315,7 +316,7 @@
 		
 			 </tbody>
 		   </table>
-			<p align="right" style="font-size: 18px; color:#ff8600; font-weight: blod">
+			<p align="right" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
 			合计:82元
 			</p>	
 			<p>
@@ -345,8 +346,10 @@ var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
 
 
 <script>
-$().ready(function() {
+//$().ready(function() {
 
+//$('#page2').live('pageinit', function(event){
+$(document).on("pagecreate", "#page2", function(){
 	var feeSum = 0;
    
 	var fee_flowPack = 8;
@@ -541,8 +544,18 @@ $().ready(function() {
 		//alert($("form#productForm").serialize());
 		//$("#result").html($("form#productForm").serialize());
 	});
+	
+	
+
 });
 
+
+$(document).on("pagecreate", "#page3", function(){
+	// alert("page3 create");
+	var item = localStorage.getItem("item");
+	alert('from page3'+item);
+
+});
 /*
 $("#page2").live("pagecreate",function(){
 	alert("hello");
