@@ -206,7 +206,6 @@
 			<!--	
 			<button id="submitBtn">确认套餐</button>
 			-->
-			<input type="hidden" id="total_fee" value="111">
 			<input type="button" value="确认套餐" id="submitBtn">
 			
 			<br>
@@ -330,6 +329,36 @@
 			<textarea cols="40" rows="8" name="address" id="address" placeholder="请输入您的收货地址"></textarea>
 			</P>
 			-->
+			<p>
+				<select>
+					<option value="0">---请选择营业厅---</option>
+					<option value="1">枣阳营业厅</option>
+					<option value="2">枣阳盛鑫广场营业厅</option>
+					<option value="3">宜城营业厅</option>
+					<option value="4">宜城新建街营业厅</option>
+					<option value="5">襄州营业厅</option>
+					<option value="6">襄州民发世界城营业厅</option>
+					<option value="7">襄城南街自有营业厅</option>
+					<option value="8">襄城鼓楼自有营业厅</option>
+					<option value="9">南漳营业厅</option>
+					<option value="10">南漳凯达广场营业厅</option>
+					<option value="11">老河口营业厅</option>
+					<option value="12">老河口市中山路自有营业厅</option>
+					<option value="13">谷城营业厅</option>
+					<option value="14">谷城县府街自有营业厅</option>
+					<option value="15">二汽营业厅</option>
+					<option value="16">城区新华北路营业厅</option>
+					<option value="17">城区三元路营业厅</option>
+					<option value="18">城区人民路自有营业厅</option>
+					<option value="19">城区人民广场营业厅</option>
+					<option value="20">城区前进路营业厅</option>
+					<option value="21">城区汉江路营业厅</option>
+					<option value="22">城区长虹路营业厅</option>
+					<option value="23">保康营业厅</option>
+					<option value="24">保康新街营业厅</option>
+				</select>
+			</p>
+			<br>
 			<p>
 			<input type="button" value="立即支付" id="payBtn">
 			</p>	
