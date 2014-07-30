@@ -45,8 +45,8 @@
 
 <body>
 <?php $this->beginBody() ?>
-
-<div data-role="page" id="page1">
+	<!--
+	<div data-role="page" id="page1">
 		<div data-role="header">
 			<h1>自由组合套餐</h1>
 		</div>
@@ -76,7 +76,9 @@
 		<div data-role="footer">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
-	</div>		
+	</div>	
+	-->
+
 		
 	<div data-role="page" id="page2">
 
@@ -99,7 +101,7 @@
 		<div class="ui-corner-all custom-corners">
 
 		  <div data-role="fieldcontain">
-			<fieldset data-role="controlgroup" data-type="horizontal">
+			<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 			  <legend>卡类型</legend>
 			  <input type="radio" name="cardType" id="radio1_0" value="0" checked />
 			  <label for="radio1_0">普通卡</label>
