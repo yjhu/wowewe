@@ -16,12 +16,17 @@ CREATE TABLE wx_gh (
 	menu text,
 	create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,	
 	update_time TIMESTAMP,
+	scene_ids MEDIUMTEXT NOT NULL DEFAULT '',
 	PRIMARY KEY (gh_id)	
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO wx_gh (gh_id,appid,appsecret,token,partnerid,partnerkey,paysignkey,wxname,nickname) VALUES ('gh_1ad98f5481f3','wx79c2bf0249ede62a','c4d53595acf30e9caf09c155b3d95253','HY09uB1h','1220047701','wosotech20140526huyajun197310070','Yat5dfJA2M8v8kZXH9rDk9q7Ae8dqmxRVApfsoiVxUrhvk8DFipBILgDzNFvVPSBJkZctFbqw0LNhfijqE8R8RLZfW04RGk8MkDXQoDES1Ac84LEtjdAt6hzJTNKG7on','xiangyangwoso','wosotech');
 INSERT INTO wx_gh (gh_id,appid,appsecret,token,partnerid,partnerkey,paysignkey,wxname,nickname) VALUES ('gh_03a74ac96138','wx1b122a21f985ea18','35eda7e6cd9b69f5ffb3c8662f62eb25','HY09uB1h','1220047701','wosotech20140526huyajun197310070','Yat5dfJA2M8v8kZXH9rDk9q7Ae8dqmxRVApfsoiVxUrhvk8DFipBILgDzNFvVPSBJkZctFbqw0LNhfijqE8R8RLZfW04RGk8MkDXQoDES1Ac84LEtjdAt6hzJTNKG7on','xiangyangunicom','xiangyangunicom');
 INSERT INTO wx_gh (gh_id,appid,appsecret,token,partnerid,partnerkey,paysignkey,wxname,nickname) VALUES ('gh_78539d18fdcc','wx4190748b840f102d','a5c3d42268d8b1a470fad26f9808198e','HY09uB1h','1200000000','partnerkey222','paysignkey222','hoyatech-cn','hoyakejiguanhao');
+
+
+
+
 */
 
 use Yii;
@@ -29,6 +34,8 @@ use yii\db\ActiveRecord;
 use yii\helpers\Security;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
+
+use app\models\U;
 
 class MGh extends ActiveRecord
 {
@@ -75,6 +82,45 @@ class MGh extends ActiveRecord
 			return true;
 		}
 		return false;
+	}
+
+	public function newSceneId()
+	{
+		if (empty($this->scene_ids))
+		{
+			$this->scene_ids = '1';
+			return 1;
+		}
+		$scene_ids = explode(',', $this->scene_ids);
+		$i=1;
+		while(1)
+		{
+			if (!in_array($i, $scene_ids))
+			{
+				$scene_ids[] = $i;	
+				$this->scene_ids = implode(',',$scene_ids);
+				return $i;
+			}
+			$i++;
+			if ($i>100000)
+				break;
+		}
+		U::W([__METHOD__, 'not find avail scene_id']);			
+		return false;
+	}
+
+	public function freeSceneId($scene_id)
+	{
+		$scene_ids = explode(',', $this->scene_ids);
+		foreach($scene_ids as $key=>$val)
+		{
+			if ($scene_id == $val)
+				unset($scene_ids[$key]);
+		}
+		if (empty($scene_ids))
+			$this->scene_ids = '';
+		else
+			$this->scene_ids = implode(',', $scene_ids);
 	}
 	
 }

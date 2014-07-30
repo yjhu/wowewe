@@ -12,6 +12,9 @@ use app\models\U;
 use app\models\Wechat;
 use app\models\WxException;
 use app\models\MUser;
+use app\models\MGh;
+use app\models\MOffice;
+use app\models\MStaff;
 
 use app\models\RespText;
 use app\models\RespImage;
@@ -23,29 +26,25 @@ class WechatXiangYangUnicom extends Wechat
 {
 	protected function onSubscribe() 
 	{
+		$FromUserName = $this->getRequest('FromUserName');		
+		$gh_id = $this->getRequest('ToUserName');				
 		$MsgType = $this->getRequest('MsgType');
 		$Event = $this->getRequest('Event');    
 		$EventKey = $this->getRequest('EventKey');
 		if (!empty($EventKey))
 		{
-			//a new user subscribe us with qr parameter, EventKey:qrscene_123123
-			$Ticket = $this->getRequest('Ticket');
-			return $this->responseText($this->getRequestString());			
+			//a new user subscribe us with qr parameter, EventKey:qrscene_3 qrscene_OFFICE_3
+			$Ticket = $this->getRequest('Ticket');	
+			$scene_pid = substr($EventKey, 8);				
+			$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
+			$model->scene_pid = $scene_pid;
+			$model->save(false);
+			return $this->responseText("{$model->nickname}, 欢迎关注襄阳联通官方微信服务号！\n\n在这里，您可以逛沃商城，享沃服务，玩游戏，参与活动...... 天天惊喜，月月有奖！");
 		}
 		else
 		{
-			$FromUserName = $this->getRequest('FromUserName');
-			$gh_id = $this->getRequest('ToUserName');			
 			$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
 			return $this->responseText("{$model->nickname}, 欢迎关注襄阳联通官方微信服务号！\n\n在这里，您可以逛沃商城，享沃服务，玩游戏，参与活动...... 天天惊喜，月月有奖！");
-/*
-			$items = array(
-				new RespNewsItem("{$model->nickname}，欢迎关注襄阳联通官方微信服务号", '欢迎关注襄阳联通官方微信服务号，在这里，您可以逛沃商城，享沃服务，游戏，参与活动...... 天天惊喜，月月有奖！', '', ''),
-				//new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), Url::to(['site/about'],true)),
-				//new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), 'weixin://wxpay/bizpayurl?timestamp=1405737068&appid=wx79c2bf0249ede62a&noncestr=PSottf4eivpHqKlV&productid=1234&sign=e1f9bca3625bfd1bdb4753906753c9f13917f0ec'),
-			);
-			return $this->responseNews($items);
-*/
 		}
 	}
 
@@ -56,19 +55,304 @@ class WechatXiangYangUnicom extends Wechat
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);		
 		if ($model !== null)
 		{
-			//$model->delete();		
+			//$model->delete();	
 			$model->subscribe = 0;
+			$model->scene_pid = 0;
 			$model->save(false);
 		}
 		return '';
 	}
-	
-	protected function onText() 
+
+	const STATE_NONE = 'NONE';	
+	const STATE_MOBILE = 'MOBILE';	
+	const STATE_CHANGE_MOBILE = 'CHANGE_MOBILE';	
+	const STATE_OFFICE = 'OFFICE';		
+	const STATE_MENU_ONE = 'MENU_ONE';
+	const PROMPT_MENU_ONE = <<<EOD
+请选择:
+1. 我的推广二维码
+2. 我的推广人数
+3. 所在部门的推广二维码
+4. 所在部门的推广人数
+5. 绑定手机号
+6. 修改所在部门
+0. 退出
+EOD;
+
+	protected function getState($gh_id, $openid) 
 	{ 
-		return Wechat::NO_RESP;
+		$key = "STATE_{$gh_id}_{$openid}";
+		$state = Yii::$app->cache->get($key);
+		return $state === false ? self::STATE_NONE : $state;
+	}
+	
+	protected function setState($gh_id, $openid, $state) 
+	{ 
+		$key = "STATE_{$gh_id}_{$openid}";
+		Yii::$app->cache->set($key, $state, 3600);	
 	}
 
+	protected function deleteState($gh_id, $openid) 
+	{ 
+		$key = "STATE_{$gh_id}_{$openid}";
+		Yii::$app->cache->delete($key);	
+	}
+
+	protected function getOfficePrompt($gh_id) 
+	{ 
 	
+		//$offices =MOffice::find(['gh_id'=>$gh_id])->asArray()->all();		
+		//$offices =MOffice::find()->where(['gh_id'=>$gh_id])->asArray()->all();		
+		$offices =MOffice::find()->where("gh_id = '$gh_id' AND office_id <=25 ")->asArray()->all();
+		$str = "请选择部门:\n";
+		foreach($offices as $office)
+		{
+			$str .= "{$office['office_id']}. {$office['title']}\n";
+		}
+		$str .= "0. 退出";
+		return $str;		
+	}
+
+	protected function onText() 
+	{ 
+		$openid = $this->getRequest('FromUserName');
+		$gh_id = $this->getRequest('ToUserName');	
+		while(1)
+		{
+			$Content = $this->getRequest('Content');
+			$msg = trim($Content);	
+			$state = $this->getState($gh_id, $openid);
+			if ($msg == '0' && $state != self::STATE_NONE)
+			{
+				U::W('deleteState');
+				$this->deleteState($gh_id, $openid);
+				return $this->responseText("谢谢，再见!");
+			}
+
+			U::W($state);
+			switch ($state) 
+			{
+				case self::STATE_NONE:
+//					if ($msg !== '我是襄阳联通员工')
+					if ($msg !== 'Xy')					
+						return Wechat::NO_RESP;
+					$model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+					if ($model === null)
+					{	
+						$this->setState($gh_id, $openid, self::STATE_MOBILE); 	
+						return $this->responseText("请输入手机号, 0:退出");
+					}
+					else if (empty($model->office_id))
+					{	
+						$this->setState($gh_id, $openid, self::STATE_OFFICE);
+						return $this->responseText($this->getOfficePrompt($gh_id));						
+					}
+					else
+					{
+						$this->setState($gh_id, $openid, self::STATE_MENU_ONE); 	
+						return $this->responseText(self::PROMPT_MENU_ONE);						
+					}
+					break;
+					
+				case self::STATE_MOBILE:
+					if ((!is_numeric($msg)) ||substr($msg, 0, 1) !== '1' || strlen($msg) != 11)
+						return $this->responseText("无效手机号!\n\n"."请重新输入手机号, 0:退出");
+
+					$model = MStaff::findOne(['mobile'=>$msg]);
+					if ($model === null)	
+						return $this->responseText("非员手机号!\n\n"."请重新输入手机号, 0:退出");					
+					$model->gh_id = $gh_id;
+					$model->openid = $openid;					
+					$model->save(false);
+					 if (empty($model->office_id))
+					 {
+						$this->setState($gh_id, $openid, self::STATE_OFFICE);
+						$str = $this->getOfficePrompt($gh_id);
+						return $this->responseText("{$model->name}，您好!\n,$str");
+					}
+					else
+					{
+						$this->setState($gh_id, $openid, self::STATE_MENU_ONE);
+						return $this->responseText(self::PROMPT_MENU_ONE);
+					}
+
+				case self::STATE_OFFICE:
+					//$offices =MOffice::find()->where(['gh_id'=>$gh_id])->asArray()->all();
+					$offices =MOffice::find()->where("gh_id = '$gh_id' AND office_id <=25 ")->asArray()->all();					
+					$office_ids = [];
+					foreach($offices as $office)
+						$office_ids[] = $office['office_id'];
+					if ((!is_numeric($msg)) || $msg < 0 || !in_array($msg, $office_ids))
+						return $this->responseText("无效的部门号!\n\n".$this->getOfficePrompt($gh_id));
+					$model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+					$model->office_id = $msg;
+					$model->save(false);
+					$this->setState($gh_id, $openid, self::STATE_MENU_ONE); 	
+					return $this->responseText(self::PROMPT_MENU_ONE);
+
+				case self::STATE_CHANGE_MOBILE:
+					if ((!is_numeric($msg)) ||substr($msg, 0, 1) !== '1' || strlen($msg) != 11)
+						return $this->responseText("无效手机号!\n\n"."请重新输入手机号, 0:退出");
+					$model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);					
+					$model->mobile = $msg;
+					$model->save(false);
+					$this->setState($gh_id, $openid, self::STATE_MENU_ONE); 	
+					return $this->responseText(self::PROMPT_MENU_ONE);
+
+				case self::STATE_MENU_ONE:
+					if ((!is_numeric($msg)) ||$msg < 0 || $msg > 6)					
+					{
+						return $this->responseText("输入无效!\n\n".self::PROMPT_MENU_ONE);
+					}						
+					switch ($msg) 
+					{
+						case 1:
+							//U::W('enter 111111');
+							$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+							if (empty($model->scene_id))
+							{
+								$gh = MGh::findOne($gh_id);
+								$scene_id = $gh->newSceneId();
+								$gh->save(false);
+								$model->scene_id = $scene_id;
+								$model->save(false);
+								//U::W("new a scene_id=$scene_id");								
+							}
+							else
+							{
+								$scene_id = $model->scene_id;
+								//U::W("old scene_id=$scene_id");																
+							}
+							$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
+							//U::W($log_file_path);							
+							if (!file_exists($log_file_path))
+							{
+								$arr = $this->WxgetQRCode($scene_id, true);
+								$url = $this->WxGetQRUrl($arr['ticket']);
+								Wechat::downloadFile($url, $log_file_path);	
+							}
+//							$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>'如何使用个人的二维码? <a href="http://baidu.com">点击这里...</a>']];
+							$url = Url::to(['wap/aboutqr','name'=>$model->nickname, 'qrurl'=>Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg"],true);
+							U::W($url);
+							$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>"如何使用个人的二维码? <a href=\"{$url}\">点击这里...</a>"]];
+							$arr = $this->WxMessageCustomSend($msg);
+							return $this->responseLocalImage('image', $log_file_path);
+							
+						case 2:
+							$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);			
+							if ($model->scene_id == 0)
+								$count = 0;
+							else
+								$count = MUser::find()->where(['gh_id'=>$gh_id, 'scene_pid' => $model->scene_id])->count();
+							return $this->responseText("你的推广人数是:{$count}\n\n".self::PROMPT_MENU_ONE);
+							
+						case 3:
+							$staff = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+							if (empty($staff->office_id))
+							{
+								$this->setState($gh_id, $openid, self::STATE_OFFICE);
+								return $this->responseText($this->getOfficePrompt($gh_id));
+							}
+							$model = MOffice::findOne($staff->office_id);
+							if ($model === null)
+							{
+								$this->setState($gh_id, $openid, self::STATE_OFFICE);
+								$str = $this->getOfficePrompt($gh_id);
+								return $this->responseText("invalid office id\n,$str");
+							}							
+							if (empty($model->scene_id))
+							{
+								$gh = MGh::findOne($gh_id);
+								$scene_id = $gh->newSceneId();
+								$gh->save(false);
+								$model->scene_id = $scene_id;
+								$model->save(false);
+								U::W("scene_id=$scene_id");								
+							}
+							else
+								$scene_id = $model->scene_id;
+							$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
+							//U::W($log_file_path);							
+							if (!file_exists($log_file_path))
+							{
+								$arr = $this->WxgetQRCode($scene_id, true);
+								$url = $this->WxGetQRUrl($arr['ticket']);
+								Wechat::downloadFile($url, $log_file_path);	
+							}
+							//$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>'如何使用部门的二维码? <a href="http://baidu.com">点击这里...</a>']];
+							$url = Url::to(['wap/aboutqr','name'=>$model->title, 'qrurl'=>Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg"],true);
+							$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>"如何使用部门的二维码? <a href=\"{$url}\">点击这里...</a>"]];
+							$arr = $this->WxMessageCustomSend($msg);
+							return $this->responseLocalImage('image', $log_file_path);
+							
+						case 4:
+							$staff = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+							if (empty($staff->office_id))
+							{
+								$this->setState($gh_id, $openid, self::STATE_OFFICE);
+								return $this->responseText($this->getOfficePrompt($gh_id));
+							}		
+							$model = MOffice::findOne($staff->office_id);
+							if ($model === null)
+							{
+								$this->setState($gh_id, $openid, self::STATE_OFFICE);
+								$str = $this->getOfficePrompt($gh_id);
+								return $this->responseText("invalid office id\n,$str");
+							}														
+							if ($model->scene_id == 0)
+								$count = 0;
+							else
+								$count = MUser::find()->where(['gh_id'=>$gh_id, 'scene_pid' => $model->scene_id])->count();
+								
+							//U::W($user->office_id);
+							//U::W('a1111111111');								
+							$staffs = MStaff::find()->where(['gh_id'=>$gh_id, 'office_id'=>$staff->office_id])->asArray()->all();
+							$openids = [];
+							//U::W($staffs);							
+							foreach($staffs as $staff)
+							{
+								if (!empty($staff['openid']))
+									$openids[] = $staff['openid'];
+							}
+
+							if (empty($openids))
+							{
+								$staff_count = 0;
+							}
+							else
+							{
+								$users = MUser::find()->where(['gh_id'=>$gh_id, 'openid'=>$openids])->asArray()->all();
+								$scene_ids = [];													
+								foreach($users as $user)
+								{
+									if ($user['scene_id'] != 0)
+										$scene_ids[] = $user['scene_id'];
+								}
+								if (empty($scene_ids))
+									$staff_count = 0;
+								else														
+									$staff_count = MUser::find()->where(['gh_id'=>$gh_id, 'scene_pid' => $scene_ids])->count();								
+							}
+							return $this->responseText("部门所属员工推广人数是:{$staff_count}\n部门推广人数是:{$count}\n\n".self::PROMPT_MENU_ONE);
+							
+						case 5:
+							$this->setState($gh_id, $openid, self::STATE_CHANGE_MOBILE);
+							return $this->responseText("请重新输入手机号, 0:退出");
+							
+						case 6:
+							$staff = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+							$current_office_id = empty($staff->office_id) ? '' : "当前所属部门号:{$staff->office_id}\n";
+							$this->setState($gh_id, $openid, self::STATE_OFFICE);
+							return $this->responseText($current_office_id.$this->getOfficePrompt($gh_id));
+							
+						default:
+							return $this->responseText("输入无效!\n\n".self::PROMPT_MENU_ONE);
+					}					
+					return $this->responseText(self::PROMPT_MENU_ONE);
+				}
+		}
+	}
+
 	protected function onImage() 
 	{ 
 		return Wechat::NO_RESP;
@@ -89,7 +373,7 @@ class WechatXiangYangUnicom extends Wechat
 	{ 
 		$items = array(
 			new RespNewsItem('襄阳联通微商城正式上线', '襄阳联通微商城正式上线', Url::to('images/item/53a9477b995e3.png',true), Url::to(['site/about'],true)),
-			new RespNewsItem('新款热销商品推荐', '新款热销商品推荐', Url::to('images/item/53a95b64d03c1_b.png',true), Url::to(['site/about'],true)),
+			new RespNewsItem('新款热销商品推广', '新款热销商品推广', Url::to('images/item/53a95b64d03c1_b.png',true), Url::to(['site/about'],true)),
 		);
 		return $this->responseNews($items);
 	}
@@ -161,6 +445,14 @@ class WechatXiangYangUnicom extends Wechat
 	}
 */
 
+/*
+			$items = array(
+				new RespNewsItem("{$model->nickname}，欢迎关注襄阳联通官方微信服务号", '欢迎关注襄阳联通官方微信服务号，在这里，您可以逛沃商城，享沃服务，游戏，参与活动...... 天天惊喜，月月有奖！', '', ''),
+				//new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), Url::to(['site/about'],true)),
+				//new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), 'weixin://wxpay/bizpayurl?timestamp=1405737068&appid=wx79c2bf0249ede62a&noncestr=PSottf4eivpHqKlV&productid=1234&sign=e1f9bca3625bfd1bdb4753906753c9f13917f0ec'),
+			);
+			return $this->responseNews($items);
+*/
 
 }
 

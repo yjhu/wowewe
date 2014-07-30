@@ -16,12 +16,6 @@ use app\models\RespNews;
 use app\models\RespNewsItem;
 use app\models\RespMusic;
 
-define('APPID', "wx79c2bf0249ede62a");  //woso appid
-define('APPKEY',"Yat5dfJA2M8v8kZXH9rDk9q7Ae8dqmxRVApfsoiVxUrhvk8DFipBILgDzNFvVPSBJkZctFbqw0LNhfijqE8R8RLZfW04RGk8MkDXQoDES1Ac84LEtjdAt6hzJTNKG7on"); //paysign key
-define('SIGNTYPE', "sha1"); //method
-define('PARTNERKEY', "wosotech20140526huyajun197310070");
-define('APPSERCERT', "c4d53595acf30e9caf09c155b3d95253");	// woso
-
 class Wechat extends \yii\base\Object
 {
 	//const OPENID_TESTER1 = 'o6biBt5yaB7d3i0YTSkgFSAHmpdo';		// hoya hehb
@@ -272,13 +266,22 @@ class Wechat extends \yii\base\Object
 
 	public function checkOpenid() 
 	{
+			U::W('aaaaaaaaaaaa');	
 		$gh_id = $this->getGhId();	
+			U::W('bbbbbb'.$gh_id);			
 		$FromUserName = $this->getRequest('FromUserName');
+			U::W('cccc'.$FromUserName);			
+
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
+			U::W('ddddd');					
 		if ($model === null)
+		{
+			U::W('no.....');
 			$model = new MUser;		
+		}
 		if (empty($model->nickname) ||!$model->subscribe)
 		{
+			U::W('yes.....');		
 			$arr = $this->WxGetUserInfo($FromUserName);
 			$model->setAttributes($arr, false);
 			$model->gh_id = $this->getRequest('ToUserName');			
@@ -287,26 +290,23 @@ class Wechat extends \yii\base\Object
 		$model->msg_time = time();
 		if (!$model->save(false))
 			U::W([__METHOD__, $model->getErrors()]);	
+			U::W('888');					
 	}
 	
 	public function run($gh_id) 
 	{
 		try
 		{		
-//				U::W('TTTTTTTTTTT111');		
 			$this->setGhId($gh_id);
-//				U::W('2222');					
 			$this->valid();		
-//				U::W('TTTTTTTTTTT33333');					
 			$MsgType = $this->getRequest('MsgType');
-//				U::W('TTTTTTTTTTT44444');					
+			U::W('TTTTTTTTTTT44444');					
 			//$this->setGhId($this->getRequest('ToUserName'));
 			$this->checkOpenid();
-//				U::W('TTTTTTTTTTT555');					
+			U::W('TTTTTTTTTTT555');					
 			switch ($MsgType) 
 			{
 				case Wechat::MSGTYPE_TEXT:
-//				U::W('TTTTTTTTTTT6666');
 					$resp = $this->onText();
 					break;
 
@@ -1184,6 +1184,13 @@ errcode errmsg
 47001 	解析JSON/XML内容错误
 48001 	api功能未授权
 50001 	用户未授权该api 
+
+
+define('APPID', "wx79c2bf0249ede62a");  //woso appid
+define('APPKEY',"Yat5dfJA2M8v8kZXH9rDk9q7Ae8dqmxRVApfsoiVxUrhvk8DFipBILgDzNFvVPSBJkZctFbqw0LNhfijqE8R8RLZfW04RGk8MkDXQoDES1Ac84LEtjdAt6hzJTNKG7on"); //paysign key
+define('SIGNTYPE', "sha1"); //method
+define('PARTNERKEY', "wosotech20140526huyajun197310070");
+define('APPSERCERT', "c4d53595acf30e9caf09c155b3d95253");	// woso
 
 
 	public static function my_json_encode($arr) 

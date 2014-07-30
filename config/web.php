@@ -25,6 +25,10 @@ $config = [
 		'class' => 'yii\caching\DummyCache',
 	],		
 */
+	'request' => [
+		'cookieValidationKey' => 'FHcXXyNQEu4_O_A68pFWXgK8TKYyKc2Z',
+	],
+
 	'cacheFile' => [
 		'class' => 'yii\caching\FileCache',
 	],
