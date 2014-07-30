@@ -277,6 +277,7 @@
 			<!--
 			<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
 			-->
+			<p id="oid"></p>
 			<table data-role="table" id="table-custom-2" data-mode="columntoggle"   class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-text="选择要显示的列..." data-column-popup-theme="a">
 			 <thead>
 			   <tr class="ui-bar-d">
@@ -533,28 +534,17 @@ $(document).on("pagecreate", "#page2", function(){
 			type:"GET",
 			data: $("form#productForm").serialize() +"&feeSum="+feeSum,
 			success:function(data){
-/*
-				if(data == "yes")
-				{
-					//alert(data);
-					$.mobile.changePage("#page3",{transition:"slide"});
-				}
-				else
-				{
-					return false;
-				}
-*/
 				data = eval('('+data+')');
 				if(data.status == 0)
 				{
-					alert(data.oid);
+					//alert(data.oid);
+					localStorage.setItem("oid",data.oid)
 					$.mobile.changePage("#page3",{transition:"slide"});
 				}
 				else
 				{
 					return false;
 				}
-
 			}
 		});
 	   
@@ -601,6 +591,10 @@ $(document).on("pageshow", "#page3", function(){
 	$("#callshowPack_fee").html(callshowPack_fee[callshowPack]+"元");
 	
 	$("#total").html("合计:"+feeSum+"元");
+	
+	var oid = localStorage.getItem("oid");
+	$("#oid").html("您的订单号: "+oid);
+	
 });
 
 
