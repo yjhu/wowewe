@@ -115,9 +115,9 @@
 			<div id="TabbedPanels1" class="TabbedPanels">
 			  <ul class="TabbedPanelsTabGroup">
 				<li class="TabbedPanelsTab" tabindex="0" id="flowPackTabTitle">流量包<br><span class='tabSumm'>100MB</span></li>
-				<li class="TabbedPanelsTab" tabindex="0" id="packTabTitle">语音包<br>&nbsp;</li>
-				<li class="TabbedPanelsTab" tabindex="0" id="msgPackTabTitle">短彩信包<br>&nbsp;</li>
-				<li class="TabbedPanelsTab" tabindex="0" id="callshowPackTabTitle">来电显示<br>&nbsp;</li>
+				<li class="TabbedPanelsTab" tabindex="0" id="packTabTitle">语音包<br><span class='tabSumm'>200分钟</span></li>
+				<li class="TabbedPanelsTab" tabindex="0" id="msgPackTabTitle">短彩信包<br><span class='tabSumm'>200条</span></li>
+				<li class="TabbedPanelsTab" tabindex="0" id="callshowPackTabTitle">来电显示<br><span class='tabSumm'>来显</span></li>
 			  </ul>
 			  <div class="TabbedPanelsContentGroup">
 				<div class="TabbedPanelsContent">
@@ -152,7 +152,7 @@
 					<div data-role="fieldcontain">
 					<fieldset data-role="controlgroup">
 					  <legend>语音包</legend>
-					  <input type="radio" name="voicePack" id="voicePack_0" value="0" />
+					  <input type="radio" name="voicePack" id="voicePack_0" value="0" checked />
 					  <label for="voicePack_0">200分钟/32元&nbsp;&nbsp;0.16元/1分钟</label>
 					  <input type="radio" name="voicePack" id="voicePack_1" value="1" />
 					  <label for="voicePack_1">300分钟/40元&nbsp;&nbsp;0.13元/1分钟</label>
@@ -173,7 +173,7 @@
 					<div data-role="fieldcontain">
 					<fieldset data-role="controlgroup">
 					  <legend>短彩信包</legend>
-					  <input type="radio" name="msgPack" id="msgPack_0" value="0" />
+					  <input type="radio" name="msgPack" id="msgPack_0" value="0" checked />
 					  <label for="msgPack_0">200条/10元</label>
 					  <input type="radio" name="msgPack" id="msgPack_1" value="1" />
 					  <label for="msgPack_1">400条/20元</label>
@@ -190,7 +190,7 @@
 					<div data-role="fieldcontain">
 					  <fieldset data-role="controlgroup">
 						<legend>来电显示</legend>
-						<input type="radio" name="callshowPack" id="callshowPack_0" value="0" />
+						<input type="radio" name="callshowPack" id="callshowPack_0" value="0" checked />
 						<label for="callshowPack_0">6元/月&nbsp;&nbsp;来电显示</label>
 						<input type="radio" name="callshowPack" id="callshowPack_1" value="1" />
 						<label for="callshowPack_1">不选择</label>
@@ -271,9 +271,59 @@
 		</div>
 		
 		<div data-role="content">
-			<h2>订单已经成功提交！</h2>
-			
-			<p><a href="#page2" data-transition="slide">我想重新选择</a> </p>
+			<h2>订单详情</h2>
+			<!--
+			<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
+			-->
+			<table data-role="table" id="table-custom-2" data-mode="columntoggle"   class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-text="选择要显示的列..." data-column-popup-theme="a">
+			 <thead>
+			   <tr class="ui-bar-d">
+				 <th data-priority="1">序号</th>
+				 <th data-priority="2">组合项</th>
+				 <th>详情</th>
+				 <th>费用</th>
+				 <!--
+				 <th data-priority="5">Reviews</th>
+				 -->
+			   </tr>
+			 </thead>
+			 <tbody>
+			   <tr>
+				 <th>1</th>
+				 <td>流量包</td>
+				 <td>300MB</td>
+				 <td>16元</td>
+			   </tr>
+			   <tr>
+				 <th>2</th>
+				 <td>语音包</td>
+				 <td>300分钟</td>
+				 <td>40元</td>
+			   </tr>
+			   <tr>
+				 <th>3</th>
+				 <td>短信彩信</td>
+				 <td>400条</td>
+				 <td>20元</td>
+			   </tr>	
+			   <tr>
+				 <th>4</th>
+				 <td>来电显示</td>
+				 <td>来显每月</td>
+				 <td>6元</td>
+			   </tr>				   
+		
+			 </tbody>
+		   </table>
+			<p align="right" style="font-size: 18px; color:#ff8600; font-weight: blod">
+			合计:82元
+			</p>	
+			<p>
+			<input type="button" value="立即支付" id="submitBtn">
+			</p>	
+			<p align="right">
+			<a href="#page2" data-transition="slide">我想重新选择</a> 
+			</p>
 		</div>
 
 		<div data-role="footer">
@@ -299,10 +349,11 @@ $().ready(function() {
 
 	var feeSum = 0;
    
-	var fee_flowPack = 0;
-	var fee_pack = 0;
-	var fee_msgPack = 0;
-	var fee_callshowPack = 0;
+	var fee_flowPack = 8;
+	var fee_pack = 32;
+	var fee_msgPack = 10;
+	var fee_callshowPack = 6;
+	
    
    	function feeSummary()
 	{
@@ -310,6 +361,7 @@ $().ready(function() {
 			$("#diy-create").html("自由组合套餐    月消费:"+feeSum+"元");
 	}
 	
+	feeSummary();
 	
    	$("[name=flowPack]").click(function(){
 		changeTabTitle("flowPack",$(this).val());
@@ -327,7 +379,6 @@ $().ready(function() {
 		changeTabTitle("callshowPack",$(this).val());
 	});	
 	
-
 	function changeTabTitle(v1,v2)
 	{
 		if(v1=="flowPack")
@@ -433,11 +484,14 @@ $().ready(function() {
 				fee_msgPack = 30;
 			}
 			else if(v2==3)
+			{
 				$("#msgPackTabTitle").html("短彩信包<br>&nbsp");	
+				fee_msgPack = 0;
+			}
 			else
 				$("#msgPackTabTitle").html("短彩信包<br>&nbsp");
 		}
-	    else if(v1=="callshowPack")
+		else if(v1=="callshowPack")
 		{
 			if(v2==0)
 			{
@@ -445,9 +499,13 @@ $().ready(function() {
 				fee_callshowPack = 6;
 			}
 			else if(v2==1)
+			{
 				$("#callshowPackTabTitle").html("来电显示<br>&nbsp ");
+				fee_callshowPack = 0;
+			}
 			else
 				$("#callshowPackTabTitle").html("来电显示<br>&nbsp");
+
 		}
 		
 		/**/
@@ -457,7 +515,10 @@ $().ready(function() {
 	
 	//submit form
 	$('#submitBtn').click(function(){
+		//alert('save args to local storage');
+		//alert($("form#productForm").serialize());
 		
+		localStorage.setItem("item",$("form#productForm").serialize())
 		$.ajax({
 			//url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/g2048save' ; ?>"+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/productsubmit' ; ?>",
@@ -468,7 +529,6 @@ $().ready(function() {
 				{
 					//alert(data);
 					$.mobile.changePage("#page3",{transition:"slide"});
-					
 				}
 				else
 				{
@@ -482,6 +542,13 @@ $().ready(function() {
 		//$("#result").html($("form#productForm").serialize());
 	});
 });
+
+/*
+$("#page2").live("pagecreate",function(){
+	alert("hello");
+});
+*/
+
 </script>	
 <?php
 /*
