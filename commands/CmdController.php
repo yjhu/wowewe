@@ -26,6 +26,7 @@ class CmdController extends Controller
 	{		
 		Yii::$app->getUrlManager()->setBaseUrl('/wx/web/index.php');
 		Yii::$app->getUrlManager()->setHostInfo('http://www.hoyatech.net');
+		Yii::$app->getUrlManager()->setScriptUrl('/wx/web/index.php');
 		//Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
 		//Yii::$app->wx->setGhId(MGh::GH_HOYA);
 		Yii::$app->wx->setGhId(MGh::GH_WOSO);
@@ -169,7 +170,8 @@ class CmdController extends Controller
 					new \app\models\ButtonView('上网卡', 'http://m.10010.com/CardList'),
 					new \app\models\ButtonView('资费套餐', 'http://m.10010.com/'),
 				]),
-				new \app\models\ButtonView('★自由组合', 'http://m.10010.com/mobilegoodsdetail/981405149472.html'),
+				//new \app\models\ButtonView('★自由组合', 'http://m.10010.com/mobilegoodsdetail/981405149472.html'),
+				new \app\models\ButtonView('★自由组合', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/product:{$gh_id}")),
 				new \app\models\ButtonComplex('沃服务', [
 					new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
 					new \app\models\ButtonView('流量包订购', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
@@ -311,7 +313,8 @@ class CmdController extends Controller
 			$name = $arr[1];				
 			$title = isset($arr[2]) ? $arr[2] : '';							
 
-			$s = new \app\models\MStaff;
+			$s = new \app\models\MStaff;
+
 
 			$s->gh_id = 'gh_03a74ac96138';
 			$s->name = $name;
