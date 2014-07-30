@@ -204,6 +204,7 @@
 			<!--	
 			<button id="submitBtn">确认套餐</button>
 			-->
+	
 			<input type="button" value="确认套餐" id="submitBtn">
 			
 			<br>
@@ -292,32 +293,34 @@
 			   <tr>
 				 <th>1</th>
 				 <td>流量包</td>
-				 <td>300MB</td>
-				 <td>16元</td>
+				 <td id="flowPack_name">300MB</td>
+				 <td id="flowPack_fee">16元</td>
 			   </tr>
 			   <tr>
 				 <th>2</th>
 				 <td>语音包</td>
-				 <td>300分钟</td>
-				 <td>40元</td>
+				 <td id="voicePack_name">300分钟</td>
+				 <td id="voicePack_fee">40元</td>
 			   </tr>
 			   <tr>
 				 <th>3</th>
 				 <td>短信彩信</td>
-				 <td>400条</td>
-				 <td>20元</td>
+				 <td id="msgPack_name">400条</td>
+				 <td id="msgPack_fee">20元</td>
 			   </tr>	
 			   <tr>
 				 <th>4</th>
-				 <td>来电显示</td>
-				 <td>来显每月</td>
+				 <td id="callshowPack_name">来电显示</td>
+				 <td id="callshowPack_fee">来显每月</td>
 				 <td>6元</td>
 			   </tr>				   
 		
 			 </tbody>
 		   </table>
 			<p align="right" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
+			<span  id="total">
 			合计:82元
+			</span>
 			</p>	
 			<p>
 			<input type="button" value="立即支付" id="submitBtn">
@@ -524,7 +527,7 @@ $(document).on("pagecreate", "#page2", function(){
 		localStorage.setItem("item",$("form#productForm").serialize())
 		$.ajax({
 			//url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/g2048save' ; ?>"+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
-			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/productsubmit' ; ?>",
+			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			type:"GET",
 			data:$("form#productForm").serialize(),
 			success:function(data){
@@ -539,7 +542,6 @@ $(document).on("pagecreate", "#page2", function(){
 				}
 			}
 		});
-		
 	   
 		//alert($("form#productForm").serialize());
 		//$("#result").html($("form#productForm").serialize());
@@ -549,18 +551,45 @@ $(document).on("pagecreate", "#page2", function(){
 
 });
 
-
-$(document).on("pagecreate", "#page3", function(){
+$(document).on("pageshow", "#page3", function(){
 	// alert("page3 create");
+	
+	flowPack_name = {"0":"100MB", "1":"300MB", "2":"500MB", "3":"1GB", "4":"2GB", "5":"3GB", "6":"4GB", "7":"6GB", "8":"11GB"};
+	flowPack_fee = {"0":"8", "1":"16", "2":"24", "3":"48", "4":"72", "5":"96", "6":"120", "7":"152", "8":"232"};
+	
+	voicePack_name = {"0":"200分钟", "1":"300分钟", "2":"500分钟", "3":"1000分钟", "4":"2000分钟", "5":"3000分钟"};
+	voicePack_fee = {"0":"32", "1":"40", "2":"56", "3":"112", "4":"160", "5":"240"};
+	
+	msgPack_name = {"0":"200条", "1":"400条", "2":"600条", "3":"不选"};
+	msgPack_fee = {"0":"10", "1":"20", "2":"30", "3":"0"};
+	
+	callshowPack_name = {"0":"来显", "1":"不选"};
+	callshowPack_fee = {"0":"6", "1":"0"};
+	
 	var item = localStorage.getItem("item");
-	alert('from page3'+item);
+	item_new = item.replace(/&/g, ";") +';';
+	
+	eval(item_new);
+	//alert('流量包'+flowPack_name[flowPack]+"费用"+flowPack_fee[flowPack]);
+	
+	var total = parseInt(flowPack_fee[flowPack]) + parseInt(voicePack_fee[voicePack]) +
+			parseInt(msgPack_fee[msgPack]) + parseInt(callshowPack_fee[callshowPack]);
+	
+	$("#flowPack_name").html(flowPack_name[flowPack]);
+	$("#flowPack_fee").html(flowPack_fee[flowPack]+"元");
+	
+	$("#voicePack_name").html(voicePack_name[voicePack]);
+	$("#voicePack_fee").html(voicePack_fee[voicePack]+"元");
+	
+	$("#msgPack_name").html(msgPack_name[msgPack]);
+	$("#msgPack_fee").html(msgPack_fee[msgPack]+"元");
+	
+	$("#callshowPack_name").html(callshowPack_name[callshowPack]);
+	$("#callshowPack_fee").html(callshowPack_fee[callshowPack]+"元");
+	
+	$("#total").html("合计:"+total+"元");
+});
 
-});
-/*
-$("#page2").live("pagecreate",function(){
-	alert("hello");
-});
-*/
 
 </script>	
 <?php
