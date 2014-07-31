@@ -749,7 +749,7 @@ EOD;
 		$order->openid = $openid;
 		$order->total_fee = $total_fee;
 		//$order->title = 'SELFDIY';
-		$order->$title = '自由组合套餐';
+		//$order->$title = '自由组合套餐';
 		//str_replace(array('"', "'", "/", "+", " "), '', $title);
 		$order->cid = MOrder::ITEM_CAT_DIY;
 		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack";
