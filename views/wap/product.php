@@ -185,8 +185,8 @@
 					  <label for="msgPack_1">400条/20元</label>
 					  <input type="radio" name="msgPack" id="msgPack_2" value="2" />
 					  <label for="msgPack_2">600条/30元</label>
-					  <input type="radio" name="msgPack" id="msgPack_3" value="3" checked />
-					  <label for="msgPack_3">不选短彩信包按0.1元/条收费费</label>
+					  <input type="radio" name="msgPack" id="msgPack_notselect" value="999" checked />
+					  <label for="msgPack_notselect">不选短彩信包按0.1元/条收费费</label>
 					</fieldset>
 					<p>&nbsp;短彩信包超出后按0.1元/条收费</p>
 				  </div>
@@ -198,8 +198,8 @@
 						<legend>来电显示</legend>
 						<input type="radio" name="callshowPack" id="callshowPack_0" value="0" />
 						<label for="callshowPack_0">6元/月&nbsp;&nbsp;来电显示</label>
-						<input type="radio" name="callshowPack" id="callshowPack_1" value="1" checked />
-						<label for="callshowPack_1">不选择</label>
+						<input type="radio" name="callshowPack" id="callshowPack_notselect" value="999" checked />
+						<label for="callshowPack_notselect">不选择</label>
 					  </fieldset>
 					  <p>&nbsp;您开通语音包后，将默认开通来电显示包</p>
 					</div>
@@ -377,7 +377,7 @@
 			<p align="right">
 			<a href="#page2" data-transition="slide">我想重新选择自由组合套餐</a>
 			</p>
-					
+
 		</div>
 
 		<div data-role="footer">
@@ -479,15 +479,12 @@ $(document).on("pageshow", "#page2", function(){
 		if( $(this).val() != 999)
 		{
 			$( "#callshowPack_0" ).prop( "checked", true ).checkboxradio( "refresh" );
-			$( "#callshowPack_1" ).checkboxradio( "option", "disabled", true ).checkboxradio( "refresh" );
-			
+			$( "#callshowPack_notselect" ).checkboxradio( "option", "disabled", true ).checkboxradio( "refresh" );
 			changeTabTitle("callshowPack",0);
 		}
 		else
 		{
-			//$( "#callshowPack_0" ).prop( "checked", true ).checkboxradio( "refresh" );
-			$( "#callshowPack_1" ).checkboxradio( "enable" );
-
+			$( "#callshowPack_notselect" ).checkboxradio( "enable" );
 			changeTabTitle("callshowPack",0);
 		}		
 	});
@@ -609,7 +606,7 @@ $(document).on("pageshow", "#page2", function(){
 				$("#msgPackTabTitle").html("短彩信包<br><span class='tabSumm'> 600条</span>");
 				fee_msgPack = 30;
 			}
-			else if(v2==3)
+			else if(v2==999)
 			{
 				$("#msgPackTabTitle").html("短彩信包<br>&nbsp");	
 				fee_msgPack = 0;
@@ -624,7 +621,7 @@ $(document).on("pageshow", "#page2", function(){
 				$("#callshowPackTabTitle").html("来电显示<br><span class='tabSumm'> 来显</span>");
 				fee_callshowPack = 6;
 			}
-			else if(v2==1)
+			else if(v2==999)
 			{
 				$("#callshowPackTabTitle").html("来电显示<br>&nbsp ");
 				fee_callshowPack = 0;
@@ -651,7 +648,7 @@ $(document).on("pageshow", "#page2", function(){
         }
         else
         {
-            seletNum = localStorage.getItem("luckNum");
+            selectNum = localStorage.getItem("luckNum");
         }
 
 		localStorage.setItem("item",$("form#productForm").serialize())
