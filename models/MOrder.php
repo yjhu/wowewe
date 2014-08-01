@@ -77,25 +77,25 @@ class MOrder extends ActiveRecord
 	
 	public static function getMsgPackName($json=true)
 	{
-		$arr = ['0'=>'200条', '1'=>'400条', '2'=>'600条', '3'=>'不选'];			
+		$arr = ['0'=>'200条', '1'=>'400条', '2'=>'600条', '999'=>'不选'];
 		return $json? json_encode($arr) : $arr;
 	}
 	
 	public static function getMsgPackFee($json=true)
 	{
-		$arr = ['0'=>'10', '1'=>'20', '2'=>'30', '3'=>'0'];			
+		$arr = ['0'=>'10', '1'=>'20', '2'=>'30', '999'=>'0'];
 		return $json? json_encode($arr) : $arr;
 	}	
 	
 	public static function getCallShowPackName($json=true)
 	{
-		$arr = ['0'=>'来显', '1'=>'不选'];			
+		$arr = ['0'=>'来显', '999'=>'不选'];
 		return $json? json_encode($arr) : $arr;
 	}	
 	
 	public static function getCallShowPackFee($json=true)
 	{
-		$arr = ['0'=>'6', '1'=>'0'];			
+		$arr = ['0'=>'6', '999'=>'0'];
 		return $json? json_encode($arr) : $arr;
 	}	
 
