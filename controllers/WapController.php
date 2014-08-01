@@ -266,18 +266,45 @@ EOD;
 			(!isset($_GET['total_fee'])) || (!isset($_GET['fee_type'])) || (!isset($_GET['notify_id'])) ||
 			(!isset($_GET['transaction_id'])) || (!isset($_GET['time_end'])))
 		{
-			U::W(['Invalid GET data from wx server...', __METHOD__, $_GET]);
+			U::W(['Invalid GET data from wx server...', __METHOD__, $_GET, $_POST]);
 			exit;
 		}				
-		$out_trade_no = $_GET["out_trade_no"];		
-		$trade_state = $_GET['trade_state'];
-		$transaction_id = $_GET['transaction_id'];		
-		$attach = Yii::$app->request->get('attach', '');		
-
-		//save to db
-		//do some things at once?, for example, https://api.weixin.qq.com/pay/delivernotify...
-		$arr = Yii::$app->wx->WxPayDeliverNotify($openid, $transaction_id, $out_trade_no);
-		U::W($arr);		
+		//$out_trade_no = $_GET["out_trade_no"];		
+		//$trade_state = $_GET['trade_state'];
+		//$transaction_id = $_GET['transaction_id'];		
+		//$attach = Yii::$app->request->get('attach', '');		
+		$order = MOrder::findOne($_GET["out_trade_no"]);
+		if ($order === null)
+		{
+			U::W(['oid does not exist!', __METHOD__, $_GET, $_POST]);
+			return 'success';
+		}
+		if ($_GET['trade_state'] == 0	)
+			$order ->status = MOrder::STATUS_WAIT_PAYED;
+		else
+			$order ->status = MOrder::STATUS_WAIT_PAYED_ERR;
+		if ($openid != $order->openid)	
+		{
+			U::W(['impossible! openid is not equal', __METHOD__, $_GET, $_POST, $order->openid]);			
+		}
+		$order ->notify_id = $_GET['notify_id'];
+		$order ->partner = $_GET['partner'];
+		$order ->time_end = $_GET['time_end'];
+		$order ->total_fee = $_GET['total_fee'];
+		$order ->trade_state = $_GET['trade_state'];
+		$order ->transaction_id = $_GET['transaction_id'];
+		$order ->appid = $arr['AppId'];
+		$order ->issubscribe = $arr['IsSubscribe'];
+		$order->save(false);
+		if ($_GET['trade_state'] == 0	)
+		{
+			$arr = Yii::$app->wx->WxPayDeliverNotify($openid, $_GET['transaction_id'], $_GET["out_trade_no"]);
+			U::W($arr);					
+		}
+		else
+		{
+			U::W(['trade_state is not 0', __METHOD__, $_GET, $_POST]);		
+		}
 		return 'success';	
 	}
 
@@ -720,8 +747,7 @@ EOD;
 	
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodsave:gh_1ad98f5481f3
 	public function actionProdsave()
-	{	
-		
+	{			
 		U::W([$_GET, $_POST]);
 		$this->layout = 'wap';
 		$gh_id = Yii::$app->session['gh_id'];
@@ -730,36 +756,44 @@ EOD;
 		{
 			$cardType = 1;
 			$flowPack =2;
-			$voicePack = 3;
-			$msgPack = 9;
-			$callshowPack = 4;
+			$voicePack = 1;
+			$msgPack = 1;
+			$callshowPack = 1;
 			$feeSum =  7;			
 		}
-		
-		$cardType = $_GET["cardType"];
-		$flowPack =$_GET["flowPack"];
-		$voicePack = $_GET["voicePack"];
-		$msgPack = $_GET["msgPack"];
-		$callshowPack = $_GET["callshowPack"];
-		$feeSum =  $_GET["feeSum"];
-
+		else
+		{
+			$cardType = $_GET["cardType"];
+			$flowPack =$_GET["flowPack"];
+			$voicePack = $_GET["voicePack"];
+			$msgPack = $_GET["msgPack"];
+			$callshowPack = $_GET["callshowPack"];
+			$feeSum =  $_GET["feeSum"];
+		}
 		$total_fee = $feeSum * 100;
 		$order = new MOrder;
 		$order->oid = MOrder::generateOid();
 		$order->gh_id = $gh_id;
 		$order->openid = $openid;
-		$order->total_fee = $total_fee;
-		//$order->title = 'SELFDIY';
+		$order->feesum = $feeSum;
 		$order->title = '自由组合套餐';
 		$order->cid = MOrder::ITEM_CAT_DIY;
 		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack";
-		$order->detail = $order->getDetailStr();
+		$order->detail = $order->getDetail();
 		$order->save(false);
 
-		//Yii::$app->wx->setGhId($gh_id);
+		//U::W($order->getDetail());
+		//U::W($order->getWxNotice());
+
+		Yii::$app->wx->setGhId($gh_id);
+		$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);
+		
+		Yii::$app->wx->clearGh();
 		Yii::$app->wx->setGhId(MGh::GH_WOSO);
 		$url = Yii::$app->wx->create_native_url($order->oid);
-		//$url = "http://baidu.com";
+		Yii::$app->wx->clearGh();
+		Yii::$app->wx->setGhId($gh_id);		
+		
 		U::W(json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]));
 		return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
 	}

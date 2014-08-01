@@ -6,6 +6,8 @@ use Yii;
 use yii\web\HttpException;
 use app\models\WxException;
 
+use app\models\U;
+
 class MyErrorAction extends \yii\web\ErrorAction
 {
 	public function run()
@@ -43,8 +45,10 @@ class MyErrorAction extends \yii\web\ErrorAction
 		}
 
 		if (Yii::$app->getRequest()->getIsAjax()) {
+			U::W([$name, $message]);
 			return "$name: $message";
 		} else {
+			U::W([$name, $message]);
 			return $this->controller->render($this->view ?: $this->id, [
 				'name' => $name,
 				'message' => $message,

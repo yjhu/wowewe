@@ -84,7 +84,7 @@ $config = [
 */        
 
 	'log' => [
-	    'traceLevel' => YII_DEBUG ? 5 : 0,
+	    'traceLevel' => YII_DEBUG ? 5 : 2,
 	    'targets' => [
 	        [
 	            'class' => 'yii\log\FileTarget',
@@ -103,12 +103,10 @@ $config = [
 
 if (YII_ENV_DEV) {
 	$config['bootstrap'][] = 'debug';
-	//$config['modules']['debug'] = 'yii\debug\Module';
 	$config['modules']['debug'] = [
 		'class' => 'yii\debug\Module',
 		'allowedIPs' => ['119.96.*.*', '101.226.*.*', '127.0.0.1', '::1']
 	];
-
 	$config['bootstrap'][] = 'gii';
 	$config['modules']['gii'] = 'yii\gii\Module';
 }
