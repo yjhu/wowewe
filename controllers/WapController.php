@@ -751,7 +751,8 @@ EOD;
 		U::W([$_GET, $_POST]);
 		$this->layout = 'wap';
 		$gh_id = Yii::$app->session['gh_id'];
-		$openid = Yii::$app->session['openid'];		
+		$openid = Yii::$app->session['openid'];	
+		Yii::$app->wx->setGhId($gh_id);		
 		if (0)
 		{
 			$cardType = 1;
@@ -784,9 +785,15 @@ EOD;
 
 		//U::W($order->getDetail());
 		//U::W($order->getWxNotice());
-
-		Yii::$app->wx->setGhId($gh_id);
-		$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);
+		try
+		{
+			$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					
+			U::W($arr);		
+		}
+		catch (\Exception $e)
+		{
+			U::W($e->getCode().':'.$e->getMessage());
+		}
 		
 		Yii::$app->wx->clearGh();
 		Yii::$app->wx->setGhId(MGh::GH_WOSO);

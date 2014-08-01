@@ -120,6 +120,7 @@ class Wechat extends \yii\base\Object
 	public function clearGh()
 	{
 		$this->_gh_id = null;
+		$this->_appid = null;
 		$this->_gh = null;
 	}
 	
