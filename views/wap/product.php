@@ -148,7 +148,7 @@
 					  <label for="flowPack_8">11GB/232元&nbsp;&nbsp;0.02元/1M</label>
 
 					</fieldset>
-					<p>&nbsp;&nbsp;流量包超出部分按0.2元/MB收费</p>
+					<p>&nbsp;流量包超出部分按0.2元/MB收费</p>
 				  </div>
 				</div>
 
@@ -171,7 +171,7 @@
 					  <input type="radio" name="voicePack" id="voicePack_notselect" value="999" checked />
 					  <label for="voicePack_notselect">不选择</label>		  
 					</fieldset>
-					<p>&nbsp;&nbsp;语音包超出后按0.15元/分钟收费</p>
+					<p>&nbsp;语音包超出后按0.15元/分钟收费</p>
 				  </div> 
 				</div>
 
@@ -188,7 +188,7 @@
 					  <input type="radio" name="msgPack" id="msgPack_3" value="3" checked />
 					  <label for="msgPack_3">不选短彩信包按0.1元/条收费费</label>
 					</fieldset>
-					<p>&nbsp;&nbsp;短彩信包超出后按0.1元/条收费</p>
+					<p>&nbsp;短彩信包超出后按0.1元/条收费</p>
 				  </div>
 				</div>         
 
@@ -201,7 +201,7 @@
 						<input type="radio" name="callshowPack" id="callshowPack_1" value="1" checked />
 						<label for="callshowPack_1">不选择</label>
 					  </fieldset>
-					  <p>&nbsp;&nbsp;您开通语音包后，将默认开通来电显示包</p>
+					  <p>&nbsp;您开通语音包后，将默认开通来电显示包</p>
 					</div>
 				</div>                
 
@@ -375,7 +375,7 @@
 			<p id="url"></p>
 			-->
 			<p align="right">
-			<a href="#page2" data-transition="slide">我想重新选择</a> 
+			<a href="#page2" data-transition="slide">我想重新选择自由组合套餐</a>
 			</p>
 					
 		</div>
@@ -397,8 +397,10 @@
 			<div class="ui-grid-a">
 			<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >13545296480</a></div></div>
 			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >33333333333</a></div></div>
-            <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >44444444444</a></div></div>
+            <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >77777777777</a></div></div>
             <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >55555555555</a></div></div>
+            <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >66666666666</a></div></div>
+            <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >88888888888</a></div></div>
 			</div><!-- /grid-->
 
             <p>
