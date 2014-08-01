@@ -16,6 +16,8 @@ use app\models\MUser;
 
 class SiteController extends Controller
 {
+	public $enableCsrfValidation = false;
+	
 	public function behaviors()
 	{
 		return [

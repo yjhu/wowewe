@@ -2,17 +2,32 @@
 /**
  * @var yii\web\View $this
  */
+use yii\helpers\Url;
+use yii\helpers\Html;
+
 $this->title = Yii::$app->params['title'];
 ?>
 <div class="site-index">
 
+
+<div class="row">
     <div class="jumbotron">
         <h1>欢迎您！</h1>
 
-        <p class="lead">您已成功登录襄阳联通官方微信管理后台</p>
+		<?php if (Yii::$app->user->isGuest): ?>
+	        <p class="lead">访问襄阳联通官方微信管理后台</p>
+		<?php else: ?>
+		    <p class="lead">您已成功登录襄阳联通官方微信管理后台</p>	
+		<?php endif; ?>
 
         <p><a class="btn btn-lg btn-success" href="#">点此了解详细</a></p>
+
+		<?php //echo Html::img(Url::to('images/qrcode_for_gh_03a74ac96138_344.jpg'), ['class'=>'img-responsive']); ?>
     </div>
+
+</div>
+
+
 
 <!--
     <div class="body-content">

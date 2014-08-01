@@ -24,20 +24,22 @@
 */
 	?>
 
-	<!--
-<link href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" rel="stylesheet" type="text/css"/>
-<link href="../../web/js/jqm/SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
-<script src="http://code.jquery.com/jquery-1.6.4.min.js" type="text/javascript"></script>
-<script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js" type="text/javascript"></script>
-<script src="../../web/js/jqm/SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>	
-	-->
-	
-	
 <style type="text/CSS">
 .tabSumm 
 {
 	color:#00C;
 }
+.keyword
+{
+    color: red;
+    background-color: yellow;
+}
+.highlight
+{
+    color: red;
+    background-color: yellow;
+}
+
 </style>
 	
 <?php $this->head() ?>
@@ -117,9 +119,9 @@
 			<div id="TabbedPanels1" class="TabbedPanels">
 			  <ul class="TabbedPanelsTabGroup">
 				<li class="TabbedPanelsTab" tabindex="0" id="flowPackTabTitle">流量包<br><span class='tabSumm'>100MB</span></li>
-				<li class="TabbedPanelsTab" tabindex="0" id="packTabTitle">语音包<br><span class='tabSumm'>200分钟</span></li>
-				<li class="TabbedPanelsTab" tabindex="0" id="msgPackTabTitle">短彩信包<br><span class='tabSumm'>200条</span></li>
-				<li class="TabbedPanelsTab" tabindex="0" id="callshowPackTabTitle">来电显示<br><span class='tabSumm'>来显</span></li>
+				<li class="TabbedPanelsTab" tabindex="0" id="packTabTitle">语音包<br><span class='tabSumm'>&nbsp;</span></li>
+				<li class="TabbedPanelsTab" tabindex="0" id="msgPackTabTitle">短彩信包<br><span class='tabSumm'>&nbsp;</span></li>
+				<li class="TabbedPanelsTab" tabindex="0" id="callshowPackTabTitle">来电显示<br><span class='tabSumm'>&nbsp;</span></li>
 			  </ul>
 			  <div class="TabbedPanelsContentGroup">
 				<div class="TabbedPanelsContent">
@@ -154,7 +156,7 @@
 					<div data-role="fieldcontain">
 					<fieldset data-role="controlgroup">
 					  <legend>语音包</legend>
-					  <input type="radio" name="voicePack" id="voicePack_0" value="0" checked />
+					  <input type="radio" name="voicePack" id="voicePack_0" value="0"  />
 					  <label for="voicePack_0">200分钟/32元&nbsp;&nbsp;0.16元/1分钟</label>
 					  <input type="radio" name="voicePack" id="voicePack_1" value="1" />
 					  <label for="voicePack_1">300分钟/40元&nbsp;&nbsp;0.13元/1分钟</label>
@@ -166,6 +168,8 @@
 					  <label for="voicePack_4">2000分钟/160元&nbsp;&nbsp;0.08元/1分钟</label>
 					  <input type="radio" name="voicePack" id="voicePack_5" value="5" />
 					  <label for="voicePack_5">3000分钟/240元&nbsp;&nbsp;0.08元/1分钟</label>
+					  <input type="radio" name="voicePack" id="voicePack_notselect" value="999" checked />
+					  <label for="voicePack_notselect">不选择</label>		  
 					</fieldset>
 					<p>&nbsp;&nbsp;语音包超出后按0.15元/分钟收费</p>
 				  </div> 
@@ -175,13 +179,13 @@
 					<div data-role="fieldcontain">
 					<fieldset data-role="controlgroup">
 					  <legend>短彩信包</legend>
-					  <input type="radio" name="msgPack" id="msgPack_0" value="0" checked />
+					  <input type="radio" name="msgPack" id="msgPack_0" value="0" />
 					  <label for="msgPack_0">200条/10元</label>
 					  <input type="radio" name="msgPack" id="msgPack_1" value="1" />
 					  <label for="msgPack_1">400条/20元</label>
 					  <input type="radio" name="msgPack" id="msgPack_2" value="2" />
 					  <label for="msgPack_2">600条/30元</label>
-					  <input type="radio" name="msgPack" id="msgPack_3" value="3" />
+					  <input type="radio" name="msgPack" id="msgPack_3" value="3" checked />
 					  <label for="msgPack_3">不选短彩信包按0.1元/条收费费</label>
 					</fieldset>
 					<p>&nbsp;&nbsp;短彩信包超出后按0.1元/条收费</p>
@@ -192,9 +196,9 @@
 					<div data-role="fieldcontain">
 					  <fieldset data-role="controlgroup">
 						<legend>来电显示</legend>
-						<input type="radio" name="callshowPack" id="callshowPack_0" value="0" checked />
+						<input type="radio" name="callshowPack" id="callshowPack_0" value="0" />
 						<label for="callshowPack_0">6元/月&nbsp;&nbsp;来电显示</label>
-						<input type="radio" name="callshowPack" id="callshowPack_1" value="1" />
+						<input type="radio" name="callshowPack" id="callshowPack_1" value="1" checked />
 						<label for="callshowPack_1">不选择</label>
 					  </fieldset>
 					  <p>&nbsp;&nbsp;您开通语音包后，将默认开通来电显示包</p>
@@ -203,9 +207,11 @@
 
 			  </div>
 			</div>
-			<!--	
-			<button id="submitBtn">确认套餐</button>
-			-->
+			
+								 
+			<a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
+			
+
 			<input type="button" value="确认套餐" id="submitBtn">
 			
 			<br>
@@ -377,6 +383,34 @@
 	</div>	<!-- page3 end -->	
 
 	
+
+	<div data-role="page" id="number-select">
+		<div data-role="header">
+			<h1>自由组合套餐</h1>
+		</div>
+		
+		<div data-role="content">
+			<h2>请您选择手机号码</h2>
+			<div class="ui-grid-a">
+			<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >13545296480</a></div></div>
+			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >33333333333</a></div></div>
+            <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >44444444444</a></div></div>
+            <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >55555555555</a></div></div>
+			</div><!-- /grid-->
+
+            <p>
+                <input type="button" value="换一批号码看看" id="seleNumBtn">
+            </p>
+
+		</div>
+
+
+
+		<div data-role="footer">
+			<h4>&copy; 襄阳联通 2014</h4>
+		</div>
+	</div>	<!-- page3 end -->	
+	
 <?php $this->endBody() ?>
 </body>
 
@@ -390,6 +424,7 @@ var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
 
 
 <script>
+var  currentPage = 1; /*init page num*/
 var feeSum = 0;
 //$().ready(function() {
 
@@ -403,12 +438,12 @@ function isWeiXin() {
 }
 
 
-$(document).on("pagecreate", "#page2", function(){
+$(document).on("pageshow", "#page2", function(){
 
 	var fee_flowPack = 8;
-	var fee_pack = 32;
-	var fee_msgPack = 10;
-	var fee_callshowPack = 6;
+	var fee_pack = 0;
+	var fee_msgPack = 0;
+	var fee_callshowPack = 0;
 	
    	function feeSummary()
 	{
@@ -419,12 +454,37 @@ $(document).on("pagecreate", "#page2", function(){
 	
 	feeSummary();
 	
+	function showSelectedNumber()
+	{
+		luckNum = localStorage.getItem("luckNum");
+		if(luckNum != null)
+		{			
+			$("#sel-num")[0].innerHTML="您选择的靓号 "+luckNum;
+		}
+	}
+	showSelectedNumber();
+
    	$("[name=flowPack]").click(function(){
 		changeTabTitle("flowPack",$(this).val());
 	});
 	
    	$("[name=voicePack]").click(function(){
 		changeTabTitle("voicePack",$(this).val());
+
+		if( $(this).val() != 999)
+		{
+			$( "#callshowPack_0" ).prop( "checked", true ).checkboxradio( "refresh" );
+			$( "#callshowPack_1" ).checkboxradio( "option", "disabled", true ).checkboxradio( "refresh" );
+			
+			changeTabTitle("callshowPack",0);
+		}
+		else
+		{
+			//$( "#callshowPack_0" ).prop( "checked", true ).checkboxradio( "refresh" );
+			$( "#callshowPack_1" ).checkboxradio( "enable" );
+
+			changeTabTitle("callshowPack",0);
+		}		
 	});
 	
    	$("[name=msgPack]").click(function(){
@@ -519,8 +579,13 @@ $(document).on("pagecreate", "#page2", function(){
 				$("#packTabTitle").html("语音包<br><span class='tabSumm'> 3000分钟</span>");
 				fee_pack = 240;
 			}
+			else if( v2==999)
+			{
+				$("#packTabTitle").html("语音包<br><span class='tabSumm'>&nbsp;</span>");
+				fee_pack = 0;
+			}
 			else
-				$("#packTabTitle").html("语音<br>&nbsp包");
+				$("#packTabTitle").html("语音包<br><span class='tabSumm'>&nbsp;</span>");
 		}
 		else if(v1=="msgPack")
 		{
@@ -573,7 +638,13 @@ $(document).on("pagecreate", "#page2", function(){
 	$('#submitBtn').click(function(){
 		//alert('save args to local storage');
 		//alert($("form#productForm").serialize());
-		
+
+        if( localStorage.getItem("luckNum") == null)
+        {
+            $.mobile.changePage("#number-select",{transition:"slide"});
+            return;
+        }
+
 		localStorage.setItem("item",$("form#productForm").serialize())
 		$.ajax({
 			//url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/g2048save' ; ?>"+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
@@ -682,7 +753,7 @@ $(document).on("pageshow", "#page3", function(){
 		if (isWeiXin()) {
 			var text = window.navigator.userAgent;
 			if (text.indexOf("Android") >= 0) {
-				alert('you mobile is android, can not pay.');
+				alert('您的订单已经生成.');
 				//alert("你的手机系统是：安卓");
 
 			} else if (text.indexOf("iPhone") >= 0) {
@@ -699,8 +770,51 @@ $(document).on("pageshow", "#page3", function(){
 	   
 	   }); /*end of pay submit*/
 	
-	
-	
+});
+
+$(document).on("pageshow", "#number-select", function(){
+
+    /*highLlght selected num*/
+    if( localStorage.getItem("luckNum") != null)
+    {
+        $('.ui-grid-a').highLight();
+        $('.ui-grid-a').highLight(localStorage.getItem("luckNum"));
+    }
+
+    $(".ui-grid-a a").click(function(){
+		//alert($(this).text());
+		localStorage.setItem("luckNum",$(this).text());
+		location.href="#page2";
+
+        /*
+		$.ajax({
+			url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodnum' ; ?>",
+			type:"GET",
+			//data: $("form#productForm").serialize() +"&feeSum="+feeSum,
+			data: "&currentPage="+currentPage,
+			success:function(data){
+				data = eval('('+data+')');
+				if(data.status == 0)
+				{
+					//alert(data.oid);
+					//localStorage.setItem("oid",data.oid);
+					//$.mobile.changePage("#page3",{transition:"slide"});
+				}
+				else
+				{
+					return false;
+				}
+			}
+		});
+        */
+        /*end of ajax*/
+	});
+
+    $("#seleNumBtn").click(function(){
+        alert("换一批号码看看, 玩命加载中...");
+    });
+
+
 });
 
 

@@ -133,8 +133,8 @@ EOD;
 			switch ($state) 
 			{
 				case self::STATE_NONE:
-//					if ($msg !== '我是襄阳联通员工')
-					if ($msg !== 'Xy')					
+					//if ($msg !== 'Xy')					
+					if ($msg !== '我是襄阳联通员工')
 						return Wechat::NO_RESP;
 					$model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 					if ($model === null)
@@ -231,9 +231,9 @@ EOD;
 								$url = $this->WxGetQRUrl($arr['ticket']);
 								Wechat::downloadFile($url, $log_file_path);	
 							}
-//							$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>'如何使用个人的二维码? <a href="http://baidu.com">点击这里...</a>']];
-							$url = Url::to(['wap/aboutqr','name'=>$model->nickname, 'qrurl'=>Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg"],true);
-							U::W($url);
+							//$url = Url::to(['wap/aboutqr','name'=>$model->nickname, 'qrurl'=>Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg"],true);
+							$url = "http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203659175&idx=1&sn=0efaf2269fb7ba6a022f5c31d0d5e255#rd";
+							//U::W($url);
 							$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>"如何使用个人的二维码? <a href=\"{$url}\">点击这里...</a>"]];
 							$arr = $this->WxMessageCustomSend($msg);
 							return $this->responseLocalImage('image', $log_file_path);
@@ -280,7 +280,8 @@ EOD;
 								Wechat::downloadFile($url, $log_file_path);	
 							}
 							//$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>'如何使用部门的二维码? <a href="http://baidu.com">点击这里...</a>']];
-							$url = Url::to(['wap/aboutqr','name'=>$model->title, 'qrurl'=>Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg"],true);
+							//$url = Url::to(['wap/aboutqr','name'=>$model->title, 'qrurl'=>Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg"],true);
+							$url = "http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203659175&idx=1&sn=0efaf2269fb7ba6a022f5c31d0d5e255#rd";
 							$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>"如何使用部门的二维码? <a href=\"{$url}\">点击这里...</a>"]];
 							$arr = $this->WxMessageCustomSend($msg);
 							return $this->responseLocalImage('image', $log_file_path);

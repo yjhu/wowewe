@@ -75,7 +75,7 @@ use yii\helpers\Security;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 
-class MOffice extends ActiveRecord
+class MOffice extends ActiveRecord implements IdentityInterface
 {
 	public static function tableName()
 	{
@@ -90,6 +90,45 @@ class MOffice extends ActiveRecord
 		];
 	}
 
+	public static function findIdentity($id)
+	{
+		return static::findOne($id);
+	}
+
+	public static function findByUsername($nickname)
+	{
+		return static::findOne(['manager' => $nickname]);
+	}
+
+	public static function findIdentityByAccessToken($token, $type = null)
+	{
+		return null;
+	}
+
+	public function getUsername()
+	{
+		return $this->manager;
+	}
+
+	public function getId()
+	{
+		return $this->office_id;
+	}
+
+	public function getAuthKey()
+	{
+		return $this->office_id;
+	}
+
+	public function validateAuthKey($authKey)
+	{
+		return $this->getAuthKey() === $authKey;
+	}
+
+	public function validatePassword($password)
+	{
+		return $password === $this->mobile;
+	}
 	
 }
 

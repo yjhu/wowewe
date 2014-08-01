@@ -168,9 +168,9 @@ EOD;
 			U::W(['order does not exist!', __METHOD__, $arr]);
 			exit;		
 		}
-		//$desc = "{$model->title}, {$model->attr}";
-		//$desc='desc';
-		//$desc = "{$model->title}";
+		//$detail = "{$model->title}, {$model->attr}";
+		//$detail='desc';
+		//$title = "{$model->title}";
 		Yii::$app->wx->setParameterComm();
 /*		
 		Yii::$app->wx->setParameter("body", urlencode("item desc"));
@@ -733,6 +733,7 @@ EOD;
 			$voicePack = 3;
 			$msgPack = 9;
 			$callshowPack = 4;
+			$feeSum =  7;			
 		}
 		
 		$cardType = $_GET["cardType"];
@@ -749,8 +750,7 @@ EOD;
 		$order->openid = $openid;
 		$order->total_fee = $total_fee;
 		//$order->title = 'SELFDIY';
-		//$order->$title = '自由组合套餐';
-		//str_replace(array('"', "'", "/", "+", " "), '', $title);
+		$order->title = '自由组合套餐';
 		$order->cid = MOrder::ITEM_CAT_DIY;
 		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack";
 		$order->detail = $order->getDetailStr();
@@ -762,12 +762,44 @@ EOD;
 		//$url = "http://baidu.com";
 		U::W(json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]));
 		return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
-	}		
-	
-	
-	
-	
-	
+	}
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodnum:gh_1ad98f5481f3
+    public function actionProdnum()
+    {
+        U::W([$_GET, $_POST]);
+        $this->layout = 'wap';
+        $gh_id = Yii::$app->session['gh_id'];
+        $openid = Yii::$app->session['openid'];
+
+        $currentPage = $_GET["currentPage"];
+
+        /*
+        $total_fee = $feeSum * 100;
+        $order = new MOrder;
+        $order->oid = MOrder::generateOid();
+        $order->gh_id = $gh_id;
+        $order->openid = $openid;
+        $order->total_fee = $total_fee;
+        //$order->title = 'SELFDIY';
+        $order->title = '自由组合套餐';
+        $order->cid = MOrder::ITEM_CAT_DIY;
+        $order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack";
+        $order->detail = $order->getDetailStr();
+        $order->save(false);
+
+        //Yii::$app->wx->setGhId($gh_id);
+        Yii::$app->wx->setGhId(MGh::GH_WOSO);
+        $url = Yii::$app->wx->create_native_url($order->oid);
+        //$url = "http://baidu.com";
+        U::W(json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]));
+        return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
+        */
+    }
+
+
+
+
 }
 
 /*

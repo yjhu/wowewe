@@ -46,12 +46,13 @@ AppAsset::register($this);
 					[
 						'label' => '<span class="glyphicon glyphicon-user"></span> ' . Html::encode(Yii::$app->user->identity->username),
 						'items' => [
-							['label' => '<span class="glyphicon glyphicon-pencil"></span> 编辑个人信息','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '编辑个人信息','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
 							'<li class="divider"></li>',
 							//'<li class="dropdown-header">Dropdown Header</li>',							
-							['label' => '<span class="glyphicon glyphicon-usd"></span> 我的积分','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
-							['label' => '<span class="glyphicon glyphicon-heart-empty"></span> 会员特权','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
-							['label' => '<span class="glyphicon glyphicon-off"></span> 退出','url' => ['/site/logout'],'linkOptions' => ['data-method' => 'post']],
+							//['label' => '<span class="glyphicon glyphicon-usd"></span> 我的积分','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
+							//['label' => '<span class="glyphicon glyphicon-heart-empty"></span> 会员特权','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '查询订单','url' => ['/order/list'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '退出','url' => ['/site/logout'],'linkOptions' => ['data-method' => 'post']],
 							//['label' => 'Signup', 'url' => ['/site/signup']]						
 						]
 					],
@@ -100,5 +101,18 @@ AppAsset::register($this);
 <?php 
 /*
 <p class="pull-left">&copy; <?= Yii::$app->params['companyName']; ?> <?= date('Y') ?></p>
+					[
+						'label' => '<span class="glyphicon glyphicon-user"></span> ' . Html::encode(Yii::$app->user->identity->username),
+						'items' => [
+							['label' => '<span class="glyphicon glyphicon-pencil"></span> 编辑个人信息','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
+							'<li class="divider"></li>',
+							//'<li class="dropdown-header">Dropdown Header</li>',							
+							['label' => '<span class="glyphicon glyphicon-usd"></span> 我的积分','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '<span class="glyphicon glyphicon-heart-empty"></span> 会员特权','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '<span class="glyphicon glyphicon-off"></span> 退出','url' => ['/site/logout'],'linkOptions' => ['data-method' => 'post']],
+							//['label' => 'Signup', 'url' => ['/site/signup']]						
+						]
+					],
+
 */
 

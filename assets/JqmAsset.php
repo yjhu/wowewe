@@ -19,7 +19,8 @@ class JqmAsset extends \yii\web\JqueryAsset
 		//'js/jqm/demos/js/jquery.js',		
 		//'js/jqm/demos/_assets/js/index.js',		
 		'js/jqm/demos/js/jquery.mobile-1.4.3.min.js',	
-		'js/jqm/SpryTabbedPanels.js',	
+		'js/jqm/SpryTabbedPanels.js',
+        'js/jquery.highlight.js',
 	];
 	
 	public $depends = [

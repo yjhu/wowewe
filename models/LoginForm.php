@@ -52,16 +52,28 @@ class LoginForm extends Model
         }
     }
 
-    /**
-     * Finds user by [[username]]
-     *
-     * @return User|null
-     */
+	public function getUser()
+	{
+		if ($this->_user === false) 
+		{
+			$this->_user = MOffice::findByUsername($this->username);            
+			if ( $this->_user === null)            
+				$this->_user = MUser::findByUsername($this->username);
+		}
+		return $this->_user;
+	}
+     
+    
+}
+
+/*     
     public function getUser()
     {
-        if ($this->_user === false) {
+        if ($this->_user === false) 
+        {
             $this->_user = MUser::findByUsername($this->username);
         }
         return $this->_user;
     }
-}
+*/
+

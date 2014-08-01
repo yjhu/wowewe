@@ -45,13 +45,13 @@ class MOrder extends ActiveRecord
 	
 	public static function getVoicePackName($json=true)
 	{
-		$arr = ['0'=>'200分钟', '1'=>'300分钟', '2'=>'500分钟', '3'=>'1000分钟', '4'=>'2000分钟', '5'=>'3000分钟'];			
+		$arr = ['0'=>'200分钟', '1'=>'300分钟', '2'=>'500分钟', '3'=>'1000分钟', '4'=>'2000分钟', '5'=>'3000分钟', '999'=>'不选'];			
 		return $json? json_encode($arr) : $arr;
 	}
 		
 	public static function getVoicePackFee($json=true)
 	{
-		$arr = ['0'=>'32', '1'=>'40', '2'=>'56', '3'=>'112', '4'=>'160', '5'=>'240'];			
+		$arr = ['0'=>'32', '1'=>'40', '2'=>'56', '3'=>'112', '4'=>'160', '5'=>'240', '999'=>'0'];			
 		return $json? json_encode($arr) : $arr;
 	}
 	
