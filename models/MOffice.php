@@ -130,6 +130,36 @@ class MOffice extends ActiveRecord implements IdentityInterface
 		return $password === $this->mobile;
 	}
 	
+/*
+	static function getOfficeNameX($key=null)
+	{
+		$arr = array(
+			self::GRADE_UNPAY => '潜在客户',
+			self::GRADE_NONE => '店铺客户',
+			self::GRADE_NORMAL => '普通会员',
+			self::GRADE_HIGH => '高级会员',
+			self::GRADE_VIP => 'VIP会员',			
+			self::GRADE_HVIP => '至尊VIP',						
+		);		
+		return $key === null ? $arr : $arr[$key];
+	}
+
+
+	public static function getOfficeName($gh_id)
+	{
+
+		$offices = MOffice::find()->where("gh_id = '$gh_id' AND office_id <=25 ")->asArray()->all();					
+		$listData = [];
+		foreach($offices as $office)
+		{
+			$value = $office['office_id'];
+			$text = $office['title'];
+			$listData[$value]=$text;
+		}
+		return $listData;
+	}
+*/
+
 }
 
 /*

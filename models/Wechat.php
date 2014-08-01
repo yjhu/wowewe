@@ -117,6 +117,12 @@ class Wechat extends \yii\base\Object
 		return $row;
 	}
 
+	public function clearGh()
+	{
+		$this->_gh_id = null;
+		$this->_gh = null;
+	}
+	
 	public function getAccessToken()
 	{
 		if($this->_accessToken !== null)

@@ -8,13 +8,21 @@ CREATE TABLE wx_order (
 	gh_id VARCHAR(32) NOT NULL DEFAULT '',
 	openid VARCHAR(32) NOT NULL DEFAULT '',
 	iid int(10) unsigned NOT NULL DEFAULT '0',
-	total_fee int(10) unsigned NOT NULL DEFAULT '0',
+	feesum int(10) unsigned NOT NULL DEFAULT '0',
 	create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,	
 	status int(10) unsigned NOT NULL DEFAULT '0',
 	title VARCHAR(128) NOT NULL DEFAULT '',
 	attr VARCHAR(256) NOT NULL DEFAULT '',
 	detail VARCHAR(512) NOT NULL DEFAULT '',
 	cid int(10) unsigned NOT NULL DEFAULT '0',
+	notify_id VARCHAR(256) NOT NULL DEFAULT '',
+	partner VARCHAR(32) NOT NULL DEFAULT '',
+	time_end VARCHAR(16) NOT NULL DEFAULT '',	
+	total_fee int(10) unsigned NOT NULL DEFAULT '0',
+	trade_state int(10) unsigned NOT NULL DEFAULT '0',	
+	transaction_id VARCHAR(32) NOT NULL DEFAULT '',	
+	appid VARCHAR(64) NOT NULL DEFAULT '',
+	issubscribe tinyint(1) unsigned NOT NULL DEFAULT '0',
 	PRIMARY KEY (oid),
 	KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -26,10 +34,22 @@ use yii\db\ActiveRecord;
 use yii\helpers\Security;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
+use app\models\U;
 
 class MOrder extends ActiveRecord
 {
 	const ITEM_CAT_DIY = 0;
+
+	const STATUS_WAIT_AUTION = 0;
+	const STATUS_WAIT_PAYED = 1;		
+	const STATUS_WAIT_SHIPPED = 2;
+	const STATUS_WAIT_PAYED_ERR = 3;		
+
+	public static function getCardTypeName($json=true)
+	{
+		$arr = ['0'=>'普通卡', '1'=>'Micro卡', '2'=>'Nano卡'];			
+		return $json? json_encode($arr) : $arr;
+	}
 
 	public static function getFlowPackName($json=true)
 	{
@@ -89,13 +109,46 @@ class MOrder extends ActiveRecord
 		return uniqid();
 	}
 
-	public function getDetailStr()
+	public function getWxNotice()
 	{
 		if ($this->cid == self::ITEM_CAT_DIY)
 		{
-			//$str = '';		
+			$gh = MGh::findOne($this->gh_id);						
+			$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
+			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack) = explode(',', $this->attr);
+			
+			$arr = self::getCardTypeName(false);
+			$cardTypeStr = isset($arr[$cardType]) ? $arr[$cardType] : '';
+			$arr = self::getFlowPackName(false);
+			$flowPackStr = isset($arr[$flowPack]) ? $arr[$flowPack] : '';
+			$arr = self::getVoicePackName(false);
+			$voicePackStr = isset($arr[$voicePack]) ? $arr[$voicePack] : '';
+			$arr = self::getMsgPackName(false);
+			$msgPackStr = isset($arr[$msgPack]) ? $arr[$msgPack] : '';
+			$arr = self::getCallShowPackName(false);
+			$callshowPackStr = isset($arr[$callshowPack]) ? $arr[$callshowPack] : '';
+			$str = <<<EOD
+【{$gh->nickname}】{$model->nickname}您的订单号:{$this->oid}已生成。
+购买商品:{$this->title}
+卡类型:{$cardTypeStr}
+流量包:{$flowPackStr}
+语音包:{$voicePackStr}
+短信包:{$msgPackStr}
+来电显示:{$callshowPackStr}
+EOD;
+			return $str;
+		}
+	}	
+
+	public function getDetail()
+	{
+		if ($this->cid == self::ITEM_CAT_DIY)
+		{
 			$str = $this->title;		
 			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack) = explode(',', $this->attr);
+
+			$arr = self::getCardTypeName(false);
+			$str .= isset($arr[$cardType]) ? $arr[$cardType] : '';
 			
 			$arr = self::getFlowPackName(false);
 			$str .= isset($arr[$flowPack]) ? $arr[$flowPack] : '';
@@ -107,10 +160,9 @@ class MOrder extends ActiveRecord
 			$str .= isset($arr[$msgPack]) ? $arr[$msgPack] : '';			
 
 			$arr = self::getCallShowPackName(false);
-			$str .= isset($arr[$callshowPack]) ? $arr[$callshowPack] : '';			
+			$str .= isset($arr[$callshowPack]) ? $arr[$callshowPack] : '';
 
 			$detailStr = str_replace(array('"', "'", "/", "+", " "), '', $str);
-			//U::W("$detailStr ------");			
 			return $detailStr;
 		}
 	}	
