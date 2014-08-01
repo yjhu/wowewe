@@ -890,6 +890,20 @@ EOD;
 		return self::isWeixinBrowser() && self::getWeixinBrowserVer() >= 5;
 	}
 
+	public static function isAndroid()
+	{
+		return stripos($_SERVER['HTTP_USER_AGENT'], 'Android') !== false ? true : false;
+	}
+
+	public static function isIos()
+	{
+		if (stripos($_SERVER['HTTP_USER_AGENT'], 'IPhone') !== false)
+			return true;
+		if (stripos($_SERVER['HTTP_USER_AGENT'], 'IPad') !== false)		
+			return true;
+		return false;
+	}
+
 	public static function isWeixinBrowser()
 	{
 		return stripos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') === false ? false : true;

@@ -182,7 +182,8 @@ EOD;
 		$detail = $model->detail;
 		Yii::$app->wx->setParameter("body", $detail);
 		Yii::$app->wx->setParameter("out_trade_no", $model->oid);
-		Yii::$app->wx->setParameter("total_fee",  "{$model->total_fee}");
+		Yii::$app->wx->setParameter("total_fee",  "{$model->feesum}");
+		//Yii::$app->wx->setParameter("total_fee",  "1");
 		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
 		
 		$xmlStr = Yii::$app->wx->create_native_package();
@@ -195,6 +196,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/paynotify
 	public function actionPaynotify()
 	{		
+		U::W(['11111111actionPaynotify', $_GET,$_POST]);
 		// receive the pay notify from wx server and save the order to db
 		// POST data
 		if (Yii::$app->wx->localTest)		
@@ -748,7 +750,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodsave:gh_1ad98f5481f3
 	public function actionProdsave()
 	{			
-		U::W([$_GET, $_POST]);
+		U::W([$_GET, $_POST, $_SERVER]);
 		$this->layout = 'wap';
 		$gh_id = Yii::$app->session['gh_id'];
 		$openid = Yii::$app->session['openid'];	
@@ -760,7 +762,8 @@ EOD;
 			$voicePack = 1;
 			$msgPack = 1;
 			$callshowPack = 1;
-			$feeSum =  7;			
+			$feeSum =  7;	
+			$selectNum = '15527766232';
 		}
 		else
 		{
@@ -770,8 +773,9 @@ EOD;
 			$msgPack = $_GET["msgPack"];
 			$callshowPack = $_GET["callshowPack"];
 			$feeSum =  $_GET["feeSum"];
+			$selectNum = $_GET["selectNum"];
 		}
-		$total_fee = $feeSum * 100;
+		$feeSum = $feeSum * 100;
 		$order = new MOrder;
 		$order->oid = MOrder::generateOid();
 		$order->gh_id = $gh_id;
@@ -779,12 +783,18 @@ EOD;
 		$order->feesum = $feeSum;
 		$order->title = '自由组合套餐';
 		$order->cid = MOrder::ITEM_CAT_DIY;
-		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack";
+		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack,$selectNum";
 		$order->detail = $order->getDetail();
 		$order->save(false);
 
 		//U::W($order->getDetail());
 		//U::W($order->getWxNotice());
+		if (Wechat::isAndroid())
+			U::W('android.........1');
+		else if (Wechat::isIos())
+			U::W('ios2222');
+		else
+			U::W('other');
 		try
 		{
 			$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					

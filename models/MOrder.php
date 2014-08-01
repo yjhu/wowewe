@@ -128,7 +128,7 @@ class MOrder extends ActiveRecord
 			$arr = self::getCallShowPackName(false);
 			$callshowPackStr = isset($arr[$callshowPack]) ? $arr[$callshowPack] : '';
 			$str = <<<EOD
-【{$gh->nickname}】{$model->nickname}您的订单号:{$this->oid}已生成。
+【{$gh->nickname}】{$model->nickname}您的订单号{$this->oid}已生成。
 购买商品:{$this->title}
 卡类型:{$cardTypeStr}
 流量包:{$flowPackStr}
@@ -147,6 +147,7 @@ EOD;
 			$str = $this->title;		
 			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack) = explode(',', $this->attr);
 
+			$str .= '/';
 			$arr = self::getCardTypeName(false);
 			$str .= isset($arr[$cardType]) ? $arr[$cardType] : '';
 			
@@ -162,7 +163,8 @@ EOD;
 			$arr = self::getCallShowPackName(false);
 			$str .= isset($arr[$callshowPack]) ? $arr[$callshowPack] : '';
 
-			$detailStr = str_replace(array('"', "'", "/", "+", " "), '', $str);
+			//$detailStr = str_replace(array('"', "'", "/", "+", " "), '', $str);
+			$detailStr = str_replace(array('"', "'", "+", " "), '', $str);
 			return $detailStr;
 		}
 	}	
