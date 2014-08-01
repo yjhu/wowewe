@@ -285,6 +285,9 @@
 			<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
 			-->
 			<p id="oid"></p>
+            <p id="selectNum"></p>
+
+
 			<table data-role="table" id="table-custom-2" data-mode="columntoggle"   class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-text="选择要显示的列..." data-column-popup-theme="a">
 			 <thead>
 			   <tr class="ui-bar-d">
@@ -644,13 +647,17 @@ $(document).on("pageshow", "#page2", function(){
             $.mobile.changePage("#number-select",{transition:"slide"});
             return;
         }
+        else
+        {
+            seletNum = localStorage.getItem("luckNum");
+        }
 
 		localStorage.setItem("item",$("form#productForm").serialize())
 		$.ajax({
 			//url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/g2048save' ; ?>"+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			type:"GET",
-			data: $("form#productForm").serialize() +"&feeSum="+feeSum,
+			data: $("form#productForm").serialize() +"&feeSum="+feeSum+"&selectNum="+selectNum,
 			success:function(data){
 				data = eval('('+data+')');
 				if(data.status == 0)
@@ -718,7 +725,10 @@ $(document).on("pageshow", "#page3", function(){
 	
 	var oid = localStorage.getItem("oid");
 	$("#oid").html("您的订单号: "+oid);
-	
+
+    var selectNum = localStorage.getItem("luckNum");
+    $("#selectNum").html("所选的靓号: "+selectNum);
+
 	var url = localStorage.getItem("url");
 	//$("#url").html("<a href='"+url+"'>Pay</a>");
 	
