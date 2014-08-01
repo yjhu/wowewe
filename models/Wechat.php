@@ -122,10 +122,11 @@ class Wechat extends \yii\base\Object
 		$this->_gh_id = null;
 		$this->_appid = null;
 		$this->_gh = null;
+		$this->_accessToken = null;
 	}
 	
 	public function getAccessToken()
-	{
+	{	
 		if($this->_accessToken !== null)
 			return $this->_accessToken;
 			
@@ -713,6 +714,7 @@ EOD;
 
 	public function WxMessageCustomSend($msg)
 	{
+	U::W(self::json_encode($msg));
 		$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/custom/send", ['access_token'=>$this->accessToken], self::json_encode($msg));
 		$this->checkWxApiResp($arr, [__METHOD__, $msg]);
 		return $arr;						

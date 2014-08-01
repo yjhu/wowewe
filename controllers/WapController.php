@@ -182,10 +182,9 @@ EOD;
 		$detail = $model->detail;
 		Yii::$app->wx->setParameter("body", $detail);
 		Yii::$app->wx->setParameter("out_trade_no", $model->oid);
-		Yii::$app->wx->setParameter("total_fee",  "{$model->feesum}");
-		//Yii::$app->wx->setParameter("total_fee",  "1");
-		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
-		
+//		Yii::$app->wx->setParameter("total_fee",  "{$model->feesum}");
+		Yii::$app->wx->setParameter("total_fee",  "1");
+		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");		
 		$xmlStr = Yii::$app->wx->create_native_package();
 		if (Yii::$app->wx->debug)
 			U::W($xmlStr);
@@ -196,7 +195,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/paynotify
 	public function actionPaynotify()
 	{		
-		U::W(['11111111actionPaynotify', $_GET,$_POST]);
+		//U::W(['actionPaynotify', $_GET,$_POST]);
 		// receive the pay notify from wx server and save the order to db
 		// POST data
 		if (Yii::$app->wx->localTest)		
@@ -213,23 +212,41 @@ EOD;
 			</xml>
 EOD;
 			/*
-			    	    [r] => wap/paynotify
-			            [bank_type] => 3006
-			            [discount] => 0
-			            [fee_type] => 1
-			            [input_charset] => UTF-8
-			            [notify_id] => 6qgi2XQy3LhVUqQl9Z-MCAIyl_1UpCf2PxD28d5pLgDwZClXXbU-CcaciluYq8jpS_CneAPcLO3AUAN6W4DlcvCizEbVoRDM
-			            [out_trade_no] => 53d1da9fe79ad
-			            [partner] => 1220047701
-			            [product_fee] => 1
-			            [sign] => DD7D0AF2BF3E2CA9606E7367EAF444B9
-			            [sign_type] => MD5
-			            [time_end] => 20140725121856
-			            [total_fee] => 1
-			            [trade_mode] => 1
-			            [trade_state] => 0
-			            [transaction_id] => 1220047701201407253390916061
-			            [transport_fee] => 0
+
+		    [0] => Array
+		        (
+		            [r] => wap/paynotify
+		            [bank_billno] => 201408016461876
+		            [bank_type] => 3006
+		            [discount] => 0
+		            [fee_type] => 1
+		            [input_charset] => UTF-8
+		            [notify_id] => 6qgi2XQy3Lg65VTEMfLiX-6o3Yh7d-e8gIVdcWQmUjCH9enV3oNg-8-aWOjbjk2xYbFmi4c0ec5RzldyH7CqFswIdDmAXv7Z
+		            [out_trade_no] => 53db6263258cc
+		            [partner] => 1220047701
+		            [product_fee] => 1
+		            [sign] => 9C83069BE5AFB74E9A353FC6CD190D05
+		            [sign_type] => MD5
+		            [time_end] => 20140801174831
+		            [total_fee] => 1
+		            [trade_mode] => 1
+		            [trade_state] => 0
+		            [transaction_id] => 1220047701201408013245460110
+		            [transport_fee] => 0
+		        )
+
+			// Note: this OpenId and AppId is money receiver woso, not xiangyang!
+		    [1] => Array
+		        (
+		            [OpenId] => oSHFKsycXkOO3JNwifurCR7Z9-qc
+		            [AppId] => wx79c2bf0249ede62a
+		            [IsSubscribe] => 0
+		            [TimeStamp] => 1406886511
+		            [NonceStr] => 2AyW087NTmQxIXuf
+		            [AppSignature] => a52c16bb2291995b1441b3255f4e3f2a048e8c3c
+		            [SignMethod] => sha1
+		        )
+			            
 			*/
 			$_GET['out_trade_no'] = Wechat::generateOutTradeNo();
 			$_GET['sign'] = 'sign';
@@ -259,21 +276,16 @@ EOD;
 			U::W(['No AppId from wx server', __METHOD__, $postStr]);
 			exit;
 		}		
-		Yii::$app->wx->setAppId($arr['AppId']);
-		$openid = $arr['OpenId'];		
 
-		// GET data
+		// GET data  (!isset($_GET['bank_type'])) ||
 		if((!isset($_GET['out_trade_no'])) || (!isset($_GET['sign'])) || (!isset($_GET['trade_mode'])) || 
-			(!isset($_GET['trade_state'])) || (!isset($_GET['partner'])) || (!isset($_GET['bank_type'])) ||
+			(!isset($_GET['trade_state'])) || (!isset($_GET['partner'])) || 
 			(!isset($_GET['total_fee'])) || (!isset($_GET['fee_type'])) || (!isset($_GET['notify_id'])) ||
 			(!isset($_GET['transaction_id'])) || (!isset($_GET['time_end'])))
 		{
 			U::W(['Invalid GET data from wx server...', __METHOD__, $_GET, $_POST]);
 			exit;
 		}				
-		//$out_trade_no = $_GET["out_trade_no"];		
-		//$trade_state = $_GET['trade_state'];
-		//$transaction_id = $_GET['transaction_id'];		
 		//$attach = Yii::$app->request->get('attach', '');		
 		$order = MOrder::findOne($_GET["out_trade_no"]);
 		if ($order === null)
@@ -285,23 +297,34 @@ EOD;
 			$order ->status = MOrder::STATUS_WAIT_PAYED;
 		else
 			$order ->status = MOrder::STATUS_WAIT_PAYED_ERR;
-		if ($openid != $order->openid)	
-		{
-			U::W(['impossible! openid is not equal', __METHOD__, $_GET, $_POST, $order->openid]);			
-		}
+
 		$order ->notify_id = $_GET['notify_id'];
 		$order ->partner = $_GET['partner'];
 		$order ->time_end = $_GET['time_end'];
 		$order ->total_fee = $_GET['total_fee'];
 		$order ->trade_state = $_GET['trade_state'];
 		$order ->transaction_id = $_GET['transaction_id'];
-		$order ->appid = $arr['AppId'];
-		$order ->issubscribe = $arr['IsSubscribe'];
+		$order ->appid_recv = $arr['AppId'];
+		$order ->openid_recv = $arr['OpenId'];		
+		$order ->issubscribe_recv = $arr['IsSubscribe'];
 		$order->save(false);
 		if ($_GET['trade_state'] == 0	)
 		{
-			$arr = Yii::$app->wx->WxPayDeliverNotify($openid, $_GET['transaction_id'], $_GET["out_trade_no"]);
-			U::W($arr);					
+			Yii::$app->wx->clearGh();		
+			Yii::$app->wx->setAppId($arr['AppId']);
+			$arr = Yii::$app->wx->WxPayDeliverNotify($arr['OpenId'], $_GET['transaction_id'], $_GET["out_trade_no"]);
+			U::W($arr);
+			try
+			{		
+				Yii::$app->wx->clearGh();
+				Yii::$app->wx->setGhId($order->gh_id);
+				$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$order->openid,'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice(true)]]);					
+				U::W($arr);		
+			}
+			catch (\Exception $e)
+			{
+				U::W($e->getCode().':'.$e->getMessage());
+			}			
 		}
 		else
 		{
@@ -750,10 +773,10 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodsave:gh_1ad98f5481f3
 	public function actionProdsave()
 	{			
-		U::W([$_GET, $_POST, $_SERVER]);
+		//U::W([$_GET, $_POST, $_SERVER]);
 		$this->layout = 'wap';
 		$gh_id = Yii::$app->session['gh_id'];
-		$openid = Yii::$app->session['openid'];	
+		$openid = Yii::$app->session['openid'];
 		Yii::$app->wx->setGhId($gh_id);		
 		if (0)
 		{
@@ -787,22 +810,17 @@ EOD;
 		$order->detail = $order->getDetail();
 		$order->save(false);
 
-		//U::W($order->getDetail());
-		//U::W($order->getWxNotice());
 		if (Wechat::isAndroid())
-			U::W('android.........1');
-		else if (Wechat::isIos())
-			U::W('ios2222');
-		else
-			U::W('other');
-		try
-		{
-			$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					
-			U::W($arr);		
-		}
-		catch (\Exception $e)
-		{
-			U::W($e->getCode().':'.$e->getMessage());
+		{			
+			try
+			{
+				$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					
+				U::W($arr);		
+			}
+			catch (\Exception $e)
+			{
+				U::W($e->getCode().':'.$e->getMessage());
+			}
 		}
 		
 		Yii::$app->wx->clearGh();
@@ -811,7 +829,7 @@ EOD;
 		Yii::$app->wx->clearGh();
 		Yii::$app->wx->setGhId($gh_id);		
 		
-		U::W(json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]));
+		//U::W(json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]));
 		return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
 	}
 

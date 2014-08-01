@@ -21,8 +21,9 @@ CREATE TABLE wx_order (
 	total_fee int(10) unsigned NOT NULL DEFAULT '0',
 	trade_state int(10) unsigned NOT NULL DEFAULT '0',	
 	transaction_id VARCHAR(32) NOT NULL DEFAULT '',	
-	appid VARCHAR(64) NOT NULL DEFAULT '',
-	issubscribe tinyint(1) unsigned NOT NULL DEFAULT '0',
+	appid_recv VARCHAR(64) NOT NULL DEFAULT '',
+	openid_recv VARCHAR(32) NOT NULL DEFAULT '',	
+	issubscribe_recv tinyint(1) unsigned NOT NULL DEFAULT '0',
 	PRIMARY KEY (oid),
 	KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -109,13 +110,13 @@ class MOrder extends ActiveRecord
 		return uniqid();
 	}
 
-	public function getWxNotice()
+	public function getWxNotice($real_pay=false)
 	{
 		if ($this->cid == self::ITEM_CAT_DIY)
 		{
 			$gh = MGh::findOne($this->gh_id);						
 			$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
-			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack) = explode(',', $this->attr);
+			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $selectNum) = explode(',', $this->attr);
 			
 			$arr = self::getCardTypeName(false);
 			$cardTypeStr = isset($arr[$cardType]) ? $arr[$cardType] : '';
@@ -135,6 +136,7 @@ class MOrder extends ActiveRecord
 语音包:{$voicePackStr}
 短信包:{$msgPackStr}
 来电显示:{$callshowPackStr}
+卡号:{$selectNum}
 EOD;
 			return $str;
 		}
@@ -145,25 +147,30 @@ EOD;
 		if ($this->cid == self::ITEM_CAT_DIY)
 		{
 			$str = $this->title;		
-			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack) = explode(',', $this->attr);
+			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $selectNum) = explode(',', $this->attr);
 
-			$str .= '/';
 			$arr = self::getCardTypeName(false);
-			$str .= isset($arr[$cardType]) ? $arr[$cardType] : '';
+			if (isset($arr[$cardType]) && $cardType!='999')
+				$str .= '/'.$arr[$cardType];
 			
 			$arr = self::getFlowPackName(false);
-			$str .= isset($arr[$flowPack]) ? $arr[$flowPack] : '';
-			
+			if (isset($arr[$flowPack]) && $flowPack!='999')
+				$str .= '/'.$arr[$flowPack];
+
 			$arr = self::getVoicePackName(false);
-			$str .= isset($arr[$voicePack]) ? $arr[$voicePack] : '';			
+			if (isset($arr[$voicePack]) && $voicePack!='999')
+				$str .= '/'.$arr[$voicePack];
 
 			$arr = self::getMsgPackName(false);
-			$str .= isset($arr[$msgPack]) ? $arr[$msgPack] : '';			
+			if (isset($arr[$msgPack]) && $msgPack!='999')
+				$str .= '/'.$arr[$msgPack];
 
 			$arr = self::getCallShowPackName(false);
-			$str .= isset($arr[$callshowPack]) ? $arr[$callshowPack] : '';
+			if (isset($arr[$callshowPack]) && $callshowPack!='999')
+				$str .= '/'.$arr[$callshowPack];
 
-			//$detailStr = str_replace(array('"', "'", "/", "+", " "), '', $str);
+			$str .= '/'.$selectNum;
+
 			$detailStr = str_replace(array('"', "'", "+", " "), '', $str);
 			return $detailStr;
 		}
