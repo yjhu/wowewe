@@ -1,6 +1,7 @@
 <?php
 	use yii\helpers\Html;
-	use yii\widgets\Breadcrumbs;
+    use yii\helpers\Url;
+
 	use app\assets\JqmAsset;
 	JqmAsset::register($this);
 
@@ -66,6 +67,10 @@
 
 .ui-content {
     padding: 0.5em !important;
+}
+
+.TabbedPanelsContent {
+    padding: 0.1em  !important;
 }
 </style>
 	
@@ -144,7 +149,7 @@
 				<div class="TabbedPanelsContent">
 
 					<div role="main" class="ui-content">
-						<p id="richtextDesc"></p>
+                        <?php echo  $item->detail; ?>
 					</div><!-- /content -->        
 
 				</div>
@@ -216,7 +221,7 @@
 		
 		<div data-role="content">
 			<h2>请您选择手机号码</h2>
-			<div class="ui-grid-a">
+            <div class="ui-grid-a" id="list_common_tbody">
 			<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >13545296480</a></div></div>
 			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >33333333333</a></div></div>
             <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >77777777777</a></div></div>
@@ -249,9 +254,9 @@ var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
 
 
 <script>
-//var productPkg = <//?php echo $_GET["productPkg"] ?>;
 var  currentPage = 1; /*init page num*/
 var feeSum = 0;
+var count = 0;
 //$().ready(function() {
 
 /*
@@ -321,7 +326,7 @@ $(document).on("pageshow", "#page2", function(){
 	{
 		cardluckNum = localStorage.getItem("cardluckNum");
 		if(cardluckNum != null)
-		{			
+		{
 			$("#sel-num")[0].innerHTML="您选的号码 "+cardluckNum;
 		}
 	}
@@ -367,9 +372,9 @@ $(document).on("pageshow", "#page2", function(){
         */
         $.mobile.changePage("#page3",{transition:"slide"});
         /*end of ajax*/
-	   
+
 	});
-	
+
 });
 
 $(document).on("pageshow", "#page3", function(){
@@ -387,9 +392,9 @@ $(document).on("pageshow", "#page3", function(){
     /*
 	$("#flowPack_name").html(flowPack_name[flowPack]);
 	$("#flowPack_fee").html(flowPack_fee[flowPack]+"元");
-	
+
 	$("#total").html("合计:"+feeSum+"元");
-	
+
 	var oid = localStorage.getItem("oid");
 	$("#oid").html("您的订单号: "+oid);
     */
@@ -399,8 +404,8 @@ $(document).on("pageshow", "#page3", function(){
 
 	var url = localStorage.getItem("url");
 	//$("#url").html("<a href='"+url+"'>Pay</a>");
-	
-	
+
+
 	$("#payBtn").click(function(){
 		//1.verfy  address
 
@@ -445,55 +450,69 @@ $(document).on("pageshow", "#page3", function(){
 		} else {
 			alert("尚未识别您的手机");
 		}
-	   
+
 	   }); /*end of pay submit*/
-	
+
 });
+
 
 $(document).on("pageshow", "#number-select", function(){
 
-    /*highLlght selected num*/
-    if( localStorage.getItem("cardluckNum") != null)
+    $("#list_common_tbody").html('');
+
+    function loadData(i, n)
     {
-        $('.ui-grid-a').highLight();
-        $('.ui-grid-a').highLight(localStorage.getItem("cardluckNum"));
+        count++;
+        if( localStorage.getItem("cardluckNum") != null)
+        {
+            if(n.num == localStorage.getItem("cardluckNum"))
+                cssStr = "style='height:60px; background-color:yellow'";
+            else
+                cssStr = "style='height:60px;'";
+        }
+
+        if(i%2 == 0)
+            var text = " <div class='ui-block-a'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"</a></div></div>";
+        else
+            var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"</a></div></div>";
+
+        $("#list_common_tbody").append(text).trigger('create');
+
     }
 
-    $(".ui-grid-a a").click(function(){
-		//alert($(this).text());
-		localStorage.setItem("cardluckNum",$(this).text());
-		location.href="#page2";
+    function getNumberList()
+    {
+        $.ajax({
+            url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'mobileNum'], true) ; ?>",
+            type:"GET",
+            //data: $("form#productForm").serialize() +"&feeSum="+feeSum,
+            data: "&currentPage="+currentPage,
+            success: function(msg){
+                var json_data = eval('('+msg+')');
+                if(json_data)
+                {
+                    $.each(json_data, loadData);
+                }
 
-        /*
-		$.ajax({
-			url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodnum' ; ?>",
-			type:"GET",
-			//data: $("form#productForm").serialize() +"&feeSum="+feeSum,
-			data: "&currentPage="+currentPage,
-			success:function(data){
-				data = eval('('+data+')');
-				if(data.status == 0)
-				{
-					//alert(data.oid);
-					//localStorage.setItem("oid",data.oid);
-					//$.mobile.changePage("#page3",{transition:"slide"});
-				}
-				else
-				{
-					return false;
-				}
-			}
-		});
-        */
-        /*end of ajax*/
-	});
+            }
+        });
+    }
+    getNumberList();
+
+    $(document).on("click",".ui-grid-a a",function(){
+        localStorage.setItem("cardluckNum",$(this).text());
+        $.mobile.changePage("#page2",{transition:"slide"});
+    });
 
     $("#seleNumBtn").click(function(){
         alert("换一批号码看看, 玩命加载中...");
+        currentPage++;
+        getNumberList();
     });
 
 
 });
+
 
 
 </script>	
