@@ -15,6 +15,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>产品</title>
+    <link rel="stylesheet" href="js/jqm/demos/css/themes/default/jquery.mobile-1.4.3.min.css">
+
 	<?php 
 /*
 	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/css/themes/default/jquery.mobile-1.4.3.min.css');
@@ -639,7 +641,8 @@ $(document).on("pageshow", "#page2", function(){
 	
 	
 	//submit form
-	$('#submitBtn').click(function(){
+	$('#submitBtn').click(function()
+		{
 		//alert('save args to local storage');
 		//alert($("form#productForm").serialize());
 
@@ -774,7 +777,7 @@ $(document).on("pageshow", "#page3", function(){
 
 $(document).on("pageshow", "#number-select", function(){
 
-    $("#list_common_tbody").html('');
+    //$("#list_common_tbody").html('');
 
     /*highLlght selected num*/
     if( localStorage.getItem("luckNum") != null)
@@ -793,7 +796,10 @@ $(document).on("pageshow", "#number-select", function(){
         else
                 var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' style='height:60px'><a href='' >"+n.num+"</a></div></div>";
 
-        $("#list_common_tbody").append(text);
+//        $("#list_common_tbody").append(text).trigger('create').trigger('click');
+			        $("#list_common_tbody").append(text).trigger('create').trigger('click');
+
+
     }
 
     function getNumberList()
@@ -811,13 +817,28 @@ $(document).on("pageshow", "#number-select", function(){
                         $.each(json_data, loadData);
                     }
                     //$("#list_count").html(count);
+
+//			        $("#list_common_tbody").append('<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="#">13545296480</a></div></div>');
+//			        $("#list_common_tbody").append('<div class="ui-block-b"><div class="ui-bar ui-bar-b" style="height:60px"><a href="#">13545296480</a></div></div>');
+//			        $("#list_common_tbody").append(text).trigger('create').trigger('click');
+
+//					$(".ui-block-a").css("border","3px solid red");
+//					$(".ui-block-b").css("border","3px solid blue");
+//					$('#listId').listview('refresh');
+//					$(".ui-block-a").addClass("ui-block-a");
+//					$(".ui-bar-a").addClass("ui-bar-a");
+//					$(".ui-block-b").addClass("ui-block-b");
+//					$('#number-select').trigger('pagecreate');
+
+
                 }
             });
     }
     getNumberList();
 
 
-    $(".ui-grid-a a").click(function(){
+//    $(".ui-grid-a a").click(function(){
+	    $(".ui-grid-a a").live("click",function(){
 		//alert($(this).text());
 		localStorage.setItem("luckNum",$(this).text());
 		location.href="#page2";
