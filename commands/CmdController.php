@@ -29,8 +29,8 @@ class CmdController extends Controller
 		Yii::$app->getUrlManager()->setScriptUrl('/wx/web/index.php');
 		//Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
 		//Yii::$app->wx->setGhId(MGh::GH_HOYA);
-		Yii::$app->wx->setGhId(MGh::GH_WOSO);
-		//Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
+		//Yii::$app->wx->setGhId(MGh::GH_WOSO);
+		Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
 	}
 
 	public function actionIndex()
@@ -164,11 +164,16 @@ class CmdController extends Controller
 		{
 			$menu = new \app\models\WxMenu([
 				new \app\models\ButtonComplex('沃商城', [
-					new \app\models\ButtonView('微信沃卡', 'http://m.10010.com/mobilegoodsdetail/711404033449.html'),
-					new \app\models\ButtonView('精品靓号', 'http://m.10010.com/mall-mobile/NumList/search'),
-					new \app\models\ButtonView('热销终端', 'http://m.10010.com/MobileList'),
-					new \app\models\ButtonView('上网卡', 'http://m.10010.com/CardList'),
-					new \app\models\ButtonView('资费套餐', 'http://m.10010.com/'),
+
+                    new \app\models\ButtonView('自由组合套餐', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/product:{$gh_id}")),
+                    new \app\models\ButtonView('微信沃卡', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardwo:{$gh_id}")),
+                    new \app\models\ButtonView('沃派校园套餐', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardxiaoyuan:{$gh_id}")),
+
+					//new \app\models\ButtonView('微信沃卡', 'http://m.10010.com/mobilegoodsdetail/711404033449.html'),
+					//new \app\models\ButtonView('精品靓号', 'http://m.10010.com/mall-mobile/NumList/search'),
+					//new \app\models\ButtonView('热销终端', 'http://m.10010.com/MobileList'),
+					//new \app\models\ButtonView('上网卡', 'http://m.10010.com/CardList'),
+					//new \app\models\ButtonView('资费套餐', 'http://m.10010.com/'),
 				]),
 				//new \app\models\ButtonView('★自由组合', 'http://m.10010.com/mobilegoodsdetail/981405149472.html'),
 				new \app\models\ButtonView('★自由组合', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/product:{$gh_id}")),
