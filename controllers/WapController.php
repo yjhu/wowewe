@@ -16,6 +16,7 @@ use app\models\Wechat;
 use app\models\MUser;
 use app\models\MGh;
 use app\models\MOrder;
+use app\models\MItem;
 
 class WapController extends Controller
 {
@@ -806,7 +807,7 @@ EOD;
 		$order->openid = $openid;
 		$order->feesum = $feeSum;
 		$order->title = '自由组合套餐';
-		$order->cid = MOrder::ITEM_CAT_DIY;
+		$order->cid = MItem::ITEM_CAT_DIY;
 		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack,$selectNum";
 		$order->detail = $order->getDetail();
 		$order->save(false);
