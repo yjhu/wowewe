@@ -770,8 +770,7 @@ EOD;
 		return $this->render('product');
 
 	}
-	
-	
+
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodsave:gh_1ad98f5481f3
 	public function actionProdsave()
 	{			
