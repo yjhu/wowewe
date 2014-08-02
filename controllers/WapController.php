@@ -837,6 +837,8 @@ EOD;
 	public function actionAjaxdata($cat)
 	{
 		U::W($_GET);
+		if (!Yii::$app->request->isAjax)
+			return;
 		$this->layout = false;		
 		$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 0;
 		$size = isset($_GET["size"]) ? $_GET["size"] : 50;
