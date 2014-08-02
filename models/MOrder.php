@@ -45,6 +45,20 @@ class MOrder extends ActiveRecord
 	const STATUS_WAIT_SHIPPED = 2;
 	const STATUS_WAIT_PAYED_ERR = 3;		
 
+	public function attributeLabels()
+	{
+		return [
+			'oid' => '订单号',
+			'nickname' => '用户昵称',
+			'title' => '商品名称',
+			'cid' => '商品类别',
+			'detail' => '商品详情',
+			'feesum' => '支付金额',
+			'status' => '订单状态',
+			'create_time' => '创建时间',
+		];
+	}
+
 	public static function getCardTypeName($json=true)
 	{
 		$arr = ['0'=>'普通卡', '1'=>'Micro卡', '2'=>'Nano卡'];			
