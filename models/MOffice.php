@@ -151,8 +151,8 @@ class MOffice extends ActiveRecord implements IdentityInterface
 	//Html::dropDownList('office_id', 0, MOffice::getOfficeNameOption($gh_id));
 	public static function getOfficeNameOption($gh_id, $need_prompt=true)
 	{
-		$offices = MOffice::find()->where("gh_id = :gh_id AND office_id <= :office_id", [':gh_id'=>$gh_id, ':office_id'=>24])->asArray()->all();					
-		$listData = $need_prompt ? ['0'=>'请选择营业厅'] ? [];
+		$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
+		$listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
 		foreach($offices as $office)
 		{
 			$value = $office['office_id'];
