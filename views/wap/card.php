@@ -10,7 +10,7 @@
     $gh_id = Yii::$app->session['gh_id'];
 
     $item = \app\models\MItem::findOne(['gh_id'=>$gh_id, 'cid' => $cid]);
-    U::W($item);
+    //U::W($item);
 ?>
 <?php $this->beginPage() ?>
 
