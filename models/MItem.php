@@ -40,6 +40,7 @@ use yii\behaviors\TimestampBehavior;
 
 class MItem extends ActiveRecord
 {
+	const ITEM_CAT_DIY = 0;
 	const ITEM_CAT_CARD_WO = 10;
 	const ITEM_CAT_CARD_XIAOYUAN = 11;
 
