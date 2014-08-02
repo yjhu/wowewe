@@ -40,10 +40,12 @@ use app\models\MItem;
 
 class MOrder extends ActiveRecord
 {
-	const STATUS_WAIT_AUTION = 0;
-	const STATUS_WAIT_PAYED = 1;		
-	const STATUS_WAIT_SHIPPED = 2;
-	const STATUS_WAIT_PAYED_ERR = 3;		
+	const STATUS_AUTION = 0;
+	const STATUS_PAYED = 1;		
+	const STATUS_SHIPPED = 2;
+	const STATUS_OK = 3;		
+	const STATUS_PAYED_ERR = 8;		
+	const STATUS_CANCEL = 9;
 
 	public function attributeLabels()
 	{
@@ -57,6 +59,17 @@ class MOrder extends ActiveRecord
 			'status' => '订单状态',
 			'create_time' => '创建时间',
 		];
+	}
+
+	static function getOrderStatusName($key=null)
+	{
+		$arr = array(
+			self::STATUS_AUTION => '等待付款',
+			self::STATUS_PAYED => '已付款',
+			//self::STATUS_SHIPPED => '已发货',
+			self::STATUS_OK => '成功',
+		);		
+		return $key === null ? $arr : $arr[$key];
 	}
 
 	public static function getCardTypeName($json=true)

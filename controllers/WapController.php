@@ -297,9 +297,9 @@ EOD;
 			return 'success';
 		}
 		if ($_GET['trade_state'] == 0	)
-			$order ->status = MOrder::STATUS_WAIT_PAYED;
+			$order ->status = MOrder::STATUS_PAYED;
 		else
-			$order ->status = MOrder::STATUS_WAIT_PAYED_ERR;
+			$order ->status = MOrder::STATUS_PAYED_ERR;
 
 		$order ->notify_id = $_GET['notify_id'];
 		$order ->partner = $_GET['partner'];
@@ -848,10 +848,26 @@ EOD;
 		{
 			case 'mobileNum':
 				$data = [
-					['num'=>'13545222924', 'price'=>0],
-					['num'=>'13545222925', 'price'=>0],
-					['num'=>'13545222926', 'price'=>0],
-					['num'=>'13545222927', 'price'=>0],
+					['num'=>'18696205015', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205016', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205017', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205018', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205019', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205020', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205021', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205022', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205023', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205024', 'ychf'=>0, 'zdxf'=>0],					
+					['num'=>'18696205025', 'ychf'=>0, 'zdxf'=>0],					
+					['num'=>'18696205026', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205027', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205028', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205029', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205030', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205031', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205032', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205033', 'ychf'=>0, 'zdxf'=>0],
+					['num'=>'18696205034', 'ychf'=>600, 'zdxf'=>0],					
 				];
 				break;
 			default:
