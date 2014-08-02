@@ -839,9 +839,20 @@ EOD;
     }
 
 
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/card:gh_1ad98f5481f3
+    public function actionCard()
+    {
+
+        $this->layout =false;
+        return $this->render('card');
+    }
+
 
 
 }
+
+
+
 
 /*
 Oauth2AccessToken Array

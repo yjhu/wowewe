@@ -394,7 +394,7 @@
 		
 		<div data-role="content">
 			<h2>请您选择手机号码</h2>
-			<div class="ui-grid-a">
+			<div class="ui-grid-a" id="list_common_tbody">
 			<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >13545296480</a></div></div>
 			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >33333333333</a></div></div>
             <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >77777777777</a></div></div>
@@ -674,31 +674,20 @@ $(document).on("pageshow", "#page2", function(){
 		});
 	   
 	});
-	
-	
 
 });
 
 $(document).on("pageshow", "#page3", function(){
-	// alert("page3 create");
-	
-//	flowPack_name = {"0":"100MB", "1":"300MB", "2":"500MB", "3":"1GB", "4":"2GB", "5":"3GB", "6":"4GB", "7":"6GB", "8":"11GB"};
-//	flowPack_fee = {"0":"8", "1":"16", "2":"24", "3":"48", "4":"72", "5":"96", "6":"120", "7":"152", "8":"232"};
+
 	flowPack_name = <?php echo \app\models\MOrder::getFlowPackName(); ?>;
 	flowPack_fee =<?php echo \app\models\MOrder::getFlowPackFee(); ?>;
-	
-	//voicePack_name = {"0":"200分钟", "1":"300分钟", "2":"500分钟", "3":"1000分钟", "4":"2000分钟", "5":"3000分钟"};
-	//voicePack_fee = {"0":"32", "1":"40", "2":"56", "3":"112", "4":"160", "5":"240"};
+
 	voicePack_name = <?php echo \app\models\MOrder::getVoicePackName(); ?>;
 	voicePack_fee = <?php echo \app\models\MOrder::getVoicePackFee(); ?>;
-	
-	//msgPack_name = {"0":"200条", "1":"400条", "2":"600条", "3":"不选"};
-	//msgPack_fee = {"0":"10", "1":"20", "2":"30", "3":"0"};
+
 	msgPack_name = <?php echo \app\models\MOrder::getMsgPackName(); ?>;
 	msgPack_fee = <?php echo \app\models\MOrder::getMsgPackFee(); ?>;
-	
-	//callshowPack_name = {"0":"来显", "1":"不选"};
-	//callshowPack_fee = {"0":"6", "1":"0"};
+
 	callshowPack_name = <?php echo \app\models\MOrder::getCallShowPackName(); ?>;
 	callshowPack_fee =<?php echo \app\models\MOrder::getCallShowPackFee(); ?>;
 	
@@ -764,16 +753,16 @@ $(document).on("pageshow", "#page3", function(){
 			if (text.indexOf("Android") >= 0) {
 				alert('您的订单已经生成.');
 				//alert("你的手机系统是：安卓");
-
 			} else if (text.indexOf("iPhone") >= 0) {
 				//alert("你的手机系统是：苹果");
 				location.href=url;
-
-			} else {
+			} else if (text.indexOf("iPad") >= 0) {
+                location.href=url;
+            }
+            else {
 				alert("尚未识别您的手机");
 			}
-		} else 
-		{
+		} else {
 			alert("尚未识别您的手机");
 		}
 	   
@@ -790,32 +779,41 @@ $(document).on("pageshow", "#number-select", function(){
         $('.ui-grid-a').highLight(localStorage.getItem("luckNum"));
     }
 
+    function loadData(i, n)
+    {
+        count++;
+
+        var str = "";
+
+        if(i%2 == 1)
+                var text = " <div class=ui-block-a><div class='ui-bar ui-bar-a' style='height:60px'><a href='' >"+n.num+"</a></div></div>";
+        else
+                var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' style='height:60px'><a href='' >"+n.num+"</a></div></div>";
+
+        $("#list_common_tbody").html(text);
+    }
+
     $(".ui-grid-a a").click(function(){
 		//alert($(this).text());
 		localStorage.setItem("luckNum",$(this).text());
 		location.href="#page2";
 
-        /*
 		$.ajax({
-			url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodnum' ; ?>",
+			//url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/ajaxdata' ; ?>",
+            url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>0], true) ; ?>",
 			type:"GET",
 			//data: $("form#productForm").serialize() +"&feeSum="+feeSum,
 			data: "&currentPage="+currentPage,
-			success:function(data){
-				data = eval('('+data+')');
-				if(data.status == 0)
-				{
-					//alert(data.oid);
-					//localStorage.setItem("oid",data.oid);
-					//$.mobile.changePage("#page3",{transition:"slide"});
-				}
-				else
-				{
-					return false;
-				}
-			}
+            success: function(msg){
+                var json_data = eval('('+msg+')');
+                if(json_data.objs)
+                {
+                    $.each(json_data.objs, loadData);
+                }
+                $("#list_count").html(count);
+            }
 		});
-        */
+
         /*end of ajax*/
 	});
 
