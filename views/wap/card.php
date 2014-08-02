@@ -96,9 +96,9 @@
 		</p>
 
         <p id="desc">
-            <!--【校园专享】沃派校园卡 26元/月 享500M省内流量-->
-            <?php echo  $item->title_hint; ?>
-        </p>
+                <!--【校园专享】沃派校园卡 26元/月 享500M省内流量-->
+                <?php echo  $item->title_hint; ?>
+            </p>
 
         <p id="price">
         价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
@@ -178,7 +178,7 @@
 	
 	<div data-role="page" id="page3">
 		<div data-role="header">
-			<h1 id="title">沃派校园卡</h1>
+			<h1 id="title"><?php echo  $item->title; ?></h1>
 		</div>
 		
 		<div data-role="content">
@@ -186,20 +186,19 @@
 			<h2>订单详情</h2>
 			<p id="oid"></p>
 
-            <p id="desc">【校园专享】微信沃卡 永享六大微信特权 预存50得530元话费</p>
+            <p><?php echo  $item->title_hint; ?></p>
             <p id="selectNum">号码：13545296480</p>
-            <p id="productPkgName">套餐：微信沃卡</p>
-            <p id="addition">赠品：好友推荐最高得100元话费； 微信晒单最高得话费50元</p>
 
-			<p align="right" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
-			<span  id="total">
-			合计: ￥ 50
+			<p align="right" >
+             合计
+			<span  id="total" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
+			 ￥ 50
 			</span>
 			</p>	
 
 			<br>
 			<p>
-			<input type="button" value="立即支付" id="payBtn">
+			<input type="button" value="确认订单" id="payBtn">
 			</p>	
 			<!--
 			<p id="url"></p>
@@ -305,7 +304,6 @@ else if(productPkg == 1)
                                                 <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201404082224242089061808.jpg\" alt=\"\" />\
                                                 <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140408222436-275090176.jpg\" alt=\"\" /> \
                                                 <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140317125516342466672.jpg\" alt=\"\" />");
-
 
 }
 */

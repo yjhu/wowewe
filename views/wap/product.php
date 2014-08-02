@@ -233,44 +233,10 @@ U::W($gh_id);
                   </div>
               </div>
 
-
               </div>
 			</div>
 
-            <!--
-            <p>
-                <select name="office">
-                    <option value="0">---请选择营业厅---</option>
-                    <option value="1">枣阳营业厅</option>
-                    <option value="2">枣阳盛鑫广场营业厅</option>
-                    <option value="3">宜城营业厅</option>
-                    <option value="4">宜城新建街营业厅</option>
-                    <option value="5">襄州营业厅</option>
-                    <option value="6">襄州民发世界城营业厅</option>
-                    <option value="7">襄城南街自有营业厅</option>
-                    <option value="8">襄城鼓楼自有营业厅</option>
-                    <option value="9">南漳营业厅</option>
-                    <option value="10">南漳凯达广场营业厅</option>
-                    <option value="11">老河口营业厅</option>
-                    <option value="12">老河口市中山路自有营业厅</option>
-                    <option value="13">谷城营业厅</option>
-                    <option value="14">谷城县府街自有营业厅</option>
-                    <option value="15">二汽营业厅</option>
-                    <option value="16">城区新华北路营业厅</option>
-                    <option value="17">城区三元路营业厅</option>
-                    <option value="18">城区人民路自有营业厅</option>
-                    <option value="19">城区人民广场营业厅</option>
-                    <option value="20">城区前进路营业厅</option>
-                    <option value="21">城区汉江路营业厅</option>
-                    <option value="22">城区长虹路营业厅</option>
-                    <option value="23">保康营业厅</option>
-                    <option value="24">保康新街营业厅</option>
-                </select>
-            </p>
-            -->
-
-            <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id)); ?>
-
+            <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
 
             <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
 			
@@ -290,35 +256,10 @@ U::W($gh_id);
 
 					<div role="main" class="ui-content">
 						<p>
-                         <!--
-						<img width="100%" style="display:block" src="http://res.mall.10010.com/mall/res/uploader/gdesc/2014071512570459069472.jpg"  />
-						<img width="100%" style="display:block" src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140715125741-395019744.jpg"  />
-						<a href="http://www.10010.com/static/homepage/subjectpage/57100000121535.html" target="_blank">
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/2014052323300111030656.jpg" />
-						</a>
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140620125526735531536.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140620125543-871142944.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140620125545-1488938112.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/201406201255471171857184.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140620125550-2085819232.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140620125552-1229077232.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140620125554890077008.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140620125555274224096.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/201406201255571229488080.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140620125558-1457143136.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140620125559-166693792.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140620125601-1539953360.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140620125603-795464784.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/201406201256041299213616.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/201406201256061847605616.jpg" />
-						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140620125608882812384.jpg" />
-						-->
-
                             <img width="100%" style="display:block" src="../web/images/item/zyzh-001.jpg" alt=""/>
                             <img width="100%" style="display:block" src="../web/images/item/zyzh-002.jpg" alt=""/>
                             <img width="100%" style="display:block" src="../web/images/item/zyzh-003.jpg" alt=""/>
                             <img width="100%" style="display:block" src="../web/images/item/zyzh-004.jpg" alt=""/>
-
                         </p>
 					</div><!-- /content -->        
 
@@ -359,6 +300,7 @@ U::W($gh_id);
 			-->
 			<p id="oid"></p>
             <p id="selectNum"></p>
+            <p id="office"></p>
 
 
 			<table data-role="table" id="table-custom-2" data-mode="columntoggle"   class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-text="选择要显示的列..." data-column-popup-theme="a">
@@ -777,7 +719,9 @@ $(document).on("pageshow", "#page3", function(){
 
     otherPack_name = <?php echo \app\models\MOrder::getOtherPackName(); ?>;
     otherPack_fee =<?php echo \app\models\MOrder::getOtherPackFee(); ?>;
-	
+
+    office_name = <?php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
+
 	var item = localStorage.getItem("item");
 	item_new = item.replace(/&/g, ";") +';';
 
@@ -806,6 +750,8 @@ $(document).on("pageshow", "#page3", function(){
 
     var selectNum = localStorage.getItem("luckNum");
     $("#selectNum").html("所选的靓号: "+selectNum);
+
+    $("#office").html('所选营业厅: ' +office_name[office] );
 
 	var url = localStorage.getItem("url");
 	//$("#url").html("<a href='"+url+"'>Pay</a>");
