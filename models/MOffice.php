@@ -92,65 +92,6 @@ class MOffice extends ActiveRecord
 		];
 	}
 
-/*
-	public static function findIdentity($id)
-	{
-		return static::findOne($id);
-	}
-
-	public static function findByUsername($title)
-	{
-		return static::findOne(['title' => $title]);
-	}
-
-	public static function findIdentityByAccessToken($token, $type = null)
-	{
-		return null;
-	}
-
-	public function getUsername()
-	{
-		return $this->title;
-	}
-
-	public function getId()
-	{
-		return $this->office_id;
-	}
-
-	public function getAuthKey()
-	{
-		return $this->office_id;
-	}
-
-	public function validateAuthKey($authKey)
-	{
-		return $this->getAuthKey() === $authKey;
-	}
-
-	public function validatePassword($password)
-	{
-		return $password === $this->pswd;
-	}
-
-*/
-
-/*
-	static function getOfficeNameX($key=null)
-	{
-		$arr = array(
-			self::GRADE_UNPAY => '潜在客户',
-			self::GRADE_NONE => '店铺客户',
-			self::GRADE_NORMAL => '普通会员',
-			self::GRADE_HIGH => '高级会员',
-			self::GRADE_VIP => 'VIP会员',			
-			self::GRADE_HVIP => '至尊VIP',						
-		);		
-		return $key === null ? $arr : $arr[$key];
-	}
-
-*/
-
 	public static function getOfficeNameOption($gh_id, $json=true, $need_prompt=true)
 	{
 		$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
@@ -193,4 +134,46 @@ INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobi
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_1ad98f5481f3','襄阳','保康','保康新街营业厅','保康新建街','王亚男','3','18507271778');
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_1ad98f5481f3','襄阳','','其它','','','167','');
 
+	public static function findIdentity($id)
+	{
+		return static::findOne($id);
+	}
+
+	public static function findByUsername($title)
+	{
+		return static::findOne(['title' => $title]);
+	}
+
+	public static function findIdentityByAccessToken($token, $type = null)
+	{
+		return null;
+	}
+
+	public function getUsername()
+	{
+		return $this->title;
+	}
+
+	public function getId()
+	{
+		return $this->office_id;
+	}
+
+	public function getAuthKey()
+	{
+		return $this->office_id;
+	}
+
+	public function validateAuthKey($authKey)
+	{
+		return $this->getAuthKey() === $authKey;
+	}
+
+	public function validatePassword($password)
+	{
+		return $password === $this->pswd;
+	}
+
 */
+
+
