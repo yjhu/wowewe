@@ -44,6 +44,14 @@
     color: #cccccc;
     font-size: 10pt;
 }
+
+.fee
+{
+    font-size: 18px;
+    color:#ff8600;
+    font-weight:  bolder;
+}
+
 </style>
 	
 <?php $this->head() ?>
@@ -72,8 +80,10 @@
         <p id="price">
         价格  ￥50
         </p>
+        <p id="priceHint" class="productPkgHint">含预存款50元</p>
 
-		<div class="ui-corner-all custom-corners">
+
+            <div class="ui-corner-all custom-corners">
             <div data-role="fieldcontain">
             <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
                 <legend>套餐</legend>
@@ -152,7 +162,7 @@
 
             <p id="desc">【校园专享】微信沃卡 永享六大微信特权 预存50得530元话费</p>
             <p id="selectNum">号码：13545296480</p>
-            <p id="productPkg">套餐：微信沃卡</p>
+            <p id="productPkgName">套餐：微信沃卡</p>
             <p id="addition">赠品：好友推荐最高得100元话费； 微信晒单最高得话费50元</p>
 
 			<p align="right" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
@@ -226,11 +236,16 @@ var feeSum = 0;
 
 if(productPkg == 0) /*沃派校园卡 */
 {
+     //alert("aaaaaaaaaaaaaaaaaaa");
     $("#title").html("【校园专享】沃派校园卡");
     $("#imgURL").html("<img width=\"60%\" src=\"http://res.mall.10010.com/mall/res/uploader/temp/20140719115711-1726575840_310_310.jpg\" alt=\"\"/>");
     $("#desc").html("【校园专享】沃派校园卡 26元/月 享500M省内流量 ");
+
+    $("#price").html(" 价格  <span class='fee'>￥50</span>");
+    $("#priceHint").html("含预存款50元");
+
     $("#productPkgName").html("沃派校园套餐");
-    $("#productPkgHint").html("500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G xxxx");
+    $("#productPkgHint").html("500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G ");
     $("#richtextDesc").html("<img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201404210955181014136816.jpg\" alt=\"\" />\
                                                 <img width=\"100%\" style=\"display:block\" src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140801164013-1800990032.jpg\" alt=\"\" />\
                                                 <img width=\"100%\" style=\"display:block\" src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140421114304-463429008.jpg\" alt=\"\" />\
@@ -240,9 +255,32 @@ if(productPkg == 0) /*沃派校园卡 */
 
 
 }
-else if(productPkg == 1) /**/
+else if(productPkg == 1) /*微信沃卡*/
 {
+    //alert("bbbbbbbbbbbbbbbbbbbbbbb");
+    $("#title").html("【校园专享】微信沃卡 ");
+    $("#imgURL").html("<img width=\"60%\" src=\"http://res.mall.10010.com/mall/res/uploader/temp/20140421101117476467616_310_310.jpg\" alt=\"\"/>");
+    $("#desc").html("【校园专享】微信沃卡 永享六大微信特权 预存50得530元话费 500M微信定向流量+500M省内流量");
+    $("#productPkgName").html("微信沃卡");
 
+    $("#price").html(" 价格  <span class='fee'>￥50</span>");
+    $("#priceHint").html("含预存款50元");
+
+    $("#productPkgHint").html("500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G");
+    $("#richtextDesc").html("<img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201404210955181014136816.jpg\" alt=\"\" />\
+                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201407150942461222527408.jpg\" alt=\"\" />\
+                                                <a href=\"http://www.10010.com/pushpage/59800000134189.71.html\" target=\"_blank\">\
+                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201407201133341283576080.jpg\" alt=\"\" />\
+                                                </a>\
+                                                <a href=\"http://www.10010.com/static/homepage/subjectpage/57100000121535.html\" target=\"_blank\">\
+                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140715094313541965008.jpg\" alt=\"\" />\
+                                                </a>\
+                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140409121513440614720.jpg\" alt=\"\" />\
+                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140408222215453828688.jpg\" alt=\"\" />\
+                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140408222356-1139107584.jpg\" alt=\"\" />\
+                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201404082224242089061808.jpg\" alt=\"\" />\
+                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140408222436-275090176.jpg\" alt=\"\" /> \
+                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140317125516342466672.jpg\" alt=\"\" />");
 
 
 }
@@ -264,7 +302,7 @@ $(document).on("pageshow", "#page2", function(){
 		cardluckNum = localStorage.getItem("cardluckNum");
 		if(cardluckNum != null)
 		{			
-			$("#sel-num")[0].innerHTML="您选择的靓号 "+cardluckNum;
+			$("#sel-num")[0].innerHTML="您选的号码 "+cardluckNum;
 		}
 	}
 	showSelectedNumber();

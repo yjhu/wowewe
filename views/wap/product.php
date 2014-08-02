@@ -30,16 +30,6 @@
 {
 	color:#00C;
 }
-.keyword
-{
-    color: red;
-    background-color: yellow;
-}
-.highlight
-{
-    color: red;
-    background-color: yellow;
-}
 
 </style>
 	
@@ -93,13 +83,13 @@
 		<form id="productForm">	
 		<div data-role="content" data-theme="d">	
 		<p  align=center>        
-		<img width="60%" src="http://res.mall.10010.com/mall/res/uploader/temp/20140514113951768477440_310_310.jpg" alt=""/>
+		<img width="80%" src="http://res.mall.10010.com/mall/res/uploader/temp/20140514113951768477440_310_310.jpg" alt=""/>
 		</p>
 
 		<p> 
-		【沃的套餐】自由组合套餐（手机营业厅客户端）<br>赠品：无纺布环保袋；好友推荐最高得100元话费；微信晒单最高得话费50元。
+		【沃的套餐】自由组合套餐（手机营业厅客户端）
+         <!--<br>赠品：无纺布环保袋；好友推荐最高得100元话费；微信晒单最高得话费50元。-->
 		</p>
-
 
 		<div class="ui-corner-all custom-corners">
 
@@ -208,19 +198,55 @@
 
 			  </div>
 			</div>
-			
-								 
-			<a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
-			
 
+            <p>
+                <select name="office">
+                    <option value="0">---请选择营业厅---</option>
+                    <option value="1">枣阳营业厅</option>
+                    <option value="2">枣阳盛鑫广场营业厅</option>
+                    <option value="3">宜城营业厅</option>
+                    <option value="4">宜城新建街营业厅</option>
+                    <option value="5">襄州营业厅</option>
+                    <option value="6">襄州民发世界城营业厅</option>
+                    <option value="7">襄城南街自有营业厅</option>
+                    <option value="8">襄城鼓楼自有营业厅</option>
+                    <option value="9">南漳营业厅</option>
+                    <option value="10">南漳凯达广场营业厅</option>
+                    <option value="11">老河口营业厅</option>
+                    <option value="12">老河口市中山路自有营业厅</option>
+                    <option value="13">谷城营业厅</option>
+                    <option value="14">谷城县府街自有营业厅</option>
+                    <option value="15">二汽营业厅</option>
+                    <option value="16">城区新华北路营业厅</option>
+                    <option value="17">城区三元路营业厅</option>
+                    <option value="18">城区人民路自有营业厅</option>
+                    <option value="19">城区人民广场营业厅</option>
+                    <option value="20">城区前进路营业厅</option>
+                    <option value="21">城区汉江路营业厅</option>
+                    <option value="22">城区长虹路营业厅</option>
+                    <option value="23">保康营业厅</option>
+                    <option value="24">保康新街营业厅</option>
+                </select>
+            </p>
+
+            <!--
+            <//?php
+            U::W(Html::dropDownList('office_id', 0, \app\models\MOffice::getOfficeNameOption('gh_03a74ac96138')));
+            ?>
+            -->
+
+            <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
+			
+            <br>
 			<input type="button" value="确认套餐" id="submitBtn">
 			
 			<br>
 			<div id="TabbedPanels2" class="TabbedPanels">
 			  <ul class="TabbedPanelsTabGroup">
 				<li class="TabbedPanelsTab" tabindex="0">图文详情</li>
-	
+	             <!--
 				<li class="TabbedPanelsTab" tabindex="0">商品评价</li>
+				-->
 			  </ul>
 			  <div class="TabbedPanelsContentGroup">
 				<div class="TabbedPanelsContent">
@@ -252,12 +278,13 @@
 					</div><!-- /content -->        
 
 				</div>
-
+                <!--
 				<div class="TabbedPanelsContent">
 					<div role="main" class="ui-content">
 					<p> 好好好</p>
-					</div><!-- /content -->       
+					</div>
 				</div>
+                  -->
 
 
 			  </div>
@@ -339,35 +366,6 @@
 			<textarea cols="40" rows="8" name="address" id="address" placeholder="请输入您的收货地址"></textarea>
 			</P>
 			-->
-			<p>
-				<select>
-					<option value="0">---请选择营业厅---</option>
-					<option value="1">枣阳营业厅</option>
-					<option value="2">枣阳盛鑫广场营业厅</option>
-					<option value="3">宜城营业厅</option>
-					<option value="4">宜城新建街营业厅</option>
-					<option value="5">襄州营业厅</option>
-					<option value="6">襄州民发世界城营业厅</option>
-					<option value="7">襄城南街自有营业厅</option>
-					<option value="8">襄城鼓楼自有营业厅</option>
-					<option value="9">南漳营业厅</option>
-					<option value="10">南漳凯达广场营业厅</option>
-					<option value="11">老河口营业厅</option>
-					<option value="12">老河口市中山路自有营业厅</option>
-					<option value="13">谷城营业厅</option>
-					<option value="14">谷城县府街自有营业厅</option>
-					<option value="15">二汽营业厅</option>
-					<option value="16">城区新华北路营业厅</option>
-					<option value="17">城区三元路营业厅</option>
-					<option value="18">城区人民路自有营业厅</option>
-					<option value="19">城区人民广场营业厅</option>
-					<option value="20">城区前进路营业厅</option>
-					<option value="21">城区汉江路营业厅</option>
-					<option value="22">城区长虹路营业厅</option>
-					<option value="23">保康营业厅</option>
-					<option value="24">保康新街营业厅</option>
-				</select>
-			</p>
 			<br>
 			<p>
 			<input type="button" value="立即支付" id="payBtn">
@@ -466,7 +464,7 @@ $(document).on("pageshow", "#page2", function(){
 		luckNum = localStorage.getItem("luckNum");
 		if(luckNum != null)
 		{			
-			$("#sel-num")[0].innerHTML="您选择的靓号 "+luckNum;
+			$("#sel-num")[0].innerHTML="您选的号码 "+luckNum;
 		}
 	}
 	showSelectedNumber();
@@ -774,26 +772,28 @@ $(document).on("pageshow", "#page3", function(){
 
 $(document).on("pageshow", "#number-select", function(){
 
-    $("#list_common_tbody").html('');
-
-    /*highLlght selected num*/
-    if( localStorage.getItem("luckNum") != null)
-    {
-        $('.ui-grid-a').highLight();
-        $('.ui-grid-a').highLight(localStorage.getItem("luckNum"));
-    }
+   $("#list_common_tbody").html('');
 
     function loadData(i, n)
     {
         //alert('load data');
         count++;
+        if( localStorage.getItem("luckNum") != null)
+        {
+            if(n.num == localStorage.getItem("luckNum"))
+               // cssStr = "style='height:60px; border:1px solid red'";
+                cssStr = "style='height:60px; background-color:yellow'";
+            else
+                cssStr = "style='height:60px;'";
+        }
 
         if(i%2 == 0)
-                var text = " <div class=ui-block-a><div class='ui-bar ui-bar-a' style='height:60px'><a href='' >"+n.num+"</a></div></div>";
+                var text = " <div class='ui-block-a'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"</a></div></div>";
         else
-                var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' style='height:60px'><a href='' >"+n.num+"</a></div></div>";
+                var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"</a></div></div>";
 
-        $("#list_common_tbody").append(text);
+        $("#list_common_tbody").append(text).trigger('create');
+
     }
 
     function getNumberList()
@@ -817,10 +817,11 @@ $(document).on("pageshow", "#number-select", function(){
     getNumberList();
 
 
-    $(".ui-grid-a a").click(function(){
+    $(document).on("click",".ui-grid-a a",function(){
 		//alert($(this).text());
 		localStorage.setItem("luckNum",$(this).text());
-		location.href="#page2";
+		//location.href="#page2";
+        $.mobile.changePage("#page2",{transition:"slide"});
 	});
 
     $("#seleNumBtn").click(function(){
