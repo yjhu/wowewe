@@ -58,6 +58,15 @@
     font-weight:  bolder;
 }
 
+.title_hint
+{
+    color:red;
+    font-size: 9pt;
+}
+
+.ui-content {
+    padding: 0.5em !important;
+}
 </style>
 	
 <?php $this->head() ?>
@@ -78,19 +87,18 @@
 		<form id="productForm">	
 		<div data-role="content" data-theme="d">	
 		<p  align=center id="imgURL">
-		    <img width="60%" src="<?php echo  $item->pic_url; ?>" alt=""/>
+		    <img width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
 		</p>
 
         <p id="desc">
-        <!--【校园专享】沃派校园卡 26元/月 享500M省内流量-->
+            <!--【校园专享】沃派校园卡 26元/月 享500M省内流量-->
             <?php echo  $item->title_hint; ?>
         </p>
 
         <p id="price">
         价格  ￥<?php echo  ($item->price)/100; ?>
+       <br><span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
         </p>
-        <p id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></p>
-
 
             <div class="ui-corner-all custom-corners">
             <div data-role="fieldcontain">
@@ -105,7 +113,6 @@
                 <?php echo  $item->pkg_name_hint; ?>
             </p>
 
-
 		  <div data-role="fieldcontain">
 			<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 			  <legend>卡类型</legend>
@@ -118,8 +125,10 @@
 			</fieldset>
 		  </div>
 
+          <img width="100%" style="display:block" src="../web/images/item/card.jpg" alt=""/>
+
 			<a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
-			
+
 
 			<input type="button" value="确认套餐" id="submitBtn">
 			
