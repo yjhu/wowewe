@@ -96,7 +96,7 @@
         </p>
 
         <p id="price">
-        价格  ￥<?php echo  ($item->price)/100; ?>
+        价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
        <br><span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
         </p>
 
