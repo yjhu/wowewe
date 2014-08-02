@@ -76,7 +76,8 @@ use yii\helpers\Security;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 
-class MOffice extends ActiveRecord implements IdentityInterface
+//implements IdentityInterface
+class MOffice extends ActiveRecord 
 {
 	public static function tableName()
 	{
@@ -91,6 +92,7 @@ class MOffice extends ActiveRecord implements IdentityInterface
 		];
 	}
 
+/*
 	public static function findIdentity($id)
 	{
 		return static::findOne($id);
@@ -130,7 +132,9 @@ class MOffice extends ActiveRecord implements IdentityInterface
 	{
 		return $password === $this->pswd;
 	}
-	
+
+*/
+
 /*
 	static function getOfficeNameX($key=null)
 	{

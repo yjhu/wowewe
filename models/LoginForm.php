@@ -56,9 +56,7 @@ class LoginForm extends Model
 	{
 		if ($this->_user === false) 
 		{
-			$this->_user = MOffice::findByUsername($this->username);            
-			if ( $this->_user === null)            
-				$this->_user = MUser::findByUsername($this->username);
+			$this->_user = MUser::findByUsername($this->username);
 		}
 		return $this->_user;
 	}
