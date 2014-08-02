@@ -60,7 +60,7 @@ class MOrder extends ActiveRecord
 
 	public static function getFlowPackFee($json=true)
 	{
-		$arr = ['0'=>'8', '1'=>'16', '2'=>'24', '3'=>'48', '4'=>'72', '5'=>'96', '6'=>'120', '7'=>'152', '8'=>'232'];			
+		$arr = ['0'=>'10', '1'=>'20', '2'=>'30', '3'=>'60', '4'=>'90', '5'=>'129', '6'=>'150', '7'=>'190', '8'=>'290'];
 		return $json? json_encode($arr) : $arr;
 	}
 	
@@ -69,10 +69,10 @@ class MOrder extends ActiveRecord
 		$arr = ['0'=>'200分钟', '1'=>'300分钟', '2'=>'500分钟', '3'=>'1000分钟', '4'=>'2000分钟', '5'=>'3000分钟', '999'=>'不选'];			
 		return $json? json_encode($arr) : $arr;
 	}
-		
+
 	public static function getVoicePackFee($json=true)
 	{
-		$arr = ['0'=>'32', '1'=>'40', '2'=>'56', '3'=>'112', '4'=>'160', '5'=>'240', '999'=>'0'];			
+		$arr = ['0'=>'40', '1'=>'50', '2'=>'70', '3'=>'140', '4'=>'200', '5'=>'300', '999'=>'0'];
 		return $json? json_encode($arr) : $arr;
 	}
 	
@@ -98,7 +98,19 @@ class MOrder extends ActiveRecord
 	{
 		$arr = ['0'=>'6', '999'=>'0'];
 		return $json? json_encode($arr) : $arr;
-	}	
+	}
+
+    public static function getOtherPackName($json=true)
+    {
+        $arr = ['0'=>'炫铃', '1'=>'手机邮箱',  '2'=>'炫铃+手机邮箱', '999'=>'不选'];
+        return $json? json_encode($arr) : $arr;
+    }
+
+    public static function getOtherPackFee($json=true)
+    {
+        $arr = ['0'=>'5', '1'=>'5','2'=>'6','999'=>'0'];
+        return $json? json_encode($arr) : $arr;
+    }
 
 	public static function tableName()
 	{

@@ -18,9 +18,8 @@ U::W($gh_id);
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>产品</title>
-    <link rel="stylesheet" href="js/jqm/demos/css/themes/default/jquery.mobile-1.4.3.min.css">
 
-	<?php 
+	<?php
 /*
 	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/css/themes/default/jquery.mobile-1.4.3.min.css');
 	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/_assets/css/jqm-demos.css'); 
@@ -41,6 +40,9 @@ U::W($gh_id);
     font-size: 9pt;
 }
 
+.ui-content {
+    padding: 0.5em !important;
+}
 </style>
 	
 <?php $this->head() ?>
@@ -93,7 +95,7 @@ U::W($gh_id);
 		<form id="productForm">	
 		<div data-role="content" data-theme="d">	
 		<p  align=center>        
-		<img width="80%" src="../web/images/item/20140514113951768477440.jpg" alt=""/>
+		<img width="100%" src="../web/images/item/20140514113951768477440.jpg" alt=""/>
 		</p>
 
  		<p>
@@ -117,6 +119,8 @@ U::W($gh_id);
 			</fieldset>
 		  </div>
 
+          <img width="100%" style="display:block" src="../web/images/item/card.jpg" alt=""/>
+
 			<!-- #ec7218 yellow -->
 			<p id="diy-create">自由组合套餐        月消费:8元</p>
 			<div id="TabbedPanels1" class="TabbedPanels">
@@ -125,6 +129,7 @@ U::W($gh_id);
 				<li class="TabbedPanelsTab" tabindex="0" id="packTabTitle">语音包<br><span class='tabSumm'>&nbsp;</span></li>
 				<li class="TabbedPanelsTab" tabindex="0" id="msgPackTabTitle">短彩信包<br><span class='tabSumm'>&nbsp;</span></li>
 				<li class="TabbedPanelsTab" tabindex="0" id="callshowPackTabTitle">来电显示<br><span class='tabSumm'>&nbsp;</span></li>
+                <li class="TabbedPanelsTab" tabindex="0" id="otherPackTabTitle">其他<br><span class='tabSumm'>&nbsp;</span></li>
 			  </ul>
 			  <div class="TabbedPanelsContentGroup">
 				<div class="TabbedPanelsContent">
@@ -197,7 +202,6 @@ U::W($gh_id);
 
 				<div class="TabbedPanelsContent">
 					<div data-role="fieldcontain">
-                        <!--
 					  <fieldset data-role="controlgroup">
 						<legend>来电显示</legend>
 						<input type="radio" name="callshowPack" id="callshowPack_0" value="0" />
@@ -205,24 +209,32 @@ U::W($gh_id);
 						<input type="radio" name="callshowPack" id="callshowPack_notselect" value="999" checked />
 						<label for="callshowPack_notselect">不选择</label>
 					  </fieldset>
-					  -->
-
-                        <fieldset data-role="controlgroup">
-                            <legend>增值业务</legend>
-                            <input type="checkbox" name="checkbox-v-2a" id="checkbox-v-2a">
-                            <label for="checkbox-v-2a">来电显示</label>
-                            <input type="checkbox" name="checkbox-v-2b" id="checkbox-v-2b">
-                            <label for="checkbox-v-2b">炫铃</label>
-                            <input type="checkbox" name="checkbox-v-2c" id="checkbox-v-2c">
-                            <label for="checkbox-v-2c">手机邮箱</label>
-                        </fieldset>
-
-
 					  <p>&nbsp;您开通语音包后，将默认开通来电显示包</p>
 					</div>
-				</div>                
+				</div>
 
-			  </div>
+              <div class="TabbedPanelsContent">
+                  <div data-role="fieldcontain">
+                      <fieldset data-role="controlgroup">
+                          <legend>其他增值业务</legend>
+                          <input type="radio" name="otherPack" id="otherPack_0" value="0" />
+                          <label for="otherPack_0">炫铃 5元/月</label>
+
+                          <input type="radio" name="otherPack" id="otherPack_1" value="1" />
+                          <label for="otherPack_1">手机邮箱 5元/月</label>
+
+                          <input type="radio" name="otherPack" id="otherPack_2" value="2" />
+                          <label for="otherPack_2">炫铃+手机邮箱 6元/月</label>
+
+                          <input type="radio" name="otherPack" id="otherPack_notselect" value="999" checked />
+                          <label for="otherPack_notselect">不选择</label>
+                      </fieldset>
+                      <p>&nbsp;</p>
+                  </div>
+              </div>
+
+
+              </div>
 			</div>
 
             <!--
@@ -278,6 +290,7 @@ U::W($gh_id);
 
 					<div role="main" class="ui-content">
 						<p>
+                         <!--
 						<img width="100%" style="display:block" src="http://res.mall.10010.com/mall/res/uploader/gdesc/2014071512570459069472.jpg"  />
 						<img width="100%" style="display:block" src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140715125741-395019744.jpg"  />
 						<a href="http://www.10010.com/static/homepage/subjectpage/57100000121535.html" target="_blank">
@@ -299,7 +312,14 @@ U::W($gh_id);
 						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/201406201256041299213616.jpg" />
 						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/201406201256061847605616.jpg" />
 						<img width="100%" style="display:block"  src="http://res.mall.10010.com/mall/res/uploader/gdesc/20140620125608882812384.jpg" />
-						</p>
+						-->
+
+                            <img width="100%" style="display:block" src="../web/images/item/zyzh-001.jpg" alt=""/>
+                            <img width="100%" style="display:block" src="../web/images/item/zyzh-002.jpg" alt=""/>
+                            <img width="100%" style="display:block" src="../web/images/item/zyzh-003.jpg" alt=""/>
+                            <img width="100%" style="display:block" src="../web/images/item/zyzh-004.jpg" alt=""/>
+
+                        </p>
 					</div><!-- /content -->        
 
 				</div>
@@ -377,8 +397,16 @@ U::W($gh_id);
 				 <td>来电显示</td>
 				 <td id="callshowPack_name">来显每月</td>
 				 <td id="callshowPack_fee">6元</td>
-			   </tr>				   
-		
+			   </tr>
+
+               <tr>
+                   <th>4</th>
+                   <td>其他增值业务</td>
+                   <td id="otherPack_name">来显每月</td>
+                   <td id="otherPack_fee">6元</td>
+               </tr>
+
+
 			 </tbody>
 		   </table>
 			<p align="right" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
@@ -474,10 +502,11 @@ $(document).on("pageshow", "#page2", function(){
 	var fee_pack = 0;
 	var fee_msgPack = 0;
 	var fee_callshowPack = 0;
+    var fee_otherPack = 0;
 	
    	function feeSummary()
 	{
-		feeSum= fee_flowPack + fee_pack + fee_msgPack + fee_callshowPack;
+		feeSum= fee_flowPack + fee_pack + fee_msgPack + fee_callshowPack + fee_otherPack;
 		$("#diy-create").html("自由组合套餐    月消费:<span style='font-size: 18px; color:#ff8600; font-weight:  bolder'>"+feeSum+"元</span>");
 		//$("#total_fee").val(feeSum);
 	}
@@ -511,7 +540,7 @@ $(document).on("pageshow", "#page2", function(){
 		{
 			$( "#callshowPack_notselect" ).checkboxradio( "enable" );
 			changeTabTitle("callshowPack",0);
-		}		
+		}
 	});
 	
    	$("[name=msgPack]").click(function(){
@@ -522,6 +551,9 @@ $(document).on("pageshow", "#page2", function(){
 		changeTabTitle("callshowPack",$(this).val());
 	});
 
+    $("[name=otherPack]").click(function(){
+        changeTabTitle("otherPack",$(this).val());
+    });
 
     function changeTabTitle(v1,v2)
 	{
@@ -595,17 +627,17 @@ $(document).on("pageshow", "#page2", function(){
 			else if(v2==3)
 			{
 				$("#packTabTitle").html("语音包<br><span class='tabSumm'> 1000分钟</span>");	
-				fee_pack = 140;
+				fee_pack = 112;
 			}
 			else if(v2==4)
 			{
 				$("#packTabTitle").html("语音包<br><span class='tabSumm'> 2000分钟</span>");
-				fee_pack = 200;
+				fee_pack = 160;
 			}
 			else if(v2==5)
 			{
 				$("#packTabTitle").html("语音包<br><span class='tabSumm'> 3000分钟</span>");
-				fee_pack = 300;
+				fee_pack = 240;
 			}
 			else if( v2==999)
 			{
@@ -656,6 +688,31 @@ $(document).on("pageshow", "#page2", function(){
 				$("#callshowPackTabTitle").html("来电显示<br>&nbsp");
 
 		}
+        else if(v1=='otherPack')
+        {
+            if(v2==0)
+            {
+                $("#otherPackTabTitle").html("其他<br><span class='tabSumm'> 已选</span>");
+                fee_otherPack = 5;
+            }
+            else if(v2==1)
+            {
+                $("#otherPackTabTitle").html("其他<br><span class='tabSumm'> 已选</span>");
+                fee_otherPack = 5;
+            }
+            else if(v2==2)
+            {
+                $("#otherPackTabTitle").html("其他<br><span class='tabSumm'> 已选</span>");
+                fee_otherPack = 6;
+            }
+            else if(v2==999)
+            {
+                $("#otherPackTabTitle").html("其他<br>&nbsp");
+                fee_otherPack = 0;
+            }
+            else
+                $("#otherPackTabTitle").html("其他<br>&nbsp");
+        }
 		
 		/**/
 		feeSummary();
@@ -717,6 +774,9 @@ $(document).on("pageshow", "#page3", function(){
 
 	callshowPack_name = <?php echo \app\models\MOrder::getCallShowPackName(); ?>;
 	callshowPack_fee =<?php echo \app\models\MOrder::getCallShowPackFee(); ?>;
+
+    otherPack_name = <?php echo \app\models\MOrder::getOtherPackName(); ?>;
+    otherPack_fee =<?php echo \app\models\MOrder::getOtherPackFee(); ?>;
 	
 	var item = localStorage.getItem("item");
 	item_new = item.replace(/&/g, ";") +';';
@@ -735,7 +795,10 @@ $(document).on("pageshow", "#page3", function(){
 	
 	$("#callshowPack_name").html(callshowPack_name[callshowPack]);
 	$("#callshowPack_fee").html(callshowPack_fee[callshowPack]+"元");
-	
+
+    $("#otherPack_name").html(otherPack_name[otherPack]);
+    $("#otherPack_fee").html(otherPack_fee[otherPack]+"元");
+
 	$("#total").html("合计:"+feeSum+"元");
 	
 	var oid = localStorage.getItem("oid");
