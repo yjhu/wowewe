@@ -144,11 +144,14 @@ class MOffice extends ActiveRecord implements IdentityInterface
 		return $key === null ? $arr : $arr[$key];
 	}
 
+*/
 
-	public static function getOfficeName($gh_id)
+	//$item = \app\models\MItem::findOne(['gh_id'=>$gh_id, 'cid' => \app\models\MItem::ITEM_CAT_CARD_WO]);
+	//$item->title
+	//Html::dropDownList('office_id', 0, MOffice::getOfficeNameOption($gh_id));
+	public static function getOfficeNameOption($gh_id)
 	{
-
-		$offices = MOffice::find()->where("gh_id = '$gh_id' AND office_id <=25 ")->asArray()->all();					
+		$offices = MOffice::find()->where("gh_id = :gh_id AND office_id <= :office_id", [':gh_id'=>$gh_id, ':office_id'=>24])->asArray()->all();					
 		$listData = [];
 		foreach($offices as $office)
 		{
@@ -158,7 +161,6 @@ class MOffice extends ActiveRecord implements IdentityInterface
 		}
 		return $listData;
 	}
-*/
 
 }
 
