@@ -4,6 +4,12 @@
 	use app\assets\JqmAsset;
 	JqmAsset::register($this);
 
+    use app\models\U;
+    use app\models\MOffice;
+    $gh_id = Yii::$app->session['gh_id'];
+
+    $item = \app\models\MItem::findOne(['gh_id'=>$gh_id, 'cid' => $_GET['cid']]);
+    U::W($item);
 ?>
 <?php $this->beginPage() ?>
 
@@ -63,24 +69,27 @@
 	<div data-role="page" id="page2">
 
 		<div data-role="header">
-			<h1 id="title">沃派校园卡</h1>
+			<h1 id="title">
+                <?php echo  $item->title; ?>
+            </h1>
 		</div>
 		
 		<div data-role="content">
 		<form id="productForm">	
 		<div data-role="content" data-theme="d">	
 		<p  align=center id="imgURL">
-		    <img width="60%" src="http://res.mall.10010.com/mall/res/uploader/temp/20140719115711-1726575840_310_310.jpg" alt=""/>
+		    <img width="60%" src="<?php echo  $item->pic_url; ?>" alt=""/>
 		</p>
 
         <p id="desc">
-        【校园专享】沃派校园卡 26元/月 享500M省内流量
+        <!--【校园专享】沃派校园卡 26元/月 享500M省内流量-->
+            <?php echo  $item->title_hint; ?>
         </p>
 
         <p id="price">
-        价格  ￥50
+        价格  ￥<?php echo  ($item->price)/100; ?>
         </p>
-        <p id="priceHint" class="productPkgHint">含预存款50元</p>
+        <p id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></p>
 
 
             <div class="ui-corner-all custom-corners">
@@ -88,10 +97,13 @@
             <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
                 <legend>套餐</legend>
                 <input type="radio" name="productPkg" id="radio-choice-h-2a" value="0" checked="checked">
-                <label for="radio-choice-h-2a" id="productPkgName">微信沃卡</label>
+                <label for="radio-choice-h-2a" id="productPkgName"><!--微信沃卡--> <?php echo  $item->pkg_name; ?></label>
             </fieldset>
             </div>
-            <p id="productPkgHint" class="productPkgHint">500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G</p>
+            <p id="productPkgHint" class="productPkgHint">
+                <!--500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G-->
+                <?php echo  $item->pkg_name_hint; ?>
+            </p>
 
 
 		  <div data-role="fieldcontain">
@@ -228,16 +240,15 @@ var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
 
 
 <script>
-var productPkg = <?php echo $_GET["productPkg"] ?>;
+//var productPkg = <//?php echo $_GET["productPkg"] ?>;
 var  currentPage = 1; /*init page num*/
 var feeSum = 0;
 //$().ready(function() {
 
-
-if(productPkg == 0) /*沃派校园卡 */
+/*
+if(productPkg == 0)
 {
-     //alert("aaaaaaaaaaaaaaaaaaa");
-    $("#title").html("【校园专享】沃派校园卡");
+    //$("#title").html("【校园专享】沃派校园卡");
     $("#imgURL").html("<img width=\"60%\" src=\"http://res.mall.10010.com/mall/res/uploader/temp/20140719115711-1726575840_310_310.jpg\" alt=\"\"/>");
     $("#desc").html("【校园专享】沃派校园卡 26元/月 享500M省内流量 ");
 
@@ -255,10 +266,9 @@ if(productPkg == 0) /*沃派校园卡 */
 
 
 }
-else if(productPkg == 1) /*微信沃卡*/
+else if(productPkg == 1)
 {
-    //alert("bbbbbbbbbbbbbbbbbbbbbbb");
-    $("#title").html("【校园专享】微信沃卡 ");
+    //$("#title").html("【校园专享】微信沃卡 ");
     $("#imgURL").html("<img width=\"60%\" src=\"http://res.mall.10010.com/mall/res/uploader/temp/20140421101117476467616_310_310.jpg\" alt=\"\"/>");
     $("#desc").html("【校园专享】微信沃卡 永享六大微信特权 预存50得530元话费 500M微信定向流量+500M省内流量");
     $("#productPkgName").html("微信沃卡");
@@ -284,6 +294,7 @@ else if(productPkg == 1) /*微信沃卡*/
 
 
 }
+*/
 
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();

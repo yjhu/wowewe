@@ -4,8 +4,11 @@
 	use yii\widgets\Breadcrumbs;
 	use app\assets\JqmAsset;
 	JqmAsset::register($this);
-	//$this->registerJs('alert("test")', yii\web\View::POS_READY); 
-	
+	//$this->registerJs('alert("test")', yii\web\View::POS_READY);
+use app\models\U;
+    use app\models\MOffice;
+    $gh_id = Yii::$app->session['gh_id'];
+U::W($gh_id);
 ?>
 <?php $this->beginPage() ?>
 
@@ -31,6 +34,11 @@
 .tabSumm 
 {
 	color:#00C;
+}
+.title_hint
+{
+    color:red;
+    font-size: 9pt;
 }
 
 </style>
@@ -85,13 +93,15 @@
 		<form id="productForm">	
 		<div data-role="content" data-theme="d">	
 		<p  align=center>        
-		<img width="80%" src="http://res.mall.10010.com/mall/res/uploader/temp/20140514113951768477440_310_310.jpg" alt=""/>
+		<img width="80%" src="../web/images/item/20140514113951768477440.jpg" alt=""/>
 		</p>
 
-		<p> 
-		【沃的套餐】自由组合套餐（手机营业厅客户端）
+ 		<p>
+		自由组合套餐
          <!--<br>赠品：无纺布环保袋；好友推荐最高得100元话费；微信晒单最高得话费50元。-->
+            <span class="title_hint"> 自由选择， 随意组合， 私人定制， 沃随你遍， 每月最低10元起</span>
 		</p>
+
 
 		<div class="ui-corner-all custom-corners">
 
@@ -122,23 +132,23 @@
 					<fieldset data-role="controlgroup">
 					  <legend>流量包</legend>
 					  <input type="radio" name="flowPack" id="flowPack_0" value="0"  checked />
-					  <label for="flowPack_0">100MB/8元&nbsp;&nbsp;0.08元/1M</label>
+					  <label for="flowPack_0">100MB/10元&nbsp;&nbsp;</label>
 					  <input type="radio" name="flowPack" id="flowPack_1" value="1" />
-					  <label for="flowPack_1">300MB/16元&nbsp;&nbsp;0.05元/1M</label>
+					  <label for="flowPack_1">300MB/20元&nbsp;&nbsp;</label>
 					  <input type="radio" name="flowPack" id="flowPack_2" value="2" />
-					  <label for="flowPack_2">500MB/24元&nbsp;&nbsp;0.05元/1M</label>
+					  <label for="flowPack_2">500MB/30元&nbsp;&nbsp;</label>
 					  <input type="radio" name="flowPack" id="flowPack_3" value="3" />
-					  <label for="flowPack_3">1GB/48元&nbsp;&nbsp;0.05元/1M</label>
+					  <label for="flowPack_3">1GB/60元&nbsp;&nbsp;</label>
 					  <input type="radio" name="flowPack" id="flowPack_4" value="4" />
-					  <label for="flowPack_4">2GB/72元&nbsp;&nbsp;0.04元/1M</label>
+					  <label for="flowPack_4">2GB/90元&nbsp;&nbsp;</label>
 					  <input type="radio" name="flowPack" id="flowPack_5" value="5" />
-					  <label for="flowPack_5">3GB/96元&nbsp;&nbsp;0.03元/1M</label>
+					  <label for="flowPack_5">3GB/129元&nbsp;&nbsp;</label>
 					  <input type="radio" name="flowPack" id="flowPack_6" value="6" />
-					  <label for="flowPack_6">4GB/120元&nbsp;&nbsp;0.03元/1M</label>
+					  <label for="flowPack_6">4GB/150元&nbsp;&nbsp;</label>
 					  <input type="radio" name="flowPack" id="flowPack_7" value="7" />
-					  <label for="flowPack_7">6GB/152元&nbsp;&nbsp;0.02元/1M</label>
+					  <label for="flowPack_7">6GB/190元&nbsp;&nbsp;</label>
 					  <input type="radio" name="flowPack" id="flowPack_8" value="8" />
-					  <label for="flowPack_8">11GB/232元&nbsp;&nbsp;0.02元/1M</label>
+					  <label for="flowPack_8">11GB/290元&nbsp;&nbsp;</label>
 
 					</fieldset>
 					<p>&nbsp;流量包超出部分按0.2元/MB收费</p>
@@ -150,17 +160,17 @@
 					<fieldset data-role="controlgroup">
 					  <legend>语音包</legend>
 					  <input type="radio" name="voicePack" id="voicePack_0" value="0"  />
-					  <label for="voicePack_0">200分钟/32元&nbsp;&nbsp;0.16元/1分钟</label>
+					  <label for="voicePack_0">200分钟/40元&nbsp;&nbsp;0.2元/1分钟</label>
 					  <input type="radio" name="voicePack" id="voicePack_1" value="1" />
-					  <label for="voicePack_1">300分钟/40元&nbsp;&nbsp;0.13元/1分钟</label>
+					  <label for="voicePack_1">300分钟/50元&nbsp;&nbsp;0.16元/1分钟</label>
 					  <input type="radio" name="voicePack" id="voicePack_2" value="2" />
-					  <label for="voicePack_2">500分钟/56元&nbsp;&nbsp;0.11元/1分钟</label>
+					  <label for="voicePack_2">500分钟/70元&nbsp;&nbsp;0.14元/1分钟</label>
 					  <input type="radio" name="voicePack" id="voicePack_3" value="3" />
-					  <label for="voicePack_3">1000分钟/112元&nbsp;&nbsp;0.11元/1分钟</label>
+					  <label for="voicePack_3">1000分钟/140元&nbsp;&nbsp;0.14元/1分钟</label>
 					  <input type="radio" name="voicePack" id="voicePack_4" value="4" />
-					  <label for="voicePack_4">2000分钟/160元&nbsp;&nbsp;0.08元/1分钟</label>
+					  <label for="voicePack_4">2000分钟/200元&nbsp;&nbsp;0.1元/1分钟</label>
 					  <input type="radio" name="voicePack" id="voicePack_5" value="5" />
-					  <label for="voicePack_5">3000分钟/240元&nbsp;&nbsp;0.08元/1分钟</label>
+					  <label for="voicePack_5">3000分钟/300元&nbsp;&nbsp;0.1元/1分钟</label>
 					  <input type="radio" name="voicePack" id="voicePack_notselect" value="999" checked />
 					  <label for="voicePack_notselect">不选择</label>		  
 					</fieldset>
@@ -187,6 +197,7 @@
 
 				<div class="TabbedPanelsContent">
 					<div data-role="fieldcontain">
+                        <!--
 					  <fieldset data-role="controlgroup">
 						<legend>来电显示</legend>
 						<input type="radio" name="callshowPack" id="callshowPack_0" value="0" />
@@ -194,6 +205,19 @@
 						<input type="radio" name="callshowPack" id="callshowPack_notselect" value="999" checked />
 						<label for="callshowPack_notselect">不选择</label>
 					  </fieldset>
+					  -->
+
+                        <fieldset data-role="controlgroup">
+                            <legend>增值业务</legend>
+                            <input type="checkbox" name="checkbox-v-2a" id="checkbox-v-2a">
+                            <label for="checkbox-v-2a">来电显示</label>
+                            <input type="checkbox" name="checkbox-v-2b" id="checkbox-v-2b">
+                            <label for="checkbox-v-2b">炫铃</label>
+                            <input type="checkbox" name="checkbox-v-2c" id="checkbox-v-2c">
+                            <label for="checkbox-v-2c">手机邮箱</label>
+                        </fieldset>
+
+
 					  <p>&nbsp;您开通语音包后，将默认开通来电显示包</p>
 					</div>
 				</div>                
@@ -201,6 +225,7 @@
 			  </div>
 			</div>
 
+            <!--
             <p>
                 <select name="office">
                     <option value="0">---请选择营业厅---</option>
@@ -230,12 +255,10 @@
                     <option value="24">保康新街营业厅</option>
                 </select>
             </p>
-
-            <!--
-            <//?php
-            U::W(Html::dropDownList('office_id', 0, \app\models\MOffice::getOfficeNameOption('gh_03a74ac96138')));
-            ?>
             -->
+
+            <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id)); ?>
+
 
             <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
 			
@@ -447,7 +470,7 @@ function isWeiXin() {
 
 $(document).on("pageshow", "#page2", function(){
 
-	var fee_flowPack = 8;
+	var fee_flowPack = 10;
 	var fee_pack = 0;
 	var fee_msgPack = 0;
 	var fee_callshowPack = 0;
@@ -497,91 +520,92 @@ $(document).on("pageshow", "#page2", function(){
 	
    	$("[name=callshowPack]").click(function(){
 		changeTabTitle("callshowPack",$(this).val());
-	});	
-	
-	function changeTabTitle(v1,v2)
+	});
+
+
+    function changeTabTitle(v1,v2)
 	{
 		if(v1=="flowPack")
 		{
 			if(v2==0)
 			{
 				$("#flowPackTabTitle").html("流量包<br><span class='tabSumm'>100MB</span>");
-				fee_flowPack = 8;
+				fee_flowPack = 10;
 			}
 			else if(v2==1)
 			{
 				$("#flowPackTabTitle").html("流量包<br><span class='tabSumm'> 300MB</span>");
-				fee_flowPack = 16;
+				fee_flowPack = 20;
 			}
 			else if(v2==2)
 			{
 				$("#flowPackTabTitle").html("流量包<br><span class='tabSumm'> 500MB</span>");
-				fee_flowPack = 24;
+				fee_flowPack = 30;
 			}
 			else if(v2==3)
 			{
 				$("#flowPackTabTitle").html("流量包<br><span class='tabSumm'> 1GB</span>");	
-				fee_flowPack = 48;
+				fee_flowPack = 60;
 			}
 			else if(v2==4)
 			{
 				$("#flowPackTabTitle").html("流量包<br><span class='tabSumm'> 2GB</span>");
-				fee_flowPack = 72;
+				fee_flowPack = 90;
 			}
 			else if(v2==5)
 			{
 				$("#flowPackTabTitle").html("流量包<br><span class='tabSumm'> 3GB</span>");
-				fee_flowPack = 96;
+				fee_flowPack = 129;
 			}
 			else if(v2==6)
 			{
 				$("#flowPackTabTitle").html("流量包<br><span class='tabSumm'> 4GB</span>");
-				fee_flowPack = 120;
+				fee_flowPack = 150;
 			}
 			else if(v2==7)
 			{
 				$("#flowPackTabTitle").html("流量包<br><span class='tabSumm'> 6GB</span>");
-				fee_flowPack = 152;
+				fee_flowPack = 190;
 			}
 			else if(v2==8)
 			{
 				$("#flowPackTabTitle").html("流量包<br><span class='tabSumm'> 11GB</span>");
-				fee_flowPack = 232;
+				fee_flowPack = 290;
 			}
 			else
 				$("#flowPackTabTitle").html("流量包<br>&nbsp");	
 		}
 		else if(v1=="voicePack")
 		{
-			if(v2==0)
+            if(v2==0)
 			{
 				$("#packTabTitle").html("语音包<br><span class='tabSumm'> 200分钟</span>");
-				fee_pack = 32;
+				fee_pack = 40;
 			}
 			else if(v2==1)
 			{
 				$("#packTabTitle").html("语音包<br><span class='tabSumm'> 300分钟</span>");
-				fee_pack = 40;
+				fee_pack = 50;
 			}
 			else if(v2==2)
 			{
 				$("#packTabTitle").html("语音包<br><span class='tabSumm'> 500分钟</span>");
-				fee_pack = 56;
+				fee_pack = 70;
 			}
 			else if(v2==3)
 			{
 				$("#packTabTitle").html("语音包<br><span class='tabSumm'> 1000分钟</span>");	
-				fee_pack = 112;
+				fee_pack = 140;
 			}
 			else if(v2==4)
 			{
 				$("#packTabTitle").html("语音包<br><span class='tabSumm'> 2000分钟</span>");
-				fee_pack = 160;
+				fee_pack = 200;
 			}
 			else if(v2==5)
 			{
 				$("#packTabTitle").html("语音包<br><span class='tabSumm'> 3000分钟</span>");
-				fee_pack = 240;
+				fee_pack = 300;
 			}
 			else if( v2==999)
 			{
