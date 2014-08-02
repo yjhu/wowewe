@@ -14,6 +14,8 @@ use app\models\WxException;
 
 use app\models\MUser;
 
+//use app\models\LoginFormx;
+
 class SiteController extends Controller
 {
 	public $enableCsrfValidation = false;

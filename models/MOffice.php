@@ -14,6 +14,7 @@ CREATE TABLE wx_office (
 	manager VARCHAR(32) NOT NULL DEFAULT '',
 	member_cnt int(10) unsigned NOT NULL DEFAULT '0',
 	mobile VARCHAR(16) NOT NULL DEFAULT '',
+	pswd VARCHAR(16) NOT NULL DEFAULT '123456',
 	KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -66,7 +67,7 @@ INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobi
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_03a74ac96138','','','保康分公司','','','','');
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_03a74ac96138','','','华盛公司','','','','');
 
-
+ALTER TABLE wx_office ADD pswd VARCHAR(16) NOT NULL DEFAULT '123456';
 */
 
 use Yii;
@@ -75,7 +76,8 @@ use yii\helpers\Security;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 
-class MOffice extends ActiveRecord implements IdentityInterface
+//implements IdentityInterface
+class MOffice extends ActiveRecord 
 {
 	public static function tableName()
 	{
@@ -90,14 +92,15 @@ class MOffice extends ActiveRecord implements IdentityInterface
 		];
 	}
 
+/*
 	public static function findIdentity($id)
 	{
 		return static::findOne($id);
 	}
 
-	public static function findByUsername($nickname)
+	public static function findByUsername($title)
 	{
-		return static::findOne(['manager' => $nickname]);
+		return static::findOne(['title' => $title]);
 	}
 
 	public static function findIdentityByAccessToken($token, $type = null)
@@ -107,7 +110,7 @@ class MOffice extends ActiveRecord implements IdentityInterface
 
 	public function getUsername()
 	{
-		return $this->manager;
+		return $this->title;
 	}
 
 	public function getId()
@@ -127,9 +130,11 @@ class MOffice extends ActiveRecord implements IdentityInterface
 
 	public function validatePassword($password)
 	{
-		return $password === $this->mobile;
+		return $password === $this->pswd;
 	}
-	
+
+*/
+
 /*
 	static function getOfficeNameX($key=null)
 	{

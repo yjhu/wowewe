@@ -38,25 +38,16 @@ AppAsset::register($this);
                 'encodeLabels' => false,
                 'items' => [
                     ['label' => '首页', 'url' => ['/site/index']],
-                    ['label' => '关于', 'url' => ['/site/about']],
-                    ['label' => '联系我们', 'url' => ['/site/contact']],
-
-                    Yii::$app->user->isGuest ?
-					['label' => '登录', 'url' => ['/site/login']]:
+                    //['label' => '关于', 'url' => ['/site/about']],
+					//['label' => '管理', 'url' => ['/admin/index'], 'visible'=>Yii::$app->user->isAdmin],	
 					[
-						'label' => '<span class="glyphicon glyphicon-user"></span> ' . Html::encode(Yii::$app->user->identity->username),
+						'label' => '营业厅',
+						'visible' => Yii::$app->user->isOffice,
 						'items' => [
-							['label' => '编辑个人信息','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
-							'<li class="divider"></li>',
-							//'<li class="dropdown-header">Dropdown Header</li>',							
-							//['label' => '<span class="glyphicon glyphicon-usd"></span> 我的积分','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
-							//['label' => '<span class="glyphicon glyphicon-heart-empty"></span> 会员特权','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
-							['label' => '查询订单','url' => ['/order/list'],'linkOptions' => ['data-method' => 'post']],
-							['label' => '退出','url' => ['/site/logout'],'linkOptions' => ['data-method' => 'post']],
-							//['label' => 'Signup', 'url' => ['/site/signup']]						
+							['label' => '订单管理','url' => ['/order/index'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '员工推广成绩','url' => ['/admin/msg'],'linkOptions' => ['data-method' => 'post']],
 						]
-					],
-					//['label' => '管理', 'url' => ['/admin/index'], 'visible'=>Yii::$app->user->isAdmin],			
+					],					
 					[
 						'label' => '管理',
 						'visible' => Yii::$app->user->isAdmin,
@@ -69,7 +60,17 @@ AppAsset::register($this);
 							['label' => '交易管理','url' => ['/admin/trade'],'linkOptions' => ['data-method' => 'post']],
 						]
 					],
-
+                    Yii::$app->user->isGuest ?
+					['label' => '登录', 'url' => ['/site/login']]:
+					[
+						'label' => '<span class="glyphicon glyphicon-user"></span> ' . Html::encode(Yii::$app->user->identity->username),
+						'items' => [
+							['label' => '编辑个人信息','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
+							'<li class="divider"></li>',
+							['label' => '退出','url' => ['/site/logout'],'linkOptions' => ['data-method' => 'post']],
+						]
+					],
+                    ['label' => '建议', 'url' => ['/site/contact']],
                 ],
             ]);
             NavBar::end();
@@ -113,6 +114,10 @@ AppAsset::register($this);
 							//['label' => 'Signup', 'url' => ['/site/signup']]						
 						]
 					],
+
+//'<li class="dropdown-header">Dropdown Header</li>',							
+//['label' => '<span class="glyphicon glyphicon-usd"></span> 我的积分','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
+//['label' => '<span class="glyphicon glyphicon-heart-empty"></span> 会员特权','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
 
 */
 

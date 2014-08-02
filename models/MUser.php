@@ -28,10 +28,14 @@ CREATE TABLE wx_user (
 	KEY idx_gh_id_scene_pid(gh_id,scene_pid),
 	UNIQUE KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_78539d18fdcc', 'admin', 'admin','1', 1);
+INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_78539d18fdcc', 'admin', 'admin','1', 2);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_78539d18fdcc', 'root', 'root','1', 9);
 INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_78539d18fdcc', 'o6biBt5yaB7d3i0YTSkgFSAHmpdo','hoya-hehbhehb','1');
 INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_1ad98f5481f3', 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o','woso-hehbhehb','1');
+
+INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '1', 'office#1','1', 1);
+INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '2', 'office#2','1', 1);
+INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '3', 'office#3','1', 1);
 
 */
 
@@ -48,7 +52,8 @@ class MUser extends ActiveRecord implements IdentityInterface
 	const STATUS_ACTIVE = 0;
 
 	const ROLE_NONE = 0;
-	const ROLE_ADMIN = 1;	
+	const ROLE_OFFICE = 1;	
+	const ROLE_ADMIN = 2;	
 	const ROLE_ROOT = 9;	
 
 	public function behaviors()

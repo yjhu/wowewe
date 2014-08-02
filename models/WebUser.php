@@ -6,6 +6,13 @@ use Yii;
 
 class WebUser extends \yii\web\User
 {
+    public function getIsOffice($checkSession = true)
+    {
+		if ($this->isGuest)
+			return false;
+		return $this->identity->role >= \app\models\MUser::ROLE_OFFICE ? true : false;
+    }
+
     public function getIsAdmin($checkSession = true)
     {
 		if ($this->isGuest)

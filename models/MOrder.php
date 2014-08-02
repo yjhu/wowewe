@@ -36,11 +36,10 @@ use yii\helpers\Security;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use app\models\U;
+use app\models\MItem;
 
 class MOrder extends ActiveRecord
 {
-	const ITEM_CAT_DIY = 0;
-
 	const STATUS_WAIT_AUTION = 0;
 	const STATUS_WAIT_PAYED = 1;		
 	const STATUS_WAIT_SHIPPED = 2;
@@ -124,7 +123,7 @@ class MOrder extends ActiveRecord
 
 	public function getWxNotice($real_pay=false)
 	{
-		if ($this->cid == self::ITEM_CAT_DIY)
+		if ($this->cid == MItem::ITEM_CAT_DIY)
 		{
 			$gh = MGh::findOne($this->gh_id);						
 			$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
@@ -156,7 +155,7 @@ EOD;
 
 	public function getDetail()
 	{
-		if ($this->cid == self::ITEM_CAT_DIY)
+		if ($this->cid == MItem::ITEM_CAT_DIY)
 		{
 			$str = $this->title;		
 			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $selectNum) = explode(',', $this->attr);
