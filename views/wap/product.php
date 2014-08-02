@@ -1,5 +1,6 @@
 <?php
 	use yii\helpers\Html;
+    use yii\helpers\Url;
 	use yii\widgets\Breadcrumbs;
 	use app\assets\JqmAsset;
 	JqmAsset::register($this);
@@ -431,6 +432,7 @@ var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
 <script>
 var  currentPage = 1; /*init page num*/
 var feeSum = 0;
+var count = 0;
 //$().ready(function() {
 
 function isWeiXin() {
@@ -772,6 +774,8 @@ $(document).on("pageshow", "#page3", function(){
 
 $(document).on("pageshow", "#number-select", function(){
 
+    $("#list_common_tbody").html('');
+
     /*highLlght selected num*/
     if( localStorage.getItem("luckNum") != null)
     {
@@ -781,44 +785,48 @@ $(document).on("pageshow", "#number-select", function(){
 
     function loadData(i, n)
     {
+        //alert('load data');
         count++;
 
-        var str = "";
-
-        if(i%2 == 1)
+        if(i%2 == 0)
                 var text = " <div class=ui-block-a><div class='ui-bar ui-bar-a' style='height:60px'><a href='' >"+n.num+"</a></div></div>";
         else
                 var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' style='height:60px'><a href='' >"+n.num+"</a></div></div>";
 
-        $("#list_common_tbody").html(text);
+        $("#list_common_tbody").append(text);
     }
+
+    function getNumberList()
+    {
+            $.ajax({
+                //url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/ajaxdata' ; ?>",
+                url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'mobileNum'], true) ; ?>",
+                type:"GET",
+                //data: $("form#productForm").serialize() +"&feeSum="+feeSum,
+                data: "&currentPage="+currentPage,
+                success: function(msg){
+                    var json_data = eval('('+msg+')');
+                    if(json_data)
+                    {
+                        $.each(json_data, loadData);
+                    }
+                    //$("#list_count").html(count);
+                }
+            });
+    }
+    getNumberList();
+
 
     $(".ui-grid-a a").click(function(){
 		//alert($(this).text());
 		localStorage.setItem("luckNum",$(this).text());
 		location.href="#page2";
-
-		$.ajax({
-			//url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/ajaxdata' ; ?>",
-            url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>0], true) ; ?>",
-			type:"GET",
-			//data: $("form#productForm").serialize() +"&feeSum="+feeSum,
-			data: "&currentPage="+currentPage,
-            success: function(msg){
-                var json_data = eval('('+msg+')');
-                if(json_data.objs)
-                {
-                    $.each(json_data.objs, loadData);
-                }
-                $("#list_count").html(count);
-            }
-		});
-
-        /*end of ajax*/
 	});
 
     $("#seleNumBtn").click(function(){
         alert("换一批号码看看, 玩命加载中...");
+        currentPage++;
+        getNumberList();
     });
 
 
