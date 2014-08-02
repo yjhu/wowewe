@@ -833,39 +833,29 @@ EOD;
 		return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
 	}
 
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodnum:gh_1ad98f5481f3
-    public function actionProdnum()
-    {
-        U::W([$_GET, $_POST]);
-        $this->layout = 'wap';
-        $gh_id = Yii::$app->session['gh_id'];
-        $openid = Yii::$app->session['openid'];
-
-        $currentPage = $_GET["currentPage"];
-
-        /*
-        $total_fee = $feeSum * 100;
-        $order = new MOrder;
-        $order->oid = MOrder::generateOid();
-        $order->gh_id = $gh_id;
-        $order->openid = $openid;
-        $order->total_fee = $total_fee;
-        //$order->title = 'SELFDIY';
-        $order->title = '自由组合套餐';
-        $order->cid = MOrder::ITEM_CAT_DIY;
-        $order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack";
-        $order->detail = $order->getDetailStr();
-        $order->save(false);
-
-        //Yii::$app->wx->setGhId($gh_id);
-        Yii::$app->wx->setGhId(MGh::GH_WOSO);
-        $url = Yii::$app->wx->create_native_url($order->oid);
-        //$url = "http://baidu.com";
-        U::W(json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]));
-        return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
-        */
-    }
-
+    //http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1
+	public function actionAjaxdata($cat)
+	{
+		U::W($_GET);
+		$this->layout = false;		
+		$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 0;
+		$size = isset($_GET["size"]) ? $_GET["size"] : 50;
+		switch ($cat) 
+		{
+			case 'mobileNum':
+				$data = [
+					['num'=>'13545222924', 'price'=>0],
+					['num'=>'13545222925', 'price'=>0],
+					['num'=>'13545222926', 'price'=>0],
+					['num'=>'13545222927', 'price'=>0],
+				];
+				break;
+			default:
+				U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
+				return;
+		}		
+		return json_encode($data);
+	}
 
 
 
