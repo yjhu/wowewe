@@ -65,6 +65,8 @@ class WapController extends Controller
 
 	public function actionIndex()
 	{		
+		//$item = \app\models\MItem::findOne(['gh_id'=>'gh_03a74ac96138', 'cid' => \app\models\MItem::ITEM_CAT_CARD_WO]);
+		//U::W($item);	
 		return $this->render('index');
 	}
 
