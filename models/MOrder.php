@@ -27,6 +27,7 @@ CREATE TABLE wx_order (
 	issubscribe_recv tinyint(1) unsigned NOT NULL DEFAULT '0',
 	PRIMARY KEY (oid),
 	KEY gh_id_oid(gh_id,oid),
+	KEY gh_id_oid(gh_id,office_id),
 	KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -45,12 +46,12 @@ use app\models\MOffice;
 class MOrder extends ActiveRecord
 {
 	const STATUS_AUTION = 0;
-//	const STATUS_PAYED = 1;		
-//	const STATUS_SHIPPED = 2;
 	const STATUS_OK = 3;		
 	const STATUS_CLOSED_USER = 7;		
-	const STATUS_CLOSED_OFFICE = 8;	
-	const STATUS_CLOSED_AUTO = 9;
+	const STATUS_CLOSED_AUTO = 9;			
+//	const STATUS_PAYED = 1;		
+//	const STATUS_SHIPPED = 2;
+//	const STATUS_CLOSED_OFFICE = 8;	
 
 	public function attributeLabels()
 	{
@@ -66,14 +67,31 @@ class MOrder extends ActiveRecord
 		];
 	}
 
+	public function rules()
+	{
+		return [
+			[['status'], 'integer'],            		
+		];
+	}
+
 	static function getOrderStatusName($key=null)
 	{
 		$arr = array(
 			self::STATUS_AUTION => '等待付款',
-			self::STATUS_PAYED => '已付款',
 			self::STATUS_OK => '交易成功',
+			self::STATUS_CLOSED_USER => '用户取消订单',
+			self::STATUS_CLOSED_AUTO => '超时自动取消订单',
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+	}
+
+	static function getOrderStatusOptionForOffice()
+	{
+		$arr = array(
+			self::STATUS_AUTION => '等待付款',
+			self::STATUS_OK => '交易成功',
+		);		
+		return $arr;
 	}
 
 	public function getStatusName()

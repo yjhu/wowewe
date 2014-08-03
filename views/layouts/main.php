@@ -53,7 +53,7 @@ AppAsset::register($this);
 						'visible' => Yii::$app->user->isAdmin,
 						'items' => [
 							['label' => '商品管理','url' => ['/admin/itemlist'],'linkOptions' => ['data-method' => 'post']],
-							['label' => '交易管理','url' => ['/admin/trade'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '订单管理','url' => ['/admin/trade'],'linkOptions' => ['data-method' => 'post']],
 							'<li class="divider"></li>',
 							['label' => '用户管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '消息管理','url' => ['/admin/msg'],'linkOptions' => ['data-method' => 'post']],

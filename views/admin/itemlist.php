@@ -21,6 +21,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
+    <p>
+        <?= Html::a('增加商品', ['itemcreate'], ['class' => 'btn btn-primary']) ?>
+    </p>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -42,11 +46,20 @@ $this->params['breadcrumbs'][] = $this->title;
 			'pic_url',
             [
 				'class' => 'yii\grid\ActionColumn',
-				'template' => '{itemupdate}',
+				'template' => '{itemupdate} {itemdelete}',
 				'buttons' => [
 					'itemupdate' => function ($url, $model) {
 						return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
 							'title' => Yii::t('yii', 'Update'),
+							'data-pjax' => '0',
+						]);
+					},
+
+					'itemdelete' => function ($url, $model) {
+						return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+							'title' => Yii::t('yii', 'Delete'),
+							'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+							'data-method' => 'post',
 							'data-pjax' => '0',
 						]);
 					}

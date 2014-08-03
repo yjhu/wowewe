@@ -62,7 +62,7 @@ class MItem extends ActiveRecord
             self::ITEM_CAT_MOBILE_K1 => 'K1',
             self::ITEM_CAT_MOBILE_HTC516 => 'HTC516',
 		);		
-		return $key === null ? $arr : $arr[$key];
+		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
 	}
 	
 	public function rules()

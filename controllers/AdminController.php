@@ -127,6 +127,30 @@ class AdminController extends Controller
 		}
 		return $this->render('itemupdate', ['model' => $model]);		
 	}
+
+	public function actionItemcreate()
+	{
+		$model = new MItem;
+		if (\Yii::$app->request->isPost) 
+		{
+	               $model->load(\Yii::$app->request->post());
+			if ($model->save()) {
+				return $this->redirect(['itemlist']);			
+			}
+			else
+			{
+				U::W($model->getErrors());
+			}
+		}
+		return $this->render('itemcreate', ['model' => $model]);				
+	}
+
+	public function actionItemdelete($id)
+	{
+		$model = MItem::findOne($id);	
+		$model->delete();
+		return $this->redirect(['itemlist']);
+	}
 	
 }
 
