@@ -17,7 +17,7 @@ U::W($gh_id);
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>产品</title>
+	<title></title>
 
 	<?php
 /*
@@ -238,6 +238,8 @@ U::W($gh_id);
 
             <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
 
+            <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
+
 			<input type="button" value="确认套餐" id="submitBtn">
 
 			<br>
@@ -358,17 +360,23 @@ U::W($gh_id);
 			<textarea cols="40" rows="8" name="address" id="address" placeholder="请输入您的收货地址"></textarea>
 			</P>
 			-->
-            <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
 
-			<br>
+            <!--
 			<p>
-			<input type="button" value="立即支付" id="payBtn">
-			</p>	
+			<input type="button" value="确认订单" id="payBtn">
+			</p>
+			-->
+            <a href="#page2" class="ui-btn">我知道了</a>
+
 			<!--
 			<p id="url"></p>
 			-->
 			<p align="right">
+
+            <!--
 			<a href="#page2" data-transition="slide">我想重新选择自由组合套餐</a>
+			-->
+
 			</p>
 
 		</div>
@@ -429,6 +437,11 @@ var size = 8;
 var feeSum = 0;
 var count = 0;
 //$().ready(function() {
+
+function jumpPage2()
+{
+    $.mobile.changePage('#page2',{ reloadPage:'true'});
+}
 
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
@@ -692,6 +705,7 @@ $(document).on("pageshow", "#page2", function(){
 					//alert(data.oid);
 					localStorage.setItem("oid",data.oid);
 					localStorage.setItem("url",data.pay_url);
+
 					$.mobile.changePage("#page3",{transition:"slide"});
 				}
 				else
@@ -722,7 +736,7 @@ $(document).on("pageshow", "#page3", function(){
     otherPack_name = <?php echo \app\models\MOrder::getOtherPackName(); ?>;
     otherPack_fee =<?php echo \app\models\MOrder::getOtherPackFee(); ?>;
 
-    //office_name = <//?php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
+    office_name = <?php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
 
 	var item = localStorage.getItem("item");
 	item_new = item.replace(/&/g, ";") +';';
@@ -753,11 +767,14 @@ $(document).on("pageshow", "#page3", function(){
     var selectNum = localStorage.getItem("luckNum");
     $("#selectNum").html("所选的靓号: "+selectNum);
 
-   // $("#office").html('所选营业厅: ' +office_name[office] );
+    localStorage.removeItem("luckNum");/*订单生成后，锁定该手机号*/
+
+   $("#office").html('所选营业厅: ' +office_name[office] );
 
 	var url = localStorage.getItem("url");
 	//$("#url").html("<a href='"+url+"'>Pay</a>");
-	
+
+
 	
 	$("#payBtn").click(function(){
 		//1.verfy  address
