@@ -26,6 +26,7 @@ CREATE TABLE wx_order (
 	openid_recv VARCHAR(32) NOT NULL DEFAULT '',	
 	issubscribe_recv tinyint(1) unsigned NOT NULL DEFAULT '0',
 	PRIMARY KEY (oid),
+	KEY gh_id_oid(gh_id,oid),
 	KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -37,6 +38,7 @@ use yii\helpers\Security;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use app\models\U;
+use app\models\MUser;
 use app\models\MItem;
 use app\models\MOffice;
 
@@ -46,8 +48,9 @@ class MOrder extends ActiveRecord
 	const STATUS_PAYED = 1;		
 	const STATUS_SHIPPED = 2;
 	const STATUS_OK = 3;		
-	const STATUS_PAYED_ERR = 8;		
-	const STATUS_CANCEL = 9;
+	const STATUS_CLOSED_USER = 7;		
+	const STATUS_CLOSED_OFFICE = 8;	
+	const STATUS_CLOSED_AUTO = 9;
 
 	public function attributeLabels()
 	{
@@ -77,6 +80,13 @@ class MOrder extends ActiveRecord
 	public function getStatusName()
 	{
 		return self::getOrderStatusName($this->status);
+	}
+
+	public function getUser()
+	{
+		//U::W("$this->gh_id, $this->openid");
+		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
+		return $model;
 	}
 
 	public static function getCardTypeName($json=true)
@@ -155,24 +165,6 @@ class MOrder extends ActiveRecord
 		return uniqid();
 	}
 
-/*
-			$str = <<<EOD
-{$model->nickname}，您已订购:{$this->title}【{$cardTypeStr}/{$flowPackStr}流量包/..】，手机号码为{$selectNum}。订单编号为xx,订单金额为yy。请您在48小时内至xx(addrees,mobile)办理。【{$gh->nickname}】
-
-
-
-				{$this->oid}已生成。
-购买商品:{$this->title}
-卡类型:{$cardTypeStr}
-流量包:{$flowPackStr}
-语音包:{$voicePackStr}
-短信包:{$msgPackStr}
-来电显示:{$callshowPackStr}
-卡号:{$selectNum}
-EOD;
-			return $str;
-
-*/
 	public function getWxNotice($real_pay=false)
 	{
 		if ($this->cid == MItem::ITEM_CAT_DIY)
@@ -182,20 +174,10 @@ EOD;
 			$office = MOffice::findOne($this->office_id);
 			$detail = $this->detail;
 			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack, $selectNum) = explode(',', $this->attr);
-/*			
-			$arr = self::getCardTypeName(false);
-			$cardTypeStr = isset($arr[$cardType]) ? $arr[$cardType] : '';
-			$arr = self::getFlowPackName(false);
-			$flowPackStr = isset($arr[$flowPack]) ? $arr[$flowPack] : '';
-			$arr = self::getVoicePackName(false);
-			$voicePackStr = isset($arr[$voicePack]) ? $arr[$voicePack] : '';
-			$arr = self::getMsgPackName(false);
-			$msgPackStr = isset($arr[$msgPack]) ? $arr[$msgPack] : '';
-			$arr = self::getCallShowPackName(false);
-			$callshowPackStr = isset($arr[$callshowPack]) ? $arr[$callshowPack] : '';
-*/
+			$feesum = ($this->feesum)/100;
+			//您已订购:{$this->title}
 			$str = <<<EOD
-{$model->nickname}，您已订购:{$this->title}【{$detail}】，手机号码为{$selectNum}。订单编号为{$this->oid},订单金额为{$this->feesum}。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理。【{$gh->nickname}】
+{$model->nickname},您已订购【{$detail}】,手机号码为{$selectNum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
 EOD;
 			return $str;
 		}
@@ -376,5 +358,33 @@ EOD;
 			return $str;
 		}
 	}	
+
+
+			$arr = self::getCardTypeName(false);
+			$cardTypeStr = isset($arr[$cardType]) ? $arr[$cardType] : '';
+			$arr = self::getFlowPackName(false);
+			$flowPackStr = isset($arr[$flowPack]) ? $arr[$flowPack] : '';
+			$arr = self::getVoicePackName(false);
+			$voicePackStr = isset($arr[$voicePack]) ? $arr[$voicePack] : '';
+			$arr = self::getMsgPackName(false);
+			$msgPackStr = isset($arr[$msgPack]) ? $arr[$msgPack] : '';
+			$arr = self::getCallShowPackName(false);
+			$callshowPackStr = isset($arr[$callshowPack]) ? $arr[$callshowPack] : '';
+
+			$str = <<<EOD
+{$model->nickname}，您已订购:{$this->title}【{$cardTypeStr}/{$flowPackStr}流量包/..】，手机号码为{$selectNum}。订单编号为xx,订单金额为yy。请您在48小时内至xx(addrees,mobile)办理。【{$gh->nickname}】
+
+
+
+				{$this->oid}已生成。
+购买商品:{$this->title}
+卡类型:{$cardTypeStr}
+流量包:{$flowPackStr}
+语音包:{$voicePackStr}
+短信包:{$msgPackStr}
+来电显示:{$callshowPackStr}
+卡号:{$selectNum}
+EOD;
+			return $str;
 
 */
