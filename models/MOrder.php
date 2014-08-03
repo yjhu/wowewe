@@ -167,20 +167,38 @@ class MOrder extends ActiveRecord
 
 	public function getWxNotice($real_pay=false)
 	{
+		$gh = MGh::findOne($this->gh_id);						
+		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
+		$office = MOffice::findOne($this->office_id);
+		$detail = $this->detail;
+		$feesum = ($this->feesum)/100;
 		if ($this->cid == MItem::ITEM_CAT_DIY)
 		{
-			$gh = MGh::findOne($this->gh_id);						
-			$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
-			$office = MOffice::findOne($this->office_id);
-			$detail = $this->detail;
 			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack, $selectNum) = explode(',', $this->attr);
-			$feesum = ($this->feesum)/100;
-			//您已订购:{$this->title}
 			$str = <<<EOD
 {$model->nickname},您已订购【{$detail}】,手机号码为{$selectNum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
 EOD;
 			return $str;
 		}
+		else if ($this->cid == MItem::ITEM_CAT_CARD_WO)
+		{
+			list($cardType, $selectNum) = explode(',', $this->attr);
+			$str = <<<EOD
+{$model->nickname},您已订购【{$detail}】,手机号码为{$selectNum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
+EOD;
+			return $str;
+		}
+		else if ($this->cid == MItem::ITEM_CAT_CARD_XIAOYUAN)
+		{
+			list($cardType, $selectNum) = explode(',', $this->attr);
+			$str = <<<EOD
+{$model->nickname},您已订购【{$detail}】,手机号码为{$selectNum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
+EOD;
+			return $str;
+		}
+		else
+			return 'Error';
+
 	}	
 
 	public function getDetailStrCore()
@@ -189,7 +207,6 @@ EOD;
 		if ($this->cid == MItem::ITEM_CAT_DIY)
 		{
 			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack, $selectNum) = explode(',', $this->attr);
-
 			$arr = self::getCardTypeName(false);
 			if (isset($arr[$cardType]) && $cardType!='999')
 				$str .= '/'.$arr[$cardType];
@@ -214,11 +231,24 @@ EOD;
 			if (isset($arr[$otherPack]) && $otherPack!='999')
 				$str .= '/'.$arr[$otherPack];
 
-//			$str .= '/'.$selectNum;
-
-			$detailStr = str_replace(array('"', "'", "+", " "), '', $str);
-			return $detailStr;
+			//$str .= '/'.$selectNum;
 		}
+		else if ($this->cid == MItem::ITEM_CAT_CARD_WO)
+		{
+			list($cardType, $selectNum) = explode(',', $this->attr);
+			$arr = self::getCardTypeName(false);
+			if (isset($arr[$cardType]) && $cardType!='999')
+				$str .= '/'.$arr[$cardType];			
+		}
+		else if ($this->cid == MItem::ITEM_CAT_CARD_XIAOYUAN)
+		{
+			list($cardType, $selectNum) = explode(',', $this->attr);
+			$arr = self::getCardTypeName(false);
+			if (isset($arr[$cardType]) && $cardType!='999')
+				$str .= '/'.$arr[$cardType];			
+		}
+		$detailStr = str_replace(array('"', "'", "+", " "), '', $str);
+		return $detailStr;
 	}	
 
 	public function getDetailStr()
