@@ -80,36 +80,6 @@
 <body>
 <?php $this->beginBody() ?>
 
-    <div data-role="page" id="page1">
-        <div data-role="header">
-            <h1 id="title">
-               优惠终端
-            </h1>
-        </div>
-        <div data-role="content">
-            <ul data-role="listview" data-inset="true">
-                <li><a href="#page2">
-                        <img src="../web/images/item/iphone4s.jpg">
-                        <h2>iPhone4S</h2>
-                        <p>iPhone 4S 8G 送3600M流量</p></a>
-                </li>
-                <li><a href="#page2">
-                        <img src="../web/images/item/htc-d516w.jpg">
-                        <h2>HTC516</h2>
-                        <p>Hot Chip</p></a>
-                </li>
-                <li><a href="#page2">
-                        <img src="../web/images/item/coolpad-k1.jpg">
-                        <h2>K1 7620L</h2>
-                        <p>酷派（Coolpad）K1(7620L) 5.5英寸全贴合IPS高清大屏 8.1mm时尚纤薄机身</p></a>
-                </li>
-            </ul>
-        </div>
-
-        <div data-role="footer">
-            <h4>&copy; 襄阳联通 2014</h4>
-        </div>
-    </div> <!-- page1 end -->
 
 	<div data-role="page" id="page2">
 
@@ -335,7 +305,7 @@ var count = 0;
 
 planFlag = 'plan66';
 //$().ready(function() {
-var cid = <?php echo $cid; ?>;
+var cid = <?php echo $_GET['cid']; ?>;
 
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
