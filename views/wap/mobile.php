@@ -80,6 +80,24 @@
 <body>
 <?php $this->beginBody() ?>
 
+    <div data-role="page" id="page1">
+        <div data-role="header">
+            <h1 id="title">
+               优惠终端
+            </h1>
+        </div>
+        <div data-role="content">
+            <ul data-role="listview" data-filter="true" data-filter-placeholder="Search ..." data-inset="true">
+                <li><a href="#page2">iPhone4S</a></li>
+                <li><a href="#page2">HTC516</a></li>
+                <li><a href="#page2">K1 7620L</a></li>
+            </ul>
+        </div>
+        <div data-role="footer">
+            <h4>&copy; 襄阳联通 2014</h4>
+        </div>
+    </div> <!-- page1 end -->
+
 	<div data-role="page" id="page2">
 
 		<div data-role="header">
@@ -95,48 +113,83 @@
 		    <img width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
 		</p>
 
-        <p id="desc">
-                <!--【校园专享】沃派校园卡 26元/月 享500M省内流量-->
+            <p id="desc">
                 <?php echo  $item->title_hint; ?>
             </p>
 
-        <p id="price">
-        价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
-       <br><span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
-        </p>
+            <p id="price">
+            价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
+           <br><span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
+            </p>
+
 
             <div class="ui-corner-all custom-corners">
             <div data-role="fieldcontain">
             <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-                <legend>套餐</legend>
-                <input type="radio" name="productPkg" id="radio-choice-h-2a" value="0" checked="checked">
-                <label for="radio-choice-h-2a" id="productPkgName"><!--微信沃卡--> <?php echo  $item->pkg_name; ?></label>
+                <legend>型号颜色</legend>
+                <input type="radio" name="modelColor" id="modelColor_0" value="0" checked="checked">
+                <label for="modelColor_0" id="modelColor_0">iPhone4S 8G 黑色</label>
+                <input type="radio" name="modelColor" id="modelColor_1" value="1"">
+                <label for="modelColor_1" id="modelColor_1">iPhone4S 8G 白色</label>
             </fieldset>
             </div>
-            <p id="productPkgHint" class="productPkgHint">
-                <!--500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G-->
-                <?php echo  $item->pkg_name_hint; ?>
-            </p>
 
 		  <div data-role="fieldcontain">
 			<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-			  <legend>卡类型</legend>
-			  <input type="radio" name="cardType" id="radio1_0" value="0" checked />
-			  <label for="radio1_0">普通卡</label>
-			  <input type="radio" name="cardType" id="radio1_1" value="1" />
-			  <label for="radio1_1">Micro卡</label>
-			  <input type="radio" name="cardType" id="radio1_2" value="2" />
-			  <label for="radio1_2">Nano卡</label>
+			  <legend>优惠活动</legend>
+			  <input type="radio" name="prom" id="radio1_0" value="0" checked />
+			  <label for="radio1_0">买手机送话费</label>
 			</fieldset>
 		  </div>
 
-          <img width="100%" style="display:block" src="../web/images/item/card.jpg" alt=""/>
 
-			<a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
+                <div id="TabbedPanels1" class="TabbedPanels">
+                    <ul class="TabbedPanelsTabGroup">
+                        <li class="TabbedPanelsTab" tabindex="0" id="Title66">月消费66元</li>
+                        <li class="TabbedPanelsTab" tabindex="0" id="Title96">月消费96元</li>
+                    </ul>
+                    <div class="TabbedPanelsContentGroup">
+                        <div class="TabbedPanelsContent">
+                            <div role="main" class="ui-content">
+                                <fieldset data-role="controlgroup">
+                                    <legend>套餐类型</legend>
+                                    <input type="radio" name="plan66" id="plan66_0" value="0"  checked />
+                                    <label for="plan66_0">A计划&nbsp;&nbsp;</label>
+                                    <input type="radio" name="plan66" id="plan66_1" value="1" />
+                                    <label for="plan66_1">B计划&nbsp;&nbsp;</label>
+                                    <input type="radio" name="plan66" id="plan66_2" value="2" />
+                                    <label for="plan66_2">C计划&nbsp;&nbsp;</label>
+                                </fieldset>
+                                <p id="plan66-show">&nbsp;</p>
+
+                            </div><!-- /content -->
+                        </div>
+
+                        <div class="TabbedPanelsContent">
+                            <div role="main" class="ui-content">
+                                <fieldset data-role="controlgroup">
+                                    <legend>套餐类型</legend>
+                                    <input type="radio" name="plan96" id="plan96_0" value="0"  checked />
+                                    <label for="plan96_0">A计划&nbsp;&nbsp;</label>
+                                    <input type="radio" name="plan96" id="plan96_1" value="1" />
+                                    <label for="plan96_1">B计划&nbsp;&nbsp;</label>
+                                    <input type="radio" name="plan96" id="plan96_2" value="2" />
+                                    <label for="plan96_2">C计划&nbsp;&nbsp;</label>
+                                </fieldset>
+                                <p id="plan96-show">&nbsp;</p>
+
+                            </div><!-- /content -->
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
 
            <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
 
-			<input type="button" value="确认套餐" id="submitBtn">
+			<input type="button" value="确认订单" id="submitBtn">
 			
 			<br>
 			<div id="TabbedPanels2" class="TabbedPanels">
@@ -218,7 +271,7 @@
 		</div>
 	</div>	<!-- page3 end -->	
 
-	
+
 
 	<div data-role="page" id="number-select">
 		<div data-role="header">
@@ -257,15 +310,17 @@
 <?php $this->endPage() ?>
 
 <script>
-var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
+    var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+    var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
 </script>
-
 
 <script>
 var  currentPage = 1; /*init page num*/
 var size = 8;
 var feeSum = 0;
 var count = 0;
+
+planFlag = 'plan66';
 //$().ready(function() {
 var cid = <?php echo $cid; ?>;
 
@@ -290,7 +345,35 @@ $(document).on("pageshow", "#page2", function(){
 		}
 	}
 	showSelectedNumber();
+    $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
+    $("[name=plan66]").click(function(){
+        planFlag = 'plan66';
+        //alert($(this).val());
+        if($(this).val() == 0) /*plan a*/
+            $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
+        else if($(this).val() == 1)
+            $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-b.png'>");
+        else if($(this).val() == 2)
+            $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-c.png'>");
+        else
+            $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
 
+    });
+
+
+    $("[name=plan96]").click(function(){
+        //alert($(this).val());
+        planFlag = 'plan96';
+        if($(this).val() == 0) /*plan a*/
+            $("#plan96-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
+        else if($(this).val() == 1)
+            $("#plan96-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-b.png'>");
+        else if($(this).val() == 2)
+            $("#plan96-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-c.png'>");
+        else
+            $("#plan96-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
+
+    });
 
 	//submit form
 	$('#submitBtn').click(function(){
@@ -320,7 +403,7 @@ $(document).on("pageshow", "#page2", function(){
 		$.ajax({
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			type:"GET",
-			data: $("form#productForm").serialize() +"&cid="+cid+"&feeSum="+realFee+"&selectNum="+selectNum,
+			data: $("form#productForm").serialize() +"&cid="+cid+"&planFlag="+planFlag+"&feeSum="+realFee+"&selectNum="+selectNum,
 			success:function(data){
 				data = eval('('+data+')');
 				if(data.status == 0)

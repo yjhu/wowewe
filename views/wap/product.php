@@ -883,10 +883,13 @@ $(document).on("pageshow", "#number-select", function(){
                 data: "&currentPage="+currentPage+"&size="+size,
                 success: function(msg){
                     var json_data = eval('('+msg+')');
+
                     if(json_data)
                     {
                         $.each(json_data, loadData);
                     }
+                    if(json_data.length < 8)
+                        currentPage =1;
                     //$("#list_count").html(count);
 
                 }

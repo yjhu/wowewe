@@ -43,6 +43,10 @@ class MItem extends ActiveRecord
 	const ITEM_CAT_CARD_WO = 10;
 	const ITEM_CAT_CARD_XIAOYUAN = 11;
 
+    const ITEM_CAT_MOBILE_IPHONE4S = 12;
+    const ITEM_CAT_MOBILE_K1 = 13;
+    const ITEM_CAT_MOBILE_HTC516 = 14;
+
 	public static function tableName()
 	{
 		return 'wx_item';
@@ -54,6 +58,9 @@ class MItem extends ActiveRecord
 			self::ITEM_CAT_DIY => '自由组合套餐',
 			self::ITEM_CAT_CARD_WO => '微信沃卡',
 			self::ITEM_CAT_CARD_XIAOYUAN => '校园沃卡',
+            self::ITEM_CAT_MOBILE_IPHONE4S => 'Apple iPhone4S',
+            self::ITEM_CAT_MOBILE_K1 => 'K1',
+            self::ITEM_CAT_MOBILE_HTC516 => 'HTC516',
 		);		
 		return $key === null ? $arr : $arr[$key];
 	}
