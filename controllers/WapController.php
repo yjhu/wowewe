@@ -905,6 +905,29 @@ EOD;
         return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_XIAOYUAN]);
     }
 
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mobileiphone4s:gh_03a74ac96138
+    public function actionMobileiphone4s()
+    {
+        $this->layout =false;
+        //return $this->render('mobile');
+        return $this->render('mobile', ['cid'=>MItem::ITEM_CAT_MOBILE_IPHONE4S]);
+    }
+
+    public function actionMobilek1()
+    {
+        $this->layout =false;
+        //return $this->render('mobile');
+        return $this->render('mobile', ['cid'=>MItem::ITEM_CAT_MOBILE_K1]);
+    }
+
+    public function actionMobilehtc516()
+    {
+        $this->layout =false;
+        //return $this->render('mobile');
+        return $this->render('mobile', ['cid'=>MItem::ITEM_CAT_MOBILE_HTC516]);
+    }
+
 }
 
 
