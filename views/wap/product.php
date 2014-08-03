@@ -236,13 +236,10 @@ U::W($gh_id);
               </div>
 			</div>
 
-            <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
-
             <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
-			
-            <br>
+
 			<input type="button" value="确认套餐" id="submitBtn">
-			
+
 			<br>
 			<div id="TabbedPanels2" class="TabbedPanels">
 			  <ul class="TabbedPanelsTabGroup">
@@ -361,6 +358,8 @@ U::W($gh_id);
 			<textarea cols="40" rows="8" name="address" id="address" placeholder="请输入您的收货地址"></textarea>
 			</P>
 			-->
+            <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
+
 			<br>
 			<p>
 			<input type="button" value="立即支付" id="payBtn">
@@ -389,12 +388,14 @@ U::W($gh_id);
 		<div data-role="content">
 			<h2>请您选择手机号码</h2>
 			<div class="ui-grid-a" id="list_common_tbody">
+                <!--
 			<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >13545296480</a></div></div>
 			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >33333333333</a></div></div>
             <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >77777777777</a></div></div>
             <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >55555555555</a></div></div>
             <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >66666666666</a></div></div>
             <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >88888888888</a></div></div>
+            -->
 			</div><!-- /grid-->
 
             <p>
@@ -424,6 +425,7 @@ var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
 
 <script>
 var  currentPage = 1; /*init page num*/
+var size = 8;
 var feeSum = 0;
 var count = 0;
 //$().ready(function() {
@@ -720,7 +722,7 @@ $(document).on("pageshow", "#page3", function(){
     otherPack_name = <?php echo \app\models\MOrder::getOtherPackName(); ?>;
     otherPack_fee =<?php echo \app\models\MOrder::getOtherPackFee(); ?>;
 
-    office_name = <?php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
+    //office_name = <//?php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
 
 	var item = localStorage.getItem("item");
 	item_new = item.replace(/&/g, ";") +';';
@@ -751,7 +753,7 @@ $(document).on("pageshow", "#page3", function(){
     var selectNum = localStorage.getItem("luckNum");
     $("#selectNum").html("所选的靓号: "+selectNum);
 
-    $("#office").html('所选营业厅: ' +office_name[office] );
+   // $("#office").html('所选营业厅: ' +office_name[office] );
 
 	var url = localStorage.getItem("url");
 	//$("#url").html("<a href='"+url+"'>Pay</a>");
@@ -808,12 +810,12 @@ $(document).on("pageshow", "#page3", function(){
 
 $(document).on("pageshow", "#number-select", function(){
 
-   $("#list_common_tbody").html('');
-
     function loadData(i, n)
     {
         //alert('load data');
         count++;
+        //alert(count);
+        cssStr = "style='height:60px;'";
         if( localStorage.getItem("luckNum") != null)
         {
             if(n.num == localStorage.getItem("luckNum"))
@@ -834,12 +836,13 @@ $(document).on("pageshow", "#number-select", function(){
 
     function getNumberList()
     {
+        $("#list_common_tbody").html('');
             $.ajax({
                 //url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/ajaxdata' ; ?>",
                 url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'mobileNum'], true) ; ?>",
                 type:"GET",
                 //data: $("form#productForm").serialize() +"&feeSum="+feeSum,
-                data: "&currentPage="+currentPage,
+                data: "&currentPage="+currentPage+"&size="+size,
                 success: function(msg){
                     var json_data = eval('('+msg+')');
                     if(json_data)
@@ -875,7 +878,7 @@ $(document).on("pageshow", "#number-select", function(){
 	});
 
     $("#seleNumBtn").click(function(){
-        alert("换一批号码看看, 玩命加载中...");
+        //alert("换一批号码看看, 玩命加载中...");
         currentPage++;
         getNumberList();
     });
