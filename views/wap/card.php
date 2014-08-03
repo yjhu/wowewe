@@ -343,26 +343,6 @@ $(document).on("pageshow", "#page2", function(){
 });
 
 $(document).on("pageshow", "#page3", function(){
-/*
-	flowPack_name = <//?php echo \app\models\MOrder::getFlowPackName(); ?>;
-	flowPack_fee =<//?php echo \app\models\MOrder::getFlowPackFee(); ?>;
-
-	var item = localStorage.getItem("item");
-	item_new = item.replace(/&/g, ";") +';';
-
-	eval(item_new);
-    */
-	//alert('流量包'+flowPack_name[flowPack]+"费用"+flowPack_fee[flowPack]);
-
-    /*
-	$("#flowPack_name").html(flowPack_name[flowPack]);
-	$("#flowPack_fee").html(flowPack_fee[flowPack]+"元");
-
-	$("#total").html("合计:"+feeSum+"元");
-
-	var oid = localStorage.getItem("oid");
-	$("#oid").html("您的订单号: "+oid);
-    */
 
     var selectNum = localStorage.getItem("num");
     $("#selectNum").html("号码: "+selectNum);
@@ -377,7 +357,6 @@ $(document).on("pageshow", "#page3", function(){
 
 	var url = localStorage.getItem("url");
 	//$("#url").html("<a href='"+url+"'>Pay</a>");
-
 
 	$("#payBtn").click(function(){
 		//1.verfy  address
@@ -467,7 +446,6 @@ $(document).on("pageshow", "#number-select", function(){
                 {
                     $.each(json_data, loadData);
                 }
-
             }
         });
     }
