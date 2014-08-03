@@ -436,6 +436,13 @@ var  currentPage = 1; /*init page num*/
 var size = 8;
 var feeSum = 0;
 var count = 0;
+
+var fee_flowPack = 10;
+var fee_pack = 0;
+var fee_msgPack = 0;
+var fee_callshowPack = 0;
+var fee_otherPack = 0;
+
 //$().ready(function() {
 
 function jumpPage2()
@@ -455,15 +462,13 @@ function isWeiXin() {
 
 $(document).on("pageshow", "#page2", function(){
 
-	var fee_flowPack = 10;
-	var fee_pack = 0;
-	var fee_msgPack = 0;
-	var fee_callshowPack = 0;
-    var fee_otherPack = 0;
-	
    	function feeSummary()
 	{
-		feeSum= fee_flowPack + fee_pack + fee_msgPack + fee_callshowPack + fee_otherPack;
+		feeSumVal= fee_flowPack + fee_pack + fee_msgPack + fee_callshowPack + fee_otherPack;
+
+        localStorage.setItem("feeSum", feeSumVal);
+        feeSum = localStorage.getItem("feeSum");
+
 		$("#diy-create").html("自由组合套餐    月消费:<span style='font-size: 18px; color:#ff8600; font-weight:  bolder'>"+feeSum+"元</span>");
 		//$("#total_fee").val(feeSum);
 	}
