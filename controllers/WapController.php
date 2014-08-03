@@ -779,6 +779,8 @@ EOD;
 	public function actionProdsave()
 	{			
 		//U::W([$_GET, $_POST, $_SERVER]);
+		if (!Yii::$app->request->isAjax)
+			return;		
 		$this->layout = 'wap';
 		$gh_id = Yii::$app->session['gh_id'];
 		$openid = Yii::$app->session['openid'];
@@ -817,21 +819,33 @@ EOD;
 		$order->title = '自由组合套餐';
 		$order->cid = MItem::ITEM_CAT_DIY;
 		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack,$otherPack,$selectNum";
-U::W('33333');				
+		//U::W('33333');				
 		$order->detail = $order->getDetailStr();
-U::W('444');				
-		$order->save(false);
-		if (Wechat::isAndroid())
-		{			
-			try
+		//U::W('444');				
+		if ($order->save(false))
+		{
+			$mobnum = MMobnum::findOne($selectNum);
+			if ($mobnum !== null)
 			{
-				$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					
-				U::W($arr);		
+				$mobnum->status = MMobnum::STATUS_LOCKED;
+				$mobnum->save(false);
 			}
-			catch (\Exception $e)
-			{
-				U::W($e->getCode().':'.$e->getMessage());
+			if (Wechat::isAndroid())
+			{			
+				try
+				{
+					$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					
+					U::W($arr);		
+				}
+				catch (\Exception $e)
+				{
+					U::W($e->getCode().':'.$e->getMessage());
+				}
 			}
+		}
+		else
+		{
+			U::W([__METHOD__, $order->getErrors()]);
 		}
 		
 		Yii::$app->wx->clearGh();
@@ -847,22 +861,22 @@ U::W('444');
     //http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1
 	public function actionAjaxdata($cat)
 	{
-		U::W($_GET);
-		//if (!Yii::$app->request->isAjax)
-		//	return;
+		//U::W($_GET);
+		if (!Yii::$app->request->isAjax)
+			return;
 		$this->layout = false;		
-		$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
-		$size = isset($_GET["size"]) ? $_GET["size"] : 8;
 		switch ($cat) 
 		{
 			case 'mobileNum':
+				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
+				$size = isset($_GET["size"]) ? $_GET["size"] : 8;			
 				$mobnums = MMobnum::find()->select('num,ychf,zdxf')->where("status = :status", [':status'=>MMobnum::STATUS_UNUSED])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
 				break;
 			default:
 				U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
 				return;
 		}		
-		U::W(json_encode($mobnums));
+		//U::W(json_encode($mobnums));
 		return json_encode($mobnums);
 	}
 
