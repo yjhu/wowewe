@@ -19,7 +19,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>产品</title>
+	<title></title>
 	<?php 
 /*
 	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/css/themes/default/jquery.mobile-1.4.3.min.css');
@@ -134,6 +134,7 @@
 
 			<a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
 
+           <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
 
 			<input type="button" value="确认套餐" id="submitBtn">
 			
@@ -196,7 +197,7 @@
 			</span>
 			</p>
 
-            <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
+
 			<br>
 			<p>
 			<input type="button" value="确认订单" id="payBtn">

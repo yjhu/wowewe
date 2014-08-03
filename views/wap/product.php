@@ -719,7 +719,7 @@ $(document).on("pageshow", "#page2", function(){
 				}
 			}
 		});
-	   
+        return false;
 	});
 
 });
@@ -770,7 +770,7 @@ $(document).on("pageshow", "#page3", function(){
 	$("#oid").html("您的订单号: "+oid);
 
     var selectNum = localStorage.getItem("luckNum");
-    $("#selectNum").html("所选的靓号: "+selectNum);
+    $("#selectNum").html("所选的号码: "+selectNum);
 
     localStorage.removeItem("luckNum");/*订单生成后，锁定该手机号*/
 
@@ -873,24 +873,11 @@ $(document).on("pageshow", "#number-select", function(){
                     }
                     //$("#list_count").html(count);
 
-//			        $("#list_common_tbody").append('<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="#">13545296480</a></div></div>');
-//			        $("#list_common_tbody").append('<div class="ui-block-b"><div class="ui-bar ui-bar-b" style="height:60px"><a href="#">13545296480</a></div></div>');
-//			        $("#list_common_tbody").append(text).trigger('create').trigger('click');
-
-//					$(".ui-block-a").css("border","3px solid red");
-//					$(".ui-block-b").css("border","3px solid blue");
-//					$('#listId').listview('refresh');
-//					$(".ui-block-a").addClass("ui-block-a");
-//					$(".ui-bar-a").addClass("ui-bar-a");
-//					$(".ui-block-b").addClass("ui-block-b");
-//					$('#number-select').trigger('pagecreate');
-
-
                 }
             });
+        return false;
     }
     getNumberList();
-
 
     $(document).on("click",".ui-grid-a a",function(){
 		//alert($(this).text());
