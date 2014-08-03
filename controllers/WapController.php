@@ -48,7 +48,7 @@ class WapController extends Controller
 	public function init()
 	{
 		//U::W(['init....', $_GET,$_POST, $GLOBALS]);
-		U::W(['init....', $_GET,$_POST]);
+		//U::W(['init....', $_GET,$_POST]);
 	}
 
 	public function beforeAction($action)
@@ -154,7 +154,6 @@ EOD;
 			exit;
 		}
 		$arr = (array)simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-		//we should check $arr signature first
 		if (Yii::$app->wx->debug)
 			U::W($arr);
 		if (empty($arr['AppId']))
@@ -173,9 +172,6 @@ EOD;
 			U::W(['order does not exist!', __METHOD__, $arr]);
 			exit;		
 		}
-		//$detail = "{$model->title}, {$model->attr}";
-		//$detail='desc';
-		//$title = "{$model->title}";
 		Yii::$app->wx->setParameterComm();
 /*		
 		Yii::$app->wx->setParameter("body", urlencode("item desc"));
@@ -183,11 +179,10 @@ EOD;
 		Yii::$app->wx->setParameter("total_fee", "1");
 		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
 */
-		//Yii::$app->wx->setParameter("body", urlencode($desc));		
 		$detail = $model->detail;
 		Yii::$app->wx->setParameter("body", $detail);
 		Yii::$app->wx->setParameter("out_trade_no", $model->oid);
-//		Yii::$app->wx->setParameter("total_fee",  "{$model->feesum}");
+		//Yii::$app->wx->setParameter("total_fee",  "{$model->feesum}");
 		Yii::$app->wx->setParameter("total_fee",  "1");
 		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");		
 		$xmlStr = Yii::$app->wx->create_native_package();
@@ -779,6 +774,10 @@ EOD;
 	public function actionProdsave()
 	{			
 		//U::W([$_GET, $_POST, $_SERVER]);
+		U::W('aaaaaaaaaaaaaaa');
+		if (!Yii::$app->request->isAjax)
+			return;	
+		U::W('bbbbb');			
 		$this->layout = 'wap';
 		$gh_id = Yii::$app->session['gh_id'];
 		$openid = Yii::$app->session['openid'];
@@ -817,21 +816,34 @@ EOD;
 		$order->title = '自由组合套餐';
 		$order->cid = MItem::ITEM_CAT_DIY;
 		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack,$otherPack,$selectNum";
-U::W('33333');				
+		U::W('33333');				
 		$order->detail = $order->getDetailStr();
-U::W('444');				
-		$order->save(false);
-		if (Wechat::isAndroid())
-		{			
-			try
+		U::W('44444');				
+		if ($order->save(false))
+		{
+		U::W('save ok....');	
+			$mobnum = MMobnum::findOne($selectNum);
+			if ($mobnum !== null)
 			{
-				$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					
-				U::W($arr);		
+				$mobnum->status = MMobnum::STATUS_LOCKED;
+				$mobnum->save(false);
 			}
-			catch (\Exception $e)
-			{
-				U::W($e->getCode().':'.$e->getMessage());
+			if (Wechat::isAndroid())
+			{			
+				try
+				{
+					$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					
+					U::W($arr);		
+				}
+				catch (\Exception $e)
+				{
+					U::W($e->getCode().':'.$e->getMessage());
+				}
 			}
+		}
+		else
+		{
+			U::W([__METHOD__, $order->getErrors()]);
 		}
 		
 		Yii::$app->wx->clearGh();
@@ -847,22 +859,22 @@ U::W('444');
     //http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1
 	public function actionAjaxdata($cat)
 	{
-		U::W($_GET);
-		//if (!Yii::$app->request->isAjax)
-		//	return;
+		//U::W($_GET);
+		if (!Yii::$app->request->isAjax)
+			return;
 		$this->layout = false;		
-		$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
-		$size = isset($_GET["size"]) ? $_GET["size"] : 8;
 		switch ($cat) 
 		{
 			case 'mobileNum':
+				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
+				$size = isset($_GET["size"]) ? $_GET["size"] : 8;			
 				$mobnums = MMobnum::find()->select('num,ychf,zdxf')->where("status = :status", [':status'=>MMobnum::STATUS_UNUSED])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
 				break;
 			default:
 				U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
 				return;
 		}		
-		U::W(json_encode($mobnums));
+		//U::W(json_encode($mobnums));
 		return json_encode($mobnums);
 	}
 

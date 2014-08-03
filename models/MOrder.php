@@ -29,7 +29,6 @@ CREATE TABLE wx_order (
 	KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-//ALTER TABLE wx_order ADD office_id int(10) unsigned NOT NULL DEFAULT '0' after attr;
 */
 
 use Yii;
