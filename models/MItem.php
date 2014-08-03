@@ -58,6 +58,14 @@ class MItem extends ActiveRecord
 		return $key === null ? $arr : $arr[$key];
 	}
 	
+	public function rules()
+	{
+		return [
+			[['cid'], 'integer'],            
+			[['price', 'price_hint', 'title', 'title_hint', 'pkg_name', 'pkg_name_hint', 'pic_url'], 'safe'],
+		];
+	}
+
 }
 
 /*

@@ -45,8 +45,8 @@ use app\models\MOffice;
 class MOrder extends ActiveRecord
 {
 	const STATUS_AUTION = 0;
-	const STATUS_PAYED = 1;		
-	const STATUS_SHIPPED = 2;
+//	const STATUS_PAYED = 1;		
+//	const STATUS_SHIPPED = 2;
 	const STATUS_OK = 3;		
 	const STATUS_CLOSED_USER = 7;		
 	const STATUS_CLOSED_OFFICE = 8;	
@@ -71,8 +71,7 @@ class MOrder extends ActiveRecord
 		$arr = array(
 			self::STATUS_AUTION => '等待付款',
 			self::STATUS_PAYED => '已付款',
-			//self::STATUS_SHIPPED => '已发货',
-			self::STATUS_OK => '成功',
+			self::STATUS_OK => '交易成功',
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
 	}

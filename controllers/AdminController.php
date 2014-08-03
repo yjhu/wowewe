@@ -9,9 +9,14 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\View;
 
+use app\models\MItem;
+use app\models\MItemSearch;
+
 class AdminController extends Controller
 {
-	//public $layout = 'main_metronic';
+	public $layout = 'main';
+
+	public $enableCsrfValidation = false;
 	
 	public function behaviors()
 	{
@@ -32,7 +37,6 @@ class AdminController extends Controller
 
 	public function actionIndex()
 	{
-		$this->layout = 'main';
 		$searchModel = new MUserSearch;
 		$dataProvider = $searchModel->search($_GET);
 
@@ -96,6 +100,34 @@ class AdminController extends Controller
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 	}
+
+	public function actionItemlist()
+	{
+		$searchModel = new MItemSearch;
+		$dataProvider = $searchModel->search($_GET);
+
+		return $this->render('itemlist', [
+			'dataProvider' => $dataProvider,
+			'searchModel' => $searchModel,
+		]);
+	}
+
+	public function actionItemupdate($id)
+	{
+		$model = MItem::findOne($id);
+		if (!$model) {
+			throw new NotFoundHttpException();
+		}
+		if (\Yii::$app->request->isPost) 
+		{
+			$model->load(\Yii::$app->request->post());
+			if ($model->save(false)) {
+				return $this->redirect(['itemlist']);			
+			}
+		}
+		return $this->render('itemupdate', ['model' => $model]);		
+	}
+	
 }
 
 /*

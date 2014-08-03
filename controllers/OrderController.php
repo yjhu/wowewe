@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\View;
 
+use app\models\MOrder;
+use app\models\MOrderSearch;
+
 class OrderController extends Controller
 {
 	public $layout = 'main';
