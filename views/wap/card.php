@@ -206,7 +206,7 @@
 			</p>
 			-->
             <a href="#page2" class="ui-btn">我知道了</a>
-            
+
 			<!--
 			<p id="url"></p>
 			-->
@@ -267,6 +267,8 @@ var size = 8;
 var feeSum = 0;
 var count = 0;
 //$().ready(function() {
+var cid = <?php echo $cid; ?>;
+
 
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
@@ -318,7 +320,7 @@ $(document).on("pageshow", "#page2", function(){
 		$.ajax({
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			type:"GET",
-			data: $("form#productForm").serialize() +"&feeSum="+realFee+"&selectNum="+selectNum,
+			data: $("form#productForm").serialize() +"&cid="+cid+"&feeSum="+realFee+"&selectNum="+selectNum,
 			success:function(data){
 				data = eval('('+data+')');
 				if(data.status == 0)
