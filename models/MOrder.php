@@ -204,6 +204,7 @@ EOD;
 
 	public function getDetailStrCore()
 	{
+		$str = '';
 		if ($this->cid == MItem::ITEM_CAT_DIY)
 		{
 			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack, $selectNum) = explode(',', $this->attr);

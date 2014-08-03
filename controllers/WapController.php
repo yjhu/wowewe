@@ -767,6 +767,7 @@ EOD;
 	
 	
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_1ad98f5481f3
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_03a74ac96138	
 	public function actionProduct()
 	{
 		$this->layout =false;
@@ -811,14 +812,15 @@ EOD;
 		$order->oid = MOrder::generateOid();
 		$order->gh_id = $gh_id;
 		$order->openid = $openid;
-		$order->feesum = $feeSum;
+		$order->feesum = $feeSum;		
 		$order->office_id = $office_id;		
 		$order->title = '自由组合套餐';
 		$order->cid = MItem::ITEM_CAT_DIY;
 		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack,$otherPack,$selectNum";
+U::W('33333');				
 		$order->detail = $order->getDetailStr();
+U::W('444');				
 		$order->save(false);
-
 		if (Wechat::isAndroid())
 		{			
 			try

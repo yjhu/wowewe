@@ -62,7 +62,7 @@ class Wechat extends \yii\base\Object
 	
 	public function init()
 	{
-		U::W('Wap init...');
+//		U::W('Wap init...');
 	}
 
 	private function log($log)
