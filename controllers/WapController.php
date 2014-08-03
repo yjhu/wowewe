@@ -886,13 +886,14 @@ EOD;
 		return json_encode($mobnums);
 	}
 
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/card:gh_1ad98f5481f3
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardwo:gh_1ad98f5481f3
     public function actionCardwo()
     {
         $this->layout =false;
         return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_WO]);
     }
 
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_1ad98f5481f3
     public function actionCardxiaoyuan()
     {
 
