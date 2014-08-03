@@ -775,61 +775,65 @@ EOD;
 	{			
 		//U::W([$_GET, $_POST, $_SERVER]);
 		U::W('aaaaaaaaaaaaaaa');
-		if (!Yii::$app->request->isAjax)
-			return;	
+		//if (!Yii::$app->request->isAjax)
+		//	return;	
 		U::W('bbbbb');			
 		$this->layout = 'wap';
 		$gh_id = Yii::$app->session['gh_id'];
 		$openid = Yii::$app->session['openid'];
-		Yii::$app->wx->setGhId($gh_id);		
+		Yii::$app->wx->setGhId($gh_id);	
 		if (0)
 		{
-			$cardType = 1;
-			$flowPack =2;
-			$voicePack = 1;
-			$msgPack = 1;
-			$callshowPack = 1;
-			$otherPack =  1;			
-			$feeSum =  7;	
-			$selectNum = '15527766232';
-			$office_id = 1;	
+			$_GET["cid"] = MItem::ITEM_CAT_DIY;
 		}
-		else
+		$order = new MOrder;
+		$order->oid = MOrder::generateOid();
+		$order->gh_id = $gh_id;
+		$order->openid = $openid;
+		$order->cid = $_GET["cid"];
+		switch ($_GET["cid"]) 
 		{
-			$cardType = $_GET["cardType"];
-			$flowPack =$_GET["flowPack"];
-			$voicePack = $_GET["voicePack"];
-			$msgPack = $_GET["msgPack"];
-			$callshowPack = $_GET["callshowPack"];
-			$otherPack =  $_GET["otherPack"];					
-			$feeSum =  $_GET["feeSum"];
-			$selectNum = $_GET["selectNum"];
-			$office_id = $_GET["office"];			
-		}
-		
-		$mobnum = MMobnum::findOne($selectNum);
+			case MItem::ITEM_CAT_DIY:
+				if (0)
+				{
+					$_GET['cardType'] = 1;
+					$_GET['flowPack'] =2;
+					$_GET['voicePack'] = 1;
+					$_GET['msgPack'] = 1;
+					$_GET['callshowPack'] = 1;
+					$_GET['otherPack'] = 1;
+					$_GET['feeSum'] = 1;
+					$_GET['selectNum'] = '18696205033';
+					$_GET['office'] = 1;
+				}			
+				$order->title = '自由组合套餐';			
+				$order->attr = "{$_GET['cardType']},{$_GET['flowPack']},{$_GET['voicePack']},{$_GET['msgPack']},{$_GET['callshowPack']},{$_GET['otherPack']},{$_GET['selectNum']}";				
+				break;
+			case MItem::ITEM_CAT_CARD_WO:
+				$order->title = '微信沃卡';			
+				$order->attr = "{$_GET['cardType']},{$_GET['selectNum']}";				
+				break;
+			case MItem::ITEM_CAT_CARD_XIAOYUAN:
+				$order->title = '沃派校园套餐';			
+				$order->attr = "{$_GET['cardType']},{$_GET['selectNum']}";
+				break;				
+			default:
+				U::W(['invalid data cat', $cid, __METHOD__,$_GET]);
+				return;
+		}				
+		$order->feesum = $_GET['feeSum'] * 100;
+		$order->office_id = $_GET['office'];			
+		$order->detail = $order->getDetailStr();
+
+		$mobnum = MMobnum::findOne($_GET['selectNum']);
 		if ($mobnum === null ||$mobnum->status != MMobnum::STATUS_UNUSED)
 		{
 			return json_encode(['status'=>1, 'errmsg'=>$mobnum === null ? "mobile doest not exist" : "mobile locked!"] );
 		}
 		
-		$feeSum = $feeSum * 100;
-		$order = new MOrder;
-		$order->oid = MOrder::generateOid();
-		$order->gh_id = $gh_id;
-		$order->openid = $openid;
-		$order->feesum = $feeSum;		
-		$order->office_id = $office_id;		
-		$order->title = '自由组合套餐';
-		$order->cid = MItem::ITEM_CAT_DIY;
-		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack,$otherPack,$selectNum";
-		U::W('33333');				
-		$order->detail = $order->getDetailStr();
-		U::W('44444');				
 		if ($order->save(false))
 		{
 			U::W('save ok....');	
-			//$mobnum = MMobnum::findOne($selectNum);
 			$mobnum->status = MMobnum::STATUS_LOCKED;
 			$mobnum->save(false);
 			if (Wechat::isAndroid())

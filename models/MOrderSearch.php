@@ -31,24 +31,33 @@ class MOrderSearch extends Model
 		];
 	}
 
-    public function search($params)
-    {
-        $query = MOrder::find();
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+	public function search($params)
+	{
+		$query = MOrder::find();
+		$dataProvider = new ActiveDataProvider([
+			'query' => $query,
+			'sort' => [
+				'defaultOrder' => [
+					//'name' => SORT_ASC,
+					'oid' => SORT_DESC
+				]
+			],
+			'pagination' => [
+				'pageSize' => 20,
+			],            
+		]);
 
-        if (!($this->load($params) && $this->validate())) {
-            return $dataProvider;
-        }
+		if (!($this->load($params) && $this->validate())) {
+			return $dataProvider;
+		}
 
-        $this->addCondition($query, 'oid', true);
-        $this->addCondition($query, 'status');
-        $this->addCondition($query, 'detail', true);
-        $this->addCondition($query, 'feesum');
-        $this->addCondition($query, 'cid');        
-        return $dataProvider;
-    }
+		$this->addCondition($query, 'oid', true);
+		$this->addCondition($query, 'status');
+		$this->addCondition($query, 'detail', true);
+		$this->addCondition($query, 'feesum');
+		$this->addCondition($query, 'cid');        
+		return $dataProvider;
+	}
 
     protected function addCondition($query, $attribute, $partialMatch = false)
     {
