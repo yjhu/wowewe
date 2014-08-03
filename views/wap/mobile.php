@@ -80,23 +80,6 @@
 <body>
 <?php $this->beginBody() ?>
 
-    <div data-role="page" id="page1">
-        <div data-role="header">
-            <h1 id="title">
-               优惠终端
-            </h1>
-        </div>
-        <div data-role="content">
-            <ul data-role="listview" data-filter="true" data-filter-placeholder="Search ..." data-inset="true">
-                <li><a href="#page2">iPhone4S</a></li>
-                <li><a href="#page2">HTC516</a></li>
-                <li><a href="#page2">K1 7620L</a></li>
-            </ul>
-        </div>
-        <div data-role="footer">
-            <h4>&copy; 襄阳联通 2014</h4>
-        </div>
-    </div> <!-- page1 end -->
 
 	<div data-role="page" id="page2">
 
@@ -128,9 +111,9 @@
             <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
                 <legend>型号颜色</legend>
                 <input type="radio" name="modelColor" id="modelColor_0" value="0" checked="checked">
-                <label for="modelColor_0" id="modelColor_0">iPhone4S 8G 黑色</label>
-                <input type="radio" name="modelColor" id="modelColor_1" value="1"">
-                <label for="modelColor_1" id="modelColor_1">iPhone4S 8G 白色</label>
+                <label for="modelColor_0" id="modelColor_0">黑色</label>
+                <input type="radio" name="modelColor" id="modelColor_1" value="1">
+                <label for="modelColor_1" id="modelColor_1">白色</label>
             </fieldset>
             </div>
 
@@ -322,8 +305,7 @@ var count = 0;
 
 planFlag = 'plan66';
 //$().ready(function() {
-var cid = <?php echo $cid; ?>;
-
+var cid = <?php echo $_GET['cid']; ?>;
 
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
@@ -333,6 +315,8 @@ function isWeiXin() {
 		return false;
 	}
 }
+
+
 $(document).on("pageshow", "#page2", function(){
 
 	var cardType = 0;
