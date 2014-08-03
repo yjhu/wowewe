@@ -48,7 +48,7 @@ class WapController extends Controller
 	public function init()
 	{
 		//U::W(['init....', $_GET,$_POST, $GLOBALS]);
-		U::W(['init....', $_GET,$_POST]);
+		//U::W(['init....', $_GET,$_POST]);
 	}
 
 	public function beforeAction($action)
@@ -154,7 +154,6 @@ EOD;
 			exit;
 		}
 		$arr = (array)simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-		//we should check $arr signature first
 		if (Yii::$app->wx->debug)
 			U::W($arr);
 		if (empty($arr['AppId']))
@@ -173,9 +172,6 @@ EOD;
 			U::W(['order does not exist!', __METHOD__, $arr]);
 			exit;		
 		}
-		//$detail = "{$model->title}, {$model->attr}";
-		//$detail='desc';
-		//$title = "{$model->title}";
 		Yii::$app->wx->setParameterComm();
 /*		
 		Yii::$app->wx->setParameter("body", urlencode("item desc"));
@@ -183,11 +179,10 @@ EOD;
 		Yii::$app->wx->setParameter("total_fee", "1");
 		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
 */
-		//Yii::$app->wx->setParameter("body", urlencode($desc));		
 		$detail = $model->detail;
 		Yii::$app->wx->setParameter("body", $detail);
 		Yii::$app->wx->setParameter("out_trade_no", $model->oid);
-//		Yii::$app->wx->setParameter("total_fee",  "{$model->feesum}");
+		//Yii::$app->wx->setParameter("total_fee",  "{$model->feesum}");
 		Yii::$app->wx->setParameter("total_fee",  "1");
 		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");		
 		$xmlStr = Yii::$app->wx->create_native_package();
@@ -779,8 +774,10 @@ EOD;
 	public function actionProdsave()
 	{			
 		//U::W([$_GET, $_POST, $_SERVER]);
+		U::W('aaaaaaaaaaaaaaa');
 		if (!Yii::$app->request->isAjax)
-			return;		
+			return;	
+		U::W('bbbbb');			
 		$this->layout = 'wap';
 		$gh_id = Yii::$app->session['gh_id'];
 		$openid = Yii::$app->session['openid'];
@@ -819,11 +816,12 @@ EOD;
 		$order->title = '自由组合套餐';
 		$order->cid = MItem::ITEM_CAT_DIY;
 		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack,$otherPack,$selectNum";
-		//U::W('33333');				
+		U::W('33333');				
 		$order->detail = $order->getDetailStr();
-		//U::W('444');				
+		U::W('44444');				
 		if ($order->save(false))
 		{
+		U::W('save ok....');	
 			$mobnum = MMobnum::findOne($selectNum);
 			if ($mobnum !== null)
 			{
