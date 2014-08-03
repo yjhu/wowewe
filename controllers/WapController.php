@@ -782,7 +782,7 @@ EOD;
 		$gh_id = Yii::$app->session['gh_id'];
 		$openid = Yii::$app->session['openid'];
 		Yii::$app->wx->setGhId($gh_id);	
-		if (1)
+		if (0)
 		{
 			$_GET["cid"] = MItem::ITEM_CAT_DIY;
 		}
@@ -794,7 +794,7 @@ EOD;
 		switch ($_GET["cid"]) 
 		{
 			case MItem::ITEM_CAT_DIY:
-				if (1)
+				if (0)
 				{
 					$_GET['cardType'] = 1;
 					$_GET['flowPack'] =2;
