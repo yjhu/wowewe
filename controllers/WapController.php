@@ -816,6 +816,10 @@ EOD;
 			case MItem::ITEM_CAT_CARD_XIAOYUAN:
 				$order->title = '沃派校园套餐';			
 				$order->attr = "{$_GET['cardType']},{$_GET['selectNum']}";
+				break;		
+			case MItem::ITEM_CAT_CARD_XIAOYUAN:
+				$order->title = 'Apple iPhone4s';			
+				$order->attr = "{$_GET['modelColor']}, {$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}, {$_GET['selectNum']}";
 				break;				
 			default:
 				U::W(['invalid data cat', $cid, __METHOD__,$_GET]);

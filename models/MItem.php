@@ -55,7 +55,7 @@ class MItem extends ActiveRecord
 			self::ITEM_CAT_CARD_WO => '微信沃卡',
 			self::ITEM_CAT_CARD_XIAOYUAN => '校园沃卡',
 		);		
-		return $key === null ? $arr : $arr[$key];
+		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
 	}
 	
 	public function rules()

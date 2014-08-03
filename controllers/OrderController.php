@@ -2,13 +2,11 @@
 
 namespace app\controllers;
 
-use app\models\U;
-use app\models\MOrder;
-use app\models\MOrderSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\View;
 
+use app\models\U;
 use app\models\MOrder;
 use app\models\MOrderSearch;
 
@@ -79,7 +77,7 @@ class OrderController extends Controller
 		if (\Yii::$app->request->isPost) 
 		{
 			$model->load(\Yii::$app->request->post());
-			if ($model->save()) {
+			if ($model->save(true, ['status'])) {
 				return $this->redirect(['index']);			
 			}
 		}

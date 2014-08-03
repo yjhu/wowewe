@@ -45,10 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'attribute' => 'feesum',
-				'format' => 'double',
-				//'label' => 'Name',
-				//'value'=>function ($model, $key, $index, $column) { return "￥".$model->feesum/100; },
-				'value'=>function ($model, $key, $index, $column) { return $model->feesum/100; },
+				'value'=>function ($model, $key, $index, $column) { return "￥".sprintf("%0.2f",$model->feesum/100); },
 			],
 			[
 				'attribute' => 'create_time',
@@ -57,7 +54,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 			[
 				'attribute' => 'status',
-				//'value'=>function ($model, $key, $index, $column) { return MOrder::getOrderStatusName($model->status); },
 				'value'=>function ($model, $key, $index, $column) { return $model->statusName; },
 				'filter'=> MOrder::getOrderStatusName(),
 			],

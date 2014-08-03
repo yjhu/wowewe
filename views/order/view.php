@@ -3,11 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
-/**
- * @var yii\web\View $this
- * @var app\models\MUser $model
- */
-
 $this->title = $model->oid;
 $this->params['breadcrumbs'][] = ['label' => '订单管理', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -22,16 +17,18 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'oid',            
-            'detail',            
-			'feesum',            
-         [   
-             'attribute' => 'status',
-             'value' => $model->statusName,
-         ],
-
+		'model' => $model,
+		'attributes' => [
+			'oid',            
+			'detail',            
+			[   
+				'attribute' => 'feesum',
+				'value' => "￥".sprintf("%0.2f",$model->feesum/100),
+			],
+			[   
+				'attribute' => 'status',
+				'value' => $model->statusName,
+			],
 			'create_time',
 		],
     ]) ?>
