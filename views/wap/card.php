@@ -468,8 +468,6 @@ $(document).on("pageshow", "#number-select", function(){
 
 });
 
-
-
 </script>	
 <?php
 /*

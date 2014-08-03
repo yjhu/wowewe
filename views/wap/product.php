@@ -366,7 +366,7 @@ U::W($gh_id);
 			<input type="button" value="确认订单" id="payBtn">
 			</p>
 			-->
-            <a href="#page2" class="ui-btn">我知道了</a>
+            <a href="javascript:jumpPage2();" class="ui-btn" data-ajax="false">我知道了</a>
 
 			<!--
 			<p id="url"></p>
@@ -444,10 +444,13 @@ var fee_callshowPack = 0;
 var fee_otherPack = 0;
 
 //$().ready(function() {
-
 function jumpPage2()
 {
+    localStorage.removeItem("num");
+    localStorage.removeItem("ychf");
+    localStorage.removeItem("zdxf");
     $.mobile.changePage('#page2',{ reloadPage:'true'});
+    //$.mobile.changePage('#page2');
 }
 
 function isWeiXin() {
