@@ -589,17 +589,17 @@ $(document).on("pageshow", "#page2", function(){
 			else if(v2==3)
 			{
 				$("#packTabTitle").html("语音包<br><span class='tabSumm'> 1000分钟</span>");	
-				fee_pack = 112;
+				fee_pack = 140;
 			}
 			else if(v2==4)
 			{
 				$("#packTabTitle").html("语音包<br><span class='tabSumm'> 2000分钟</span>");
-				fee_pack = 160;
+				fee_pack = 200;
 			}
 			else if(v2==5)
 			{
 				$("#packTabTitle").html("语音包<br><span class='tabSumm'> 3000分钟</span>");
-				fee_pack = 240;
+				fee_pack = 300;
 			}
 			else if( v2==999)
 			{
@@ -690,7 +690,7 @@ $(document).on("pageshow", "#page2", function(){
         if( localStorage.getItem("luckNum") == null)
         {
             $.mobile.changePage("#number-select",{transition:"slide"});
-            return;
+            return false;
         }
         else
         {
@@ -702,6 +702,7 @@ $(document).on("pageshow", "#page2", function(){
 			//url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/g2048save' ; ?>"+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			type:"GET",
+            cache:false,
 			data: $("form#productForm").serialize() +"&feeSum="+feeSum+"&selectNum="+selectNum,
 			success:function(data){
 				data = eval('('+data+')');
@@ -790,6 +791,7 @@ $(document).on("pageshow", "#page3", function(){
 		$.ajax({
 			url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			type:"GET",
+            cache:false,
 			data: $("form#productForm").serialize() +"&feeSum="+feeSum,
 			success:function(data){
 				data = eval('('+data+')');
@@ -863,6 +865,7 @@ $(document).on("pageshow", "#number-select", function(){
                 //url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/ajaxdata' ; ?>",
                 url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'mobileNum'], true) ; ?>",
                 type:"GET",
+                cache:false,
                 //data: $("form#productForm").serialize() +"&feeSum="+feeSum,
                 data: "&currentPage="+currentPage+"&size="+size,
                 success: function(msg){
