@@ -477,10 +477,9 @@ $(document).on("pageshow", "#page2", function(){
 	
 	function showSelectedNumber()
 	{
-		luckNum = localStorage.getItem("luckNum");
-		if(luckNum != null)
+		if(localStorage.getItem("num") != null)
 		{			
-			$("#sel-num")[0].innerHTML="您选的号码 "+luckNum;
+			$("#sel-num")[0].innerHTML="您选的号码 "+localStorage.getItem("num");
 		}
 	}
 	showSelectedNumber();
@@ -682,28 +681,38 @@ $(document).on("pageshow", "#page2", function(){
 	
 	
 	//submit form
-	$('#submitBtn').click(function()
-		{
-		//alert('save args to local storage');
-		//alert($("form#productForm").serialize());
+	//$('#submitBtn').click(function(){
+        $(document).on("click", "#submitBtn", function(){
+		//alert('page2topage3');
 
-        if( localStorage.getItem("luckNum") == null)
+        if( localStorage.getItem("num") == null)
         {
             $.mobile.changePage("#number-select",{transition:"slide"});
             return false;
         }
         else
         {
-            selectNum = localStorage.getItem("luckNum");
+            selectNum = localStorage.getItem("num");
         }
 
-		localStorage.setItem("item",$("form#productForm").serialize())
+        if($("[name=office]").val() == 0)
+        {
+            alert("请选择营业厅");
+            return false;
+        }
+
+        if(localStorage.getItem('ychf') >= 50)
+            realFee = localStorage.getItem('ychf');
+        else
+            realFee = 50;
+
+		localStorage.setItem("item",$("form#productForm").serialize());
 		$.ajax({
 			//url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/g2048save' ; ?>"+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			type:"GET",
             cache:false,
-			data: $("form#productForm").serialize() +"&feeSum="+feeSum+"&selectNum="+selectNum,
+			data: $("form#productForm").serialize() +"&cid="+0+"&feeSum="+realFee+"&selectNum="+selectNum,
 			success:function(data){
 				data = eval('('+data+')');
 				if(data.status == 0)
@@ -716,6 +725,7 @@ $(document).on("pageshow", "#page2", function(){
 				}
 				else
 				{
+                    //alert(data.status +"------"+ data.errmsg);
 					return false;
 				}
 			}
@@ -770,7 +780,7 @@ $(document).on("pageshow", "#page3", function(){
 	var oid = localStorage.getItem("oid");
 	$("#oid").html("您的订单号: "+oid);
 
-    var selectNum = localStorage.getItem("luckNum");
+    var selectNum = localStorage.getItem("num");
     $("#selectNum").html("所选的号码: "+selectNum);
 
     localStorage.removeItem("luckNum");/*订单生成后，锁定该手机号*/
@@ -840,9 +850,9 @@ $(document).on("pageshow", "#number-select", function(){
         count++;
         //alert(count);
         cssStr = "style='height:60px;'";
-        if( localStorage.getItem("luckNum") != null)
+        if( localStorage.getItem("num") != null)
         {
-            if(n.num == localStorage.getItem("luckNum"))
+            if(n.num == localStorage.getItem("num"))
                // cssStr = "style='height:60px; border:1px solid red'";
                 cssStr = "style='height:60px; background-color:yellow'";
             else
@@ -850,9 +860,9 @@ $(document).on("pageshow", "#number-select", function(){
         }
 
         if(i%2 == 0)
-                var text = " <div class='ui-block-a'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"</a></div></div>";
+                var text = " <div class='ui-block-a'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
         else
-                var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"</a></div></div>";
+                var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
 
         $("#list_common_tbody").append(text).trigger('create');
 
@@ -884,7 +894,13 @@ $(document).on("pageshow", "#number-select", function(){
 
     $(document).on("click",".ui-grid-a a",function(){
 		//alert($(this).text());
-		localStorage.setItem("luckNum",$(this).text());
+		//localStorage.setItem("luckNum",$(this).text());
+
+        cardInfo = ($(this).text()).split('-');
+        localStorage.setItem("num",cardInfo[0]);
+        localStorage.setItem("ychf",cardInfo[1]);
+        localStorage.setItem("zdxf",cardInfo[2]);
+
 		//location.href="#page2";
         $.mobile.changePage("#page2",{transition:"slide"});
 	});
