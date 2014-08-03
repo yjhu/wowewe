@@ -93,7 +93,9 @@ class MOffice extends ActiveRecord
 
 	public static function getOfficeNameOption($gh_id, $json=true, $need_prompt=true)
 	{
+        U::W($gh_id);
 		$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
+        U::W($offices);
 		$listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
 		foreach($offices as $office)
 		{

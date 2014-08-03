@@ -364,10 +364,15 @@ $(document).on("pageshow", "#page3", function(){
 	$("#oid").html("您的订单号: "+oid);
     */
 
-    var selectNum = localStorage.getItem("cardluckNum");
+    var selectNum = localStorage.getItem("num");
     $("#selectNum").html("号码: "+selectNum);
 
     office_name = <?php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
+
+    var item = localStorage.getItem("item");
+    item_new = item.replace(/&/g, ";") +';';
+    eval(item_new);
+
     $("#office").html('所选营业厅: ' +office_name[office] );
 
 	var url = localStorage.getItem("url");
