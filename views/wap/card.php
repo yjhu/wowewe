@@ -194,8 +194,9 @@
 			<span  id="total" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
 			 ￥ 50
 			</span>
-			</p>	
+			</p>
 
+            <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
 			<br>
 			<p>
 			<input type="button" value="确认订单" id="payBtn">
@@ -215,18 +216,20 @@
 
 	<div data-role="page" id="number-select">
 		<div data-role="header">
-			<h1>自由组合套餐</h1>
+			<h1><?php echo  $item->title; ?></h1>
 		</div>
 		
 		<div data-role="content">
 			<h2>请您选择手机号码</h2>
             <div class="ui-grid-a" id="list_common_tbody">
+                <!--
 			<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >13545296480</a></div></div>
 			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >33333333333</a></div></div>
             <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >77777777777</a></div></div>
             <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >55555555555</a></div></div>
             <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >66666666666</a></div></div>
             <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >88888888888</a></div></div>
+            -->
 			</div><!-- /grid-->
 
             <p>
@@ -456,11 +459,10 @@ $(document).on("pageshow", "#page3", function(){
 
 $(document).on("pageshow", "#number-select", function(){
 
-    $("#list_common_tbody").html('');
-
     function loadData(i, n)
     {
         count++;
+        cssStr = "style='height:60px;'";
         if( localStorage.getItem("cardluckNum") != null)
         {
             if(n.num == localStorage.getItem("cardluckNum"))
@@ -480,6 +482,8 @@ $(document).on("pageshow", "#number-select", function(){
 
     function getNumberList()
     {
+        $("#list_common_tbody").html('');
+
         $.ajax({
             url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'mobileNum'], true) ; ?>",
             type:"GET",
@@ -503,7 +507,7 @@ $(document).on("pageshow", "#number-select", function(){
     });
 
     $("#seleNumBtn").click(function(){
-        alert("换一批号码看看, 玩命加载中...");
+       // alert("换一批号码看看, 玩命加载中...");
         currentPage++;
         getNumberList();
     });
