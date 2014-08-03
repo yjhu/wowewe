@@ -839,8 +839,8 @@ EOD;
 	public function actionAjaxdata($cat)
 	{
 		U::W($_GET);
-		if (!Yii::$app->request->isAjax)
-			return;
+		//if (!Yii::$app->request->isAjax)
+		//	return;
 		$this->layout = false;		
 		$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 0;
 		$size = isset($_GET["size"]) ? $_GET["size"] : 50;
@@ -874,6 +874,7 @@ EOD;
 				U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
 				return;
 		}		
+		U::W(json_encode($data));
 		return json_encode($data);
 	}
 

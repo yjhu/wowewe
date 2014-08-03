@@ -69,7 +69,12 @@ class MOrder extends ActiveRecord
 			//self::STATUS_SHIPPED => '已发货',
 			self::STATUS_OK => '成功',
 		);		
-		return $key === null ? $arr : $arr[$key];
+		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+	}
+
+	public function getStatusName()
+	{
+		return self::getOrderStatusName($this->status);
 	}
 
 	public static function getCardTypeName($json=true)
