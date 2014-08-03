@@ -807,26 +807,35 @@ EOD;
 					$_GET['office'] = 1;
 				}			
 				$order->title = '自由组合套餐';			
-				$order->attr = "{$_GET['cardType']},{$_GET['flowPack']},{$_GET['voicePack']},{$_GET['msgPack']},{$_GET['callshowPack']},{$_GET['otherPack']},{$_GET['selectNum']}";				
+				$order->attr = "{$_GET['cardType']},{$_GET['flowPack']},{$_GET['voicePack']},{$_GET['msgPack']},{$_GET['callshowPack']},{$_GET['otherPack']}";				
 				break;
 			case MItem::ITEM_CAT_CARD_WO:
 				$order->title = '微信沃卡';			
-				$order->attr = "{$_GET['cardType']},{$_GET['selectNum']}";				
+				$order->attr = "{$_GET['cardType']}";				
 				break;
 			case MItem::ITEM_CAT_CARD_XIAOYUAN:
 				$order->title = '沃派校园套餐';			
-				$order->attr = "{$_GET['cardType']},{$_GET['selectNum']}";
+				$order->attr = "{$_GET['cardType']}";
 				break;		
-			case MItem::ITEM_CAT_CARD_XIAOYUAN:
+			case MItem::ITEM_CAT_MOBILE_IPHONE4S:
 				$order->title = 'Apple iPhone4s';			
-				$order->attr = "{$_GET['modelColor']}, {$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}, {$_GET['selectNum']}";
+				$order->attr = "{$_GET['modelColor']}, {$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				break;				
+			case MItem::ITEM_CAT_MOBILE_K1:
+				$order->title = 'K1';			
+				$order->attr = "{$_GET['modelColor']}, {$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				break;				
+			case MItem::ITEM_CAT_MOBILE_HTC516:
+				$order->title = 'HTC516';			
+				$order->attr = "{$_GET['modelColor']}, {$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
 				break;				
 			default:
 				U::W(['invalid data cat', $cid, __METHOD__,$_GET]);
 				return;
 		}				
 		$order->feesum = $_GET['feeSum'] * 100;
-		$order->office_id = $_GET['office'];			
+		$order->office_id = $_GET['office'];					
+		$order->select_mobnum = $_GET['selectNum'];			
 		$order->detail = $order->getDetailStr();
 
 		$mobnum = MMobnum::findOne($_GET['selectNum']);

@@ -11,7 +11,8 @@ CREATE TABLE wx_order (
 	feesum int(10) unsigned NOT NULL DEFAULT '0',
 	create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,	
 	status int(10) unsigned NOT NULL DEFAULT '0',
-	title VARCHAR(128) NOT NULL DEFAULT '',
+	title VARCHAR(128) NOT NULL DEFAULT '',	
+	select_mobnum VARCHAR(16) NOT NULL DEFAULT '',		
 	attr VARCHAR(256) NOT NULL DEFAULT '',
 	office_id int(10) unsigned NOT NULL DEFAULT '0',
 	detail VARCHAR(512) NOT NULL DEFAULT '',
@@ -30,6 +31,8 @@ CREATE TABLE wx_order (
 	KEY gh_id_oid(gh_id,office_id),
 	KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+//ALTER TABLE wx_order ADD select_mobnum VARCHAR(16) NOT NULL DEFAULT '' after title;
 
 */
 
@@ -101,7 +104,6 @@ class MOrder extends ActiveRecord
 
 	public function getUser()
 	{
-		//U::W("$this->gh_id, $this->openid");
 		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
 		return $model;
 	}
@@ -172,6 +174,18 @@ class MOrder extends ActiveRecord
         return $json? json_encode($arr) : $arr;
     }
 
+	public static function getPlan66Name($json=true)
+	{
+		$arr = ['0'=>'66元A计划()', '1'=>'B计划()', '2'=>'C计划()'];			
+		return $json? json_encode($arr) : $arr;
+	}
+
+	public static function getPlan96Name($json=true)
+	{
+		$arr = ['0'=>'96元A计划()', '1'=>'B计划()', '2'=>'C计划()'];			
+		return $json? json_encode($arr) : $arr;
+	}
+
 	public static function tableName()
 	{
 		return 'wx_order';
@@ -188,34 +202,12 @@ class MOrder extends ActiveRecord
 		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
 		$office = MOffice::findOne($this->office_id);
 		$detail = $this->detail;
-		$feesum = ($this->feesum)/100;
-		if ($this->cid == MItem::ITEM_CAT_DIY)
-		{
-			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack, $selectNum) = explode(',', $this->attr);
-			$str = <<<EOD
-{$model->nickname},您已订购【{$detail}】,手机号码为{$selectNum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
+		//$feesum = ($this->feesum)/100;
+		$feesum = sprintf("%0.2f",$model->feesum/100);
+		$str = <<<EOD
+{$model->nickname},您已订购【{$detail}】,手机号码为{$this->select_mobnum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
 EOD;
 			return $str;
-		}
-		else if ($this->cid == MItem::ITEM_CAT_CARD_WO)
-		{
-			list($cardType, $selectNum) = explode(',', $this->attr);
-			$str = <<<EOD
-{$model->nickname},您已订购【{$detail}】,手机号码为{$selectNum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
-EOD;
-			return $str;
-		}
-		else if ($this->cid == MItem::ITEM_CAT_CARD_XIAOYUAN)
-		{
-			list($cardType, $selectNum) = explode(',', $this->attr);
-			$str = <<<EOD
-{$model->nickname},您已订购【{$detail}】,手机号码为{$selectNum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
-EOD;
-			return $str;
-		}
-		else
-			return 'Error';
-
 	}	
 
 	public function getDetailStrCore()
@@ -223,7 +215,7 @@ EOD;
 		$str = '';
 		if ($this->cid == MItem::ITEM_CAT_DIY)
 		{
-			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack, $selectNum) = explode(',', $this->attr);
+			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack) = explode(',', $this->attr);
 			$arr = self::getCardTypeName(false);
 			if (isset($arr[$cardType]) && $cardType!='999')
 				$str .= '/'.$arr[$cardType];
@@ -250,20 +242,21 @@ EOD;
 
 			//$str .= '/'.$selectNum;
 		}
-		else if ($this->cid == MItem::ITEM_CAT_CARD_WO)
+		else if ($this->cid == MItem::ITEM_CAT_CARD_WO || $this->cid == MItem::ITEM_CAT_CARD_XIAOYUAN)
 		{
-			list($cardType, $selectNum) = explode(',', $this->attr);
+			list($cardType) = explode(',', $this->attr);
 			$arr = self::getCardTypeName(false);
 			if (isset($arr[$cardType]) && $cardType!='999')
 				$str .= '/'.$arr[$cardType];			
 		}
-		else if ($this->cid == MItem::ITEM_CAT_CARD_XIAOYUAN)
+		else if ($this->cid == MItem::ITEM_CAT_MOBILE_IPHONE4S || $this->cid == MItem::ITEM_CAT_MOBILE_K1 || $this->cid == MItem::ITEM_CAT_MOBILE_HTC516)
 		{
-			list($cardType, $selectNum) = explode(',', $this->attr);
+			list($modelColor, $prom, $planFlag, $plan66, $plan96) = explode(',', $this->attr);
 			$arr = self::getCardTypeName(false);
 			if (isset($arr[$cardType]) && $cardType!='999')
 				$str .= '/'.$arr[$cardType];			
 		}
+
 		$detailStr = str_replace(array('"', "'", "+", " "), '', $str);
 		return $detailStr;
 	}	
@@ -434,4 +427,30 @@ EOD;
 EOD;
 			return $str;
 
+		if ($this->cid == MItem::ITEM_CAT_DIY)
+		{
+			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack) = explode(',', $this->attr);
+			$str = <<<EOD
+{$model->nickname},您已订购【{$detail}】,手机号码为{$selectNum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
+EOD;
+			return $str;
+		}
+		else if ($this->cid == MItem::ITEM_CAT_CARD_WO)
+		{
+			list($cardType) = explode(',', $this->attr);
+			$str = <<<EOD
+{$model->nickname},您已订购【{$detail}】,手机号码为{$selectNum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
+EOD;
+			return $str;
+		}
+		else if ($this->cid == MItem::ITEM_CAT_CARD_XIAOYUAN)
+		{
+			list($cardType) = explode(',', $this->attr);
+			$str = <<<EOD
+{$model->nickname},您已订购【{$detail}】,手机号码为{$selectNum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
+EOD;
+			return $str;
+		}
+		else
+			return 'Error';
 */
