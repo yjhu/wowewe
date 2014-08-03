@@ -87,12 +87,25 @@
             </h1>
         </div>
         <div data-role="content">
-            <ul data-role="listview" data-filter="true" data-filter-placeholder="Search ..." data-inset="true">
-                <li><a href="#page2">iPhone4S</a></li>
-                <li><a href="#page2">HTC516</a></li>
-                <li><a href="#page2">K1 7620L</a></li>
+            <ul data-role="listview" data-inset="true">
+                <li><a href="#page2">
+                        <img src="../web/images/item/iphone4s.jpg">
+                        <h2>iPhone4S</h2>
+                        <p>iPhone 4S 8G 送3600M流量</p></a>
+                </li>
+                <li><a href="#page2">
+                        <img src="../web/images/item/htc-d516w.jpg">
+                        <h2>HTC516</h2>
+                        <p>Hot Chip</p></a>
+                </li>
+                <li><a href="#page2">
+                        <img src="../web/images/item/coolpad-k1.jpg">
+                        <h2>K1 7620L</h2>
+                        <p>酷派（Coolpad）K1(7620L) 5.5英寸全贴合IPS高清大屏 8.1mm时尚纤薄机身</p></a>
+                </li>
             </ul>
         </div>
+
         <div data-role="footer">
             <h4>&copy; 襄阳联通 2014</h4>
         </div>
@@ -128,9 +141,9 @@
             <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
                 <legend>型号颜色</legend>
                 <input type="radio" name="modelColor" id="modelColor_0" value="0" checked="checked">
-                <label for="modelColor_0" id="modelColor_0">iPhone4S 8G 黑色</label>
-                <input type="radio" name="modelColor" id="modelColor_1" value="1"">
-                <label for="modelColor_1" id="modelColor_1">iPhone4S 8G 白色</label>
+                <label for="modelColor_0" id="modelColor_0">黑色</label>
+                <input type="radio" name="modelColor" id="modelColor_1" value="1">
+                <label for="modelColor_1" id="modelColor_1">白色</label>
             </fieldset>
             </div>
 
@@ -324,7 +337,6 @@ planFlag = 'plan66';
 //$().ready(function() {
 var cid = <?php echo $cid; ?>;
 
-
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
 	if (ua.match(/MicroMessenger/i) == 'micromessenger') {
@@ -333,6 +345,8 @@ function isWeiXin() {
 		return false;
 	}
 }
+
+
 $(document).on("pageshow", "#page2", function(){
 
 	var cardType = 0;

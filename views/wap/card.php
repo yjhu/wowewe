@@ -269,7 +269,6 @@ var count = 0;
 //$().ready(function() {
 var cid = <?php echo $cid; ?>;
 
-
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
 	if (ua.match(/MicroMessenger/i) == 'micromessenger') {
