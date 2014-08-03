@@ -17,6 +17,8 @@ use app\models\MUser;
 use app\models\MGh;
 use app\models\MOrder;
 use app\models\MItem;
+use app\models\MMobnum;
+
 
 class WapController extends Controller
 {
@@ -787,8 +789,10 @@ EOD;
 			$voicePack = 1;
 			$msgPack = 1;
 			$callshowPack = 1;
+			$otherPack =  1;			
 			$feeSum =  7;	
 			$selectNum = '15527766232';
+			$office_id = 1;	
 		}
 		else
 		{
@@ -797,8 +801,10 @@ EOD;
 			$voicePack = $_GET["voicePack"];
 			$msgPack = $_GET["msgPack"];
 			$callshowPack = $_GET["callshowPack"];
+			$otherPack =  $_GET["otherPack"];					
 			$feeSum =  $_GET["feeSum"];
 			$selectNum = $_GET["selectNum"];
+			$office_id = $_GET["office"];			
 		}
 		$feeSum = $feeSum * 100;
 		$order = new MOrder;
@@ -806,10 +812,11 @@ EOD;
 		$order->gh_id = $gh_id;
 		$order->openid = $openid;
 		$order->feesum = $feeSum;
+		$order->office_id = $office_id;		
 		$order->title = '自由组合套餐';
 		$order->cid = MItem::ITEM_CAT_DIY;
-		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack,$selectNum";
-		$order->detail = $order->getDetail();
+		$order->attr = "$cardType,$flowPack,$voicePack,$msgPack,$callshowPack,$otherPack,$selectNum";
+		$order->detail = $order->getDetailStr();
 		$order->save(false);
 
 		if (Wechat::isAndroid())
@@ -839,42 +846,22 @@ EOD;
 	public function actionAjaxdata($cat)
 	{
 		U::W($_GET);
-		if (!Yii::$app->request->isAjax)
-			return;
+		//if (!Yii::$app->request->isAjax)
+		//	return;
 		$this->layout = false;		
-		$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 0;
-		$size = isset($_GET["size"]) ? $_GET["size"] : 50;
+		$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
+		$size = isset($_GET["size"]) ? $_GET["size"] : 8;
 		switch ($cat) 
 		{
 			case 'mobileNum':
-				$data = [
-					['num'=>'18696205015', 'ychf'=>100, 'zdxf'=>0],
-					['num'=>'18696205016', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205017', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205018', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205019', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205020', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205021', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205022', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205023', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205024', 'ychf'=>0, 'zdxf'=>0],					
-					['num'=>'18696205025', 'ychf'=>0, 'zdxf'=>0],					
-					['num'=>'18696205026', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205027', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205028', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205029', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205030', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205031', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205032', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205033', 'ychf'=>0, 'zdxf'=>0],
-					['num'=>'18696205034', 'ychf'=>600, 'zdxf'=>0],					
-				];
+				$mobnums = MMobnum::find()->select('num,ychf,zdxf')->where("status = :status", [':status'=>MMobnum::STATUS_UNUSED])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
 				break;
 			default:
 				U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
 				return;
 		}		
-		return json_encode($data);
+		U::W(json_encode($mobnums));
+		return json_encode($mobnums);
 	}
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/card:gh_1ad98f5481f3

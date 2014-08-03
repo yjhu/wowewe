@@ -13,6 +13,7 @@ CREATE TABLE wx_order (
 	status int(10) unsigned NOT NULL DEFAULT '0',
 	title VARCHAR(128) NOT NULL DEFAULT '',
 	attr VARCHAR(256) NOT NULL DEFAULT '',
+	office_id int(10) unsigned NOT NULL DEFAULT '0',
 	detail VARCHAR(512) NOT NULL DEFAULT '',
 	cid int(10) unsigned NOT NULL DEFAULT '0',
 	notify_id VARCHAR(256) NOT NULL DEFAULT '',
@@ -28,6 +29,7 @@ CREATE TABLE wx_order (
 	KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+//ALTER TABLE wx_order ADD office_id int(10) unsigned NOT NULL DEFAULT '0' after attr;
 */
 
 use Yii;
@@ -37,6 +39,7 @@ use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use app\models\U;
 use app\models\MItem;
+use app\models\MOffice;
 
 class MOrder extends ActiveRecord
 {
@@ -69,7 +72,12 @@ class MOrder extends ActiveRecord
 			//self::STATUS_SHIPPED => '已发货',
 			self::STATUS_OK => '成功',
 		);		
-		return $key === null ? $arr : $arr[$key];
+		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+	}
+
+	public function getStatusName()
+	{
+		return self::getOrderStatusName($this->status);
 	}
 
 	public static function getCardTypeName($json=true)
@@ -148,14 +156,34 @@ class MOrder extends ActiveRecord
 		return uniqid();
 	}
 
+/*
+			$str = <<<EOD
+{$model->nickname}，您已订购:{$this->title}【{$cardTypeStr}/{$flowPackStr}流量包/..】，手机号码为{$selectNum}。订单编号为xx,订单金额为yy。请您在48小时内至xx(addrees,mobile)办理。【{$gh->nickname}】
+
+
+
+				{$this->oid}已生成。
+购买商品:{$this->title}
+卡类型:{$cardTypeStr}
+流量包:{$flowPackStr}
+语音包:{$voicePackStr}
+短信包:{$msgPackStr}
+来电显示:{$callshowPackStr}
+卡号:{$selectNum}
+EOD;
+			return $str;
+
+*/
 	public function getWxNotice($real_pay=false)
 	{
 		if ($this->cid == MItem::ITEM_CAT_DIY)
 		{
 			$gh = MGh::findOne($this->gh_id);						
 			$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
-			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $selectNum) = explode(',', $this->attr);
-			
+			$office = MOffice::findOne($this->office_id);
+			$detail = $this->detail;
+			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack, $selectNum) = explode(',', $this->attr);
+/*			
 			$arr = self::getCardTypeName(false);
 			$cardTypeStr = isset($arr[$cardType]) ? $arr[$cardType] : '';
 			$arr = self::getFlowPackName(false);
@@ -166,26 +194,19 @@ class MOrder extends ActiveRecord
 			$msgPackStr = isset($arr[$msgPack]) ? $arr[$msgPack] : '';
 			$arr = self::getCallShowPackName(false);
 			$callshowPackStr = isset($arr[$callshowPack]) ? $arr[$callshowPack] : '';
+*/
 			$str = <<<EOD
-【{$gh->nickname}】{$model->nickname}您的订单号{$this->oid}已生成。
-购买商品:{$this->title}
-卡类型:{$cardTypeStr}
-流量包:{$flowPackStr}
-语音包:{$voicePackStr}
-短信包:{$msgPackStr}
-来电显示:{$callshowPackStr}
-卡号:{$selectNum}
+{$model->nickname}，您已订购:{$this->title}【{$detail}】，手机号码为{$selectNum}。订单编号为{$this->oid},订单金额为{$this->feesum}。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理。【{$gh->nickname}】
 EOD;
 			return $str;
 		}
 	}	
 
-	public function getDetail()
+	public function getDetailStrCore()
 	{
 		if ($this->cid == MItem::ITEM_CAT_DIY)
 		{
-			$str = $this->title;		
-			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $selectNum) = explode(',', $this->attr);
+			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack, $selectNum) = explode(',', $this->attr);
 
 			$arr = self::getCardTypeName(false);
 			if (isset($arr[$cardType]) && $cardType!='999')
@@ -193,28 +214,39 @@ EOD;
 			
 			$arr = self::getFlowPackName(false);
 			if (isset($arr[$flowPack]) && $flowPack!='999')
-				$str .= '/'.$arr[$flowPack];
+				$str .= '/'.$arr[$flowPack].'流量包';
 
 			$arr = self::getVoicePackName(false);
 			if (isset($arr[$voicePack]) && $voicePack!='999')
-				$str .= '/'.$arr[$voicePack];
+				$str .= '/'.$arr[$voicePack].'语音包';
 
 			$arr = self::getMsgPackName(false);
 			if (isset($arr[$msgPack]) && $msgPack!='999')
-				$str .= '/'.$arr[$msgPack];
+				$str .= '/'.$arr[$msgPack].'短信包';
 
 			$arr = self::getCallShowPackName(false);
 			if (isset($arr[$callshowPack]) && $callshowPack!='999')
 				$str .= '/'.$arr[$callshowPack];
 
-			$str .= '/'.$selectNum;
+			$arr = self::getOtherPackName(false);
+			if (isset($arr[$otherPack]) && $otherPack!='999')
+				$str .= '/'.$arr[$otherPack];
+
+//			$str .= '/'.$selectNum;
 
 			$detailStr = str_replace(array('"', "'", "+", " "), '', $str);
 			return $detailStr;
 		}
 	}	
-	
 
+	public function getDetailStr()
+	{
+		$str = $this->title;
+		$str .= $this->getDetailStrCore();
+		$detailStr = str_replace(array('"', "'", "+", " "), '', $str);
+		return $detailStr;			
+	}	
+	
 }
 
 /*		
@@ -272,5 +304,77 @@ EOD;
 	public static function getCallShowPackFee()
 	{
 		return json_encode($this->callShowPackFee);
+	}
+	
+	public function getDetailStrCore()
+	{
+		if ($this->cid == MItem::ITEM_CAT_DIY)
+		{
+			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack, $selectNum) = explode(',', $this->attr);
+
+			$arr = self::getCardTypeName(false);
+			if (isset($arr[$cardType]) && $cardType!='999')
+				$str .= '/'.$arr[$cardType];
+			
+			$arr = self::getFlowPackName(false);
+			if (isset($arr[$flowPack]) && $flowPack!='999')
+				$str .= '/'.$arr[$flowPack].'流量包';
+
+			$arr = self::getVoicePackName(false);
+			if (isset($arr[$voicePack]) && $voicePack!='999')
+				$str .= '/'.$arr[$voicePack].'语音包';
+
+			$arr = self::getMsgPackName(false);
+			if (isset($arr[$msgPack]) && $msgPack!='999')
+				$str .= '/'.$arr[$msgPack].'短信包';
+
+			$arr = self::getCallShowPackName(false);
+			if (isset($arr[$callshowPack]) && $callshowPack!='999')
+				$str .= '/'.$arr[$callshowPack].'来电显示';
+
+			$arr = self::getOtherPackName(false);
+			if (isset($arr[$otherPack]) && $otherPack!='999')
+				$str .= '/'.$arr[$otherPack].;
+
+			$str .= '/'.$selectNum;
+
+			$detailStr = str_replace(array('"', "'", "+", " "), '', $str);
+			return $detailStr;
+		}
 	}	
+
+	public function getWxNotice($real_pay=false)
+	{
+		if ($this->cid == MItem::ITEM_CAT_DIY)
+		{
+			$gh = MGh::findOne($this->gh_id);						
+			$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
+			$office = MOffice::findOne($this->office_id);	
+			
+			list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack, $selectNum) = explode(',', $this->attr);
+			
+			$arr = self::getCardTypeName(false);
+			$cardTypeStr = isset($arr[$cardType]) ? $arr[$cardType] : '';
+			$arr = self::getFlowPackName(false);
+			$flowPackStr = isset($arr[$flowPack]) ? $arr[$flowPack] : '';
+			$arr = self::getVoicePackName(false);
+			$voicePackStr = isset($arr[$voicePack]) ? $arr[$voicePack] : '';
+			$arr = self::getMsgPackName(false);
+			$msgPackStr = isset($arr[$msgPack]) ? $arr[$msgPack] : '';
+			$arr = self::getCallShowPackName(false);
+			$callshowPackStr = isset($arr[$callshowPack]) ? $arr[$callshowPack] : '';
+			$str = <<<EOD
+【{$gh->nickname}】{$model->nickname}您的订单号{$this->oid}已生成。
+购买商品:{$this->title}
+卡类型:{$cardTypeStr}
+流量包:{$flowPackStr}
+语音包:{$voicePackStr}
+短信包:{$msgPackStr}
+来电显示:{$callshowPackStr}
+卡号:{$selectNum}
+EOD;
+			return $str;
+		}
+	}	
+
 */
