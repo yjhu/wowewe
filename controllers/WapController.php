@@ -806,6 +806,13 @@ EOD;
 			$selectNum = $_GET["selectNum"];
 			$office_id = $_GET["office"];			
 		}
+		
+		$mobnum = MMobnum::findOne($selectNum);
+		if ($mobnum === null ||$mobnum->status != MMobnum::STATUS_UNUSED)
+		{
+			return json_encode(['status'=>1, 'errmsg'=>$mobnum === null ? "mobile doest not exist" : "mobile locked!"] );
+		}
+		
 		$feeSum = $feeSum * 100;
 		$order = new MOrder;
 		$order->oid = MOrder::generateOid();
@@ -821,13 +828,10 @@ EOD;
 		U::W('44444');				
 		if ($order->save(false))
 		{
-		U::W('save ok....');	
-			$mobnum = MMobnum::findOne($selectNum);
-			if ($mobnum !== null)
-			{
-				$mobnum->status = MMobnum::STATUS_LOCKED;
-				$mobnum->save(false);
-			}
+			U::W('save ok....');	
+			//$mobnum = MMobnum::findOne($selectNum);
+			$mobnum->status = MMobnum::STATUS_LOCKED;
+			$mobnum->save(false);
 			if (Wechat::isAndroid())
 			{			
 				try
