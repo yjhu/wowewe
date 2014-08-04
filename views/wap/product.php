@@ -147,7 +147,7 @@ U::W($gh_id);
 					  <input type="radio" name="flowPack" id="flowPack_4" value="4" />
 					  <label for="flowPack_4">2GB/90元&nbsp;&nbsp;</label>
 					  <input type="radio" name="flowPack" id="flowPack_5" value="5" />
-					  <label for="flowPack_5">3GB/129元&nbsp;&nbsp;</label>
+					  <label for="flowPack_5">3GB/120元&nbsp;&nbsp;</label>
 					  <input type="radio" name="flowPack" id="flowPack_6" value="6" />
 					  <label for="flowPack_6">4GB/150元&nbsp;&nbsp;</label>
 					  <input type="radio" name="flowPack" id="flowPack_7" value="7" />
@@ -551,7 +551,7 @@ $(document).on("pageshow", "#page2", function(){
 			else if(v2==5)
 			{
 				$("#flowPackTabTitle").html("流量包<br><span class='tabSumm'> 3GB</span>");
-				fee_flowPack = 129;
+				fee_flowPack = 120;
 			}
 			else if(v2==6)
 			{

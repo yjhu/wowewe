@@ -126,7 +126,7 @@ class MOrder extends ActiveRecord
 
 	public static function getFlowPackFee($json=true)
 	{
-		$arr = ['0'=>'10', '1'=>'20', '2'=>'30', '3'=>'60', '4'=>'90', '5'=>'129', '6'=>'150', '7'=>'190', '8'=>'290'];
+		$arr = ['0'=>'10', '1'=>'20', '2'=>'30', '3'=>'60', '4'=>'90', '5'=>'120', '6'=>'150', '7'=>'190', '8'=>'290'];
 		return $json? json_encode($arr) : $arr;
 	}
 	

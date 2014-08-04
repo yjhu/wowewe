@@ -81,6 +81,15 @@ style="margin:10px;"
     </div>
 </div>
 
+    <div class="col-sm-6 col-md-3">
+        <div class="thumbnail tile tile-medium tile-green-sea col-md-3">
+            <a href="http://wap.10010.com/t/siteMap.htm?menuId=query" >
+                <h1>账单查询
+                </h1>
+            </a>
+        </div>
+    </div>
+
 <div class="col-sm-6 col-md-3">
     <div class="thumbnail tile tile-wide tile-green">
         <a href="<?php echo Url::to(['wap/mobilelist'], true) ; ?>" >
@@ -116,14 +125,7 @@ style="margin:10px;"
         </a>
     </div>
 </div>
-<div class="col-sm-6 col-md-3">
-    <div class="thumbnail tile tile-medium tile-green-sea col-md-3">
-        <a href="http://wap.10010.com/t/siteMap.htm?menuId=query" >
-            <h1>账单查询
-            </h1>
-        </a>
-    </div>
-</div>
+
 <div class="col-sm-6 col-md-3">
     <div class="thumbnail tile tile-medium tile-emerald col-md-3">
         <a href="#" >
