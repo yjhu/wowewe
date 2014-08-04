@@ -939,6 +939,16 @@ EOD;
         return $this->render('games/disk/index');
     }
 
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/home:gh_03a74ac96138
+    public function actionHome()
+    {
+        $this->layout =false;
+        return $this->render('home');
+    }
+
+
+
+
 }
 
 
