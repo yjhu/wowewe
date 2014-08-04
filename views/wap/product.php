@@ -880,7 +880,7 @@ $(document).on("pageshow", "#number-select", function(){
                 type:"GET",
                 cache:false,
                 //data: $("form#productForm").serialize() +"&feeSum="+feeSum,
-                data: "&currentPage="+currentPage+"&size="+size,
+                data: "&currentPage="+currentPage+"&size="+size+"&cid="+0,
                 success: function(msg){
                     var json_data = eval('('+msg+')');
 

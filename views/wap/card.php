@@ -438,7 +438,7 @@ $(document).on("pageshow", "#number-select", function(){
             url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'mobileNum'], true) ; ?>",
             type:"GET",
             //data: $("form#productForm").serialize() +"&feeSum="+feeSum,
-            data: "&currentPage="+currentPage+"&size="+size,
+            data: "&currentPage="+currentPage+"&size="+size+"&cid="+cid,
             success: function(msg){
                 var json_data = eval('('+msg+')');
                 if(json_data)

@@ -916,7 +916,7 @@ EOD;
 
 
 
-
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mobilelist:gh_03a74ac96138
     public function actionMobilelist()
     {
         $this->layout =false;
@@ -924,16 +924,12 @@ EOD;
         return $this->render('mobilelist');
     }
 
-
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mobilelist:gh_03a74ac96138
     public function actionMobile()
     {
         $this->layout =false;
         //return $this->render('mobile');
         return $this->render('mobile', ['cid'=>$_GET['cid']]);
     }
-
-
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/disk:gh_03a74ac96138
     public function actionDisk()
