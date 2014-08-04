@@ -135,7 +135,13 @@ EOD;
 				case self::STATE_NONE:
 					//if ($msg !== 'Xy')					
 					if ($msg !== '我是襄阳联通员工')
-						return Wechat::NO_RESP;
+					{
+						//return Wechat::NO_RESP;
+						$items = array(
+							new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/product:{$gh_id}")),
+						);
+						return $this->responseNews($items);
+					}
 					$model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 					if ($model === null)
 					{	
