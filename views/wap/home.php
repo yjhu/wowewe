@@ -8,6 +8,10 @@
     <link href="/wx/web/css/metro-bootstrap/dist/css/metro-bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/wx/web/css/metro-bootstrap/docs/styles/docs.css">
 
+<!--
+style="margin:10px;"
+-->
+
 <body>
 
 <!-- Tile Colors -->
@@ -15,65 +19,72 @@
 <div class="bs-example">
 <div class="row">
 <div class="col-sm-6 col-md-3">
-    <div class="thumbnail tile tile-medium tile-blue col-md-3">
+    <div class="thumbnail tile tile-wide tile-orange">
         <a href="#" >
-            <h1>blue
+            <h1>八月浪漫季
             </h1>
         </a>
     </div>
 </div>
+
 <div class="col-sm-6 col-md-3">
-    <div class="thumbnail tile tile-medium tile-green col-md-3">
+    <div class="thumbnail tile tile-medium tile-blue col-md-3" >
         <a href="#" >
-            <h1>green
+            <h1>自由组合套餐
             </h1>
         </a>
     </div>
 </div>
+
 <div class="col-sm-6 col-md-3">
     <div class="thumbnail tile tile-medium tile-red col-md-3">
         <a href="#" >
-            <h1>red
+            <h1>微信沃卡
             </h1>
         </a>
     </div>
 </div>
-<div class="col-sm-6 col-md-3">
-    <div class="thumbnail tile tile-medium tile-yellow col-md-3">
-        <a href="#" >
-            <h1>yellow
-            </h1>
-        </a>
-    </div>
-</div>
-<div class="col-sm-6 col-md-3">
-    <div class="thumbnail tile tile-medium tile-pink col-md-3">
-        <a href="#" >
-            <h1>pink
-            </h1>
-        </a>
-    </div>
-</div>
-<div class="col-sm-6 col-md-3">
-    <div class="thumbnail tile tile-medium tile-purple col-md-3">
-        <a href="#" >
-            <h1>purple
-            </h1>
-        </a>
-    </div>
-</div>
+
 <div class="col-sm-6 col-md-3">
     <div class="thumbnail tile tile-medium tile-lime col-md-3">
         <a href="#" >
-            <h1>lime
+            <h1>游戏2048
             </h1>
         </a>
     </div>
 </div>
+
+<div class="col-sm-6 col-md-3">
+    <div class="thumbnail tile tile-medium tile-yellow col-md-3">
+        <a href="#" >
+            <h1>沃派校园套餐
+            </h1>
+        </a>
+    </div>
+</div>
+
+<div class="col-sm-6 col-md-3">
+    <div class="thumbnail tile tile-medium tile-pink col-md-3">
+        <a href="#" >
+            <h1>精选靓号
+            </h1>
+        </a>
+    </div>
+</div>
+
+<div class="col-sm-6 col-md-3">
+    <div class="thumbnail tile tile-wide tile-green">
+        <a href="#" >
+            <h1>特惠手机
+            </h1>
+        </a>
+    </div>
+</div>
+
 <div class="col-sm-6 col-md-3">
     <div class="thumbnail tile tile-medium tile-magenta col-md-3">
         <a href="#" >
-            <h1>magenta
+            <h1>关注有礼
             </h1>
         </a>
     </div>
@@ -81,7 +92,7 @@
 <div class="col-sm-6 col-md-3">
     <div class="thumbnail tile tile-medium tile-teal col-md-3">
         <a href="#" >
-            <h1>teal
+            <h1>用户吐槽
             </h1>
         </a>
     </div>
@@ -89,7 +100,7 @@
 <div class="col-sm-6 col-md-3">
     <div class="thumbnail tile tile-medium tile-turquoise col-md-3">
         <a href="#" >
-            <h1>turquoise
+            <h1>流量包订购
             </h1>
         </a>
     </div>
@@ -97,7 +108,7 @@
 <div class="col-sm-6 col-md-3">
     <div class="thumbnail tile tile-medium tile-green-sea col-md-3">
         <a href="#" >
-            <h1>green sea
+            <h1>账单查询
             </h1>
         </a>
     </div>
@@ -105,7 +116,7 @@
 <div class="col-sm-6 col-md-3">
     <div class="thumbnail tile tile-medium tile-emerald col-md-3">
         <a href="#" >
-            <h1>emerald
+            <h1>
             </h1>
         </a>
     </div>
