@@ -1,7 +1,7 @@
 <?php
 	use yii\helpers\Html;
     use yii\helpers\Url;
-
+    use app\models\MItem;
 	use app\assets\JqmAsset;
 	JqmAsset::register($this);
 
@@ -72,6 +72,7 @@
 .TabbedPanelsContent {
     padding: 0.1em  !important;
 }
+
 </style>
 	
 <?php $this->head() ?>
@@ -80,13 +81,16 @@
 <body>
 <?php $this->beginBody() ?>
 
-
 	<div data-role="page" id="page2">
 
 		<div data-role="header">
-			<h1 id="title">
+
+            <a href="<?php echo  Url::to(['wap/mobilelist'],true) ?>" data-rel="back">返回</a>
+
+            <h1 id="title">
                 <?php echo  $item->title; ?>
             </h1>
+
 		</div>
 		
 		<div data-role="content">
@@ -105,17 +109,27 @@
            <br><span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
             </p>
 
-
-            <div class="ui-corner-all custom-corners">
-            <div data-role="fieldcontain">
-            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-                <legend>型号颜色</legend>
-                <input type="radio" name="modelColor" id="modelColor_0" value="0" checked="checked">
-                <label for="modelColor_0" id="modelColor_0">黑色</label>
-                <input type="radio" name="modelColor" id="modelColor_1" value="1">
-                <label for="modelColor_1" id="modelColor_1">白色</label>
-            </fieldset>
-            </div>
+                <?php if ($cid == MItem::ITEM_CAT_MOBILE_IPHONE4S): ?>
+                <div class="ui-corner-all custom-corners">
+                    <div data-role="fieldcontain">
+                        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                            <legend>型号颜色</legend>
+                            <input type="radio" name="modelColor" id="modelColor_0" value="0" checked="checked">
+                            <label for="modelColor_0" id="modelColor_0">黑色</label>
+                            <input type="radio" name="modelColor" id="modelColor_1" value="1">
+                            <label for="modelColor_1" id="modelColor_1">白色</label>
+                        </fieldset>
+                    </div>
+                <?php else: ?>
+                    <div class="ui-corner-all custom-corners">
+                        <div data-role="fieldcontain">
+                            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                                <legend>型号颜色</legend>
+                                <input type="radio" name="modelColor" id="modelColor_1" value="1" checked="checked">
+                                <label for="modelColor_1" id="modelColor_1">白色</label>
+                            </fieldset>
+                        </div>
+                <?php endif; ?>
 
 		  <div data-role="fieldcontain">
 			<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
@@ -130,6 +144,7 @@
                     <ul class="TabbedPanelsTabGroup">
                         <li class="TabbedPanelsTab" tabindex="0" id="Title66">月消费66元</li>
                         <li class="TabbedPanelsTab" tabindex="0" id="Title96">月消费96元</li>
+                        <li class="TabbedPanelsTab" tabindex="0" id="Title126">月消费126元</li>
                     </ul>
                     <div class="TabbedPanelsContentGroup">
                         <div class="TabbedPanelsContent">
@@ -160,6 +175,22 @@
                                     <label for="plan96_2">C计划&nbsp;&nbsp;</label>
                                 </fieldset>
                                 <p id="plan96-show">&nbsp;</p>
+
+                            </div><!-- /content -->
+                        </div>
+
+                        <div class="TabbedPanelsContent">
+                            <div role="main" class="ui-content">
+                                <fieldset data-role="controlgroup">
+                                    <legend>套餐类型</legend>
+                                    <input type="radio" name="plan126" id="plan126_0" value="0"  checked />
+                                    <label for="plan126_0">A计划&nbsp;&nbsp;</label>
+                                    <input type="radio" name="plan126" id="plan126_1" value="1" />
+                                    <label for="plan126_1">B计划&nbsp;&nbsp;</label>
+                                    <input type="radio" name="plan126" id="plan126_2" value="2" />
+                                    <label for="plan126_2">C计划&nbsp;&nbsp;</label>
+                                </fieldset>
+                                <p id="plan126-show">&nbsp;</p>
 
                             </div><!-- /content -->
                         </div>
@@ -214,7 +245,7 @@
 	
 	
 	<div data-role="page" id="page3">
-		<div data-role="header">
+		<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
 			<h1 id="title"><?php echo  $item->title; ?></h1>
 		</div>
 		
@@ -257,7 +288,7 @@
 
 
 	<div data-role="page" id="number-select">
-		<div data-role="header">
+		<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
 			<h1><?php echo  $item->title; ?></h1>
 		</div>
 		
@@ -344,7 +375,6 @@ $(document).on("pageshow", "#page2", function(){
 
     });
 
-
     $("[name=plan96]").click(function(){
         //alert($(this).val());
         planFlag = 'plan96';
@@ -356,6 +386,20 @@ $(document).on("pageshow", "#page2", function(){
             $("#plan96-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-c.png'>");
         else
             $("#plan96-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
+
+    });
+
+    $("[name=plan126]").click(function(){
+        //alert($(this).val());
+        planFlag = 'plan126';
+        if($(this).val() == 0) /*plan a*/
+            $("#plan126-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
+        else if($(this).val() == 1)
+            $("#plan126-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-b.png'>");
+        else if($(this).val() == 2)
+            $("#plan126-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-c.png'>");
+        else
+            $("#plan126-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
 
     });
 

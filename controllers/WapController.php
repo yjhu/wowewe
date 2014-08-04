@@ -933,6 +933,16 @@ EOD;
         return $this->render('mobile', ['cid'=>$_GET['cid']]);
     }
 
+
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/disk:gh_03a74ac96138
+    public function actionDisk()
+    {
+        $this->layout = false;
+
+        return $this->render('games/disk/index');
+    }
+
 }
 
 
