@@ -101,7 +101,7 @@ U::W($gh_id);
  		<p>
 		自由组合套餐
          <!--<br>赠品：无纺布环保袋；好友推荐最高得100元话费；微信晒单最高得话费50元。-->
-            <span class="title_hint"> 自由选择， 随意组合， 私人定制， 沃随你遍， 每月最低10元起</span>
+            <span class="title_hint"> 自由选择， 随意组合， 私人定制， 沃随你变， 每月最低10元起</span>
 		</p>
 
 
@@ -194,7 +194,7 @@ U::W($gh_id);
 					  <input type="radio" name="msgPack" id="msgPack_2" value="2" />
 					  <label for="msgPack_2">600条/30元</label>
 					  <input type="radio" name="msgPack" id="msgPack_notselect" value="999" checked />
-					  <label for="msgPack_notselect">不选短彩信包按0.1元/条收费费</label>
+					  <label for="msgPack_notselect">不选短彩信包按0.1元/条收费</label>
 					</fieldset>
 					<p>&nbsp;短彩信包超出后按0.1元/条收费</p>
 				  </div>
@@ -880,7 +880,7 @@ $(document).on("pageshow", "#number-select", function(){
                 type:"GET",
                 cache:false,
                 //data: $("form#productForm").serialize() +"&feeSum="+feeSum,
-                data: "&currentPage="+currentPage+"&size="+size+"&cid="+0,
+                data: "&currentPage="+currentPage+"&size="+size+"&cid="+0+"&feeSum="+feeSum,
                 success: function(msg){
                     var json_data = eval('('+msg+')');
 
