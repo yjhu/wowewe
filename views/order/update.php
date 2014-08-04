@@ -22,6 +22,8 @@ $this->params['breadcrumbs'][] = '修改';
 
 		<?= $form->field($model, 'feesum')->textInput(['maxlength' => 32, 'readonly'=>true, 'value'=>sprintf("%0.2f",$model->feesum/100)]) ?>
 
+		<?= $form->field($model, 'select_mobnum')->textInput(['maxlength' => 24, 'readonly'=>true]) ?>
+
 		<?= $form->field($model, 'status')->dropDownList(MOrder::getOrderStatusOptionForOffice()) ?>
 
 		<div class="form-group">
