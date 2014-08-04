@@ -22,17 +22,15 @@ use yii\widgets\ActiveForm;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'username') ?>
+	<?= $form->field($model, 'username')->textInput(['maxlength' => 11, 'placeholder'=>'请输入用户名', 'class'=>'form-control input-lg'])->label(false); ?>
 
-    <?= $form->field($model, 'password')->passwordInput() ?>
-
-    <?= $form->field($model, 'rememberMe', [
-        'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-    ])->checkbox(['label'=>'自动登录']); ?>
+    <?= $form->field($model, 'password')->passwordInput(['placeholder'=>'请输入密码', 'class'=>'form-control input-lg'])->label(false); ?>
 
     <div class="form-group">
         <div class="col-lg-offset-1 col-lg-11">
-            <?= Html::submitButton('登录', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+
+            <?= Html::submitButton('登录', ['class' => 'btn btn-success btn-lg', 'name' => 'login-button']) ?>
+
         </div>
     </div>
 
@@ -52,5 +50,10 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'rememberMe', [
         'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
     ])->checkbox() ?>
+
+    <?= $form->field($model, 'rememberMe', [
+        'template' => "<div class=\"col-lg-offset-1 col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
+    ])->checkbox(['label'=>'自动登录']); ?>
+
 
 */

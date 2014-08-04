@@ -28,7 +28,7 @@ CREATE TABLE wx_order (
 	issubscribe_recv tinyint(1) unsigned NOT NULL DEFAULT '0',
 	PRIMARY KEY (oid),
 	KEY gh_id_oid(gh_id,oid),
-	KEY gh_id_oid(gh_id,office_id),
+	KEY gh_id_office_id(gh_id,office_id),
 	KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -174,6 +174,18 @@ class MOrder extends ActiveRecord
         return $json? json_encode($arr) : $arr;
     }
 
+	public static function getModelColorName($json=true)
+	{
+		$arr = ['0'=>'黑', '1'=>'白'];			
+		return $json? json_encode($arr) : $arr;
+	}
+
+	public static function getPromName($json=true)
+	{
+		$arr = ['0'=>'优惠活动'];			
+		return $json? json_encode($arr) : $arr;
+	}
+
 	public static function getPlan66Name($json=true)
 	{
 		$arr = ['0'=>'66元A计划()', '1'=>'B计划()', '2'=>'C计划()'];			
@@ -203,7 +215,7 @@ class MOrder extends ActiveRecord
 		$office = MOffice::findOne($this->office_id);
 		$detail = $this->detail;
 		//$feesum = ($this->feesum)/100;
-		$feesum = sprintf("%0.2f",$model->feesum/100);
+		$feesum = sprintf("%0.2f",$this->feesum/100);
 		$str = <<<EOD
 {$model->nickname},您已订购【{$detail}】,手机号码为{$this->select_mobnum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
 EOD;
@@ -252,9 +264,26 @@ EOD;
 		else if ($this->cid == MItem::ITEM_CAT_MOBILE_IPHONE4S || $this->cid == MItem::ITEM_CAT_MOBILE_K1 || $this->cid == MItem::ITEM_CAT_MOBILE_HTC516)
 		{
 			list($modelColor, $prom, $planFlag, $plan66, $plan96) = explode(',', $this->attr);
-			$arr = self::getCardTypeName(false);
-			if (isset($arr[$cardType]) && $cardType!='999')
-				$str .= '/'.$arr[$cardType];			
+			$arr = self::getModelColorName(false);
+			if (isset($arr[$modelColor]) && $modelColor!='999')
+				$str .= '/'.$arr[$modelColor];			
+
+			$arr = self::getPromName(false);
+			if (isset($arr[$prom]) && $prom!='999')
+				$str .= '/'.$arr[$prom];			
+
+			if ($planFlag == 'plan66')
+			{
+				$arr = self::getPlan66Name(false);
+				if (isset($arr[$plan66]) && $plan66!='999')
+					$str .= '/'.$arr[$plan66];			
+			}
+			else
+			{
+				$arr = self::getPlan96Name(false);
+				if (isset($arr[$plan96]) && $plan96!='999')
+					$str .= '/'.$arr[$plan96];
+			}
 		}
 
 		$detailStr = str_replace(array('"', "'", "+", " "), '', $str);
