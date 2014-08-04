@@ -152,11 +152,12 @@ class CmdController extends Controller
 					new \app\models\ButtonView('用户吐槽', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/suggest:{$gh_id}")),
 					//new \app\models\ButtonView('我要维权', Url::to(['site/index'],true)),
 					//new \app\models\ButtonView('jsnative', 'http://www.hoyatech.net/wx/web/jsnative.php'),
-					new \app\models\ButtonView('我要推广', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/tui:{$gh_id}")),
+					//new \app\models\ButtonView('我要推广', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/tui:{$gh_id}")),
 					new \app\models\ButtonView('jsphp', 'http://www.hoyatech.net/wx/web/jsphp.php'),
 					new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/luck:{$gh_id}")),
 					//new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.php'),
 					new \app\models\ButtonView('游戏2048', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}")),
+                    new \app\models\ButtonView('幸运大转盘', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/disk:{$gh_id}")),
 				]),
 			]);
 		}
@@ -168,7 +169,8 @@ class CmdController extends Controller
                     new \app\models\ButtonView('自由组合套餐', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/product:{$gh_id}")),
                     new \app\models\ButtonView('微信沃卡', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardwo:{$gh_id}")),
                     new \app\models\ButtonView('沃派校园套餐', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardxiaoyuan:{$gh_id}")),
-
+                    new \app\models\ButtonView('特惠手机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobilelist:{$gh_id}")),
+                    new \app\models\ButtonView('精选靓号', 'http://m.10010.com/mall-mobile/NumList/search'),
 					//new \app\models\ButtonView('微信沃卡', 'http://m.10010.com/mobilegoodsdetail/711404033449.html'),
 					//new \app\models\ButtonView('精品靓号', 'http://m.10010.com/mall-mobile/NumList/search'),
 					//new \app\models\ButtonView('热销终端', 'http://m.10010.com/MobileList'),
@@ -176,7 +178,7 @@ class CmdController extends Controller
 					//new \app\models\ButtonView('资费套餐', 'http://m.10010.com/'),
 				]),
 				//new \app\models\ButtonView('★自由组合', 'http://m.10010.com/mobilegoodsdetail/981405149472.html'),
-				new \app\models\ButtonView('★自由组合', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/product:{$gh_id}")),
+				new \app\models\ButtonView('八月浪漫季', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203635121&idx=1&sn=b47bc2f6a4490819227853e8ffed72c9#rd'),
 				new \app\models\ButtonComplex('沃服务', [
 					new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
 					new \app\models\ButtonView('流量包订购', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
