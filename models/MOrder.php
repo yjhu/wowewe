@@ -32,6 +32,9 @@ CREATE TABLE wx_order (
 	KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS wx_order_arc;
+CREATE TABLE wx_order_arc LIKE wx_order;
+
 //ALTER TABLE wx_order ADD select_mobnum VARCHAR(16) NOT NULL DEFAULT '' after title;
 
 */
@@ -66,6 +69,7 @@ class MOrder extends ActiveRecord
 			'detail' => '商品详情',
 			'feesum' => '支付金额',
 			'status' => '订单状态',
+			'select_mobnum'=>'手机号码',
 			'create_time' => '创建时间',
 		];
 	}

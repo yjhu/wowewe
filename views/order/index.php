@@ -48,6 +48,9 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { return "￥".sprintf("%0.2f",$model->feesum/100); },
 			],
 			[
+				'attribute' => 'select_mobnum',
+			],
+			[
 				'attribute' => 'create_time',
 				'filter'=> false,
 			],

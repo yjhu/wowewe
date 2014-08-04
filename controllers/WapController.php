@@ -774,6 +774,7 @@ EOD;
 	public function actionProdsave()
 	{			
 		//U::W([$_GET, $_POST, $_SERVER]);
+		U::W([$_GET, $_POST]);
 		U::W('aaaaaaaaaaaaaaa');
 		//if (!Yii::$app->request->isAjax)
 		//	return;	
@@ -848,6 +849,7 @@ EOD;
 		{
 			U::W('save ok....');	
 			$mobnum->status = MMobnum::STATUS_LOCKED;
+			$mobnum->locktime = time();
 			$mobnum->save(false);
 			if (Wechat::isAndroid())
 			{			
@@ -877,7 +879,7 @@ EOD;
 		return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
 	}
 
-    //http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1
+	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1&cid=10&feeSum=1
 	public function actionAjaxdata($cat)
 	{
 		//U::W($_GET);
@@ -888,8 +890,12 @@ EOD;
 		{
 			case 'mobileNum':
 				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
-				$size = isset($_GET["size"]) ? $_GET["size"] : 8;			
-				$mobnums = MMobnum::find()->select('num,ychf,zdxf')->where("status = :status", [':status'=>MMobnum::STATUS_UNUSED])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
+				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
+				$feeSum = isset($_GET['feeSum']) ? $_GET['feeSum'] : 100000;
+				$feeSum = $feeSum * 100;
+				$cid = isset($_GET["cid"]) ? $_GET["cid"] : MItem::ITEM_CAT_DIY;		
+				$num_cat = MMobnum::getNumCat($cid);
+				$mobnums = MMobnum::find()->select('num,ychf,zdxf')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
 				break;
 			default:
 				U::W(['invalid data cat', $cat, __METHOD__,$_GET]);

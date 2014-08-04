@@ -9,6 +9,7 @@ use yii\web\View;
 use app\models\U;
 use app\models\MOrder;
 use app\models\MOrderSearch;
+use app\models\MMobnum;
 
 class OrderController extends Controller
 {
@@ -77,7 +78,17 @@ class OrderController extends Controller
 		if (\Yii::$app->request->isPost) 
 		{
 			$model->load(\Yii::$app->request->post());
-			if ($model->save(true, ['status'])) {
+			if ($model->save(true, ['status'])) 
+			{				
+				$mobnum = MMobnum::findOne($model->select_mobnum);
+				if ($mobnum !== null)
+				{
+					if ($model->status == MOrder::STATUS_OK)
+						$mobnum->status = MMobnum::STATUS_USED;
+					else if ($model->status == MOrder::STATUS_AUTION)
+						$mobnum->status = MMobnum::STATUS_LOCKED;
+					$mobnum->save(false);				
+				}
 				return $this->redirect(['index']);			
 			}
 		}
