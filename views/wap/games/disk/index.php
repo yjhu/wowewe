@@ -27,14 +27,24 @@ $(function(){
 	$("#startbtn").rotate({
 		bind:{
 			click:function(){
-				var a = Math.floor(Math.random() * 360);
+				//var a = Math.floor(Math.random() * 360);
+				var a = <?php echo $rotateParam['angle']; ?>;
+				var name = "<?php echo $rotateParam['name']; ?>";
+				var value = <?php echo $rotateParam['value']; ?>;
 				 $(this).rotate({
 					 	duration:3000,
 					 	angle: 0, 
             			animateTo:1440+a,
 						easing: $.easing.easeOutSine,
 						callback: function(){
-							alert('中奖了！');
+							//alert('中奖了！');
+							if (value%2 == 0)
+							{
+								var res = 'ok';
+							}
+							else
+								var res = 'sorry';
+							alert(name + ':' + value + res );
 						}
 				 });
 			}
