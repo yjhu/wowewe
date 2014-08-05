@@ -963,7 +963,7 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/home:gh_03a74ac96138
     public function actionHome()
     {
-        $this->layout =false;
+        $this->layout = 'wap';
         return $this->render('home');
     }
 

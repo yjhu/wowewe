@@ -1,7 +1,6 @@
 
 <?php
 use yii\helpers\Html;
-//use yii\widgets\ActiveForm;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
@@ -24,32 +23,47 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets'
 
 <script type="text/javascript">
 $(function(){
-	$("#startbtn").rotate({
-		bind:{
-			click:function(){
-				//var a = Math.floor(Math.random() * 360);
-				var a = <?php echo $rotateParam['angle']; ?>;
-				var name = "<?php echo $rotateParam['name']; ?>";
-				var value = <?php echo $rotateParam['value']; ?>;
-				 $(this).rotate({
-					 	duration:3000,
-					 	angle: 0, 
-            			animateTo:1440+a,
-						easing: $.easing.easeOutSine,
-						callback: function(){
-							//alert('中奖了！');
-							if (value%2 == 0)
-							{
-								var res = 'ok';
-							}
-							else
-								var res = 'sorry';
-							alert(name + ':' + value + res );
-						}
-				 });
-			}
-		}
-	});
+
+    /**/
+    $.ajax({
+        url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'diskpermission  '], true) ; ?>",
+        type:"GET",
+        cache:false,
+        data: "&openid="+openid+"&gh_id="+gh_id,
+        success: function(msg){
+            alert('我有资格转盘子...');
+            $("#startbtn").rotate({
+                    bind:{
+                        click:function(){
+                            var a = Math.floor(Math.random() * 360);
+                            $(this).rotate({
+                                duration:3000,
+                                angle: 0,
+                                animateTo:1440+a,
+                                easing: $.easing.easeOutSine,
+                                callback: function(){
+                                                    alert('告诉服务器该用户转了盘子...');
+                                                    $.ajax({
+                                                        url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'diskresult'], true) ; ?>",
+                                                        type:"GET",
+                                                        cache:false,
+                                                        data: "&openid="+openid+"&gh_id="+gh_id,
+                                                        success: function(msg){
+                                                            //var json_data = eval('('+msg+')');
+                                                            alert('aaaaaaaaaaaaaaaaaa');
+                                                        }
+                                                    });
+
+                                }
+                            });
+                        }
+                    }
+                });
+        }/*end of first ajax request for diskpermission */
+    });
+
+
+
 });
 </script>
 
