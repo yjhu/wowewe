@@ -3,9 +3,12 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
-
+use app\models\U;
 $this->title = '幸运大转盘';
 $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets';
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');    	
+
 ?>
 
 <style type="text/css">
@@ -32,6 +35,12 @@ $(function(){
         data: "&openid="+openid+"&gh_id="+gh_id,
         success: function(msg){
             alert('我有资格转盘子...');
+
+
+				var a = <?php echo $rotateParam['angle']; ?>;
+				var name = "<?php echo $rotateParam['name']; ?>";
+				var value = <?php echo $rotateParam['value']; ?>;
+
             $("#startbtn").rotate({
                     bind:{
                         click:function(){
@@ -42,6 +51,14 @@ $(function(){
                                 animateTo:1440+a,
                                 easing: $.easing.easeOutSine,
                                 callback: function(){
+												if (value%2 == 0)
+												{
+													var res = 'ok';
+												}
+												else
+													var res = 'sorry';
+												alert(name + ':' + value + res );
+/*
                                                     alert('告诉服务器该用户转了盘子...');
                                                     $.ajax({
                                                         url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'diskresult'], true) ; ?>",
@@ -53,6 +70,7 @@ $(function(){
                                                             alert('aaaaaaaaaaaaaaaaaa');
                                                         }
                                                     });
+*/
 
                                 }
                             });
