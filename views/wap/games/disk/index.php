@@ -1,11 +1,22 @@
 
 <?php
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
+use yii\widgets\Breadcrumbs;
+use app\assets\JqmAsset;
+JqmAsset::register($this);
+//$this->registerJs('alert("test")', yii\web\View::POS_READY);
+use app\models\U;
+use app\models\MOffice;
 
 $this->title = '幸运大转盘';
-$assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets';
+$assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets'
+
+$gh_id = Yii::$app->session['gh_id'];
+$openid = Yii::$app->session['openid'];
+
+U::W($gh_id);
+U::W($openid);
 ?>
 
 <style type="text/css">
@@ -29,7 +40,7 @@ $(function(){
         url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'diskpermission  '], true) ; ?>",
         type:"GET",
         cache:false,
-        data: "&openid="+openid+"&gh_id="+gh_id,
+        data: "&openid="+'<?php echo $openid; ?>'+"&gh_id="+'<?php echo $gh_id; ?>',
         success: function(msg){
             alert('我有资格转盘子...');
             $("#startbtn").rotate({
@@ -47,7 +58,7 @@ $(function(){
                                                         url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'diskresult'], true) ; ?>",
                                                         type:"GET",
                                                         cache:false,
-                                                        data: "&openid="+openid+"&gh_id="+gh_id,
+                                                        data: "&openid="+'<?php echo $openid; ?>'+"&gh_id="+'<?php echo $gh_id; ?>',
                                                         success: function(msg){
                                                             //var json_data = eval('('+msg+')');
                                                             alert('aaaaaaaaaaaaaaaaaa');
