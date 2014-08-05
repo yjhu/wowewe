@@ -10,13 +10,15 @@ use app\models\U;
 use app\models\MOffice;
 
 $this->title = '幸运大转盘';
-$assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets'
+$assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets';
 
-$gh_id = Yii::$app->session['gh_id'];
-$openid = Yii::$app->session['openid'];
-
+//$gh_id = Yii::$app->session['gh_id'];
+//$openid = Yii::$app->session['openid'];
+$gh_id = U::getSessionParam('gh_id');
+$openid = U::getSessionParam('openid');
 U::W($gh_id);
 U::W($openid);
+
 ?>
 
 <style type="text/css">
