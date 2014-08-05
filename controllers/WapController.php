@@ -948,7 +948,7 @@ EOD;
         return $this->render('mobile', ['cid'=>$_GET['cid']]);
     }
 
-	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/disk:gh_03a74ac96138
+	//http://127.0.0.1/wx/web/index.php?r=wap/disk&gh_id=gh_03a74ac96138&openid=111
 	public function actionDisk()
 	{
 		$this->layout = false;	
