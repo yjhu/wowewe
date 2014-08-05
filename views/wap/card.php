@@ -72,6 +72,12 @@
 .TabbedPanelsContent {
     padding: 0.1em  !important;
 }
+
+.ui-select-num{
+    font-size: 12px !important;
+    margin: .5em 0 !important;
+    padding: .5em 0em !important;
+}
 </style>
 	
 <?php $this->head() ?>
@@ -422,9 +428,9 @@ $(document).on("pageshow", "#number-select", function(){
         }
 
         if(i%2 == 0)
-            var text = " <div class='ui-block-a'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
+            var text = " <div class='ui-block-a'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' class='ui-select-num'>"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
         else
-            var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
+            var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' class='ui-select-num'>"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
 
         $("#list_common_tbody").append(text).trigger('create');
 
