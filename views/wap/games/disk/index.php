@@ -2,13 +2,7 @@
 <?php
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\Breadcrumbs;
-use app\assets\JqmAsset;
-JqmAsset::register($this);
-//$this->registerJs('alert("test")', yii\web\View::POS_READY);
 use app\models\U;
-use app\models\MOffice;
-
 $this->title = '幸运大转盘';
 $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets';
 
@@ -18,6 +12,8 @@ $gh_id = U::getSessionParam('gh_id');
 $openid = U::getSessionParam('openid');
 U::W($gh_id);
 U::W($openid);
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');    	
 
 ?>
 
@@ -45,6 +41,12 @@ $(function(){
         data: "&openid="+'<?php echo $openid; ?>'+"&gh_id="+'<?php echo $gh_id; ?>',
         success: function(msg){
             alert('我有资格转盘子...');
+
+
+				var a = <?php echo $rotateParam['angle']; ?>;
+				var name = "<?php echo $rotateParam['name']; ?>";
+				var value = <?php echo $rotateParam['value']; ?>;
+
             $("#startbtn").rotate({
                     bind:{
                         click:function(){
@@ -55,6 +57,14 @@ $(function(){
                                 animateTo:1440+a,
                                 easing: $.easing.easeOutSine,
                                 callback: function(){
+												if (value%2 == 0)
+												{
+													var res = 'ok';
+												}
+												else
+													var res = 'sorry';
+												alert(name + ':' + value + res );
+/*
                                                     alert('告诉服务器该用户转了盘子...');
                                                     $.ajax({
                                                         url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'diskresult'], true) ; ?>",
@@ -66,6 +76,7 @@ $(function(){
                                                             alert('aaaaaaaaaaaaaaaaaa');
                                                         }
                                                     });
+*/
 
                                 }
                             });
