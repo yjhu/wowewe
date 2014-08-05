@@ -1,11 +1,16 @@
 
 <?php
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use app\models\U;
 $this->title = '幸运大转盘';
-$assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets';
+$assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets'
+
+$gh_id = Yii::$app->session['gh_id'];
+$openid = Yii::$app->session['openid'];
+
+U::W($gh_id);
+U::W($openid);
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');    	
 
@@ -32,7 +37,7 @@ $(function(){
         url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'diskpermission  '], true) ; ?>",
         type:"GET",
         cache:false,
-        data: "&openid="+openid+"&gh_id="+gh_id,
+        data: "&openid="+'<?php echo $openid; ?>'+"&gh_id="+'<?php echo $gh_id; ?>',
         success: function(msg){
             alert('我有资格转盘子...');
 
@@ -64,7 +69,7 @@ $(function(){
                                                         url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'diskresult'], true) ; ?>",
                                                         type:"GET",
                                                         cache:false,
-                                                        data: "&openid="+openid+"&gh_id="+gh_id,
+                                                        data: "&openid="+'<?php echo $openid; ?>'+"&gh_id="+'<?php echo $gh_id; ?>',
                                                         success: function(msg){
                                                             //var json_data = eval('('+msg+')');
                                                             alert('aaaaaaaaaaaaaaaaaa');
