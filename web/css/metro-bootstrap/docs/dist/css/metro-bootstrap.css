@@ -5959,6 +5959,14 @@ button.close {
 .tile.tile-success {
   background-color: #2ecc71;
 }
+
+/*user defined color*/
+.tile.tile-woso111 {
+    background-color: #ff0000;
+}
+
+
+
 a.fa-links {
   color: #ffffff;
 }
