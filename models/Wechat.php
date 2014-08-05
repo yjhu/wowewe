@@ -55,9 +55,6 @@ class Wechat extends \yii\base\Object
 	private $_accessToken;	
 
 	// wxpay package parameters
-	//private $_parameters;
-	//public $parameters;
-	
 	public $_parameters;	
 	
 	public function init()
@@ -274,22 +271,22 @@ class Wechat extends \yii\base\Object
 
 	public function checkOpenid() 
 	{
-			U::W('aaaaaaaaaaaa');	
+//			U::W('aaaaaaaaaaaa');	
 		$gh_id = $this->getGhId();	
-			U::W('bbbbbb'.$gh_id);			
+//			U::W('bbbbbb'.$gh_id);			
 		$FromUserName = $this->getRequest('FromUserName');
-			U::W('cccc'.$FromUserName);			
+//			U::W('cccc'.$FromUserName);			
 
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
-			U::W('ddddd');					
+//			U::W('ddddd');					
 		if ($model === null)
 		{
-			U::W('no.....');
+//			U::W('no.....');
 			$model = new MUser;		
 		}
 		if (empty($model->nickname) ||!$model->subscribe)
 		{
-			U::W('yes.....');		
+//			U::W('yes.....');		
 			$arr = $this->WxGetUserInfo($FromUserName);
 			$model->setAttributes($arr, false);
 			$model->gh_id = $this->getRequest('ToUserName');			
@@ -298,7 +295,6 @@ class Wechat extends \yii\base\Object
 		$model->msg_time = time();
 		if (!$model->save(false))
 			U::W([__METHOD__, $model->getErrors()]);	
-			U::W('888');					
 	}
 	
 	public function run($gh_id) 

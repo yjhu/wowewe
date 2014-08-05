@@ -896,6 +896,7 @@ EOD;
 				$cid = isset($_GET["cid"]) ? $_GET["cid"] : MItem::ITEM_CAT_DIY;		
 				$num_cat = MMobnum::getNumCat($cid);
 				$mobnums = MMobnum::find()->select('num,ychf,zdxf')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
+				//U::W([$num_cat, $mobnums]);				
 				break;
 			default:
 				U::W(['invalid data cat', $cat, __METHOD__,$_GET]);

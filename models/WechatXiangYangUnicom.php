@@ -137,8 +137,10 @@ EOD;
 					if ($msg !== '我是襄阳联通员工')
 					{
 						//return Wechat::NO_RESP;
+						//U::W('hehb');
+						//$this->setGhId($gh_id);
 						$items = array(
-							new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/product:{$gh_id}")),
+							new RespNewsItem("欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/640.jpg',true), $this->WxGetOauth2Url('snsapi_base', "wap/home:{$gh_id}")),
 						);
 						return $this->responseNews($items);
 					}

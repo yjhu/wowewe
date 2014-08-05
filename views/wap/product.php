@@ -214,7 +214,7 @@ U::W($gh_id);
 				</div>
 
               <div class="TabbedPanelsContent">
-                  <div data-role="fieldcontain" data-theme="g">
+                  <div data-role="fieldcontain" data-theme="c">
                       <fieldset data-role="controlgroup">
                           <legend>其他增值业务</legend>
                           <input type="radio" name="otherPack" id="otherPack_0" value="0" />
