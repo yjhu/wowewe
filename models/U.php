@@ -188,7 +188,7 @@ class U
 			throw new HttpException(500, "key=$key does not exist");
 	}
 	
-	public static function getRotateParam($type=0)
+	public static function makeDiskResult($type=0)
 	{
 		if ($type == 0)
 		{
@@ -245,6 +245,7 @@ class U
 			if ($param['value'] == $value)
 				break;
 		}
+		$param['code'] = 0;		
 		$param['angle'] = rand($param['start'], $param['end']);
 		U::W($param);
 		return $param;

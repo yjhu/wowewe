@@ -18,7 +18,7 @@ use app\models\MGh;
 use app\models\MOrder;
 use app\models\MItem;
 use app\models\MMobnum;
-
+use app\models\MDisk;
 
 class WapController extends Controller
 {
@@ -882,7 +882,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1&cid=10&feeSum=1
 	public function actionAjaxdata($cat)
 	{
-		//U::W($_GET);
+		U::W($_GET);
 		if (!Yii::$app->request->isAjax)
 			return;
 		$this->layout = false;		
@@ -895,27 +895,25 @@ EOD;
 				$feeSum = $feeSum * 100;
 				$cid = isset($_GET["cid"]) ? $_GET["cid"] : MItem::ITEM_CAT_DIY;		
 				$num_cat = MMobnum::getNumCat($cid);
-				$mobnums = MMobnum::find()->select('num,ychf,zdxf')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
-				//U::W([$num_cat, $mobnums]);				
+				$data = MMobnum::find()->select('num,ychf,zdxf')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
+				//U::W([$num_cat, $data]);				
 				break;
 				
-			case 'mobileNum':
-				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
-				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
-				$feeSum = isset($_GET['feeSum']) ? $_GET['feeSum'] : 100000;
-				$feeSum = $feeSum * 100;
-				$cid = isset($_GET["cid"]) ? $_GET["cid"] : MItem::ITEM_CAT_DIY;		
-				$num_cat = MMobnum::getNumCat($cid);
-				$mobnums = MMobnum::find()->select('num,ychf,zdxf')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
-				//U::W([$num_cat, $mobnums]);				
+			case 'diskclick':
+				$gh_id = U::getSessionParam('gh_id');
+				$openid = U::getSessionParam('openid');
+				$hasQualification = MDisk::getDiskQualification($gh_id,$openid);
+				if (!$hasQualification)
+					return json_encode(['code'=>0, 'errmsg'=>'has no qualification']);
+				$data = U::makeDiskResult();			
 				break;
 				
 			default:
 				U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
 				return;
 		}		
-		//U::W(json_encode($mobnums));
-		return json_encode($mobnums);
+		//U::W(json_encode($data));
+		return json_encode($data);
 	}
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardwo:gh_1ad98f5481f3
@@ -956,8 +954,8 @@ EOD;
 		$this->layout = false;	
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');    	
-		$rotateParam = U::getRotateParam();
-		return $this->render('games/disk/index', ['rotateParam'=>$rotateParam]);
+		//$rotateParam = U::getRotateParam();
+		return $this->render('games/disk/index');
 	}
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/home:gh_03a74ac96138

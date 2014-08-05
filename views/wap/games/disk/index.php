@@ -3,14 +3,10 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\U;
+use app\models\MDisk;
 $this->title = '幸运大转盘';
-$assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets'
+$assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets';
 
-$gh_id = Yii::$app->session['gh_id'];
-$openid = Yii::$app->session['openid'];
-
-U::W($gh_id);
-U::W($openid);
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');    	
 
@@ -31,59 +27,62 @@ U::W($openid);
 
 <script type="text/javascript">
 $(function(){
-
-    /**/
-    $.ajax({
-        url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'diskpermission  '], true) ; ?>",
-        type:"GET",
-        cache:false,
-        data: "&openid="+'<?php echo $openid; ?>'+"&gh_id="+'<?php echo $gh_id; ?>',
-        success: function(msg){
-            alert('我有资格转盘子...');
-
-
-				var a = <?php echo $rotateParam['angle']; ?>;
-				var name = "<?php echo $rotateParam['name']; ?>";
-				var value = <?php echo $rotateParam['value']; ?>;
-
             $("#startbtn").rotate({
                     bind:{
                         click:function(){
-                            var a = Math.floor(Math.random() * 360);
-                            $(this).rotate({
-                                duration:3000,
-                                angle: 0,
-                                animateTo:1440+a,
-                                easing: $.easing.easeOutSine,
-                                callback: function(){
-												if (value%2 == 0)
-												{
-													var res = 'ok';
-												}
-												else
-													var res = 'sorry';
-												alert(name + ':' + value + res );
-/*
-                                                    alert('告诉服务器该用户转了盘子...');
-                                                    $.ajax({
-                                                        url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'diskresult'], true) ; ?>",
-                                                        type:"GET",
-                                                        cache:false,
-                                                        data: "&openid="+'<?php echo $openid; ?>'+"&gh_id="+'<?php echo $gh_id; ?>',
-                                                        success: function(msg){
-                                                            //var json_data = eval('('+msg+')');
-                                                            alert('aaaaaaaaaaaaaaaaaa');
-                                                        }
-                                                    });
-*/
 
-                                }
-                            });
+						var json_data;
+						//alert('告诉服务器该用户转了盘子...');
+						$.ajax({
+							url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'diskclick'], true) ; ?>",
+							type:"GET",
+							async:false,
+							cache:false,
+							dataType:'json',
+							data: "&openid="+'<?php echo $openid; ?>'+"&gh_id="+'<?php echo $gh_id; ?>',
+							success: function(data){
+								//var json_data = eval('('+msg+')');
+								//alert(json_data.code);
+								json_data = data;
+							}
+						});
+
+							if (json_data.code == 0)
+							{
+//								alert('aaaaaaaaaaaaaaaaaa');
+								var a = json_data.angle;
+								var value = json_data.value;
+								var name = json_data.name;
+								//alert(a + ":" + name + ":" + value);
+								//var a = Math.floor(Math.random() * 360);
+								$(this).rotate({
+									duration:3000,
+									angle: 0,
+									animateTo:1440+a,
+									easing: $.easing.easeOutSine,
+									callback: function()
+									{
+										if (value%2 == 0)
+										{
+											var res = 'ok';
+										}
+										else
+											var res = 'sorry';
+										alert(name + ':' + value + res );
+									}
+								});
+							}
+							else
+							{
+
+								alert(json_data.code+json_data.errmsg);
+							}
+
+
+
                         }
                     }
                 });
-        }/*end of first ajax request for diskpermission */
-    });
 
 
 
@@ -101,3 +100,13 @@ $(function(){
 </div>
 
 
+<?php
+
+/*
+				var a = <?php echo $rotateParam['angle']; ?>;
+				var name = "<?php echo $rotateParam['name']; ?>";
+				var value = <?php echo $rotateParam['value']; ?>;
+
+								var has_right = <?php echo MDisk::getDiskQualification($gh_id,$openid); ?>;
+
+*/
