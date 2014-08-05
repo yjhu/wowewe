@@ -882,7 +882,6 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1&cid=10&feeSum=1
 	public function actionAjaxdata($cat)
 	{
-		U::W($_GET);
 		if (!Yii::$app->request->isAjax)
 			return;
 		$this->layout = false;		
@@ -904,7 +903,7 @@ EOD;
 				$openid = U::getSessionParam('openid');
 				$hasQualification = MDisk::getDiskQualification($gh_id,$openid);
 				if (!$hasQualification)
-					return json_encode(['code'=>0, 'errmsg'=>'has no qualification']);
+					return json_encode(['code'=>1, 'errmsg'=>'has no qualification']);
 				$data = U::makeDiskResult();			
 				break;
 				

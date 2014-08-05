@@ -31,7 +31,13 @@ class MDisk extends ActiveRecord
 	{
 		$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);		
 		if ($model === null)
+		{
+			$model = new MDisk;
+			$model->gh_id = $gh_id;
+			$model->openid = $openid;
+			$model->save(false);
 			return true;
+		}
 		else if ($model->cnt > 0)
 		{
 			if ($save)
