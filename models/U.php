@@ -144,6 +144,102 @@ class U
 		return $ip;
 	}
 
+/**
+   * getRandomWeightedElement()
+   * Utility function for getting random values with weighting.
+   * Pass in an associative array, such as array('A'=>5, 'B'=>45, 'C'=>50)
+   * An array like this means that "A" has a 5% chance of being selected, "B" 45%, and "C" 50%.
+   * The return value is the array key, A, B, or C in this case.  Note that the values assigned
+   * do not have to be percentages.  The values are simply relative to each other.  If one value
+   * weight was 2, and the other weight of 1, the value with the weight of 2 has about a 66%
+   * chance of being selected.  Also note that weights should be integers.
+   * 
+   * @param array $weightedValues
+   */
+   	//U::getRandomWeightedElement(array('AAA'=>5, 'BBB'=>30, 'CCC'=>65));
+	public static function getRandomWeightedElement($weightedValues)
+	{
+		$rand = mt_rand(1, (int) array_sum($weightedValues));
+		foreach ($weightedValues as $key => $value) 
+		{
+			$rand -= $value;
+			if ($rand <= 0) 
+			{
+				return $key;
+			}
+		}
+	}
+
+	public static function array_field_assoc($items, $field1, $field2) 
+	{
+		$iids = array();	
+		foreach ($items as $item) 
+			$iids[$item[$field1]] = $item[$field2];
+		return ($iids);	
+	}
+
+	public static function getRotateParam($type=0)
+	{
+		if ($type == 0)
+		{
+			//$probability = 0.5	//		0.1/12*100;
+/*
+			$params = [
+				['name'=>'item 0','value'=>0, 'start'=> 0, 'end'=> 30, 'probability'=> 50],
+				['name'=>'item 1','value'=>1, 'start'=>30, 'end'=>60, 'probability'=>25],
+				['name'=>'item 2','value'=>2, 'start'=>60, 'end'=>90, 'probability'=>25],
+				['name'=>'item 3','value'=>3, 'start'=>90, 'end'=>120, 'probability'=>0],
+				['name'=>'item 4','value'=>4, 'start'=>120, 'end'=>150, 'probability'=>0],
+				['name'=>'item 5','value'=>5, 'start'=>150, 'end'=>180, 'probability'=>0],
+				['name'=>'item 6','value'=>6, 'start'=>180, 'end'=>210, 'probability'=>0],
+				['name'=>'item 7','value'=>7, 'start'=>210, 'end'=>240, 'probability'=>0],
+				['name'=>'item 8','value'=>8, 'start'=>240, 'end'=>270, 'probability'=>0],
+				['name'=>'item 9','value'=>9, 'start'=>270, 'end'=>300, 'probability'=>0],
+				['name'=>'item 10','value'=>10, 'start'=>300, 'end'=>330, 'probability'=>0],
+				['name'=>'item 11','value'=>11, 'start'=>330, 'end'=>360, 'probability'=>0],
+			];
+*/			
+			$params = [
+				['name'=>'item 0','value'=>0, 'start'=> 0, 'end'=> 15, 'probability'=> 0.83],
+				['name'=>'item 1','value'=>1, 'start'=>15, 'end'=>30, 'probability'=>7.5],
+				['name'=>'item 2','value'=>2, 'start'=>30, 'end'=>45, 'probability'=>0.83],
+				['name'=>'item 3','value'=>3, 'start'=>45, 'end'=>60, 'probability'=>7.5],
+				['name'=>'item 4','value'=>4, 'start'=>60, 'end'=>75, 'probability'=>0.83],
+				['name'=>'item 5','value'=>5, 'start'=>75, 'end'=>90, 'probability'=>7.5],
+				['name'=>'item 6','value'=>6, 'start'=>90, 'end'=>105, 'probability'=>0.83],
+				['name'=>'item 7','value'=>7, 'start'=>105, 'end'=>120, 'probability'=>7.5],
+				['name'=>'item 8','value'=>8, 'start'=>120, 'end'=>135, 'probability'=>0.83],
+				['name'=>'item 9','value'=>9, 'start'=>135, 'end'=>150, 'probability'=>7.5],
+				['name'=>'item 10','value'=>10, 'start'=>150, 'end'=>165, 'probability'=>0.83],
+				['name'=>'item 11','value'=>11, 'start'=>165, 'end'=>180, 'probability'=>7.5],
+				['name'=>'item 12','value'=>12, 'start'=>180, 'end'=>195, 'probability'=> 0.83],
+				['name'=>'item 13','value'=>13, 'start'=>195, 'end'=>210, 'probability'=>7.5],
+				['name'=>'item 14','value'=>14, 'start'=>210, 'end'=>225, 'probability'=>0.83],
+				['name'=>'item 15','value'=>15, 'start'=>225, 'end'=>240, 'probability'=>7.5],
+				['name'=>'item 16','value'=>16, 'start'=>240, 'end'=>255, 'probability'=>0.83],
+				['name'=>'item 17','value'=>17, 'start'=>255, 'end'=>270, 'probability'=>7.5],
+				['name'=>'item 18','value'=>18, 'start'=>270, 'end'=>285, 'probability'=>0.83],
+				['name'=>'item 19','value'=>19, 'start'=>285, 'end'=>300, 'probability'=>7.5],
+				['name'=>'item 20','value'=>20, 'start'=>300, 'end'=>315, 'probability'=>0.83],
+				['name'=>'item 21','value'=>21, 'start'=>315, 'end'=>300, 'probability'=>7.5],
+				['name'=>'item 22','value'=>22, 'start'=>330, 'end'=>330, 'probability'=>0.87],
+				['name'=>'item 23','value'=>23, 'start'=>345, 'end'=>360, 'probability'=>7.5]
+				
+			];
+		}
+		$par = U::array_field_assoc($params, 'value', 'probability');
+		$value = U::getRandomWeightedElement($par);
+		
+		foreach($params as $key => $param)
+		{
+			if ($param['value'] == $value)
+				break;
+		}
+		$param['angle'] = rand($param['start'], $param['end']);
+		U::W($param);
+		return $param;
+	}
+
 	public static function getMobileLuck($mobile)
 	{
 		srand($mobile);

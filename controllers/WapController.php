@@ -942,8 +942,8 @@ EOD;
     public function actionDisk()
     {
         $this->layout = false;
-
-        return $this->render('games/disk/index');
+	$rotateParam = U::getRotateParam();
+        return $this->render('games/disk/index', ['rotateParam'=>$rotateParam]);
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/home:gh_03a74ac96138
