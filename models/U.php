@@ -178,6 +178,16 @@ class U
 		return ($iids);	
 	}
 
+	public static function getSessionParam($key)
+	{
+		if (isset($_GET[$key]))
+			return $_GET[$key];			
+		else if (isset(Yii::$app->session[$key]))
+			return Yii::$app->session[$key];
+		else 
+			throw new HttpException(500, "key=$key does not exist");
+	}
+	
 	public static function getRotateParam($type=0)
 	{
 		if ($type == 0)

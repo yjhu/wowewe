@@ -898,6 +898,18 @@ EOD;
 				$mobnums = MMobnum::find()->select('num,ychf,zdxf')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
 				//U::W([$num_cat, $mobnums]);				
 				break;
+				
+			case 'mobileNum':
+				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
+				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
+				$feeSum = isset($_GET['feeSum']) ? $_GET['feeSum'] : 100000;
+				$feeSum = $feeSum * 100;
+				$cid = isset($_GET["cid"]) ? $_GET["cid"] : MItem::ITEM_CAT_DIY;		
+				$num_cat = MMobnum::getNumCat($cid);
+				$mobnums = MMobnum::find()->select('num,ychf,zdxf')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
+				//U::W([$num_cat, $mobnums]);				
+				break;
+				
 			default:
 				U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
 				return;
@@ -938,13 +950,15 @@ EOD;
         return $this->render('mobile', ['cid'=>$_GET['cid']]);
     }
 
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/disk:gh_03a74ac96138
-    public function actionDisk()
-    {
-        $this->layout = false;
-	$rotateParam = U::getRotateParam();
-        return $this->render('games/disk/index', ['rotateParam'=>$rotateParam]);
-    }
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/disk:gh_03a74ac96138
+	public function actionDisk()
+	{
+		$this->layout = false;	
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');    	
+		$rotateParam = U::getRotateParam();
+		return $this->render('games/disk/index', ['rotateParam'=>$rotateParam]);
+	}
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/home:gh_03a74ac96138
     public function actionHome()
