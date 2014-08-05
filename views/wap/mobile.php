@@ -542,6 +542,7 @@ $(document).on("pageshow", "#number-select", function(){
 
     }
 
+    feeSum = <?php echo  ($item->price)/100; ?>;
     function getNumberList()
     {
         $("#list_common_tbody").html('');
