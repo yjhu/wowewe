@@ -25,7 +25,7 @@ class CmdController extends Controller
 	public function init()
 	{		
 		Yii::$app->getUrlManager()->setBaseUrl('/wx/web/index.php');
-		Yii::$app->getUrlManager()->setHostInfo('http://www.hoyatech.net');
+		Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
 		Yii::$app->getUrlManager()->setScriptUrl('/wx/web/index.php');
 		//Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
 		//Yii::$app->wx->setGhId(MGh::GH_HOYA);
@@ -143,7 +143,7 @@ class CmdController extends Controller
 					new \app\models\ButtonView('明星产品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/product:{$gh_id}")),
 				]),
 				//new \app\models\ButtonView('促销商品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/prom:{$gh_id}")),
-				new \app\models\ButtonView('促销商品', "http://www.hoyatech.net/wx/web/index.php?r=wap/prom&gh_id={$gh_id}"),
+				new \app\models\ButtonView('促销商品', "http://wosotech.com/wx/web/index.php?r=wap/prom&gh_id={$gh_id}"),
 				new \app\models\ButtonComplex('我的服务', [
 					//new \app\models\ButtonClick('个性化账单', 'FuncQueryAccount'),
 					//new \app\models\ButtonClick('本地生活', 'FuncQueryFee'),
@@ -151,11 +151,11 @@ class CmdController extends Controller
 					//new \app\models\ButtonClick('吐槽', 'FuncCustomService'),
 					new \app\models\ButtonView('用户吐槽', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/suggest:{$gh_id}")),
 					//new \app\models\ButtonView('我要维权', Url::to(['site/index'],true)),
-					//new \app\models\ButtonView('jsnative', 'http://www.hoyatech.net/wx/web/jsnative.php'),
+					//new \app\models\ButtonView('jsnative', 'http://wosotech.com/wx/web/jsnative.php'),
 					//new \app\models\ButtonView('我要推广', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/tui:{$gh_id}")),
-					new \app\models\ButtonView('jsphp', 'http://www.hoyatech.net/wx/web/jsphp.php'),
+					new \app\models\ButtonView('jsphp', 'http://wosotech.com/wx/web/jsphp.php'),
 					new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/luck:{$gh_id}")),
-					//new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.php'),
+					//new \app\models\ButtonView('游戏2048', 'http://wosotech.com/wx/webtest/2048/index.php'),
 					new \app\models\ButtonView('游戏2048', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}")),
                     new \app\models\ButtonView('幸运大转盘', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/disk:{$gh_id}")),
 				]),
@@ -186,7 +186,7 @@ class CmdController extends Controller
 					new \app\models\ButtonView('关注有礼', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203635121&idx=1&sn=b47bc2f6a4490819227853e8ffed72c9#rd'),
 					//new \app\models\ButtonView('襄阳沃社区', 'http://m.10010.com/'),
 					//new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base','wap/luck:'.Yii::$app->wx->getGhid())),
-					//new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.htm'),
+					//new \app\models\ButtonView('游戏2048', 'http://wosotech.com/wx/webtest/2048/index.htm'),
 					new \app\models\ButtonView('游戏2048', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}")),
 				]),
 			]);
@@ -275,18 +275,18 @@ class CmdController extends Controller
 					new \app\models\ButtonView('沃商城', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mall:{$gh_id}")),
 				]),
 				//new \app\models\ButtonView('促销商品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/prom:{$gh_id}")),
-				new \app\models\ButtonView('促销商品', "http://www.hoyatech.net/wx/web/index.php?r=wap/prom&gh_id={$gh_id}"),
+				new \app\models\ButtonView('促销商品', "http://wosotech.com/wx/web/index.php?r=wap/prom&gh_id={$gh_id}"),
 				new \app\models\ButtonComplex('我的服务', [
 					//new \app\models\ButtonClick('个性化账单', 'FuncQueryAccount'),
 					new \app\models\ButtonClick('本地生活', 'FuncQueryFee'),
 					//new \app\models\ButtonClick('关注', 'FuncSignon'),
 					//new \app\models\ButtonClick('吐槽', 'FuncCustomService'),
 					//new \app\models\ButtonView('我要维权', Url::to(['site/index'],true)),
-					new \app\models\ButtonView('jsnative', 'http://www.hoyatech.net/wx/web/jsnative.php'),
-					new \app\models\ButtonView('jsphp', 'http://www.hoyatech.net/wx/web/jsphp.php'),
-					//new \app\models\ButtonView('jsjs', 'http://www.hoyatech.net/wx/webtest/jsjs.php'),
+					new \app\models\ButtonView('jsnative', 'http://wosotech.com/wx/web/jsnative.php'),
+					new \app\models\ButtonView('jsphp', 'http://wosotech.com/wx/web/jsphp.php'),
+					//new \app\models\ButtonView('jsjs', 'http://wosotech.com/wx/webtest/jsjs.php'),
 					new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/luck:{$gh_id}")),
-					//new \app\models\ButtonView('游戏2048', 'http://www.hoyatech.net/wx/webtest/2048/index.php'),
+					//new \app\models\ButtonView('游戏2048', 'http://wosotech.com/wx/webtest/2048/index.php'),
 					new \app\models\ButtonView('游戏2048', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}")),
 				]),
 			]);

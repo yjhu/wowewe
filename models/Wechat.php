@@ -681,7 +681,7 @@ EOD;
 	{
 		$appid = $this->gh['appid'];
 		//snsapi_base, snsapi_userinfo
-		//$redirect_uri = urlencode("http://hoyatech.net/wx/web/index.php?r=wap/oauth2cb");
+		//$redirect_uri = urlencode("http://wosotech.com/wx/web/index.php?r=wap/oauth2cb");
 		//$redirect_uri = urlencode("http://wosotech.com/wx/web/index.php?r=wap/oauth2cb");		
 		//U::W(Url::to($this->oauth2cb, true));
 		//$redirect_uri = urlencode(Url::to($this->oauth2cb, true));	

@@ -35,7 +35,9 @@ CREATE TABLE wx_order (
 DROP TABLE IF EXISTS wx_order_arc;
 CREATE TABLE wx_order_arc LIKE wx_order;
 
-//ALTER TABLE wx_order ADD select_mobnum VARCHAR(16) NOT NULL DEFAULT '' after title;
+DROP TABLE IF EXISTS wx_order_arc;
+CREATE TABLE wx_order_arc AS SELECT * FROM wx_order where 1=2;
+ 
 
 */
 
@@ -486,4 +488,7 @@ EOD;
 		}
 		else
 			return 'Error';
+
+//ALTER TABLE wx_order ADD select_mobnum VARCHAR(16) NOT NULL DEFAULT '' after title;
+			
 */

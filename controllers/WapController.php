@@ -390,8 +390,11 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mall:gh_1ad98f5481f3
 	public function actionMall()
 	{		
-		$gh_id = Yii::$app->session['gh_id'];	
-		$openid = Yii::$app->session['openid'];
+		//$gh_id = Yii::$app->session['gh_id'];	
+		//$openid = Yii::$app->session['openid'];
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
+		
 		Yii::$app->wx->setGhId($gh_id);
 		//U::W($_GET);	
 		if (Yii::$app->user->isGuest)
@@ -429,14 +432,16 @@ EOD;
         
 	//http://127.0.0.1/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prom:gh_1ad98f5481f3
-	//http://www.hoyatech.net/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
-	//http://www.hoyatech.net/wx/webtest/wxpay-jsapi-demo.html
+	//http://wosotech.com/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
+	//http://wosotech.com/wx/webtest/wxpay-jsapi-demo.html
 	public function actionProm()
 	{
 		$this->layout = false;		
-		$gh_id = $_GET['gh_id'];
+		//$gh_id = $_GET['gh_id'];
 		//$gh_id = Yii::$app->session['gh_id'];	
 		//$openid = Yii::$app->session['openid'];
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
 		
 		Yii::$app->wx->setGhId($gh_id);
 		//test native url begin		
@@ -462,8 +467,10 @@ EOD;
 	public function actionLuck()
 	{
 		$this->layout = 'wap';
-		$gh_id = Yii::$app->session['gh_id'];	
-		$openid = Yii::$app->session['openid'];
+		//$gh_id = Yii::$app->session['gh_id'];	
+		//$openid = Yii::$app->session['openid'];
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
 		Yii::$app->wx->setGhId($gh_id);
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 		if ($model === null)
@@ -531,8 +538,11 @@ EOD;
 	public function actionG2048()
 	{
 		$this->layout = 'wap';
-		$gh_id = Yii::$app->session['gh_id'];	
-		$openid = Yii::$app->session['openid'];
+		//$gh_id = Yii::$app->session['gh_id'];	
+		//$openid = Yii::$app->session['openid'];
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
+		
 		Yii::$app->wx->setGhId($gh_id);
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 		if ($model === null)
@@ -708,8 +718,10 @@ EOD;
 	public function actionSuggest()
 	{
 		$this->layout = 'wap';
-		$gh_id = Yii::$app->session['gh_id'];	
-		$openid = Yii::$app->session['openid'];
+		//$gh_id = Yii::$app->session['gh_id'];	
+		//$openid = Yii::$app->session['openid'];
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');		
 		Yii::$app->wx->setGhId($gh_id);
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 		
@@ -781,8 +793,11 @@ EOD;
 		//	return;	
 		U::W('bbbbb');			
 		$this->layout = 'wap';
-		$gh_id = Yii::$app->session['gh_id'];
-		$openid = Yii::$app->session['openid'];
+//		$gh_id = Yii::$app->session['gh_id'];
+//		$openid = Yii::$app->session['openid'];
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');		
+		
 		Yii::$app->wx->setGhId($gh_id);	
 		if (0)
 		{
@@ -883,7 +898,6 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1&cid=10&feeSum=1
 	public function actionAjaxdata($cat)
 	{
-		U::W($_GET);
 		if (!Yii::$app->request->isAjax)
 			return;
 		$this->layout = false;		
@@ -903,10 +917,22 @@ EOD;
 			case 'diskclick':
 				$gh_id = U::getSessionParam('gh_id');
 				$openid = U::getSessionParam('openid');
-				$hasQualification = MDisk::getDiskQualification($gh_id,$openid);
-				if (!$hasQualification)
-					return json_encode(['code'=>0, 'errmsg'=>'has no qualification']);
-				$data = U::makeDiskResult();			
+				$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);						
+				if ($model === null)
+				{
+					$model = new MDisk;
+					$model->gh_id = $gh_id;
+					$model->openid = $openid;
+					$model->cnt = 3;					
+				}
+				else if ($model->cnt > 0)
+					$model->cnt = $model->cnt - 1;
+				else
+					return json_encode(['code'=>1, 'errmsg'=>'has no qualification']);				
+				$data = U::makeDiskResult();	
+				if ($data['code'] == 0)
+					$model->cnt = 0;	
+				$model->save(false);						
 				break;
 				
 			default:
@@ -1008,7 +1034,7 @@ $wxPayHelper->setParameter("partner", "1220047701");
 $wxPayHelper->setParameter("out_trade_no", $commonUtil->create_noncestr());
 $wxPayHelper->setParameter("total_fee", "1");
 $wxPayHelper->setParameter("fee_type", "1");
-$wxPayHelper->setParameter("notify_url", "http://www.hoyatech.net/wx/web/index.php?r=wap/paynotify");
+$wxPayHelper->setParameter("notify_url", "http://wosotech.com/wx/web/index.php?r=wap/paynotify");
 $wxPayHelper->setParameter("spbill_create_ip", "127.0.0.1");
 $wxPayHelper->setParameter("input_charset", "UTF-8");
 $xmlStr = $wxPayHelper->create_native_package();
