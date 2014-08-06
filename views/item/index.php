@@ -22,20 +22,20 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?= Html::a('Create MItem', ['create'], ['class' => 'btn btn-success']) ?>
 	</p>
 
-	<?php echo GridView::widget([
-		'dataProvider' => $dataProvider,
-		'filterModel' => $searchModel,
-		'columns' => [
-			['class' => 'yii\grid\SerialColumn'],
-			'num_iid',
-			'user_id',
-			'title',
-			'pic_url:url',
-			'price',
-			'cid',
-			'seller_cids',
-			['class' => 'yii\grid\ActionColumn'],
-		],
-	]); ?>
+    <?php echo GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            'num_iid',
+            'user_id',
+            'title',
+            'pic_url:url',
+            'price',
+            'cid',
+            'seller_cids',
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
 
 </div>

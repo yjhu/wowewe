@@ -9,6 +9,8 @@ use yii\web\HttpException;
 use yii\helpers\Html;
 use yii\filters\VerbFilter;
 use yii\data\ArrayDataProvider;
+use yii\base\Model;
+use yii\data\ActiveDataProvider;
 
 use app\models\U;
 use app\models\WxException;
@@ -768,12 +770,26 @@ EOD;
 			}	
 			
 			//Yii::$app->session->setFlash('submit_ok');
-           // return $this->refresh();
+           return $this->refresh();
 
-		}		
+		}
+
+        $query =  \app\models\MSuggest::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    //'name' => SORT_ASC,
+                    'id' => SORT_DESC
+                ]
+            ],
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
  		//return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 		//return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
-		return $this->render('suggest',['ar' => $ar]);
+		return $this->render('suggest',['ar' => $ar,'dataProvider' => $dataProvider,]);
 	}	
 	
 	
