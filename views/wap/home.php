@@ -3,9 +3,20 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use yii\bootstrap\Alert;
+use app\models\U;
 
+use app\assets\JqmAsset;
+JqmAsset::register($this);
+
+$assetsPath = Yii::$app->getRequest()->baseUrl.'/../web/images';
+
+$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js?v0.1');
+
+$gh_id = U::getSessionParam('gh_id');
+Yii::$app->wx->setGhid($gh_id);
 ?>
 
+<?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -13,10 +24,29 @@ use yii\bootstrap\Alert;
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
     <link href="/wx/web/css/bootstrap.home.min.css" rel="stylesheet">
+
+    <style type="text/CSS">
+
+        .wrap > .container {
+            padding: 0px 0px 0px !important;
+        }
+    </style>
+
+
+    <?php $this->head() ?>
 </head>
 
 <body>
-<div class="wrap">
+<?php $this->beginBody() ?>
+<div data-role="page" id="page1" data-theme="e">
+
+    <div data-role="header" data-theme="e">
+        <h1>襄阳联通官方微信营业厅</h1>
+    </div>
+
+    <div data-role="content">
+
+    <div class="wrap">
     <div class="container" style="padding-top:0px;">
 
         <!--
@@ -37,24 +67,31 @@ use yii\bootstrap\Alert;
         <ol class="carousel-indicators">
             <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
             <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <!--
             <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+            -->
         </ol>
 
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iNTAwIj48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzc3NyI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjQ1MCIgeT0iMjUwIiBzdHlsZT0iZmlsbDojNTU1O2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjU2cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+Rmlyc3Qgc2xpZGU8L3RleHQ+PC9zdmc+" alt="...">
+                <img src="../web/images/metro_home_head1.jpg" alt="八月浪漫季">
                 <div class="carousel-caption">
-                    Welcome
-                </div>
-            </div>
-            <div class="item">
-                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iNTAwIj48cmVjdCB3aWR0aD0iOTAwIiBoZWlnaHQ9IjUwMCIgZmlsbD0iIzY2NiI+PC9yZWN0Pjx0ZXh0IHRleHQtYW5jaG9yPSJtaWRkbGUiIHg9IjQ1MCIgeT0iMjUwIiBzdHlsZT0iZmlsbDojNDQ0O2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjU2cHg7Zm9udC1mYW1pbHk6QXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7ZG9taW5hbnQtYmFzZWxpbmU6Y2VudHJhbCI+U2Vjb25kIHNsaWRlPC90ZXh0Pjwvc3ZnPg==" alt="...">
-                <div class="carousel-caption">
-                  Hello world
                 </div>
             </div>
 
+            <div class="item">
+                <img src="../web/images/metro_home_head2.jpg" alt="八月浪漫季">
+                <div class="carousel-caption">
+                </div>
+            </div>
+            <!--
+            <div class="item">
+                <img src="../web/images/metro_home_head1.jpg" alt="八月浪漫季">
+                <div class="carousel-caption">
+                </div>
+            </div>
+            -->
         </div>
 
         <!-- Controls -->
@@ -137,9 +174,83 @@ use yii\bootstrap\Alert;
     </div>
 </div>
 
+<div class="row" >
+    <div class="col-md-12 col-xs-12">
+            <!--
+            <img width=100% src="../web/images/metro-gzyl.jpg">
+            -->
+            <img class="img-responsive" src="/wx/web/images/wx-tuiguang2.jpg" alt="">
+    </div>
+</div>
+
 </div>
 </div>
+</div>
+
+<div data-role="footer">
+    <h4>&copy; 襄阳联通 2014</h4>
+</div>
+
+</div> <!-- page1 end -->
+<?php $this->endBody() ?>
 </body>
 </html>
+<?php $this->endPage() ?>
+<?php
+$appid = Yii::$app->wx->gh['appid'];
+
+$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/home:'.Yii::$app->wx->getGhid());
+$myImg = Url::to("$assetsPath/share-icon.jpg", true);
+$title = '襄阳联通官方微信营业厅';
+$desc = '欢迎进入襄阳联通官方微信营业厅';
+
+?>
+
+<script>
+    var dataForWeixin={
+        appId:"<?php echo $appid; ?>",
+        MsgImg:"<?php echo $myImg; ?>",
+        TLImg:"<?php echo $myImg; ?>",
+        url:"<?php echo $url; ?>",
+        title:"<?php echo $title; ?>",
+        desc:"<?php echo $desc; ?>",
+        fakeid:"",
+        prepare:function(argv)
+        {
+
+        },
+
+        callback:function(res)
+        {
+            //发送给好友或应用
+            if (res.err_msg=='send_app_msg:confirm') {
+                //todo:func1();
+                ///alert(res.err_desc);
+            }
+            if (res.err_msg=='send_app_msg:cancel') {
+            }
+            //分享到朋友圈
+            if (res.err_msg=='share_timeline:confirm') {
+            }
+            if (res.err_msg=='share_timeline:cancel') {
+            }
+            //分享到微博
+            if (res.err_msg=='share_weibo:confirm') {
+            }
+            if (res.err_msg=='share_weibo:cancel') {
+            }
+            //收藏或分享到应用
+            if (res.err_msg=='send_app_msg:ok') {
+            }
+        }
+    };
+
+
+</script>
 <script src="/wx/web/css/jquery.home.min.js"></script>
 <script src="/wx/web/css/bootstrap.home.min.js"></script>
+
+
+
+
+

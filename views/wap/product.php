@@ -87,13 +87,13 @@ U::W($gh_id);
 		
 	<div data-role="page" id="page2" data-theme="e">
 
-		<div data-role="header" data-theme="b">
+		<div data-role="header" data-theme="e">
 			<h1>自由组合套餐</h1>
 		</div>
 		
 		<div data-role="content">
 		<form id="productForm">	
-		<div data-role="content" data-theme="f">	
+		<div data-role="content" data-theme="e">	
 		<p  align=center>        
 		<img width="100%" src="../web/images/item/20140514113951768477440.jpg" alt=""/>
 		</p>
@@ -107,7 +107,7 @@ U::W($gh_id);
 
 		<div class="ui-corner-all custom-corners">
 
-		  <div data-role="fieldcontain" data-theme="g">
+		  <div data-role="fieldcontain" data-theme="e">
 			<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 			  <legend>卡类型</legend>
 			  <input type="radio" name="cardType" id="radio1_0" value="0" checked />
@@ -134,7 +134,7 @@ U::W($gh_id);
 			  <div class="TabbedPanelsContentGroup">
 				<div class="TabbedPanelsContent">
 				  <div data-role="fieldcontain">
-					<fieldset data-role="controlgroup" data-theme="c">
+					<fieldset data-role="controlgroup" data-theme="e">
 					  <legend>流量包</legend>
 					  <input type="radio" name="flowPack" id="flowPack_0" value="0"  checked />
 					  <label for="flowPack_0">100MB/10元&nbsp;&nbsp;</label>
@@ -162,7 +162,7 @@ U::W($gh_id);
 
 				<div class="TabbedPanelsContent">
 					<div data-role="fieldcontain">
-					<fieldset data-role="controlgroup" data-theme="c">
+					<fieldset data-role="controlgroup" data-theme="e">
 					  <legend>语音包</legend>
 					  <input type="radio" name="voicePack" id="voicePack_0" value="0"  />
 					  <label for="voicePack_0">200分钟/40元&nbsp;&nbsp;0.2元/1分钟</label>
@@ -185,7 +185,7 @@ U::W($gh_id);
 
 				<div class="TabbedPanelsContent">
 					<div data-role="fieldcontain">
-					<fieldset data-role="controlgroup" data-theme="c">
+					<fieldset data-role="controlgroup" data-theme="e">
 					  <legend>短彩信包</legend>
 					  <input type="radio" name="msgPack" id="msgPack_0" value="0" />
 					  <label for="msgPack_0">200条/10元</label>
@@ -214,7 +214,7 @@ U::W($gh_id);
 				</div>
 
               <div class="TabbedPanelsContent">
-                  <div data-role="fieldcontain" data-theme="c">
+                  <div data-role="fieldcontain" data-theme="e">
                       <fieldset data-role="controlgroup">
                           <legend>其他增值业务</legend>
                           <input type="radio" name="otherPack" id="otherPack_0" value="0" />
@@ -286,7 +286,7 @@ U::W($gh_id);
 	</div> <!-- page2 end -->
 	
 	
-	<div data-role="page" id="page3" data-theme="f">
+	<div data-role="page" id="page3" data-theme="e">
 		<div data-role="header">
 			<h1>自由组合套餐</h1>
 		</div>
@@ -388,7 +388,7 @@ U::W($gh_id);
 
 	
 
-	<div data-role="page" id="number-select">
+	<div data-role="page" id="number-select" data-theme="e">
 		<div data-role="header">
 			<h1>自由组合套餐</h1>
 		</div>
@@ -704,8 +704,8 @@ $(document).on("pageshow", "#page2", function(){
             return false;
         }
 
-        if(localStorage.getItem('ychf') >= 50)
-            realFee = localStorage.getItem('ychf');
+        if((localStorage.getItem('ychf')/100) >= 50)
+            realFee = localStorage.getItem('ychf')/100;
         else
             realFee = 50;
 

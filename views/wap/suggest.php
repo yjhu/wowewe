@@ -1,72 +1,53 @@
 ﻿<?php
 use yii\helpers\Html;
-//use yii\widgets\ActiveForm;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use yii\bootstrap\Alert;
+use app\models\U;
 
-//$this->title = '用户吐槽';
-//$this->params['breadcrumbs'][] = $this->title;
+use app\assets\JqmAsset;
+JqmAsset::register($this);
+
+$assetsPath = Yii::$app->getRequest()->baseUrl.'/../web/images';
+
+
+$gh_id = U::getSessionParam('gh_id');
+Yii::$app->wx->setGhid($gh_id);
 ?>
 
+<?php $this->beginPage() ?>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
 
-<div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-12">
-		
-		<h3>用户吐槽</h3>
-		
-    <?php if (Yii::$app->session->hasFlash('submit_ok')): ?>
+    <?php $this->head() ?>
+</head>
 
-<!--
-    <div class="alert alert-success">
-        感谢您的反馈，我们会尽快回复您！
+<body>
+<?php $this->beginBody() ?>
+<div data-role="page" id="page1" data-theme="e">
+
+    <div data-role="header" data-theme="e">
+        <h1>襄阳联通官方微信营业厅</h1>
     </div>
--->
-		<?php Alert::begin([
-			'options' => [
-				'class' => 'alert-success',
-			],
-		]); ?>
-		已成功提交, 感谢您的吐槽。
-		<?php Alert::end(); ?>
 
-    <?php endif; ?>
+    <div data-role="content">
 
-		<?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
+    </div>
 
-			<?= $form->field($ar, 'title')->textInput(['maxlength' => 128, 'placeholder'=>'吐槽标题', 'class'=>'form-control input-lg'])->label(false); ?>
-	
-			<?= $form->field($ar, 'mobile')->textInput(['maxlength' => 11, 'placeholder'=>'手机号码', 'class'=>'form-control input-lg'])->label(false); ?>
+    <div data-role="footer">
+        <h4>&copy; 襄阳联通 2014</h4>
+    </div>
 
-			<?= $form->field($ar, 'detail')->textarea(['maxlength' => 256, 'placeholder'=>'详细内容', 'class'=>'form-control input-lg'])->label(false); ?>
-			
-				
-			<div class="form-group">
-				<?= Html::submitButton('我要吐槽', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'contact-button']) ?>
-			</div>
-		
-			
-		<?php ActiveForm::end(); ?>
-	
-	</div>
-</div>
-
-
-<br><br>
+</div> <!-- page1 end -->
+<?php $this->endBody() ?>
+</body>
+</html>
+<?php $this->endPage() ?>
 
 
 
-<?php echo Html::img(Url::to('images/wx-tuiguang2.jpg'), ['class'=>'img-responsive']); ?>
 
-
-<?php
-/*
-		<?php Alert::begin([
-			'options' => [
-				'class' => 'alert-success',
-			],
-		]); ?>
-		Say hello...111
-		<?php Alert::end(); ?>
-
-*/

@@ -704,6 +704,7 @@ EOD;
         
 	
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_1ad98f5481f3
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_03a74ac96138
 	public function actionSuggest()
 	{
 		$this->layout = 'wap';

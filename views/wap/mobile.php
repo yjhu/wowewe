@@ -81,7 +81,7 @@
 <body>
 <?php $this->beginBody() ?>
 
-	<div data-role="page" id="page2">
+	<div data-role="page" id="page2" data-theme="e">
 
 		<div data-role="header">
 
@@ -95,7 +95,7 @@
 		
 		<div data-role="content">
 		<form id="productForm">	
-		<div data-role="content" data-theme="d">	
+		<div data-role="content" data-theme="e">	
 		<p  align=center id="imgURL">
 		    <img width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
 		</p>
@@ -244,7 +244,7 @@
 	</div> <!-- page2 end -->
 	
 	
-	<div data-role="page" id="page3">
+	<div data-role="page" id="page3" data-theme="e">
 		<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
 			<h1 id="title"><?php echo  $item->title; ?></h1>
 		</div>
@@ -287,7 +287,7 @@
 
 
 
-	<div data-role="page" id="number-select">
+	<div data-role="page" id="number-select" data-theme="e">
 		<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
 			<h1><?php echo  $item->title; ?></h1>
 		</div>
@@ -422,8 +422,8 @@ $(document).on("pageshow", "#page2", function(){
             return false;
         }
 
-        if(localStorage.getItem('ychf') >= 50)
-            realFee = localStorage.getItem('ychf');
+        if((localStorage.getItem('ychf')/100) >= 50)
+            realFee = localStorage.getItem('ychf')/100;
         else
             realFee = 50;
 
