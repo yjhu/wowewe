@@ -10,54 +10,224 @@ CREATE TABLE wx_mobnum (
 	status int(10) unsigned NOT NULL DEFAULT '0',
 	locktime int(10) unsigned NOT NULL DEFAULT '0',		
 	num_cat tinyint(1) unsigned NOT NULL DEFAULT '0',	
+	is_good tinyint(1) unsigned NOT NULL DEFAULT '0',		
 	PRIMARY KEY (num)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat) VALUES ('18696205015', '100000', '1000', 1);
-INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat) VALUES ('18696205017', '0', '0', 1);
-INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat) VALUES ('18696205018', '0', '0', 1);
-INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat) VALUES ('18696205019', '0', '0', 1);
-INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat) VALUES ('18696205020', '0', '0', 1);
-INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat) VALUES ('18696205021', '0', '0', 1);
-INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat) VALUES ('18696205022', '200000', '2000', 2);
-INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat) VALUES ('18696205023', '0', '0', 2);
-INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat) VALUES ('18696205024', '0', '0', 2);
-INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat) VALUES ('18696205025', '0', '0', 2);
-INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat) VALUES ('18696205026', '0', '0', 2);
-INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat) VALUES ('18696205027', '0', '0', 2);
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205028', '300000', '3000');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205029', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205030', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205031', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205032', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205033', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205034', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205035', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205036', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205037', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205038', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205039', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205040', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205041', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205042', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205043', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205044', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205045', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205046', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205047', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205048', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205049', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205050', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205051', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205052', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205053', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205054', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205055', '0', '200');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205056', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205057', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205058', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205059', '0', '0');
-INSERT INTO wx_mobnum (num, ychf, zdxf) VALUES ('18696205060', '800000', '8000');
+
+
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205015', 100000, 1000, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205017', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205018', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205019', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205020', 0, 0, 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205021', 0, 0, 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205022', 200000, 2000, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205023', 0, 0, 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205025', 0, 0, 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205026', 0, 0, 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205027', 0, 0, 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205028', 300000, 3000, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205029', 0, 0, 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205030', 0, 0, 1, 1);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205031', 0, 0, 0, 1);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205032', 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205033', 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205035', 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205036', 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205037', 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205038', 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205039', 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205053', 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205056', 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205058', 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205059', 0, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205060', 800000, 8000, 1);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205061', 810000, 8000, 1);
+INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205062', 820000, 8000, 1);
+
+
+
+
+
+导入号码时，界面提示输入:池子类别，是否它们是靓号(金额全为0)
+对每个导入的号码，如果满足联通定义规则则打靛号标志
+如果是导入的人为靓号则打靛号标志
+
+
+18696205015
+18696205016
+18696205017
+18696205018
+18696205019
+18696205020
+18696205021
+18696205022
+18696205023
+18696205025
+18696205026
+18696205027
+18696205028
+18696205029
+18696205030
+18696205031
+18696205032
+18696205033
+18696205035
+18696205036
+18696205037
+18696205038
+18696205039
+18696205053
+18696205056
+18696205058
+18696205059
+18696205060
+18696205061
+18696205062
+
+18672725200
+18672725202
+18672725203
+18672725205
+18672725206
+18672725207
+18672725209
+18672725210
+18672725212
+18672725213
+18672725215
+18672725216
+18672725219
+18672725220
+18672725221
+18672725223
+18672725226
+18672725229
+18672725232
+18672725236
+18672725237
+18672725238
+18672725239
+18672725250
+18672725251
+18672725255
+18672725256
+18672725259
+18672725260
+18672725261
+18672725262
+18672725263
+18672725268
+18672725269
+18672725270
+18672725271
+18672725273
+18672725275
+18672725277
+18672725279
+18672725280
+18672725281
+18672725283
+18672725287
+18672725289
+18672725290
+18672725291
+18672725292
+18672725293
+18672725296
+18672725300
+18672725302
+18672725303
+18672725307
+18672725308
+18672725309
+18672725310
+18672725311
+18672725312
+18672725316
+18672725317
+18672725318
+18672725321
+18672725326
+18672725330
+18672725332
+18672725336
+18672725338
+18672725339
+18672725351
+18672725352
+18672725356
+18672725357
+18672725358
+18672725359
+18672725365
+18672725367
+18672725368
+18672725371
+18672725372
+18672725375
+18672725377
+18672725378
+18672725379
+18672725380
+18672725381
+18672725382
+18672725385
+18672725386
+18672725389
+18672725390
+18672725391
+18672725392
+18672725393
+18672725395
+18672725397
+18672725398
+18672725503
+18672725505
+18672725506
+18672725507
+18672725508
+18672725509
+18672725512
+18672725513
+18672725516
+18672725517
+18672725518
+18672725519
+18672725523
+18672725527
+18672725528
+18672725530
+18672725531
+18672725532
+18672725539
+18672725557
+18672725560
+18672725561
+18672725565
+18672725569
+18672725570
+18672725571
+18672725572
+18672725573
+18672725575
+18672725578
+18672725582
+18672725583
+18672725585
+18672725586
+18672725587
+18672725589
+18672725590
+18672725593
+18672725596
+18672725597
+18672725598
+18672725600
+
+
+
 
 */
 
@@ -67,6 +237,7 @@ use yii\helpers\Security;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use app\models\U;
+use app\models\MItem;
 
 class MMobnum extends ActiveRecord
 {

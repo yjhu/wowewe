@@ -2,6 +2,7 @@
 
 /*
 C:\xampp\php\php.exe C:\htdocs\wx\yii night
+/usr/bin/php /mnt/wwwroot/wx/yii night
 */
 
 namespace app\commands;
@@ -72,7 +73,7 @@ class NightController extends Controller
 
 		//release mobile number
 		$tableName = MMobnum::tableName();
-		$n = Yii::$app->db->createCommand()->update($tableName, ['status' => MMobnum::STATUS_UNUSED], 'status=:status AND locktime < :locktime', [':status'=>MMobnum::STATUS_LOCKED, ':locktime'=>time()-2*24*3600])->execute();
+		$n = Yii::$app->db->createCommand()->update($tableName, ['status' => MMobnum::STATUS_UNUSED, 'locktime' => 0], 'status=:status AND locktime < :locktime', [':status'=>MMobnum::STATUS_LOCKED, ':locktime'=>time()-2*24*3600])->execute();
 		U::W("UPDATE $tableName, $n");	
 		$n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE status=:status", [':status'=>MMobnum::STATUS_USED])->execute();
 		U::W("DELETE $tableName, $n");
