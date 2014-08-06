@@ -15,6 +15,7 @@ use app\models\MGh;
 use app\models\MUser;
 use app\models\MOrder;
 use app\models\MMobnum;
+use app\models\MDisk;
 
 class NightController extends Controller
 {
@@ -28,6 +29,9 @@ class NightController extends Controller
 		U::W("###########".__CLASS__." BEGIN");		
 		
 		self::closeExpiredOrders();
+
+		//MDisk::updateAll(['cnt' => 3]);
+		MDisk::deleteAll();
 
 		if (date('N') == 1)
 		{
@@ -57,6 +61,7 @@ class NightController extends Controller
 	{
 
 		$tableName = MOrder::tableName();
+		// 2天内拍下未付款的订单自动关闭
 		$n = Yii::$app->db->createCommand()->update($tableName, ['status' => MOrder::STATUS_CLOSED_AUTO], 'status=:status AND create_time < DATE_SUB(NOW(), INTERVAL 2 day)', [':status'=>MOrder::STATUS_AUTION])->execute();
 		U::W("UPDATE $tableName, $n");		
 		//move the unsuccessful orders exceed 90 days to bak table

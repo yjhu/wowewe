@@ -15,7 +15,7 @@ class WxMenu
 	{		
 		$menu = new WxMenu([
 			new \app\models\ButtonClick('Button-1', 'key_1'),
-			new \app\models\ButtonView('Button-2', 'http://hoyatech.net/wx/web/index.php'),
+			new \app\models\ButtonView('Button-2', 'http://wosotech.com/wx/web/index.php'),
 			new \app\models\ButtonComplex('Button-3', [
 				new \app\models\ButtonClick('Button-31', 'key_31'),
 				new \app\models\ButtonView('Button-32', 'http://sina.com'),
@@ -35,7 +35,7 @@ class WxMenu
 		$b2 = new \app\models\ButtonView;
 		$b2->name = "Button-Two";
 		$b2->type = "view";
-		$b2->url = "http://hoyatech.net/wx/web/index.php";
+		$b2->url = "http://wosotech.com/wx/web/index.php";
 
 		$b31 = new \app\models\ButtonClick;
 		$b31->name = "Button-Three";

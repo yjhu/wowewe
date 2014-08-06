@@ -27,6 +27,7 @@ class MDisk extends ActiveRecord
 		return 'wx_disk';
 	}
 
+/*
 	public static function getDiskQualification($gh_id, $openid, $save=true)
 	{
 		$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);		
@@ -49,7 +50,7 @@ class MDisk extends ActiveRecord
 		}
 		return false;
 	}
-
+*/
 }
 
 /*
