@@ -771,12 +771,6 @@ EOD;
            // return $this->refresh();
 
 		}		
-
-$query = new \yii\db\Query();
-$query->select('*')->from(\app\models\MSuggest::tableName())->orderBy(['id' => SORT_DESC])->limit(10);   
-$rows = $query->createCommand()->queryAll();
-U::W($rows);
-
  		//return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 		//return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
 		return $this->render('suggest',['ar' => $ar]);
