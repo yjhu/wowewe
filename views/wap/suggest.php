@@ -69,11 +69,27 @@ Yii::$app->wx->setGhid($gh_id);
                // ['class' => 'yii\grid\SerialColumn'],
                 //'num_iid',
                // 'id',
+/*
                 [
                     'label' => '用户昵称',
                     'headerOptions' => array('style'=>'width:100px;'),
                     'attribute' => 'id',
                 ],
+*/
+                [
+                    'label' => '图像',
+                    'headerOptions' => array('style'=>'width:80px;'),
+					'format'=>'image',
+                    'attribute' => 'headimgurl',
+					//'value'=>function ($model, $key, $index, $column) { return U::getUserHeadimgurl($model->headimgurl, 64); },
+					'value'=>function ($model, $key, $index, $column) { return U::getUserHeadimgurl($model->headimgurl, 46); },
+                ],
+                [
+                    'label' => '用户昵称',
+                    'headerOptions' => array('style'=>'width:100px;'),
+                    'attribute' => 'nickname',
+                ],
+
                 //'title',
                 [
                     'label' => '吐槽内容',

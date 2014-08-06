@@ -338,6 +338,18 @@ class U
 	}
 
 
+	// U::getUserHeadimgurl("http://wx.qlogo.cn/mmopen/17ASicSl2de5EHEpImf7IOxZ5w6MibiaWuzsThDo39s0Lq6U0ZG4Kn04AJDfK4XiaxYicCCpsXH3UxW8goFcPnEkfhv7GO2AeFAtR/0", 64);
+	public static function getUserHeadimgurl($url, $size)
+	{
+		if (empty($url))
+			return $url;
+		if (!in_array($size, [0, 46, 64, 96, 132]))
+			return $url;
+		$pos = strrpos($url, "/");
+		$str = substr($url, 0, $pos) . "/$size";
+		return $str;
+	}
+	
 /*
 	public static function getMobileLuck($pn)
 	{

@@ -7,8 +7,8 @@ CREATE TABLE wx_suggest (
 	id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	gh_id VARCHAR(32) NOT NULL DEFAULT '',
 	openid VARCHAR(32) NOT NULL DEFAULT '',
-	title VARCHAR(128) NOT NULL DEFAULT '',
-	mobile VARCHAR(16) NOT NULL DEFAULT '',
+	nickname VARCHAR(64) NOT NULL DEFAULT '',
+	headimgurl VARCHAR(256) NOT NULL DEFAULT '',	
 	detail TEXT NOT NULL DEFAULT '',
 	create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	KEY idx_gh_id_open_id(gh_id, openid)
@@ -41,6 +41,9 @@ class MSuggest extends ActiveRecord
 				['detail', 'required'],
 				['detail', 'string', 'min' => 2, 'max' => 512],
 
+				[['nickname', 'headimgurl'], 'safe'],
+				
+
 				//['mobile', 'filter', 'filter' => 'trim'],
 				//['mobile', 'required'],
 				//['mobile', 'match', 'pattern' => '/((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/' ],
@@ -63,5 +66,7 @@ class MSuggest extends ActiveRecord
 
 
 /*
+	title VARCHAR(128) NOT NULL DEFAULT '',
+	mobile VARCHAR(16) NOT NULL DEFAULT '',
 
 */

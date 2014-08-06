@@ -719,79 +719,64 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_03a74ac96138
 	public function actionSuggest()
 	{
-		//$this->layout = 'wap';
-        $this->layout =false;
-        U::W(['ccccccccccccccccccc']);
+U::getUserHeadimgurl("http://wx.qlogo.cn/mmopen/17ASicSl2de5EHEpImf7IOxZ5w6MibiaWuzsThDo39s0Lq6U0ZG4Kn04AJDfK4XiaxYicCCpsXH3UxW8goFcPnEkfhv7GO2AeFAtR/0", 64);	
 
-		//$gh_id = Yii::$app->session['gh_id'];	
-		//$openid = Yii::$app->session['openid'];
+		//$this->layout = 'wap';
+	        $this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');		
-		Yii::$app->wx->setGhId($gh_id);
-		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+		//Yii::$app->wx->setGhId($gh_id);
 		
 		$ar = new \app\models\MSuggest;
 		$ar->gh_id = $gh_id;
 		$ar->openid = $openid;
-		//$model1->title = $_GET['title'];
-		//$model1->mobile = $_GET['mobile'];
-		//$model1->detail = $_GET['detail'];			
 		
-		if ($model === null)
-		{
-			$model = new MUser;		
-			$subscribed = false;			
-		}
-		else if ($model->subscribe)
-			$subscribed = true;
-		else
-			$subscribed = false;
-
-		if (!Yii::$app->user->isGuest)
-			$username = Yii::$app->user->identity->username;
-		else
-			$username = '';
-		
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);		
+		$subscribed = ($model !== null && $model->subscribe) ? true : false;
 		if ($ar->load(Yii::$app->request->post())) 
 		{
-			//if (Yii::$app->user->isGuest)
-			//	$username = $model->mobile;
-			U::W($ar->getAttributes());
-			//$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);			
-			if ($ar->save(true)) {
-				//return $this->redirect(['index']);
-				U::W(['kkkkkkkkkkkkkkkkkkkk']);
-				//$result = $this->renderPartial('result', ['msg'=>$msg]);
-
-			}
+			//if ($subscribed)
+			if (1)
+			{				
+				$ar->nickname = $model->nickname;
+				$ar->headimgurl = $model->headimgurl;				
+				if ($ar->save(true)) 
+				{
+					//return $this->redirect(['index']);
+					U::W(['kkkkkkkkkkkkkkkkkkkk']);
+					//$result = $this->renderPartial('result', ['msg'=>$msg]);
+				}
+				else
+				{
+					U::W($ar->getErrors());
+				}	
+			}	
 			else
 			{
-				U::W($ar->getErrors());
-			}	
-			
+				U::W("openid=$openid is not subscribed");
+			}
 			//Yii::$app->session->setFlash('submit_ok');
-           return $this->refresh();
-
+			//return $this->refresh();
 		}
 
-        $query =  \app\models\MSuggest::find();
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort' => [
-                'defaultOrder' => [
-                    //'name' => SORT_ASC,
-                    'id' => SORT_DESC
-                ]
-            ],
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-        ]);
+		$query =  \app\models\MSuggest::find();
+		$dataProvider = new ActiveDataProvider([
+			'query' => $query,
+			'sort' => [
+				'defaultOrder' => [
+					//'name' => SORT_ASC,
+					'id' => SORT_DESC
+				]
+			],
+			'pagination' => [
+				'pageSize' => 10,
+			],
+		]);
 
-$query = new \yii\db\Query();
-$query->select('*')->from(\app\models\MSuggest::tableName())->orderBy(['id' => SORT_DESC])->limit(10);   
-$rows = $query->createCommand()->queryAll();
-U::W($rows);
+		$query = new \yii\db\Query();
+		$query->select('*')->from(\app\models\MSuggest::tableName())->where(['gh_id'=>$gh_id])->orderBy(['id' => SORT_DESC])->limit(10);   
+		$rows = $query->createCommand()->queryAll();
+		U::W($rows);
 
  		//return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 		//return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
