@@ -717,7 +717,10 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_03a74ac96138
 	public function actionSuggest()
 	{
-		$this->layout = 'wap';
+		//$this->layout = 'wap';
+        $this->layout =false;
+        U::W(['ccccccccccccccccccc']);
+
 		//$gh_id = Yii::$app->session['gh_id'];	
 		//$openid = Yii::$app->session['openid'];
 		$gh_id = U::getSessionParam('gh_id');
@@ -751,20 +754,21 @@ EOD;
 		{
 			//if (Yii::$app->user->isGuest)
 			//	$username = $model->mobile;
-			//U::W($ar->getAttributes());
+			U::W($ar->getAttributes());
 			//$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);			
 			if ($ar->save(true)) {
 				//return $this->redirect(['index']);
-				//U::W(['kkkkkkkkkkkkkkkkkkkk']);
+				U::W(['kkkkkkkkkkkkkkkkkkkk']);
 				//$result = $this->renderPartial('result', ['msg'=>$msg]);
+
 			}
 			else
 			{
 				U::W($ar->getErrors());
 			}	
 			
-			Yii::$app->session->setFlash('submit_ok');
-			return $this->refresh();
+			//Yii::$app->session->setFlash('submit_ok');
+           // return $this->refresh();
 
 		}		
  		//return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
