@@ -261,7 +261,7 @@ class MMobnum extends ActiveRecord
 		else if ($cid == MItem::ITEM_CAT_CARD_WO || $cid == MItem::ITEM_CAT_CARD_XIAOYUAN)
 			return self::NUM_CAT_CARD;
 		else
-			return self::NUM_CAT_MOBILE;
+			return self::NUM_CAT_MOBILE;			// mobile and lianghao
 	}
 
 }

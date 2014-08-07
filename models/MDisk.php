@@ -24,12 +24,27 @@ use yii\db\Expression;
 
 class MDisk extends ActiveRecord
 {
+	const MDISK_CNT_PER_DAY = 3000;
+	
 	public static function tableName()
 	{
 		return 'wx_disk';
 	}
 
+	public static function initDefault($gh_id, $openid)
+	{
+		$model = new MDisk;
+		$model->gh_id = $gh_id;
+		$model->openid = $openid;
+		$model->cnt = MDisk::MDISK_CNT_PER_DAY;					
+		return $model;
+	}
+	
 /*
+	public function haveChanceToRotate()
+	{
+	}
+
 	public static function getDiskQualification($gh_id, $openid, $save=true)
 	{
 		$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);		
