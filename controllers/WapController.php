@@ -926,27 +926,27 @@ EOD;
 			case 'diskclick':
 				$gh_id = U::getSessionParam('gh_id');
 				$openid = U::getSessionParam('openid');
-U::W("gh_id=$gh_id, openid=$openid");				
+//				U::W("gh_id=$gh_id, openid=$openid");				
 				$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);						
 				if ($model === null)
 				{
-				U::W("not found");
+//					U::W("not found");
 					$model = new MDisk;
 					$model->gh_id = $gh_id;
 					$model->openid = $openid;
 //					$model->cnt = 3;					
-					$model->cnt = 3000;					
+					$model->cnt = MDisk::MDISK_CNT_PER_DAY;					
 				}
 				else if ($model->cnt > 0)
 				{
-								U::W("found {$model->cnt}");
+//					U::W("found {$model->cnt}");
 					$model->cnt = $model->cnt - 1;
 				}
 				else
 				{
-												U::W("no qualification {$model->cnt}");
+//					U::W("no qualification {$model->cnt}");
 					return json_encode(['code'=>1, 'errmsg'=>'has no qualification']);				
-					}
+				}
 				$data = U::makeDiskResult();	
 //				if ($data['code'] == 0)
 	//				$model->cnt = 0;	
@@ -993,6 +993,7 @@ U::W("gh_id=$gh_id, openid=$openid");
         return $this->render('mobile', ['cid'=>$_GET['cid']]);
     }
 
+/*
 	//http://127.0.0.1/wx/web/index.php?r=wap/disk&gh_id=gh_03a74ac96138&openid=111
 	public function actionDisk()
 	{
@@ -1001,6 +1002,34 @@ U::W("gh_id=$gh_id, openid=$openid");
 		$openid = U::getSessionParam('openid');    	
 		//$rotateParam = U::getRotateParam();
 		return $this->render('games/disk/index');
+	}
+*/
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/disk:gh_03a74ac96138
+	public function actionDisk()
+	{
+		$this->layout =false;
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
+		$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+		$cur_time = time();
+		$alreadyWin = false;
+		if ($model === null)
+			$restCnt = MDisk::MDISK_CNT_PER_DAY;
+		else if ($model->win == 1 && $cur_time - win_time < 30*60)
+			$alreadyWin = true;
+		else if ($model->cnt > 0)
+			$restCnt = $model->cnt;
+/*			
+		if (win)
+		{
+			//display disk and alert you win already,
+		}
+		else if (has_disk_cnt)
+			goto disk_rotate
+		else
+			echo 'sorry, please come here tomorrow';
+*/			
+		return $this->render('games/disk/index', ['alreadyWin'=>$alreadyWin, 'restCnt'=>$restCnt]);
 	}
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/home:gh_03a74ac96138

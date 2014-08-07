@@ -24,9 +24,15 @@ use yii\db\Expression;
 
 class MDisk extends ActiveRecord
 {
+	const MDISK_CNT_PER_DAY = 3000;
+	
 	public static function tableName()
 	{
 		return 'wx_disk';
+	}
+
+	public function haveChanceToRotate()
+	{
 	}
 
 /*
