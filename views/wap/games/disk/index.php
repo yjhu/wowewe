@@ -45,13 +45,32 @@ $openid = U::getSessionParam('openid');
 		<h1>八月浪漫季</h1>
 	</div>
 	<div data-role="content" id="diskstart">
+
+		<img width="100%" src="<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/metro_home_head1.jpg' ?>" alt="八月浪漫季">
+
 		<div id="disk">
 			<img width="100%" src="<?php echo "$assetsPath/disk2.png"; ?>">
 		</div>
 		<div id="start">
 			<img src="<?php echo "$assetsPath/start2.png"; ?>" id="startbtn" style="-webkit-transform: rotate(197deg);">
 		</div>
-
+		<div style='position:relative;top:-200px;text-align: left;'>
+			<h2>八月浪漫季，情侣靓号等你来！</h2>
+			<h3>活动参与</h3>
+			<ol>
+				<li>关注“襄阳联通”官方微信号；（具体关注方式，如下图所示。）</li>
+				<li>摇玫瑰幸运转盘；</li>
+				<li>中奖后即可入靓号池选号，N多靓号等你来，520（我爱你），1314（一生一世），9213（就爱一生）......</li>
+			</ol>
+			<h3>活动规则</h3>
+			<ol>
+				<li>参与者必须是“襄阳联通”关注用户；</li>
+				<li>每个关注用户每天有3次机会摇玫瑰幸运转盘；今天未中，明天再来；</li>
+				<li><span style="background-color:#da156d;">深玫瑰格</span>为未中奖，<span style="background-color:#fdd8e0;">浅玫瑰色</span>为中奖；</li>
+				<li>中奖用户必须在30分钟内完成选号及订单，24小时内到指定营业厅办理，否则，做弃权处理；</li>
+				<li>本活动最终解释权归襄阳联通所有。</li>
+			</ol>
+		</div>
 		<div>
 			<img width="100%" src="/wx/web/images/wx-tuiguang2.jpg" alt="">
 		</div>
