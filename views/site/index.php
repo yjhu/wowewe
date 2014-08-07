@@ -12,12 +12,13 @@ $this->title = Yii::$app->params['title'];
 
 <div class="row">
     <div class="jumbotron">
-        <h1>欢迎您！</h1>
 
 		<?php if (Yii::$app->user->isGuest): ?>
+	        <h1>欢迎您</h1>
 	        <p class="lead">访问襄阳联通官方微信管理后台</p>
 		<?php else: ?>
-		    <p class="lead">您已成功登录襄阳联通官方微信管理后台</p>	
+	        <h1><?php echo $username; ?></h1>
+		    <p class="lead">您已成功登录襄阳联通官方微信管理后台！</p>	
 		<?php endif; ?>
 
         <p><a class="btn btn-lg btn-success" href="#">点此了解详细</a></p>

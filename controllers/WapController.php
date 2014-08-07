@@ -85,8 +85,8 @@ class WapController extends Controller
 			Yii::$app->session['gh_id'] = $gh_id;
 			Yii::$app->session['openid'] = $openid;			
 			$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-			if ($user !== null)
-				Yii::$app->user->login($user);
+			//if ($user !== null)
+			//	Yii::$app->user->login($user);
 			return $this->redirect([$route]);
 		}
 	
@@ -121,11 +121,11 @@ class WapController extends Controller
 
 		Yii::$app->session['gh_id'] = $gh_id;
 		Yii::$app->session['openid'] = $openid;
-		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-		if ($user !== null)
-			Yii::$app->user->login($user);
-		else
-			U::W("not found, $openid");
+		//$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+		//if ($user !== null)
+		//	Yii::$app->user->login($user);
+		//else
+		//	U::W("not found, $openid");
 		return $this->redirect([$route]);
 	}
 
@@ -719,8 +719,6 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_03a74ac96138
 	public function actionSuggest()
 	{
-U::getUserHeadimgurl("http://wx.qlogo.cn/mmopen/17ASicSl2de5EHEpImf7IOxZ5w6MibiaWuzsThDo39s0Lq6U0ZG4Kn04AJDfK4XiaxYicCCpsXH3UxW8goFcPnEkfhv7GO2AeFAtR/0", 64);	
-
 		//$this->layout = 'wap';
 	        $this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
@@ -735,8 +733,8 @@ U::getUserHeadimgurl("http://wx.qlogo.cn/mmopen/17ASicSl2de5EHEpImf7IOxZ5w6Mibia
 		$subscribed = ($model !== null && $model->subscribe) ? true : false;
 		if ($ar->load(Yii::$app->request->post())) 
 		{
-			//if ($subscribed)
-			if (1)
+			if ($subscribed)
+			//if (1)
 			{				
 				$ar->nickname = $model->nickname;
 				$ar->headimgurl = $model->headimgurl;				
@@ -776,7 +774,7 @@ U::getUserHeadimgurl("http://wx.qlogo.cn/mmopen/17ASicSl2de5EHEpImf7IOxZ5w6Mibia
 		$query = new \yii\db\Query();
 		$query->select('*')->from(\app\models\MSuggest::tableName())->where(['gh_id'=>$gh_id])->orderBy(['id' => SORT_DESC])->limit(10);   
 		$rows = $query->createCommand()->queryAll();
-		U::W($rows);
+		//U::W($rows);
 
  		//return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 		//return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
@@ -928,21 +926,30 @@ U::getUserHeadimgurl("http://wx.qlogo.cn/mmopen/17ASicSl2de5EHEpImf7IOxZ5w6Mibia
 			case 'diskclick':
 				$gh_id = U::getSessionParam('gh_id');
 				$openid = U::getSessionParam('openid');
+U::W("gh_id=$gh_id, openid=$openid");				
 				$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);						
 				if ($model === null)
 				{
+				U::W("not found");
 					$model = new MDisk;
 					$model->gh_id = $gh_id;
 					$model->openid = $openid;
-					$model->cnt = 3;					
+//					$model->cnt = 3;					
+					$model->cnt = 3000;					
 				}
 				else if ($model->cnt > 0)
+				{
+								U::W("found {$model->cnt}");
 					$model->cnt = $model->cnt - 1;
+				}
 				else
+				{
+												U::W("no qualification {$model->cnt}");
 					return json_encode(['code'=>1, 'errmsg'=>'has no qualification']);				
+					}
 				$data = U::makeDiskResult();	
-				if ($data['code'] == 0)
-					$model->cnt = 0;	
+//				if ($data['code'] == 0)
+	//				$model->cnt = 0;	
 				$model->save(false);						
 				break;
 				

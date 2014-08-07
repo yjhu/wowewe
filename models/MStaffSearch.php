@@ -5,43 +5,34 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\MOrder;
+use app\models\MStaff;
 
-class MOrderSearch extends Model
+class MStaffSearch extends Model
 {
-	public $oid;
+	public $name;
 
-	public $status;
+	public $mobile;
 
-	public $create_time;
-
-	public $title;
-
-	public $cid;
-
-	public $detail;	
-
-	public $feesum;		
+	public $office_id;
 
 	public function rules()
 	{
 		return [
-			[['status', 'cid'], 'integer'],            
-			[['oid','create_time', 'title', 'detail', 'feesum'], 'safe'],
+			[['name','mobile', 'office_id'], 'safe'],
 		];
 	}
 
 	public function search($params)
 	{
-		$query = MOrder::find();
+		$query = MStaff::find();
 		$dataProvider = new ActiveDataProvider([
 			'query' => $query,
 			'sort' => [
 				'defaultOrder' => [
-					//'name' => SORT_ASC,
-					'oid' => SORT_DESC
+					'staff_id' => SORT_ASC,
 				]
 			],
+
 			'pagination' => [
 				'pageSize' => 20,
 			],            
@@ -57,11 +48,9 @@ class MOrderSearch extends Model
 			return $dataProvider;
 		}
 
-		$this->addCondition($query, 'oid', true);
-		$this->addCondition($query, 'status');
-		$this->addCondition($query, 'detail', true);
-		$this->addCondition($query, 'feesum');
-		$this->addCondition($query, 'cid');        
+		$this->addCondition($query, 'office_id');
+		$this->addCondition($query, 'name', true);
+		$this->addCondition($query, 'mobile', true);
 		return $dataProvider;
 	}
 

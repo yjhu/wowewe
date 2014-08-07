@@ -45,7 +45,7 @@ AppAsset::register($this);
 						'visible' => Yii::$app->user->isOffice,
 						'items' => [
 							['label' => '订单管理','url' => ['/order/index'],'linkOptions' => ['data-method' => 'post']],
-							['label' => '员工推广成绩','url' => ['/admin/msg'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '员工管理','url' => ['/order/stafflist'],'linkOptions' => ['data-method' => 'post']],
 						]
 					],					
 					[
@@ -65,7 +65,7 @@ AppAsset::register($this);
 					[
 						'label' => '<span class="glyphicon glyphicon-user"></span> ' . Html::encode(Yii::$app->user->identity->username),
 						'items' => [
-							['label' => '编辑个人信息','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '修改设置','url' => ['/site/profile'],'linkOptions' => ['data-method' => 'post']],
 							'<li class="divider"></li>',
 							['label' => '退出','url' => ['/site/logout'],'linkOptions' => ['data-method' => 'post']],
 						]

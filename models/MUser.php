@@ -33,6 +33,8 @@ INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_78539d18
 INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_78539d18fdcc', 'o6biBt5yaB7d3i0YTSkgFSAHmpdo','hoya-hehbhehb','1');
 INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_1ad98f5481f3', 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o','woso-hehbhehb','1');
 
+INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('root', 'root', 'root', '1', 9);
+INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', 'admin', 'admin','1', 2);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '1', 'office#1','1', 1);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '2', 'office#2','1', 1);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '3', 'office#3','1', 1);
@@ -99,7 +101,6 @@ class MUser extends ActiveRecord implements IdentityInterface
 	public function getId()
 	{
 		return $this->id;
-		//return $this->openid;
 	}
 
 	public function getAuthKey()
@@ -146,6 +147,7 @@ class MUser extends ActiveRecord implements IdentityInterface
 	{
 		return [
 			'mobile'=>'手机号',
+			'password'=>'密码',
 		];
 	}
 
@@ -310,4 +312,6 @@ class User extends \yii\base\Object implements \yii\web\IdentityInterface
 		return $this->password === $password;
 	}
 }
+
+zengkai, xiangyangunicom   openid:    oKgUduJJFo9ocN8qO9k2N5xrKoGE
 */

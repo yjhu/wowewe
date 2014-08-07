@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 
+use app\models\MGh;
 use app\models\MUser;
 
 class LoginForm extends Model
@@ -15,6 +16,8 @@ class LoginForm extends Model
 
     private $_user = false;
 
+    public $gh_id = MGh::GH_XIANGYANGUNICOM;
+    
     public function rules()
     {
         return [
@@ -45,9 +48,12 @@ class LoginForm extends Model
      */
     public function login()
     {
-        if ($this->validate()) {
+        if ($this->validate()) 
+        {
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
-        } else {
+        } 
+        else 
+        {
             return false;
         }
     }
@@ -56,7 +62,13 @@ class LoginForm extends Model
 	{
 		if ($this->_user === false) 
 		{
-			$this->_user = MUser::findByUsername($this->username);
+			//$this->_user = MUser::findByUsername($this->username);
+			if ($this->username == 'root')
+				$this->_user = MUser::findOne(['gh_id'=>$this->username, 'openid' => $this->username]);			
+			else if ($this->username == 'admin')
+				$this->_user = MUser::findOne(['gh_id'=>$this->gh_id, 'openid' => $this->username]);						
+			else
+				$this->_user = MUser::findOne(['gh_id'=>$this->gh_id, 'nickname' => $this->username]);
 		}
 		return $this->_user;
 	}
