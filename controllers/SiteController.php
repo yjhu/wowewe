@@ -13,8 +13,8 @@ use app\models\U;
 use app\models\WxException;
 
 use app\models\MUser;
-
-//use app\models\LoginFormx;
+use app\models\MContact;
+use app\models\MOffice;
 
 class SiteController extends Controller
 {
@@ -37,7 +37,7 @@ class SiteController extends Controller
 			'verbs' => [
 				'class' => VerbFilter::className(),
 				'actions' => [
-					'logout' => ['post'],
+					'logout' => ['get', 'post'],
 				],
 			],
 		];
@@ -58,7 +58,21 @@ class SiteController extends Controller
 
 	public function actionIndex()
 	{		
-		return $this->render('index');
+		if (!\Yii::$app->user->isGuest) 
+		{
+			if (is_numeric(Yii::$app->user->identity->openid))
+			{
+				$model = MOffice::findOne(Yii::$app->user->identity->openid);
+				$username = $model->title;
+			}
+			else
+				$username = Yii::$app->user->identity->username;
+		}
+		else
+		{
+			$username = '';
+		}
+		return $this->render('index', ['username'=>$username]);
 	}
 	
 	public function actionLogin()
@@ -89,6 +103,25 @@ class SiteController extends Controller
 
 	public function actionContact()
 	{
+		$model = new MContact();
+		if ($model->load(Yii::$app->request->post())) 
+		{
+			if ($model->save())
+			{
+				Yii::$app->session->setFlash('success','感谢您的反馈，我们会尽快回复您！');				
+				return $this->refresh();
+			}
+		} 
+		else 
+		{
+			return $this->render('contact', [
+				'model' => $model,
+			]);
+		}
+	}
+
+	public function actionContactOld()
+	{
 		$model = new ContactForm();
 		if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) 
 		{
@@ -106,6 +139,27 @@ class SiteController extends Controller
 	public function actionAbout()
 	{
 		return $this->render('about');
+	}
+
+	public function actionProfile()
+	{
+		$user = MUser::findOne(Yii::$app->user->id);
+		if (is_numeric(Yii::$app->user->identity->openid))
+			$office = MOffice::findOne(Yii::$app->user->identity->openid);
+		
+		if ($user->load(Yii::$app->request->post())) 
+		{
+			if ($user->save(false, ['password']))
+			{
+				Yii::$app->session->setFlash('success','设置成功！');				
+				return $this->refresh();
+			}
+			else
+			U::W($user->getErrors());
+		} 
+		return $this->render('profile', [
+			'model' => $user,
+		]);
 	}
 	
 }

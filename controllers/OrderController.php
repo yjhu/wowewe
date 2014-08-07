@@ -11,6 +11,11 @@ use app\models\MOrder;
 use app\models\MOrderSearch;
 use app\models\MMobnum;
 
+use app\models\MStaff;
+use app\models\MStaffSearch;
+
+
+
 class OrderController extends Controller
 {
 	public $layout = 'main';
@@ -109,6 +114,80 @@ class OrderController extends Controller
 			throw new NotFoundHttpException('The requested page does not exist.');
 		}
 	}
+
+	public function actionStafflist()
+	{
+		$searchModel = new MStaffSearch;
+		$dataProvider = $searchModel->search($_GET);
+
+		return $this->render('stafflist', [
+			'dataProvider' => $dataProvider,
+			'searchModel' => $searchModel,
+		]);
+	}
+
+	public function actionStaffView($id)
+	{
+		return $this->render('staffview', [
+			'model' => $this->findStaffModel($id),
+		]);
+	}
+
+	public function actionStaffcreate()
+	{
+		$model = new MStaff;
+		if (\Yii::$app->request->isPost) 
+		{
+	               $model->load(\Yii::$app->request->post());
+			if ($model->save()) {
+				return $this->redirect(['stafflist']);			
+			}
+			else
+			{
+				U::W($model->getErrors());
+			}
+		}
+		return $this->render('staffcreate', ['model' => $model]);				
+	}
+
+	public function actionStaffupdate($id)
+	{
+		$model = MStaff::findOne($id);
+		if (!$model) {
+			throw new NotFoundHttpException();
+		}
+		if (\Yii::$app->request->isPost) 
+		{
+			$model->load(\Yii::$app->request->post());
+			if ($model->save()) 
+			{				
+				return $this->redirect(['stafflist']);			
+			}
+			else
+			{
+				U::W($model->getErrors());
+			}
+			
+		}
+		return $this->render('staffupdate', ['model' => $model]);		
+	}
+
+	public function actionStaffdelete($id)
+	{
+		$this->findStaffModel($id)->delete();
+		return $this->redirect(['stafflist']);
+	}
+
+	protected function findStaffModel($id)
+	{
+		if (($model = MStaff::findOne($id)) !== null) {
+			return $model;
+		} else {
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
+	}
+
+	
 }
 
 /*

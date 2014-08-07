@@ -9,12 +9,13 @@ use yii\captcha\Captcha;
  * @var yii\widgets\ActiveForm $form
  * @var app\models\ContactForm $model
  */
-//$this->title = 'Contact';
-//$this->params['breadcrumbs'][] = $this->title;
+$this->title = '修改设置';
+$this->params['breadcrumbs'][] = $this->title;
 $this->title = Yii::$app->params['title'];
 ?>
 <div class="site-contact">
     <h1><?php //echo Html::encode($this->title) ?></h1>
+
 	<?php
 		$this->registerJs(
 		   '$(".flash-success").animate({opacity: 1.0}, 3000).fadeOut("slow");',
@@ -26,24 +27,17 @@ $this->title = Yii::$app->params['title'];
 		<div class="alert alert-success flash-success">
 			<?php echo Yii::$app->session->getFlash('success'); ?>
 		</div>
-	<?php else: ?>
-	    <p>如您有任何意见或建议，请给我们留言，谢谢！</p>
 	<?php endif; ?>
 
     <div class="row">
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
-                <?= $form->field($model, 'detail')->textArea(['rows' => 6]) ?>
-				<?= $form->field($model, 'email')->textInput(); ?>
-                <?= $form->field($model, 'verifyCode')->widget(Captcha::className(), [
-                    'template' => '<div class="row"><div class="col-lg-3">{image}</div><div class="col-lg-6">{input}</div></div>',
-                ]) ?>
+				<?= $form->field($model, 'password')->textInput(); ?>
                 <div class="form-group">
                     <?= Html::submitButton('提交', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
                 </div>
             <?php ActiveForm::end(); ?>
         </div>
     </div>
-
 
 </div>
