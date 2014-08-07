@@ -59,9 +59,9 @@ Yii::$app->wx->setGhid($gh_id);
         <?php echo GridView::widget([
            // 'options'=>['data-role'=>"table",'class' => 'ui-responsive'],
             'tableOptions'=>['data-role'=>"table",'id'=>'table-custom-2','data-column-popup-theme'=>'a','data-column-btn-text'=>'选择要显示的列...','class' => 'ui-body-d ui-shadow table-stripe ui-responsive'],
-            //            'showHeader' => false,
+            //           'showHeader' => false,
             //           'showFooter' => false,
-            //'headerRowOptions' =>['style'=>'display:none'],
+            'headerRowOptions' =>['style'=>'display:none'],
              'layout' => "{items}",
              'dataProvider' => $dataProvider,
             //'filterModel' => $searchModel,
@@ -89,19 +89,19 @@ Yii::$app->wx->setGhid($gh_id);
                     'headerOptions' => array('style'=>'width:100px;'),
                     'attribute' => 'nickname',
                 ],
-
+	            //'create_time',
+	            [
+		            'label' => '吐槽时间',
+		            'headerOptions' => array('style'=>'width:200px;'),
+		            'attribute' => 'create_time',
+	            ],
                 //'title',
                 [
                     'label' => '吐槽内容',
                     'headerOptions' => array('style'=>'width:300px;'),
                     'attribute' => 'detail',
                 ],
-                //'create_time',
-                [
-                    'label' => '吐槽时间',
-                    'headerOptions' => array('style'=>'width:200px;'),
-                    'attribute' => 'create_time',
-                ],
+
                 //['class' => 'yii\grid\ActionColumn'],
             ],
         ]); ?>

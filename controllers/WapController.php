@@ -989,7 +989,7 @@ U::getUserHeadimgurl("http://wx.qlogo.cn/mmopen/17ASicSl2de5EHEpImf7IOxZ5w6Mibia
 	//http://127.0.0.1/wx/web/index.php?r=wap/disk&gh_id=gh_03a74ac96138&openid=111
 	public function actionDisk()
 	{
-		$this->layout = false;	
+		$this->layout = false;
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');    	
 		//$rotateParam = U::getRotateParam();
