@@ -32,11 +32,6 @@ CREATE TABLE wx_order (
 	KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS wx_order_arc;
-CREATE TABLE wx_order_arc LIKE wx_order;
-
-DROP TABLE IF EXISTS wx_order_arc;
-CREATE TABLE wx_order_arc AS SELECT * FROM wx_order where 1=2;
  
 
 */
@@ -112,6 +107,11 @@ class MOrder extends ActiveRecord
 	{
 		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
 		return $model;
+	}
+
+	public function getOffice()
+	{
+		return $this->hasOne(MOffice::className(), ['office_id' => 'office_id']);
 	}
 
 	public static function getCardTypeName($json=true)
@@ -223,7 +223,7 @@ class MOrder extends ActiveRecord
 		//$feesum = ($this->feesum)/100;
 		$feesum = sprintf("%0.2f",$this->feesum/100);
 		$str = <<<EOD
-{$model->nickname},您已订购【{$detail}】,手机号码为{$this->select_mobnum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
+{$model->nickname},您已订购【{$detail}】,手机号码为{$this->select_mobnum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内携身份证或相关证件至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期将自动关闭。【{$gh->nickname}】
 EOD;
 			return $str;
 	}	
@@ -307,6 +307,13 @@ EOD;
 }
 
 /*		
+DROP TABLE IF EXISTS wx_order_arc;
+CREATE TABLE wx_order_arc LIKE wx_order;
+
+DROP TABLE IF EXISTS wx_order_arc;
+CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
+
+
 	$flowPackName = ['0'=>'100MB', '1'=>'300MB', '2'=>'500MB', '3'=>'1GB', '4'=>'2GB', '5'=>'3GB', '6'=>'4GB', '7'=>'6GB', '8'=>'11GB'];
 
 	$flowPackFee = ['0'=>'8', '1'=>'16', '2'=>'24', '3'=>'48', '4'=>'72', '5'=>'96', '6'=>'120', '7'=>'152', '8'=>'232'];			

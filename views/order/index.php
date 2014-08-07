@@ -30,13 +30,21 @@ $this->params['breadcrumbs'][] = $this->title;
 			//['class' => yii\grid\CheckboxColumn::className()],
             'oid',   
 			[
+				'label' => '营业厅',
+				'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
+				'filter'=> false,
+				'headerOptions' => array('style'=>'width:80px;'),			
+			],
+			[
 				'label' => '用户昵称',
 				'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
 				'filter'=> false,
+				'headerOptions' => array('style'=>'width:80px;'),			
+
 			],
 			[
 				'attribute' => 'detail',
-				'headerOptions' => array('style'=>'width:200px;'),			
+				'headerOptions' => array('style'=>'width:180px;'),			
 			],
 			[
 				'attribute' => 'cid',
@@ -49,6 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'attribute' => 'select_mobnum',
+				'headerOptions' => array('style'=>'width:80px;'),			
 			],
 			[
 				'attribute' => 'create_time',
