@@ -1010,6 +1010,16 @@ U::W("gh_id=$gh_id, openid=$openid");
         return $this->render('home');
     }
 
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/goodnumber:gh_03a74ac96138
+	public function actionGoodnumber()
+	{
+		$this->layout =false;
+
+
+		return $this->render('goodnumber', ['cid'=>MItem::ITEM_CAT_CARD_WO]);
+	}
+
+
 
 
 

@@ -47,6 +47,10 @@ class MItem extends ActiveRecord
 	const ITEM_CAT_MOBILE_K1 = 13;
 	const ITEM_CAT_MOBILE_HTC516 = 14;
 
+
+	const ITEM_CAT_GOODNUMBER = 300;
+
+
 	public static function tableName()
 	{
 		return 'wx_item';
@@ -61,6 +65,7 @@ class MItem extends ActiveRecord
             self::ITEM_CAT_MOBILE_IPHONE4S => 'Apple iPhone4S',
             self::ITEM_CAT_MOBILE_K1 => 'K1',
             self::ITEM_CAT_MOBILE_HTC516 => 'HTC516',
+			self::ITEM_CAT_GOODNUMBER => '精选靓号',
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
 	}

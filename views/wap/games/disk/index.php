@@ -16,23 +16,22 @@ $openid = U::getSessionParam('openid');
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>disk</title>
+<title></title>
 
 <?php
 	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm_flatui/generated/jquery.mobile.flatui.min.css');
 ?>
 <style type="text/css">
 
-#disk {
-	position: absolute;
-	left: 118px;
-	top: 80px;
-	width: 137px;
-	height: 256px;
-	z-index: 1;
-	background-image: url(<?php echo "$assetsPath/start.png"; ?>);
-	background-size: cover;
+#diskstart{
+	text-align: center;
 }
+
+#start {
+	top: -268px;
+	position: relative;
+}
+
 </style>
 
 	<?php $this->head() ?>
@@ -45,12 +44,19 @@ $openid = U::getSessionParam('openid');
 	<div data-role="header">
 		<h1>幸运大转盘</h1>
 	</div>
-	<div data-role="content">
-		<div id="disk"></div>
+	<div data-role="content" id="diskstart">
+		<div id="disk">
+			<img width="100%" src="<?php echo "$assetsPath/disk2.png"; ?>">
+		</div>
 		<div id="start">
-		<img src="<?php echo "$assetsPath/disk.png"; ?>" width="336" height="336" id="startbtn" style="-webkit-transform: rotate(197deg);">
+			<img src="<?php echo "$assetsPath/start2.png"; ?>" id="startbtn" style="-webkit-transform: rotate(197deg);">
 		</div>
+
+		<div>
+			<img width="100%" src="/wx/web/images/wx-tuiguang2.jpg" alt="">
 		</div>
+
+	</div>
 	<div data-role="footer">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
@@ -59,9 +65,6 @@ $openid = U::getSessionParam('openid');
 <?php $this->endBody() ?>
 </body>
 
-<!--
-<script src="<//?php echo "$assetsPath/jquery.js"; ?> "></script>
--->
 <?php
 
 	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/css/jquery.home.min.js');
@@ -74,9 +77,8 @@ $openid = U::getSessionParam('openid');
 	$(function(){
 		$("#startbtn").rotate({
 			bind:{
-				click:function(){
+				tap:function(){
 					var json_data;
-					//alert('告诉服务器该用户转了盘子...');
 					$.ajax({
 						url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'diskclick'], true) ; ?>",
 						type:"GET",
@@ -97,9 +99,9 @@ $openid = U::getSessionParam('openid');
 						//alert(a + ":" + name + ":" + value);
 						//var a = Math.floor(Math.random() * 360);
 						$(this).rotate({
-							duration:10000,
+							duration:5000,
 							angle: 0,
-							animateTo:1440+a,
+							animateTo:(360*4)+a,
 							easing: $.easing.easeOutSine,
 							callback: function()
 							{
