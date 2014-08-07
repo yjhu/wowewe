@@ -42,7 +42,7 @@ $openid = U::getSessionParam('openid');
 
 <div data-role="page" id="page1" data-theme="e">
 	<div data-role="header">
-		<h1>幸运大转盘</h1>
+		<h1>八月浪漫季</h1>
 	</div>
 	<div data-role="content" id="diskstart">
 		<div id="disk">
