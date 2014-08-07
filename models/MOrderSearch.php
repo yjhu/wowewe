@@ -9,6 +9,10 @@ use app\models\MOrder;
 
 class MOrderSearch extends Model
 {
+	public $gh_id;
+
+	public $office_id;
+	
 	public $oid;
 
 	public $status;
@@ -26,8 +30,8 @@ class MOrderSearch extends Model
 	public function rules()
 	{
 		return [
-			[['status', 'cid'], 'integer'],            
-			[['oid','create_time', 'title', 'detail', 'feesum'], 'safe'],
+			[['office_id', 'status', 'cid'], 'integer'],            
+			[['gh_id', 'oid','create_time', 'title', 'detail', 'feesum'], 'safe'],
 		];
 	}
 
@@ -46,11 +50,21 @@ class MOrderSearch extends Model
 				'pageSize' => 20,
 			],            
 		]);
-/*
-		$gh_id = Yii::$app->user->identity->gh_id;
+
 		if (Yii::$app->user->identity->gh_id == 'root')
-		if (is_numeric(Yii::$app->user->identity->openid))
-*/			
+			U::W('root see order');
+		else if (Yii::$app->user->identity->openid == 'admin')
+		{
+			$this->gh_id = Yii::$app->user->identity->gh_id;
+			$this->addCondition($query, 'gh_id');		
+		}
+		else if (is_numeric(Yii::$app->user->identity->openid))
+		{
+			$this->gh_id = Yii::$app->user->identity->gh_id;
+			$this->office_id = Yii::$app->user->identity->openid;
+			$this->addCondition($query, 'gh_id');		
+			$this->addCondition($query, 'office_id');					
+		}
 		
 		if (!($this->load($params) && $this->validate())) {
 			//$this->addCondition($query, 'oid', true);		

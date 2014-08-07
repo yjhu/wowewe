@@ -8,6 +8,8 @@ CREATE TABLE wx_disk (
 	gh_id VARCHAR(32) NOT NULL DEFAULT '',
 	openid VARCHAR(32) NOT NULL DEFAULT '',
 	cnt int(10) unsigned NOT NULL DEFAULT '0',
+	win tinyint(3) unsigned NOT NULL DEFAULT 0,	
+	win_time int(10) unsigned NOT NULL DEFAULT '0',	
 	UNIQUE KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

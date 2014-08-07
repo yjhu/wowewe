@@ -61,6 +61,8 @@ class MStaff extends ActiveRecord
 		$gh_id = $this->gh_id;
 		$openid = $this->openid;
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+		if ($model === null)
+			return 0;
 		if ($model->scene_id == 0)
 			$count = 0;
 		else

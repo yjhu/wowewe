@@ -50,7 +50,8 @@ AppAsset::register($this);
 					],					
 					[
 						'label' => '管理',
-						'visible' => Yii::$app->user->isAdmin,
+						//'visible' => Yii::$app->user->isAdmin,
+						'visible' => Yii::$app->user->isRoot,
 						'items' => [
 							['label' => '商品管理','url' => ['/admin/itemlist'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '订单管理','url' => ['/admin/trade'],'linkOptions' => ['data-method' => 'post']],
