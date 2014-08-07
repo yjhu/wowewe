@@ -219,6 +219,7 @@ class CmdController extends Controller
 		return;		
 	}
 
+	//C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/import-mobilenum
 	public function actionImportMobilenum($message = 'hello world')
 	{
 		echo $message . "\n";

@@ -932,12 +932,6 @@ EOD;
 				if ($model === null)
 				{
 //					U::W("not found");
-/*
-					$model = new MDisk;
-					$model->gh_id = $gh_id;
-					$model->openid = $openid;
-					$model->cnt = MDisk::MDISK_CNT_PER_DAY;	
-*/					
 					$model = MDisk::initDefault($gh_id, $openid);
 				}
 				else if ($model->cnt > 0)
@@ -975,6 +969,12 @@ EOD;
 					$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);							
 				}
 				$data = $model->getAttributes();
+				$cur_time = time();	
+				if ($model->win == 1 && $cur_time - $model->win_time < 30*60)
+					$alreadyWin = 1;
+				else 
+					$alreadyWin = 0;
+				$data['alreadyWin'] = $alreadyWin;
 				$data['code'] = 0; 
 				U::W($data);
 				break;
@@ -1037,13 +1037,13 @@ EOD;
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
 		$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-		$cur_time = time();
-		$alreadyWin = false;
+		$cur_time = time();	
+		$alreadyWin = 0;		
 		if ($model === null)
 			$restCnt = MDisk::MDISK_CNT_PER_DAY;
-		else if ($model->win == 1 && $cur_time - win_time < 30*60)
-			$alreadyWin = true;
-		else if ($model->cnt > 0)
+		else if ($model->win == 1 && $cur_time - $model->win_time < 30*60)
+			$alreadyWin = 1;
+		else
 			$restCnt = $model->cnt;
 /*			
 		if (win)

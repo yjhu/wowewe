@@ -15,7 +15,6 @@ CREATE TABLE wx_mobnum (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
-
 INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205015', 100000, 1000, 1, 0);
 INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205017', 0, 0, 1, 0);
 INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205018', 0, 0, 1, 0);
@@ -45,15 +44,6 @@ INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205059',
 INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205060', 800000, 8000, 0, 2);
 INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205061', 810000, 8000, 0, 2);
 INSERT INTO wx_mobnum (num, ychf, zdxf, is_good, num_cat) VALUES ('18696205062', 820000, 8000, 0, 2);
-
-
-
-
-
-导入号码时，界面提示输入:池子类别，是否它们是靓号(金额全为0)
-对每个导入的号码，如果满足联通定义规则则打靛号标志
-如果是导入的人为靓号则打靛号标志
-
 
 18696205015
 18696205016
