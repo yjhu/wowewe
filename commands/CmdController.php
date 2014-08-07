@@ -219,6 +219,11 @@ class CmdController extends Controller
 		return;		
 	}
 
+	public function actionImportMobilenum($message = 'hello world')
+	{
+		echo $message . "\n";
+	}
+
 	
 }
 

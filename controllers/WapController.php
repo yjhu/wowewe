@@ -796,14 +796,14 @@ EOD;
 	public function actionProdsave()
 	{			
 		//U::W([$_GET, $_POST, $_SERVER]);
-		U::W([$_GET, $_POST]);
-		U::W('aaaaaaaaaaaaaaa');
+		//U::W([$_GET, $_POST]);
+		//U::W('aaaaaaaaaaaaaaa');
 		//if (!Yii::$app->request->isAjax)
 		//	return;	
-		U::W('bbbbb');			
+		//U::W('bbbbb');			
 		$this->layout = 'wap';
-//		$gh_id = Yii::$app->session['gh_id'];
-//		$openid = Yii::$app->session['openid'];
+		//$gh_id = Yii::$app->session['gh_id'];
+		//$openid = Yii::$app->session['openid'];
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');		
 		
@@ -905,10 +905,11 @@ EOD;
 	}
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1&cid=10&feeSum=1
+	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=diskRestCnt&cid=10
 	public function actionAjaxdata($cat)
 	{
-		if (!Yii::$app->request->isAjax)
-			return;
+//		if (!Yii::$app->request->isAjax)
+	//		return;
 		$this->layout = false;		
 		switch ($cat) 
 		{
@@ -931,11 +932,13 @@ EOD;
 				if ($model === null)
 				{
 //					U::W("not found");
+/*
 					$model = new MDisk;
 					$model->gh_id = $gh_id;
 					$model->openid = $openid;
-//					$model->cnt = 3;					
-					$model->cnt = MDisk::MDISK_CNT_PER_DAY;					
+					$model->cnt = MDisk::MDISK_CNT_PER_DAY;	
+*/					
+					$model = MDisk::initDefault($gh_id, $openid);
 				}
 				else if ($model->cnt > 0)
 				{
@@ -948,9 +951,32 @@ EOD;
 					return json_encode(['code'=>1, 'errmsg'=>'has no qualification']);				
 				}
 				$data = U::makeDiskResult();	
-//				if ($data['code'] == 0)
-	//				$model->cnt = 0;	
+				if ($data['code'] == 0)
+				{	
+					if ($data['value'] % 2 == 0)
+					{
+						$model->cnt = 0;						
+						$model->win = 1;
+						$model->win_time = time();
+					}
+				}
 				$model->save(false);						
+				break;
+
+			case 'diskRestCnt':
+				$gh_id = U::getSessionParam('gh_id');
+				$openid = U::getSessionParam('openid');
+				//$cid = $_GET['cid'];
+				$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);		
+				if ($model === null)
+				{
+					$model = MDisk::initDefault($gh_id, $openid);
+					$model->save(false);
+					$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);							
+				}
+				$data = $model->getAttributes();
+				$data['code'] = 0; 
+				U::W($data);
 				break;
 				
 			default:
