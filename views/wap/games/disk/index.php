@@ -46,8 +46,8 @@ $openid = U::getSessionParam('openid');
 	</div>
 	<div data-role="content" id="diskstart">
 
-		<img width="100%" src="<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/metro_home_head1.jpg' ?>" alt="八月浪漫季">
-
+		<img width="100%" src="<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/metro_home_head2.jpg' ?>" alt="八月浪漫季">
+		<br><br>
 		<div id="disk">
 			<img width="100%" src="<?php echo "$assetsPath/disk2.png"; ?>">
 		</div>

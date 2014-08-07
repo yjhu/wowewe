@@ -1069,9 +1069,7 @@ EOD;
 	public function actionGoodnumber()
 	{
 		$this->layout =false;
-
-
-		return $this->render('goodnumber', ['cid'=>MItem::ITEM_CAT_CARD_WO]);
+		return $this->render('goodnumber', ['cid'=>MItem::ITEM_CAT_GOODNUMBER]);
 	}
 
 
