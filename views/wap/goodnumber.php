@@ -263,7 +263,7 @@ if ($item === null)
 	<div data-role="footer">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
-</div>	<!-- page3 end -->
+</div>	<!-- contactPage end -->
 
 
 <div data-role="page" id="number-select" data-theme="e">
@@ -416,9 +416,11 @@ $(document).on("pageshow", "#page2", function(){
 		$.ajax({
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			type:"GET",
+			cache:false,
+			dataType:'json',
 			data: $("form#productForm").serialize() +"&cid="+cid+"&planFlag="+planFlag+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
 			success:function(data){
-				data = eval('('+data+')');
+				//data = eval('('+data+')');
 				if(data.status == 0)
 				{
 					//alert(data.oid);
