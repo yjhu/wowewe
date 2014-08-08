@@ -857,14 +857,22 @@ EOD;
 			case MItem::ITEM_CAT_MOBILE_HTC516:
 				$order->title = 'HTC516';			
 				$order->attr = "{$_GET['modelColor']}, {$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				break;		
+			case MItem::ITEM_CAT_GOODNUMBER:
+				$order->title = '精选靓号';			
+				$order->attr = "{$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}, {$_GET['plan126']}";
 				break;				
+				
 			default:
 				U::W(['invalid data cat', $cid, __METHOD__,$_GET]);
 				return;
 		}				
 		$order->feesum = $_GET['feeSum'] * 100;
 		$order->office_id = $_GET['office'];					
-		$order->select_mobnum = $_GET['selectNum'];			
+		$order->select_mobnum = $_GET['selectNum'];		
+		$order->userid = isset($_GET['userid']) ? $_GET['userid'] : '';
+		$order->username = isset($_GET['username']) ? $_GET['username'] : '';
+		$order->usermobile = isset($_GET['usermobile']) ? $_GET['usermobile'] : '';
 		$order->detail = $order->getDetailStr();
 
 		$mobnum = MMobnum::findOne($_GET['selectNum']);

@@ -26,6 +26,9 @@ CREATE TABLE wx_order (
 	appid_recv VARCHAR(64) NOT NULL DEFAULT '',
 	openid_recv VARCHAR(32) NOT NULL DEFAULT '',	
 	issubscribe_recv tinyint(1) unsigned NOT NULL DEFAULT '0',
+	userid VARCHAR(32) NOT NULL DEFAULT '',
+	username VARCHAR(16) NOT NULL DEFAULT '',
+	usermobile VARCHAR(16) NOT NULL DEFAULT '',	
 	PRIMARY KEY (oid),
 	KEY gh_id_oid(gh_id,oid),
 	KEY gh_id_office_id(gh_id,office_id),
@@ -33,6 +36,10 @@ CREATE TABLE wx_order (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
  
+ALTER TABLE wx_order ADD userid VARCHAR(32) NOT NULL DEFAULT '', ADD username VARCHAR(16) NOT NULL DEFAULT '', ADD usermobile VARCHAR(16) NOT NULL DEFAULT '';
+DROP TABLE IF EXISTS wx_order_arc;
+CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
+
 
 */
 
@@ -68,6 +75,9 @@ class MOrder extends ActiveRecord
 			'status' => '订单状态',
 			'select_mobnum'=>'手机号码',
 			'create_time' => '创建时间',
+			'userid' => '身份证',
+			'username' => '姓名',
+			'usermobile' => '联系电话',
 		];
 	}
 
@@ -194,13 +204,19 @@ class MOrder extends ActiveRecord
 
 	public static function getPlan66Name($json=true)
 	{
-		$arr = ['0'=>'66元A计划()', '1'=>'B计划()', '2'=>'C计划()'];			
+		$arr = ['0'=>'66元A计划()', '1'=>'66元B计划()', '2'=>'66元C计划()'];			
 		return $json? json_encode($arr) : $arr;
 	}
 
 	public static function getPlan96Name($json=true)
 	{
-		$arr = ['0'=>'96元A计划()', '1'=>'B计划()', '2'=>'C计划()'];			
+		$arr = ['0'=>'96元A计划()', '1'=>'96元B计划()', '2'=>'96元C计划()'];			
+		return $json? json_encode($arr) : $arr;
+	}
+
+	public static function getPlan126Name($json=true)
+	{
+		$arr = ['0'=>'126元A计划()', '1'=>'126元B计划()', '2'=>'126元C计划()'];			
 		return $json? json_encode($arr) : $arr;
 	}
 
@@ -223,7 +239,7 @@ class MOrder extends ActiveRecord
 		//$feesum = ($this->feesum)/100;
 		$feesum = sprintf("%0.2f",$this->feesum/100);
 		$str = <<<EOD
-{$model->nickname},您已订购【{$detail}】,手机号码为{$this->select_mobnum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内携身份证或相关证件至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期将自动关闭。【{$gh->nickname}】
+{$model->nickname},您已订购【{$detail}】,手机号码为{$this->select_mobnum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元,订单信息为【{$this->username},身份证{$this->userid},联系电话{$this->usermobile}】。请您在48小时内携身份证或相关证件至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期将自动关闭。【{$gh->nickname}】
 EOD;
 			return $str;
 	}	
@@ -290,6 +306,29 @@ EOD;
 				if (isset($arr[$plan96]) && $plan96!='999')
 					$str .= '/'.$arr[$plan96];
 			}
+		}
+		else if ($this->cid == MItem::ITEM_CAT_GOODNUMBER)
+		{
+			list($planFlag, $plan66, $plan96, $plan126) = explode(',', $this->attr);
+			if ($planFlag == 'plan66')
+			{
+				$arr = self::getPlan66Name(false);
+				if (isset($arr[$plan66]) && $plan66!='999')
+					$str .= '/'.$arr[$plan66];			
+			}
+			else if ($planFlag == 'plan96')
+			{
+				$arr = self::getPlan96Name(false);
+				if (isset($arr[$plan96]) && $plan96!='999')
+					$str .= '/'.$arr[$plan96];
+			}
+			else
+			{
+				$arr = self::getPlan126Name(false);
+				if (isset($arr[$plan126]) && $plan126!='999')
+					$str .= '/'.$arr[$plan126];
+			}
+
 		}
 
 		$detailStr = str_replace(array('"', "'", "+", " "), '', $str);
