@@ -58,12 +58,13 @@ class SiteController extends Controller
 
 	public function actionIndex()
 	{		
+		$office = null;
 		if (!\Yii::$app->user->isGuest) 
 		{
 			if (is_numeric(Yii::$app->user->identity->openid))
 			{
-				$model = MOffice::findOne(Yii::$app->user->identity->openid);
-				$username = $model->title;
+				$office = MOffice::findOne(Yii::$app->user->identity->openid);
+				$username = $office->title;
 			}
 			else
 				$username = Yii::$app->user->identity->username;
@@ -72,7 +73,7 @@ class SiteController extends Controller
 		{
 			$username = '';
 		}
-		return $this->render('index', ['username'=>$username]);
+		return $this->render('index', ['username'=>$username, 'office'=>$office]);
 	}
 	
 	public function actionLogin()

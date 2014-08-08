@@ -831,6 +831,9 @@ EOD;
 					$_GET['feeSum'] = 1;
 					$_GET['selectNum'] = '18696205033';
 					$_GET['office'] = 1;
+					$_GET['username'] = 'hehb';
+					$_GET['usermobile'] = '18696205033';
+					$_GET['userid'] = '422428197452232344';					
 				}			
 				$order->title = '自由组合套餐';			
 				$order->attr = "{$_GET['cardType']},{$_GET['flowPack']},{$_GET['voicePack']},{$_GET['msgPack']},{$_GET['callshowPack']},{$_GET['otherPack']}";				
@@ -854,14 +857,22 @@ EOD;
 			case MItem::ITEM_CAT_MOBILE_HTC516:
 				$order->title = 'HTC516';			
 				$order->attr = "{$_GET['modelColor']}, {$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				break;		
+			case MItem::ITEM_CAT_GOODNUMBER:
+				$order->title = '精选靓号';			
+				$order->attr = "{$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}, {$_GET['plan126']}";
 				break;				
+				
 			default:
 				U::W(['invalid data cat', $cid, __METHOD__,$_GET]);
 				return;
 		}				
 		$order->feesum = $_GET['feeSum'] * 100;
 		$order->office_id = $_GET['office'];					
-		$order->select_mobnum = $_GET['selectNum'];			
+		$order->select_mobnum = $_GET['selectNum'];		
+		$order->userid = isset($_GET['userid']) ? $_GET['userid'] : '';
+		$order->username = isset($_GET['username']) ? $_GET['username'] : '';
+		$order->usermobile = isset($_GET['usermobile']) ? $_GET['usermobile'] : '';
 		$order->detail = $order->getDetailStr();
 
 		$mobnum = MMobnum::findOne($_GET['selectNum']);
@@ -908,12 +919,13 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=diskRestCnt&cid=10
 	public function actionAjaxdata($cat)
 	{
-//		if (!Yii::$app->request->isAjax)
-	//		return;
+		//if (!Yii::$app->request->isAjax)
+		//	return;
 		$this->layout = false;		
 		switch ($cat) 
 		{
 			case 'mobileNum':
+				//U::W($_GET);
 				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
 				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
 				$feeSum = isset($_GET['feeSum']) ? $_GET['feeSum'] : 100000;
@@ -997,12 +1009,9 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_1ad98f5481f3
     public function actionCardxiaoyuan()
     {
-
         $this->layout =false;
         return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_XIAOYUAN]);
     }
-
-
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mobilelist:gh_03a74ac96138
     public function actionMobilelist()

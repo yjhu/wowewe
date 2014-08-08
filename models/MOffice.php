@@ -129,6 +129,34 @@ class MOffice extends ActiveRecord
 		return $json? json_encode($listData) : $listData;
 	}
 
+	public function getQrImageUrl()
+	{
+		$gh_id = $this->gh_id;
+		if (empty($this->scene_id))
+		{
+			$gh = MGh::findOne($gh_id);
+			$scene_id = $gh->newSceneId();
+			$gh->save(false);
+			$this->scene_id = $scene_id;
+			$this->save(false);
+			//U::W("scene_id=$scene_id");								
+		}
+		else
+			$scene_id = $this->scene_id;
+		$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
+		//U::W($log_file_path);							
+		if (!file_exists($log_file_path))
+		{
+			Yii::$app->wx->setGhId($gh_id);	
+			$arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
+			$url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
+			Wechat::downloadFile($url, $log_file_path);	
+		}
+		$url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
+		//U::W($url);
+		return $url;
+	}
+
 }
 
 /*

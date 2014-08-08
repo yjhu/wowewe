@@ -24,7 +24,8 @@ use yii\db\Expression;
 
 class MDisk extends ActiveRecord
 {
-	const MDISK_CNT_PER_DAY = 3000;
+	//const MDISK_CNT_PER_DAY = 3000;
+	const MDISK_CNT_PER_DAY = 3;
 	
 	public static function tableName()
 	{
