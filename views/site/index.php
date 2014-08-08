@@ -7,8 +7,6 @@ use yii\helpers\Html;
 
 $this->title = Yii::$app->params['title'];
 ?>
-<div class="site-index">
-
 
 <div class="row">
     <div class="jumbotron">
@@ -21,13 +19,14 @@ $this->title = Yii::$app->params['title'];
 		    <p class="lead">您已成功登录襄阳联通官方微信管理后台！</p>	
 		<?php endif; ?>
 
-        <p><a class="btn btn-lg btn-success" href="#">点此了解详细</a></p>
+		<?php if (!empty($office)): ?>
+	        <p><a class="btn btn-lg btn-success" href="#">了解更多详细，请扫下方营业厅二维码</a></p>
+			<?php echo Html::img($office->getQrImageUrl(), ['class'=>'img-responsive center-block']); ?>
+		<?php endif; ?>
 
-		<?php //echo Html::img(Url::to('images/qrcode_for_gh_03a74ac96138_344.jpg'), ['class'=>'img-responsive']); ?>
     </div>
 
 </div>
-
 
 
 <!--
@@ -69,4 +68,4 @@ $this->title = Yii::$app->params['title'];
     </div>
 -->
 
-</div>
+

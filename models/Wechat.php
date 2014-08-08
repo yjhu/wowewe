@@ -124,27 +124,34 @@ class Wechat extends \yii\base\Object
 		$this->_accessToken = null;
 	}
 	
-	public function getAccessToken()
+	public function getAccessToken($forceRefresh=false)
 	{	
 		if($this->_accessToken !== null)
 			return $this->_accessToken;
 			
 		$key = __METHOD__.$this->_gh_id;
-		$value = Yii::$app->cache->get($key);
-		if ($value !== false)
+
+		if (!$forceRefresh)
 		{
-			$this->_accessToken = $value;
-			return $value;
+			$value = Yii::$app->cache->get($key);
+			if ($value !== false)
+			{
+				$this->_accessToken = $value;
+				U::W("getAccessToken from cache, $value");
+				return $value;
+			}
 		}
 
 		$arr = self::WxGetAccessToken($this->gh['appid'], $this->gh['appsecret']);
 		if (!isset($arr['access_token']))
 		{
 			U::W([__METHOD__, $arr]);
-			die('no access_token');
+			die('no access_token......');
 		}
 		$this->_accessToken = $arr['access_token'];
 		Yii::$app->cache->set($key, $this->_accessToken, YII_DEBUG ? 10 : 3600);
+		U::W("getAccessToken from weixin====, {$arr['access_token']}");
+		
 		return $this->_accessToken;		
 	}
 
@@ -283,13 +290,23 @@ class Wechat extends \yii\base\Object
 //			U::W('ddddd');					
 		if ($model === null)
 		{
-			U::W('no.....');
+			//U::W('no.....');
 			$model = new MUser;		
 		}
 		if (empty($model->nickname) ||!$model->subscribe)
 		{
-			U::W('yes.....');
-			$arr = $this->WxGetUserInfo($FromUserName);
+			//U::W('yes.....');
+			try
+			{						
+				$arr = $this->WxGetUserInfo($FromUserName);
+			}
+			catch(\Exception $e)
+			{
+				// refresh accessToken 
+				U::W('refresh accessToken.....then get user again........');
+				$this->getAccessToken(true);
+				$arr = $this->WxGetUserInfo($FromUserName);
+			}			
 			$model->setAttributes($arr, false);
 			$model->gh_id = $this->getRequest('ToUserName');			
 			$model->openid = $FromUserName;			
@@ -638,6 +655,11 @@ EOD;
 		if (!empty($resp['errcode']))
 		{
 			U::W([$resp, $params]);
+			if ($resp['errcode'] == 40001)
+			{
+				U::W('checkWxApiResp, refresh token.');
+				$this->getAccessToken(true);			
+			}
 			throw new WxException($resp);
 		}
 		return true;
