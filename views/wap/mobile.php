@@ -77,6 +77,21 @@
     padding: 0.1em  !important;
 }
 
+.n1
+{
+	font-size: 12pt;
+	font-weight: bolder;
+}
+.n2
+{
+	font-size: 10pt;
+	background-color: red;
+}
+.n3
+{
+	font-size:10pt;
+	color: #0033cc;
+}
 </style>
 	
 <?php $this->head() ?>
@@ -528,7 +543,8 @@ $(document).on("pageshow", "#number-select", function(){
     function loadData(i, n)
     {
         count++;
-        cssStr = "style='height:60px;'";
+	    cssStr1 = 'ui-bar ui-bar-a';
+	    cssStr = "style='height:60px;'";
         if( localStorage.getItem("num") != null)
         {
             if(n.num == localStorage.getItem("num"))
@@ -537,10 +553,22 @@ $(document).on("pageshow", "#number-select", function(){
                 cssStr = "style='height:60px;'";
         }
 
+	    /*
         if(i%2 == 0)
             var text = " <div class='ui-block-a'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
         else
             var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
+		*/
+	    var params = n.num+'-'+ n.ychf+'-'+ n.zdxf;
+	    //var userNum = n.num;
+	    var userNum = '<div class=n1>'+ n.num+'<div><span class=n2>靓号</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class=n3>预存 ￥'+ n.ychf+'</span></div></div>';
+	    var numInfo = '<a  myParams='+params+'>'+userNum+'</a>';
+
+
+	    if(i%2 == 0)
+		    var text = '<div class=ui-block-a><div class='+cssStr1+cssStr+'>'+numInfo+'</div></div>';
+	    else
+		    var text = '<div class=ui-block-b><div class='+cssStr1+cssStr+'>'+numInfo+'</div></div>';
 
         $("#list_common_tbody").append(text).trigger('create');
 
@@ -554,10 +582,12 @@ $(document).on("pageshow", "#number-select", function(){
         $.ajax({
             url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'mobileNum'], true) ; ?>",
             type:"GET",
+	        cache:false,
+	        dataType:'json',
             //data: $("form#productForm").serialize() +"&feeSum="+feeSum,
             data: "&currentPage="+currentPage+"&size="+size+"&cid="+cid+"&feeSum="+feeSum,
-            success: function(msg){
-                var json_data = eval('('+msg+')');
+            success: function(json_data){
+                //var json_data = eval('('+msg+')');
                 if(json_data)
                 {
                     $.each(json_data, loadData);
