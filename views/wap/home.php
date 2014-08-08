@@ -155,7 +155,7 @@ Yii::$app->wx->setGhid($gh_id);
 
                 <div class="row" >
                     <div class="col-md-12 col-xs-12">
-                        <a href="http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203635121&idx=1&sn=b47bc2f6a4490819227853e8ffed72c9#rd" >
+                        <a href="http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203837364&idx=1&sn=e320d6d5bc60b71bdedabe25b515f93d#rd" >
                             <img width=100% src="../web/images/metro-gzyl.jpg">
                         </a>
                     </div>

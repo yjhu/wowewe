@@ -93,7 +93,8 @@ $openid = U::getSessionParam('openid');
 <script src="<?php echo "$assetsPath/jQueryRotate.2.2.js"; ?> "></script>
 <script src="<?php echo "$assetsPath/jquery.easing.min.js"; ?> "></script>
 <script type="text/javascript">
-	$(function(){
+	//$(function(){
+	$(document).on("pageshow", "#page1", function(){
 		$("#startbtn").rotate({
 			bind:{
 				tap:function(){
@@ -126,10 +127,17 @@ $openid = U::getSessionParam('openid');
 							{
 								if (value%2 == 0)
 								{
+									//中奖了， 转到选号页面， 可以选择靓号了~~
 									var res = 'ok';
+									window.location = '<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/goodnumber#number-select' ; ?>';
 								}
 								else
+								{
+									//没中奖？？
 									var res = 'sorry';
+
+								}
+
 								alert(name + ':' + value + res );
 							}
 						});
