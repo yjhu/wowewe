@@ -14,9 +14,10 @@ use yii\db\Query;
 use yii\helpers\Url;
 
 use app\models\U;
-//use app\models\WX;
 use app\models\MGh;
 use app\models\MUser;
+use app\models\MMobnum;
+use app\models\MItem;
 
 use app\models\Wechat;
 
@@ -220,9 +221,32 @@ class CmdController extends Controller
 	}
 
 	//C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/import-mobilenum
-	public function actionImportMobilenum($message = 'hello world')
+	// /usr/bin/php /mnt/wwwroot/wx/yii cmd/import-mobilenum
+	public function actionImportMobilenum()
 	{
-		echo $message . "\n";
+		$num_cat = MMobnum::getNumCat(MItem::ITEM_CAT_MOBILE_IPHONE4S);		
+		$file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'mobile_num.txt';
+		$fh = fopen($file, "r");
+		$i = 0;
+		$sm_valid_cids = array();
+		while (!feof($fh)) 
+		{
+			$line = fgets($fh);
+			if (empty($line))
+				continue;
+
+			$mobnum = trim($line);
+			$ychf = 0;
+			$zdxf = 0;
+			$is_good = 1;
+
+			$tableName = MMobnum::tableName();
+			$n = Yii::$app->db->createCommand("REPLACE INTO $tableName (num, num_cat, ychf, zdxf, is_good) VALUES (:num, :num_cat, :ychf, :zdxf, :is_good)", [':num' => $mobnum,':num_cat' => $num_cat, ':ychf'=>$ychf, ':zdxf'=>$zdxf, ':is_good'=>$is_good])->execute();
+
+			$i++;
+			//if ($i > 2) break;
+		}
+		fclose($fh);	
 	}
 
 	
