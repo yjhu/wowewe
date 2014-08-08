@@ -256,7 +256,7 @@ if ($item === null)
 			<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
 		</div>
 
-		<input type="button" value="增加联系方式" id="addContactBtn">
+		<input type="button" value="确认" id="addContactBtn">
 
 	</div>
 
@@ -506,8 +506,15 @@ $(document).on("pageshow", "#page3", function(){
 
 });
 
-
+/*联系方式*/
 $(document).on("pageshow", "#contactPage", function(){
+
+	if(localStorage.getItem('username') != '')
+		$('#username').val(localStorage.getItem('username'));
+	if(localStorage.getItem('usermobile') != '')
+		$('#usermobile').val(localStorage.getItem('usermobile'));
+	if(localStorage.getItem('userid') != '')
+		$('#userid').val(localStorage.getItem('userid'));
 
 	//alert('here is contact page');
 	$("#addContactBtn").click(function(){
@@ -522,14 +529,12 @@ $(document).on("pageshow", "#contactPage", function(){
 			alert("姓名输入不合法");
 			return  false;
 		}
-
 		var usermobileReg = /(^(130|131|132|133|134|135|136|137|138|139)\d{8}$)/;
 		if(usermobileReg.test(usermobile) === false)
 		{
 			alert("手机号码输入不合法");
 			return  false;
 		}
-
 		var useridReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
 		if(useridReg.test(userid) === false)
 		{
@@ -545,7 +550,6 @@ $(document).on("pageshow", "#contactPage", function(){
 	});
 
 });
-
 
 
 $(document).on("pageshow", "#number-select", function(){
