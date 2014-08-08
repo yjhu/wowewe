@@ -32,7 +32,9 @@ class NightController extends Controller
 		self::closeExpiredOrders();
 
 		//MDisk::updateAll(['cnt' => 3]);
-		MDisk::deleteAll();
+		$tableName = MDisk::tableName()
+		$n = MDisk::deleteAll();
+		U::W("DELETE $tableName, $n");	
 
 		if (date('N') == 1)
 		{
@@ -60,9 +62,8 @@ class NightController extends Controller
 
 	public static function closeExpiredOrders() 
 	{
-
 		$tableName = MOrder::tableName();
-		// 2天内拍下未付款的订单自动关闭
+		// auto close the orders exceed 2 days
 		$n = Yii::$app->db->createCommand()->update($tableName, ['status' => MOrder::STATUS_CLOSED_AUTO], 'status=:status AND create_time < DATE_SUB(NOW(), INTERVAL 2 day)', [':status'=>MOrder::STATUS_AUTION])->execute();
 		U::W("UPDATE $tableName, $n");		
 		//move the unsuccessful orders exceed 90 days to bak table

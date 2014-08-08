@@ -19,8 +19,10 @@ use app\models\RespMusic;
 class Wechat extends \yii\base\Object
 {
 	//const OPENID_TESTER1 = 'o6biBt5yaB7d3i0YTSkgFSAHmpdo';		// hoya hehb
-	const OPENID_TESTER1 = 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o';		// woso hehb	
-	//const OPENID_TESTER1 = '';		// xiangyangunicom hehb		
+	const OPENID_TESTER1 = 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o';			// woso hehb	
+	//const OPENID_TESTER1 = 'oKgUduNHzUQlGRIDAghiY7ywSeWk';		// xiangyangunicom hbhe		
+	//const OPENID_TESTER1 = 'oKgUduJJFo9ocN8qO9k2N5xrKoGE';		// xiangyangunicom kzeng		
+	//const OPENID_TESTER1 = 'oKgUduNaK7mfojofz2qnSxa_FTMs';		// xiangyangunicom gtsun			
 	
 	const MSGTYPE_TEXT = 'text';
 	const MSGTYPE_IMAGE = 'image';
@@ -281,12 +283,12 @@ class Wechat extends \yii\base\Object
 //			U::W('ddddd');					
 		if ($model === null)
 		{
-//			U::W('no.....');
+			U::W('no.....');
 			$model = new MUser;		
 		}
 		if (empty($model->nickname) ||!$model->subscribe)
 		{
-//			U::W('yes.....');		
+			U::W('yes.....');
 			$arr = $this->WxGetUserInfo($FromUserName);
 			$model->setAttributes($arr, false);
 			$model->gh_id = $this->getRequest('ToUserName');			
