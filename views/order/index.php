@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'headerOptions' => array('style'=>'width:80px;'),			
 			],
 			[
-				'label' => '用户昵称',
+				'label' => '买家微信昵称',
 				'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
 				'filter'=> false,
 				'headerOptions' => array('style'=>'width:80px;'),			
@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'attribute' => 'detail',
-				'headerOptions' => array('style'=>'width:180px;'),			
+				'headerOptions' => array('style'=>'width:120px;'),			
 			],
 			[
 				'attribute' => 'cid',
@@ -56,12 +56,18 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { return "￥".sprintf("%0.2f",$model->feesum/100); },
 			],
 			[
+				'label' => '卡号',
 				'attribute' => 'select_mobnum',
 				'headerOptions' => array('style'=>'width:80px;'),			
 			],
 			[
 				'attribute' => 'create_time',
 				'filter'=> false,
+			],
+			[
+				'label' => '买家身份信息',
+				'value'=>function ($model, $key, $index, $column) { return "{$model->username},{$model->userid},{$model->usermobile}"; },
+				'headerOptions' => array('style'=>'width:120px;'),			
 			],
 
 			[

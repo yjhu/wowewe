@@ -224,6 +224,16 @@ class CmdController extends Controller
 	// /usr/bin/php /mnt/wwwroot/wx/yii cmd/import-mobilenum
 	public function actionImportMobilenum()
 	{
+/*	
+$pattern = "/(?:0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){5}\d/";
+//$ret = preg_match($pattern, '123456789');
+$ret = preg_match($pattern, 'a234567b6789');
+if ($ret)
+	echo 'match';
+else
+	echo 'no match';
+*/
+	
 		$num_cat = MMobnum::getNumCat(MItem::ITEM_CAT_MOBILE_IPHONE4S);		
 		$file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'mobile_num.txt';
 		$fh = fopen($file, "r");
