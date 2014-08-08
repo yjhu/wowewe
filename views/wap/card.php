@@ -140,6 +140,8 @@
 
 			<a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
 
+	        <a href="#contactPage" class="ui-btn">联系方式</a>
+
            <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
 
 			<input type="button" value="确认套餐" id="submitBtn">
@@ -196,7 +198,7 @@
             <p><?php echo  $item->title_hint; ?></p>
             <p id="selectNum">号码：13545296480</p>
             <p id="office"></p>
-
+			<p id="contact"></p>
 
 			<p align="right" >
              合计
@@ -222,9 +224,35 @@
 		<div data-role="footer">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
-	</div>	<!-- page3 end -->	
+	</div>	<!-- page3 end -->
 
-	
+	<div data-role="page" id="contactPage" data-theme="e">
+		<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
+			<h1 id="title"><?php echo  $item->title; ?></h1>
+		</div>
+
+		<div data-role="content">
+
+			<h2>联系方式</h2>
+			<div class="ui-field-contain">
+				<!--
+				<label for="username">姓名</label>
+				-->
+				<input type="text" name="username" id="username" placeholder="姓名" value="">
+
+				<input type="text" name="usermobile" id="usermobile" placeholder="手机号码" value="">
+
+				<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
+			</div>
+
+			<input type="button" value="确认" id="addContactBtn">
+
+		</div>
+
+		<div data-role="footer">
+			<h4>&copy; 襄阳联通 2014</h4>
+		</div>
+	</div>	<!-- contactPage end -->
 
 	<div data-role="page" id="number-select" data-theme="e">
 		<div data-role="header">
@@ -316,7 +344,11 @@ $(document).on("pageshow", "#page2", function(){
             return false;
         }
 
-        if((localStorage.getItem('ychf')/100) >= 50)
+		username = localStorage.getItem("username");
+		usermobile = localStorage.getItem("usermobile");
+		userid = localStorage.getItem("userid");
+
+		if((localStorage.getItem('ychf')/100) >= 50)
             realFee = localStorage.getItem('ychf')/100;
         else
             realFee = 50;
@@ -324,10 +356,11 @@ $(document).on("pageshow", "#page2", function(){
 		localStorage.setItem("item",$("form#productForm").serialize());
 		$.ajax({
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
-			type:"GET",
-			data: $("form#productForm").serialize() +"&cid="+cid+"&feeSum="+realFee+"&selectNum="+selectNum,
+			cache:false,
+			dataType:'json',
+			data: $("form#productForm").serialize() +"&cid="+cid+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
 			success:function(data){
-				data = eval('('+data+')');
+				//data = eval('('+data+')');
 				if(data.status == 0)
 				{
 					//alert(data.oid);
@@ -359,6 +392,7 @@ $(document).on("pageshow", "#page3", function(){
     eval(item_new);
 
     $("#office").html('所选营业厅: ' +office_name[office] );
+	$("#contact").html('联系方式<br>' +'姓名: '+ localStorage.getItem("username")+'<br>手机: '+ localStorage.getItem("usermobile")+'<br>身份证: '+ localStorage.getItem("userid")  );
 
 	var url = localStorage.getItem("url");
 	//$("#url").html("<a href='"+url+"'>Pay</a>");
