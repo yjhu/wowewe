@@ -128,17 +128,19 @@ $openid = U::getSessionParam('openid');
 								if (value%2 == 0)
 								{
 									//中奖了， 转到选号页面， 可以选择靓号了~~
-									var res = 'ok';
+									//var res = 'ok';
+									var res = '恭喜您，中奖了！';
 									window.location = '<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/goodnumber#number-select' ; ?>';
 								}
 								else
 								{
 									//没中奖？？
-									var res = 'sorry';
-
+									//var res = 'sorry';
+									var res = '真可惜，就差一点点！';
 								}
 
-								alert(name + ':' + value + res );
+								//alert(name + ':' + value + res );
+								alert( res );
 							}
 						});
 					}
