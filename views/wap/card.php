@@ -78,6 +78,22 @@
     margin: .5em 0 !important;
     padding: .5em 0em !important;
 }
+
+.n1
+{
+	font-size: 12pt;
+	font-weight: bolder;
+}
+.n2
+{
+	font-size: 10pt;
+	background-color: red;
+}
+.n3
+{
+	font-size:10pt;
+	color: #0033cc;
+}
 </style>
 	
 <?php $this->head() ?>
@@ -213,7 +229,7 @@
 			<input type="button" value="确认订单" id="payBtn">
 			</p>
 			-->
-            <a href="#page2" class="ui-btn">我知道了</a>
+            <a data-ajax=false href="<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>" class="ui-btn">我知道了</a>
 
 			<!--
 			<p id="url"></p>
@@ -359,13 +375,13 @@ $(document).on("pageshow", "#page2", function(){
 			cache:false,
 			dataType:'json',
 			data: $("form#productForm").serialize() +"&cid="+cid+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
-			success:function(data){
+			success:function(json_data){
 				//data = eval('('+data+')');
-				if(data.status == 0)
+				if(json_data.status == 0)
 				{
 					//alert(data.oid);
-					localStorage.setItem("oid",data.oid);
-					localStorage.setItem("url",data.pay_url);
+					localStorage.setItem("oid",json_data.oid);
+					localStorage.setItem("url",json_data.pay_url);
 					$.mobile.changePage("#page3",{transition:"slide"});
 				}
 				else
@@ -447,12 +463,59 @@ $(document).on("pageshow", "#page3", function(){
 });
 
 
+/*联系方式*/
+$(document).on("pageshow", "#contactPage", function(){
+
+	if(localStorage.getItem('username') != '')
+		$('#username').val(localStorage.getItem('username'));
+	if(localStorage.getItem('usermobile') != '')
+		$('#usermobile').val(localStorage.getItem('usermobile'));
+	if(localStorage.getItem('userid') != '')
+		$('#userid').val(localStorage.getItem('userid'));
+
+	//alert('here is contact page');
+	$("#addContactBtn").click(function(){
+		var username = $('#username').val();
+		var usermobile = $('#usermobile').val();
+		var userid = $('#userid').val();
+
+
+		var usernameReg = /^[\u4E00-\u9FFF]+$/;
+		if(usernameReg.test(username) === false)
+		{
+			alert("姓名输入不合法");
+			return  false;
+		}
+		var usermobileReg = /(^(130|131|132|133|134|135|136|137|138|139)\d{8}$)/;
+		if(usermobileReg.test(usermobile) === false)
+		{
+			alert("手机号码输入不合法");
+			return  false;
+		}
+		var useridReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+		if(useridReg.test(userid) === false)
+		{
+			alert("身份证输入不合法");
+			return  false;
+		}
+
+		localStorage.setItem('username',username);
+		localStorage.setItem('usermobile',usermobile);
+		localStorage.setItem('userid',userid);
+
+		$.mobile.changePage("#page2",{transition:"slide"});
+	});
+
+});
+
+
 $(document).on("pageshow", "#number-select", function(){
 
     function loadData(i, n)
     {
         count++;
-        cssStr = "style='height:60px;'";
+	    cssStr1 = 'ui-bar ui-bar-a';
+	    cssStr = "style='height:60px;'";
         if( localStorage.getItem("num") != null)
         {
             if(n.num == localStorage.getItem("num"))
@@ -461,12 +524,18 @@ $(document).on("pageshow", "#number-select", function(){
                 cssStr = "style='height:60px;'";
         }
 
-        if(i%2 == 0)
-            var text = " <div class='ui-block-a'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' class='ui-select-num'>"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
-        else
-            var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' class='ui-select-num'>"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
+	    var params = n.num+'-'+ n.ychf+'-'+ n.zdxf;
+	    //var userNum = n.num;
+	    var userNum = '<div class=n1>'+ n.num+'<div><span class=n2>靓号</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class=n3>预存 ￥'+ n.ychf+'</span></div></div>';
+	    var numInfo = '<a  myParams='+params+'>'+userNum+'</a>';
 
-        $("#list_common_tbody").append(text).trigger('create');
+
+	    if(i%2 == 0)
+		    var text = '<div class=ui-block-a><div class='+cssStr1+cssStr+'>'+numInfo+'</div></div>';
+	    else
+		    var text = '<div class=ui-block-b><div class='+cssStr1+cssStr+'>'+numInfo+'</div></div>';
+
+	    $("#list_common_tbody").append(text).trigger('create');
 
     }
 
@@ -477,10 +546,11 @@ $(document).on("pageshow", "#number-select", function(){
         $.ajax({
             url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'mobileNum'], true) ; ?>",
             type:"GET",
-            //data: $("form#productForm").serialize() +"&feeSum="+feeSum,
+	        cache:false,
+	        dataType:'json',
             data: "&currentPage="+currentPage+"&size="+size+"&cid="+cid+"&feeSum="+feeSum,
-            success: function(msg){
-                var json_data = eval('('+msg+')');
+            success: function(json_data){
+                //var json_data = eval('('+msg+')');
                 if(json_data)
                 {
                     $.each(json_data, loadData);
@@ -493,11 +563,11 @@ $(document).on("pageshow", "#number-select", function(){
     getNumberList();
 
     $(document).on("click",".ui-grid-a a",function(){
-        cardInfo = ($(this).text()).split('-');
-        localStorage.setItem("num",cardInfo[0]);
-        localStorage.setItem("ychf",cardInfo[1]);
-        localStorage.setItem("zdxf",cardInfo[2]);
-        $.mobile.changePage("#page2",{transition:"slide"});
+	    cardInfo = $(this).attr('myParams').split('-');
+	    localStorage.setItem("num",cardInfo[0]);
+	    localStorage.setItem("ychf",cardInfo[1]);
+	    localStorage.setItem("zdxf",cardInfo[2]);
+	    $.mobile.changePage("#page2",{transition:"slide"});
     });
 
     $("#seleNumBtn").click(function(){

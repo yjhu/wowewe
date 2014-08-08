@@ -316,6 +316,7 @@ U::W($gh_id);
 			<p id="oid"></p>
             <p id="selectNum"></p>
             <p id="office"></p>
+			<p id="contact"></p>
 
 
 			<table data-role="table" id="table-custom-2" data-mode="columntoggle"   class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-text="选择要显示的列..." data-column-popup-theme="a">
@@ -382,7 +383,7 @@ U::W($gh_id);
 			<input type="button" value="确认订单" id="payBtn">
 			</p>
 			-->
-            <a href="javascript:jumpPage2();" class="ui-btn" data-ajax="false">我知道了</a>
+            <a data-ajax=false href="<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>" class="ui-btn" data-ajax="false">我知道了</a>
 
 			<!--
 			<p id="url"></p>
@@ -400,9 +401,35 @@ U::W($gh_id);
 		<div data-role="footer">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
-	</div>	<!-- page3 end -->	
+	</div>	<!-- page3 end -->
 
-	
+	<div data-role="page" id="contactPage" data-theme="e">
+		<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
+			<h1 id="title">自由组合套餐</h1>
+		</div>
+
+		<div data-role="content">
+
+			<h2>联系方式</h2>
+			<div class="ui-field-contain">
+				<!--
+				<label for="username">姓名</label>
+				-->
+				<input type="text" name="username" id="username" placeholder="姓名" value="">
+
+				<input type="text" name="usermobile" id="usermobile" placeholder="手机号码" value="">
+
+				<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
+			</div>
+
+			<input type="button" value="确认" id="addContactBtn">
+
+		</div>
+
+		<div data-role="footer">
+			<h4>&copy; 襄阳联通 2014</h4>
+		</div>
+	</div>	<!-- contactPage end -->
 
 	<div data-role="page" id="number-select" data-theme="e">
 		<div data-role="header">
@@ -460,14 +487,6 @@ var fee_callshowPack = 0;
 var fee_otherPack = 0;
 
 //$().ready(function() {
-function jumpPage2()
-{
-    localStorage.removeItem("num");
-    localStorage.removeItem("ychf");
-    localStorage.removeItem("zdxf");
-    $.mobile.changePage('#page2',{ reloadPage:'true'});
-    //$.mobile.changePage('#page2');
-}
 
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
@@ -720,6 +739,10 @@ $(document).on("pageshow", "#page2", function(){
             return false;
         }
 
+        username = localStorage.getItem("username");
+        usermobile = localStorage.getItem("usermobile");
+        userid = localStorage.getItem("userid");
+
         if((localStorage.getItem('ychf')/100) >= 50)
             realFee = localStorage.getItem('ychf')/100;
         else
@@ -730,15 +753,16 @@ $(document).on("pageshow", "#page2", function(){
 			//url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/g2048save' ; ?>"+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			type:"GET",
-            cache:false,
-			data: $("form#productForm").serialize() +"&cid="+0+"&feeSum="+realFee+"&selectNum="+selectNum,
-			success:function(data){
-				data = eval('('+data+')');
-				if(data.status == 0)
+			cache:false,
+			dataType:'json',
+			data: $("form#productForm").serialize() +"&cid="+0+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
+			success:function(json_data){
+				//data = eval('('+data+')');
+				if(json_data.status == 0)
 				{
 					//alert(data.oid);
-					localStorage.setItem("oid",data.oid);
-					localStorage.setItem("url",data.pay_url);
+					localStorage.setItem("oid",json_data.oid);
+					localStorage.setItem("url",json_data.pay_url);
 
 					$.mobile.changePage("#page3",{transition:"slide"});
 				}
@@ -805,6 +829,7 @@ $(document).on("pageshow", "#page3", function(){
     localStorage.removeItem("luckNum");/*订单生成后，锁定该手机号*/
 
    $("#office").html('所选营业厅: ' +office_name[office] );
+	$("#contact").html('联系方式<br>' +'姓名: '+ localStorage.getItem("username")+'<br>手机: '+ localStorage.getItem("usermobile")+'<br>身份证: '+ localStorage.getItem("userid")  );
 
 	var url = localStorage.getItem("url");
 	//$("#url").html("<a href='"+url+"'>Pay</a>");
@@ -861,6 +886,53 @@ $(document).on("pageshow", "#page3", function(){
 	
 });
 
+
+/*联系方式*/
+$(document).on("pageshow", "#contactPage", function(){
+
+	if(localStorage.getItem('username') != '')
+		$('#username').val(localStorage.getItem('username'));
+	if(localStorage.getItem('usermobile') != '')
+		$('#usermobile').val(localStorage.getItem('usermobile'));
+	if(localStorage.getItem('userid') != '')
+		$('#userid').val(localStorage.getItem('userid'));
+
+	//alert('here is contact page');
+	$("#addContactBtn").click(function(){
+		var username = $('#username').val();
+		var usermobile = $('#usermobile').val();
+		var userid = $('#userid').val();
+
+
+		var usernameReg = /^[\u4E00-\u9FFF]+$/;
+		if(usernameReg.test(username) === false)
+		{
+			alert("姓名输入不合法");
+			return  false;
+		}
+		var usermobileReg = /(^(130|131|132|133|134|135|136|137|138|139)\d{8}$)/;
+		if(usermobileReg.test(usermobile) === false)
+		{
+			alert("手机号码输入不合法");
+			return  false;
+		}
+		var useridReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+		if(useridReg.test(userid) === false)
+		{
+			alert("身份证输入不合法");
+			return  false;
+		}
+
+		localStorage.setItem('username',username);
+		localStorage.setItem('usermobile',usermobile);
+		localStorage.setItem('userid',userid);
+
+		$.mobile.changePage("#page2",{transition:"slide"});
+	});
+
+});
+
+
 $(document).on("pageshow", "#number-select", function(){
 
     function loadData(i, n)
@@ -880,13 +952,6 @@ $(document).on("pageshow", "#number-select", function(){
                 cssStr = "style='height:60px;'";
         }
 
-	    /*
-        if(i%2 == 0)
-                var text = " <div class='ui-block-a'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
-        else
-                var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
-	    */
-
 	    var params = n.num+'-'+ n.ychf+'-'+ n.zdxf;
 	    //var userNum = n.num;
 	    var userNum = '<div class=n1>'+ n.num+'<div><span class=n2>靓号</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class=n3>预存 ￥'+ n.ychf+'</span></div></div>';
@@ -900,7 +965,6 @@ $(document).on("pageshow", "#number-select", function(){
 
 
         $("#list_common_tbody").append(text).trigger('create');
-
     }
 
     function getNumberList()
@@ -932,16 +996,11 @@ $(document).on("pageshow", "#number-select", function(){
     getNumberList();
 
     $(document).on("click",".ui-grid-a a",function(){
-		//alert($(this).text());
-		//localStorage.setItem("luckNum",$(this).text());
-
-        cardInfo = ($(this).text()).split('-');
-        localStorage.setItem("num",cardInfo[0]);
-        localStorage.setItem("ychf",cardInfo[1]);
-        localStorage.setItem("zdxf",cardInfo[2]);
-
-		//location.href="#page2";
-        $.mobile.changePage("#page2",{transition:"slide"});
+	    cardInfo = $(this).attr('myParams').split('-');
+	    localStorage.setItem("num",cardInfo[0]);
+	    localStorage.setItem("ychf",cardInfo[1]);
+	    localStorage.setItem("zdxf",cardInfo[2]);
+	    $.mobile.changePage("#page2",{transition:"slide"});
 	});
 
     $("#seleNumBtn").click(function(){

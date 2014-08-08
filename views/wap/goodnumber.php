@@ -223,7 +223,11 @@ if ($item === null)
 		<input type="button" value="确认订单" id="payBtn">
 		</p>
 		-->
+		<!--
 		<a href="#page2" class="ui-btn">我知道了</a>
+		-->
+		<a data-ajax=false href="<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>" class="ui-btn">我知道了</a>
+
 
 		<!--
 		<p id="url"></p>
@@ -569,14 +573,6 @@ $(document).on("pageshow", "#number-select", function(){
 				cssStr = "style='height:60px;'";
 		}
 
-		/*
-		if(i%2 == 0)
-			var text = " <div class='ui-block-a'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
-		else
-			var text = " <div class='ui-block-b'><div class='ui-bar ui-bar-a' "+cssStr+"><a href='' >"+n.num+"-"+ n.ychf+"-"+ n.zdxf+"</a></div></div>";
-
-		*/
-
 		var params = n.num+'-'+ n.ychf+'-'+ n.zdxf;
 		//var userNum = n.num;
 		var userNum = '<div class=n1>'+ n.num+'<div><span class=n2>靓号</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class=n3>预存 ￥'+ n.ychf+'</span></div></div>';
@@ -652,13 +648,7 @@ $(document).on("pageshow", "#number-select", function(){
 	});
 
 	$(document).on("click",".ui-grid-a a",function(){
-		//cardInfo = ($(this).text()).split('-');
 		cardInfo = $(this).attr('myParams').split('-');
-
-		//alert(cardInfo[0]);
-		//alert(cardInfo[1]);
-		//alert(cardInfo[2]);
-
 		localStorage.setItem("num",cardInfo[0]);
 		localStorage.setItem("ychf",cardInfo[1]);
 		localStorage.setItem("zdxf",cardInfo[2]);

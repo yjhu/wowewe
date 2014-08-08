@@ -796,7 +796,7 @@ EOD;
 	public function actionProdsave()
 	{			
 		//U::W([$_GET, $_POST, $_SERVER]);
-		//U::W([$_GET, $_POST]);
+		U::W([$_GET, $_POST]);
 		//U::W('aaaaaaaaaaaaaaa');
 		//if (!Yii::$app->request->isAjax)
 		//	return;	
@@ -876,6 +876,7 @@ EOD;
 		$order->detail = $order->getDetailStr();
 
 		$mobnum = MMobnum::findOne($_GET['selectNum']);
+		U::W($_GET['selectNum']);
 		if ($mobnum === null ||$mobnum->status != MMobnum::STATUS_UNUSED)
 		{
 			return json_encode(['status'=>1, 'errmsg'=>$mobnum === null ? "mobile doest not exist" : "mobile locked!"] );
@@ -925,7 +926,7 @@ EOD;
 		switch ($cat) 
 		{
 			case 'mobileNum':
-				//U::W($_GET);
+				U::W($_GET);
 				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
 				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
 				$feeSum = isset($_GET['feeSum']) ? $_GET['feeSum'] : 100000;
@@ -933,7 +934,7 @@ EOD;
 				$cid = isset($_GET["cid"]) ? $_GET["cid"] : MItem::ITEM_CAT_DIY;		
 				$num_cat = MMobnum::getNumCat($cid);
 				$data = MMobnum::find()->select('num,ychf,zdxf')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
-				//U::W([$num_cat, $data]);				
+				U::W([$num_cat, $data]);
 				break;
 				
 			case 'diskclick':
@@ -1007,6 +1008,7 @@ EOD;
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_1ad98f5481f3
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_03a74ac96138
     public function actionCardxiaoyuan()
     {
         $this->layout =false;
