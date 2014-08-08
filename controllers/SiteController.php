@@ -58,15 +58,6 @@ class SiteController extends Controller
 
 	public function actionIndex()
 	{		
-$pattern = "/(?:0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)){5}\d/";
-//$ret = preg_match($pattern, '123456789');
-$ret = preg_match($pattern, 'a234567b6789');
-if ($ret)
-	return 'match';
-else
-	return 'no match';
-
-
 		$office = null;
 		if (!\Yii::$app->user->isGuest) 
 		{
