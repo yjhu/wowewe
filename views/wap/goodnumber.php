@@ -256,7 +256,7 @@ if ($item === null)
 			<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
 		</div>
 
-		<input type="button" value="增加联系方式" id="addContactBtn">
+		<input type="button" value="确认" id="addContactBtn">
 
 	</div>
 
