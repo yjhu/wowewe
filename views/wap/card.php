@@ -7,6 +7,8 @@
 
     use app\models\U;
     use app\models\MOffice;
+	use app\models\MItem;
+
     $gh_id = Yii::$app->session['gh_id'];
 
     $item = \app\models\MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$cid]);
@@ -298,8 +300,41 @@
 		<div data-role="footer">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
-	</div>	<!-- page3 end -->	
-	
+	</div>	<!-- page3 end -->
+
+
+<?php
+
+	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
+	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
+	$appid = Yii::$app->wx->gh['appid'];
+
+	if($cid == MItem::ITEM_CAT_CARD_WO)
+		$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/cardwo:'.Yii::$app->wx->getGhid());
+	else if($cid == MItem::ITEM_CAT_CARD_XIAOYUAN)
+		$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/cardxiaoyuan:'.Yii::$app->wx->getGhid());
+	else
+		$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/cardwo:'.Yii::$app->wx->getGhid());
+
+	$myImg = Url::to("$assetsPath/share-icon.jpg", true);
+	$title = strip_tags($item->title);
+	$desc = strip_tags($item->title_hint);
+?>
+
+<script>
+	var dataForWeixin={
+		appId:"<?php echo $appid; ?>",
+		MsgImg:"<?php echo $myImg; ?>",
+		TLImg:"<?php echo $myImg; ?>",
+		url:"<?php echo $url; ?>",
+		title:"<?php echo $title; ?>",
+		desc:"<?php echo $desc; ?>",
+		fakeid:"",
+		prepare:function(argv) {	},
+		callback:function(res){	 }
+	};
+</script>
+
 <?php $this->endBody() ?>
 </body>
 
