@@ -64,6 +64,30 @@
         </div>
     </div> <!-- page1 end -->
 
+	<?php
+		$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
+		$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
+		$appid = Yii::$app->wx->gh['appid'];
+		$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid());
+		$myImg = Url::to("$assetsPath/share-icon.jpg", true);
+		$title = '特惠手机';
+		$desc = '多款热销机型，优惠大放送，快来瞄瞄吧~~ 心动不如行动！';
+	?>
+
+	<script>
+		var dataForWeixin={
+			appId:"<?php echo $appid; ?>",
+			MsgImg:"<?php echo $myImg; ?>",
+			TLImg:"<?php echo $myImg; ?>",
+			url:"<?php echo $url; ?>",
+			title:"<?php echo $title; ?>",
+			desc:"<?php echo $desc; ?>",
+			fakeid:"",
+			prepare:function(argv) {	},
+			callback:function(res){	 }
+		};
+	</script>
+
 <?php $this->endBody() ?>
 </body>
 
@@ -71,9 +95,10 @@
 <?php $this->endPage() ?>
 
 
-<script>
 
-</script>	
 <?php
-
+/*
+ *
+ *
+ */
 ?>

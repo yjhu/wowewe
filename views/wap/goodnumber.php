@@ -302,6 +302,30 @@ if ($item === null)
 	</div>
 </div>	<!-- page3 end -->
 
+<?php
+	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
+	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
+	$appid = Yii::$app->wx->gh['appid'];
+	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/goodnumber:'.Yii::$app->wx->getGhid());
+	$myImg = Url::to("$assetsPath/share-icon.jpg", true);
+	$title = '精选靓号';
+	$desc = '手机靓号，您值得拥有。靓号有限，先抢先得啦...';
+?>
+
+<script>
+	var dataForWeixin={
+		appId:"<?php echo $appid; ?>",
+		MsgImg:"<?php echo $myImg; ?>",
+		TLImg:"<?php echo $myImg; ?>",
+		url:"<?php echo $url; ?>",
+		title:"<?php echo $title; ?>",
+		desc:"<?php echo $desc; ?>",
+		fakeid:"",
+		prepare:function(argv) {	},
+		callback:function(res){	 }
+	};
+</script>
+
 <?php $this->endBody() ?>
 </body>
 

@@ -1011,9 +1011,7 @@ $(document).on("pageshow", "#number-select", function(){
 
 
 });
-
-
-</script>	
+</script>
 <?php
 /*
 	<link rel="stylesheet" href="../css/themes/default/jquery.mobile-1.4.3.min.css">

@@ -91,6 +91,31 @@ $openid = U::getSessionParam('openid');
 		<p>真可惜，就差一点点！</p>
 		<a href="#page1" data-rel="back" class="ui-corner-all ui-btn">确认</a>
 	</div>
+</div>
+
+<div data-role="page" id='dialogPage2' data-dialog="true" data-theme="c">
+
+	<div data-role="header">
+		<h1>抽奖结果</h1>
+	</div>
+
+	<div role="main" class="ui-content">
+		<p>您今天的3次抽奖机会都用完了，请明天再来。</p>
+		<a data-ajax=false  href="<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>"  class="ui-shadow ui-corner-all ui-btn">确认</a>
+	</div>
+
+</div>
+
+<div data-role="page" id='dialogPage3' data-dialog="true" data-theme="c">
+
+	<div data-role="header">
+		<h1>抽奖结果</h1>
+	</div>
+
+	<div role="main" class="ui-content">
+		<p style="font-size: 14pt; font-weight: bolder;color: red">恭喜您，中奖了!</p>
+		<a data-ajax=false href="<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/goodnumber#number-select' ; ?>" class="ui-shadow ui-corner-all ui-btn">确认</a>
+	</div>
 
 </div>
 
@@ -142,8 +167,10 @@ $openid = U::getSessionParam('openid');
 								{
 									//中奖了， 转到选号页面， 可以选择靓号了~~
 									//var res = 'ok';
-									var res = '恭喜您，中奖了！';
-									window.location = '<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/goodnumber#number-select' ; ?>';
+									//var res = '恭喜您，中奖了！';
+
+									//window.location = '<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/goodnumber#number-select' ; ?>';
+									window.location='#dialogPage3';
 								}
 								else
 								{
@@ -161,8 +188,9 @@ $openid = U::getSessionParam('openid');
 					else
 					{
 						//alert(json_data.code+json_data.errmsg);
-						alert('您今天的3次抽奖机会都用完了，请明天再来。');
-						window.location = '<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>';
+						//alert('您今天的3次抽奖机会都用完了，请明天再来。');
+						//window.location = '<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>';
+						window.location='#dialogPage2';
 					}
 
 				}

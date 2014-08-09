@@ -7,13 +7,6 @@ use app\models\U;
 
 use app\assets\JqmAsset;
 JqmAsset::register($this);
-
-$assetsPath = Yii::$app->getRequest()->baseUrl.'/../web/images';
-
-$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js?v0.1');
-
-$gh_id = U::getSessionParam('gh_id');
-Yii::$app->wx->setGhid($gh_id);
 ?>
 
 <?php $this->beginPage() ?>
@@ -201,56 +194,30 @@ Yii::$app->wx->setGhid($gh_id);
 </html>
 <?php $this->endPage() ?>
 <?php
-$appid = Yii::$app->wx->gh['appid'];
+	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
+	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
+	$appid = Yii::$app->wx->gh['appid'];
 
-$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/home:'.Yii::$app->wx->getGhid());
-$myImg = Url::to("$assetsPath/share-icon.jpg", true);
-$title = '襄阳联通官方微信营业厅';
-$desc = '欢迎进入襄阳联通官方微信营业厅';
-
+	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/home:'.Yii::$app->wx->getGhid());
+	$myImg = Url::to("$assetsPath/share-icon.jpg", true);
+	$title = '襄阳联通官方微信营业厅';
+	$desc = '欢迎进入襄阳联通官方微信营业厅';
 ?>
 
 <script>
-    var dataForWeixin={
-        appId:"<?php echo $appid; ?>",
-        MsgImg:"<?php echo $myImg; ?>",
-        TLImg:"<?php echo $myImg; ?>",
-        url:"<?php echo $url; ?>",
-        title:"<?php echo $title; ?>",
-        desc:"<?php echo $desc; ?>",
-        fakeid:"",
-        prepare:function(argv)
-        {
-
-        },
-
-        callback:function(res)
-        {
-            //发送给好友或应用
-            if (res.err_msg=='send_app_msg:confirm') {
-                //todo:func1();
-                ///alert(res.err_desc);
-            }
-            if (res.err_msg=='send_app_msg:cancel') {
-            }
-            //分享到朋友圈
-            if (res.err_msg=='share_timeline:confirm') {
-            }
-            if (res.err_msg=='share_timeline:cancel') {
-            }
-            //分享到微博
-            if (res.err_msg=='share_weibo:confirm') {
-            }
-            if (res.err_msg=='share_weibo:cancel') {
-            }
-            //收藏或分享到应用
-            if (res.err_msg=='send_app_msg:ok') {
-            }
-        }
-    };
-
-
+	var dataForWeixin={
+		appId:"<?php echo $appid; ?>",
+		MsgImg:"<?php echo $myImg; ?>",
+		TLImg:"<?php echo $myImg; ?>",
+		url:"<?php echo $url; ?>",
+		title:"<?php echo $title; ?>",
+		desc:"<?php echo $desc; ?>",
+		fakeid:"",
+		prepare:function(argv) {	},
+		callback:function(res){	 }
+	};
 </script>
+
 <script src="/wx/web/css/jquery.home.min.js"></script>
 <script src="/wx/web/css/bootstrap.home.min.js"></script>
 

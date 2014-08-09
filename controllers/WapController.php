@@ -1037,8 +1037,10 @@ EOD;
     public function actionCardwo()
     {
         $this->layout =false;
-	$gh_id = U::getSessionParam('gh_id');
-	$openid = U::getSessionParam('openid');		        
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
+		Yii::$app->wx->setGhId($gh_id);
+
         return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_WO]);
     }
 
@@ -1047,8 +1049,10 @@ EOD;
     public function actionCardxiaoyuan()
     {
         $this->layout =false;
-	$gh_id = U::getSessionParam('gh_id');
-	$openid = U::getSessionParam('openid');		        
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
+	    Yii::$app->wx->setGhId($gh_id);
+
         return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_XIAOYUAN]);
     }
 
@@ -1056,8 +1060,10 @@ EOD;
     public function actionMobilelist()
     {
         $this->layout =false;
-	$gh_id = U::getSessionParam('gh_id');
-	$openid = U::getSessionParam('openid');		        
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
+		Yii::$app->wx->setGhId($gh_id);
+
         //return $this->render('mobile');
         return $this->render('mobilelist');
     }
@@ -1065,8 +1071,10 @@ EOD;
     public function actionMobile()
     {
         $this->layout =false;
-	$gh_id = U::getSessionParam('gh_id');
-	$openid = U::getSessionParam('openid');		        
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
+		Yii::$app->wx->setGhId($gh_id);
+
         //return $this->render('mobile');
         return $this->render('mobile', ['cid'=>$_GET['cid']]);
     }
@@ -1122,6 +1130,11 @@ EOD;
     public function actionHome()
     {
         $this->layout = 'wap';
+
+	    $gh_id = U::getSessionParam('gh_id');
+	    $openid = U::getSessionParam('openid');
+	    Yii::$app->wx->setGhId($gh_id);
+
         return $this->render('home');
     }
 
@@ -1129,6 +1142,11 @@ EOD;
 	public function actionGoodnumber()
 	{
 		$this->layout =false;
+
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
+		Yii::$app->wx->setGhId($gh_id);
+
 		return $this->render('goodnumber', ['cid'=>MItem::ITEM_CAT_GOODNUMBER]);
 	}
 
