@@ -4,8 +4,6 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
-$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js?v0.1');
-
 $this->title = '2048';
 //$this->params['breadcrumbs'][] = $this->title;
 $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets';
@@ -19,7 +17,7 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
   <title>2048</title>
 -->
 
-  <link href="<?php echo "$assetsPath/main.css?v=4"; ?>" rel="stylesheet" type="text/css">
+  <link href="<?php echo "$assetsPath/main.css?"; ?>" rel="stylesheet" type="text/css">
 
   <style>
 	.sbgshow{display:block;position:fixed;top:0;left:0;width:100%;height:100%;text-align:center;color:#fff;font-size:30px;line-height:1.7em;background:rgba(0,0,0,0.85);}
@@ -30,23 +28,8 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
 	.sbg p{padding-top:78px;}
           .msgstyle {color:#F7EA45;}/*yellow*/
 </style>
-  <!--
-  <link rel="shortcut icon" href="http://gabrielecirulli.github.io/2048/favicon.ico">
- 
-  <link rel="apple-touch-icon" href="http://gabrielecirulli.github.io/2048/meta/apple-touch-icon.png">
-  -->
 
-<!--
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
-  <meta name="format-detection" content="telephone=no">
-
-  <meta name="apple-itunes-app" content="app-id=868076805">
---> 
   <script>
   
         function share(){
@@ -60,10 +43,6 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
 
   </script>
 
-  <!--
-</head>
-<body>
--->
 
   <div class="row">
     <div class="heading">
@@ -78,18 +57,10 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
 
     <div class="above-game">
       <p class="game-intro">
-	  <!--
-	  Join the numbers and get to the <strong>2048 tile!</strong>
-	  -->
 	  全球最火益智游戏，今天你<strong>2048</strong>了吗？
-	  <!--
-	  合并数字直到<strong>2048！</strong>
-	  -->
 	  </p>
       <a class="restart-button">新游戏</a>
     </div>
-
-    
 
     <div class="game-container">
       <div class="game-message">
@@ -99,8 +70,7 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
           <a class="retry-button">重新开始</a>
 	
           <div class="score-sharing"></div>
-	
-		  
+
 		  <!--
           <div class="mailing-list">
             <!\\-- MailChimp Signup Form --\\>
@@ -155,15 +125,15 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
     <p style="color:#007529">
       <strong class="important">[玩法]</strong> 
 
-	  <br>
-	  用手指上下左右滑动，将两个相同的数字合成一个，如2+2 合成4， 4+4 合成8... 直到1024+1024 合出2048.
+	    <br>
+	    用手指上下左右滑动，将两个相同的数字合成一个，如2+2 合成4， 4+4 合成8... 直到1024+1024 合出2048.
     </p>
-                      <hr>
+
+	  <hr>
 
 	<div class="sharing">
     </div>
-					  
-					  
+
   </div>
         
         <div id="sbg" class="sbg">
@@ -171,15 +141,15 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
                 <p id="msg" class="msgstyle">请点击右上角<br />点击【分享到朋友圈】<br /></p>
         </div>
 
-        
 
-<?php 
-$appid = Yii::$app->wx->gh['appid'];
-$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/g2048:'.Yii::$app->wx->getGhid());
-$myImg = Url::to("$assetsPath/game_2048.png", true);
-$title = '游戏2048';
-$desc = '游戏2048, 全球最火益智游戏. 今天你2048了吗?';
+<?php
+	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
 
+	$appid = Yii::$app->wx->gh['appid'];
+	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/g2048:'.Yii::$app->wx->getGhid());
+	$myImg = Url::to("$assetsPath/game_2048.png", true);
+	$title = '游戏2048';
+	$desc = '游戏2048, 全球最火益智游戏. 今天你2048了吗?';
 ?>
 
 <script>
@@ -191,34 +161,8 @@ var dataForWeixin={
 	title:"<?php echo $title; ?>",
 	desc:"<?php echo $desc; ?>",
 	fakeid:"",
-	prepare:function(argv)
-	{
-            
-	},
-
-	callback:function(res)
-	{
-		//发送给好友或应用
-		if (res.err_msg=='send_app_msg:confirm') {
-			//todo:func1();
-			///alert(res.err_desc);
-		}
-		if (res.err_msg=='send_app_msg:cancel') {
-		}
-		//分享到朋友圈
-		if (res.err_msg=='share_timeline:confirm') {
-		}
-		if (res.err_msg=='share_timeline:cancel') {
-		}
-		//分享到微博
-		if (res.err_msg=='share_weibo:confirm') {
-		}
-		if (res.err_msg=='share_weibo:cancel') {
-		}
-		//收藏或分享到应用
-		if (res.err_msg=='send_app_msg:ok') {
-		}   	
-	}
+	prepare:function(argv) {	},
+	callback:function(res){	 }
 };
 
 function showScore(msg)
@@ -319,9 +263,6 @@ function showScore(msg)
   <script src="<?php echo "$assetsPath/local_storage_manager.js";?>"></script>
   <script src="<?php echo "$assetsPath/game_manager.js"; ?>"></script>
   <script src="<?php echo "$assetsPath/application.js"; ?>"></script>
-  
-  
-
 
 <?php echo Html::img(Url::to('images/wx-tuiguang2.jpg'), ['class'=>'img-responsive']); ?>
 
@@ -359,12 +300,6 @@ function showScore(msg)
 
 <?php //$this->registerJs('alert(345);$("#modal_id").trigger("click");', yii\web\View::POS_READY); ?>
 
-
-
-<!--
-</body>
-</html>
--->
 
 <?php
 /*
