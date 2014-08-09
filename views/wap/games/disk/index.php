@@ -81,6 +81,19 @@ $openid = U::getSessionParam('openid');
 	</div>
 </div>
 
+<div data-role="page" id='dialogPage1' data-dialog="true" data-theme="c">
+
+	<div data-role="header">
+		<h1>抽奖结果</h1>
+	</div>
+
+	<div role="main" class="ui-content">
+		<p>真可惜，就差一点点！</p>
+		<a href="#page1" data-rel="back" class="ui-corner-all ui-btn">确认</a>
+	</div>
+
+</div>
+
 <?php $this->endBody() ?>
 </body>
 
@@ -136,17 +149,20 @@ $openid = U::getSessionParam('openid');
 								{
 									//没中奖？？
 									//var res = 'sorry';
-									var res = '真可惜，就差一点点！';
+									//var res = '真可惜，就差一点点！';
+									window.location='#dialogPage1';
 								}
 
 								//alert(name + ':' + value + res );
-								alert( res );
+								//alert( res );
 							}
 						});
 					}
 					else
 					{
-						alert(json_data.code+json_data.errmsg);
+						//alert(json_data.code+json_data.errmsg);
+						alert('您今天的3次抽奖机会都用完了，请明天再来。');
+						window.location = '<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>';
 					}
 
 				}

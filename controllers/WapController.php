@@ -537,6 +537,7 @@ EOD;
 	}	
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/g2048:gh_1ad98f5481f3
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/g2048:gh_03a74ac96138
 	public function actionG2048()
 	{
 		$this->layout = 'wap';
@@ -544,8 +545,8 @@ EOD;
 		//$openid = Yii::$app->session['openid'];
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
-		
 		Yii::$app->wx->setGhId($gh_id);
+
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 		if ($model === null)
 		{
@@ -777,10 +778,30 @@ EOD;
 		$query->select('*')->from(\app\models\MSuggest::tableName())->where(['gh_id'=>$gh_id])->orderBy(['id' => SORT_DESC])->limit(10);   
 		$rows = $query->createCommand()->queryAll();
 		//U::W($rows);
+		foreach($rows as &$row)
+		{
+			$create_time= strtotime($row['create_time']);
+			$d = time()  - $create_time;
+			$d_days = round($d/86400);
+			$d_hours = round($d/3600);
+			$d_minutes = round($d/60);
+			if($d_days>0 && $d_days<4){
+				//document.write(d_days+"天前");
+				$row['create_time_new'] = $d_days."天前";
+			}else if($d_days<=0 && $d_hours>0){
+				//document.write(d_hours+"小时前");
+				$row['create_time_new'] = $d_hours."小时前";
+			}else if($d_hours<=0 && $d_minutes>0){
+				//document.write(d_minutes+"分钟前");
+				$row['create_time_new'] = $d_minutes."分钟前";
+			}else{
+				$row['create_time_new'] = $row['create_time'];
+			}
+		}
 
  		//return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 		//return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
-		return $this->render('suggest',['ar' => $ar,'dataProvider' => $dataProvider,]);
+		return $this->render('suggest',['ar' => $ar,'dataProvider' => $dataProvider, 'rows' =>$rows]);
 	}	
 	
 	
@@ -1067,6 +1088,8 @@ EOD;
 		$this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
+
+		/*
 		$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 		$cur_time = time();	
 		$alreadyWin = 0;		
@@ -1079,6 +1102,8 @@ EOD;
 		}
 		else
 			$restCnt = $model->cnt;
+		*/
+
 /*			
 		if (win)
 		{
@@ -1089,7 +1114,8 @@ EOD;
 		else
 			echo 'sorry, please come here tomorrow';
 */			
-		return $this->render('games/disk/index', ['alreadyWin'=>$alreadyWin, 'restCnt'=>$restCnt]);
+		//return $this->render('games/disk/index', ['alreadyWin'=>$alreadyWin, 'restCnt'=>$restCnt]);
+		return $this->render('games/disk/index');
 	}
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/home:gh_03a74ac96138

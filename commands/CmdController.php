@@ -168,11 +168,12 @@ class CmdController extends Controller
 				new \app\models\ButtonComplex('沃商城', [
 
                     //new \app\models\ButtonView('自由组合套餐', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/product:{$gh_id}")),
-					new \app\models\ButtonView('幸运大转盘', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/disk:{$gh_id}")),
+					//new \app\models\ButtonView('幸运大转盘', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/disk:{$gh_id}")),
                     new \app\models\ButtonView('微信沃卡', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardwo:{$gh_id}")),
                     new \app\models\ButtonView('沃派校园套餐', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardxiaoyuan:{$gh_id}")),
                     new \app\models\ButtonView('特惠手机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobilelist:{$gh_id}")),
-                    new \app\models\ButtonView('精选靓号', 'http://m.10010.com/mall-mobile/NumList/search'),
+                    //new \app\models\ButtonView('精选靓号', 'http://m.10010.com/mall-mobile/NumList/search'),
+					new \app\models\ButtonView('精选靓号', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/goodnumber:{$gh_id}")),
 					//new \app\models\ButtonView('微信沃卡', 'http://m.10010.com/mobilegoodsdetail/711404033449.html'),
 					//new \app\models\ButtonView('精品靓号', 'http://m.10010.com/mall-mobile/NumList/search'),
 					//new \app\models\ButtonView('热销终端', 'http://m.10010.com/MobileList'),
@@ -180,7 +181,8 @@ class CmdController extends Controller
 					//new \app\models\ButtonView('资费套餐', 'http://m.10010.com/'),
 				]),
 				//new \app\models\ButtonView('★自由组合', 'http://m.10010.com/mobilegoodsdetail/981405149472.html'),
-				new \app\models\ButtonView('八月浪漫季', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203837364&idx=1&sn=e320d6d5bc60b71bdedabe25b515f93d#rd'),
+				//new \app\models\ButtonView('八月浪漫季', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203837364&idx=1&sn=e320d6d5bc60b71bdedabe25b515f93d#rd'),
+				new \app\models\ButtonView('八月浪漫季', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/disk:{$gh_id}")),
 				new \app\models\ButtonComplex('沃服务', [
 					new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
 					new \app\models\ButtonView('流量包订购', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),

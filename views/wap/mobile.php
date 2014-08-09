@@ -220,7 +220,7 @@
 
            <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
 
-	       <a href="#contactPage" class="ui-btn">联系方式</a>
+	       <a href="#contactPage" class="ui-btn">用户信息</a>
 
            <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
 
@@ -314,7 +314,7 @@
 
 	<div data-role="content">
 
-		<h2>联系方式</h2>
+		<h2>用户信息</h2>
 		<div class="ui-field-contain">
 			<!--
 			<label for="username">姓名</label>
@@ -518,7 +518,7 @@ $(document).on("pageshow", "#page3", function(){
     eval(item_new);
 
     $("#office").html('所选营业厅: ' +office_name[office] );
-	$("#contact").html('联系方式<br>' +'姓名: '+ localStorage.getItem("username")+'<br>手机: '+ localStorage.getItem("usermobile")+'<br>身份证: '+ localStorage.getItem("userid")  );
+	$("#contact").html('用户信息<br>' +'姓名: '+ localStorage.getItem("username")+'<br>手机: '+ localStorage.getItem("usermobile")+'<br>身份证: '+ localStorage.getItem("userid")  );
 
 	var url = localStorage.getItem("url");
 	//$("#url").html("<a href='"+url+"'>Pay</a>");
@@ -572,7 +572,7 @@ $(document).on("pageshow", "#page3", function(){
 
 });
 
-/*联系方式*/
+/*用户信息*/
 $(document).on("pageshow", "#contactPage", function(){
 
 	if(localStorage.getItem('username') != '')
