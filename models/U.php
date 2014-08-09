@@ -185,7 +185,10 @@ class U
 		else if (isset(Yii::$app->session[$key]))
 			return Yii::$app->session[$key];
 		else 
-			throw new HttpException(500, "key=$key does not exist");
+		{
+			U::W(['no session data', $_SERVER, $_SESSION]);
+			throw new HttpException(500, "session does not exist, key=$key");
+		}
 	}
 	
 	public static function makeDiskResult($type=0)

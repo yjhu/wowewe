@@ -27,4 +27,15 @@ class WebUser extends \yii\web\User
 		return $this->identity->role >= \app\models\MUser::ROLE_ROOT ? true : false;
     }
 
+    public function getGhid()
+    {
+		if (Yii::$app->user->identity->gh_id == 'root')
+		{
+			U::W('root has no gh_id!');
+			throw new NotFoundHttpException('root has no gh_id');			
+		}
+		else
+			return Yii::$app->user->identity->gh_id;
+    }
+
 }

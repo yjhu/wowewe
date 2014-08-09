@@ -590,8 +590,8 @@ EOD;
 	{            
 		$msg = 0;
 		$this->layout = false;
-		$gh_id = Yii::$app->session['gh_id'];
-		$openid = Yii::$app->session['openid'];
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');				
 		Yii::$app->wx->setGhId($gh_id);
 		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 		if (!Yii::$app->user->isGuest)
@@ -678,7 +678,9 @@ EOD;
 	public function actionDiy()
 	{
 		$this->layout = false;		
-		Yii::$app->wx->setGhId();		
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');				
+		//Yii::$app->wx->setGhId();		
  		return $this->render('diy');
 	}	
  
@@ -788,15 +790,16 @@ EOD;
 	public function actionProduct()
 	{
 		$this->layout =false;
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');				
 		return $this->render('product');
-
 	}
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodsave:gh_1ad98f5481f3
 	public function actionProdsave()
 	{			
 		//U::W([$_GET, $_POST, $_SERVER]);
-		U::W([$_GET, $_POST]);
+		//U::W([$_GET, $_POST]);
 		//U::W('aaaaaaaaaaaaaaa');
 		//if (!Yii::$app->request->isAjax)
 		//	return;	
@@ -876,7 +879,7 @@ EOD;
 		$order->detail = $order->getDetailStr();
 
 		$mobnum = MMobnum::findOne($_GET['selectNum']);
-		U::W($_GET['selectNum']);
+		//U::W($_GET['selectNum']);
 		if ($mobnum === null ||$mobnum->status != MMobnum::STATUS_UNUSED)
 		{
 			return json_encode(['status'=>1, 'errmsg'=>$mobnum === null ? "mobile doest not exist" : "mobile locked!"] );
@@ -884,10 +887,21 @@ EOD;
 		
 		if ($order->save(false))
 		{
-			U::W('save ok....');	
+			//U::W('save ok....');	
 			$mobnum->status = MMobnum::STATUS_LOCKED;
 			$mobnum->locktime = time();
 			$mobnum->save(false);
+
+			// clear win flag
+			$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+			if ($model !== null)
+			{
+				$model->cnt = 0;						
+				$model->win = 0;
+				$model->win_time = 0;
+				$model->save(false);
+			}
+				
 			if (Wechat::isAndroid())
 			{			
 				try
@@ -922,11 +936,13 @@ EOD;
 	{
 		//if (!Yii::$app->request->isAjax)
 		//	return;
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');				
 		$this->layout = false;		
 		switch ($cat) 
 		{
 			case 'mobileNum':
-				U::W($_GET);
+				//U::W($_GET);
 				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
 				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
 				$feeSum = isset($_GET['feeSum']) ? $_GET['feeSum'] : 100000;
@@ -934,12 +950,10 @@ EOD;
 				$cid = isset($_GET["cid"]) ? $_GET["cid"] : MItem::ITEM_CAT_DIY;		
 				$num_cat = MMobnum::getNumCat($cid);
 				$data = MMobnum::find()->select('num,ychf,zdxf')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
-				U::W([$num_cat, $data]);
+				//U::W([$num_cat, $data]);
 				break;
 				
 			case 'diskclick':
-				$gh_id = U::getSessionParam('gh_id');
-				$openid = U::getSessionParam('openid');
 //				U::W("gh_id=$gh_id, openid=$openid");				
 				$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);						
 				if ($model === null)
@@ -971,8 +985,6 @@ EOD;
 				break;
 
 			case 'diskRestCnt':
-				$gh_id = U::getSessionParam('gh_id');
-				$openid = U::getSessionParam('openid');
 				//$cid = $_GET['cid'];
 				$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);		
 				if ($model === null)
@@ -1004,6 +1016,8 @@ EOD;
     public function actionCardwo()
     {
         $this->layout =false;
+	$gh_id = U::getSessionParam('gh_id');
+	$openid = U::getSessionParam('openid');		        
         return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_WO]);
     }
 
@@ -1012,6 +1026,8 @@ EOD;
     public function actionCardxiaoyuan()
     {
         $this->layout =false;
+	$gh_id = U::getSessionParam('gh_id');
+	$openid = U::getSessionParam('openid');		        
         return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_XIAOYUAN]);
     }
 
@@ -1019,6 +1035,8 @@ EOD;
     public function actionMobilelist()
     {
         $this->layout =false;
+	$gh_id = U::getSessionParam('gh_id');
+	$openid = U::getSessionParam('openid');		        
         //return $this->render('mobile');
         return $this->render('mobilelist');
     }
@@ -1026,6 +1044,8 @@ EOD;
     public function actionMobile()
     {
         $this->layout =false;
+	$gh_id = U::getSessionParam('gh_id');
+	$openid = U::getSessionParam('openid');		        
         //return $this->render('mobile');
         return $this->render('mobile', ['cid'=>$_GET['cid']]);
     }
@@ -1053,7 +1073,10 @@ EOD;
 		if ($model === null)
 			$restCnt = MDisk::MDISK_CNT_PER_DAY;
 		else if ($model->win == 1 && $cur_time - $model->win_time < 30*60)
+		{
 			$alreadyWin = 1;
+			$restCnt = $model->cnt;
+		}
 		else
 			$restCnt = $model->cnt;
 /*			

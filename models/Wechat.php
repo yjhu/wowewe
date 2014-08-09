@@ -909,16 +909,21 @@ EOD;
 
 	public static function supportWeixinPay()
 	{
-		return self::isWeixinBrowser() && self::getWeixinBrowserVer() >= 5;
+		return false;
+		//return self::isWeixinBrowser() && self::getWeixinBrowserVer() >= 5;
 	}
 
 	public static function isAndroid()
 	{
+		if (!isset($_SERVER['HTTP_USER_AGENT']))
+			return true;
 		return stripos($_SERVER['HTTP_USER_AGENT'], 'Android') !== false ? true : false;
 	}
 
 	public static function isIos()
 	{
+		if (!isset($_SERVER['HTTP_USER_AGENT']))
+			return false;	
 		if (stripos($_SERVER['HTTP_USER_AGENT'], 'IPhone') !== false)
 			return true;
 		if (stripos($_SERVER['HTTP_USER_AGENT'], 'IPad') !== false)		
@@ -928,6 +933,8 @@ EOD;
 
 	public static function isWeixinBrowser()
 	{
+		if (!isset($_SERVER['HTTP_USER_AGENT']))
+			return true;
 		return stripos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger') === false ? false : true;
 	}
 

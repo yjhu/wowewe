@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'attribute' => 'detail',
-				'headerOptions' => array('style'=>'width:120px;'),			
+				'headerOptions' => array('style'=>'width:100px;'),			
 			],
 			[
 				'attribute' => 'cid',
@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'label' => '买家身份信息',
-				'value'=>function ($model, $key, $index, $column) { return "{$model->username},{$model->userid},{$model->usermobile}"; },
+				'value'=>function ($model, $key, $index, $column) { return "{$model->username}, {$model->userid}, {$model->usermobile}"; },
 				'headerOptions' => array('style'=>'width:120px;'),			
 			],
 

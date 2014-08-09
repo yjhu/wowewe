@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\View;
@@ -136,10 +137,15 @@ class OrderController extends Controller
 	public function actionStaffcreate()
 	{
 		$model = new MStaff;
-		if (\Yii::$app->request->isPost) 
+//		U::W('actionStaffcreate');
+		if (Yii::$app->request->isPost) 
 		{
-	               $model->load(\Yii::$app->request->post());
+//		U::W('aaaa');		
+			$model->load(Yii::$app->request->post());
+			$model->gh_id = Yii::$app->user->getGhid();
 			if ($model->save()) {
+//		U::W('bbbb');		
+			
 				return $this->redirect(['stafflist']);			
 			}
 			else
@@ -147,6 +153,7 @@ class OrderController extends Controller
 				U::W($model->getErrors());
 			}
 		}
+//		U::W('ccc');				
 		return $this->render('staffcreate', ['model' => $model]);				
 	}
 
@@ -166,8 +173,7 @@ class OrderController extends Controller
 			else
 			{
 				U::W($model->getErrors());
-			}
-			
+			}			
 		}
 		return $this->render('staffupdate', ['model' => $model]);		
 	}
