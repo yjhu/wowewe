@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\View;
+use yii\data\ArrayDataProvider;
 
 use app\models\U;
 use app\models\MOrder;
@@ -14,6 +15,7 @@ use app\models\MMobnum;
 
 use app\models\MStaff;
 use app\models\MStaffSearch;
+
 
 
 
@@ -137,15 +139,12 @@ class OrderController extends Controller
 	public function actionStaffcreate()
 	{
 		$model = new MStaff;
-//		U::W('actionStaffcreate');
 		if (Yii::$app->request->isPost) 
 		{
-//		U::W('aaaa');		
 			$model->load(Yii::$app->request->post());
 			$model->gh_id = Yii::$app->user->getGhid();
-			if ($model->save()) {
-//		U::W('bbbb');		
-			
+			if ($model->save()) 
+			{
 				return $this->redirect(['stafflist']);			
 			}
 			else
@@ -153,7 +152,6 @@ class OrderController extends Controller
 				U::W($model->getErrors());
 			}
 		}
-//		U::W('ccc');				
 		return $this->render('staffcreate', ['model' => $model]);				
 	}
 
@@ -193,6 +191,37 @@ class OrderController extends Controller
 		}
 	}
 
+	public function actionStafftop()
+	{
+		$sql = <<<EOD
+select t1.score, t3.name, t3.office_id, t4.title, t2.scene_id  from (select scene_pid, count(*) as score from wx_user 
+where gh_id='gh_03a74ac96138' and scene_pid != 0 group by scene_pid order by score desc) t1 
+left join wx_user t2 on t1.scene_pid = t2.scene_id and t2.scene_id != 0 
+left join wx_staff t3 on t2.openid = t3.openid 
+left join wx_office t4 on t3.office_id = t4.office_id
+EOD;
+		$rows = Yii::$app->db->createCommand($sql)->queryAll();
+		foreach($rows as $key => $row)
+		{
+			if (empty($row['name']))
+				unset($rows[$key]);
+		}
+		$dataProvider = new ArrayDataProvider([
+			'allModels' => $rows,
+			'sort' => [
+				'attributes' => ['score', 'name'],
+			],
+			'pagination' => [
+				'pageSize' => 50,
+			],
+		]);
+		// get the posts in the curddrent page
+		// $posts = $provider->getModels();
+		return $this->render('stafftop', [
+			'dataProvider' => $dataProvider,
+		]);
+		
+	}
 	
 }
 

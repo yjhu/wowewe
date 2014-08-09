@@ -1022,7 +1022,7 @@ EOD;
 					$alreadyWin = 0;
 				$data['alreadyWin'] = $alreadyWin;
 				$data['code'] = 0; 
-				U::W($data);
+				//U::W($data);
 				break;
 				
 			default:

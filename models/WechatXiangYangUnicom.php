@@ -82,8 +82,9 @@ class WechatXiangYangUnicom extends Wechat
 2. 我的推广人数
 3. 所在部门的推广二维码
 4. 所在部门的推广人数
-5. 绑定手机号
+5. 修改手机号
 6. 修改所在部门
+7. 解除绑定
 0. 退出
 EOD;
 
@@ -171,11 +172,11 @@ EOD;
 					
 				case self::STATE_MOBILE:
 					if ((!is_numeric($msg)) ||substr($msg, 0, 1) !== '1' || strlen($msg) != 11)
-						return $this->responseText("无效手机号!\n\n"."请重新输入手机号, 0:退出");
+						return $this->responseText("无效的手机号!\n\n"."请重新输入手机号, 0:退出");
 
 					$model = MStaff::findOne(['mobile'=>$msg]);
 					if ($model === null)	
-						return $this->responseText("非员手机号!\n\n"."请重新输入手机号, 0:退出");					
+						return $this->responseText("非襄阳联通员工手机号!\n\n"."请重新输入手机号, 0:退出");					
 					$model->gh_id = $gh_id;
 					$model->openid = $openid;					
 					$model->save(false);
@@ -207,7 +208,7 @@ EOD;
 
 				case self::STATE_CHANGE_MOBILE:
 					if ((!is_numeric($msg)) ||substr($msg, 0, 1) !== '1' || strlen($msg) != 11)
-						return $this->responseText("无效手机号!\n\n"."请重新输入手机号, 0:退出");
+						return $this->responseText("无效的手机号!\n\n"."请重新输入手机号, 0:退出");
 					$model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);					
 					$model->mobile = $msg;
 					$model->save(false);
@@ -215,7 +216,7 @@ EOD;
 					return $this->responseText(self::PROMPT_MENU_ONE);
 
 				case self::STATE_MENU_ONE:
-					if ((!is_numeric($msg)) ||$msg < 0 || $msg > 6)					
+					if ((!is_numeric($msg)) ||$msg < 0 || $msg > 7)					
 					{
 						return $this->responseText("输入无效!\n\n".self::PROMPT_MENU_ONE);
 					}						
@@ -360,6 +361,17 @@ EOD;
 							$current_office_id = empty($staff->office_id) ? '' : "当前所属部门号:{$staff->office_id}\n";
 							$this->setState($gh_id, $openid, self::STATE_OFFICE);
 							return $this->responseText($current_office_id.$this->getOfficePrompt($gh_id));
+
+						case 7:
+							$staff = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+							if ($staff !== null)
+							{
+								$staff->openid = '';
+								$staff->save(false);
+								return $this->responseText("成功解除微信号与员工之间的绑定!\n\n".self::PROMPT_MENU_ONE);
+							}
+							else
+								return $this->responseText("你不需要解除绑定\n\n".self::PROMPT_MENU_ONE);
 							
 						default:
 							return $this->responseText("输入无效!\n\n".self::PROMPT_MENU_ONE);

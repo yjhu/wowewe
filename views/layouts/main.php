@@ -46,6 +46,7 @@ AppAsset::register($this);
 						'items' => [
 							['label' => '订单管理','url' => ['/order/index'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '员工管理','url' => ['/order/stafflist'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '员工推广成绩排行','url' => ['/order/stafftop'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isAdmin],
 						]
 					],					
 					[
