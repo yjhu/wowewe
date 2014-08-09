@@ -59,6 +59,7 @@ class MStaffSearch extends Model
 			return $dataProvider;
 		}
 
+		$this->addCondition($query, 'office_id');					
 		$this->addCondition($query, 'name', true);
 		$this->addCondition($query, 'mobile', true);
 		return $dataProvider;

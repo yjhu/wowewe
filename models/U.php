@@ -352,7 +352,25 @@ class U
 		$str = substr($url, 0, $pos) . "/$size";
 		return $str;
 	}
-	
+
+/*
+	public static function getDataForWeixin($appId, $MsgImg, $url, $title, $desc)
+	{
+		$arr = [
+			'appId'=>$appId,
+			'MsgImg'=>$MsgImg,
+			'TLImg'=>$MsgImg,			
+			'url'=>$url,
+			'title'=>$title,			
+			'desc'=>$desc,
+			'fakeid'=>'',
+			'prepare' => function ($argv){},
+			'callback' => function($res) {},
+		];
+		return json_encode($arr);
+	}
+*/
+
 /*
 	public static function getMobileLuck($pn)
 	{
