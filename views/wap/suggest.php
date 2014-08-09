@@ -26,7 +26,8 @@ Yii::$app->wx->setGhid($gh_id);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
 
-    <?php $this->head() ?>
+	<?php $this->head() ?>
+
 </head>
 
 <body>
@@ -46,7 +47,7 @@ Yii::$app->wx->setGhid($gh_id);
         <?php ActiveForm::end(); ?>
 
 
-        <br><br>
+        <br>
         <!--
         data-role="table"
         id="table-custom-2"
@@ -56,56 +57,22 @@ Yii::$app->wx->setGhid($gh_id);
         data-column-popup-theme="a"
         -->
 
-        <?php echo GridView::widget([
-           // 'options'=>['data-role'=>"table",'class' => 'ui-responsive'],
-            'tableOptions'=>['data-role'=>"table",'id'=>'table-custom-2','data-column-popup-theme'=>'a','data-column-btn-text'=>'选择要显示的列...','class' => 'ui-body-d ui-shadow table-stripe ui-responsive'],
-            //           'showHeader' => false,
-            //           'showFooter' => false,
-            'headerRowOptions' =>['style'=>'display:none'],
-             'layout' => "{items}",
-             'dataProvider' => $dataProvider,
-            //'filterModel' => $searchModel,
-            'columns' => [
-               // ['class' => 'yii\grid\SerialColumn'],
-                //'num_iid',
-               // 'id',
-/*
-                [
-                    'label' => '用户昵称',
-                    'headerOptions' => array('style'=>'width:100px;'),
-                    'attribute' => 'id',
-                ],
-*/
-                [
-                    'label' => '图像',
-                    'headerOptions' => array('style'=>'width:80px;'),
-					'format'=>'image',
-                    'attribute' => 'headimgurl',
-					//'value'=>function ($model, $key, $index, $column) { return U::getUserHeadimgurl($model->headimgurl, 64); },
-					'value'=>function ($model, $key, $index, $column) { return U::getUserHeadimgurl($model->headimgurl, 46); },
-                ],
-                [
-                    'label' => '用户昵称',
-                    'headerOptions' => array('style'=>'width:100px;'),
-                    'attribute' => 'nickname',
-                ],
-	            //'create_time',
-	            [
-		            'label' => '吐槽时间',
-		            'headerOptions' => array('style'=>'width:200px;'),
-		            'attribute' => 'create_time',
-	            ],
-                //'title',
-                [
-                    'label' => '吐槽内容',
-                    'headerOptions' => array('style'=>'width:300px;'),
-                    'attribute' => 'detail',
-                ],
+	    <!-- -->
+	    <ul data-role="listview" data-inset="true">
+		    <?php foreach($rows as $row) { ?>
+		    <li>
+			    <img src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 96);  ?> ">
+			    <h2><?php echo $row['nickname'] ?></h2>
 
-                //['class' => 'yii\grid\ActionColumn'],
-            ],
-        ]); ?>
-            <br><br>
+			    <p><?php echo $row['create_time_new'] ?></p>
+
+			    <p><?php echo $row['detail'] ?></p>
+		    </li>
+		    <?php } ?>
+	    </ul>
+
+	    <br><br>
+
         <?php echo Html::img(Url::to('images/wx-tuiguang2.jpg'), ['class'=>'img-responsive','width'=>'100%']); ?>
     </div>
 
@@ -120,3 +87,55 @@ Yii::$app->wx->setGhid($gh_id);
 </body>
 </html>
 <?php $this->endPage() ?>
+
+<?php
+
+/*
+
+        <?php echo GridView::widget([
+           // 'options'=>['data-role'=>"table",'class' => 'ui-responsive'],
+            'tableOptions'=>['data-role'=>"table",'id'=>'table-custom-2','data-column-popup-theme'=>'a','data-column-btn-text'=>'选择要显示的列...','class' => 'ui-body-d ui-shadow table-stripe ui-responsive'],
+            //           'showHeader' => false,
+            //           'showFooter' => false,
+            'headerRowOptions' =>['style'=>'display:none'],
+             'layout' => "{items}",
+             'dataProvider' => $dataProvider,
+            //'filterModel' => $searchModel,
+            'columns' => [
+               // ['class' => 'yii\grid\SerialColumn'],
+                //'num_iid',
+               // 'id',
+
+[
+	'label' => '图像',
+	'headerOptions' => array('style'=>'width:80px;'),
+	'format'=>'image',
+	'attribute' => 'headimgurl',
+	//'value'=>function ($model, $key, $index, $column) { return U::getUserHeadimgurl($model->headimgurl, 64); },
+	'value'=>function ($model, $key, $index, $column) { return U::getUserHeadimgurl($model->headimgurl, 46); },
+],
+                [
+	                'label' => '用户昵称',
+	                'headerOptions' => array('style'=>'width:100px;'),
+	                'attribute' => 'nickname',
+                ],
+	            //'create_time',
+	            [
+		            'label' => '吐槽时间',
+		            'headerOptions' => array('style'=>'width:200px;'),
+		            'attribute' => 'create_time',
+	            ],
+                //'title',
+                [
+	                'label' => '吐槽内容',
+	                'headerOptions' => array('style'=>'width:300px;'),
+	                'attribute' => 'detail',
+                ],
+
+                //['class' => 'yii\grid\ActionColumn'],
+            ],
+        ]); ?>
+<br><br>
+
+
+ */

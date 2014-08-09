@@ -75,13 +75,17 @@ Yii::$app->wx->setGhid($gh_id);
                     <!-- Wrapper for slides -->
                     <div class="carousel-inner" role="listbox">
                         <div class="item active">
+	                        <a data-ajax=false href="<?php echo Url::to(['wap/disk'], true) ; ?>" >
                             <img src="../web/images/metro_home_head1.jpg" alt="八月浪漫季">
+		                    </a>
                             <div class="carousel-caption">
                             </div>
                         </div>
 
                         <div class="item">
+	                        <a data-ajax=false href="<?php echo Url::to(['wap/disk'], true) ; ?>" >
                             <img src="../web/images/metro_home_head2.jpg" alt="八月浪漫季">
+	                        </a>
                             <div class="carousel-caption">
                             </div>
                         </div>
@@ -108,12 +112,12 @@ Yii::$app->wx->setGhid($gh_id);
 
                 <div class="row" style="margin-top: 10px">
                     <div class="col-md-6 col-xs-6" >
-                        <a href="<?php echo Url::to(['wap/product'], true) ; ?>" >
+                        <a data-ajax=false href="<?php echo Url::to(['wap/product'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-zyzhtc.jpg">
                         </a>
                     </div>
                     <div class="col-md-6 col-xs-6" >
-                        <a href="<?php echo Url::to(['wap/cardwo'], true) ; ?>" >
+                        <a data-ajax=false href="<?php echo Url::to(['wap/cardwo'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-wxwk.jpg">
                         </a>
                     </div>
@@ -121,12 +125,12 @@ Yii::$app->wx->setGhid($gh_id);
 
                 <div class="row">
                     <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-                        <a href="<?php echo Url::to(['wap/cardxiaoyuan'], true) ; ?>" >
+                        <a data-ajax=false href="<?php echo Url::to(['wap/cardxiaoyuan'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-wpxytc.jpg">
                         </a>
                     </div>
                     <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-                        <a href="http://m.10010.com/mall-mobile/NumList/search" >
+	                    <a data-ajax=false href="<?php echo Url::to(['wap/goodnumber'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-jxlh.jpg">
                         </a>
                     </div>
@@ -134,7 +138,7 @@ Yii::$app->wx->setGhid($gh_id);
 
                 <div class="row" >
                     <div class="col-md-12 col-xs-12" >
-                        <a href="<?php echo Url::to(['wap/mobilelist'], true) ; ?>" >
+                        <a data-ajax=false href="<?php echo Url::to(['wap/mobilelist'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-thsj.jpg">
                         </a>
                     </div>
@@ -142,12 +146,12 @@ Yii::$app->wx->setGhid($gh_id);
 
                 <div class="row" >
                     <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-                        <a href="http://wap.10010.com/t/siteMap.htm?menuId=query" >
+                        <a data-ajax=false href="http://wap.10010.com/t/siteMap.htm?menuId=query" >
                             <img width=100% src="../web/images/metro-zdcx.jpg">
                         </a>
                     </div>
                     <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-                        <a href="http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd" >
+                        <a data-ajax=false href="http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd" >
                             <img width=100% src="../web/images/metro-llbdg.jpg">
                         </a>
                     </div>
@@ -155,7 +159,7 @@ Yii::$app->wx->setGhid($gh_id);
 
                 <div class="row" >
                     <div class="col-md-12 col-xs-12">
-                        <a href="http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203837364&idx=1&sn=e320d6d5bc60b71bdedabe25b515f93d#rd" >
+                        <a data-ajax=false href="http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203837364&idx=1&sn=e320d6d5bc60b71bdedabe25b515f93d#rd">
                             <img width=100% src="../web/images/metro-gzyl.jpg">
                         </a>
                     </div>
@@ -163,12 +167,12 @@ Yii::$app->wx->setGhid($gh_id);
 
                 <div class="row" >
                     <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-                        <a href="<?php echo Url::to(['wap/suggest'], true) ; ?>" >
+                        <a data-ajax=false href="<?php echo Url::to(['wap/suggest'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-yhtc.jpg">
                         </a>
                     </div>
                     <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-                        <a href="<?php echo Url::to(['wap/g2048'], true) ; ?>" >
+                        <a data-ajax=false href="<?php echo Url::to(['wap/g2048'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-2048.jpg">
                         </a>
                     </div>
