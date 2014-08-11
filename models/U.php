@@ -233,7 +233,7 @@ class U
 		}
 		$param['code'] = 0;		
 		$param['angle'] = rand($param['start'], $param['end']);
-		U::W($param);
+		//U::W($param);
 		return $param;
 	}
 

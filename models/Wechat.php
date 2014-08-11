@@ -721,6 +721,7 @@ EOD;
 	public function WxGetOauth2AccessToken($code)
 	{
 		$arr = self::WxApi("https://api.weixin.qq.com/sns/oauth2/access_token", ['appid'=>$this->gh['appid'], 'secret'=>$this->gh['appsecret'], 'code'=>$code, 'grant_type'=>'authorization_code']);
+U::W($arr);		
 		$this->checkWxApiResp($arr, [__METHOD__, $code]);
 		return $arr;
 	}
