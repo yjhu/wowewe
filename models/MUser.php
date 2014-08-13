@@ -25,9 +25,15 @@ CREATE TABLE wx_user (
 	msg_time int(10) unsigned NOT NULL DEFAULT '0',
 	scene_id int(10) unsigned NOT NULL DEFAULT '0',
 	scene_pid int(10) unsigned NOT NULL DEFAULT '0',
+	lat float(10,6) NOT NULL DEFAULT '0.000000',
+	lon float(10,6) NOT NULL DEFAULT '0.000000',
+	prec float(10,6) NOT NULL DEFAULT '0.000000',
 	KEY idx_gh_id_scene_pid(gh_id,scene_pid),
 	UNIQUE KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE wx_user ADD lat float(10,6) NOT NULL DEFAULT '0.000000', ADD lon float(10,6) NOT NULL DEFAULT '0.000000', ADD prec float(10,6) NOT NULL DEFAULT '0.000000';
+
 
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('root', 'root', 'root', '1', 9);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', 'admin', 'admin','1', 2);

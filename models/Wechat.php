@@ -137,7 +137,7 @@ class Wechat extends \yii\base\Object
 			if ($value !== false)
 			{
 				$this->_accessToken = $value;
-				U::W("getAccessToken from cache, $value");
+				U::W("getAccessToken from cache key=$key, value=$value");
 				return $value;
 			}
 		}
@@ -658,7 +658,8 @@ EOD;
 			if ($resp['errcode'] == 40001)
 			{
 				U::W('checkWxApiResp, refresh token.');
-				$this->getAccessToken(true);			
+				$this->getAccessToken(true);		
+				return true;
 			}
 			throw new WxException($resp);
 		}
@@ -721,7 +722,7 @@ EOD;
 	public function WxGetOauth2AccessToken($code)
 	{
 		$arr = self::WxApi("https://api.weixin.qq.com/sns/oauth2/access_token", ['appid'=>$this->gh['appid'], 'secret'=>$this->gh['appsecret'], 'code'=>$code, 'grant_type'=>'authorization_code']);
-U::W($arr);		
+//U::W($arr);		
 		$this->checkWxApiResp($arr, [__METHOD__, $code]);
 		return $arr;
 	}

@@ -26,7 +26,8 @@ class WechatXiangYangUnicom extends Wechat
 {
 	protected function onSubscribe() 
 	{
-		$FromUserName = $this->getRequest('FromUserName');		
+		$FromUserName = $this->getRequest('FromUserName');	
+		$openid = $this->getRequest('FromUserName');		
 		$gh_id = $this->getRequest('ToUserName');				
 		$MsgType = $this->getRequest('MsgType');
 		$Event = $this->getRequest('Event');    
@@ -41,7 +42,8 @@ class WechatXiangYangUnicom extends Wechat
 			$model->save(false);
 			//return $this->responseText("{$model->nickname}, 欢迎关注襄阳联通官方微信服务号！\n\n在这里，您可以逛沃商城，享沃服务，玩游戏，参与活动...... 天天惊喜，月月有奖！");
 			$items = array(
-				new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('images/metro-intro.jpg',true), $this->WxGetOauth2Url('snsapi_base', "wap/home:{$gh_id}")),
+				//new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('images/metro-intro.jpg',true), $this->WxGetOauth2Url('snsapi_base', "wap/home:{$gh_id}")),
+				new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
 			);
 			return $this->responseNews($items);
 		}
@@ -50,7 +52,7 @@ class WechatXiangYangUnicom extends Wechat
 			$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
 			//return $this->responseText("{$model->nickname}, 欢迎关注襄阳联通官方微信服务号！\n\n在这里，您可以逛沃商城，享沃服务，玩游戏，参与活动...... 天天惊喜，月月有奖！");
 			$items = array(
-				new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('images/metro-intro.jpg',true), $this->WxGetOauth2Url('snsapi_base', "wap/home:{$gh_id}")),
+				new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
 			);
 			return $this->responseNews($items);
 		}
@@ -148,7 +150,7 @@ EOD;
 						//return Wechat::NO_RESP;
 						$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 						$items = array(
-							new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('images/metro-intro.jpg',true), $this->WxGetOauth2Url('snsapi_base', "wap/home:{$gh_id}")),
+							new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
 						);
 						return $this->responseNews($items);
 					}
