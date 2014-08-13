@@ -22,7 +22,7 @@ use app\models\MItem;
 use app\models\MMobnum;
 use app\models\MDisk;
 
-class WapController extends Controller
+class WapxController extends Controller
 {
 	public function behaviors()
 	{
@@ -70,9 +70,10 @@ class WapController extends Controller
 
 	public function actionStaff()
 	{		
-		$this->layout = 'wapx';
-		$gh_id = U::getSessionParam('gh_id');
-		$openid = U::getSessionParam('openid');
+		//$this->layout = 'wapx';
+		$this->layout = false;
+		//$gh_id = U::getSessionParam('gh_id');
+		//$openid = U::getSessionParam('openid');
 		//Yii::$app->wx->setGhId($gh_id);
 		return $this->render('staff');
 	}

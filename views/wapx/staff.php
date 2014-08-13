@@ -1,227 +1,81 @@
-﻿<?php
-use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Url;
-use yii\bootstrap\Alert;
-use app\models\U;
+﻿<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Fixed Toolbars - jQuery Mobile Framework</title>
+	<link rel="shortcut icon" href="../favicon.ico">
 
-use app\assets\JqmAsset;
-JqmAsset::register($this);
-?>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" /> 
+<!--
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> 
+-->
+	<script src="http://libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script> 
 
-<?php $this->beginPage() ?>
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
-    <link href="/wx/web/css/bootstrap.home.min.css" rel="stylesheet">
-
-    <style type="text/CSS">
-
-        .wrap > .container {
-            padding: 0px 0px 0px !important;
-        }
-    </style>
-
-
-    <?php $this->head() ?>
 </head>
-
 <body>
-<?php $this->beginBody() ?>
-<div data-role="page" id="page1" data-theme="e">
+	<div data-role="page" class="jqm-demos" data-quicklinks="true">
 
-    <div data-role="header" data-theme="e">
-        <h1>襄阳联通官方微信营业厅</h1>
-    </div>
+	    <div data-role="header" data-position="fixed">
+			<a href="../toolbar/" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+	        <h1>Fixed header</h1>
+	    </div>
 
-    <div data-role="content">
+	    <div role="main" class="ui-content jqm-content jqm-fullwidth">
 
-        <div class="wrap">
-            <div class="container" style="padding-top:0px;">
+	    	<h1>Fixed toolbars</h1>
 
-                <!--
-                每个小色块换成 345x190（原230x137）
-                长色块换成 700x190（原来是 465x127）
-                整个布局换成 2 - 2 - 1 - 2 - 1 - 2
-                第一行： 自由组合套餐， 微信沃卡
-                第二行： 沃派校园套餐， 精选靓号
-                第三行：特惠手机
-                第四行：账单查询，流量包订购
-                第5行：关注有礼
-                第6行：用户吐槽，2048
-                另，画内色块间距，横竖都换成10（原来是5）
-                -->
+			<p>In browsers that support CSS <code>position: fixed</code> (most desktop browsers, iOS5+, Android 2.2+, and others), toolbars that use the "fixedtoolbar" plugin will be fixed to the top or bottom of the viewport, while the page content scrolls freely in between. In browsers that don't support fixed positioning, the toolbars will remain positioned in flow, at the top or bottom of the page. </p>
 
-                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                        <!--
-                        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                        -->
-                    </ol>
+		<form>
 
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active">
-	                        <a data-ajax=false href="<?php echo Url::to(['wap/disk'], true) ; ?>" >
-                            <img src="../web/images/metro_home_head1.jpg" alt="八月浪漫季">
-		                    </a>
-                            <div class="carousel-caption">
-                            </div>
-                        </div>
+			<div class="ui-field-contain">
+				<input data-clear-btn="true" name="textinput-1" id="textinput-1" placeholder="Mobile number" value="" type="text">
+			</div>
 
-                        <div class="item">
-	                        <a data-ajax=false href="<?php echo Url::to(['wap/disk'], true) ; ?>" >
-                            <img src="../web/images/metro_home_head2.jpg" alt="八月浪漫季">
-	                        </a>
-                            <div class="carousel-caption">
-                            </div>
-                        </div>
-                        <!--
-                        <div class="item">
-                            <img src="../web/images/metro_home_head1.jpg" alt="八月浪漫季">
-                            <div class="carousel-caption">
-                            </div>
-                        </div>
-                        -->
-                    </div>
+			<div class="ui-field-contain">
+				<select name="select-native-1" id="select-native-1" data-native-menu="false">
+					<option>Choose office...</option>
+					<option value="1">The 1st Option</option>
+					<option value="2">The 2nd Option</option>
+					<option value="3">The 3rd Option</option>
+					<option value="4">The 4th Option</option>
+				</select>
+			</div>
 
-                    <!-- Controls -->
-                    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
+			<div class="ui-field-contain">
+				<button type="submit" id="submit-1" class="ui-shadow ui-btn ui-corner-all">Save</button>
+			</div>
 
+		</form>
 
-                <div class="row" style="margin-top: 10px">
-                    <div class="col-md-6 col-xs-6" >
-                        <a data-ajax=false href="<?php echo Url::to(['wap/product'], true) ; ?>" >
-                            <img width=100% src="../web/images/metro-zyzhtc.jpg">
-                        </a>
-                    </div>
-                    <div class="col-md-6 col-xs-6" >
-                        <a data-ajax=false href="<?php echo Url::to(['wap/cardwo'], true) ; ?>" >
-                            <img width=100% src="../web/images/metro-wxwk.jpg">
-                        </a>
-                    </div>
-                </div>
+	    </div>
 
-                <div class="row">
-                    <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-                        <a data-ajax=false href="<?php echo Url::to(['wap/cardxiaoyuan'], true) ; ?>" >
-                            <img width=100% src="../web/images/metro-wpxytc.jpg">
-                        </a>
-                    </div>
-                    <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-	                    <a data-ajax=false href="<?php echo Url::to(['wap/goodnumber'], true) ; ?>" >
-                            <img width=100% src="../web/images/metro-jxlh.jpg">
-                        </a>
-                    </div>
-                </div>
+	    <div data-role="footer" data-position="fixed">
+	    	<h1>Fixed footer</h1>
+	    </div>
 
-                <div class="row" >
-                    <div class="col-md-12 col-xs-12" >
-                        <a data-ajax=false href="<?php echo Url::to(['wap/mobilelist'], true) ; ?>" >
-                            <img width=100% src="../web/images/metro-thsj.jpg">
-                        </a>
-                    </div>
-                </div>
+	</div>
 
-                <div class="row" >
-                    <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-                        <a data-ajax=false href="http://wap.10010.com/t/siteMap.htm?menuId=query" >
-                            <img width=100% src="../web/images/metro-zdcx.jpg">
-                        </a>
-                    </div>
-                    <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-                        <a data-ajax=false href="http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd" >
-                            <img width=100% src="../web/images/metro-llbdg.jpg">
-                        </a>
-                    </div>
-                </div>
-
-                <div class="row" >
-                    <div class="col-md-12 col-xs-12">
-                        <a data-ajax=false href="http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203837364&idx=1&sn=e320d6d5bc60b71bdedabe25b515f93d#rd">
-                            <img width=100% src="../web/images/metro-gzyl.jpg">
-                        </a>
-                    </div>
-                </div>
-
-                <div class="row" >
-                    <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-                        <a data-ajax=false href="<?php echo Url::to(['wap/suggest'], true) ; ?>" >
-                            <img width=100% src="../web/images/metro-yhtc.jpg">
-                        </a>
-                    </div>
-                    <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-                        <a data-ajax=false href="<?php echo Url::to(['wap/g2048'], true) ; ?>" >
-                            <img width=100% src="../web/images/metro-2048.jpg">
-                        </a>
-                    </div>
-                </div>
-
-                <div class="row" >
-                    <div class="col-md-12 col-xs-12">
-                        <!--
-                        <img width=100% src="../web/images/metro-gzyl.jpg">
-                        -->
-                        <img class="img-responsive" src="/wx/web/images/wx-tuiguang2.jpg" alt="">
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div data-role="footer">
-        <h4>&copy; 襄阳联通 2014</h4>
-    </div>
-
-</div> <!-- page1 end -->
-<?php $this->endBody() ?>
 </body>
 </html>
-<?php $this->endPage() ?>
-<?php
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
-	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
-	$appid = Yii::$app->wx->gh['appid'];
-
-	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/home:'.Yii::$app->wx->getGhid());
-	$myImg = Url::to("$assetsPath/share-icon.jpg", true);
-	$title = '襄阳联通官方微信营业厅';
-	$desc = '欢迎进入襄阳联通官方微信营业厅';
-?>
-
-<script>
-	var dataForWeixin={
-		appId:"<?php echo $appid; ?>",
-		MsgImg:"<?php echo $myImg; ?>",
-		TLImg:"<?php echo $myImg; ?>",
-		url:"<?php echo $url; ?>",
-		title:"<?php echo $title; ?>",
-		desc:"<?php echo $desc; ?>",
-		fakeid:"",
-		prepare:function(argv) {	},
-		callback:function(res){	 }
-	};
-</script>
-
-<script src="/wx/web/css/jquery.home.min.js"></script>
-<script src="/wx/web/css/bootstrap.home.min.js"></script>
 
 
 
 
+<!--
+	<link rel="stylesheet" href="../css/themes/default/jquery.mobile-1.4.3.min.css">
+	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
+	<script src="../js/jquery.js"></script>
+	<script src="../_assets/js/index.js"></script>
+	<script src="../js/jquery.mobile-1.4.3.min.js"></script>
+
+	<script src="http://libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
+
+				<label for="textinput-1" class="ui-hidden-accessible">Text Input:</label>
+				<label for="select-native-1" class="ui-hidden-accessible">Basic:</label>
+				<label for="submit-1" class="ui-hidden-accessible">Save</label>
+
+-->
 
