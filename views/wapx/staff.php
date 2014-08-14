@@ -10,7 +10,9 @@ use app\models\MOffice;
 
 $this->title = '修改';
 
+$this->registerJs('$(document).on("pagecreate", "#page1", function() {alert(1); });', yii\web\View::POS_END); 
 ?>
+
 
 <div data-role="page" id="page1" data-quicklinks="true">
 
@@ -29,7 +31,7 @@ $this->title = '修改';
 		<?php $form = ActiveForm::begin([
 			'method' => 'get',
 			'options'=>['class'=>'ui-corner-all'],
-			'action' => ['wapx/staffscore'],
+//			'action' => ['wapx/staffscore'],
 //			'method' => 'post',
 //			'options'=>['class'=>'ui-corner-all', 'data-ajax'=>'false'],
 			'fieldConfig' => [
@@ -83,7 +85,12 @@ $this->title = '修改';
 var o = $('#submitBtn');
 var a =  $.mobile.getAttribute(o, 'role');
 alert(a);
+</script>
 
+<script>
+$(document).on('pagecreate', '#page2', function(event) {
+     alert('1');
+});
 </script>
 
 <form>

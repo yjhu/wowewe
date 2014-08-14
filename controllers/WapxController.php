@@ -72,8 +72,6 @@ class WapxController extends Controller
 	//http://127.0.0.1/wx/web/index.php?r=wapx/staff&gh_id=gh_1ad98f5481f3&openid=1
 	public function actionStaff()
 	{		
-//return $this->redirect(['staffscore']);
-
 		if (Yii::$app->request->isAjax)
 			U::W('is ajax....');
 		$this->layout = 'wapx';
@@ -90,9 +88,11 @@ class WapxController extends Controller
 			$model->openid = $openid;			
 		}		
 		if ($model->load(Yii::$app->request->post())) 
+//		if ($model->load(Yii::$app->request->get())) 
 		{		
 			if ($model->save(false))
 			{
+				U::W('save ok');
 				return $this->redirect(['staffscore']);							
 			}
 			else

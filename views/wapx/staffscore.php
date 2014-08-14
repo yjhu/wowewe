@@ -14,10 +14,27 @@
 <link rel="shortcut icon" href="../favicon.ico">
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
 <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<script>
+$(document).on("mobileinit", function() {
+	//alert(1);
+	//$.mobile.popup.prototype.options.overlayTheme = "b";
+	//$.mobile.page.prototype.options.keepNative = 'button';
+});
+</script>
+
+
 <script src="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
+
+<script>
+$(document).on('pagecreate', '#page2', function(event) {
+     alert('1');
+});
+</script>
+
 </head>
 <body>
-	<div data-role="page" class="jqm-demos" data-quicklinks="true">
+	<div data-role="page" id="page2" class="jqm-demos" data-quicklinks="true">
 
 	    <div data-role="header" data-position="fixed">
 			<a href="../toolbar/" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
