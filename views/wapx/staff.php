@@ -1,70 +1,70 @@
-﻿<!DOCTYPE html>
-<html>
-	<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Fixed Toolbars - jQuery Mobile Framework</title>
-	<link rel="shortcut icon" href="../favicon.ico">
+﻿<?php
+use yii\helpers\Html;
+use yii\helpers\Url;
 
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" /> 
-<!--
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script> 
--->
-	<script src="http://libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
-    <script src="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script> 
+use yii\widgets\ActiveForm;
 
-</head>
-<body>
-	<div data-role="page" class="jqm-demos" data-quicklinks="true">
+use app\models\U;
+use app\models\MStaff;
+use app\models\MOffice;
 
-	    <div data-role="header" data-position="fixed">
-			<a href="../toolbar/" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-	        <h1>Fixed header</h1>
-	    </div>
+$this->title = '修改';
 
-	    <div role="main" class="ui-content jqm-content jqm-fullwidth">
+?>
 
-	    	<h1>Fixed toolbars</h1>
+<div data-role="page" id="page1" data-quicklinks="true">
 
-			<p>In browsers that support CSS <code>position: fixed</code> (most desktop browsers, iOS5+, Android 2.2+, and others), toolbars that use the "fixedtoolbar" plugin will be fixed to the top or bottom of the viewport, while the page content scrolls freely in between. In browsers that don't support fixed positioning, the toolbars will remain positioned in flow, at the top or bottom of the page. </p>
+	<div data-role="header" data-position="fixed">
+		<a href="../toolbar/" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+		<h1>襄阳联通</h1>
+		<a data-rel="back" href="#">返回</a>
+	</div>
 
-		<form>
+	<div role="main" class="ui-content">
 
-			<div class="ui-field-contain">
-				<input data-clear-btn="true" name="textinput-1" id="textinput-1" placeholder="Mobile number" value="" type="text">
-			</div>
+		<h1>Bind mobile number</h1>
 
-			<div class="ui-field-contain">
-				<select name="select-native-1" id="select-native-1" data-native-menu="false">
-					<option>Choose office...</option>
-					<option value="1">The 1st Option</option>
-					<option value="2">The 2nd Option</option>
-					<option value="3">The 3rd Option</option>
-					<option value="4">The 4th Option</option>
-				</select>
-			</div>
+		<p></p>
 
-			<div class="ui-field-contain">
-				<button type="submit" id="submit-1" class="ui-shadow ui-btn ui-corner-all">Save</button>
-			</div>
+		<?php $form = ActiveForm::begin([
+			'method' => 'get',
+			'options'=>['class'=>'ui-corner-all'],
+			'action' => ['wapx/staffscore'],
+//			'method' => 'post',
+//			'options'=>['class'=>'ui-corner-all', 'data-ajax'=>'false'],
+			'fieldConfig' => [
+				//'labelOptions' => ['class' => 'control-label col-sm-3'],
+				//'inputOptions' => ['class' => 'form-control'],
+				//'template' => "{label}\n<div class='col-sm-9'>{input}</div>\n{hint}\n{error}",
+				'options' => ['class' => 'ui-field-contain'],
+				'inputOptions' => [],
+				'labelOptions' => [],
+			]               
+		]); ?>
 
-		</form>
+		<?= $form->field($model, 'mobile')->textInput(['maxlength' => 24, 'data-clear-btn'=>'true', 'placeholder'=>'Mobile number'])->label(false) ?>
 
-	    </div>
+		<?= $form->field($model, 'office_id')->dropDownList(MOffice::getOfficeNameOptionSimple('gh_03a74ac96138', false, false), ['prompt'=>'选择营业厅', 'data-native-menu'=>'false'])->label(false) ?>
 
-	    <div data-role="footer" data-position="fixed">
-	    	<h1>Fixed footer</h1>
-	    </div>
+		<div class="ui-field-contain">
+			<button type="submit" id="submit-1" class="ui-shadow ui-btn ui-corner-all">Save</button>
+		</div>
+
+		<?php ActiveForm::end(); ?>
 
 	</div>
 
-</body>
-</html>
+	<div data-role="footer" data-position="fixed">
+		<h1>Fixed footer</h1>
+	</div>
+
+</div>
 
 
+<?php
+/*
 
 
-<!--
 	<link rel="stylesheet" href="../css/themes/default/jquery.mobile-1.4.3.min.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
 	<script src="../js/jquery.js"></script>
@@ -77,5 +77,30 @@
 				<label for="select-native-1" class="ui-hidden-accessible">Basic:</label>
 				<label for="submit-1" class="ui-hidden-accessible">Save</label>
 
--->
+			<a rel="external" href="<?php echo Url::to(['wapx/staffscore'], true); ?>" class="ui-btn ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">go to my score</a>
+
+<script>
+var o = $('#submitBtn');
+var a =  $.mobile.getAttribute(o, 'role');
+alert(a);
+
+</script>
+
+<form>
+		<div class="ui-field-contain">
+			<input data-clear-btn="true" name="textinput-1" id="textinput-1" placeholder="Mobile number" value="" type="text">
+		</div>
+
+		<div class="ui-field-contain">
+			<select name="select-native-1" id="select-native-1" data-native-menu="false">
+				<option>选择营业厅</option>
+				<option value="1">The 1st Option</option>
+				<option value="2">The 2nd Option</option>
+				<option value="3">The 3rd Option</option>
+				<option value="4">The 4th Option</option>
+			</select>
+		</div>
+</form>
+
+*/
 
