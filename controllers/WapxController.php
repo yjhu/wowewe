@@ -87,8 +87,8 @@ class WapxController extends Controller
 			$model->gh_id = '111';
 			$model->openid = $openid;			
 		}		
-		if ($model->load(Yii::$app->request->post())) 
-//		if ($model->load(Yii::$app->request->get())) 
+//		if ($model->load(Yii::$app->request->post())) 
+		if ($model->load(Yii::$app->request->get())) 
 		{		
 			if ($model->save(false))
 			{

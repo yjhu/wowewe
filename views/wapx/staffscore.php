@@ -28,7 +28,19 @@ $(document).on("mobileinit", function() {
 
 <script>
 $(document).on('pagecreate', '#page2', function(event) {
-     alert('1');
+	//alert('1');
+
+	$('#form2').submit(function() {
+		var len = $('#id_mobile_numile').val().length;
+		if (len < 11)
+		{
+			$('#errmsg').text('Invalid mobile number.').show().fadeOut(5000);
+			return false;
+		}
+		else
+			return true;
+	});
+
 });
 </script>
 
@@ -48,10 +60,10 @@ $(document).on('pagecreate', '#page2', function(event) {
 	    	<h1>You score is:</h1>
 			<p>In browsers that support CSS <code>position: fixed</code> (most desktop browsers, iOS5+, Android 2.2+, and others), toolbars that use the "fixedtoolbar" plugin will be fixed to the top or bottom of the viewport, while the page content scrolls freely in between. In browsers that don't support fixed positioning, the toolbars will remain positioned in flow, at the top or bottom of the page. </p>
 
-			<form>
+			<form id="form2">
 
 			<div class="ui-field-contain">
-				<input data-clear-btn="true" name="textinput-1" id="textinput-1" placeholder="Mobile number" value="" type="text">
+				<input data-clear-btn="true" name="mobile_numile" id="id_mobile_numile" placeholder="Mobile number" value="" type="text" required>
 			</div>
 
 			<div class="ui-field-contain">
@@ -64,6 +76,7 @@ $(document).on('pagecreate', '#page2', function(event) {
 				</select>
 			</div>
 
+			<div id='errmsg' style='color:#f00'></div>
 			<div class="ui-field-contain">
 				<button type="submit" id="submit-1" class="ui-shadow ui-btn ui-corner-all">Save</button>
 			</div>

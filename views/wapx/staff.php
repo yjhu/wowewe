@@ -10,11 +10,11 @@ use app\models\MOffice;
 
 $this->title = '修改';
 
-$this->registerJs('$(document).on("pagecreate", "#page1", function() {alert(1); });', yii\web\View::POS_END); 
+//$this->registerJs('$(document).on("pagecreate", "#page1", function() {alert(1); $.mobile.ajaxEnabled = false; });', yii\web\View::POS_END); 
 ?>
 
 
-<div data-role="page" id="page1" data-quicklinks="true">
+<div data-role="page" id="page1" data-quicklinks="true" data-title="Multi-Page Template">
 
 	<div data-role="header" data-position="fixed">
 		<a href="../toolbar/" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
