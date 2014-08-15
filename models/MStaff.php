@@ -10,8 +10,9 @@ CREATE TABLE wx_staff (
 	openid VARCHAR(32) NOT NULL DEFAULT '',
 	name VARCHAR(16) NOT NULL DEFAULT '',
 	mobile VARCHAR(16) NOT NULL DEFAULT '',
-	KEY gh_id_idx(gh_id)
+	KEY idx_gh_id (gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 */
 
 use Yii;
@@ -33,9 +34,11 @@ class MStaff extends ActiveRecord
 	{
 		return [
 			[['name', 'mobile'], 'filter', 'filter' => 'trim'],
-			[['name', 'mobile'], 'required'],
+//			[['name', 'mobile'], 'required'],
+			[['name', 'mobile', 'office_id'], 'required'],
 			[['name', 'mobile'], 'string', 'min' => 2, 'max' => 255],
-			[['office_id'], 'integer'],            					
+			[['office_id'], 'integer', 'integerOnly' =>true, 'min'=>1],        
+			[['gh_id', 'openid'], 'safe'],			
 		];
 	}
 
@@ -75,5 +78,6 @@ class MStaff extends ActiveRecord
 }
 
 /*
+ALTER IGNORE TABLE wx_staff DROP KEY idx_gh_id_openid, ADD KEY idx_gh_id (gh_id);
 
 */

@@ -63,7 +63,7 @@ $(document).on('pagecreate', '#page2', function(event) {
 			<form id="form2">
 
 			<div class="ui-field-contain">
-				<input data-clear-btn="true" name="mobile_numile" id="id_mobile_numile" placeholder="Mobile number" value="" type="text" required>
+				<input data-clear-btn="true" name="mobile_numile" id="id_mobile_numile" placeholder="Mobile number" value="" type="tel" required>
 			</div>
 
 			<div class="ui-field-contain">
@@ -109,6 +109,96 @@ $(document).on('pagecreate', '#page2', function(event) {
 	<label for="textinput-1" class="ui-hidden-accessible">Text Input:</label>
 	<label for="select-native-1" class="ui-hidden-accessible">Basic:</label>
 	<label for="submit-1" class="ui-hidden-accessible">Save</label>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fixed Toolbars - jQuery Mobile Framework</title>
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<script>
+$(document).on("mobileinit", function() {
+	//alert(1);
+	//$.mobile.popup.prototype.options.overlayTheme = "b";
+	//$.mobile.page.prototype.options.keepNative = 'button';
+});
+</script>
+
+
+<script src="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
+
+<script>
+$(document).on('pagecreate', '#page2', function(event) {
+	//alert('1');
+
+	$('#form2').submit(function() {
+		var len = $('#id_mobile_numile').val().length;
+		if (len < 11)
+		{
+			$('#errmsg').text('Invalid mobile number.').show().fadeOut(5000);
+			return false;
+		}
+		else
+			return true;
+	});
+
+});
+</script>
+
+</head>
+<body>
+	<div data-role="page" id="page2" class="jqm-demos" data-quicklinks="true">
+
+	    <div data-role="header" data-position="fixed">
+			<a href="../toolbar/" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
+
+	        <h1>Staff score</h1>
+			<a data-rel="back" href="#">返回</a>
+	    </div>
+
+	    <div role="main" class="ui-content">
+
+	    	<h1>You score is:</h1>
+			<p>In browsers that support CSS <code>position: fixed</code> (most desktop browsers, iOS5+, Android 2.2+, and others), toolbars that use the "fixedtoolbar" plugin will be fixed to the top or bottom of the viewport, while the page content scrolls freely in between. In browsers that don't support fixed positioning, the toolbars will remain positioned in flow, at the top or bottom of the page. </p>
+
+			<form id="form2">
+
+			<div class="ui-field-contain">
+				<input data-clear-btn="true" name="mobile_numile" id="id_mobile_numile" placeholder="Mobile number" value="" type="tel" required>
+			</div>
+
+			<div class="ui-field-contain">
+				<select name="select-native-1" id="select-native-1" data-native-menu="false">
+					<option>Choose office...</option>
+					<option value="1">The 1st Option</option>
+					<option value="2">The 2nd Option</option>
+					<option value="3">The 3rd Option</option>
+					<option value="4">The 4th Option</option>
+				</select>
+			</div>
+
+			<div id='errmsg' style='color:#f00'></div>
+			<div class="ui-field-contain">
+				<button type="submit" id="submit-1" class="ui-shadow ui-btn ui-corner-all">Save</button>
+			</div>
+
+			</form>
+
+	    </div>
+
+	    <div data-role="footer" data-position="fixed">
+	    	<h1>Fixed footer</h1>
+	    </div>
+
+	</div>
+
+</body>
+</html>
+
 
 -->
 

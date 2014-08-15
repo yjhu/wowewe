@@ -42,6 +42,12 @@ class MGh extends ActiveRecord
 	const GH_WOSO = 'gh_1ad98f5481f3';
 	const GH_XIANGYANGUNICOM = 'gh_03a74ac96138';	
 	const GH_HOYA = 'gh_78539d18fdcc';
+
+	const GH_XIANGYANGUNICOM_OPENID_HBHE = 'oKgUduNHzUQlGRIDAghiY7ywSeWk';
+	const GH_XIANGYANGUNICOM_OPENID_KZENG = 'oKgUduJJFo9ocN8qO9k2N5xrKoGE';
+	const GH_XIANGYANGUNICOM_OPENID_GTSUN = 'oKgUduNaK7mfojofz2qnSxa_FTMs';	
+
+	const GH_WOSO_OPENID_HBHE = 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o';
 	
 	public function behaviors()
 	{

@@ -184,6 +184,10 @@ class U
 			return $_GET[$key];			
 		else if (isset(Yii::$app->session[$key]))
 			return Yii::$app->session[$key];
+		else if (Yii::$app->params['isWin'] && $key == 'gh_id' && Yii::$app->wx->localTest)
+			return \app\models\MGh::GH_XIANGYANGUNICOM;
+		else if (Yii::$app->params['isWin'] && $key == 'openid' && Yii::$app->wx->localTest)
+			return \app\models\MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;			
 		else 
 		{
 			U::W(['no session data', $_SERVER, $_SESSION]);

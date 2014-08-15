@@ -345,4 +345,6 @@ INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_78539d18
 INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_78539d18fdcc', 'o6biBt5yaB7d3i0YTSkgFSAHmpdo','hoya-hehbhehb','1');
 INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_1ad98f5481f3', 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o','woso-hehbhehb','1');
 
+ALTER IGNORE TABLE wx_staff DROP KEY gh_id_idx, ADD UNIQUE KEY idx_gh_id_openid (gh_id,openid);		
+
 */

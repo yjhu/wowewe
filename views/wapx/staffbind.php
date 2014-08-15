@@ -8,32 +8,37 @@ use app\models\U;
 use app\models\MStaff;
 use app\models\MOffice;
 
-$this->title = '修改';
+$this->title = '襄阳联通';
+$basename = basename(__FILE__, '.php');
 
-//$this->registerJs('$(document).on("pagecreate", "#page1", function() {alert(1); $.mobile.ajaxEnabled = false; });', yii\web\View::POS_END); 
+
+/*
+$js_code=<<<EOD
+$(document).on("pagecreate", "#page1", function() {
+	$.mobile.ajaxEnabled = false; 
+});
+EOD;
+$this->registerJs($js_code, yii\web\View::POS_END); 
+*/
+
 ?>
 
+<div data-role="page" id="<?= $basename ?>_page_1" data-quicklinks="true" data-title="襄阳联通">
 
-<div data-role="page" id="page1" data-quicklinks="true" data-title="Multi-Page Template">
-
-	<div data-role="header" data-position="fixed">
-		<a href="../toolbar/" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-carat-l">Back</a>
-		<h1>襄阳联通</h1>
-		<a data-rel="back" href="#">返回</a>
-	</div>
+	<?php echo $this->render('header', ['title' => '襄阳联通']); ?>
 
 	<div role="main" class="ui-content">
 
-		<h1>Bind mobile number</h1>
-
+		<h1></h1>
 		<p></p>
 
 		<?php $form = ActiveForm::begin([
-			'method' => 'get',
-			'options'=>['class'=>'ui-corner-all'],
-//			'action' => ['wapx/staffscore'],
-//			'method' => 'post',
-//			'options'=>['class'=>'ui-corner-all', 'data-ajax'=>'false'],
+			'id' => "{$basename}_form",
+			//'method' => 'get',
+			//'options'=>['class'=>'ui-corner-all'],
+			//'action' => ['wapx/staffscore'],
+			'method' => 'post',
+			'options'=>['class'=>'ui-corner-all', 'data-ajax'=>'false'],
 			'fieldConfig' => [
 				//'labelOptions' => ['class' => 'control-label col-sm-3'],
 				//'inputOptions' => ['class' => 'form-control'],
@@ -44,21 +49,21 @@ $this->title = '修改';
 			]               
 		]); ?>
 
-		<?= $form->field($model, 'mobile')->textInput(['maxlength' => 24, 'data-clear-btn'=>'true', 'placeholder'=>'Mobile number'])->label(false) ?>
+		<?= $form->field($model, 'mobile')->input('tel', ['maxlength' => 11, 'data-clear-btn'=>'true', 'placeholder'=>'输入手机号', 'readonly'=>true])->label(false) ?>
 
-		<?= $form->field($model, 'office_id')->dropDownList(MOffice::getOfficeNameOptionSimple('gh_03a74ac96138', false, false), ['prompt'=>'选择营业厅', 'data-native-menu'=>'false'])->label(false) ?>
+		<?= $form->field($model, 'name')->textInput(['maxlength' => 24, 'data-clear-btn'=>'true', 'placeholder'=>'员工姓名', 'required'=>true])->label(false) ?>
+
+		<?= $form->field($model, 'office_id')->dropDownList(MOffice::getOfficeNameOptionSimple1($model->gh_id, false, false), ['prompt'=>'选择营业厅', 'data-native-menu'=>'false'])->label(false) ?>
 
 		<div class="ui-field-contain">
-			<button type="submit" id="submit-1" class="ui-shadow ui-btn ui-corner-all">Save</button>
+			<button type="submit" class="ui-shadow ui-btn ui-corner-all">确认绑定</button>
 		</div>
 
 		<?php ActiveForm::end(); ?>
 
 	</div>
 
-	<div data-role="footer" data-position="fixed">
-		<h1>Fixed footer</h1>
-	</div>
+	<?php echo $this->render('footer', ['title' => "&copy; 襄阳联通 ".date('Y')]); ?>
 
 </div>
 
