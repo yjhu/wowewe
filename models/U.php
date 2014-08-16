@@ -185,12 +185,18 @@ class U
 		else if (isset(Yii::$app->session[$key]))
 			return Yii::$app->session[$key];
 		else if (Yii::$app->params['isWin'] && $key == 'gh_id' && Yii::$app->wx->localTest)
-			return \app\models\MGh::GH_XIANGYANGUNICOM;
+		{
+			//return \app\models\MGh::GH_XIANGYANGUNICOM;
+			return \app\models\MGh::GH_WOSO;
+		}
 		else if (Yii::$app->params['isWin'] && $key == 'openid' && Yii::$app->wx->localTest)
-			return \app\models\MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;			
+		{
+			//return \app\models\MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;		
+			return \app\models\MGh::GH_WOSO_OPENID_HBHE;					
+		}
 		else 
 		{
-			U::W(['no session data', $_SERVER, $_SESSION]);
+			U::W(["no session data for $key", $_SERVER, $_SESSION]);
 			throw new HttpException(500, "session does not exist, key=$key");
 		}
 	}
@@ -356,6 +362,7 @@ class U
 		$str = substr($url, 0, $pos) . "/$size";
 		return $str;
 	}
+
 
 /*
 	public static function getDataForWeixin($appId, $MsgImg, $url, $title, $desc)

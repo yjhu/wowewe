@@ -146,9 +146,15 @@ EOD;
 					//if ($msg !== 'Xy')
 					if ($msg == 'New')
 					{
-						$url = Url::to(['wapx/staff', 'gh_id'=>$gh_id, 'openid'=>$openid], true);
+						$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid], true);
 						return $this->responseText("see my score? <a href=\"{$url}\">click me</a>");
 					}
+					else if ($msg == '.test')
+					{
+						$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid], true);
+						return $this->responseText("see my score? <a href=\"{$url}\">click me</a>");
+					}
+					
 					if ($msg !== 'Xy')
 					{
 						//return Wechat::NO_RESP;

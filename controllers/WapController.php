@@ -100,7 +100,7 @@ class WapController extends Controller
 		{
 			return 'Sorry, we can not do anything for you without your authrization!';
 		}
-U::W('1111');
+//U::W('1111');
 		list($route, $gh_id) = explode(':', $_GET['state']);
 		Yii::$app->wx->setGhId($gh_id);
 		$token = Yii::$app->wx->WxGetOauth2AccessToken($code);
@@ -118,7 +118,7 @@ U::W('1111');
 			U::W($oauth2UserInfo);
 			Yii::$app->session->set('oauth2UserInfo', $oauth2UserInfo);
 		}
-U::W('2222');
+//U::W('2222');
 		Yii::$app->session['gh_id'] = $gh_id;
 		Yii::$app->session['openid'] = $openid;
 		//$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);

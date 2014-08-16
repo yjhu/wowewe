@@ -10,9 +10,8 @@ CREATE TABLE wx_staff (
 	openid VARCHAR(32) NOT NULL DEFAULT '',
 	name VARCHAR(16) NOT NULL DEFAULT '',
 	mobile VARCHAR(16) NOT NULL DEFAULT '',
-	KEY idx_gh_id (gh_id)
+	KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 */
 
 use Yii;
@@ -33,8 +32,14 @@ class MStaff extends ActiveRecord
 	public function rules()
 	{
 		return [
+/*
 			[['name', 'mobile'], 'filter', 'filter' => 'trim'],
-//			[['name', 'mobile'], 'required'],
+			[['name', 'mobile'], 'required'],
+			[['name', 'mobile'], 'string', 'min' => 2, 'max' => 255],
+			[['office_id'], 'integer'],     
+*/			
+			[['name', 'mobile'], 'filter', 'filter' => 'trim'],
+			//[['name', 'mobile'], 'required'],
 			[['name', 'mobile', 'office_id'], 'required'],
 			[['name', 'mobile'], 'string', 'min' => 2, 'max' => 255],
 			[['office_id'], 'integer', 'integerOnly' =>true, 'min'=>1],        
@@ -61,23 +66,15 @@ class MStaff extends ActiveRecord
 	{
 		if (empty($this->openid))
 			return 0;
-		$gh_id = $this->gh_id;
-		$openid = $this->openid;
-		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
 		if ($model === null)
 			return 0;
-		if ($model->scene_id == 0)
-			$count = 0;
-		else
-			$count = MUser::find()->where(['gh_id'=>$gh_id, 'scene_pid' => $model->scene_id])->count();
-		return $count;
-
+		return $model->getScore();
 	}
 
 	
 }
 
 /*
-ALTER IGNORE TABLE wx_staff DROP KEY idx_gh_id_openid, ADD KEY idx_gh_id (gh_id);
 
 */

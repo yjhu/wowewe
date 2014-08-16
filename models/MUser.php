@@ -174,7 +174,82 @@ class MUser extends ActiveRecord implements IdentityInterface
 		];
 	}
 
+	public function getScore()
+	{
+		if ($this->scene_id == 0)
+			$count = 0;
+		else
+			$count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id])->count();
+		return $count;	
+	}
 
+/*
+	public function getQrImageUrl()
+	{
+		$gh_id = $this->gh_id;
+		if (empty($this->scene_id))
+		{
+			$gh = MGh::findOne($gh_id);
+			$scene_id = $gh->newSceneId();
+			$gh->save(false);
+			$this->scene_id = $scene_id;
+			$this->save(false);
+			U::W("new a scene_id=$scene_id");								
+		}
+		else
+		{
+			$scene_id = $this->scene_id;
+			U::W("old scene_id=$scene_id");																
+		}
+		$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
+		U::W($log_file_path);							
+		if (!file_exists($log_file_path))
+		{
+			$arr = $this->WxgetQRCode($scene_id, true);
+			$url = $this->WxGetQRUrl($arr['ticket']);
+			Wechat::downloadFile($url, $log_file_path);	
+		}
+		$qrUrl =  Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
+		return $qrUrl;
+		//$url = Url::to(['wap/aboutqr','name'=>$this->nickname, 'qrurl'=>Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg"],true);		
+	}
+*/
+	public function getQrImageUrl()
+	{
+		$gh_id = $this->gh_id;
+		if (empty($this->scene_id))
+		{
+			$newFlag = true;
+			$gh = MGh::findOne($gh_id);
+			$scene_id = $gh->newSceneId();
+			//$gh->save(false);
+			$this->scene_id = $scene_id;
+			//$this->save(false);
+			//U::W("scene_id=$scene_id");								
+		}
+		else
+		{
+			$newFlag = false;		
+			$scene_id = $this->scene_id;
+		}
+		$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
+		//U::W($log_file_path);							
+		if (!file_exists($log_file_path))
+		{
+			Yii::$app->wx->setGhId($gh_id);	
+			$arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
+			$url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
+			Wechat::downloadFile($url, $log_file_path);
+		}
+		if ($newFlag)
+		{
+			$gh->save(false);
+			$this->save(false);
+		}		
+		$url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
+		//U::W($url);
+		return $url;
+	}
 
 /*
 	public function scenarios()
