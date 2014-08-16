@@ -283,7 +283,7 @@
 			<p align="right" >
              合计
 			<span  id="total" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
-			 ￥ 50
+			 ￥ 
 			</span>
 			</p>
 
@@ -407,6 +407,7 @@ var  currentPage = 1; /*init page num*/
 var size = 8;
 var feeSum = 0;
 var count = 0;
+var phonePrice = <?php echo ($item->price)/100; ?>;
 
 planFlag = 'plan66';
 //$().ready(function() {
@@ -505,6 +506,11 @@ $(document).on("pageshow", "#page2", function(){
         else
             realFee = 50;
 
+        if(realFee < 100)
+            realFee = phonePrice;
+        else
+            realFee = realFee - 100 + phonePrice;
+
 		localStorage.setItem("item",$("form#productForm").serialize());
 		$.ajax({
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
@@ -544,6 +550,19 @@ $(document).on("pageshow", "#page3", function(){
 
     $("#office").html('所选营业厅: ' +office_name[office] );
 	$("#contact").html('用户信息<br>' +'姓名: '+ localStorage.getItem("username")+'<br>手机: '+ localStorage.getItem("usermobile")+'<br>身份证: '+ localStorage.getItem("userid")  );
+
+    /* show total*/
+    if((localStorage.getItem('ychf')/100) >= 50)
+        realFee = localStorage.getItem('ychf')/100;
+    else
+        realFee = 50;
+
+    if(realFee < 100)
+        realFee = phonePrice;
+    else
+        realFee = realFee - 100 + phonePrice;
+
+    $("#total").html("￥ " + realFee);
 
 	var url = localStorage.getItem("url");
 	//$("#url").html("<a href='"+url+"'>Pay</a>");
