@@ -23,6 +23,10 @@ JqmAsset::register($this);
         .wrap > .container {
             padding: 0px 0px 0px !important;
         }
+
+        .ui-header .ui-title, .ui-footer .ui-title {
+            margin-right: 0 !important; margin-left: 0 !important;
+        }
     </style>
 
 
