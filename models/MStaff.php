@@ -10,9 +10,8 @@ CREATE TABLE wx_staff (
 	openid VARCHAR(32) NOT NULL DEFAULT '',
 	name VARCHAR(16) NOT NULL DEFAULT '',
 	mobile VARCHAR(16) NOT NULL DEFAULT '',
-	KEY idx_gh_id (gh_id)
+	KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 */
 
 use Yii;
@@ -33,8 +32,14 @@ class MStaff extends ActiveRecord
 	public function rules()
 	{
 		return [
+/*
 			[['name', 'mobile'], 'filter', 'filter' => 'trim'],
-//			[['name', 'mobile'], 'required'],
+			[['name', 'mobile'], 'required'],
+			[['name', 'mobile'], 'string', 'min' => 2, 'max' => 255],
+			[['office_id'], 'integer'],     
+*/			
+			[['name', 'mobile'], 'filter', 'filter' => 'trim'],
+			//[['name', 'mobile'], 'required'],
 			[['name', 'mobile', 'office_id'], 'required'],
 			[['name', 'mobile'], 'string', 'min' => 2, 'max' => 255],
 			[['office_id'], 'integer', 'integerOnly' =>true, 'min'=>1],        
@@ -61,23 +66,45 @@ class MStaff extends ActiveRecord
 	{
 		if (empty($this->openid))
 			return 0;
-		$gh_id = $this->gh_id;
-		$openid = $this->openid;
-		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
 		if ($model === null)
 			return 0;
-		if ($model->scene_id == 0)
-			$count = 0;
-		else
-			$count = MUser::find()->where(['gh_id'=>$gh_id, 'scene_pid' => $model->scene_id])->count();
-		return $count;
+		return $model->getScore();
+	}
 
+	public static function getStaffScoreTop($gh_id, $n=0)
+	{
+		$key = __METHOD__."{$gh_id}_{$n}";
+		$value = Yii::$app->cache->get($key);
+		if ($value !== false)
+			return $value;
+		
+		$sql = <<<EOD
+SELECT t1.score, t3.name, t3.office_id, t4.title, t2.scene_id, t2.headimgurl  FROM (SELECT scene_pid, count(*) as score FROM wx_user 
+WHERE gh_id='$gh_id' and scene_pid != 0 GROUP BY scene_pid ORDER BY score desc) t1 
+LEFT JOIN wx_user t2 ON t1.scene_pid = t2.scene_id AND t2.scene_id != 0 
+LEFT JOIN wx_staff t3 ON t2.openid = t3.openid 
+LEFT JOIN wx_office t4 ON t3.office_id = t4.office_id
+EOD;
+		if ($n)
+			$sql .= " LIMIT $n";
+
+		$rows = Yii::$app->db->createCommand($sql)->queryAll();
+		foreach($rows as $idx => $row)
+		{
+			if (empty($row['name']))
+				unset($rows[$idx]);
+		}
+		Yii::$app->cache->set($key, $rows, YII_DEBUG ? 100 : 12*3600);
+		return $rows;
 	}
 
 	
 }
 
 /*
-ALTER IGNORE TABLE wx_staff DROP KEY idx_gh_id_openid, ADD KEY idx_gh_id (gh_id);
+		$rows = Yii::$app->db->cache(function (\yii\db\Connection $db) {
+			return $db->createCommand($sql)->queryAll();
+		}, YII_DEBUG ? 100 : 3600);
 
 */

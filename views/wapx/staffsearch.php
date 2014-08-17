@@ -46,10 +46,10 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 			]               
 		]); ?>
 
-		<?= $form->field($model, 'mobile')->input('tel', ['maxlength' => 11, 'data-clear-btn'=>'true', 'placeholder'=>'输入手机号', 'required'=>true])->label(false) ?>
+		<?= $form->field($model, 'mobile')->input('tel', ['maxlength' => 11, 'data-clear-btn'=>'true', 'placeholder'=>'输入手机号', 'required'=>true])->label('手机号:') ?>
 
 		<div class="ui-field-contain">
-			<button type="submit" id="<?= $basename ?>_submit_1" class="ui-shadow ui-btn ui-corner-all">确认</button>
+			<button type="submit" id="<?= $basename ?>_submit_1" class="ui-shadow ui-btn ui-corner-all">下一步</button>
 		</div>
 
 		<?php ActiveForm::end(); ?>

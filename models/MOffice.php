@@ -147,15 +147,19 @@ class MOffice extends ActiveRecord
 		$gh_id = $this->gh_id;
 		if (empty($this->scene_id))
 		{
+			$newFlag = true;
 			$gh = MGh::findOne($gh_id);
 			$scene_id = $gh->newSceneId();
-			$gh->save(false);
+			//$gh->save(false);
 			$this->scene_id = $scene_id;
-			$this->save(false);
+			//$this->save(false);
 			//U::W("scene_id=$scene_id");								
 		}
 		else
+		{
+			$newFlag = false;		
 			$scene_id = $this->scene_id;
+		}
 		$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
 		//U::W($log_file_path);							
 		if (!file_exists($log_file_path))
@@ -163,13 +167,60 @@ class MOffice extends ActiveRecord
 			Yii::$app->wx->setGhId($gh_id);	
 			$arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
 			$url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
-			Wechat::downloadFile($url, $log_file_path);	
+			Wechat::downloadFile($url, $log_file_path);
 		}
+		if ($newFlag)
+		{
+			$gh->save(false);
+			$this->save(false);
+		}		
 		$url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
 		//U::W($url);
 		return $url;
 	}
 
+	public function getScoreOfAllStaffs()
+	{
+		$staffs = MStaff::find()->where(['gh_id'=>$this->gh_id, 'office_id'=>$this->office_id])->asArray()->all();
+		$openids = [];
+		//U::W($staffs);							
+		foreach($staffs as $staff)
+		{
+			if (!empty($staff['openid']))
+				$openids[] = $staff['openid'];
+		}
+
+		if (empty($openids))
+		{
+			$staff_count = 0;
+		}
+		else
+		{
+			$users = MUser::find()->where(['gh_id'=>$this->gh_id, 'openid'=>$openids])->asArray()->all();
+			$scene_ids = [];													
+			foreach($users as $user)
+			{
+				if ($user['scene_id'] != 0)
+					$scene_ids[] = $user['scene_id'];
+			}
+			//U::W($scene_ids);
+			if (empty($scene_ids))
+				$staff_count = 0;
+			else														
+				$staff_count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $scene_ids])->count();								
+		}
+		return $staff_count;		
+	}
+
+	public function getScore()
+	{
+		//U::W("$this->gh_id, $this->scene_id, $this->office_id");	
+		if ($this->scene_id == 0)
+			$count = 0;
+		else
+			$count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id])->count();
+		return $count;		
+	}
 }
 
 /*

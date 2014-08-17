@@ -38,7 +38,7 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 			//'options'=>['class'=>'ui-corner-all'],
 			//'action' => ['wapx/staffscore'],
 			'method' => 'post',
-			'options'=>['class'=>'ui-corner-all', 'data-ajax'=>'false'],
+			'options'=>['class'=>'ui-corner-all', 'data' => ['ajax'=>'false']],
 			'fieldConfig' => [
 				//'labelOptions' => ['class' => 'control-label col-sm-3'],
 				//'inputOptions' => ['class' => 'form-control'],
@@ -49,14 +49,14 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 			]               
 		]); ?>
 
-		<?= $form->field($model, 'mobile')->input('tel', ['maxlength' => 11, 'data-clear-btn'=>'true', 'placeholder'=>'输入手机号', 'readonly'=>true])->label(false) ?>
+		<?= $form->field($model, 'mobile')->input('tel', ['maxlength' => 11, 'data' => ['clear-btn'=>'true'], 'placeholder'=>'输入手机号', 'readonly'=>true])->label('手机号:') ?>
 
-		<?= $form->field($model, 'name')->textInput(['maxlength' => 24, 'data-clear-btn'=>'true', 'placeholder'=>'员工姓名', 'required'=>true])->label(false) ?>
+		<?= $form->field($model, 'name')->textInput(['maxlength' => 24, 'data' => ['clear-btn'=>'true'], 'placeholder'=>'员工姓名', 'required'=>true])->label('姓名:') ?>
 
-		<?= $form->field($model, 'office_id')->dropDownList(MOffice::getOfficeNameOptionSimple1($model->gh_id, false, false), ['prompt'=>'选择营业厅', 'data-native-menu'=>'false'])->label(false) ?>
+		<?= $form->field($model, 'office_id')->dropDownList(MOffice::getOfficeNameOptionSimple1($model->gh_id, false, false), ['prompt'=>'选择营业厅'])->label(false) ?>
 
 		<div class="ui-field-contain">
-			<button type="submit" class="ui-shadow ui-btn ui-corner-all">确认绑定</button>
+			<button type="submit" class="ui-shadow ui-btn ui-corner-all">将微信与员工信息进行绑定</button>
 		</div>
 
 		<?php ActiveForm::end(); ?>
@@ -113,6 +113,7 @@ $(document).on('pagecreate', '#page2', function(event) {
 			</select>
 		</div>
 </form>
+			'options'=>['class'=>'ui-corner-all', 'data-ajax'=>'false'],
 
 */
 

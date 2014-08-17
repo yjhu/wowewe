@@ -32,7 +32,7 @@ class NightController extends Controller
 		self::closeExpiredOrders();
 
 		//MDisk::updateAll(['cnt' => 3]);
-		$tableName = MDisk::tableName()
+		$tableName = MDisk::tableName();
 		$n = MDisk::deleteAll();
 		U::W("DELETE $tableName, $n");	
 
