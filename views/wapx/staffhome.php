@@ -53,16 +53,28 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 			<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:40px">部门的推广人数</div></div>
 			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:40px"><?= $office->score ?>人</div></div>
 			<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:40px">部门的推广二维码</div></div>
-			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:40px"><a href="#dialog_office_qr" class="ui-btn ui-shadow ui-corner-all ui-icon-grid ui-btn-icon-notext">部门二维码图片</a></div></div>
+<!--
+			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:40px"><a href="#dialog_office_qr123" class="ui-btn ui-shadow ui-corner-all ui-icon-grid ui-btn-icon-notext">部门二维码图片</a></div></div>
+-->
+			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:40px"><a href="<?php echo Url::to(['officeqr', 'gh_id'=>$model->gh_id, 'openid'=>$model->openid]) ?>" class="ui-btn ui-shadow ui-corner-all ui-icon-grid ui-btn-icon-notext">部门二维码图片</a></div></div>
+
 		</div>
 	</div>
 
 	<div data-role="footer" data-position="fixed">
 		<div data-role="navbar">
 			<ul>
-            <li><a href="<?php echo Url::to(['staffbind', 'mobile'=>$model->mobile]) ?>" data-icon="gear" data-ajax="false">修改设置</a></li>
+
+			<?php if (isset(Yii::$app->session['owner'])): ?>
+            <li><a href="<?php echo Url::to(['staffbind', 'gh_id'=>$model->gh_id, 'openid'=>$model->openid, 'mobile'=>$model->mobile]) ?>" data-icon="gear" data-ajax="false">修改设置</a></li>
+			<?php endif; ?>
+
             <li><a href="#staffhome_stafftop" data-icon="bullets">推广明星</a></li>
+
+			<?php if (isset(Yii::$app->session['owner'])): ?>
             <li><input name="Unbind" data-corners="false" data-icon="delete" data-iconpos="top" value="解绑" type="submit" onclick="return confirm('将微信号与员工信息解绑,确定?');"></li>
+			<?php endif; ?>
+
 			</ul>
 	    </div>
 
@@ -81,12 +93,14 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 	</div>
 </div>
 
+<?php /*
 <div data-role="page" id="dialog_office_qr" data-dialog="true">
 	<div data-role="header"><h1>部门的推广二维码</h1></div>
 	<div role="main" class="ui-content">
 	<?php echo Html::img($office->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
 	</div>
 </div>
+*/ ?>
 
 <div data-role="dialog" id="staffhome_stafftop">
 	<?php $rows = MStaff::getStaffScoreTop($user->gh_id, 10); ?>

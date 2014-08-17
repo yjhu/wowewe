@@ -2,7 +2,6 @@
 namespace app\models;
 
 /*
-DROP TABLE IF EXISTS wx_user;
 CREATE TABLE wx_user (
 	id int(10) unsigned NOT NULL AUTO_INCREMENT  PRIMARY KEY,
 	gh_id VARCHAR(32) NOT NULL DEFAULT '',
@@ -32,7 +31,6 @@ CREATE TABLE wx_user (
 	UNIQUE KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-ALTER TABLE wx_user ADD lat float(10,6) NOT NULL DEFAULT '0.000000', ADD lon float(10,6) NOT NULL DEFAULT '0.000000', ADD prec float(10,6) NOT NULL DEFAULT '0.000000';
 
 
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('root', 'root', 'root', '1', 9);
@@ -183,37 +181,6 @@ class MUser extends ActiveRecord implements IdentityInterface
 		return $count;	
 	}
 
-/*
-	public function getQrImageUrl()
-	{
-		$gh_id = $this->gh_id;
-		if (empty($this->scene_id))
-		{
-			$gh = MGh::findOne($gh_id);
-			$scene_id = $gh->newSceneId();
-			$gh->save(false);
-			$this->scene_id = $scene_id;
-			$this->save(false);
-			U::W("new a scene_id=$scene_id");								
-		}
-		else
-		{
-			$scene_id = $this->scene_id;
-			U::W("old scene_id=$scene_id");																
-		}
-		$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
-		U::W($log_file_path);							
-		if (!file_exists($log_file_path))
-		{
-			$arr = $this->WxgetQRCode($scene_id, true);
-			$url = $this->WxGetQRUrl($arr['ticket']);
-			Wechat::downloadFile($url, $log_file_path);	
-		}
-		$qrUrl =  Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
-		return $qrUrl;
-		//$url = Url::to(['wap/aboutqr','name'=>$this->nickname, 'qrurl'=>Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg"],true);		
-	}
-*/
 	public function getQrImageUrl()
 	{
 		$gh_id = $this->gh_id;
@@ -233,7 +200,7 @@ class MUser extends ActiveRecord implements IdentityInterface
 			$scene_id = $this->scene_id;
 		}
 		$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
-		U::W($log_file_path);							
+		//U::W($log_file_path);							
 		if (!file_exists($log_file_path))
 		{
 			Yii::$app->wx->setGhId($gh_id);	
@@ -247,38 +214,14 @@ class MUser extends ActiveRecord implements IdentityInterface
 			$this->save(false);
 		}		
 		$url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
-		U::W($url);
+		//U::W($url);
 		return $url;
 	}
 
-/*
-	public function scenarios()
-	{
-		return [
-			Yii\base\Model::SCENARIO_DEFAULT => ['nickname', 'email', 'password'],
-			'signup' => ['nickname', 'email', 'password'],
-			'resetPassword' => ['password'],
-			'requestPasswordResetToken' => ['email'],
-		];
-	}
-	
-	public function beforeSave($insert)
-	{
-		if (parent::beforeSave($insert)) {
-			if (($this->isNewRecord || $this->getScenario() === 'resetPassword') && !empty($this->password)) {
-				//$this->password_hash = Security::generatePasswordHash($this->password);
-			}
-			if ($this->isNewRecord) {
-				//$this->auth_key = Security::generateRandomKey();
-			}
-			return true;
-		}
-		return false;
-	}
-*/	
 }
 
 /*
+ALTER TABLE wx_user ADD lat float(10,6) NOT NULL DEFAULT '0.000000', ADD lon float(10,6) NOT NULL DEFAULT '0.000000', ADD prec float(10,6) NOT NULL DEFAULT '0.000000';
 
 DROP TABLE IF EXISTS wx_user;
 CREATE TABLE wx_user (
@@ -422,4 +365,58 @@ INSERT INTO wx_user (gh_id, openid,nickname,password) VALUES ('gh_1ad98f5481f3',
 
 ALTER IGNORE TABLE wx_staff DROP KEY gh_id_idx, ADD UNIQUE KEY idx_gh_id_openid (gh_id,openid);		
 
-*/
+	public function getQrImageUrl()
+	{
+		$gh_id = $this->gh_id;
+		if (empty($this->scene_id))
+		{
+			$gh = MGh::findOne($gh_id);
+			$scene_id = $gh->newSceneId();
+			$gh->save(false);
+			$this->scene_id = $scene_id;
+			$this->save(false);
+			U::W("new a scene_id=$scene_id");								
+		}
+		else
+		{
+			$scene_id = $this->scene_id;
+			U::W("old scene_id=$scene_id");																
+		}
+		$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
+		U::W($log_file_path);							
+		if (!file_exists($log_file_path))
+		{
+			$arr = $this->WxgetQRCode($scene_id, true);
+			$url = $this->WxGetQRUrl($arr['ticket']);
+			Wechat::downloadFile($url, $log_file_path);	
+		}
+		$qrUrl =  Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
+		return $qrUrl;
+		//$url = Url::to(['wap/aboutqr','name'=>$this->nickname, 'qrurl'=>Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg"],true);		
+	}
+
+	public function scenarios()
+	{
+		return [
+			Yii\base\Model::SCENARIO_DEFAULT => ['nickname', 'email', 'password'],
+			'signup' => ['nickname', 'email', 'password'],
+			'resetPassword' => ['password'],
+			'requestPasswordResetToken' => ['email'],
+		];
+	}
+	
+	public function beforeSave($insert)
+	{
+		if (parent::beforeSave($insert)) {
+			if (($this->isNewRecord || $this->getScenario() === 'resetPassword') && !empty($this->password)) {
+				//$this->password_hash = Security::generatePasswordHash($this->password);
+			}
+			if ($this->isNewRecord) {
+				//$this->auth_key = Security::generateRandomKey();
+			}
+			return true;
+		}
+		return false;
+	}
+*/	
+

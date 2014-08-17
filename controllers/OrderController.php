@@ -192,22 +192,6 @@ class OrderController extends Controller
 
 	public function actionStafftop()
 	{
-/*	
-		$sql = <<<EOD
-select t1.score, t3.name, t3.office_id, t4.title, t2.scene_id  from (select scene_pid, count(*) as score from wx_user 
-where gh_id='gh_03a74ac96138' and scene_pid != 0 group by scene_pid order by score desc) t1 
-left join wx_user t2 on t1.scene_pid = t2.scene_id and t2.scene_id != 0 
-left join wx_staff t3 on t2.openid = t3.openid 
-left join wx_office t4 on t3.office_id = t4.office_id
-EOD;
-		$rows = Yii::$app->db->createCommand($sql)->queryAll();
-		foreach($rows as $key => $row)
-		{
-			if (empty($row['name']))
-				unset($rows[$key]);
-		}
-*/
-		//$rows = MStaff::getStaffScoreTop(MGh::GH_WOSO);
 		$rows = MStaff::getStaffScoreTop(MGh::GH_XIANGYANGUNICOM);
 		$dataProvider = new ArrayDataProvider([
 			'allModels' => $rows,
@@ -244,5 +228,21 @@ EOD;
 		]);
 		
 	}
+
+		$sql = <<<EOD
+select t1.score, t3.name, t3.office_id, t4.title, t2.scene_id  from (select scene_pid, count(*) as score from wx_user 
+where gh_id='gh_03a74ac96138' and scene_pid != 0 group by scene_pid order by score desc) t1 
+left join wx_user t2 on t1.scene_pid = t2.scene_id and t2.scene_id != 0 
+left join wx_staff t3 on t2.openid = t3.openid 
+left join wx_office t4 on t3.office_id = t4.office_id
+EOD;
+		$rows = Yii::$app->db->createCommand($sql)->queryAll();
+		foreach($rows as $key => $row)
+		{
+			if (empty($row['name']))
+				unset($rows[$key]);
+		}
+		//$rows = MStaff::getStaffScoreTop(MGh::GH_WOSO);
+		
 */
 

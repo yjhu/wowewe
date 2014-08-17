@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'attribute' => '推广成绩',
-				'value'=>function ($model, $key, $index, $column) { return $model->score; },
+				'value'=>function ($model, $key, $index, $column) { return $model->score.(empty($model->openid)?' [微信未绑定]':''); },
 				'filter'=> false,
 				'headerOptions' => array('style'=>'width:200px;'),
 			],

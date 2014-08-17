@@ -36,7 +36,9 @@ class WechatXiangYangUnicom extends Wechat
 		{
 			//a new user subscribe us with qr parameter, EventKey:qrscene_3 qrscene_OFFICE_3
 			$Ticket = $this->getRequest('Ticket');	
-			$scene_pid = substr($EventKey, 8);				
+			$scene_pid = substr($EventKey, 8);	
+			//U::W("sub....qr...., $EventKey, $scene_pid");
+			
 			$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
 			$model->scene_pid = $scene_pid;
 			$model->save(false);
@@ -132,12 +134,12 @@ EOD;
 		$msg = trim($Content);	
 		if ($msg == '我是襄阳联通员工')
 		{
-			$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid], true);
+			$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
 			return $this->responseText("<a href=\"{$url}\">联通内部员工通道, 点击这里进入...</a>");
 		}
 		else if ($msg == '.debug')
 		{
-			$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid], true);
+			$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
 			return $this->responseText("see my score? <a href=\"{$url}\">click me</a>");
 		}
 		else
@@ -417,6 +419,36 @@ EOD;
 	protected function onLocation() 
 	{ 
 		return Wechat::NO_RESP;	
+		
+		$FromUserName = $this->getRequest('FromUserName');
+		$gh_id = $this->getRequest('ToUserName');
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);		
+		if ($model !== null)
+		{
+			$model->lat = $this->getRequest('Location_X');
+			$model->lon = $this->getRequest('Location_Y');
+			//$model->scale = $this->getRequest('Scale');			
+			$model->save(false);
+		}	
+		return Wechat::NO_RESP;	
+	}
+
+	protected function onEventLocation()
+	{ 
+		return Wechat::NO_RESP;	
+		
+		$FromUserName = $this->getRequest('FromUserName');
+		$gh_id = $this->getRequest('ToUserName');
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);		
+		if ($model !== null)
+		{
+			$model->lat = $this->getRequest('Latitude');
+			$model->lon = $this->getRequest('Longitude');
+			$model->prec = $this->getRequest('Precision');
+			$model->save(false);
+			U::W("{$model->lat}, {$model->lon}");			
+		}	
+		return Wechat::NO_RESP;
 	}
 
 	protected function onScan() 
