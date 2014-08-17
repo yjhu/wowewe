@@ -19,7 +19,6 @@ $(document).on("pagecreate", "#page1", function() {
 EOD;
 $this->registerJs($js_code, yii\web\View::POS_END); 
 */
-
 ?>
 
 <div data-role="page" id="<?= $basename ?>_page_1" data-quicklinks="true" data-title="襄阳联通">
@@ -62,10 +61,7 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 		<div data-role="navbar">
 			<ul>
             <li><a href="<?php echo Url::to(['staffbind', 'mobile'=>$model->mobile]) ?>" data-icon="gear" data-ajax="false">修改设置</a></li>
-            <li><a href="<?php echo Url::to(['stafftop']) ?>" data-icon="bullets">推广明星</a></li>
-<!--
-            <li><input name="Manage" data-corners="false" data-icon="user" data-iconpos="top" value="我是主管" type="submit" onclick="return confirm('营业厅相关的微信信息将会发给主管,您确认是主管?');"></li>
--->
+            <li><a href="#staffhome_stafftop" data-icon="bullets">推广明星</a></li>
             <li><input name="Unbind" data-corners="false" data-icon="delete" data-iconpos="top" value="解绑" type="submit" onclick="return confirm('将微信号与员工信息解绑,确定?');"></li>
 			</ul>
 	    </div>
@@ -80,16 +76,32 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 
 <div data-role="page" id="dialog_staff_qr" data-dialog="true">
 	<div data-role="header"><h1>我的推广二维码</h1></div>
-	<div role="main" class="ui-content ui-responsive">
-	<?php //echo Html::img($user->getQrImageUrl(), ['class'=>'ui-responsive', 'style'=>'width:240px;']); ?>
-	<?php echo Html::img($user->getQrImageUrl(), ['class'=>'ui-responsive']); ?>
+	<div role="main" class="ui-content">
+	<?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
 	</div>
 </div>
 
 <div data-role="page" id="dialog_office_qr" data-dialog="true">
 	<div data-role="header"><h1>部门的推广二维码</h1></div>
-	<div role="main" class="ui-content ui-responsive">
-	<?php echo Html::img($office->getQrImageUrl(), ['class'=>'img-responsive center-block']); ?>
+	<div role="main" class="ui-content">
+	<?php echo Html::img($office->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
+	</div>
+</div>
+
+<div data-role="dialog" id="staffhome_stafftop">
+	<?php $rows = MStaff::getStaffScoreTop($user->gh_id, 10); ?>
+	<div data-role="header"><h1>明星员工</h1></div>
+	<div role="main" class="ui-content">
+		<ul data-role="listview" data-count-theme="b" data-inset="true">
+			<?php foreach($rows as $row) { ?>
+			<li>
+				<img src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
+				<h2><?= $row['name'] ?></h2>
+				<p><?= $row['title'] ?></p>
+				<span class="ui-li-count"><?= $row['score'] ?></span>
+			</li>
+			<?php } ?>
+		</ul>
 	</div>
 </div>
 
@@ -155,6 +167,33 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 		<div style="margin-top:20px"><input name="Manage" data-icon="delete" data-iconpos="right" value="我是营业厅主管" type="submit" onclick="return confirm('营业厅相关的微信信息将会发给主管，您确认是主管?');"></div>
 
 			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:40px"><a href="<?php echo Url::to(['officeqr']) ?>" class="ui-btn ui-shadow ui-corner-all ui-icon-grid ui-btn-icon-notext">部门二维码图片</a></div></div>
+	<?php //echo Html::img($user->getQrImageUrl(), ['class'=>'ui-responsive', 'style'=>'width:224 336px;']); ?>
+            <li><input name="Manage" data-corners="false" data-icon="user" data-iconpos="top" value="我是主管" type="submit" onclick="return confirm('营业厅相关的微信信息将会发给主管,您确认是主管?');"></li>
+
+            <li><a href="<?php echo Url::to(['stafftop']) ?>" data-icon="bullets">推广明星</a></li>
+
+		<ol data-role="listview" data-count-theme="b" data-inset="true">
+			<li>枣阳营业厅 <span class="ui-li-count">12</span></li>
+			<li>枣阳盛鑫广场营业厅 <span class="ui-li-count">12</span></li>
+			<li>枣阳营业厅 <span class="ui-li-count">12</span></li>
+			<li>枣阳盛鑫广场营业厅 <span class="ui-li-count">12</span></li>
+			<li>枣阳营业厅 <span class="ui-li-count">12</span></li>
+			<li>枣阳盛鑫广场营业厅 <span class="ui-li-count">12</span></li>
+			<li>枣阳营业厅 <span class="ui-li-count">12</span></li>
+			<li>枣阳盛鑫广场营业厅 <span class="ui-li-count">12</span></li>
+			<li>枣阳营业厅 <span class="ui-li-count">12</span></li>
+			<li>枣阳盛鑫广场营业厅 <span class="ui-li-count">12</span></li>
+		</ol>
+
+		<ul data-role="listview" data-count-theme="b" data-inset="true">
+
+			<li>
+			<img src="http://wx.qlogo.cn/mmopen/caShn7prhux0pKy4zOQYY7E8PEicomN0RHV9CSE9z4GcdkaJUcLic5sn7jKaUPkddcE46M2XG0zv6hk1aQVqmu0leYdcWH8Tye/64">
+			<h2>何华斌</h2>
+			<p>枣阳盛鑫广场营业厅</p>
+			<span class="ui-li-count">12</span>
+			</li>
+		</ul>
 
 */
 

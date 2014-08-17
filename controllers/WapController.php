@@ -1133,6 +1133,9 @@ EOD;
 
 	    $gh_id = U::getSessionParam('gh_id');
 	    $openid = U::getSessionParam('openid');
+		Yii::$app->session['gh_id'] = $gh_id;
+		Yii::$app->session['openid'] = $openid;		
+	    
 	    Yii::$app->wx->setGhId($gh_id);
 
         return $this->render('home');

@@ -233,7 +233,7 @@ class MUser extends ActiveRecord implements IdentityInterface
 			$scene_id = $this->scene_id;
 		}
 		$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
-		//U::W($log_file_path);							
+		U::W($log_file_path);							
 		if (!file_exists($log_file_path))
 		{
 			Yii::$app->wx->setGhId($gh_id);	
@@ -247,7 +247,7 @@ class MUser extends ActiveRecord implements IdentityInterface
 			$this->save(false);
 		}		
 		$url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
-		//U::W($url);
+		U::W($url);
 		return $url;
 	}
 

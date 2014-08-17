@@ -168,17 +168,15 @@ class WapxController extends Controller
 		
 		if (Yii::$app->request->post('Unbind') !== null)
 		{
-			$n = MStaff::updateAll(['openid' => ''], 'gh_id = :gh_id AND openid = :openid', [':gh_id'=>$gh_id, ':openid'=>$openid]);
-			//$n = MStaff::deleteAll('gh_id = :gh_id AND openid = :openid', [':gh_id'=>$gh_id, ':openid'=>$openid]);
+			//$n = MStaff::updateAll(['openid' => ''], 'gh_id = :gh_id AND openid = :openid', [':gh_id'=>$gh_id, ':openid'=>$openid]);
+			$n = MStaff::deleteAll('gh_id = :gh_id AND openid = :openid', [':gh_id'=>$gh_id, ':openid'=>$openid]);
 			U::W("Unbind $n");	
 			return $this->redirect(['staffsearch']);	
 		}
+		
 		return $this->render('staffhome', ['model' => $model, 'office'=>$office, 'user'=>$user]);
 	}
 
-	public function actionStaffqr()
-	{		
-	}
 }
 
 

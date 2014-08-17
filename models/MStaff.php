@@ -72,9 +72,39 @@ class MStaff extends ActiveRecord
 		return $model->getScore();
 	}
 
+	public static function getStaffScoreTop($gh_id, $n=0)
+	{
+		$key = __METHOD__."{$gh_id}_{$n}";
+		$value = Yii::$app->cache->get($key);
+		if ($value !== false)
+			return $value;
+		
+		$sql = <<<EOD
+SELECT t1.score, t3.name, t3.office_id, t4.title, t2.scene_id, t2.headimgurl  FROM (SELECT scene_pid, count(*) as score FROM wx_user 
+WHERE gh_id='$gh_id' and scene_pid != 0 GROUP BY scene_pid ORDER BY score desc) t1 
+LEFT JOIN wx_user t2 ON t1.scene_pid = t2.scene_id AND t2.scene_id != 0 
+LEFT JOIN wx_staff t3 ON t2.openid = t3.openid 
+LEFT JOIN wx_office t4 ON t3.office_id = t4.office_id
+EOD;
+		if ($n)
+			$sql .= " LIMIT $n";
+
+		$rows = Yii::$app->db->createCommand($sql)->queryAll();
+		foreach($rows as $idx => $row)
+		{
+			if (empty($row['name']))
+				unset($rows[$idx]);
+		}
+		Yii::$app->cache->set($key, $rows, YII_DEBUG ? 100 : 12*3600);
+		return $rows;
+	}
+
 	
 }
 
 /*
+		$rows = Yii::$app->db->cache(function (\yii\db\Connection $db) {
+			return $db->createCommand($sql)->queryAll();
+		}, YII_DEBUG ? 100 : 3600);
 
 */

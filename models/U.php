@@ -5,6 +5,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\Exception;
+use yii\web\HttpException;
 
 class U
 {

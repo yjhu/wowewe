@@ -127,6 +127,32 @@ EOD;
 	{ 
 		$openid = $this->getRequest('FromUserName');
 		$gh_id = $this->getRequest('ToUserName');	
+		$Content = $this->getRequest('Content');
+		$msg = trim($Content);	
+		if ($msg == '我是襄阳联通员工')
+		{
+			$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid], true);
+			return $this->responseText("<a href=\"{$url}\">联通内部员工通道, 点击这里进入...</a>");
+		}
+		else if ($msg == '.debug')
+		{
+			$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid], true);
+			return $this->responseText("see my score? <a href=\"{$url}\">click me</a>");
+		}
+		else
+		{
+			$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+			$items = array(
+				new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
+			);
+			return $this->responseNews($items);
+		}
+	}
+
+	protected function onTextOld() 
+	{ 
+		$openid = $this->getRequest('FromUserName');
+		$gh_id = $this->getRequest('ToUserName');	
 		while(1)
 		{
 			$Content = $this->getRequest('Content');
@@ -149,7 +175,7 @@ EOD;
 						$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid], true);
 						return $this->responseText("see my score? <a href=\"{$url}\">click me</a>");
 					}
-					else if ($msg == '.test')
+					else if ($msg == '.debug')
 					{
 						$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid], true);
 						return $this->responseText("see my score? <a href=\"{$url}\">click me</a>");

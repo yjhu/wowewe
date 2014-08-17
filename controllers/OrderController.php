@@ -13,11 +13,10 @@ use app\models\MOrder;
 use app\models\MOrderSearch;
 use app\models\MMobnum;
 
+use app\models\MGh;
+use app\models\MUser;
 use app\models\MStaff;
 use app\models\MStaffSearch;
-
-
-
 
 class OrderController extends Controller
 {
@@ -193,6 +192,7 @@ class OrderController extends Controller
 
 	public function actionStafftop()
 	{
+/*	
 		$sql = <<<EOD
 select t1.score, t3.name, t3.office_id, t4.title, t2.scene_id  from (select scene_pid, count(*) as score from wx_user 
 where gh_id='gh_03a74ac96138' and scene_pid != 0 group by scene_pid order by score desc) t1 
@@ -206,6 +206,9 @@ EOD;
 			if (empty($row['name']))
 				unset($rows[$key]);
 		}
+*/
+		//$rows = MStaff::getStaffScoreTop(MGh::GH_WOSO);
+		$rows = MStaff::getStaffScoreTop(MGh::GH_XIANGYANGUNICOM);
 		$dataProvider = new ArrayDataProvider([
 			'allModels' => $rows,
 			'sort' => [
