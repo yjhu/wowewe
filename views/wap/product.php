@@ -252,6 +252,8 @@ U::W($gh_id);
               </div>
 			</div>
 
+       		<a href="#contactPage" class="ui-btn">用户信息</a>
+
             <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
 
             <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
@@ -430,6 +432,7 @@ U::W($gh_id);
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
 	</div>	<!-- contactPage end -->
+
 
 	<div data-role="page" id="number-select" data-theme="e">
 		<div data-role="header">
@@ -739,9 +742,18 @@ $(document).on("pageshow", "#page2", function(){
             return false;
         }
 
-        username = localStorage.getItem("username");
-        usermobile = localStorage.getItem("usermobile");
-        userid = localStorage.getItem("userid");
+        if( localStorage.getItem("username") == null)
+        {
+            $.mobile.changePage("#contactPage",{transition:"slide"});
+            return false;
+        }
+        else
+        {
+	        username = localStorage.getItem("username");
+	        usermobile = localStorage.getItem("usermobile");
+	        userid = localStorage.getItem("userid");
+        }
+
 
         if((localStorage.getItem('ychf')/100) >= 50)
             realFee = localStorage.getItem('ychf')/100;
@@ -763,6 +775,9 @@ $(document).on("pageshow", "#page2", function(){
 					//alert(data.oid);
 					localStorage.setItem("oid",json_data.oid);
 					localStorage.setItem("url",json_data.pay_url);
+
+					/*remove seleted mobile number from client*/
+					localStorage.removeItem("num");
 
 					$.mobile.changePage("#page3",{transition:"slide"});
 				}
