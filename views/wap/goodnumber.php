@@ -431,9 +431,18 @@ $(document).on("pageshow", "#page2", function(){
 			return false;
 		}
 
-		username = localStorage.getItem("username");
-		usermobile = localStorage.getItem("usermobile");
-		userid = localStorage.getItem("userid");
+        if( localStorage.getItem("username") == null)
+        {
+            $.mobile.changePage("#contactPage",{transition:"slide"});
+            return false;
+        }
+        else
+        {
+	        username = localStorage.getItem("username");
+	        usermobile = localStorage.getItem("usermobile");
+	        userid = localStorage.getItem("userid");
+        }
+
 
 		if((localStorage.getItem('ychf')/100) >= 50)
 			realFee = localStorage.getItem('ychf')/100;
@@ -473,7 +482,9 @@ $(document).on("pageshow", "#page3", function(){
 
 	var selectNum = localStorage.getItem("num");
 	$("#selectNum").html("号码: "+selectNum);
-
+	/*remove seleted mobile number from client*/
+	localStorage.removeItem("num");
+	
 	office_name = <?php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
 
 	var item = localStorage.getItem("item");

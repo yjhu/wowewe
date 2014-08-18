@@ -776,9 +776,6 @@ $(document).on("pageshow", "#page2", function(){
 					localStorage.setItem("oid",json_data.oid);
 					localStorage.setItem("url",json_data.pay_url);
 
-					/*remove seleted mobile number from client*/
-					localStorage.removeItem("num");
-
 					$.mobile.changePage("#page3",{transition:"slide"});
 				}
 				else
@@ -839,7 +836,9 @@ $(document).on("pageshow", "#page3", function(){
 	$("#oid").html("您的订单号: "+oid);
 
     var selectNum = localStorage.getItem("num");
-    $("#selectNum").html("所选的号码: "+selectNum);
+	$("#selectNum").html("所选的号码: "+selectNum);
+	/*remove seleted mobile number from client*/
+	localStorage.removeItem("num");
 
     localStorage.removeItem("luckNum");/*订单生成后，锁定该手机号*/
 
