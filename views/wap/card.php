@@ -160,7 +160,9 @@
 
 	        <a href="#contactPage" class="ui-btn">用户信息</a>
 
-           <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
+			<div id="officeArea">
+			<?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
+			</div>
 
 			<input type="button" value="确认套餐" id="submitBtn">
 			
@@ -258,7 +260,7 @@
 				-->
 				<input type="text" name="username" id="username" placeholder="姓名" value="">
 
-				<input type="text" name="usermobile" id="usermobile" placeholder="手机号码" value="">
+				<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
 
 				<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
 			</div>
@@ -375,7 +377,10 @@ $(document).on("pageshow", "#page2", function(){
 	}
 	showSelectedNumber();
 
-
+	$("[name=office]").change(function(){
+        if($("[name=office]").val() != 0)
+            $("#officeArea").removeAttr('style');
+    });
 	//submit form
 	$('#submitBtn').click(function(){
 
@@ -391,7 +396,8 @@ $(document).on("pageshow", "#page2", function(){
 
         if($("[name=office]").val() == 0)
         {
-            alert("请选择营业厅");
+            //alert("请选择营业厅");
+            $("#officeArea").attr('style', 'border:1px solid #ffffff;background-color:#ff99ff;');
             return false;
         }
 

@@ -132,7 +132,8 @@ EOD;
 		if ($msg == '我是襄阳联通员工')
 		{
 			$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid], true);
-			return $this->responseText("<a href=\"{$url}\">联通内部员工通道, 点击这里进入...</a>");
+			//return $this->responseText("<a href=\"{$url}\">联通内部员工通道, 点击这里进入...</a>");
+			return $this->responseText("襄阳联通内部员工通道, 参与推广, 查看成绩, <a href=\"{$url}\">请点击这里进入...</a>");
 		}
 		else if ($msg == '.debug')
 		{

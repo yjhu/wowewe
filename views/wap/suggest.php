@@ -25,6 +25,13 @@ Yii::$app->wx->setGhid($gh_id);
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
+    
+    <style type="text/CSS">
+
+        .ui-header .ui-title, .ui-footer .ui-title {
+            margin-right: 0 !important; margin-left: 0 !important;
+        }
+    </style>
 
 	<?php $this->head() ?>
 
