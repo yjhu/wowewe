@@ -36,6 +36,12 @@ class OrderController extends Controller
 		];
 	}
 
+	public function init()
+	{
+		//U::W(['init....', $_GET,$_POST, $GLOBALS]);
+		U::W(['init....', $_GET,$_POST]);
+	}
+
 	public function beforeAction($action)
 	{
 		return parent::beforeAction($action);
@@ -177,8 +183,9 @@ class OrderController extends Controller
 
 	public function actionStaffdelete($id)
 	{
+U::W('1111'.$id);	
 		$this->findStaffModel($id)->delete();
-		return $this->redirect(['stafflist']);
+//		return $this->redirect(['stafflist']);
 	}
 
 	protected function findStaffModel($id)
@@ -202,13 +209,21 @@ class OrderController extends Controller
 				'pageSize' => 50,
 			],
 		]);
-		// get the posts in the curddrent page
-		// $posts = $provider->getModels();
 		return $this->render('stafftop', [
 			'dataProvider' => $dataProvider,
 		]);
 		
 	}
+
+	public function actionStafftogglemanager($id)
+	{
+		if (Yii::$app->request->isAjax)
+			U::W('is ajax....');
+	
+//		$this->findStaffModel($id)->delete();
+		return $this->redirect(['stafflist']);
+	}
+
 	
 }
 

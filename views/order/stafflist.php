@@ -26,6 +26,8 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?php echo Html::a('新增员工', ['staffcreate'], ['class' => 'btn btn-success']) ?>
     </p>
 
+<?php \yii\widgets\Pjax::begin(); ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -75,16 +77,45 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'label' => '是否主管',
 				'attribute' => 'is_manager',
-				'value'=>function ($model, $key, $index, $column) { return empty($model->is_manager)?'':'是'; },
+				'format'=>'html',
+//				'value'=>function ($model, $key, $index, $column) { return empty($model->is_manager)?'':'是'; },
+
+				'value'=>function ($model, $key, $index, $column) { 
+//						return empty($model->is_manager)? Html::a('<span class="glyphicon glyphicon-minus"></span>', 'baidu.com', ['title' => '设为主管','data-pjax' => '0',]) :'是';
+/*
+						return Html::a('toggle231', ['stafftogglemanager', 'id' => $model->staff_id], [
+							//'class' => 'btn btn-danger',
+							'data-confirm' => 'are you sure?',
+							'data-method' => 'post',
+							'data-pjax' => '0',
+						]);
+*/
+						return Html::a('<span class="glyphicon glyphicon-trash"></span>', ['stafftogglemanager', 'id' => $model->staff_id], [
+							'title' => Yii::t('yii', 'toggle'),
+							'data-confirm' => 'toggle, sure?',
+							'data-method' => 'post',
+							'data-pjax' => '0',
+						]);
+					},
+
 				'filter'=> ['0'=>'否', '1'=>'是'],
 			],
+
+
             [
 				'class' => 'yii\grid\ActionColumn',
-				'template' => '{staffupdate} {staffdelete}',
+				'template' => '{staffupdate} {staffismanager} {staffdelete}',
 				'buttons' => [
 					'staffupdate' => function ($url, $model) {
 						return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
 							'title' => Yii::t('yii', 'Update'),
+							'data-pjax' => '0',
+						]);
+					},
+
+					'staffismanager' => function ($url, $model) {
+						return Html::a('<span class="glyphicon glyphicon-minus"></span>', $url, [
+							'title' => '设为主管',
 							'data-pjax' => '0',
 						]);
 					},
@@ -94,7 +125,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							'title' => Yii::t('yii', 'Delete'),
 							'data-confirm' => Yii::t('yii', '确认要删除此名员工?'),
 							'data-method' => 'post',
-							'data-pjax' => '0',
+							'data-pjax' => '1',
 						]);
 					}
 				],
@@ -102,6 +133,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
         ],
     ]); ?>
+
+<?php \yii\widgets\Pjax::end(); ?>
 
 </div>
 
