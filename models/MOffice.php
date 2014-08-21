@@ -15,12 +15,12 @@ CREATE TABLE wx_office (
 	member_cnt int(10) unsigned NOT NULL DEFAULT '0',
 	mobile VARCHAR(16) NOT NULL DEFAULT '',
 	pswd VARCHAR(16) NOT NULL DEFAULT '123456',
-	manager_openid VARCHAR(32) NOT NULL DEFAULT '',	
 	KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-ALTER TABLE wx_office ADD manager_openid VARCHAR(32) NOT NULL DEFAULT '';
-
+//i want delete some fields
+ALTER TABLE wx_office DROP manager, DROP member_cnt, DROP mobile, DROP pswd;	
+		
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_03a74ac96138','襄阳','枣阳','枣阳营业厅','枣阳光武路85号老国税大楼','郑静','6','18607277303');
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_03a74ac96138','襄阳','枣阳','枣阳盛鑫广场营业厅','枣阳盛鑫广场','屈伸','4','18607277298');
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_03a74ac96138','襄阳','宜城','宜城营业厅','宜城市振兴大道315号','肖雨','2','18671000057');

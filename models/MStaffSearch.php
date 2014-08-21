@@ -17,10 +17,12 @@ class MStaffSearch extends Model
 
 	public $mobile;
 
+	public $is_manager;
+	
 	public function rules()
 	{
 		return [
-			[['gh_id', 'name','mobile', 'office_id'], 'safe'],
+			[['gh_id', 'name','mobile', 'office_id', 'is_manager'], 'safe'],
 		];
 	}
 
@@ -62,6 +64,8 @@ class MStaffSearch extends Model
 		$this->addCondition($query, 'office_id');					
 		$this->addCondition($query, 'name', true);
 		$this->addCondition($query, 'mobile', true);
+		$this->addCondition($query, 'is_manager');							
+		
 		return $dataProvider;
 	}
 
