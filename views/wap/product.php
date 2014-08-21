@@ -103,13 +103,14 @@ U::W($gh_id);
 		
 	<div data-role="page" id="page2" data-theme="e">
 
-		<!--
+
 		<div data-role="header" data-theme="e">
 			<h1>自由组合套餐</h1>
 		</div>
+		<!--
+		<?//php include('menu.php'); ?>
+		<?//php include('header.php'); ?>
 		-->
-		<?php include('menu.php'); ?>
-		<?php include('header.php'); ?>
 		
 		<div data-role="content">
 		<form id="productForm">	
