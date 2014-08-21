@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?php echo Html::a('新增员工', ['staffcreate'], ['class' => 'btn btn-success']) ?>
     </p>
 
-<?php \yii\widgets\Pjax::begin(); ?>
+<?php //\yii\widgets\Pjax::begin(); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -134,7 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-<?php \yii\widgets\Pjax::end(); ?>
+<?php //\yii\widgets\Pjax::end(); ?>
 
 </div>
 

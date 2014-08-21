@@ -953,7 +953,7 @@ EOD;
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1&cid=10&feeSum=1
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=diskRestCnt&cid=10
-	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=myorder
+	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=orderview&oid=53de91f9d3773
 	public function actionAjaxdata($cat)
 	{
 		//if (!Yii::$app->request->isAjax)
@@ -963,6 +963,29 @@ EOD;
 		$this->layout = false;		
 		switch ($cat) 
 		{
+			case 'orderclose':
+				$oid = isset($_GET["oid"]) ? $_GET["oid"] : 1;
+				$model = MOrder::findOne($oid);
+				if ($model === null)
+					U::D(["invalid oid:$oid", __METHOD__]);
+				$model->status = MOrder::STATUS_CLOSED_USER;
+				if ($model->save(true, ['status']))
+				{				
+					$mobnum = MMobnum::findOne($model->select_mobnum);
+					if ($mobnum !== null)
+					{
+						$mobnum->status = MMobnum::STATUS_UNUSED;
+						$mobnum->save(false);				
+					}
+				}		
+				$data['code'] = 0;
+				break;
+
+			case 'orderview':
+				$oid = isset($_GET["oid"]) ? $_GET["oid"] : 1;
+				$data = MOrder::find()->select('*')->where("oid=:oid", [':oid'=>$oid])->asArray()->one();
+				break;
+		
 			case 'myorder':
 				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
 				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
