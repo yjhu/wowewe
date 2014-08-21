@@ -11,34 +11,17 @@ use app\models\MOrder;
 $gh_id = Yii::$app->session['gh_id'];
 $openid = Yii::$app->session['openid'];
 
-
 $this->title = '襄阳联通';
 $basename = basename(__FILE__, '.php');
 
-/*
-$js_code=<<<EOD
-$(document).on("pagecreate", "#page1", function() {
-	$.mobile.ajaxEnabled = false; 
-});
-EOD;
-$this->registerJs($js_code, yii\web\View::POS_END); 
-*/
 ?>
 
-<div data-role="page" id="myorder">
+<div data-role="page" id="myorder" data-theme="a">
 	<div data-role="header" data-position="fixed"><h1>我的订单</h1></div>
 	<div role="main" class="ui-content">
-		<ul data-role="listview" data-inset="true">
-			<li id="list_common_tbody">
-				<img src='img.jpg'>
-				<span>订单编号:</span><span><a href='#'></a></span><br>
-				<span>下单时间:</span><span></span><br>
-				<span>商品名称:</span><span></span><br>
-				<span>价格:</span><span></span><br>
-				<span>订单状态:</span><span></span> <span><a href='#'></a></span><br>
-			</li>
+		<ul data-role="listview" data-inset="false" id="list_common_tbody">
 		</ul>
-
+		<br>
 		<p>
 			<input type="button" value="查看以前订单" id="loadMyOrderListBtn">
 		</p>
@@ -52,34 +35,41 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 </div>
 
 <script>
-var  currentPage = 1; /*init page num*/
+var  currentPage = 1; 
 var size = 3;
 var count = 0;
 
 var gh_id = '<?php echo $user->gh_id; ?>';
 var openid = '<?php echo $user->openid; ?>';
 
+var imgurl = '<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/share-icon.jpg'; ?>';
+
 $(document).on("pageshow", "#myorder", function(){
+
 
 	function loadData(i, n)
 	{
 		count++;
 
-		text ="\
-		<img src='"+n.imgurl+"'>\
-		<span>订单编号:</span><span><a href='#'>"+n.oid+"</a></span><br>\
-		<span>下单时间:</span><span>"+n.create_time+"</span><br>\
-		<span>商品名称:</span><span>"+n.detail+"</span><br>\
-		<span>价格:</span><span>￥"+(n.feesum)/100+"</span><br>";
+		text ="<li>\
+		<img src='"+imgurl+"'>\
+		<p>订单编号:<span color='color:blue'>"+n.oid+"</span></p>\
+		<p>下单时间:"+n.create_time+"</p>\
+		<p>商品名称:"+n.title+"</p>\
+		<p>价格:￥"+(n.feesum)/100+"</p>";
 
-		if(n.status == 0) /*wait to pay*/ 
-			txt_mos ="<span>订单状态:</span><span>"+n.status+"</span> <span><a href='#'>取消订单</a></span><br>";
+		if(n.status == 0) //wait to pay 
+			txt_mos ="<p>订单状态:"+n.statusName+"<span style='color:blue' id='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
 		else
-			txt_mos ="<span>订单状态:</span><span>"+n.status+"</span> <br>";
+			txt_mos ="<p>订单状态:"+n.statusName+"</p>";
 
-		text = text + txt_mos;
+		txt_mod = "<i class='ui-corner-all ui-btn-icon-right ui-icon-arrow-r' id='ddxq' myOid="+n.oid+"></i></li>";
 
-		$("#list_common_tbody").append(text).trigger('create');
+		text = text + txt_mos + txt_mod;
+
+		//$("#list_common_tbody").append(text).trigger('create');
+		$("#list_common_tbody").append(text);
+
 	}
 
 	function getMyOrderList()
@@ -96,6 +86,10 @@ $(document).on("pageshow", "#myorder", function(){
 		        {
 		            $.each(json_data, loadData);
 		        }
+
+				$('#list_common_tbody').listview('refresh');
+	
+
 		        if(json_data.length < 3)
 		            currentPage =1;
 		    }
@@ -111,24 +105,107 @@ $(document).on("pageshow", "#myorder", function(){
 	});
 
 
+	/*取消订单*/
+	$(document).on("click","#qxdd",function(){
+		oid = $(this).attr('myOid');
+		//alert("取消订单: "+oid);
+		//closeorder = confirm('取消此订单,确定?');
+
+		if(confirm('取消此订单,确定?') == true)
+		{
+			alert("您的订单: "+oid+"已取消！");
+			return false;//close order!!!
+		}
+
+		$.ajax({
+		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'closeorder'], true) ; ?>",
+		    type:"GET",
+		    cache:false,
+		    dataType:'json',
+		    data: "&currentPage="+currentPage+"&size="+size+"&oid="+oid,
+		    success: function(json_data){
+		        if(json_data)
+		        {
+		            
+		        }
+
+		    }
+		});
+	});
+
+
+	/*订单详情*/
+	$(document).on("click","#ddxq",function(){
+		oid = $(this).attr('myOid');
+		//alert("取消订单: "+oid);
+		//closeorder = confirm('取消此订单,确定?');
+
+		if(confirm('查看订单详情,确定?') == true)
+		{
+			alert("您的订单: "+oid+"马上转到订单详情页面！");
+			return false;//close order!!!
+		}
+
+		$.ajax({
+		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'vieworder'], true) ; ?>",
+		    type:"GET",
+		    cache:false,
+		    dataType:'json',
+		    data: "&currentPage="+currentPage+"&size="+size+"&oid="+oid,
+		    success: function(json_data){
+		        if(json_data)
+		        {
+		            
+		        }
+
+		    }
+		});
+	});
+
+	
+
+
+
+
 });
+
+
 
 </script>
 
 <?php
 /*
 <li>
-	<img src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
-	<h2><?= $row['name'] ?></h2>
-	<p><?= $row['title'] ?></p>
-	<span class="ui-li-count"><?= $row['score'] ?></span>
+	<img src='<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/share-icon.jpg'; ?>'>
+	<p>订单编号:<span color='color:blue'>1234567890</span></p>
+	<p>下单时间: 2014-8-20</p>
+	<p>商品名称: 沃派校园套餐</p>
+	<p>价格:￥ 66</p>
+	<p>订单状态:等待付款<span style='color:blue'>&nbsp;&nbsp;取消订单</span></p>
 </li>
 
+<li>
+	<img src='<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/share-icon.jpg'; ?>'>
+	<p>订单编号:<span color='color:blue'>1234567890</span></p>
+	<p>下单时间: 2014-8-19</p>
+	<p>商品名称: Apple iPhone 4s 8G</p>
+	<p>价格:￥ 2399</p>
+	<p>订单状态:等待付款<span style='color:blue'>&nbsp;&nbsp;取消订单</span></p>
+</li>
+
+<li>
+	<img src='<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/share-icon.jpg'; ?>'>
+	<p>订单编号:<span color='color:blue'>1234567890</span></p>
+	<p>下单时间: 2014-8-20</p>
+	<p>商品名称: 微信沃卡</p>
+	<p>价格:￥ 50</p>
+	<p>订单状态:等待付款<span style='color:blue'>&nbsp;&nbsp;取消订单</span></p>
+</li>
 
 <!--
-<span>用户信息</span><br>
-<span>姓名:</span><span>张三</span><br>
-<span>电话:</span><span>13545296488</span><br>
-<span>身份证:</span><span>42010019900909199</span><br>
+<p>用户信息</p><br>
+<p>姓名:</p><p>张三</p><br>
+<p>电话:</p><p>13545296488</p><br>
+<p>身份证:</p><p>42010019900909199</p><br>
 -->
 */
