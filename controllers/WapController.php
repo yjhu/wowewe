@@ -953,6 +953,7 @@ EOD;
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1&cid=10&feeSum=1
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=diskRestCnt&cid=10
+	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=myorder
 	public function actionAjaxdata($cat)
 	{
 		//if (!Yii::$app->request->isAjax)
@@ -962,6 +963,13 @@ EOD;
 		$this->layout = false;		
 		switch ($cat) 
 		{
+			case 'myorder':
+				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
+				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
+				$data = MOrder::find()->select('*')->where("gh_id=:gh_id AND openid=:openid", [':gh_id'=>$gh_id, ':openid'=>$openid])->orderBy(['oid' => SORT_DESC])->offset(($page-1)*$size)->limit($size)->asArray()->all();				
+				U::W([$data]);
+				break;
+		
 			case 'mobileNum':
 				//U::W($_GET);
 				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
