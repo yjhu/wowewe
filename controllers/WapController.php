@@ -723,7 +723,7 @@ EOD;
 	public function actionSuggest()
 	{
 		//$this->layout = 'wap';
-	        $this->layout =false;
+	    $this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');		
 		//Yii::$app->wx->setGhId($gh_id);
@@ -1159,6 +1159,36 @@ EOD;
 		Yii::$app->wx->setGhId($gh_id);
 
 		return $this->render('goodnumber', ['cid'=>MItem::ITEM_CAT_GOODNUMBER]);
+	}
+
+
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/myorder:gh_1ad98f5481f3
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/myorder:gh_03a74ac96138
+	public function actionMyorder()
+	{		
+	
+		//$this->layout = 'wap';
+	    $this->layout =false;
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');		
+		//Yii::$app->wx->setGhId($gh_id);
+		
+		$ar = new \app\models\MOrder;
+		$ar->gh_id = $gh_id;
+		$ar->openid = $openid;
+		
+		$model = MOrder::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);		
+	
+
+		$query = new \yii\db\Query();
+		$query->select('*')->from(\app\models\MOrder::tableName())->where(['gh_id'=>$gh_id])->limit(10);   
+		$rows = $query->createCommand()->queryAll();
+		//U::W($rows);
+
+
+
+
+		return $this->render('myorder',['rows' =>$rows]);
 	}
 
 
