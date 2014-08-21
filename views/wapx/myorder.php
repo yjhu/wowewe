@@ -22,11 +22,11 @@ $basename = basename(__FILE__, '.php');
 	<div role="main" class="ui-content">
 		<ul data-role="listview" data-inset="false" id="list_common_tbody">
 		</ul>
-		<br>
-		<p>
-			<input type="button" value="查看以前订单" id="loadMyOrderListBtn">
-		</p>
 
+		<br>
+		<input type="button" value="查看以前订单" id="loadMyOrderListBtn">
+
+		
 	</div>
 
 	<div data-role="footer" data-position="fixed">
@@ -61,7 +61,7 @@ var openid = '<?php echo $user->openid; ?>';
 
 var imgurl = '<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/share-icon.jpg'; ?>';
 
-$(document).on("pageshow", "#myorder", function(){
+$(document).on("pageinit", "#myorder", function(){
 
 
 	function loadData(i, n)
@@ -113,6 +113,7 @@ $(document).on("pageshow", "#myorder", function(){
 		});
 	}
 
+
 	getMyOrderList();
 	/*
 	$("#loadMyOrderListBtn").click(function(){
@@ -122,14 +123,15 @@ $(document).on("pageshow", "#myorder", function(){
 	});
 	*/
 
-	$(document).on("click","#loadMyOrderListBtn",function(){
+	$(document).on("tap","#loadMyOrderListBtn",function(){
 		// alert("玩命加载中...");
 		currentPage++;
 		getMyOrderList();
 	});
 
 	/*取消订单*/
-	$(document).on("click",".qxdd",function(){
+	$(document).on("tap",".qxdd",function(){
+
 		oid = $(this).attr('myOid');
 		//alert("取消订单: "+oid);
 		//closeorder = confirm('取消此订单,确定?');
@@ -157,7 +159,7 @@ $(document).on("pageshow", "#myorder", function(){
 	});
 
 	/*订单详情*/
-	$(document).on("click",".ddxq",function(){
+	$(document).on("tap",".ddxq",function(){
 		oid = $(this).attr('myOid');
 		//alert("取消订单: "+oid);
 		//closeorder = confirm('取消此订单,确定?');
