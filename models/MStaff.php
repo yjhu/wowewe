@@ -10,10 +10,15 @@ CREATE TABLE wx_staff (
 	openid VARCHAR(32) NOT NULL DEFAULT '',
 	name VARCHAR(16) NOT NULL DEFAULT '',
 	mobile VARCHAR(16) NOT NULL DEFAULT '',
+	is_manager tinyint(3) NOT NULL DEFAULT 0,
 	KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE wx_staff ADD is_manager tinyint(3) NOT NULL DEFAULT 0;
+
 */
 
+		
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\Security;
@@ -32,18 +37,12 @@ class MStaff extends ActiveRecord
 	public function rules()
 	{
 		return [
-/*
 			[['name', 'mobile'], 'filter', 'filter' => 'trim'],
-			[['name', 'mobile'], 'required'],
-			[['name', 'mobile'], 'string', 'min' => 2, 'max' => 255],
-			[['office_id'], 'integer'],     
-*/			
-			[['name', 'mobile'], 'filter', 'filter' => 'trim'],
-			//[['name', 'mobile'], 'required'],
 			[['name', 'mobile', 'office_id'], 'required'],
 			[['name', 'mobile'], 'string', 'min' => 2, 'max' => 255],
-			[['office_id'], 'integer', 'integerOnly' =>true, 'min'=>1],        
+			[['office_id'], 'integer', 'integerOnly' =>true, 'min'=>1],       
 			[['gh_id', 'openid'], 'safe'],			
+			[['is_manager'], 'boolean'],			
 		];
 	}
 
@@ -54,6 +53,7 @@ class MStaff extends ActiveRecord
 			'office_id' => '营业厅编号',
 			'name' => '姓名',
 			'mobile' => '手机号',
+			'is_manager' => '是否主管',
 		];
 	}
 	
@@ -107,4 +107,10 @@ EOD;
 			return $db->createCommand($sql)->queryAll();
 		}, YII_DEBUG ? 100 : 3600);
 
-*/
+
+			[['name', 'mobile'], 'filter', 'filter' => 'trim'],
+			[['name', 'mobile'], 'required'],
+			[['name', 'mobile'], 'string', 'min' => 2, 'max' => 255],
+			[['office_id'], 'integer'],     
+*/			
+

@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
+use app\models\U;
 use app\models\MStaff;
 use app\models\MOffice;
 
@@ -46,56 +47,37 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 */
 			[
+				'attribute' => 'name',
+			],
+			[
 				'label' => '部门编号',
 				'attribute' => 'office_id',
-				'headerOptions' => array('style'=>'width:100px;'),			
+				'headerOptions' => array('style'=>'width:100px;'),	
+				'filter'=> false,				
+				'visible'=>false,
 			],
 			[
 				'label' => '部门名称',
+				'attribute' => 'office_id',
 				//'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
 				'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
-				'filter'=> false,
+				'filter'=> MOffice::getOfficeNameOptionAll($searchModel->gh_id,false,false),
 				'headerOptions' => array('style'=>'width:200px;'),		
 			],
 			[
-				'attribute' => 'name',
-				'headerOptions' => array('style'=>'width:200px;'),			
-			],
-			[
 				'attribute' => 'mobile',
-				'headerOptions' => array('style'=>'width:200px;'),			
 			],
 			[
-				'attribute' => '推广成绩',
+				'label' => '推广成绩',
 				'value'=>function ($model, $key, $index, $column) { return $model->score.(empty($model->openid)?' [微信未绑定]':''); },
 				'filter'=> false,
-				'headerOptions' => array('style'=>'width:200px;'),
-			],
-
-/*
-			[
-				'attribute' => 'cid',
-				'value'=>function ($model, $key, $index, $column) { return MItem::getItemCatName($model->cid); },
-				'filter'=> MItem::getItemCatName(),
 			],
 			[
-				'attribute' => 'feesum',
-				'value'=>function ($model, $key, $index, $column) { return "￥".sprintf("%0.2f",$model->feesum/100); },
+				'label' => '是否主管',
+				'attribute' => 'is_manager',
+				'value'=>function ($model, $key, $index, $column) { return empty($model->is_manager)?'':'是'; },
+				'filter'=> ['0'=>'否', '1'=>'是'],
 			],
-			[
-				'attribute' => 'select_mobnum',
-			],
-			[
-				'attribute' => 'create_time',
-				'filter'=> false,
-			],
-
-			[
-				'attribute' => 'status',
-				'value'=>function ($model, $key, $index, $column) { return $model->statusName; },
-				'filter'=> MOrder::getOrderStatusName(),
-			],
-*/
             [
 				'class' => 'yii\grid\ActionColumn',
 				'template' => '{staffupdate} {staffdelete}',
