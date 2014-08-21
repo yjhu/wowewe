@@ -185,6 +185,15 @@ class WapxController extends Controller
 		return $this->render('officeqr', ['model' => $model, 'office'=>$office, 'user'=>$user]);
 	}
 
+	public function actionMyorder($gh_id, $openid)
+	{		
+		$this->layout = 'wapx';
+		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+	
+		return $this->render('myorder', ['user'=>$user]);
+	}
+
+
 }
 
 
