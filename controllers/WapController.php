@@ -967,7 +967,12 @@ EOD;
 				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
 				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
 				$data = MOrder::find()->select('*')->where("gh_id=:gh_id AND openid=:openid", [':gh_id'=>$gh_id, ':openid'=>$openid])->orderBy(['oid' => SORT_DESC])->offset(($page-1)*$size)->limit($size)->asArray()->all();				
-				U::W([$data]);
+				foreach($data as &$row)
+				{
+					$row['statusName'] = MOrder::getOrderStatusName($row['status']);
+				}	
+				unset($row);	
+				//U::W([$data]);
 				break;
 		
 			case 'mobileNum':
