@@ -16,6 +16,8 @@ class JqmxAsset extends AssetBundle
 		'js/jqm/jquery.mobile-1.4.3.min.js',	
 	];
 
+	public $jsOptions = ['position'=>\yii\web\View::POS_HEAD];
+	
 	public $depends = [
 		 '\yii\web\JqueryAsset',
 	];
