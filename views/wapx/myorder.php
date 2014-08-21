@@ -56,8 +56,8 @@ var  currentPage = 1; /*init page num*/
 var size = 3;
 var count = 0;
 
-var gh_id = <?php echo $user->gh_id; ?>;
-var openid = <?php echo $user->openid; ?>;
+var gh_id = '<?php echo $user->gh_id; ?>';
+var openid = '<?php echo $user->openid; ?>';
 
 $(document).on("pageshow", "#myorder", function(){
 
