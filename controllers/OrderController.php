@@ -183,9 +183,9 @@ class OrderController extends Controller
 
 	public function actionStaffdelete($id)
 	{
-U::W('1111'.$id);	
+		//U::W('1111'.$id);	
 		$this->findStaffModel($id)->delete();
-//		return $this->redirect(['stafflist']);
+		return $this->redirect(['stafflist']);
 	}
 
 	protected function findStaffModel($id)
