@@ -84,8 +84,8 @@ $(document).on("pageinit", "#myorder", function(){
 
 		text = text + txt_mos + txt_mod;
 
-		//$("#list_common_tbody").append(text).trigger('create');
-		$("#list_common_tbody").append(text);
+		$("#list_common_tbody").append(text).trigger('create');
+		//$("#list_common_tbody").append(text);
 
 	}
 
@@ -115,22 +115,15 @@ $(document).on("pageinit", "#myorder", function(){
 
 
 	getMyOrderList();
-	/*
-	$("#loadMyOrderListBtn").click(function(){
-		// alert("玩命加载中...");
-		currentPage++;
-		getMyOrderList();
-	});
-	*/
 
-	$(document).on("tap","#loadMyOrderListBtn",function(){
+	$(document).on("click","#loadMyOrderListBtn",function(){
 		// alert("玩命加载中...");
 		currentPage++;
 		getMyOrderList();
 	});
 
 	/*取消订单*/
-	$(document).on("tap",".qxdd",function(){
+	$(document).on("click",".qxdd",function(){
 
 		oid = $(this).attr('myOid');
 		//alert("取消订单: "+oid);
@@ -147,7 +140,7 @@ $(document).on("pageinit", "#myorder", function(){
 		    type:"GET",
 		    cache:false,
 		    dataType:'json',
-		    data: "&currentPage="+currentPage+"&size="+size+"&oid="+oid,
+		    data: "&oid="+oid,
 		    success: function(json_data){
 		        if(json_data)
 		        {
@@ -159,7 +152,7 @@ $(document).on("pageinit", "#myorder", function(){
 	});
 
 	/*订单详情*/
-	$(document).on("tap",".ddxq",function(){
+	$(document).on("click",".ddxq",function(){
 		oid = $(this).attr('myOid');
 		//alert("取消订单: "+oid);
 		//closeorder = confirm('取消此订单,确定?');
@@ -174,7 +167,7 @@ $(document).on("pageinit", "#myorder", function(){
 		    type:"GET",
 		    cache:false,
 		    dataType:'json',
-		    data: "&currentPage="+currentPage+"&size="+size+"&oid="+oid,
+		    data: "&oid="+oid,
 		    success: function(json_data){
 		        if(json_data)
 		        {
