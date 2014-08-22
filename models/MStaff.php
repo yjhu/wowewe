@@ -99,7 +99,6 @@ EOD;
 		return $rows;
 	}
 
-//	sendWxm($order->getWxNotice(true))
 	public function sendWxm($content)
 	{
 		if (empty($this->gh_id) || empty($this->openid))

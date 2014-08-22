@@ -833,7 +833,7 @@ EOD;
 		$openid = U::getSessionParam('openid');		
 		
 		Yii::$app->wx->setGhId($gh_id);	
-		if (1)
+		if (0)
 		{
 			$_GET["cid"] = MItem::ITEM_CAT_DIY;
 		}
@@ -845,7 +845,7 @@ EOD;
 		switch ($_GET["cid"]) 
 		{
 			case MItem::ITEM_CAT_DIY:
-				if (1)
+				if (0)
 				{
 					$_GET['cardType'] = 1;
 					$_GET['flowPack'] =2;
@@ -926,8 +926,11 @@ EOD;
 
 			//send wx message and sm 
 			$manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
-			$manager->sendWxm($order->getWxNotice());
-			$manager->sendSm($order->getWxNotice());
+			if ($manager !== null)
+			{
+				$manager->sendWxm($order->getWxNotice());
+				$manager->sendSm($order->getWxNotice());
+			}
 			
 			if (Wechat::isAndroid())
 			{			
