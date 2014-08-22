@@ -44,7 +44,9 @@ $basename = basename(__FILE__, '.php');
 
 <div data-role="page" id="myorder" data-theme="e">
 
-	<div data-role="header" data-position="fixed"><h1>我的订单</h1></div>
+	<div data-role="header" data-position="fixed">
+	<h1>我的订单</h1>
+	</div>
 	<div role="main" class="ui-content">
 		<ul data-role="listview" data-inset="false" id="list_common_tbody">
 		</ul>
@@ -69,7 +71,7 @@ $basename = basename(__FILE__, '.php');
 	<div role="main" class="ui-content">
 	<h2>订单详情</h2>
 		<p>订单编号:&nbsp;<span id="oid"></span></p>
-		<p>订单状态:&nbsp;<span id="statusxx"></span></p>
+		<p>订单状态:&nbsp;<span id="status"></span></p>
 		<p>商品名称:&nbsp;<span id="title"></span></p>
 		<p>下单时间:&nbsp;<span id="create_time"></span></p>
 		<p>商品详情:&nbsp;<span id="detail"></span></p>
@@ -215,7 +217,11 @@ $(document).on("pageinit", "#myorder", function(){
 		$("#usermobile").html(n.usermobile);
 		$("#userid").html(n.userid);
 		$("#office_id").html(office_name[n.office_id]);
-		$("#statusxx").html(n.statusName);
+		if(n.status == 0)
+			$("#status").html(n.statusName +"<span style='color:blue' class='qxdd_orderdetail' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span>");
+		else
+			$("#status").html(n.statusName);
+
 	}
 
 	/*订单详情*/
@@ -239,45 +245,44 @@ $(document).on("pageinit", "#myorder", function(){
 	
 	});
 
-
 });
 
+
+$(document).on("pageinit", "#orderdetail", function(){
+	/*取消订单@在详情页*/
+	$(document).on("tap",".qxdd_orderdetail",function(){
+
+		oid = $(this).attr('myOid');
+
+		if(confirm('取消此订单,确定?') == false)
+		{
+			return false;
+		}
+
+		$.ajax({
+		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderclose'], true) ; ?>",
+		    type:"GET",
+		    cache:false,
+		    dataType:'json',
+		    data: "&oid="+oid,
+		    success: function(json_data){
+		        if(json_data)
+		        {
+		
+		        }
+		        //$.mobile.changePage("#myorder",{transition:"slide"});
+		      	//getMyOrderList();
+		      	$("#status").trigger('create');
+
+		    }
+		});
+	});
+
+});
 
 </script>
 
 <?php
 /*
-<li>
-	<img src='<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/share-icon.jpg'; ?>'>
-	<p>订单编号:<span color='color:blue'>1234567890</span></p>
-	<p>下单时间: 2014-8-20</p>
-	<p>商品名称: 沃派校园套餐</p>
-	<p>价格:￥ 66</p>
-	<p>订单状态:等待付款<span style='color:blue'>&nbsp;&nbsp;取消订单</span></p>
-</li>
 
-<li>
-	<img src='<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/share-icon.jpg'; ?>'>
-	<p>订单编号:<span color='color:blue'>1234567890</span></p>
-	<p>下单时间: 2014-8-19</p>
-	<p>商品名称: Apple iPhone 4s 8G</p>
-	<p>价格:￥ 2399</p>
-	<p>订单状态:等待付款<span style='color:blue'>&nbsp;&nbsp;取消订单</span></p>
-</li>
-
-<li>
-	<img src='<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/share-icon.jpg'; ?>'>
-	<p>订单编号:<span color='color:blue'>1234567890</span></p>
-	<p>下单时间: 2014-8-20</p>
-	<p>商品名称: 微信沃卡</p>
-	<p>价格:￥ 50</p>
-	<p>订单状态:等待付款<span style='color:blue'>&nbsp;&nbsp;取消订单</span></p>
-</li>
-
-<!--
-<p>用户信息</p><br>
-<p>姓名:</p><p>张三</p><br>
-<p>电话:</p><p>13545296488</p><br>
-<p>身份证:</p><p>42010019900909199</p><br>
--->
 */

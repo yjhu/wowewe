@@ -507,8 +507,16 @@ function isWeiXin() {
 	}
 }
 
-
 $(document).on("pageshow", "#page2", function(){
+	if(localStorage.getItem("num") != null)
+	{			
+		//alert(localStorage.getItem("num"));
+		$("#sel-num")[0].innerHTML="您选的号码 "+localStorage.getItem("num");
+		//$("#sel-num").trigger('create');
+	}
+});
+
+$(document).on("pageinit", "#page2", function(){
 
    	function feeSummary()
 	{
@@ -523,15 +531,6 @@ $(document).on("pageshow", "#page2", function(){
 	
 	feeSummary();
 	
-	function showSelectedNumber()
-	{
-		if(localStorage.getItem("num") != null)
-		{			
-			$("#sel-num")[0].innerHTML="您选的号码 "+localStorage.getItem("num");
-		}
-	}
-	showSelectedNumber();
-
    	$("[name=flowPack]").click(function(){
 		changeTabTitle("flowPack",$(this).val());
 	});
@@ -802,7 +801,7 @@ $(document).on("pageshow", "#page2", function(){
 
 });
 
-$(document).on("pageshow", "#page3", function(){
+$(document).on("pageinit", "#page3", function(){
 
 	flowPack_name = <?php echo \app\models\MOrder::getFlowPackName(); ?>;
 	flowPack_fee =<?php echo \app\models\MOrder::getFlowPackFee(); ?>;
@@ -914,7 +913,7 @@ $(document).on("pageshow", "#page3", function(){
 
 
 /*用户信息*/
-$(document).on("pageshow", "#contactPage", function(){
+$(document).on("pageinit", "#contactPage", function(){
 
 	if(localStorage.getItem('username') != '')
 		$('#username').val(localStorage.getItem('username'));
@@ -959,7 +958,7 @@ $(document).on("pageshow", "#contactPage", function(){
 });
 
 
-$(document).on("pageshow", "#number-select", function(){
+$(document).on("pageinit", "#number-select", function(){
 
     function loadData(i, n)
     {
@@ -1021,7 +1020,7 @@ $(document).on("pageshow", "#number-select", function(){
     }
     getNumberList();
 
-    $(document).on("click",".ui-grid-a a",function(){
+    $(document).on("tap",".ui-grid-a a",function(){
 	    cardInfo = $(this).attr('myParams').split('-');
 	    localStorage.setItem("num",cardInfo[0]);
 	    localStorage.setItem("ychf",cardInfo[1]);
@@ -1029,11 +1028,11 @@ $(document).on("pageshow", "#number-select", function(){
 	    $.mobile.changePage("#page2",{transition:"slide"});
 	});
 
-    $("#seleNumBtn").click(function(){
-        //alert("换一批号码看看, 玩命加载中...");
+	$(document).on("tap","#seleNumBtn",function(){
+		// alert("玩命加载中...");
         currentPage++;
         getNumberList();
-    });
+	});
 
 
 });
