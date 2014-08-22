@@ -986,8 +986,10 @@ EOD;
 						$mobnum->status = MMobnum::STATUS_UNUSED;
 						$mobnum->save(false);				
 					}
+					$data['code'] = 0;
 				}		
-				$data['code'] = 0;
+				else
+					return json_encode(['code'=>1, 'errmsg'=>'save db error']);				
 				break;
 
 			case 'orderview':
