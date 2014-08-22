@@ -68,19 +68,19 @@ $basename = basename(__FILE__, '.php');
 
 	<div role="main" class="ui-content">
 	<h2>订单详情</h2>
-		<p>订单编号:<span id="oid"></span></p>
-		<p>订单状态:<span id="statusxx"></span></p>
-		<p>商品名称:<span id="title"></span></p>
-		<p>下单时间:<span id="create_time"></span></p>
-		<p>商品详情:<span id="detail"></span></p>
-		<p>营业厅:<span id="office_id"></span></p>
-		<p>价格:<span id="feesum"></span></p>
+		<p>订单编号:&nbsp;<span id="oid"></span></p>
+		<p>订单状态:&nbsp;<span id="statusxx"></span></p>
+		<p>商品名称:&nbsp;<span id="title"></span></p>
+		<p>下单时间:&nbsp;<span id="create_time"></span></p>
+		<p>商品详情:&nbsp;<span id="detail"></span></p>
+		<p>营业厅:&nbsp;<span id="office_id"></span></p>
+		<p>价格:&nbsp;￥<span id="feesum"></span></p>
 
-		<br>
+		<hr color="#F7C708">
 		<p>用户信息</p>
-		<p>姓名:<span id="username"></span></p>
-		<p>手机号码:<span id="usermobile"></span></p>
-		<p>身份证:<span id="userid"></span></p>
+		<p>姓名:&nbsp;<span id="username"></span></p>
+		<p>手机号码:&nbsp;<span id="usermobile"></span></p>
+		<p>身份证:&nbsp;<span id="userid"></span></p>
 		
 	</div>
 
@@ -114,17 +114,17 @@ $(document).on("pageinit", "#myorder", function(){
 
 		text ="<li>\
 		<img src='"+imgurl+"'>\
-		<p>订单编号:<span color='color:blue'>"+n.oid+"</span></p>\
-		<p>下单时间:"+n.create_time+"</p>\
-		<p>商品名称:"+n.title+"</p>\
-		<p>价格:￥"+(n.feesum)/100+"</p>";
+		<p>订单编号:&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
+		<p>下单时间:&nbsp;"+n.create_time+"</p>\
+		<p>商品名称:&nbsp;"+n.title+"</p>\
+		<p>价格:&nbsp;￥"+(n.feesum)/100+"</p>";
 
 		if(n.status == 0) //wait to pay 
-			txt_mos ="<p>订单状态:"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
+			txt_mos ="<p>订单状态:&nbsp;"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
 		else
-			txt_mos ="<p>订单状态:"+n.statusName+"</p>";
+			txt_mos ="<p>订单状态:&nbsp;"+n.statusName+"</p>";
 
-		txt_mod = "<i class='ui-corner-all ui-btn-icon-right ui-icon-arrow-r ddxq' myOid="+n.oid+"></i></li>";
+		txt_mod = "<i class='ui-corner-all ui-btn-icon-right ui-icon-carat-r ddxq' myOid="+n.oid+"></i></li>";
 
 		text = text + txt_mos + txt_mod;
 
@@ -150,8 +150,6 @@ $(document).on("pageinit", "#myorder", function(){
 
 				$('#list_common_tbody').listview('refresh');
 	
-
-
 		        if(json_data.length < 3)
 		            currentPage =1;
 		    }
@@ -169,7 +167,8 @@ $(document).on("pageinit", "#myorder", function(){
 
 	$(document).on("tap","#loadMyOrderListBtnPre",function(){
 		// alert("玩命加载中...");
-		currentPage--;
+		if(currentPage != 1)
+			currentPage--;
 		getMyOrderList();
 	});
 
@@ -183,7 +182,6 @@ $(document).on("pageinit", "#myorder", function(){
 
 		if(confirm('取消此订单,确定?') == false)
 		{
-			//alert("您的订单: "+oid+"已取消！");
 			return false;
 		}
 
