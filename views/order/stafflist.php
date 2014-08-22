@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 
 use app\models\U;
@@ -27,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
 <?php //\yii\widgets\Pjax::begin(); ?>
+<?php \yii\widgets\Pjax::begin(['id' => 'list_data']); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -121,7 +123,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					},
 
 					'staffdelete' => function ($url, $model) {
-						return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+						return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(Yii::$app->getRequest()->getUrl()."&delete=1&staff_id={$model->staff_id}"), [
 							'title' => Yii::t('yii', 'Delete'),
 							'data-confirm' => Yii::t('yii', '确认要删除此名员工?'),
 							'data-method' => 'post',
@@ -134,7 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-<?php //\yii\widgets\Pjax::end(); ?>
+<?php \yii\widgets\Pjax::end(); ?>
 
 </div>
 
