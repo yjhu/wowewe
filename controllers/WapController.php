@@ -1195,6 +1195,18 @@ EOD;
 		return $this->render('goodnumber', ['cid'=>MItem::ITEM_CAT_GOODNUMBER]);
 	}
 
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/order:gh_1ad98f5481f3
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/order:gh_03a74ac96138
+	public function actionOrder()
+	{		
+		$this->layout = false;
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
+
+		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+	
+		return $this->render('order', ['user'=>$user]);
+	}
 
 
 

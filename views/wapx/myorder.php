@@ -17,22 +17,39 @@ $basename = basename(__FILE__, '.php');
 ?>
 
 <div data-role="page" id="myorder" data-theme="a">
+
 	<div data-role="header" data-position="fixed"><h1>我的订单</h1></div>
 	<div role="main" class="ui-content">
 		<ul data-role="listview" data-inset="false" id="list_common_tbody">
 		</ul>
+
 		<br>
-		<p>
-			<input type="button" value="查看以前订单" id="loadMyOrderListBtn">
-		</p>
+		<input type="button" value="查看以前订单" id="loadMyOrderListBtn">
+
+		
+	</div>
+
+	<div data-role="footer" data-position="fixed">
+		<h4>&copy; 襄阳联通 2014</h4>
+	</div>
+</div>
+
+
+<div data-role="page" id="orderdetail" data-theme="a">
+	<div data-role="header" data-position="fixed" data-add-back-btn="true" data-back-btn-text="返回">
+	<h1>订单详情</h1>
+	</div>
+
+	<div role="main" class="ui-content">
+
 
 	</div>
 
 	<div data-role="footer" data-position="fixed">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
-
 </div>
+
 
 <script>
 var  currentPage = 1; 
@@ -44,7 +61,7 @@ var openid = '<?php echo $user->openid; ?>';
 
 var imgurl = '<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/share-icon.jpg'; ?>';
 
-$(document).on("pageshow", "#myorder", function(){
+$(document).on("pageinit", "#myorder", function(){
 
 
 	function loadData(i, n)
@@ -59,16 +76,16 @@ $(document).on("pageshow", "#myorder", function(){
 		<p>价格:￥"+(n.feesum)/100+"</p>";
 
 		if(n.status == 0) //wait to pay 
-			txt_mos ="<p>订单状态:"+n.statusName+"<span style='color:blue' id='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
+			txt_mos ="<p>订单状态:"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
 		else
 			txt_mos ="<p>订单状态:"+n.statusName+"</p>";
 
-		txt_mod = "<i class='ui-corner-all ui-btn-icon-right ui-icon-arrow-r' id='ddxq' myOid="+n.oid+"></i></li>";
+		txt_mod = "<i class='ui-corner-all ui-btn-icon-right ui-icon-arrow-r ddxq' myOid="+n.oid+"></i></li>";
 
 		text = text + txt_mos + txt_mod;
 
-		//$("#list_common_tbody").append(text).trigger('create');
-		$("#list_common_tbody").append(text);
+		$("#list_common_tbody").append(text).trigger('create');
+		//$("#list_common_tbody").append(text);
 
 	}
 
@@ -96,17 +113,18 @@ $(document).on("pageshow", "#myorder", function(){
 		});
 	}
 
+
 	getMyOrderList();
 
-	$("#loadMyOrderListBtn").click(function(){
+	$(document).on("click","#loadMyOrderListBtn",function(){
 		// alert("玩命加载中...");
 		currentPage++;
 		getMyOrderList();
 	});
 
-
 	/*取消订单*/
-	$(document).on("click","#qxdd",function(){
+	$(document).on("click",".qxdd",function(){
+
 		oid = $(this).attr('myOid');
 		//alert("取消订单: "+oid);
 		//closeorder = confirm('取消此订单,确定?');
@@ -118,11 +136,11 @@ $(document).on("pageshow", "#myorder", function(){
 		}
 
 		$.ajax({
-		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'closeorder'], true) ; ?>",
+		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderclose'], true) ; ?>",
 		    type:"GET",
 		    cache:false,
 		    dataType:'json',
-		    data: "&currentPage="+currentPage+"&size="+size+"&oid="+oid,
+		    data: "&oid="+oid,
 		    success: function(json_data){
 		        if(json_data)
 		        {
@@ -133,25 +151,23 @@ $(document).on("pageshow", "#myorder", function(){
 		});
 	});
 
-
 	/*订单详情*/
-	$(document).on("click","#ddxq",function(){
+	$(document).on("click",".ddxq",function(){
 		oid = $(this).attr('myOid');
 		//alert("取消订单: "+oid);
 		//closeorder = confirm('取消此订单,确定?');
 
-		if(confirm('查看订单详情,确定?') == true)
-		{
-			alert("您的订单: "+oid+"马上转到订单详情页面！");
-			return false;//close order!!!
-		}
+		$.mobile.changePage("#orderdetail",{transition:"slide"});
+		
+		//return false;
 
+		/*
 		$.ajax({
-		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'vieworder'], true) ; ?>",
+		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderview'], true) ; ?>",
 		    type:"GET",
 		    cache:false,
 		    dataType:'json',
-		    data: "&currentPage="+currentPage+"&size="+size+"&oid="+oid,
+		    data: "&oid="+oid,
 		    success: function(json_data){
 		        if(json_data)
 		        {
@@ -160,11 +176,10 @@ $(document).on("pageshow", "#myorder", function(){
 
 		    }
 		});
+		*/
 	});
 
 	
-
-
 
 
 });

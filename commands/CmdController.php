@@ -146,7 +146,7 @@ class CmdController extends Controller
 				//new \app\models\ButtonView('促销商品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/prom:{$gh_id}")),
 				new \app\models\ButtonView('促销商品', "http://wosotech.com/wx/web/index.php?r=wap/prom&gh_id={$gh_id}"),
 				new \app\models\ButtonComplex('我的服务', [
-					new \app\models\ButtonView('我的订单', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wapx/myorder:{$gh_id}")),
+					new \app\models\ButtonView('我的订单', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/order:{$gh_id}")),
 					//new \app\models\ButtonClick('个性化账单', 'FuncQueryAccount'),
 					//new \app\models\ButtonClick('本地生活', 'FuncQueryFee'),
 					//new \app\models\ButtonClick('关注', 'FuncSignon'),
