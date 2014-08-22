@@ -75,7 +75,7 @@ var count = 0;
 
 var orderby = 'oid'; /*oid, create_time, feesum*/
 var asc = 0; /*0:降 1:升 */
-var office_id = 0;
+var office_id = '<?php echo $model->office_id; ?>';
 
 var gh_id = '<?php echo $user->gh_id; ?>';
 var openid = '<?php echo $user->openid; ?>';

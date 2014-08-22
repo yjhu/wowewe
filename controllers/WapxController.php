@@ -186,17 +186,26 @@ class WapxController extends Controller
 	}
 
 
-	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wapx/officeorder:gh_1ad98f5481f3
-	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wapx/officeorder:gh_03a74ac96138
-	public function actionOfficeorder()
+
+	//http://127.0.0.1/wx/web/index.php?r=wapx/officeorder&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
+	public function actionOfficeorder($gh_id, $openid)
 	{		
 		$this->layout = 'wapx';
-		$gh_id = U::getSessionParam('gh_id');
-		$openid = U::getSessionParam('openid');
-
 		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-	
-		return $this->render('officeorder', ['user'=>$user]);
+		$model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+		if ($model === null) 
+		{
+			U::W(['Invalid openid.', __METHOD__, $gh_id, $openid]);	
+			return $this->redirect(['staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid]);
+		}
+		if (empty($model->office_id))
+		{
+			U::W(['Invalid office_id.', __METHOD__, $gh_id, $openid]);	
+			return $this->redirect(['staffbind', 'gh_id'=>$gh_id, 'openid'=>$openid, 'mobile'=>$model->mobile]);				
+		}
+		$office = MOffice::findOne($model->office_id);
+		return $this->render('officeorder', ['model' => $model, 'office'=>$office, 'user'=>$user]);
+
 	}
 
 
