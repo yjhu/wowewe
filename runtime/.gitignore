@@ -1,2 +1,5 @@
-*
-!.gitignore
+/debug
+
+/logs
+
+/errors.log

@@ -99,6 +99,75 @@ EOD;
 		return $rows;
 	}
 
+	public function sendWxm($content)
+	{
+		if (empty($this->gh_id) || empty($this->openid))
+		{
+			U::W(["manager's gh_id or openid is empty", $this->getAttributes(), __METHOD__]);
+			return false;
+		}
+		try
+		{
+			Yii::$app->wx->setGhId($this->gh_id);
+			$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$this->openid,'msgtype'=>'text', 'text'=>['content'=>$content]]);
+			U::W($arr);
+		}
+		catch (\Exception $e)
+		{
+			U::W($e->getCode().':'.$e->getMessage());
+			return false;
+		}
+		return true;
+	}
+
+	public function sendSm($content)
+	{
+		if (empty($this->mobile))
+		{
+			U::W(["manager's mobile is empty", $this->getAttributes(), __METHOD__]);
+			return false;
+		}
+		$s = Yii::$app->sm->S($receiver_mobile, $msg, '', 'guodu', true);		
+		$s = Yii::$app->sm->S($receiver_mobile, $msg, '', null, true);				
+/*		
+		Yii::import('ext.sm.*');
+		U::W('before='.ESmsJuxin::B(true));	
+		$s = Yii::app()->sm->S($receiver_mobile, $msg, '', 'juxin');
+		U::W($s->resp);
+		U::W('after='.ESmsJuxin::B(true));	
+*/		
+		if (!$s->isSendOk())
+		{
+			U::W(array($user_id, $receiver_mobile, $msg, $s->resp));			
+			throw new CException("send error");
+		} 
+
+
+/*
+		$isOrder = true;
+		$s = Yii::app()->sm->S($receiver_mobile, $msg, $smQueue['sendtime'], null, $isOrder, array('user_id'=>$user_id));				
+		$is_ok = $s->isSendOk();	
+		$err_code = $s->getErrorMsg();
+		$className=get_class($s);				
+		$err_code .= $className;
+		if (!$is_ok)
+		{
+			$status = MCrmSmQueue::STATUS_ERR;			
+		} 
+		else 
+		{
+			$status = MCrmSmQueue::STATUS_SENT;	
+			$user->saveCounters(array('x_crm_sm_sum' => -$sm_count));  
+			MCrmSmStat::smSendStat($user_id, $sm_count);	
+			if ($cat != MCrmSmTemplateCond::CAT_COMM)
+				SmSender::checkSmAlm($user->x_crm_sm_sum + $sm_count, $user);					
+		}
+		MCrmSmQueue::model()->updateByPk($id, array('status'=>$status, 'err_code'=>$err_code));					
+
+*/		
+		return true;
+	
+	}
 	
 }
 

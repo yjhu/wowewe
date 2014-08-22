@@ -97,6 +97,9 @@ $config = [
 	'db' => require(__DIR__ . '/db.php'),
 	
 	'wx' => require(__DIR__ . '/wx.php'),	
+
+	'sm' => require(__DIR__ . '/sm.php'),		
+	
     ],
     'params' => $params,
 ];

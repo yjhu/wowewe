@@ -18,6 +18,7 @@ use app\models\MGh;
 use app\models\MUser;
 use app\models\MMobnum;
 use app\models\MItem;
+use app\models\MSmQueue;
 
 use app\models\Wechat;
 
@@ -34,9 +35,34 @@ class CmdController extends Controller
 		//Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
 	}
 
+	//C:\xampp\php\php.exe C:\htdocs\wx\yii cmd
 	public function actionIndex()
 	{		
-		//U::W(json_encode(['liquid package'=>'4G/$120', 'call'=>'200m/$32', 'sm'=>'600p/$30', 'display caller'=>'$6/month']));
+		echo 'Hello, world!!';
+	}
+
+	//C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/sendsm
+	public function actionSendsm()	
+	{		
+		$n = \app\models\sm\ESmsGuodu::B();
+		U::W("balance before is $n");
+		$s = Yii::$app->sm->S('15527766232', 'hello world', '', 'guodu', true);		
+		if ($s->isSendOk())
+		{
+			U::W('Send OK');
+			$smQueue = new MSmQueue;
+			$smQueue->gh_id = '123';
+			$smQueue->status = MSmQueue::STATUS_SENT;
+			$smQueue->receiver_mobile = '15527766232';
+			$smQueue->msg = 'hello jack';
+			$smQueue->save(false);
+		}
+		else 
+			U::W('Send ERR');
+		U::W($s->resp);
+
+		$n = \app\models\sm\ESmsGuodu::B();
+		U::W("balance after is $n");
 		echo 'Hello, world!!';
 	}
 
@@ -146,7 +172,7 @@ class CmdController extends Controller
 				//new \app\models\ButtonView('促销商品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/prom:{$gh_id}")),
 				new \app\models\ButtonView('促销商品', "http://wosotech.com/wx/web/index.php?r=wap/prom&gh_id={$gh_id}"),
 				new \app\models\ButtonComplex('我的服务', [
-					new \app\models\ButtonView('我的订单', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wapx/myorder:{$gh_id}")),
+					new \app\models\ButtonView('我的订单', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/order:{$gh_id}")),
 					//new \app\models\ButtonClick('个性化账单', 'FuncQueryAccount'),
 					//new \app\models\ButtonClick('本地生活', 'FuncQueryFee'),
 					//new \app\models\ButtonClick('关注', 'FuncSignon'),

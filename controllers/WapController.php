@@ -16,6 +16,7 @@ use app\models\U;
 use app\models\WxException;
 use app\models\Wechat;
 use app\models\MUser;
+use app\models\MStaff;
 use app\models\MGh;
 use app\models\MOrder;
 use app\models\MItem;
@@ -853,10 +854,10 @@ EOD;
 					$_GET['callshowPack'] = 1;
 					$_GET['otherPack'] = 1;
 					$_GET['feeSum'] = 1;
-					$_GET['selectNum'] = '18696205033';
+					$_GET['selectNum'] = '18672725352';
 					$_GET['office'] = 1;
 					$_GET['username'] = 'hehb';
-					$_GET['usermobile'] = '18696205033';
+					$_GET['usermobile'] = '18672725352';
 					$_GET['userid'] = '422428197452232344';					
 				}			
 				$order->title = '自由组合套餐';			
@@ -922,7 +923,15 @@ EOD;
 				$model->win_time = 0;
 				$model->save(false);
 			}
-				
+
+			//send wx message and sm 
+			$manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
+			if ($manager !== null)
+			{
+				$manager->sendWxm($order->getWxNotice());
+				$manager->sendSm($order->getWxNotice());
+			}
+			
 			if (Wechat::isAndroid())
 			{			
 				try
@@ -977,19 +986,39 @@ EOD;
 						$mobnum->status = MMobnum::STATUS_UNUSED;
 						$mobnum->save(false);				
 					}
+					$data['code'] = 0;
 				}		
-				$data['code'] = 0;
+				else
+					return json_encode(['code'=>1, 'errmsg'=>'save db error']);				
 				break;
 
 			case 'orderview':
 				$oid = isset($_GET["oid"]) ? $_GET["oid"] : 1;
 				$data = MOrder::find()->select('*')->where("oid=:oid", [':oid'=>$oid])->asArray()->one();
+
+				$data['statusName'] = MOrder::getOrderStatusName($data['status']);
+					
 				break;
 		
 			case 'myorder':
 				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
 				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
 				$data = MOrder::find()->select('*')->where("gh_id=:gh_id AND openid=:openid", [':gh_id'=>$gh_id, ':openid'=>$openid])->orderBy(['oid' => SORT_DESC])->offset(($page-1)*$size)->limit($size)->asArray()->all();				
+				foreach($data as &$row)
+				{
+					$row['statusName'] = MOrder::getOrderStatusName($row['status']);
+				}	
+				unset($row);	
+				//U::W([$data]);
+				break;
+
+			case 'officeorder':
+				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
+				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
+				$orderby = isset($_GET["orderby"]) ? $_GET["orderby"] : 'oid';
+				$asc = isset($_GET["asc"]) ? $_GET["asc"] : 0;
+				$office_id = isset($_GET["office_id"]) ? $_GET["office_id"] : 0;
+				$data = MOrder::find()->select('*')->where("gh_id=:gh_id AND office_id=:office_id", [':gh_id'=>$gh_id, ':office_id'=>$office_id])->orderBy([$orderby => $asc == 1 ? SORT_ASC : SORT_DESC])->offset(($page-1)*$size)->limit($size)->asArray()->all();				
 				foreach($data as &$row)
 				{
 					$row['statusName'] = MOrder::getOrderStatusName($row['status']);
@@ -1065,6 +1094,7 @@ EOD;
 				U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
 				return;
 		}		
+		U::W([$data]);
 		//U::W(json_encode($data));
 		return json_encode($data);
 	}
@@ -1189,6 +1219,18 @@ EOD;
 		return $this->render('goodnumber', ['cid'=>MItem::ITEM_CAT_GOODNUMBER]);
 	}
 
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/order:gh_1ad98f5481f3
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/order:gh_03a74ac96138
+	public function actionOrder()
+	{		
+		$this->layout = false;
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
+
+		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+	
+		return $this->render('order', ['user'=>$user]);
+	}
 
 
 

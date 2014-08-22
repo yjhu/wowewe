@@ -186,9 +186,6 @@ if (Yii::$app->request->getIsPjax() && isset($_GET['delete']) && isset($_GET['st
 
 	public function actionStaffdelete($id)
 	{
-		U::W('1111'.$id);	
-if (Yii::$app->request->getIsAjax() || Yii::$app->request->getIsPjax()) {
-		U::W('2222');
 		$this->findStaffModel($id)->delete();
 		//return $this->redirect(['stafflist']);
 		$searchModel = new MStaffSearch;
@@ -232,10 +229,9 @@ U::W('333');
 
 	public function actionStafftogglemanager($id)
 	{
-		if (Yii::$app->request->isAjax)
-			U::W('is ajax....');
-	
-//		$this->findStaffModel($id)->delete();
+		$model = $this->findStaffModel($id);
+		$model->is_manager =$model->is_manager ? 0 : 1;
+		$model->save();
 		return $this->redirect(['stafflist']);
 	}
 
