@@ -14,7 +14,8 @@ CREATE TABLE wx_sm_queue (
 	cat int(10) unsigned NOT NULL DEFAULT '1', 
 	msg VARCHAR(1024) NOT NULL DEFAULT '',
 	err_code VARCHAR(8) NOT NULL DEFAULT '',				
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
+	KEY gh_id_idx(gh_id)	
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 */
