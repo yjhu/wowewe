@@ -193,7 +193,8 @@ class U
 		else if (Yii::$app->params['isWin'] && $key == 'openid' && Yii::$app->wx->localTest)
 		{
 			//return \app\models\MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;		
-			return \app\models\MGh::GH_WOSO_OPENID_HBHE;					
+			//return \app\models\MGh::GH_WOSO_OPENID_HBHE;		
+			return \app\models\MGh::GH_WOSO_OPENID_KZENG;				
 		}
 		else 
 		{

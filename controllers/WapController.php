@@ -995,6 +995,9 @@ EOD;
 			case 'orderview':
 				$oid = isset($_GET["oid"]) ? $_GET["oid"] : 1;
 				$data = MOrder::find()->select('*')->where("oid=:oid", [':oid'=>$oid])->asArray()->one();
+
+				$data['statusName'] = MOrder::getOrderStatusName($data['status']);
+					
 				break;
 		
 			case 'myorder':
