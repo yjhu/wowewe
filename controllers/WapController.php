@@ -1018,7 +1018,7 @@ EOD;
 				$orderby = isset($_GET["orderby"]) ? $_GET["orderby"] : 'oid';
 				$asc = isset($_GET["asc"]) ? $_GET["asc"] : 0;
 				$office_id = isset($_GET["asc"]) ? $_GET["asc"] : 0;
-				$data = MOrder::find()->select('*')->where("gh_id=:gh_id AND openid=:openid", [':gh_id'=>$gh_id, ':office_id'=>$office_id])->orderBy([$orderby => $asc == 1 ? SORT_ASC : SORT_DESC])->offset(($page-1)*$size)->limit($size)->asArray()->all();				
+				$data = MOrder::find()->select('*')->where("gh_id=:gh_id AND office_id=:office_id", [':gh_id'=>$gh_id, ':office_id'=>$office_id])->orderBy([$orderby => $asc == 1 ? SORT_ASC : SORT_DESC])->offset(($page-1)*$size)->limit($size)->asArray()->all();				
 				foreach($data as &$row)
 				{
 					$row['statusName'] = MOrder::getOrderStatusName($row['status']);
