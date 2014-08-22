@@ -186,9 +186,9 @@ class WapxController extends Controller
 	}
 
 
-	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wapx/myorder:gh_1ad98f5481f3
-	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wapx/myorder:gh_03a74ac96138
-	public function actionMyorder()
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wapx/officeorder:gh_1ad98f5481f3
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wapx/officeorder:gh_03a74ac96138
+	public function actionOfficeorder()
 	{		
 		$this->layout = 'wapx';
 		$gh_id = U::getSessionParam('gh_id');
@@ -196,7 +196,7 @@ class WapxController extends Controller
 
 		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 	
-		return $this->render('myorder', ['user'=>$user]);
+		return $this->render('officeorder', ['user'=>$user]);
 	}
 
 
