@@ -16,6 +16,7 @@ use app\models\U;
 use app\models\WxException;
 use app\models\Wechat;
 use app\models\MUser;
+use app\models\MStaff;
 use app\models\MGh;
 use app\models\MOrder;
 use app\models\MItem;
@@ -832,7 +833,7 @@ EOD;
 		$openid = U::getSessionParam('openid');		
 		
 		Yii::$app->wx->setGhId($gh_id);	
-		if (0)
+		if (1)
 		{
 			$_GET["cid"] = MItem::ITEM_CAT_DIY;
 		}
@@ -844,7 +845,7 @@ EOD;
 		switch ($_GET["cid"]) 
 		{
 			case MItem::ITEM_CAT_DIY:
-				if (0)
+				if (1)
 				{
 					$_GET['cardType'] = 1;
 					$_GET['flowPack'] =2;
@@ -853,10 +854,10 @@ EOD;
 					$_GET['callshowPack'] = 1;
 					$_GET['otherPack'] = 1;
 					$_GET['feeSum'] = 1;
-					$_GET['selectNum'] = '18696205033';
+					$_GET['selectNum'] = '18672725352';
 					$_GET['office'] = 1;
 					$_GET['username'] = 'hehb';
-					$_GET['usermobile'] = '18696205033';
+					$_GET['usermobile'] = '18672725352';
 					$_GET['userid'] = '422428197452232344';					
 				}			
 				$order->title = '自由组合套餐';			
@@ -922,7 +923,12 @@ EOD;
 				$model->win_time = 0;
 				$model->save(false);
 			}
-				
+
+			//send wx message and sm 
+			$manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
+			$manager->sendWxm($order->getWxNotice());
+			$manager->sendSm($order->getWxNotice());
+			
 			if (Wechat::isAndroid())
 			{			
 				try

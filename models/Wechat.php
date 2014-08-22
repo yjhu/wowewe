@@ -736,7 +736,7 @@ EOD;
 
 	public function WxMessageCustomSend($msg)
 	{
-	U::W(self::json_encode($msg));
+		//U::W(self::json_encode($msg));
 		$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/custom/send", ['access_token'=>$this->accessToken], self::json_encode($msg));
 		$this->checkWxApiResp($arr, [__METHOD__, $msg]);
 		return $arr;						

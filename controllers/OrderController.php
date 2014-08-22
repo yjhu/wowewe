@@ -183,7 +183,6 @@ class OrderController extends Controller
 
 	public function actionStaffdelete($id)
 	{
-		//U::W('1111'.$id);	
 		$this->findStaffModel($id)->delete();
 		return $this->redirect(['stafflist']);
 	}
@@ -217,10 +216,9 @@ class OrderController extends Controller
 
 	public function actionStafftogglemanager($id)
 	{
-		if (Yii::$app->request->isAjax)
-			U::W('is ajax....');
-	
-//		$this->findStaffModel($id)->delete();
+		$model = $this->findStaffModel($id);
+		$model->is_manager =$model->is_manager ? 0 : 1;
+		$model->save();
 		return $this->redirect(['stafflist']);
 	}
 

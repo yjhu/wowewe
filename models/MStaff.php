@@ -99,6 +99,38 @@ EOD;
 		return $rows;
 	}
 
+//	sendWxm($order->getWxNotice(true))
+	public function sendWxm($content)
+	{
+		if (empty($this->gh_id) || empty($this->openid))
+		{
+			U::W(["manager's gh_id or openid is empty", $this->getAttributes(), __METHOD__]);
+			return false;
+		}
+		try
+		{
+			Yii::$app->wx->setGhId($this->gh_id);
+			$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$this->openid,'msgtype'=>'text', 'text'=>['content'=>$content]]);
+			U::W($arr);
+		}
+		catch (\Exception $e)
+		{
+			U::W($e->getCode().':'.$e->getMessage());
+			return false;
+		}
+		return true;
+	}
+
+	public function sendSm($content)
+	{
+		if (empty($this->mobile))
+		{
+			U::W(["manager's mobile is empty", $this->getAttributes(), __METHOD__]);
+			return false;
+		}
+		return true;
+	
+	}
 	
 }
 
