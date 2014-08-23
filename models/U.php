@@ -365,6 +365,14 @@ class U
 		return $str;
 	}
 
+	public static function mobileIsValid($mobile)
+	{	
+		$pattern = '/^1\d{10}$/';
+		if(preg_match($pattern, $mobile))		
+			return true;			
+		return false;
+	}
+
 
 /*
 	public static function getDataForWeixin($appId, $MsgImg, $url, $title, $desc)

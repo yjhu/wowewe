@@ -25,6 +25,7 @@ use yii\helpers\Security;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 
+use app\models\U;
 use app\models\MOffice;
 
 class MStaff extends ActiveRecord
@@ -122,53 +123,40 @@ EOD;
 
 	public function sendSm($content)
 	{
-		if (empty($this->mobile))
+		if (empty($this->mobile) || !U::mobileIsValid($this->mobile))
 		{
-			U::W(["manager's mobile is empty", $this->getAttributes(), __METHOD__]);
+			U::W(["manager's mobile is empty or invalid", $this->getAttributes(), __METHOD__]);
 			return false;
 		}
-		$s = Yii::$app->sm->S($receiver_mobile, $msg, '', 'guodu', true);		
-		$s = Yii::$app->sm->S($receiver_mobile, $msg, '', null, true);				
-/*		
-		Yii::import('ext.sm.*');
-		U::W('before='.ESmsJuxin::B(true));	
-		$s = Yii::app()->sm->S($receiver_mobile, $msg, '', 'juxin');
-		U::W($s->resp);
-		U::W('after='.ESmsJuxin::B(true));	
-*/		
-		if (!$s->isSendOk())
-		{
-			U::W(array($user_id, $receiver_mobile, $msg, $s->resp));			
-			throw new CException("send error");
-		} 
-
-
-/*
-		$isOrder = true;
-		$s = Yii::app()->sm->S($receiver_mobile, $msg, $smQueue['sendtime'], null, $isOrder, array('user_id'=>$user_id));				
-		$is_ok = $s->isSendOk();	
+		//$s = Yii::$app->sm->S($this->mobile, $content, '', 'guodu', true);		
+		$s = Yii::$app->sm->S($this->mobile, $content, '', null, true);
+		//U::W($s->resp);		
 		$err_code = $s->getErrorMsg();
-		$className=get_class($s);				
-		$err_code .= $className;
-		if (!$is_ok)
+		$className = get_class($s);				
+		$err_code .= get_class($s);		
+		$smQueue = new MSmQueue;
+		$smQueue->gh_id = $this->gh_id;
+		$smQueue->receiver_mobile = $this->mobile;
+		$smQueue->msg = $content;
+		$smQueue->err_code = $err_code;
+		if ($s->isSendOk())
 		{
-			$status = MCrmSmQueue::STATUS_ERR;			
-		} 
+			U::W('Send Sm OK');
+			$smQueue->status = MSmQueue::STATUS_SENT;
+		}
 		else 
 		{
-			$status = MCrmSmQueue::STATUS_SENT;	
-			$user->saveCounters(array('x_crm_sm_sum' => -$sm_count));  
-			MCrmSmStat::smSendStat($user_id, $sm_count);	
-			if ($cat != MCrmSmTemplateCond::CAT_COMM)
-				SmSender::checkSmAlm($user->x_crm_sm_sum + $sm_count, $user);					
+			U::W(['Send Sm ERR', $err_code, $s->resp]);
+			$smQueue->status = MSmQueue::STATUS_ERR;			
 		}
-		MCrmSmQueue::model()->updateByPk($id, array('status'=>$status, 'err_code'=>$err_code));					
-
-*/		
+		$smQueue->save(false);		
 		return true;
-	
 	}
-	
+
+	public function isManager()
+	{
+		return $this->is_manager ? true : false;
+	}	
 }
 
 /*

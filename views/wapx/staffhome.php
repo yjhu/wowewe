@@ -53,9 +53,6 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 			<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:40px">部门的推广人数</div></div>
 			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:40px"><?= $office->score ?>人</div></div>
 			<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:40px">部门的推广二维码</div></div>
-<!--
-			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:40px"><a href="#dialog_office_qr123" class="ui-btn ui-shadow ui-corner-all ui-icon-grid ui-btn-icon-notext">部门二维码图片</a></div></div>
--->
 			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:40px"><a href="<?php echo Url::to(['officeqr', 'gh_id'=>$model->gh_id, 'openid'=>$model->openid]) ?>" class="ui-btn ui-shadow ui-corner-all ui-icon-grid ui-btn-icon-notext">部门二维码图片</a></div></div>
 
 		</div>
@@ -67,6 +64,10 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 
 			<?php if (isset(Yii::$app->session['owner'])): ?>
             <li><a href="<?php echo Url::to(['staffbind', 'gh_id'=>$model->gh_id, 'openid'=>$model->openid, 'mobile'=>$model->mobile]) ?>" data-icon="gear" data-ajax="false">修改设置</a></li>
+			<?php endif; ?>
+
+			<?php if (isset(Yii::$app->session['owner']) && $model->isManager()): ?>
+            <li><a href="<?php echo Url::to(['officeorder', 'gh_id'=>$model->gh_id, 'openid'=>$model->openid]) ?>" data-icon="user" data-ajax="false">营业厅订单</a></li>
 			<?php endif; ?>
 
             <li><a href="#staffhome_stafftop" data-icon="bullets">推广明星</a></li>
@@ -92,15 +93,6 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 	<?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
 	</div>
 </div>
-
-<?php /*
-<div data-role="page" id="dialog_office_qr" data-dialog="true">
-	<div data-role="header"><h1>部门的推广二维码</h1></div>
-	<div role="main" class="ui-content">
-	<?php echo Html::img($office->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
-	</div>
-</div>
-*/ ?>
 
 <div data-role="dialog" id="staffhome_stafftop">
 	<?php $rows = MStaff::getStaffScoreTop($user->gh_id, 10); ?>
@@ -208,6 +200,17 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 			<span class="ui-li-count">12</span>
 			</li>
 		</ul>
+<!--
+			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:40px"><a href="#dialog_office_qr123" class="ui-btn ui-shadow ui-corner-all ui-icon-grid ui-btn-icon-notext">部门二维码图片</a></div></div>
+-->
+
+<div data-role="page" id="dialog_office_qr" data-dialog="true">
+	<div data-role="header"><h1>部门的推广二维码</h1></div>
+	<div role="main" class="ui-content">
+	<?php echo Html::img($office->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
+	</div>
+</div>
+
 
 */
 

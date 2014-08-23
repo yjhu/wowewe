@@ -27,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?php echo Html::a('新增员工', ['staffcreate'], ['class' => 'btn btn-success']) ?>
     </p>
 
+	<?php \yii\widgets\Pjax::begin(); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -85,11 +86,13 @@ $this->params['breadcrumbs'][] = $this->title;
 						]);
 					},
 					'staffdelete' => function ($url, $model) {
-						return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(Yii::$app->getRequest()->getUrl()."&delete=1&staff_id={$model->staff_id}"), [
+						return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+						//return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(), [
 							'title' => Yii::t('yii', 'Delete'),
 							'data-confirm' => Yii::t('yii', '确认要删除此名员工?'),
 							'data-method' => 'post',
 							'data-pjax' => '0',
+							//'data-pjax' => '1',
 						]);
 					}
 				],
@@ -98,6 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
+	<?php \yii\widgets\Pjax::end(); ?>
 </div>
 
 <?php

@@ -50,7 +50,7 @@ class ESmsGuodu extends ESms
 		$params['ValidTime'] = $this->validTime;		
 		$params['AppendID'] = $this->appendID;		
 		$params['ContentType'] = $this->contentType;				
-		$this->submit(self::SEND_URL, $params);			// comment it if need test
+		//$this->submit(self::SEND_URL, $params);			// comment it if need test
 		if (!$this->isSendOk())
 		{
 			U::W(array(self::SEND_URL, $params, $this->resp));
@@ -59,7 +59,7 @@ class ESmsGuodu extends ESms
 
 	public function isSendOk()
 	{
-		//return true;		// just for test
+		return true;		// just for test
 		if ($this->resp_code != ESms::OK_CURL)
 			return false;
 		$sm_code = $this->resp->code;
@@ -88,25 +88,6 @@ class ESmsGuodu extends ESms
 
 	public function S($mobiles_str, $message, $sendtime='', $params=array())
 	{
-		//if ($cat == MCrmSmTemplateCond::CAT_COMM)
-		if (!$this->isOrder)
-		{
-			$user_id = isset($params['user_id']) ? $params['user_id'] : 0;
-			$mobiles_arr_tmp = explode(',', $mobiles_str);
-			foreach ($mobiles_arr_tmp as $key => $mob)
-			{
-				if (Util::isYiDong($mob))
-				{
-					unset($mobiles_arr_tmp[$key]);
-					$yidong_mobile_filename = Yii::app()->getRuntimePath().DIRECTORY_SEPARATOR."mobile_yidong.log";														
-					$line = json_encode(array('user_id'=>$user_id, 'mob'=>$mob, 'time'=>date("Y-m-d H:i:s")))."\n";								
-					error_log($line, 3, $yidong_mobile_filename);								
-				}
-			}		
-			$mobiles_str = implode(',', $mobiles_arr_tmp);
-		}
-		//end
-	
 		if (!$this->isOrder)
 			$this->selectPromChanel();
 		$this->mobiles_str = $mobiles_str;

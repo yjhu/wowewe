@@ -127,10 +127,6 @@ class OrderController extends Controller
 	{
 		$searchModel = new MStaffSearch;
 		$dataProvider = $searchModel->search($_GET);
-
-if (Yii::$app->request->getIsPjax() && isset($_GET['delete']) && isset($_GET['staff_id'])) {
-//		$this->findStaffModel($_GET['staff_id'])->delete();
-}
 		return $this->render('stafflist', [
 			'dataProvider' => $dataProvider,
 			'searchModel' => $searchModel,
@@ -186,18 +182,10 @@ if (Yii::$app->request->getIsPjax() && isset($_GET['delete']) && isset($_GET['st
 
 	public function actionStaffdelete($id)
 	{
+		//if (!Yii::$app->request->getIsPjax())
+		//	return;
 		$this->findStaffModel($id)->delete();
-		//return $this->redirect(['stafflist']);
-		$searchModel = new MStaffSearch;
-		$dataProvider = $searchModel->search($_GET);
-U::W('333');
-		return $this->render('stafflist', [
-			'dataProvider' => $dataProvider,
-			'searchModel' => $searchModel,
-		]);
-		
-		
-}	
+		return $this->redirect(['stafflist']);
 	}
 
 	protected function findStaffModel($id)

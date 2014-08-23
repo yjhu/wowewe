@@ -44,25 +44,39 @@ class CmdController extends Controller
 	//C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/sendsm
 	public function actionSendsm()	
 	{		
-		$n = \app\models\sm\ESmsGuodu::B();
-		U::W("balance before is $n");
-		$s = Yii::$app->sm->S('15527766232', 'hello world', '', 'guodu', true);		
+		$mobile = '15527766232';
+		if (!U::mobileIsValid($mobile))
+		{
+			echo "$mobile is a invalid mobile number!";
+			return;
+		}
+		U::W("balance before is ".\app\models\sm\ESmsGuodu::B());
+		//$s = Yii::$app->sm->S($mobile, 'hello world', '', 'guodu', true);
+		$s = Yii::$app->sm->S($mobile, 'hello world', '', null, true);
+		U::W($s->resp);
+		
+		$err_code = $s->getErrorMsg();
+		$className = get_class($s);				
+		$err_code .= get_class($s);
+		
+		$smQueue = new MSmQueue;
+		$smQueue->gh_id = '123';
+		$smQueue->receiver_mobile = $mobile;
+		$smQueue->msg = 'hello jack';
+		$smQueue->err_code = $err_code;
 		if ($s->isSendOk())
 		{
 			U::W('Send OK');
-			$smQueue = new MSmQueue;
-			$smQueue->gh_id = '123';
 			$smQueue->status = MSmQueue::STATUS_SENT;
-			$smQueue->receiver_mobile = '15527766232';
-			$smQueue->msg = 'hello jack';
-			$smQueue->save(false);
 		}
 		else 
+		{
 			U::W('Send ERR');
-		U::W($s->resp);
-
-		$n = \app\models\sm\ESmsGuodu::B();
-		U::W("balance after is $n");
+			$smQueue->status = MSmQueue::STATUS_ERR;			
+		}
+		$smQueue->save(false);
+			
+		U::W("balance after is ".\app\models\sm\ESmsGuodu::B());		
 		echo 'Hello, world!!';
 	}
 

@@ -928,8 +928,10 @@ EOD;
 			$manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
 			if ($manager !== null)
 			{
+				U::W('sendWxm');
 				$manager->sendWxm($order->getWxNotice());
-				$manager->sendSm($order->getWxNotice());
+				U::W('sendSm');
+				$manager->sendSm($order->getSmNotice());
 			}
 			
 			if (Wechat::isAndroid())
