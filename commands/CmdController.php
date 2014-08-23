@@ -31,8 +31,8 @@ class CmdController extends Controller
 		Yii::$app->getUrlManager()->setScriptUrl('/wx/web/index.php');
 		//Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
 		//Yii::$app->wx->setGhId(MGh::GH_HOYA);
-		Yii::$app->wx->setGhId(MGh::GH_WOSO);
-		//Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
+		//Yii::$app->wx->setGhId(MGh::GH_WOSO);
+		Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
 	}
 
 	//C:\xampp\php\php.exe C:\htdocs\wx\yii cmd
@@ -214,7 +214,8 @@ class CmdController extends Controller
 					new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
 					new \app\models\ButtonView('流量包订购', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
 					new \app\models\ButtonView('用户吐槽', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/suggest:{$gh_id}")),
-					new \app\models\ButtonView('关注有礼', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203837364&idx=1&sn=e320d6d5bc60b71bdedabe25b515f93d#rd'),
+					//new \app\models\ButtonView('关注有礼', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203837364&idx=1&sn=e320d6d5bc60b71bdedabe25b515f93d#rd'),
+					new \app\models\ButtonView('我的订单', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/order:{$gh_id}")),
 					//new \app\models\ButtonView('襄阳沃社区', 'http://m.10010.com/'),
 					//new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base','wap/luck:'.Yii::$app->wx->getGhid())),
 					//new \app\models\ButtonView('游戏2048', 'http://wosotech.com/wx/webtest/2048/index.htm'),
