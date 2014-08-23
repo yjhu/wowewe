@@ -168,13 +168,13 @@ function getMyOrderList()
 
 function getMyOrderListDetail(oid)
 {
-		$.ajax({
-	    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderview'], true) ; ?>",
-	    type:"GET",
-	    cache:false,
-	    dataType:'json',
-	    data: "&oid="+oid,
-	    success: function(json_data){
+	$.ajax({
+    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderview'], true) ; ?>",
+    type:"GET",
+    cache:false,
+    dataType:'json',
+    data: "&oid="+oid,
+    success: function(json_data){
 	        if(json_data)
 	        {
 	           load_data1(0, json_data); 
@@ -182,8 +182,7 @@ function getMyOrderListDetail(oid)
 	        //$.mobile.changePage("#orderdetail",{transition:"slide"});
 	        //$('#orderdetail_content').listview('refresh');
 	        $("#status").trigger('create');
-
-	    }
+    	}
 	});
 }
 
@@ -228,8 +227,7 @@ $(document).on("pageinit", "#myorder", function(){
 		            
 		        }
 		        //$.mobile.changePage("#myorder",{transition:"slide"});
-		      getMyOrderList();
-
+		      	getMyOrderList();
 		    }
 		});
 	});
