@@ -296,6 +296,7 @@ class Wechat extends \yii\base\Object
 		if (empty($model->nickname) ||!$model->subscribe)
 		{
 			//U::W('yes.....');
+/*			
 			try
 			{						
 				$arr = $this->WxGetUserInfo($FromUserName);
@@ -306,7 +307,9 @@ class Wechat extends \yii\base\Object
 				U::W('refresh accessToken.....then get user again........');
 				$this->getAccessToken(true);
 				$arr = $this->WxGetUserInfo($FromUserName);
-			}			
+			}		
+*/			
+			$arr = $this->WxGetUserInfo($FromUserName);
 			$model->setAttributes($arr, false);
 			$model->gh_id = $this->getRequest('ToUserName');			
 			$model->openid = $FromUserName;			
@@ -700,6 +703,20 @@ EOD;
 		$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/user/info", ['access_token'=>$this->accessToken, 'openid'=>$openid, 'lang'=>'zh_CN']);
 		$this->checkWxApiResp($arr, [__METHOD__, $openid]);
 		return $arr;
+/*
+		try
+		{						
+			$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/user/info", ['access_token'=>$this->accessToken, 'openid'=>$openid, 'lang'=>'zh_CN']);
+			$this->checkWxApiResp($arr, [__METHOD__, $openid]);
+		}
+		catch(\Exception $e)
+		{
+			// refresh accessToken 
+			U::W('refresh accessToken.....then get user again........');
+			$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/user/info", ['access_token'=>$this->accessToken, 'openid'=>$openid, 'lang'=>'zh_CN']);			
+		}		
+		return $arr;	
+*/		
 	}
 
 	public function WxGetOauth2Url($scope='snsapi_userinfo', $state='')
@@ -722,7 +739,6 @@ EOD;
 	public function WxGetOauth2AccessToken($code)
 	{
 		$arr = self::WxApi("https://api.weixin.qq.com/sns/oauth2/access_token", ['appid'=>$this->gh['appid'], 'secret'=>$this->gh['appsecret'], 'code'=>$code, 'grant_type'=>'authorization_code']);
-//U::W($arr);		
 		$this->checkWxApiResp($arr, [__METHOD__, $code]);
 		return $arr;
 	}

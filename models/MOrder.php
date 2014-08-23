@@ -252,7 +252,7 @@ EOD;
 		$detail = $this->detail;
 		$feesum = sprintf("%0.2f",$this->feesum/100);
 		$str = <<<EOD
-{$office->title}, {$model->nickname}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 【{$gh->nickname}】
+{$office->title}: {$model->nickname}于{$model->create_time}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 【{$gh->nickname}】
 EOD;
 			return $str;
 	}	
@@ -265,7 +265,7 @@ EOD;
 		$detail = $this->detail;
 		$feesum = sprintf("%0.2f",$this->feesum/100);
 		$str = <<<EOD
-【{$gh->nickname}】{$model->nickname}已订购【{$detail}】,卡号{$this->select_mobnum}。订单号【{$this->oid}】,金额{$feesum}元,用户信息【{$this->username},身份证{$this->userid},联系电话{$this->usermobile}】，将于【{$office->title}】办理
+【{$gh->nickname}】{$office->title}: {$model->nickname}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】
 EOD;
 			return $str;
 	}	
@@ -562,5 +562,27 @@ EOD;
 			return 'Error';
 
 //ALTER TABLE wx_order ADD select_mobnum VARCHAR(16) NOT NULL DEFAULT '' after title;
+		
+	public function getWxNoticeToManager($real_pay=false)
+	{
+		$gh = MGh::findOne($this->gh_id);						
+		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
+		$office = MOffice::findOne($this->office_id);
+		$detail = $this->detail;
+		$feesum = sprintf("%0.2f",$this->feesum/100);
+		//$create_time = substr($model->create_time, 0, 10);
+		$str = <<<EOD
+{$office->title}, 用户{$model->nickname}于{$model->create_time} 在微信营业厅成功下单, 订单信息如下:
+订单号: 【{$this->oid}】
+商品: 【{$detail}】, 
+卡号: {$this->select_mobnum}, 
+金额: {$feesum}元
+姓名: {$this->username}
+身份证: {$this->userid}
+联系电话: {$this->usermobile}】
+【{$gh->nickname}】
+EOD;
+			return $str;
+	}	
 			
 */

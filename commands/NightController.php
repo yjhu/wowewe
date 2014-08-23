@@ -3,6 +3,7 @@
 /*
 C:\xampp\php\php.exe C:\htdocs\wx\yii night
 /usr/bin/php /mnt/wwwroot/wx/yii night
+0 1 * * * /usr/bin/php /mnt/wwwroot/wx/yii night
 */
 
 namespace app\commands;
