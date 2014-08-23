@@ -125,14 +125,13 @@ class Wechat extends \yii\base\Object
 	}
 	
 	public function getAccessToken($forceRefresh=false)
-	{	
-		if($this->_accessToken !== null)
-			return $this->_accessToken;
-			
+	{		
 		$key = __METHOD__.$this->_gh_id;
-
 		if (!$forceRefresh)
 		{
+			if($this->_accessToken !== null)
+				return $this->_accessToken;
+		
 			$value = Yii::$app->cache->get($key);
 			if ($value !== false)
 			{
@@ -149,8 +148,9 @@ class Wechat extends \yii\base\Object
 			die('no access_token......');
 		}
 		$this->_accessToken = $arr['access_token'];
-		Yii::$app->cache->set($key, $this->_accessToken, YII_DEBUG ? 10 : 3600);
-		U::W("getAccessToken from weixin====, {$arr['access_token']}");
+		//Yii::$app->cache->set($key, $this->_accessToken, YII_DEBUG ? 10 : 3600);
+		Yii::$app->cache->set($key, $this->_accessToken, YII_DEBUG ? 3600 : 3600);
+		U::W("getAccessToken from weixin====, $key, {$arr['access_token']}");
 		
 		return $this->_accessToken;		
 	}
@@ -309,7 +309,8 @@ class Wechat extends \yii\base\Object
 				$arr = $this->WxGetUserInfo($FromUserName);
 			}		
 */			
-			$arr = $this->WxGetUserInfo($FromUserName);
+			//$arr = $this->WxGetUserInfo($FromUserName);
+			$arr = $this->WxGetUserInfoSafe($FromUserName);			
 			$model->setAttributes($arr, false);
 			$model->gh_id = $this->getRequest('ToUserName');			
 			$model->openid = $FromUserName;			
@@ -702,6 +703,42 @@ EOD;
 	{
 		$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/user/info", ['access_token'=>$this->accessToken, 'openid'=>$openid, 'lang'=>'zh_CN']);
 		$this->checkWxApiResp($arr, [__METHOD__, $openid]);
+		return $arr;
+/*
+		try
+		{						
+			$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/user/info", ['access_token'=>$this->accessToken, 'openid'=>$openid, 'lang'=>'zh_CN']);
+			$this->checkWxApiResp($arr, [__METHOD__, $openid]);
+		}
+		catch(\Exception $e)
+		{
+			// refresh accessToken 
+			U::W('refresh accessToken.....then get user again........');
+			$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/user/info", ['access_token'=>$this->accessToken, 'openid'=>$openid, 'lang'=>'zh_CN']);			
+		}		
+		return $arr;	
+*/		
+	}
+
+	public function WxGetUserInfoSafe($openid)
+	{
+		$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/user/info", ['access_token'=>$this->getAccessToken(), 'openid'=>$openid, 'lang'=>'zh_CN']);
+		if (!empty($arr['errcode']))
+		{
+			U::W([$arr, [__METHOD__, $this->getAccessToken(), $openid]]);
+			if ($arr['errcode'] == 40001)
+			{
+				U::W('force to refresh token.');
+				$accessToken = $this->getAccessToken(true);
+				$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/user/info", ['access_token'=>$accessToken, 'openid'=>$openid, 'lang'=>'zh_CN']);
+				if (!empty($arr['errcode']))
+				{
+					U::W([$arr, [__METHOD__, $accessToken, $openid]]);
+					if ($arr['errcode'] == 40001)
+						U::W(['get access_token error again, I have not any idea!']);
+				}				
+			}
+		}		
 		return $arr;
 /*
 		try

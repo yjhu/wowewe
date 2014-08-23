@@ -41,7 +41,9 @@ class HourController extends Controller
 		{
 			Yii::$app->wx->clearGh();
 			Yii::$app->wx->setGhId($gh_id);
+			//U::W(['old', $gh_id, Yii::$app->wx->getAccessToken()]);			
 			Yii::$app->wx->getAccessToken(true);
+			//U::W(['new', $gh_id, Yii::$app->wx->getAccessToken()]);						
 		}
 	}
 	

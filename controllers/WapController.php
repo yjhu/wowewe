@@ -1096,7 +1096,7 @@ EOD;
 				U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
 				return;
 		}		
-		U::W([$data]);
+		//U::W([$data]);
 		//U::W(json_encode($data));
 		return json_encode($data);
 	}
