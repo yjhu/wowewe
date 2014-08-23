@@ -29,6 +29,11 @@ $basename = basename(__FILE__, '.php');
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title></title>
 
+	<style>
+		.orderlist{
+
+		}
+	</style>
 	<?php $this->head() ?>
 </head>
 
@@ -63,20 +68,20 @@ $basename = basename(__FILE__, '.php');
 
 	<div role="main" class="ui-content">
 	<h2>订单详情</h2>
-		<p>订单编号:&nbsp;<span id="oid"></span></p>
-		<p>订单状态:&nbsp;<span id="status"></span></p>
-		<p>商品名称:&nbsp;<span id="title"></span></p>
-		<p>下单时间:&nbsp;<span id="create_time"></span></p>
-		<p>商品详情:&nbsp;<span id="detail"></span></p>
-		<p>营业厅:&nbsp;<span id="office_id"></span></p>
-		<p>价格:&nbsp;￥<span id="feesum"></span></p>
+		<p><span class="orderlist">订单编号:</span>&nbsp;<span id="oid"></span></p>
+		<p><span class="orderlist">订单状态:</span>&nbsp;<span id="status"></span></p>
+		<p><span class="orderlist">商品名称:</span>&nbsp;<span id="title"></span></p>
+		<p><span class="orderlist">下单时间:</span>&nbsp;<span id="create_time"></span></p>
+		<p><span class="orderlist">商品详情:</span>&nbsp;<span id="detail"></span></p>
+		<p><span class="orderlist">营业厅:</span>&nbsp;<span id="office_id"></span></p>
+		<p><span class="orderlist">价格:</span>&nbsp;￥<span id="feesum"></span></p>
 		
 		<hr color="#F7C708">
 		
-		<p>用户信息</p></li>
-		<p>姓名:&nbsp;<span id="username"></span></p>
-		<p>手机号码:&nbsp;<span id="usermobile"></span></p>
-		<p>身份证:&nbsp;<span id="userid"></span></p>
+		<p><span class="orderlist">用户信息</span></p></li>
+		<p><span class="orderlist">姓名:</span>&nbsp;<span id="username"></span></p>
+		<p><span class="orderlist">手机号码:</span>&nbsp;<span id="usermobile"></span></p>
+		<p><span class="orderlist">身份证:&nbsp;</span><span id="userid"></span></p>
 	</div>
 
 	<div data-role="footer" data-position="fixed">
