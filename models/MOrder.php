@@ -239,7 +239,7 @@ class MOrder extends ActiveRecord
 		//$feesum = ($this->feesum)/100;
 		$feesum = sprintf("%0.2f",$this->feesum/100);
 		$str = <<<EOD
-{$model->nickname},您已订购【{$detail}】,手机号码为{$this->select_mobnum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元,用户信息为【{$this->username},身份证{$this->userid},联系电话{$this->usermobile}】。请您在48小时内携身份证或相关证件至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期将自动关闭。【{$gh->nickname}】
+{$model->nickname}, 您已订购【{$detail}】, 手机号码为{$this->select_mobnum}。 订单编号为【{$this->oid}】, 订单金额为{$feesum}元, 用户信息为【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 请您在48小时内携身份证或相关证件至{$office->title}({$office->address}, {$office->manager}, {$office->mobile})办理, 逾期将自动关闭。 【{$gh->nickname}】
 EOD;
 			return $str;
 	}	
@@ -252,7 +252,7 @@ EOD;
 		$detail = $this->detail;
 		$feesum = sprintf("%0.2f",$this->feesum/100);
 		$str = <<<EOD
-{$office->title}, {$model->nickname}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username},身份证{$this->userid},联系电话{$this->usermobile}】。【{$gh->nickname}】
+{$office->title}, {$model->nickname}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 【{$gh->nickname}】
 EOD;
 			return $str;
 	}	

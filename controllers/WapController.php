@@ -929,9 +929,9 @@ EOD;
 			if ($manager !== null)
 			{
 				U::W('sendWxm');
-				$manager->sendWxm($order->getWxNotice());
+				$manager->sendWxm($order->getWxNoticeToManager());
 				U::W('sendSm');
-				$manager->sendSm($order->getSmNotice());
+				$manager->sendSm($order->getSmNoticeToManager());
 			}
 			
 			if (Wechat::isAndroid())
