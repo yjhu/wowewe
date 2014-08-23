@@ -51,6 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
 				'filter'=> MOffice::getOfficeNameOptionAll($searchModel->gh_id,false,false),
 				'headerOptions' => array('style'=>'width:200px;'),		
+				'visible'=>Yii::$app->user->identity->openid == 'admin',
 			],
 			[
 				'attribute' => 'mobile',
@@ -74,6 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						]);
 					},
 				'filter'=> ['0'=>'否', '1'=>'是'],
+				'visible'=>Yii::$app->user->identity->openid == 'admin',
 			],
             [
 				'class' => 'yii\grid\ActionColumn',

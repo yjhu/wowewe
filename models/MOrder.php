@@ -244,7 +244,20 @@ EOD;
 			return $str;
 	}	
 
-	public function getSmNotice($real_pay=false)
+	public function getWxNoticeToManager($real_pay=false)
+	{
+		$gh = MGh::findOne($this->gh_id);						
+		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
+		$office = MOffice::findOne($this->office_id);
+		$detail = $this->detail;
+		$feesum = sprintf("%0.2f",$this->feesum/100);
+		$str = <<<EOD
+{$office->title}, {$model->nickname}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username},身份证{$this->userid},联系电话{$this->usermobile}】。【{$gh->nickname}】
+EOD;
+			return $str;
+	}	
+
+	public function getSmNoticeToManager($real_pay=false)
 	{
 		$gh = MGh::findOne($this->gh_id);						
 		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
