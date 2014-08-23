@@ -128,7 +128,7 @@ function load_data2(i, n)
 {
 	count++;
 
-	text ="<li>\
+	text ="<li data-theme='c'><a href='#' class='ddxq' myOid='"+n.oid+"'>\
 	<img src='"+imgurl+"'>\
 	<p>订单编号:&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
 	<p>下单时间:&nbsp;"+n.create_time+"</p>\
@@ -140,7 +140,7 @@ function load_data2(i, n)
 	else
 		txt_mos ="<p>订单状态:&nbsp;"+n.statusName+"</p>";
 
-	txt_mod = "<i class='ui-corner-all ui-btn-icon-right ui-icon-carat-r ddxq' myOid="+n.oid+"></i></li>";
+	txt_mod = "</a></li>";
 
 	text = text + txt_mos + txt_mod;
 
