@@ -67,7 +67,7 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 			<?php endif; ?>
 
 			<?php if (isset(Yii::$app->session['owner']) && $model->isManager()): ?>
-            <li><a href="<?php echo Url::to(['officeorder', 'gh_id'=>$model->gh_id, 'openid'=>$model->openid]) ?>" data-icon="user" data-ajax="false">营业厅订单</a></li>
+            <li><a href="<?php echo Url::to(['officeorder', 'gh_id'=>$model->gh_id, 'openid'=>$model->openid]) ?>" data-icon="shop" data-ajax="false">营业厅订单</a></li>
 			<?php endif; ?>
 
             <li><a href="#staffhome_stafftop" data-icon="bullets">推广明星</a></li>
