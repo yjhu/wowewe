@@ -26,13 +26,28 @@ $basename = basename(__FILE__, '.php');
 	<div role="main" class="ui-content">
 		<ul data-role="listview" data-inset="false" id="list_common_tbody">
 		</ul>
-
-		<br>
-		<button class="ui-btn ui-btn-inline" id="loadOfficeOrderListBtnPre">上一页</button>
-		<button class="ui-btn ui-btn-inline" id="loadOfficeOrderListBtnNext">下一页</button>
-
 	</div>
 
+<!--
+	<div class="ui-grid-a">
+		<button class="ui-btn ui-btn-inline ui-mini" id="loadOfficeOrderListBtnPre">上一页</button>
+		<button class="ui-btn ui-btn-inline ui-mini" id="loadOfficeOrderListBtnNext">下一页</button>
+	</div>
+-->
+
+	<div class="ui-grid-a">
+		<div class="ui-block-a"><a href="#" class="ui-mini ui-shadow ui-btn ui-corner-all" id="loadOfficeOrderListBtnPre">上一页</a></div>
+		<div class="ui-block-b"><a href="#" class="ui-mini ui-shadow ui-btn ui-corner-all" id="loadOfficeOrderListBtnNext">下一页</a></div>
+	</div>
+
+<!--
+	<div data-role="navbar" data-iconpos="right">
+	<ul>
+		<li><a href="#">上一页</a></li>
+		<li><a href="#">下一页</a></li>
+	</ul>
+	</div>
+-->
 	<div data-role="footer" data-position="fixed">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
