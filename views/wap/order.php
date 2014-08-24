@@ -51,8 +51,16 @@ $basename = basename(__FILE__, '.php');
 		</ul>
 
 		<br>
+
+		<!--
 		<button class="ui-btn ui-btn-inline" id="loadMyOrderListBtnPre">上一页</button>
 		<button class="ui-btn ui-btn-inline" id="loadMyOrderListBtnNext">下一页</button>
+		-->
+
+		<div class="ui-grid-a">
+			<div class="ui-block-a"><a href="#" class="ui-mini ui-shadow ui-btn ui-corner-all" id="loadMyOrderListBtnPre">上一页</a></div>
+			<div class="ui-block-b"><a href="#" class="ui-mini ui-shadow ui-btn ui-corner-all" id="loadMyOrderListBtnNext">下一页</a></div>
+		</div>
 
 	</div>
 
@@ -168,7 +176,7 @@ function getMyOrderList()
 	        if(json_data.length < 3)
 	            currentPage =1;
 	    }
-	});
+	})
 }
 
 function getMyOrderListDetail(oid)

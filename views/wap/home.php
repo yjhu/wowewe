@@ -154,6 +154,7 @@ JqmAsset::register($this);
                     </div>
                 </div>
 
+                <!--
                 <div class="row" >
                     <div class="col-md-12 col-xs-12">
                         <a data-ajax=false href="http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203837364&idx=1&sn=e320d6d5bc60b71bdedabe25b515f93d#rd">
@@ -161,6 +162,7 @@ JqmAsset::register($this);
                         </a>
                     </div>
                 </div>
+                -->
 
                 <div class="row" >
                     <div class="col-md-6 col-xs-6" style="margin: 10px auto">
