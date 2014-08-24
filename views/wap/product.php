@@ -257,10 +257,10 @@ U::W($gh_id);
               </div>
 			</div>
 
+            <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
+
        		<a href="#contactPage" class="ui-btn">用户信息</a>
 
-            <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
-       
 			<div id="officeArea">
 			<?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
 			</div>
@@ -733,7 +733,7 @@ $(document).on("pageinit", "#page2", function(){
 
 	//submit form
 	//$('#submitBtn').click(function(){
-        $(document).on("click", "#submitBtn", function(){
+    $(document).on("tap", "#submitBtn", function(){
 		//alert('page2topage3');
 
         if( localStorage.getItem("num") == null)
@@ -935,7 +935,7 @@ $(document).on("pageinit", "#contactPage", function(){
 			alert("姓名输入不合法");
 			return  false;
 		}
-		var usermobileReg = /(^(130|131|132|133|134|135|136|137|138|139)\d{8}$)/;
+		var usermobileReg = /(^(1)\d{10}$)/;
 		if(usermobileReg.test(usermobile) === false)
 		{
 			alert("手机号码输入不合法");
