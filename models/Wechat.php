@@ -704,20 +704,6 @@ EOD;
 		$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/user/info", ['access_token'=>$this->accessToken, 'openid'=>$openid, 'lang'=>'zh_CN']);
 		$this->checkWxApiResp($arr, [__METHOD__, $openid]);
 		return $arr;
-/*
-		try
-		{						
-			$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/user/info", ['access_token'=>$this->accessToken, 'openid'=>$openid, 'lang'=>'zh_CN']);
-			$this->checkWxApiResp($arr, [__METHOD__, $openid]);
-		}
-		catch(\Exception $e)
-		{
-			// refresh accessToken 
-			U::W('refresh accessToken.....then get user again........');
-			$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/user/info", ['access_token'=>$this->accessToken, 'openid'=>$openid, 'lang'=>'zh_CN']);			
-		}		
-		return $arr;	
-*/		
 	}
 
 	public function WxGetUserInfoSafe($openid)
@@ -735,25 +721,11 @@ EOD;
 				{
 					U::W([$arr, [__METHOD__, $accessToken, $openid]]);
 					if ($arr['errcode'] == 40001)
-						U::W(['get access_token error again, I have not any idea!']);
+						U::W(['get access_token error again, no way']);
 				}				
 			}
 		}		
 		return $arr;
-/*
-		try
-		{						
-			$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/user/info", ['access_token'=>$this->accessToken, 'openid'=>$openid, 'lang'=>'zh_CN']);
-			$this->checkWxApiResp($arr, [__METHOD__, $openid]);
-		}
-		catch(\Exception $e)
-		{
-			// refresh accessToken 
-			U::W('refresh accessToken.....then get user again........');
-			$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/user/info", ['access_token'=>$this->accessToken, 'openid'=>$openid, 'lang'=>'zh_CN']);			
-		}		
-		return $arr;	
-*/		
 	}
 
 	public function WxGetOauth2Url($scope='snsapi_userinfo', $state='')
@@ -776,7 +748,7 @@ EOD;
 	public function WxGetOauth2AccessToken($code)
 	{
 		$arr = self::WxApi("https://api.weixin.qq.com/sns/oauth2/access_token", ['appid'=>$this->gh['appid'], 'secret'=>$this->gh['appsecret'], 'code'=>$code, 'grant_type'=>'authorization_code']);
-		$this->checkWxApiResp($arr, [__METHOD__, $code]);
+		$this->checkWxApiResp($arr, [__METHOD__, ['appid'=>$this->gh['appid'], 'secret'=>$this->gh['appsecret'], 'code'=>$code, 'grant_type'=>'authorization_code']]);
 		return $arr;
 	}
 

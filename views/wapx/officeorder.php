@@ -18,36 +18,24 @@ $basename = basename(__FILE__, '.php');
 
 ?>
 
-<div data-role="page" id="myorder" >
+<div data-role="page" id="officeorder" >
 
 	<div data-role="header" data-position="fixed">
-	<h1>我的订单</h1>
+		<a href="#" data-rel="back" class="ui-btn ui-btn-left ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-back">返回</a>
+		<h1>营业厅订单</h1>
+		<a href="<?php echo Url::to(['staffhome', 'gh_id'=>$model->gh_id, 'openid'=>$model->openid]) ?>" class="ui-btn ui-btn-right ui-alt-icon ui-nodisc-icon ui-corner-all ui-btn-icon-notext ui-icon-home">首页</a>
 	</div>
+
 	<div role="main" class="ui-content">
 		<ul data-role="listview" data-inset="false" id="list_common_tbody">
 		</ul>
 	</div>
-
-<!--
-	<div class="ui-grid-a">
-		<button class="ui-btn ui-btn-inline ui-mini" id="loadOfficeOrderListBtnPre">上一页</button>
-		<button class="ui-btn ui-btn-inline ui-mini" id="loadOfficeOrderListBtnNext">下一页</button>
-	</div>
--->
 
 	<div class="ui-grid-a">
 		<div class="ui-block-a"><a href="#" class="ui-mini ui-shadow ui-btn ui-corner-all" id="loadOfficeOrderListBtnPre">上一页</a></div>
 		<div class="ui-block-b"><a href="#" class="ui-mini ui-shadow ui-btn ui-corner-all" id="loadOfficeOrderListBtnNext">下一页</a></div>
 	</div>
 
-<!--
-	<div data-role="navbar" data-iconpos="right">
-	<ul>
-		<li><a href="#">上一页</a></li>
-		<li><a href="#">下一页</a></li>
-	</ul>
-	</div>
--->
 	<div data-role="footer" data-position="fixed">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
@@ -183,7 +171,7 @@ function getOfficeOrderListDetail(oid)
 }
 
 
-$(document).on("pageinit", "#myorder", function(){
+$(document).on("pageinit", "#officeorder", function(){
 
 	getOfficeOrderList();
 
@@ -223,7 +211,7 @@ $(document).on("pageinit", "#myorder", function(){
 		        {
 		            
 		        }
-		        //$.mobile.changePage("#myorder",{transition:"slide"});
+		        //$.mobile.changePage("#officeorder",{transition:"slide"});
 		      	getOfficeOrderList();
 		    }
 		});
