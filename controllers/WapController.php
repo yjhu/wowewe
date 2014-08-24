@@ -1011,7 +1011,6 @@ EOD;
 					$row['statusName'] = MOrder::getOrderStatusName($row['status']);
 				}	
 				unset($row);	
-				//U::W([$data]);
 				break;
 
 			case 'officeorder':
@@ -1028,11 +1027,9 @@ EOD;
 					$row['statusName'] = MOrder::getOrderStatusName($row['status']);
 				}	
 				unset($row);	
-				//U::W([$data]);
 				break;
 		
 			case 'mobileNum':
-				//U::W($_GET);
 				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
 				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
 				$feeSum = isset($_GET['feeSum']) ? $_GET['feeSum'] : 100000;
@@ -1040,29 +1037,18 @@ EOD;
 				$cid = isset($_GET["cid"]) ? $_GET["cid"] : MItem::ITEM_CAT_DIY;		
 				$num_cat = MMobnum::getNumCat($cid);
 				$data = MMobnum::find()->select('num,ychf,zdxf')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();         				
-				//U::W([$num_cat, $data]);
 				break;
 				
 			case 'diskclick':
 				$gh_id = U::getSessionParam('gh_id');
 				$openid = U::getSessionParam('openid');										
-//				U::W("gh_id=$gh_id, openid=$openid");				
 				$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);						
 				if ($model === null)
-				{
-//					U::W("not found");
 					$model = MDisk::initDefault($gh_id, $openid);
-				}
 				else if ($model->cnt > 0)
-				{
-//					U::W("found {$model->cnt}");
 					$model->cnt = $model->cnt - 1;
-				}
 				else
-				{
-//					U::W("no qualification {$model->cnt}");
 					return json_encode(['code'=>1, 'errmsg'=>'has no qualification']);				
-				}
 				$data = U::makeDiskResult();	
 				if ($data['code'] == 0)
 				{	
@@ -1079,7 +1065,6 @@ EOD;
 			case 'diskRestCnt':
 				$gh_id = U::getSessionParam('gh_id');
 				$openid = U::getSessionParam('openid');										
-				//$cid = $_GET['cid'];
 				$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);		
 				if ($model === null)
 				{
@@ -1095,7 +1080,6 @@ EOD;
 					$alreadyWin = 0;
 				$data['alreadyWin'] = $alreadyWin;
 				$data['code'] = 0; 
-				//U::W($data);
 				break;
 				
 			default:
