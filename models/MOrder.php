@@ -241,7 +241,7 @@ class MOrder extends ActiveRecord
 		$str = <<<EOD
 {$model->nickname}, 您已订购【{$detail}】, 手机号码为{$this->select_mobnum}。 订单编号为【{$this->oid}】, 订单金额为{$feesum}元, 用户信息为【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 请您在48小时内携身份证或相关证件至{$office->title}({$office->address}, {$office->manager}, {$office->mobile})办理, 逾期将自动关闭。 【{$gh->nickname}】
 EOD;
-			return $str;
+		return $str;
 	}	
 
 	public function getWxNoticeToManager($real_pay=false)
@@ -254,7 +254,7 @@ EOD;
 		$str = <<<EOD
 {$office->title}: {$model->nickname}于{$model->create_time}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 【{$gh->nickname}】
 EOD;
-			return $str;
+		return $str;
 	}	
 
 	public function getSmNoticeToManager($real_pay=false)
@@ -264,10 +264,17 @@ EOD;
 		$office = MOffice::findOne($this->office_id);
 		$detail = $this->detail;
 		$feesum = sprintf("%0.2f",$this->feesum/100);
+		$title = mb_substr($office->title, 0, 5, 'utf-8');
+/*
 		$str = <<<EOD
 【{$gh->nickname}】{$office->title}: {$model->nickname}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】
 EOD;
-			return $str;
+*/
+		$str = <<<EOD
+【{$gh->nickname}】{$title}:用户已订购【{$detail}】,订单号【{$this->oid}】,金额{$feesum}元,用户信息【{$this->username},联系电话{$this->usermobile}】
+EOD;
+		U::W($str."...".mb_strlen($str, 'utf-8'));
+		return $str;
 	}	
 
 	public function getDetailStrCore()
