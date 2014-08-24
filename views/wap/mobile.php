@@ -424,19 +424,19 @@ function isWeiXin() {
 	}
 }
 
-
 $(document).on("pageshow", "#page2", function(){
+    if(localStorage.getItem("num") != null)
+    {           
+        //alert(localStorage.getItem("num"));
+        $("#sel-num")[0].innerHTML="您选的号码 "+localStorage.getItem("num");
+        //$("#sel-num").trigger('create');
+    }
+});
+
+$(document).on("pageinit", "#page2", function(){
 
 	var cardType = 0;
 
-	function showSelectedNumber()
-	{
-        if(localStorage.getItem("num") != null)
-		{
-			$("#sel-num")[0].innerHTML="您选的号码 "+localStorage.getItem("num");
-		}
-	}
-	showSelectedNumber();
     $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
     $("[name=plan66]").click(function(){
         planFlag = 'plan66';
@@ -486,8 +486,7 @@ $(document).on("pageshow", "#page2", function(){
     });
 
 	//submit form
-	$('#submitBtn').click(function(){
-
+    $(document).on("tap", "#submitBtn", function(){
         if( localStorage.getItem("num") == null)
         {
             $.mobile.changePage("#number-select",{transition:"slide"});
@@ -556,7 +555,7 @@ $(document).on("pageshow", "#page2", function(){
 
 });
 
-$(document).on("pageshow", "#page3", function(){
+$(document).on("pageinit", "#page3", function(){
 
     var selectNum = localStorage.getItem("num");
     $("#selectNum").html("号码: "+selectNum);
@@ -639,7 +638,7 @@ $(document).on("pageshow", "#page3", function(){
 });
 
 /*用户信息*/
-$(document).on("pageshow", "#contactPage", function(){
+$(document).on("pageinit", "#contactPage", function(){
 
 	if(localStorage.getItem('username') != '')
 		$('#username').val(localStorage.getItem('username'));
@@ -661,7 +660,7 @@ $(document).on("pageshow", "#contactPage", function(){
 			alert("姓名输入不合法");
 			return  false;
 		}
-		var usermobileReg = /(^(130|131|132|133|134|135|136|137|138|139)\d{8}$)/;
+		var usermobileReg = /(^(1)\d{10}$)/;
 		if(usermobileReg.test(usermobile) === false)
 		{
 			alert("手机号码输入不合法");
@@ -684,7 +683,7 @@ $(document).on("pageshow", "#contactPage", function(){
 });
 
 
-$(document).on("pageshow", "#number-select", function(){
+$(document).on("pageinit", "#number-select", function(){
 
     function loadData(i, n)
     {
@@ -739,7 +738,7 @@ $(document).on("pageshow", "#number-select", function(){
     }
     getNumberList();
 
-    $(document).on("click",".ui-grid-a a",function(){
+    $(document).on("tap",".ui-grid-a a",function(){
 	    cardInfo = $(this).attr('myParams').split('-');
 	    localStorage.setItem("num",cardInfo[0]);
 	    localStorage.setItem("ychf",cardInfo[1]);
@@ -747,12 +746,12 @@ $(document).on("pageshow", "#number-select", function(){
 	    $.mobile.changePage("#page2",{transition:"slide"});
     });
 
-    $("#seleNumBtn").click(function(){
-       // alert("换一批号码看看, 玩命加载中...");
+
+    $(document).on("tap","#seleNumBtn",function(){
+        // alert("玩命加载中...");
         currentPage++;
         getNumberList();
     });
-
 
 });
 </script>

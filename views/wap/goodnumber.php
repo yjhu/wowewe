@@ -575,7 +575,7 @@ $(document).on("pageshow", "#contactPage", function(){
 			alert("姓名输入不合法");
 			return  false;
 		}
-		var usermobileReg = /(^(130|131|132|133|134|135|136|137|138|139)\d{8}$)/;
+		var usermobileReg = /(^(1)\d{10}$)/;
 		if(usermobileReg.test(usermobile) === false)
 		{
 			alert("手机号码输入不合法");
