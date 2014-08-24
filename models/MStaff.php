@@ -123,33 +123,42 @@ EOD;
 
 	public function sendSm($content)
 	{
-		if (empty($this->mobile) || !U::mobileIsValid($this->mobile))
+		try
 		{
-			U::W(["manager's mobile is empty or invalid", $this->getAttributes(), __METHOD__]);
-			return false;
+			if (empty($this->mobile) || !U::mobileIsValid($this->mobile))
+			{
+				U::W(["manager's mobile is empty or invalid", $this->getAttributes(), __METHOD__]);
+				return false;
+			}
+			U::W("balance before is ".\app\models\sm\ESmsGuodu::B());
+			//$s = Yii::$app->sm->S($this->mobile, $content, '', 'guodu', true);		
+			$s = Yii::$app->sm->S($this->mobile, $content, '', null, true);
+			//U::W($s->resp);		
+			$err_code = $s->getErrorMsg();
+			$className = get_class($s);				
+			$err_code .= get_class($s);		
+			$smQueue = new MSmQueue;
+			$smQueue->gh_id = $this->gh_id;
+			$smQueue->receiver_mobile = $this->mobile;
+			$smQueue->msg = $content;
+			$smQueue->err_code = $err_code;
+			if ($s->isSendOk())
+			{
+				U::W('Send Sm OK');
+				$smQueue->status = MSmQueue::STATUS_SENT;
+			}
+			else 
+			{
+				U::W(['Send Sm ERR', $err_code, $s->resp]);
+				$smQueue->status = MSmQueue::STATUS_ERR;			
+			}
+			$smQueue->save(false);
+			U::W("balance after is ".\app\models\sm\ESmsGuodu::B());		
 		}
-		//$s = Yii::$app->sm->S($this->mobile, $content, '', 'guodu', true);		
-		$s = Yii::$app->sm->S($this->mobile, $content, '', null, true);
-		//U::W($s->resp);		
-		$err_code = $s->getErrorMsg();
-		$className = get_class($s);				
-		$err_code .= get_class($s);		
-		$smQueue = new MSmQueue;
-		$smQueue->gh_id = $this->gh_id;
-		$smQueue->receiver_mobile = $this->mobile;
-		$smQueue->msg = $content;
-		$smQueue->err_code = $err_code;
-		if ($s->isSendOk())
+		catch (\Exception $e)
 		{
-			U::W('Send Sm OK');
-			$smQueue->status = MSmQueue::STATUS_SENT;
-		}
-		else 
-		{
-			U::W(['Send Sm ERR', $err_code, $s->resp]);
-			$smQueue->status = MSmQueue::STATUS_ERR;			
-		}
-		$smQueue->save(false);		
+			U::W($e->getCode().':'.$e->getMessage());
+		}	
 		return true;
 	}
 
