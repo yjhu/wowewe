@@ -37,7 +37,6 @@ class ESmsManager extends \yii\base\Object
 
 	public function getCommRoutes()
 	{
-		//return new CMap($this->_commRoutes);
 		return $this->_commRoutes;
 	}
 
@@ -49,7 +48,6 @@ class ESmsManager extends \yii\base\Object
 
 	public function getOrderRoutes()
 	{
-		//return new CMap($this->_orderRoutes);
 		return $this->_orderRoutes;
 	}
 
@@ -59,17 +57,6 @@ class ESmsManager extends \yii\base\Object
 			$this->_orderRoutes[$channel]=$route;
 	}
 
-	/*
-		// send cuxiao or promotion sm
-		$s = Yii::app()->sm->S('13871407676', 'hello, world', date("Y-m-d H:i:s"));			// by random channel by the weight, comm cuxiao type
-		$s = Yii::app()->sm->S('13871407676', 'hello, world', date("Y-m-d H:i:s"), 'guodu', true);	// by the specified channel guodu, order type
-		if ($s->isSendOk())
-			U::W('Send OK');
-		else 
-			U::W('Send ERR');
-		U::W($s->resp);
-		U::W('after='.ESmsYmt::B(true));	
-	*/
 	public function S($mobiles_str, $message, $sendtime='', $channel=null, $isOrder=false, $params=array())
 	{
 		if (empty($channel))

@@ -50,7 +50,7 @@ class ESmsGuodu extends ESms
 		$params['ValidTime'] = $this->validTime;		
 		$params['AppendID'] = $this->appendID;		
 		$params['ContentType'] = $this->contentType;				
-		$this->submit(self::SEND_URL, $params);			// comment it if need test
+		//$this->submit(self::SEND_URL, $params);			// comment it if need test
 		if (!$this->isSendOk())
 		{
 			U::W(array(self::SEND_URL, $params, $this->resp));
@@ -59,7 +59,7 @@ class ESmsGuodu extends ESms
 
 	public function isSendOk()
 	{
-		//return true;		// just for test
+		return true;		// just for test
 		if ($this->resp_code != ESms::OK_CURL)
 			return false;
 		$sm_code = $this->resp->code;

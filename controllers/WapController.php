@@ -901,7 +901,6 @@ EOD;
 		$order->detail = $order->getDetailStr();
 
 		$mobnum = MMobnum::findOne($_GET['selectNum']);
-		//U::W($_GET['selectNum']);
 		if ($mobnum === null ||$mobnum->status != MMobnum::STATUS_UNUSED)
 		{
 			return json_encode(['status'=>1, 'errmsg'=>$mobnum === null ? "mobile doest not exist" : "mobile locked!"] );
@@ -933,19 +932,10 @@ EOD;
 				U::W('sendSm');
 				$manager->sendSm($order->getSmNoticeToManager());
 			}
-			
-			if (Wechat::isAndroid())
-			{			
-				try
-				{
-					$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					
-					U::W($arr);		
-				}
-				catch (\Exception $e)
-				{
-					U::W($e->getCode().':'.$e->getMessage());
-				}
-			}
+
+			// send wx message to user
+			$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					
+
 		}
 		else
 		{
@@ -1349,5 +1339,18 @@ return $xmlStr;
     }
 
 		
-*/
+			if (Wechat::isAndroid())
+			{			
+				try
+				{
+					$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					
+					U::W($arr);		
+				}
+				catch (\Exception $e)
+				{
+					U::W($e->getCode().':'.$e->getMessage());
+				}
+			}
+*/			
+
 

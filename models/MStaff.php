@@ -111,7 +111,7 @@ EOD;
 		{
 			Yii::$app->wx->setGhId($this->gh_id);
 			$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$this->openid,'msgtype'=>'text', 'text'=>['content'=>$content]]);
-			U::W($arr);
+			//U::W(['sendwxm....', $arr, ['touser'=>$this->openid,'msgtype'=>'text', 'text'=>['content'=>$content]], $this->gh_id]);
 		}
 		catch (\Exception $e)
 		{
