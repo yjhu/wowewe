@@ -969,8 +969,6 @@ EOD;
 	{
 		//if (!Yii::$app->request->isAjax)
 		//	return;
-		$gh_id = U::getSessionParam('gh_id');
-		$openid = U::getSessionParam('openid');				
 		$this->layout = false;		
 		switch ($cat) 
 		{
@@ -1003,6 +1001,8 @@ EOD;
 				break;
 		
 			case 'myorder':
+				$gh_id = U::getSessionParam('gh_id');
+				$openid = U::getSessionParam('openid');										
 				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
 				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
 				$data = MOrder::find()->select('*')->where("gh_id=:gh_id AND openid=:openid", [':gh_id'=>$gh_id, ':openid'=>$openid])->orderBy(['oid' => SORT_DESC])->offset(($page-1)*$size)->limit($size)->asArray()->all();				
@@ -1015,6 +1015,8 @@ EOD;
 				break;
 
 			case 'officeorder':
+				$gh_id = U::getSessionParam('gh_id');
+				$openid = U::getSessionParam('openid');										
 				$page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
 				$size = isset($_GET['size']) ? $_GET['size'] : 8;	
 				$orderby = isset($_GET["orderby"]) ? $_GET["orderby"] : 'oid';
@@ -1042,6 +1044,8 @@ EOD;
 				break;
 				
 			case 'diskclick':
+				$gh_id = U::getSessionParam('gh_id');
+				$openid = U::getSessionParam('openid');										
 //				U::W("gh_id=$gh_id, openid=$openid");				
 				$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);						
 				if ($model === null)
@@ -1073,6 +1077,8 @@ EOD;
 				break;
 
 			case 'diskRestCnt':
+				$gh_id = U::getSessionParam('gh_id');
+				$openid = U::getSessionParam('openid');										
 				//$cid = $_GET['cid'];
 				$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);		
 				if ($model === null)
