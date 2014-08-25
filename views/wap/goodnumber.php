@@ -7,7 +7,6 @@ JqmAsset::register($this);
 
 use app\models\U;
 use app\models\MOffice;
-$gh_id = Yii::$app->session['gh_id'];
 
 $item = \app\models\MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$cid]);
 if ($item === null)
@@ -99,13 +98,8 @@ if ($item === null)
 
 <div data-role="page" id="page2" data-theme="e">
 
-	<div data-role="header">
-
-		<h1 id="title">
-			精选靓号
-		</h1>
-
-	</div>
+	<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+    <?php echo $this->render('header1', ['menuId'=>'menu2','title' => "精选靓号" ]); ?>   	
 
 	<div data-role="content">
 		<form id="productForm">
@@ -197,9 +191,9 @@ if ($item === null)
 
 
 <div data-role="page" id="page3" data-theme="e">
-	<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
-		<h1 id="title"><?php echo  $item->title; ?></h1>
-	</div>
+
+	<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+    <?php echo $this->render('header2', ['menuId'=>'menu3','title' => $item->title ]); ?>   		
 
 	<div data-role="content">
 
@@ -243,9 +237,8 @@ if ($item === null)
 
 
 <div data-role="page" id="contactPage" data-theme="e">
-	<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
-		<h1 id="title"><?php echo  $item->title; ?></h1>
-	</div>
+	<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+    <?php echo $this->render('header2', ['menuId'=>'menu4','title' => $item->title ]); ?>   
 
 	<div data-role="content">
 
@@ -272,9 +265,9 @@ if ($item === null)
 
 
 <div data-role="page" id="number-select" data-theme="e">
-	<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
-		<h1><?php echo  $item->title; ?></h1>
-	</div>
+
+	<?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+    <?php echo $this->render('header2', ['menuId'=>'menu5','title' => $item->title ]); ?>  
 
 	<div data-role="content">
 		<h2>请您选择手机号码</h2>

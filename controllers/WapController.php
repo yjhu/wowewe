@@ -584,7 +584,7 @@ EOD;
 			$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);
 		}		
 */		
- 		return $this->render('games/2048/index', ['model' => $model, 'result'=>$result, 'subscribed'=>$subscribed, 'username'=>$username]);
+ 		return $this->render('games/2048/index', ['model' => $model, 'result'=>$result, 'subscribed'=>$subscribed, 'username'=>$username, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 	}	
                
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/gsave:gh_1ad98f5481f3
@@ -814,7 +814,7 @@ EOD;
 		$this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');				
-		return $this->render('product');
+		return $this->render('product',['gh_id'=>$gh_id, 'openid'=>$openid]);
 	}
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodsave:gh_1ad98f5481f3
@@ -1089,7 +1089,7 @@ EOD;
 		$openid = U::getSessionParam('openid');
 		Yii::$app->wx->setGhId($gh_id);
 
-        return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_WO]);
+        return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_WO, 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_1ad98f5481f3
@@ -1101,7 +1101,7 @@ EOD;
 		$openid = U::getSessionParam('openid');
 	    Yii::$app->wx->setGhId($gh_id);
 
-        return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_XIAOYUAN]);
+        return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_XIAOYUAN, 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mobilelist:gh_03a74ac96138
@@ -1124,7 +1124,7 @@ EOD;
 		Yii::$app->wx->setGhId($gh_id);
 
         //return $this->render('mobile');
-        return $this->render('mobile', ['cid'=>$_GET['cid']]);
+        return $this->render('mobile', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
 /*
@@ -1198,7 +1198,7 @@ EOD;
 		$openid = U::getSessionParam('openid');
 		Yii::$app->wx->setGhId($gh_id);
 
-		return $this->render('goodnumber', ['cid'=>MItem::ITEM_CAT_GOODNUMBER]);
+		return $this->render('goodnumber', ['cid'=>MItem::ITEM_CAT_GOODNUMBER, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 	}
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/order:gh_1ad98f5481f3

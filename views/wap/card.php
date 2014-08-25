@@ -9,8 +9,6 @@
     use app\models\MOffice;
 	use app\models\MItem;
 
-    $gh_id = Yii::$app->session['gh_id'];
-
     $item = \app\models\MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$cid]);
     //U::W($item);
 ?>
@@ -23,13 +21,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title></title>
 	<?php 
-/*
-	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/css/themes/default/jquery.mobile-1.4.3.min.css');
-	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/_assets/css/jqm-demos.css'); 
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/js/jquery.js'); 
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/_assets/js/index.js'); 
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/js/jquery.mobile-1.4.3.min.js'); 
-*/
+		/*
+			$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/css/themes/default/jquery.mobile-1.4.3.min.css');
+			$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/_assets/css/jqm-demos.css'); 
+			$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/js/jquery.js'); 
+			$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/_assets/js/index.js'); 
+			$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/js/jquery.mobile-1.4.3.min.js'); 
+		*/
 	?>
 
 <style type="text/CSS">
@@ -106,12 +104,9 @@
 
 	<div data-role="page" id="page2" data-theme="e">
 
-		<div data-role="header">
-			<h1 id="title">
-                <?php echo  $item->title; ?>
-            </h1>
-		</div>
-		
+		<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+		<?php echo $this->render('header1', ['menuId'=>'menu2','title' => $item->title]); ?>
+
 		<div data-role="content">
 		<form id="productForm">	
 		<div data-role="content" data-theme="e">	
@@ -206,9 +201,9 @@
 	
 	
 	<div data-role="page" id="page3" data-theme="e">
-		<div data-role="header">
-			<h1 id="title"><?php echo  $item->title; ?></h1>
-		</div>
+
+		<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+		<?php echo $this->render('header1', ['menuId'=>'menu3','title' => $item->title]); ?>
 		
 		<div data-role="content">
 
@@ -247,9 +242,9 @@
 	</div>	<!-- page3 end -->
 
 	<div data-role="page" id="contactPage" data-theme="e">
-		<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
-			<h1 id="title"><?php echo  $item->title; ?></h1>
-		</div>
+
+		<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+		<?php echo $this->render('header2', ['menuId'=>'menu4','title' => $item->title]); ?>
 
 		<div data-role="content">
 
@@ -275,9 +270,10 @@
 	</div>	<!-- contactPage end -->
 
 	<div data-role="page" id="number-select" data-theme="e">
-		<div data-role="header">
-			<h1><?php echo  $item->title; ?></h1>
-		</div>
+
+		<?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+		<?php echo $this->render('header2', ['menuId'=>'menu5','title' => $item->title]); ?>
+
 		
 		<div data-role="content">
 			<h2>请您选择手机号码</h2>

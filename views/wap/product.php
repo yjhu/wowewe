@@ -5,11 +5,10 @@
 	use app\assets\JqmAsset;
 	JqmAsset::register($this);
 	//$this->registerJs('alert("test")', yii\web\View::POS_READY);
-use app\models\U;
-    use app\models\MOffice;
-    $gh_id = Yii::$app->session['gh_id'];
-U::W($gh_id);
+	use app\models\U;
+	use app\models\MOffice;
 ?>
+
 <?php $this->beginPage() ?>
 
 <!DOCTYPE html>
@@ -66,52 +65,17 @@ U::W($gh_id);
 
 <body>
 <?php $this->beginBody() ?>
-	<!--
-	<div data-role="page" id="page1">
-		<div data-role="header">
-			<h1>自由组合套餐</h1>
-		</div>
-		
-		<div data-role="content">
-			<h2>产品列表</h2>
-			<ul data-role="listview" data-autodividers="true" data-filter="true" data-inset="true">
-			  <li>
-				<a href="#page2" data-transition="flip">
-				<img src="http://www.w3cschool.cc/try/demo_source/firefox.png">
-				<h2>产品编号140729</h2>
-				<p>该产品简单描述...</p>
-				</a>
-			  </li>
-
-			  <li>
-				<a href="#page2" data-transition="flip">
-				<img src="http://www.w3cschool.cc/try/demo_source/chrome.png">
-				<h2><p style="display:none">M</P> 红米手机</h2>
-				<h2>价格:2048元</h2>
-				<p>该产品简单描述...</p>
-				</a>
-			  </li>			  
-			</ul>
-		</div>
-
-		<div data-role="footer">
-			<h4>&copy; 襄阳联通 2014</h4>
-		</div>
-	</div>	
-	-->
-
 		
 	<div data-role="page" id="page2" data-theme="e">
 
-
+		<!--
 		<div data-role="header" data-theme="e">
 			<h1>自由组合套餐</h1>
 		</div>
-		<!--
-		<?//php include('menu.php'); ?>
-		<?//php include('header.php'); ?>
 		-->
-		
+		<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+		<?php echo $this->render('header1', ['menuId'=>'menu2','title' => '自由组合套餐']); ?>
+
 		<div data-role="content">
 		<form id="productForm">	
 		<div data-role="content" data-theme="e">	
@@ -120,8 +84,7 @@ U::W($gh_id);
 		</p>
 
  		<p>
-		自由组合套餐
-         <!--<br>赠品：无纺布环保袋；好友推荐最高得100元话费；微信晒单最高得话费50元。-->
+			自由组合套餐
             <span class="title_hint"> 自由选择， 随意组合， 私人定制， 沃随你变， 每月最低10元起</span>
 		</p>
 
@@ -312,10 +275,15 @@ U::W($gh_id);
 	
 	
 	<div data-role="page" id="page3" data-theme="e">
+		<!--
 		<div data-role="header">
 			<h1>自由组合套餐</h1>
 		</div>
+		-->
+		<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+		<?php echo $this->render('header1', ['menuId'=>'menu3','title' => '自由组合套餐']); ?>
 		
+
 		<div data-role="content">
 
 			<h2>订单详情</h2>
@@ -413,9 +381,9 @@ U::W($gh_id);
 	</div>	<!-- page3 end -->
 
 	<div data-role="page" id="contactPage" data-theme="e">
-		<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
-			<h1 id="title">自由组合套餐</h1>
-		</div>
+
+		<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+		<?php echo $this->render('header2', ['menuId'=>'menu4','title' => '自由组合套餐']); ?>
 
 		<div data-role="content">
 
@@ -442,9 +410,8 @@ U::W($gh_id);
 
 
 	<div data-role="page" id="number-select" data-theme="e">
-		<div data-role="header">
-			<h1>自由组合套餐</h1>
-		</div>
+		<?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+		<?php echo $this->render('header2', ['menuId'=>'menu5','title' => '自由组合套餐']); ?>
 		
 		<div data-role="content">
 			<h2>请您选择手机号码</h2>
