@@ -52,7 +52,8 @@ class CmdController extends Controller
 		}
 		U::W("balance before is ".\app\models\sm\ESmsGuodu::B());
 		//$s = Yii::$app->sm->S($mobile, 'hello world', '', 'guodu', true);
-		$s = Yii::$app->sm->S($mobile, 'hello world', '', null, true);
+		//$s = Yii::$app->sm->S($mobile, 'hello world', '', null, true);
+		$s = Yii::$app->sm->S($mobile, '【襄阳联通】, 您已订购商品', '', null, true);
 		U::W($s->resp);
 		
 		$err_code = $s->getErrorMsg();

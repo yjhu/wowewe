@@ -11,11 +11,11 @@ class ESmsGuodu extends ESms
 	const SEND_URL = "http://221.179.180.158:9007/QxtSms/QxtFirewall";		
 	const BALANCE_URL = "http://221.179.180.158:8081/QxtSms_surplus/surplus";			
 	
-	const ORDER_USERNAME = 'wushen';	
-	const ORDER_PASSWORD = 'wushen123';	
+	const ORDER_USERNAME = 'xylt';	
+	const ORDER_PASSWORD = 'he0825';	
 
-	const PROM_USERNAME = 'gouwuc';	
-	const PROM_PASSWORD = 'he1109';	
+	const PROM_USERNAME = 'xylt';	
+	const PROM_PASSWORD = 'he0825';
 
 	public $contentType = 8;		// long message , 1: <=70(bytes)    2:2x67(bytes)  3:3x67(bytes)
 	public $appendID = '0';
@@ -50,7 +50,7 @@ class ESmsGuodu extends ESms
 		$params['ValidTime'] = $this->validTime;		
 		$params['AppendID'] = $this->appendID;		
 		$params['ContentType'] = $this->contentType;				
-		//$this->submit(self::SEND_URL, $params);			// comment it if need test
+		$this->submit(self::SEND_URL, $params);			// comment it if need test
 		if (!$this->isSendOk())
 		{
 			U::W(array(self::SEND_URL, $params, $this->resp));
@@ -59,7 +59,7 @@ class ESmsGuodu extends ESms
 
 	public function isSendOk()
 	{
-		return true;		// just for test
+		//return true;		// just for test
 		if ($this->resp_code != ESms::OK_CURL)
 			return false;
 		$sm_code = $this->resp->code;
@@ -102,7 +102,6 @@ class ESmsGuodu extends ESms
 
 	public function changePassword($newPassword)
 	{
-		// http://221.179.180.158:9001/QxtSms/QxtSetOperPass?OperID=wushen&OperPassOld=wushen123&OperPassNew=newpassword
 		return;
 	}
 

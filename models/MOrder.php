@@ -262,7 +262,7 @@ EOD;
 		$gh = MGh::findOne($this->gh_id);						
 		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
 		$office = MOffice::findOne($this->office_id);
-		$detail = $this->detail;
+		$detail = mb_substr( $this->detail, 0, 16, 'utf-8');
 		$feesum = sprintf("%0.2f",$this->feesum/100);
 		$title = mb_substr($office->title, 0, 5, 'utf-8');
 /*
@@ -271,7 +271,7 @@ EOD;
 EOD;
 */
 		$str = <<<EOD
-【{$gh->nickname}】{$title}:用户已订购【{$detail}】,订单号【{$this->oid}】,金额{$feesum}元,用户信息【{$this->username},联系电话{$this->usermobile}】
+【{$gh->nickname}】{$title}订单【{$this->oid}】,{$detail},{$feesum}元,{$this->username},电话{$this->usermobile}
 EOD;
 		U::W($str."...".mb_strlen($str, 'utf-8'));
 		return $str;
