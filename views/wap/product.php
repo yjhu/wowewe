@@ -73,7 +73,7 @@
 			<h1>自由组合套餐</h1>
 		</div>
 		-->
-		<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+
 		<?php echo $this->render('header1', ['menuId'=>'menu2','title' => '自由组合套餐']); ?>
 
 		<div data-role="content">
@@ -270,7 +270,7 @@
 	<div data-role="footer">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
-		<div id="result"></div>	
+	<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>	
 	</div> <!-- page2 end -->
 	
 	
@@ -280,10 +280,9 @@
 			<h1>自由组合套餐</h1>
 		</div>
 		-->
-		<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+		
 		<?php echo $this->render('header1', ['menuId'=>'menu3','title' => '自由组合套餐']); ?>
 		
-
 		<div data-role="content">
 
 			<h2>订单详情</h2>
@@ -378,11 +377,11 @@
 		<div data-role="footer">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
+		<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 	</div>	<!-- page3 end -->
 
 	<div data-role="page" id="contactPage" data-theme="e">
 
-		<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 		<?php echo $this->render('header2', ['menuId'=>'menu4','title' => '自由组合套餐']); ?>
 
 		<div data-role="content">
@@ -406,11 +405,12 @@
 		<div data-role="footer">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
+		<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 	</div>	<!-- contactPage end -->
 
 
 	<div data-role="page" id="number-select" data-theme="e">
-		<?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+		
 		<?php echo $this->render('header2', ['menuId'=>'menu5','title' => '自由组合套餐']); ?>
 		
 		<div data-role="content">
@@ -432,11 +432,10 @@
 
 		</div>
 
-
-
 		<div data-role="footer">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
+		<?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 	</div>	<!-- page3 end -->	
 	
 <?php $this->endBody() ?>
