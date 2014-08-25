@@ -273,7 +273,6 @@
 	<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>	
 	</div> <!-- page2 end -->
 	
-	
 	<div data-role="page" id="page3" data-theme="e">
 		<!--
 		<div data-role="header">
