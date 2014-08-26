@@ -247,12 +247,21 @@ EOD;
 	public function getWxNoticeToManager($real_pay=false)
 	{
 		$gh = MGh::findOne($this->gh_id);						
-		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
+		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);		
+if ($model === null)		
+	U::W('no openid'.$this->openid);
 		$office = MOffice::findOne($this->office_id);
+
+U::W($office->title);
+U::W($model->nickname);
+U::W($gh->nickname);
+U::W($this->create_time);
+U::W($this->select_mobnum);
+
 		$detail = $this->detail;
 		$feesum = sprintf("%0.2f",$this->feesum/100);
 		$str = <<<EOD
-{$office->title}: {$model->nickname}于{$model->create_time}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 【{$gh->nickname}】
+{$office->title}: {$model->nickname}于{$this->create_time}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 【{$gh->nickname}】
 EOD;
 		return $str;
 	}	
