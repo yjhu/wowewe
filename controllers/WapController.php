@@ -95,7 +95,8 @@ class WapController extends Controller
 			$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 			//if ($user !== null)
 			//	Yii::$app->user->login($user);
-			return $this->redirect([$route, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+			//return $this->redirect([$route, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+			return $this->redirect([$route]);
 		}
 	
 		if (empty($_GET['code']))
@@ -132,7 +133,8 @@ class WapController extends Controller
 		//	Yii::$app->user->login($user);
 		//else
 		//	U::W("not found, $openid");
-		return $this->redirect([$route, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+		//return $this->redirect([$route, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+		return $this->redirect([$route]);
 	}
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/nativepackage
@@ -443,7 +445,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prom:gh_1ad98f5481f3
 	//http://wosotech.com/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
 	//http://wosotech.com/wx/webtest/wxpay-jsapi-demo.html
-	public function actionProm($gh_id, $openid)
+	public function actionProm()
 	{
 		$this->layout = false;		
 		//$gh_id = $_GET['gh_id'];
@@ -475,7 +477,7 @@ EOD;
 */	
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_03a74ac96138	
-	public function actionLuck($gh_id, $openid)
+	public function actionLuck()
 	{
 		$this->layout = 'wap';
 		//$gh_id = Yii::$app->session['gh_id'];	
@@ -547,7 +549,7 @@ EOD;
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/g2048:gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/g2048:gh_03a74ac96138
-	public function actionG2048($gh_id, $openid)
+	public function actionG2048()
 	{
 		$this->layout = 'wap';
 		//$gh_id = Yii::$app->session['gh_id'];	
@@ -596,7 +598,7 @@ EOD;
 	}	
                
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/gsave:gh_1ad98f5481f3
-	public function actionG2048save($gh_id, $openid)
+	public function actionG2048save()
 	{            
 		$msg = 0;
 		$this->layout = false;
@@ -730,7 +732,7 @@ EOD;
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_1ad98f5481f3
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_03a74ac96138
-	public function actionSuggest($gh_id, $openid)
+	public function actionSuggest()
 	{
 		//$this->layout = 'wap';
 	    $this->layout =false;
@@ -818,7 +820,7 @@ EOD;
 	
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_03a74ac96138	
-	public function actionProduct($gh_id, $openid)
+	public function actionProduct()
 	{
 		$this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
@@ -827,7 +829,7 @@ EOD;
 	}
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodsave:gh_1ad98f5481f3
-	public function actionProdsave($gh_id, $openid)
+	public function actionProdsave()
 	{			
 		//U::W([$_GET, $_POST, $_SERVER]);
 		//U::W([$_GET, $_POST]);
@@ -937,7 +939,6 @@ EOD;
 			if ($manager !== null)
 			{
 				U::W('sendWxm');
-U::W($order->getWxNoticeToManager());				
 				$manager->sendWxm($order->getWxNoticeToManager());
 				U::W('sendSm');
 				$manager->sendSm($order->getSmNoticeToManager());
@@ -965,7 +966,7 @@ U::W($order->getWxNoticeToManager());
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1&cid=10&feeSum=1
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=diskRestCnt&cid=10
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=orderview&oid=53de91f9d3773
-	public function actionAjaxdata($gh_id, $openid, $cat)
+	public function actionAjaxdata($cat)
 	{
 		//if (!Yii::$app->request->isAjax)
 		//	return;
@@ -1092,7 +1093,7 @@ U::W($order->getWxNoticeToManager());
 	}
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardwo:gh_1ad98f5481f3
-    public function actionCardwo($gh_id, $openid)
+    public function actionCardwo()
     {
         $this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
@@ -1104,7 +1105,7 @@ U::W($order->getWxNoticeToManager());
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_03a74ac96138
-    public function actionCardxiaoyuan($gh_id, $openid)
+    public function actionCardxiaoyuan()
     {
         $this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
@@ -1115,7 +1116,7 @@ U::W($order->getWxNoticeToManager());
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mobilelist:gh_03a74ac96138
-    public function actionMobilelist($gh_id, $openid)
+    public function actionMobilelist()
     {
         $this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
@@ -1126,7 +1127,7 @@ U::W($order->getWxNoticeToManager());
         return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
-    public function actionMobile($gh_id, $openid)
+    public function actionMobile()
     {
         $this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
@@ -1149,7 +1150,7 @@ U::W($order->getWxNoticeToManager());
 	}
 */
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/disk:gh_03a74ac96138
-	public function actionDisk($gh_id, $openid)
+	public function actionDisk()
 	{
 		$this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
@@ -1185,7 +1186,7 @@ U::W($order->getWxNoticeToManager());
 	}
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/home:gh_03a74ac96138
-    public function actionHome($gh_id, $openid)
+    public function actionHome()
     {
         $this->layout = 'wap';
 
@@ -1200,7 +1201,7 @@ U::W($order->getWxNoticeToManager());
     }
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/goodnumber:gh_03a74ac96138
-	public function actionGoodnumber($gh_id, $openid)
+	public function actionGoodnumber()
 	{
 		$this->layout =false;
 
@@ -1213,7 +1214,7 @@ U::W($order->getWxNoticeToManager());
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/order:gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/order:gh_03a74ac96138
-	public function actionOrder($gh_id, $openid)
+	public function actionOrder()
 	{		
 		$this->layout = false;
 		$gh_id = U::getSessionParam('gh_id');
