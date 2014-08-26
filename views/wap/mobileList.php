@@ -35,7 +35,6 @@
 
     <div data-role="page" id="page1" data-theme="e">
 
-        <?php echo $this->render('menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 		<?php echo $this->render('header1', ['menuId'=>'menu1','title' => "特惠手机"]); ?>
 
         <div data-role="content">
@@ -61,6 +60,7 @@
         <div data-role="footer">
             <h4>&copy; 襄阳联通 2014</h4>
         </div>
+        <?php echo $this->render('menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
     </div> <!-- page1 end -->
 
 	<?php

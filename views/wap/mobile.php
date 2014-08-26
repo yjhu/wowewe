@@ -111,10 +111,9 @@
 		</div>
         -->
 
-        <?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+       
         <?php echo $this->render('header1', ['menuId'=>'menu2','title' => $item->title ]); ?>
 
-		
 		<div data-role="content">
 		<form id="productForm">	
 		<div data-role="content" data-theme="e">	
@@ -266,7 +265,7 @@
 	<div data-role="footer">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
-		<div id="result"></div>	
+    <?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 	</div> <!-- page2 end -->
 	
 	
@@ -277,7 +276,6 @@
 		</div>
         -->
 
-        <?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
         <?php echo $this->render('header2', ['menuId'=>'menu3','title' => $item->title ]); ?>		
 
 		<div data-role="content">
@@ -314,6 +312,7 @@
 		<div data-role="footer">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
+        <?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 	</div>	<!-- page3 end -->
 
 
@@ -323,7 +322,7 @@
 		<h1 id="title"><?php echo  $item->title; ?></h1>
 	</div>
     -->
-    <?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+    
     <?php echo $this->render('header2', ['menuId'=>'menu4','title' => $item->title ]); ?>   
 
 	<div data-role="content">
@@ -347,6 +346,7 @@
 	<div data-role="footer">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
+    <?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>	<!-- contactPage end -->
 
 
@@ -356,7 +356,7 @@
 			<h1><?php echo  $item->title; ?></h1>
 		</div>
         -->
-		<?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+		
         <?php echo $this->render('header2', ['menuId'=>'menu5','title' => $item->title ]); ?>   
 
 		<div data-role="content">
@@ -382,6 +382,7 @@
 		<div data-role="footer">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
+        <?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 	</div>	<!-- page3 end -->
 
 
