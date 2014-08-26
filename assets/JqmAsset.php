@@ -11,8 +11,12 @@ class JqmAsset extends \yii\web\JqueryAsset
 
 	public $css = [
 		//'js/jqm/jquery.mobile-1.4.3.min.css',
-		'js/jqm_flatui/generated/jquery.mobile.flatui.min.css',
-		'js/jqm/SpryTabbedPanels.css',	
+		//'js/jqm_flatui/generated/jquery.mobile.flatui.min.css',
+		'js/jqm/xiangyangunicom.min.css',
+		'js/jqm/jquery.mobile.icons.min.css',
+		'js/jqm/jquery.mobile.structure-1.4.3.min.css',
+		
+		'js/jqm/SpryTabbedPanels.css',
 	];
 	
 	public $js = [
