@@ -58,6 +58,12 @@ class WapController extends Controller
 	{
 		return true;
 	}
+
+	public function afterAction($action, $result)
+	{
+		U::W("{$this->id}/{$this->action->id}:".Yii::getLogger()->getElapsedTime());
+		return parent::afterAction($action, $result);
+	}
 
 	public function actions()
 	{
@@ -88,7 +94,7 @@ class WapController extends Controller
 			$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 			//if ($user !== null)
 			//	Yii::$app->user->login($user);
-			return $this->redirect([$route]);
+			return $this->redirect([$route, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 		}
 	
 		if (empty($_GET['code']))
@@ -101,7 +107,6 @@ class WapController extends Controller
 		{
 			return 'Sorry, we can not do anything for you without your authrization!';
 		}
-//U::W('1111');
 		list($route, $gh_id) = explode(':', $_GET['state']);
 		Yii::$app->wx->setGhId($gh_id);
 		$token = Yii::$app->wx->WxGetOauth2AccessToken($code);
@@ -119,7 +124,6 @@ class WapController extends Controller
 			U::W($oauth2UserInfo);
 			Yii::$app->session->set('oauth2UserInfo', $oauth2UserInfo);
 		}
-//U::W('2222');
 		Yii::$app->session['gh_id'] = $gh_id;
 		Yii::$app->session['openid'] = $openid;
 		//$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
@@ -127,7 +131,7 @@ class WapController extends Controller
 		//	Yii::$app->user->login($user);
 		//else
 		//	U::W("not found, $openid");
-		return $this->redirect([$route]);
+		return $this->redirect([$route, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 	}
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/nativepackage
@@ -388,7 +392,7 @@ EOD;
 		if (Yii::$app->wx->debug)
 			U::W($arr);
 	}
-
+/*
 	//http://127.0.0.1/wx/web/index.php?r=wap/mall&gh_id=gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mall:gh_1ad98f5481f3
 	public function actionMall()
@@ -437,7 +441,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prom:gh_1ad98f5481f3
 	//http://wosotech.com/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
 	//http://wosotech.com/wx/webtest/wxpay-jsapi-demo.html
-	public function actionProm()
+	public function actionProm($gh_id, $openid)
 	{
 		$this->layout = false;		
 		//$gh_id = $_GET['gh_id'];
@@ -455,7 +459,10 @@ EOD;
 		$item = ['iid'=>'4198489411','title'=>'title1','price'=>'169900', 'new_price'=>'119900', 'url'=>'http://baidu.com', 'pic_url'=>'53a95055dcf97_b.png', 'seller_cids'=>'100'];
  		return $this->render('prom', ['item' => $item]);
 	}	
+*/
 
+
+/*
 	//http://127.0.0.1/wx/web/index.php?r=wap/aboutqr&name=jack&qrurl=http://wosotech.com/wx/runtime/qr/gh_03a74ac96138_1.jpg
 	public function actionAboutqr()
 	{
@@ -464,16 +471,16 @@ EOD;
 		$this->layout = 'wap';
  		return $this->render('aboutqr', ['name' => $name, 'qrurl'=>$qrurl]);
 	}
-	
+*/	
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_03a74ac96138	
-	public function actionLuck()
+	public function actionLuck($gh_id, $openid)
 	{
 		$this->layout = 'wap';
 		//$gh_id = Yii::$app->session['gh_id'];	
 		//$openid = Yii::$app->session['openid'];
-		$gh_id = U::getSessionParam('gh_id');
-		$openid = U::getSessionParam('openid');
+		//$gh_id = U::getSessionParam('gh_id');
+		//$openid = U::getSessionParam('openid');
 		Yii::$app->wx->setGhId($gh_id);
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 		if ($model === null)
@@ -539,7 +546,7 @@ EOD;
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/g2048:gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/g2048:gh_03a74ac96138
-	public function actionG2048()
+	public function actionG2048($gh_id, $openid)
 	{
 		$this->layout = 'wap';
 		//$gh_id = Yii::$app->session['gh_id'];	
@@ -588,7 +595,7 @@ EOD;
 	}	
                
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/gsave:gh_1ad98f5481f3
-	public function actionG2048save()
+	public function actionG2048save($gh_id, $openid)
 	{            
 		$msg = 0;
 		$this->layout = false;
@@ -673,7 +680,7 @@ EOD;
 		return $msg;
 	}	
     
-    
+    /*
 	//http://127.0.0.1/wx/web/index.php?r=wap/diy&gh_id=gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/diy:gh_1ad98f5481f3
 	//http://114.215.178.32/wx/web/index.php?r=wap/diy&gh_id=gh_1ad98f5481f3
@@ -685,7 +692,7 @@ EOD;
 		//Yii::$app->wx->setGhId();		
  		return $this->render('diy');
 	}	
- 
+/
 	public function actionAccount($openid, $gh_id, $reason)
 	{
 		//$openid = $_GET['openid'];
@@ -718,10 +725,11 @@ EOD;
 		return $this->render('billDetail', ['mobile'=>$mobile]);
 	}
         
-	
+*/	
+
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_1ad98f5481f3
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_03a74ac96138
-	public function actionSuggest()
+	public function actionSuggest($gh_id, $openid)
 	{
 		//$this->layout = 'wap';
 	    $this->layout =false;
@@ -809,7 +817,7 @@ EOD;
 	
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_03a74ac96138	
-	public function actionProduct()
+	public function actionProduct($gh_id, $openid)
 	{
 		$this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
@@ -818,7 +826,7 @@ EOD;
 	}
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodsave:gh_1ad98f5481f3
-	public function actionProdsave()
+	public function actionProdsave($gh_id, $openid)
 	{			
 		//U::W([$_GET, $_POST, $_SERVER]);
 		//U::W([$_GET, $_POST]);
@@ -955,7 +963,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1&cid=10&feeSum=1
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=diskRestCnt&cid=10
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=orderview&oid=53de91f9d3773
-	public function actionAjaxdata($cat)
+	public function actionAjaxdata($gh_id, $openid, $cat)
 	{
 		//if (!Yii::$app->request->isAjax)
 		//	return;
@@ -1082,7 +1090,7 @@ EOD;
 	}
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardwo:gh_1ad98f5481f3
-    public function actionCardwo()
+    public function actionCardwo($gh_id, $openid)
     {
         $this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
@@ -1094,7 +1102,7 @@ EOD;
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_03a74ac96138
-    public function actionCardxiaoyuan()
+    public function actionCardxiaoyuan($gh_id, $openid)
     {
         $this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
@@ -1105,7 +1113,7 @@ EOD;
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mobilelist:gh_03a74ac96138
-    public function actionMobilelist()
+    public function actionMobilelist($gh_id, $openid)
     {
         $this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
@@ -1116,7 +1124,7 @@ EOD;
         return $this->render('mobilelist');
     }
 
-    public function actionMobile()
+    public function actionMobile($gh_id, $openid)
     {
         $this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
@@ -1139,7 +1147,7 @@ EOD;
 	}
 */
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/disk:gh_03a74ac96138
-	public function actionDisk()
+	public function actionDisk($gh_id, $openid)
 	{
 		$this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
@@ -1175,7 +1183,7 @@ EOD;
 	}
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/home:gh_03a74ac96138
-    public function actionHome()
+    public function actionHome($gh_id, $openid)
     {
         $this->layout = 'wap';
 
@@ -1190,7 +1198,7 @@ EOD;
     }
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/goodnumber:gh_03a74ac96138
-	public function actionGoodnumber()
+	public function actionGoodnumber($gh_id, $openid)
 	{
 		$this->layout =false;
 
@@ -1203,7 +1211,7 @@ EOD;
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/order:gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/order:gh_03a74ac96138
-	public function actionOrder()
+	public function actionOrder($gh_id, $openid)
 	{		
 		$this->layout = false;
 		$gh_id = U::getSessionParam('gh_id');

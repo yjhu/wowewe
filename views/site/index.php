@@ -5,7 +5,8 @@
 use yii\helpers\Url;
 use yii\helpers\Html;
 
-$this->title = Yii::$app->params['title'];
+//$this->title = Yii::$app->params['title'];
+$this->title = '襄阳联通';
 ?>
 
 <div class="row">
@@ -13,7 +14,7 @@ $this->title = Yii::$app->params['title'];
 
 		<?php if (Yii::$app->user->isGuest): ?>
 	        <h1>欢迎您</h1>
-	        <p class="lead">访问襄阳联通官方微信管理后台</p>
+	        <p class="lead">访问襄阳联通</p>
 		<?php else: ?>
 	        <h1><?php echo $username; ?></h1>
 		    <p class="lead">您已成功登录襄阳联通官方微信管理后台！</p>	
@@ -69,3 +70,16 @@ $this->title = Yii::$app->params['title'];
 -->
 
 
+<?php
+/*
+
+		<?php if (Yii::$app->user->isGuest): ?>
+	        <h1>欢迎您</h1>
+	        <p class="lead">访问襄阳联通官方微信管理后台</p>
+		<?php else: ?>
+	        <h1><?php echo $username; ?></h1>
+		    <p class="lead">您已成功登录襄阳联通官方微信管理后台！</p>	
+		<?php endif; ?>
+
+
+*/

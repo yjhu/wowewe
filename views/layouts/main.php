@@ -28,7 +28,8 @@ AppAsset::register($this);
         <?php
             NavBar::begin([
 				//'brandLabel' => Html::img($asset->baseUrl . '/logo.png'),
-                'brandLabel' => '襄阳联通官方微信',
+                //'brandLabel' => '襄阳联通官方微信',
+				'brandLabel' => '襄阳联通',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',

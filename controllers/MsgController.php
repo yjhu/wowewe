@@ -46,6 +46,12 @@ class MsgController extends Controller
 		return $wechat->run($gh_id);	
 	}
 
+	public function afterAction($action, $result)
+	{
+		U::W("{$this->id}/{$this->action->id}:".Yii::getLogger()->getElapsedTime());
+		return parent::afterAction($action, $result);
+	}
+
 	//http://wosotech.com/wx/web/index.php?r=msg/valid&token=HY09uB1h
 	//http://127.0.0.1/wx/web/index.php?r=msg/valid&token=HY09uB1h
 	public function actionValid($token)
