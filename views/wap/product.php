@@ -51,7 +51,7 @@
 .n2
 {
 	font-size: 10pt;
-	background-color: red;
+	background-color: yellow;
 }
 .n3
 {
@@ -66,10 +66,10 @@
 <body>
 <?php $this->beginBody() ?>
 		
-	<div data-role="page" id="page2" data-theme="e">
+	<div data-role="page" id="page2" data-theme="c">
 
 		<!--
-		<div data-role="header" data-theme="e">
+		<div data-role="header" data-theme="c">
 			<h1>自由组合套餐</h1>
 		</div>
 		-->
@@ -78,7 +78,7 @@
 
 		<div data-role="content">
 		<form id="productForm">	
-		<div data-role="content" data-theme="e">	
+		<div data-role="content" data-theme="c">	
 		<p  align=center>        
 		<img width="100%" src="../web/images/item/20140514113951768477440.jpg" alt=""/>
 		</p>
@@ -91,7 +91,7 @@
 
 		<div class="ui-corner-all custom-corners">
 
-		  <div data-role="fieldcontain" data-theme="e">
+		  <div data-role="fieldcontain" data-theme="c">
 			<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 			  <legend>卡类型</legend>
 			  <input type="radio" name="cardType" id="radio1_0" value="0" checked />
@@ -118,7 +118,7 @@
 			  <div class="TabbedPanelsContentGroup">
 				<div class="TabbedPanelsContent">
 				  <div data-role="fieldcontain">
-					<fieldset data-role="controlgroup" data-theme="e">
+					<fieldset data-role="controlgroup" data-theme="c">
 					  <legend>流量包</legend>
 					  <input type="radio" name="flowPack" id="flowPack_0" value="0"  checked />
 					  <label for="flowPack_0">100MB/10元&nbsp;&nbsp;</label>
@@ -146,7 +146,7 @@
 
 				<div class="TabbedPanelsContent">
 					<div data-role="fieldcontain">
-					<fieldset data-role="controlgroup" data-theme="e">
+					<fieldset data-role="controlgroup" data-theme="c">
 					  <legend>语音包</legend>
 					  <input type="radio" name="voicePack" id="voicePack_0" value="0"  />
 					  <label for="voicePack_0">200分钟/40元&nbsp;&nbsp;0.2元/1分钟</label>
@@ -169,7 +169,7 @@
 
 				<div class="TabbedPanelsContent">
 					<div data-role="fieldcontain">
-					<fieldset data-role="controlgroup" data-theme="e">
+					<fieldset data-role="controlgroup" data-theme="c">
 					  <legend>短彩信包</legend>
 					  <input type="radio" name="msgPack" id="msgPack_0" value="0" />
 					  <label for="msgPack_0">200条/10元</label>
@@ -198,7 +198,7 @@
 				</div>
 
               <div class="TabbedPanelsContent">
-                  <div data-role="fieldcontain" data-theme="e">
+                  <div data-role="fieldcontain" data-theme="c">
                       <fieldset data-role="controlgroup">
                           <legend>其他增值业务</legend>
                           <input type="radio" name="otherPack" id="otherPack_0" value="0" />
@@ -273,7 +273,7 @@
 	<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>	
 	</div> <!-- page2 end -->
 	
-	<div data-role="page" id="page3" data-theme="e">
+	<div data-role="page" id="page3" data-theme="c">
 		<!--
 		<div data-role="header">
 			<h1>自由组合套餐</h1>
@@ -373,13 +373,13 @@
 
 		</div>
 
-		<div data-role="footer">
+		<div data-role="footer" data-position="fixed">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
 		<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 	</div>	<!-- page3 end -->
 
-	<div data-role="page" id="contactPage" data-theme="e">
+	<div data-role="page" id="contactPage" data-theme="c">
 
 		<?php echo $this->render('header2', ['menuId'=>'menu4','title' => '自由组合套餐']); ?>
 
@@ -401,14 +401,14 @@
 
 		</div>
 
-		<div data-role="footer">
+		<div data-role="footer" data-position="fixed">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
 		<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 	</div>	<!-- contactPage end -->
 
 
-	<div data-role="page" id="number-select" data-theme="e">
+	<div data-role="page" id="number-select" data-theme="c">
 		
 		<?php echo $this->render('header2', ['menuId'=>'menu5','title' => '自由组合套餐']); ?>
 		
@@ -431,7 +431,7 @@
 
 		</div>
 
-		<div data-role="footer">
+		<div data-role="footer" data-position="fixed">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
 		<?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>

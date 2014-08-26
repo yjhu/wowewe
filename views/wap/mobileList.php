@@ -33,7 +33,7 @@
 <body>
 <?php $this->beginBody() ?>
 
-    <div data-role="page" id="page1" data-theme="e">
+    <div data-role="page" id="page1" data-theme="c">
 
 		<?php echo $this->render('header1', ['menuId'=>'menu1','title' => "特惠手机"]); ?>
 

@@ -38,7 +38,7 @@ $basename = basename(__FILE__, '.php');
 <?php $this->beginBody() ?>
 
 
-<div data-role="page" id="myorder" data-theme="e">
+<div data-role="page" id="myorder" data-theme="c">
 
 	<?php echo $this->render('menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid]); ?>	
 	<?php echo $this->render('header1', ['menuId'=>'menu1','title' => '我的订单']); ?>
@@ -66,7 +66,7 @@ $basename = basename(__FILE__, '.php');
 	</div>
 </div>
 
-<div data-role="page" id="orderdetail" data-theme="e">
+<div data-role="page" id="orderdetail" data-theme="c">
 
 	<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>	
 	<?php echo $this->render('header2', ['menuId'=>'menu2','title' => '我的订单']); ?>

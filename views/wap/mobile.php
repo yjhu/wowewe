@@ -84,7 +84,7 @@
 .n2
 {
 	font-size: 10pt;
-	background-color: red;
+	background-color: yellow;
 }
 .n3
 {
@@ -99,7 +99,7 @@
 <body>
 <?php $this->beginBody() ?>
 
-	<div data-role="page" id="page2" data-theme="e">
+	<div data-role="page" id="page2" data-theme="c">
 
         <!--
 		<div data-role="header">
@@ -116,7 +116,7 @@
 
 		<div data-role="content">
 		<form id="productForm">	
-		<div data-role="content" data-theme="e">	
+		<div data-role="content" data-theme="c">	
 		<p  align=center id="imgURL">
 		    <img width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
 		</p>
@@ -269,7 +269,7 @@
 	</div> <!-- page2 end -->
 	
 	
-	<div data-role="page" id="page3" data-theme="e">
+	<div data-role="page" id="page3" data-theme="c">
         <!--
 		<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
 			<h1 id="title"><?php echo  $item->title; ?></h1>
@@ -309,14 +309,14 @@
 
 		</div>
 
-		<div data-role="footer">
+		<div data-role="footer" data-position="fixed">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
         <?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 	</div>	<!-- page3 end -->
 
 
-<div data-role="page" id="contactPage" data-theme="e">
+<div data-role="page" id="contactPage" data-theme="c">
     <!--
 	<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
 		<h1 id="title"><?php echo  $item->title; ?></h1>
@@ -343,14 +343,14 @@
 
 	</div>
 
-	<div data-role="footer">
+	<div data-role="footer" data-position="fixed">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
     <?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>	<!-- contactPage end -->
 
 
-	<div data-role="page" id="number-select" data-theme="e">
+	<div data-role="page" id="number-select" data-theme="c">
         <!--
 		<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
 			<h1><?php echo  $item->title; ?></h1>
@@ -379,7 +379,7 @@
 		</div>
 
 
-		<div data-role="footer">
+		<div data-role="footer" data-position="fixed">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
         <?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
