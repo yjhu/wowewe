@@ -134,7 +134,7 @@ function load_data2(i, n)
 	count++;
 
 	text ="<li data-theme='c'><a href='#' class='ddxq' myOid='"+n.oid+"'>\
-	<img src='"+imgurl+"'>\
+	<img style='padding-top:20px' src='"+imgurl+"'>\
 	<p>订单编号:&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
 	<p>下单时间:&nbsp;"+n.create_time+"</p>\
 	<p>商品名称:&nbsp;"+n.title+"</p>\

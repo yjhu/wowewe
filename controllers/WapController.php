@@ -58,7 +58,8 @@ class WapController extends Controller
 	{
 		return true;
 	}
-
+
+
 	public function afterAction($action, $result)
 	{
 		U::W("{$this->id}/{$this->action->id}:".Yii::getLogger()->getElapsedTime());
@@ -936,6 +937,7 @@ EOD;
 			if ($manager !== null)
 			{
 				U::W('sendWxm');
+U::W($order->getWxNoticeToManager());				
 				$manager->sendWxm($order->getWxNoticeToManager());
 				U::W('sendSm');
 				$manager->sendSm($order->getSmNoticeToManager());
