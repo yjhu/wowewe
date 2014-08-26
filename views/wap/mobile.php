@@ -428,8 +428,6 @@ var feeSum = 0;
 var count = 0;
 var phonePrice = <?php echo ($item->price)/100; ?>;
 
-var gh_id = '<?php echo $gh_id; ?>';
-var openid = '<?php echo $openid; ?>';
 
 planFlag = 'plan66';
 //$().ready(function() {
@@ -552,7 +550,7 @@ $(document).on("pageinit", "#page2", function(){
 		$.ajax({
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			type:"GET",
-			data: $("form#productForm").serialize()+"&gh_id="+gh_id+"&openid="+openid+"&cid="+cid+"&planFlag="+planFlag+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
+			data: $("form#productForm").serialize()+"&cid="+cid+"&planFlag="+planFlag+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
 			success:function(data){
 				data = eval('('+data+')');
 				if(data.status == 0)
@@ -739,7 +737,7 @@ $(document).on("pageinit", "#number-select", function(){
         $("#list_common_tbody").html('');
 
         $.ajax({
-            url: "<?php echo Url::to(['wap/ajaxdata', 'gh_id'=>$gh_id, 'openid'=>$openid, 'cat'=>'mobileNum'], true) ; ?>",
+            url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'mobileNum'], true) ; ?>",
             type:"GET",
 	        cache:false,
 	        dataType:'json',

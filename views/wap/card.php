@@ -351,9 +351,6 @@ var count = 0;
 //$().ready(function() {
 var cid = <?php echo $cid; ?>;
 
-var gh_id = '<?php echo $gh_id; ?>';
-var openid = '<?php echo $openid; ?>';
-
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
 	if (ua.match(/MicroMessenger/i) == 'micromessenger') {
@@ -424,7 +421,7 @@ $(document).on("pageinit", "#page2", function(){
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			cache:false,
 			dataType:'json',
-			data: $("form#productForm").serialize() +"&gh_id="+gh_id+"&openid="+openid+"&cid="+cid+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
+			data: $("form#productForm").serialize() +"&cid="+cid+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
 			success:function(json_data){
 				//data = eval('('+data+')');
 				if(json_data.status == 0)
@@ -597,7 +594,7 @@ $(document).on("pageinit", "#number-select", function(){
         $("#list_common_tbody").html('');
 
         $.ajax({
-            url: "<?php echo Url::to(['wap/ajaxdata', 'gh_id'=>$gh_id, 'openid'=>$openid, 'cat'=>'mobileNum'], true) ; ?>",
+            url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'mobileNum'], true) ; ?>",
             type:"GET",
 	        cache:false,
 	        dataType:'json',
