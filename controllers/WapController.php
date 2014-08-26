@@ -1113,7 +1113,7 @@ EOD;
 		Yii::$app->wx->setGhId($gh_id);
 
         //return $this->render('mobile');
-        return $this->render('mobilelist');
+        return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
     public function actionMobile()

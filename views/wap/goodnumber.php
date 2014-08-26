@@ -97,7 +97,7 @@ if ($item === null)
 <?php $this->beginBody() ?>
 
 <div data-role="page" id="page2" data-theme="e">
-
+	<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
     <?php echo $this->render('header1', ['menuId'=>'menu2','title' => "精选靓号" ]); ?>   	
 
 	<div data-role="content">
@@ -185,12 +185,11 @@ if ($item === null)
 	<div data-role="footer">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
-	<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div> <!-- page2 end -->
 
 
 <div data-role="page" id="page3" data-theme="e">
-
+	<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
     <?php echo $this->render('header2', ['menuId'=>'menu3','title' => $item->title ]); ?>   		
 
 	<div data-role="content">
@@ -231,12 +230,12 @@ if ($item === null)
 	<div data-role="footer">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
-	<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+	
 </div>	<!-- page3 end -->
 
 
 <div data-role="page" id="contactPage" data-theme="e">
-	
+	<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
     <?php echo $this->render('header2', ['menuId'=>'menu4','title' => $item->title ]); ?>   
 
 	<div data-role="content">
@@ -260,7 +259,7 @@ if ($item === null)
 	<div data-role="footer">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
-	<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+	
 </div>	<!-- contactPage end -->
 
 
