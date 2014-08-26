@@ -255,6 +255,8 @@ $(document).on("pageinit", "#myorder", function(){
 		      	getMyOrderList();
 		    }
 		});
+
+		return false;
 	});
 
 	/*订单详情*/
