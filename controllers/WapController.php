@@ -59,6 +59,13 @@ class WapController extends Controller
 		return true;
 	}
 
+
+	public function afterAction($action, $result)
+	{
+		U::W("{$this->id}/{$this->action->id}:".Yii::getLogger()->getElapsedTime());
+		return parent::afterAction($action, $result);
+	}
+
 	public function actions()
 	{
 		return [
@@ -88,6 +95,7 @@ class WapController extends Controller
 			$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 			//if ($user !== null)
 			//	Yii::$app->user->login($user);
+			//return $this->redirect([$route, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 			return $this->redirect([$route]);
 		}
 	
@@ -101,7 +109,6 @@ class WapController extends Controller
 		{
 			return 'Sorry, we can not do anything for you without your authrization!';
 		}
-//U::W('1111');
 		list($route, $gh_id) = explode(':', $_GET['state']);
 		Yii::$app->wx->setGhId($gh_id);
 		$token = Yii::$app->wx->WxGetOauth2AccessToken($code);
@@ -119,7 +126,6 @@ class WapController extends Controller
 			U::W($oauth2UserInfo);
 			Yii::$app->session->set('oauth2UserInfo', $oauth2UserInfo);
 		}
-//U::W('2222');
 		Yii::$app->session['gh_id'] = $gh_id;
 		Yii::$app->session['openid'] = $openid;
 		//$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
@@ -127,6 +133,7 @@ class WapController extends Controller
 		//	Yii::$app->user->login($user);
 		//else
 		//	U::W("not found, $openid");
+		//return $this->redirect([$route, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 		return $this->redirect([$route]);
 	}
 
@@ -388,7 +395,7 @@ EOD;
 		if (Yii::$app->wx->debug)
 			U::W($arr);
 	}
-
+/*
 	//http://127.0.0.1/wx/web/index.php?r=wap/mall&gh_id=gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mall:gh_1ad98f5481f3
 	public function actionMall()
@@ -432,7 +439,8 @@ EOD;
 
  		return $this->render('mall', ['dataProvider' => $dataProvider]);
 	}    
-        
+
+*/        
 	//http://127.0.0.1/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prom:gh_1ad98f5481f3
 	//http://wosotech.com/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
@@ -456,6 +464,8 @@ EOD;
  		return $this->render('prom', ['item' => $item]);
 	}	
 
+
+/*
 	//http://127.0.0.1/wx/web/index.php?r=wap/aboutqr&name=jack&qrurl=http://wosotech.com/wx/runtime/qr/gh_03a74ac96138_1.jpg
 	public function actionAboutqr()
 	{
@@ -464,7 +474,7 @@ EOD;
 		$this->layout = 'wap';
  		return $this->render('aboutqr', ['name' => $name, 'qrurl'=>$qrurl]);
 	}
-	
+*/	
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_03a74ac96138	
 	public function actionLuck()
@@ -472,8 +482,8 @@ EOD;
 		$this->layout = 'wap';
 		//$gh_id = Yii::$app->session['gh_id'];	
 		//$openid = Yii::$app->session['openid'];
-		$gh_id = U::getSessionParam('gh_id');
-		$openid = U::getSessionParam('openid');
+		//$gh_id = U::getSessionParam('gh_id');
+		//$openid = U::getSessionParam('openid');
 		Yii::$app->wx->setGhId($gh_id);
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 		if ($model === null)
@@ -542,12 +552,9 @@ EOD;
 	public function actionG2048()
 	{
 		$this->layout = 'wap';
-		//$gh_id = Yii::$app->session['gh_id'];	
-		//$openid = Yii::$app->session['openid'];
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
-		Yii::$app->wx->setGhId($gh_id);
-
+		//Yii::$app->wx->setGhId($gh_id);
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 		if ($model === null)
 		{
@@ -558,32 +565,17 @@ EOD;
 			$subscribed = true;
 		else
 			$subscribed = false;
-
+/*
 		if (!Yii::$app->user->isGuest)
 			$username = Yii::$app->user->identity->username;
 		else
 			$username = '';
-		
+*/
+		if ($model === null)
+			$username = '';
+		else
+			$username = $model->nickname;
 		$result = '';
-/*		
-		$lucy_msg = [];
-		if ($model->load(Yii::$app->request->post())) 
-		{
-			if (Yii::$app->user->isGuest)
-				$username = $model->mobile;
-		
-			$loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$model->mobile."&output=json&callback=querycallback");
-			$loca = substr($loca, 14, -2);  
-			$loca = json_decode($loca, true);	
-			//$lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$model->mobile."&output=json&callback=querycallback");
-			//$lucy_msg = substr($lucy_msg, 14, -2);  
-			//$lucy_msg = json_decode($lucy_msg, true);	
-			$lucy_msg = U::getMobileLuck($model->mobile);
-			$lucy_msg['Mobile'] = $model->mobile;
-
-			$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);
-		}		
-*/		
  		return $this->render('games/2048/index', ['model' => $model, 'result'=>$result, 'subscribed'=>$subscribed, 'username'=>$username, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 	}	
                
@@ -619,38 +611,6 @@ EOD;
 		else
 			$subscribed = false;
 		
-		/*
-		$url = "http://baidu.com";
-		$tag = Html::a('来挑战', $url);
-		*/
-		
-		/*
-		if ($user !== null)
-		{
-			try
-			{
-				//$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>"我的2048游戏最后得分3600分，简直碉堡了！ 已击败90%的人，小伙伴们{$tag}我吧!"]];
-				$msg = [
-					'touser'=>$openid, 
-					'msgtype'=>'news', 
-					'news'=> [
-						'articles'=>[
-							['title'=>"游戏2048", 'description'=>"我的2048游戏最后得分3600分，简直碉堡了！ 已击败90%的人，小伙伴们来挑战我吧!", 'url'=>Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}"), 'picurl'=>''],
-						]				
-					]
-				];				
-					
-				$arr = Yii::$app->wx->WxMessageCustomSend($msg);
-				U::W($arr);		
-			}
-			catch (\Exception $e)
-			{
-				U::W($e->getCode().':'.$e->getMessage());
-			}
-		}
-		*/
-//		$sql = "SELECT * FROM `wx_g2048` ORDER BY `score` ASC ";
-
 		if($subscribed)
 		{
 			if ($model->save(false)) {
@@ -673,7 +633,7 @@ EOD;
 		return $msg;
 	}	
     
-    
+    /*
 	//http://127.0.0.1/wx/web/index.php?r=wap/diy&gh_id=gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/diy:gh_1ad98f5481f3
 	//http://114.215.178.32/wx/web/index.php?r=wap/diy&gh_id=gh_1ad98f5481f3
@@ -685,7 +645,7 @@ EOD;
 		//Yii::$app->wx->setGhId();		
  		return $this->render('diy');
 	}	
- 
+/
 	public function actionAccount($openid, $gh_id, $reason)
 	{
 		//$openid = $_GET['openid'];
@@ -718,7 +678,8 @@ EOD;
 		return $this->render('billDetail', ['mobile'=>$mobile]);
 	}
         
-	
+*/	
+
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_1ad98f5481f3
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_03a74ac96138
 	public function actionSuggest()
@@ -802,7 +763,7 @@ EOD;
 
  		//return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 		//return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
-		return $this->render('suggest',['ar' => $ar,'dataProvider' => $dataProvider, 'rows' =>$rows]);
+		return $this->render('suggest',['ar' => $ar,'dataProvider' => $dataProvider, 'rows' =>$rows, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 	}	
 	
 	
@@ -1113,7 +1074,7 @@ EOD;
 		Yii::$app->wx->setGhId($gh_id);
 
         //return $this->render('mobile');
-        return $this->render('mobilelist');
+        return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
     public function actionMobile()
@@ -1211,7 +1172,7 @@ EOD;
 
 		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 	
-		return $this->render('order', ['user'=>$user]);
+		return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 	}
 
 
@@ -1351,6 +1312,53 @@ return $xmlStr;
 					U::W($e->getCode().':'.$e->getMessage());
 				}
 			}
-*/			
 
+		$lucy_msg = [];
+		if ($model->load(Yii::$app->request->post())) 
+		{
+			if (Yii::$app->user->isGuest)
+				$username = $model->mobile;
+		
+			$loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$model->mobile."&output=json&callback=querycallback");
+			$loca = substr($loca, 14, -2);  
+			$loca = json_decode($loca, true);	
+			//$lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$model->mobile."&output=json&callback=querycallback");
+			//$lucy_msg = substr($lucy_msg, 14, -2);  
+			//$lucy_msg = json_decode($lucy_msg, true);	
+			$lucy_msg = U::getMobileLuck($model->mobile);
+			$lucy_msg['Mobile'] = $model->mobile;
+
+			$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);
+		}		
+
+		$url = "http://baidu.com";
+		$tag = Html::a('来挑战', $url);
+
+		if ($user !== null)
+		{
+			try
+			{
+				//$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>"我的2048游戏最后得分3600分，简直碉堡了！ 已击败90%的人，小伙伴们{$tag}我吧!"]];
+				$msg = [
+					'touser'=>$openid, 
+					'msgtype'=>'news', 
+					'news'=> [
+						'articles'=>[
+							['title'=>"游戏2048", 'description'=>"我的2048游戏最后得分3600分，简直碉堡了！ 已击败90%的人，小伙伴们来挑战我吧!", 'url'=>Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}"), 'picurl'=>''],
+						]				
+					]
+				];				
+					
+				$arr = Yii::$app->wx->WxMessageCustomSend($msg);
+				U::W($arr);		
+			}
+			catch (\Exception $e)
+			{
+				U::W($e->getCode().':'.$e->getMessage());
+			}
+		}
+
+//		$sql = "SELECT * FROM `wx_g2048` ORDER BY `score` ASC ";
+
+		*/
 

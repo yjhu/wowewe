@@ -47,6 +47,12 @@ class OrderController extends Controller
 		return parent::beforeAction($action);
 	}
 
+	public function afterAction($action, $result)
+	{
+		//U::W("{$this->id}/{$this->action->id}:".Yii::getLogger()->getElapsedTime());	
+		return parent::afterAction($action, $result);
+	}
+
 	public function actionIndex()
 	{
 		$searchModel = new MOrderSearch;

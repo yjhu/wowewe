@@ -12,9 +12,6 @@ use app\models\MOrder;
 use app\assets\JqmAsset;
 JqmAsset::register($this);
 
-$gh_id = Yii::$app->session['gh_id'];
-$openid = Yii::$app->session['openid'];
-
 $this->title = '襄阳联通';
 $basename = basename(__FILE__, '.php');
 
@@ -41,11 +38,11 @@ $basename = basename(__FILE__, '.php');
 <?php $this->beginBody() ?>
 
 
-<div data-role="page" id="myorder" data-theme="e">
+<div data-role="page" id="myorder" data-theme="c">
 
-	<div data-role="header" data-position="fixed">
-	<h1>我的订单</h1>
-	</div>
+	<?php echo $this->render('menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid]); ?>	
+	<?php echo $this->render('header1', ['menuId'=>'menu1','title' => '我的订单']); ?>
+
 	<div role="main" class="ui-content">
 		<ul data-role="listview" data-inset="false" id="list_common_tbody">
 		</ul>
@@ -69,10 +66,10 @@ $basename = basename(__FILE__, '.php');
 	</div>
 </div>
 
-<div data-role="page" id="orderdetail" data-theme="e">
-	<div data-role="header" data-position="fixed" data-add-back-btn="true" data-back-btn-text="返回">
-	<h1>我的订单</h1>
-	</div>
+<div data-role="page" id="orderdetail" data-theme="c">
+
+	<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>	
+	<?php echo $this->render('header2', ['menuId'=>'menu2','title' => '我的订单']); ?>
 
 	<div role="main" class="ui-content">
 	<h2>订单详情</h2>
@@ -136,8 +133,23 @@ function load_data2(i, n)
 {
 	count++;
 
+	if(n.cid == 0)//自由组合套餐
+		imgurl = '../web/images/item/zyzhtc-120x120.jpg';
+	else if(n.cid == 12)//AppleiPhone4s
+		imgurl = '../web/images/item/iphone4s-120x120.jpg';
+	else if(n.cid == 13)//K1
+		imgurl = '../web/images/item/coolpad-k1-120x120.jpg';
+	else if(n.cid == 14)//HTC
+		imgurl = '../web/images/item/htc-d516w-120x120.jpg';
+	else if(n.cid == 10)//微信沃卡/普通卡
+		imgurl = '../web/images/item/wxwk-120x120.jpg';
+	else if(n.cid == 11)//沃派校园套餐/普通卡
+		imgurl = '../web/images/item/wpxytc-120x120.jpg';
+	else if(n.cid == 300)//精选靓号
+		imgurl = '../web/images/item/jxlh-120x120.jpg';
+
 	text ="<li data-theme='c'><a href='#' class='ddxq' myOid='"+n.oid+"'>\
-	<img src='"+imgurl+"'>\
+	<img style='padding-top:20px' src='"+imgurl+"'>\
 	<p>订单编号:&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
 	<p>下单时间:&nbsp;"+n.create_time+"</p>\
 	<p>商品名称:&nbsp;"+n.title+"</p>\
@@ -243,6 +255,8 @@ $(document).on("pageinit", "#myorder", function(){
 		      	getMyOrderList();
 		    }
 		});
+
+		return false;
 	});
 
 	/*订单详情*/

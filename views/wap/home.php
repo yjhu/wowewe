@@ -35,9 +35,9 @@ JqmAsset::register($this);
 
 <body>
 <?php $this->beginBody() ?>
-<div data-role="page" id="page1" data-theme="e">
+<div data-role="page" id="page1" data-theme="c">
 
-    <div data-role="header" data-theme="e">
+    <div data-role="header" data-theme="c">
         <h1>襄阳联通官方微信营业厅</h1>
     </div>
 
@@ -190,7 +190,7 @@ JqmAsset::register($this);
         </div>
     </div>
 
-    <div data-role="footer">
+    <div data-role="footer" data-position="fixed">
         <h4>&copy; 襄阳联通 2014</h4>
     </div>
 

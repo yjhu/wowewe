@@ -7,14 +7,11 @@ use yii\helpers\Url;
 //use yii\bootstrap\Alert;
 use app\models\U;
 
-
 use app\assets\JqmAsset;
 JqmAsset::register($this);
 
 $assetsPath = Yii::$app->getRequest()->baseUrl.'/../web/images';
 
-
-$gh_id = U::getSessionParam('gh_id');
 Yii::$app->wx->setGhid($gh_id);
 ?>
 
@@ -39,11 +36,10 @@ Yii::$app->wx->setGhid($gh_id);
 
 <body>
 <?php $this->beginBody() ?>
-<div data-role="page" id="page1" data-theme="e">
-    <div data-role="header" data-theme="e">
-        <h1>襄阳联通官方微信营业厅</h1>
-    </div>
+<div data-role="page" id="page1" data-theme="c">
 
+    <?php echo $this->render('header1', ['menuId'=>'menu1','title' => '用户吐槽']); ?>
+ 
     <div data-role="content">
         <?php $form = ActiveForm::begin(['id' => 'contact-form','class'=>'ui-field-contain']); ?>
 
@@ -84,9 +80,10 @@ Yii::$app->wx->setGhid($gh_id);
     </div>
 
 
-    <div data-role="footer">
+    <div data-role="footer" data-position="fixed">
         <h4>&copy; 襄阳联通 2014</h4>
     </div>
+    <?php echo $this->render('menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div> <!-- page1 end -->
 
 

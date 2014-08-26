@@ -36,7 +36,6 @@ CREATE TABLE wx_order (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
  
-ALTER TABLE wx_order ADD userid VARCHAR(32) NOT NULL DEFAULT '', ADD username VARCHAR(16) NOT NULL DEFAULT '', ADD usermobile VARCHAR(16) NOT NULL DEFAULT '';
 DROP TABLE IF EXISTS wx_order_arc;
 CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
 
@@ -247,12 +246,12 @@ EOD;
 	public function getWxNoticeToManager($real_pay=false)
 	{
 		$gh = MGh::findOne($this->gh_id);						
-		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
+		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);		
 		$office = MOffice::findOne($this->office_id);
 		$detail = $this->detail;
 		$feesum = sprintf("%0.2f",$this->feesum/100);
 		$str = <<<EOD
-{$office->title}: {$model->nickname}于{$model->create_time}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 【{$gh->nickname}】
+{$office->title}: {$model->nickname}于{$this->create_time}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 【{$gh->nickname}】
 EOD;
 		return $str;
 	}	
@@ -265,11 +264,6 @@ EOD;
 		$detail = mb_substr( $this->detail, 0, 16, 'utf-8');
 		$feesum = sprintf("%0.2f",$this->feesum/100);
 		$title = mb_substr($office->title, 0, 5, 'utf-8');
-/*
-		$str = <<<EOD
-【{$gh->nickname}】{$office->title}: {$model->nickname}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】
-EOD;
-*/
 		$str = <<<EOD
 【{$gh->nickname}】{$title}订单【{$this->oid}】,{$detail},{$feesum}元,{$this->username},电话{$this->usermobile}
 EOD;
@@ -385,6 +379,7 @@ CREATE TABLE wx_order_arc LIKE wx_order;
 DROP TABLE IF EXISTS wx_order_arc;
 CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
 
+ALTER TABLE wx_order ADD userid VARCHAR(32) NOT NULL DEFAULT '', ADD username VARCHAR(16) NOT NULL DEFAULT '', ADD usermobile VARCHAR(16) NOT NULL DEFAULT '';
 
 	$flowPackName = ['0'=>'100MB', '1'=>'300MB', '2'=>'500MB', '3'=>'1GB', '4'=>'2GB', '5'=>'3GB', '6'=>'4GB', '7'=>'6GB', '8'=>'11GB'];
 
@@ -592,4 +587,7 @@ EOD;
 			return $str;
 	}	
 			
+		$str = <<<EOD
+【{$gh->nickname}】{$office->title}: {$model->nickname}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】
+EOD;
 */
