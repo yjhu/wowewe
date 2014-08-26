@@ -49,7 +49,7 @@ class OrderController extends Controller
 
 	public function afterAction($action, $result)
 	{
-		U::W(Yii::getLogger()->getElapsedTime());
+		//U::W("{$this->id}/{$this->action->id}:".Yii::getLogger()->getElapsedTime());	
 		return parent::afterAction($action, $result);
 	}
 

@@ -552,12 +552,9 @@ EOD;
 	public function actionG2048()
 	{
 		$this->layout = 'wap';
-		//$gh_id = Yii::$app->session['gh_id'];	
-		//$openid = Yii::$app->session['openid'];
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
-		Yii::$app->wx->setGhId($gh_id);
-
+		//Yii::$app->wx->setGhId($gh_id);
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 		if ($model === null)
 		{
@@ -568,32 +565,17 @@ EOD;
 			$subscribed = true;
 		else
 			$subscribed = false;
-
+/*
 		if (!Yii::$app->user->isGuest)
 			$username = Yii::$app->user->identity->username;
 		else
 			$username = '';
-		
+*/
+		if ($model === null)
+			$username = '';
+		else
+			$username = $model->nickname;
 		$result = '';
-/*		
-		$lucy_msg = [];
-		if ($model->load(Yii::$app->request->post())) 
-		{
-			if (Yii::$app->user->isGuest)
-				$username = $model->mobile;
-		
-			$loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$model->mobile."&output=json&callback=querycallback");
-			$loca = substr($loca, 14, -2);  
-			$loca = json_decode($loca, true);	
-			//$lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$model->mobile."&output=json&callback=querycallback");
-			//$lucy_msg = substr($lucy_msg, 14, -2);  
-			//$lucy_msg = json_decode($lucy_msg, true);	
-			$lucy_msg = U::getMobileLuck($model->mobile);
-			$lucy_msg['Mobile'] = $model->mobile;
-
-			$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);
-		}		
-*/		
  		return $this->render('games/2048/index', ['model' => $model, 'result'=>$result, 'subscribed'=>$subscribed, 'username'=>$username, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 	}	
                
@@ -629,38 +611,6 @@ EOD;
 		else
 			$subscribed = false;
 		
-		/*
-		$url = "http://baidu.com";
-		$tag = Html::a('来挑战', $url);
-		*/
-		
-		/*
-		if ($user !== null)
-		{
-			try
-			{
-				//$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>"我的2048游戏最后得分3600分，简直碉堡了！ 已击败90%的人，小伙伴们{$tag}我吧!"]];
-				$msg = [
-					'touser'=>$openid, 
-					'msgtype'=>'news', 
-					'news'=> [
-						'articles'=>[
-							['title'=>"游戏2048", 'description'=>"我的2048游戏最后得分3600分，简直碉堡了！ 已击败90%的人，小伙伴们来挑战我吧!", 'url'=>Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}"), 'picurl'=>''],
-						]				
-					]
-				];				
-					
-				$arr = Yii::$app->wx->WxMessageCustomSend($msg);
-				U::W($arr);		
-			}
-			catch (\Exception $e)
-			{
-				U::W($e->getCode().':'.$e->getMessage());
-			}
-		}
-		*/
-//		$sql = "SELECT * FROM `wx_g2048` ORDER BY `score` ASC ";
-
 		if($subscribed)
 		{
 			if ($model->save(false)) {
@@ -1362,6 +1312,53 @@ return $xmlStr;
 					U::W($e->getCode().':'.$e->getMessage());
 				}
 			}
-*/			
 
+		$lucy_msg = [];
+		if ($model->load(Yii::$app->request->post())) 
+		{
+			if (Yii::$app->user->isGuest)
+				$username = $model->mobile;
+		
+			$loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$model->mobile."&output=json&callback=querycallback");
+			$loca = substr($loca, 14, -2);  
+			$loca = json_decode($loca, true);	
+			//$lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$model->mobile."&output=json&callback=querycallback");
+			//$lucy_msg = substr($lucy_msg, 14, -2);  
+			//$lucy_msg = json_decode($lucy_msg, true);	
+			$lucy_msg = U::getMobileLuck($model->mobile);
+			$lucy_msg['Mobile'] = $model->mobile;
+
+			$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);
+		}		
+
+		$url = "http://baidu.com";
+		$tag = Html::a('来挑战', $url);
+
+		if ($user !== null)
+		{
+			try
+			{
+				//$msg = ['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>"我的2048游戏最后得分3600分，简直碉堡了！ 已击败90%的人，小伙伴们{$tag}我吧!"]];
+				$msg = [
+					'touser'=>$openid, 
+					'msgtype'=>'news', 
+					'news'=> [
+						'articles'=>[
+							['title'=>"游戏2048", 'description'=>"我的2048游戏最后得分3600分，简直碉堡了！ 已击败90%的人，小伙伴们来挑战我吧!", 'url'=>Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}"), 'picurl'=>''],
+						]				
+					]
+				];				
+					
+				$arr = Yii::$app->wx->WxMessageCustomSend($msg);
+				U::W($arr);		
+			}
+			catch (\Exception $e)
+			{
+				U::W($e->getCode().':'.$e->getMessage());
+			}
+		}
+
+//		$sql = "SELECT * FROM `wx_g2048` ORDER BY `score` ASC ";
+
+		*/
 
