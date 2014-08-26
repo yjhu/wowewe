@@ -12,9 +12,6 @@ use app\models\MOrder;
 use app\assets\JqmAsset;
 JqmAsset::register($this);
 
-$gh_id = Yii::$app->session['gh_id'];
-$openid = Yii::$app->session['openid'];
-
 $this->title = '襄阳联通';
 $basename = basename(__FILE__, '.php');
 
@@ -43,9 +40,9 @@ $basename = basename(__FILE__, '.php');
 
 <div data-role="page" id="myorder" data-theme="e">
 
-	<div data-role="header" data-position="fixed">
-	<h1>我的订单</h1>
-	</div>
+	<?php echo $this->render('menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid]); ?>	
+	<?php echo $this->render('header1', ['menuId'=>'menu1','title' => '我的订单']); ?>
+
 	<div role="main" class="ui-content">
 		<ul data-role="listview" data-inset="false" id="list_common_tbody">
 		</ul>
@@ -70,9 +67,9 @@ $basename = basename(__FILE__, '.php');
 </div>
 
 <div data-role="page" id="orderdetail" data-theme="e">
-	<div data-role="header" data-position="fixed" data-add-back-btn="true" data-back-btn-text="返回">
-	<h1>我的订单</h1>
-	</div>
+
+	<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>	
+	<?php echo $this->render('header2', ['menuId'=>'menu2','title' => '我的订单']); ?>
 
 	<div role="main" class="ui-content">
 	<h2>订单详情</h2>

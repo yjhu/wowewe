@@ -802,7 +802,7 @@ EOD;
 
  		//return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 		//return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
-		return $this->render('suggest',['ar' => $ar,'dataProvider' => $dataProvider, 'rows' =>$rows]);
+		return $this->render('suggest',['ar' => $ar,'dataProvider' => $dataProvider, 'rows' =>$rows, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 	}	
 	
 	
@@ -1211,7 +1211,7 @@ EOD;
 
 		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 	
-		return $this->render('order', ['user'=>$user]);
+		return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 	}
 
 
