@@ -57,7 +57,7 @@
             </ul>
         </div>
 
-        <div data-role="footer">
+        <div data-role="footer" data-position="fixed">
             <h4>&copy; 襄阳联通 2014</h4>
         </div>
         <?php echo $this->render('menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
