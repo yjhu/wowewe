@@ -335,6 +335,9 @@ var size = 8;
 var feeSum = 0;
 var count = 0;
 
+var gh_id = '<?php echo $gh_id; ?>';
+var openid = '<?php echo $openid; ?>';
+
 planFlag = 'plan66';
 //$().ready(function() {
 var cid = <?php echo $cid; ?>;
@@ -452,7 +455,7 @@ $(document).on("pageshow", "#page2", function(){
 			type:"GET",
 			cache:false,
 			dataType:'json',
-			data: $("form#productForm").serialize() +"&cid="+cid+"&planFlag="+planFlag+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
+			data: $("form#productForm").serialize() +"&gh_id="+gh_id+"&openid="+openid +"&cid="+cid+"&planFlag="+planFlag+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
 			success:function(data){
 				//data = eval('('+data+')');
 				if(data.status == 0)
@@ -627,7 +630,7 @@ $(document).on("pageshow", "#number-select", function(){
 		$("#list_common_tbody").html('');
 
 		$.ajax({
-			url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'mobileNum'], true) ; ?>",
+			url: "<?php echo Url::to(['wap/ajaxdata', 'gh_id'=>$gh_id, 'openid'=>$openid, 'cat'=>'mobileNum'], true) ; ?>",
 			type:"GET",
 			cache:false,
 			dataType:'json',

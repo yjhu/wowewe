@@ -51,7 +51,7 @@ class WapController extends Controller
 	public function init()
 	{
 		//U::W(['init....', $_GET,$_POST, $GLOBALS]);
-		U::W(['init....', $_GET,$_POST]);
+		//U::W(['init....', $_GET,$_POST]);
 	}
 
 	public function beforeAction($action)
@@ -908,11 +908,13 @@ EOD;
 		$order->username = isset($_GET['username']) ? $_GET['username'] : '';
 		$order->usermobile = isset($_GET['usermobile']) ? $_GET['usermobile'] : '';
 		$order->detail = $order->getDetailStr();
+
 		$mobnum = MMobnum::findOne($_GET['selectNum']);
 		if ($mobnum === null ||$mobnum->status != MMobnum::STATUS_UNUSED)
 		{
 			return json_encode(['status'=>1, 'errmsg'=>$mobnum === null ? "mobile doest not exist" : "mobile locked!"] );
 		}
+		
 		if ($order->save(false))
 		{
 			//U::W('save ok....');	
@@ -935,13 +937,15 @@ EOD;
 			if ($manager !== null)
 			{
 				U::W('sendWxm');
+U::W($order->getWxNoticeToManager());				
 				$manager->sendWxm($order->getWxNoticeToManager());
 				U::W('sendSm');
 				$manager->sendSm($order->getSmNoticeToManager());
 			}
 
 			// send wx message to user
-			$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);
+			$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					
+
 		}
 		else
 		{
@@ -961,7 +965,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1&cid=10&feeSum=1
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=diskRestCnt&cid=10
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=orderview&oid=53de91f9d3773
-	public function actionAjaxdata($cat)
+	public function actionAjaxdata($gh_id, $openid, $cat)
 	{
 		//if (!Yii::$app->request->isAjax)
 		//	return;
@@ -1103,8 +1107,8 @@ EOD;
     public function actionCardxiaoyuan($gh_id, $openid)
     {
         $this->layout =false;
-	//	$gh_id = U::getSessionParam('gh_id');
-	//	$openid = U::getSessionParam('openid');
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
 	    Yii::$app->wx->setGhId($gh_id);
 
         return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_XIAOYUAN, 'gh_id'=>$gh_id, 'openid'=>$openid]);
