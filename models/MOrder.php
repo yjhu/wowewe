@@ -36,7 +36,6 @@ CREATE TABLE wx_order (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
  
-ALTER TABLE wx_order ADD userid VARCHAR(32) NOT NULL DEFAULT '', ADD username VARCHAR(16) NOT NULL DEFAULT '', ADD usermobile VARCHAR(16) NOT NULL DEFAULT '';
 DROP TABLE IF EXISTS wx_order_arc;
 CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
 
@@ -380,6 +379,7 @@ CREATE TABLE wx_order_arc LIKE wx_order;
 DROP TABLE IF EXISTS wx_order_arc;
 CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
 
+ALTER TABLE wx_order ADD userid VARCHAR(32) NOT NULL DEFAULT '', ADD username VARCHAR(16) NOT NULL DEFAULT '', ADD usermobile VARCHAR(16) NOT NULL DEFAULT '';
 
 	$flowPackName = ['0'=>'100MB', '1'=>'300MB', '2'=>'500MB', '3'=>'1GB', '4'=>'2GB', '5'=>'3GB', '6'=>'4GB', '7'=>'6GB', '8'=>'11GB'];
 

@@ -437,7 +437,8 @@ EOD;
 
  		return $this->render('mall', ['dataProvider' => $dataProvider]);
 	}    
-        
+
+*/        
 	//http://127.0.0.1/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prom:gh_1ad98f5481f3
 	//http://wosotech.com/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
@@ -460,7 +461,6 @@ EOD;
 		$item = ['iid'=>'4198489411','title'=>'title1','price'=>'169900', 'new_price'=>'119900', 'url'=>'http://baidu.com', 'pic_url'=>'53a95055dcf97_b.png', 'seller_cids'=>'100'];
  		return $this->render('prom', ['item' => $item]);
 	}	
-*/
 
 
 /*
