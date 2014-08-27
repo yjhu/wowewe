@@ -792,6 +792,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1&cid=10&feeSum=1
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=diskRestCnt&cid=10
 	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=orderview&oid=53de91f9d3773
+	//http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=g2048Save&bigNum=1&best=2&score=100
 	public function actionAjaxdata($cat)
 	{
 		//if (!Yii::$app->request->isAjax)
@@ -918,7 +919,7 @@ EOD;
 				if ($user === null)
 					$user = new MUser;		
 				
-				if ($user->subscribe)
+				if (!empty($user->subscribe))
 				{
 					$model = new \app\models\MG2048;
 					$model->gh_id = $gh_id;
@@ -933,8 +934,8 @@ EOD;
 					}		
 				}
 				$data['code'] = 0;
-				$data['isSubscribed'] = $user->subscribe;
-				$data['position'] = MG2048::getCurrentScorePosition($gh_id, $_GET['score']);
+				$data['isSubscribed'] = empty($user->subscribe) ? 0 : 1;
+				$data['position'] = \app\models\MG2048::getCurrentScorePosition($gh_id, $_GET['score']);
 				break;
 				
 			default:
