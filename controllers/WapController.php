@@ -910,7 +910,6 @@ EOD;
 				$data['code'] = 0; 
 				break;
 
-
 			case 'g2048Save':
 				$gh_id = U::getSessionParam('gh_id');
 				$openid = U::getSessionParam('openid');				
