@@ -411,11 +411,6 @@ EOD;
 				}
 		}
 	}
-
-	protected function onImage() 
-	{ 
-		return Wechat::NO_RESP;
-	}
 	
 	protected function onLocation() 
 	{ 
@@ -452,7 +447,22 @@ EOD;
 		return Wechat::NO_RESP;
 	}
 
+	protected function onImage() 
+	{ 
+		return Wechat::NO_RESP;
+	}
+
 	protected function onScan() 
+	{
+		return Wechat::NO_RESP;		
+	}
+
+	protected function onVoice() 
+	{
+		return Wechat::NO_RESP;		
+	}
+
+	protected function onVideo() 
 	{
 		return Wechat::NO_RESP;		
 	}

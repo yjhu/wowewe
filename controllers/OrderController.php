@@ -49,7 +49,7 @@ class OrderController extends Controller
 
 	public function afterAction($action, $result)
 	{
-		U::W(Yii::getLogger()->getElapsedTime());
+		//U::W("{$this->id}/{$this->action->id}:".Yii::getLogger()->getElapsedTime());	
 		return parent::afterAction($action, $result);
 	}
 
@@ -229,6 +229,16 @@ class OrderController extends Controller
 		return $this->redirect(['stafflist']);
 	}
 
+	public function actionStaffscoredetail()
+	{
+		$searchModel = new MUserSearch;
+		$dataProvider = $searchModel->search($_GET);
+
+		return $this->render('staffscoredetail', [
+			'dataProvider' => $dataProvider,
+			'searchModel' => $searchModel,
+		]);
+	}
 	
 }
 
