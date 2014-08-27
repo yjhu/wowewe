@@ -56,7 +56,7 @@
 -->
 <?php echo $this->render('/wap/header1', ['menuId'=>'menu1','title' => '游戏2048']); ?>
 
-<div data-role="popup" id="popupDialog" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px">
+<div data-role="popup" id="popupDialog" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:450px">
     <div data-role="header" data-theme="c">
     <h1>Game over</h1>
     </div>
@@ -150,9 +150,20 @@
   <div data-role="header"><h1>帮助</h1></div>
   <div role="main" class="ui-content">
       <p style="color:#007529">
-      <strong class="important">[玩法]</strong> 
+      <strong class="important">玩法</strong> 
       <br>
-      用手指上下左右滑动，将两个相同的数字合成一个，如2+2 合成4， 4+4 合成8... 直到1024+1024 合出2048.
+      用手指上下左右滑动, 将相邻的两个相同的数字合成一个. 如2+2合成4, 4+4合成8... 直到1024+1024合出2048.
+
+      <br>
+      <strong class="important">查看排名</strong> 
+      <br>
+      通过底部工具栏, 点击我的成绩可查看我的得分和最好记录; 点击英雄榜可查看所有玩家周/月/总排名.
+
+      <br>
+      <strong class="important">分享与收藏</strong> 
+      <br>
+      通过微信... 可以把游戏或你的游戏成绩发送给朋友/分享到朋友圈和收藏。
+
     </p>
   </div>
 </div>
