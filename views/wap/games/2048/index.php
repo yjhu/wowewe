@@ -1,8 +1,10 @@
 ﻿<?php
   use yii\helpers\Html;
-  //use yii\widgets\ActiveForm;
   use yii\bootstrap\ActiveForm;
   use yii\helpers\Url;
+  use app\models\U;
+  use app\models\MG2048;
+
 
   use app\assets\JqmAsset;
   JqmAsset::register($this);
@@ -24,32 +26,21 @@
       padding: 0.5em !important;
       margin-top: 1em !important;
   }
-
+  .game-container {
+      margin-left: 1.2em !important;
+  }
   .score-container, .best-container {
     height: 30px !important;
   }
 
-  .sbgshow{display:block;position:fixed;top:0;left:0;width:100%;height:100%;text-align:center;color:#fff;font-size:30px;line-height:1.7em;background:rgba(0,0,0,0.85);}
-  .sbgshow .arron{ position:absolute;top:8px;right:8px;width:100px;height:100px;background:url(http://baby.ci123.com/yunqi/m/weixin/images/arron.png) no-repeat; background-size:100px 100px;}
-  .sbgshow p{padding-top:78px;}
-  .sbg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;text-align:center;color:#fff;font-size:26px;line-height:1.7em;background:rgba(0,0,0,0.85);}
-  .sbg .arron{ position:absolute;top:8px;right:8px;width:100px;height:100px;background:url(http://baby.ci123.com/yunqi/m/weixin/images/arron.png) no-repeat; background-size:100px 100px;}
-  .sbg p{padding-top:78px;}
-  .msgstyle {color:#F7EA45;}/*yellow*/
+  .unicom-red{
+    color:#d9080d;
+  }
+
 </style>
   
 <link href="<?php echo "$assetsPath/main.css?"; ?>" rel="stylesheet" type="text/css">
 
-<script>
-  function share(){
-      document.getElementById("sbg").className="sbgshow";
-      window.setTimeout(hiddenMe, 9000);
-  }
-
-  function hiddenMe(){
-      document.getElementById("sbg").className="sbg";
-  }
-</script>
 
 <?php $this->head() ?>
 </head>
@@ -63,31 +54,29 @@
   <h1>游戏2048</h1>
 </div>
 -->
+<?php echo $this->render('/wap/header1', ['menuId'=>'menu1','title' => '游戏2048']); ?>
 
-<?php echo $this->render('header1', ['menuId'=>'menu1','title' => '游戏2048']); ?>
-
-<div data-role="popup" id="popupDialog" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
+<div data-role="popup" id="popupDialog" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px">
     <div data-role="header" data-theme="c">
-    <h1>Game Over</h1>
+    <h1>Game over</h1>
     </div>
-    <div role="main" class="ui-content">
+    <div id="gameover_content" role="main" class="ui-content">
       <h3 class="ui-title">你的游戏排名时 第一名！</h3>
       <p>本次成绩: 666</p>
       <p>最好记录: 888</p>
 
-    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">确定</a>
-       
+      <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">确定</a>
     </div>
 </div>
 
   <div data-role="content">
 
     <div class="heading">
-      <!--
+
       <h1 class="title">2048</h1>
-      -->
+
       <div class="scores-container">
-              <link href="assets/main.css" rel="stylesheet" type="text/css"/>
+          
           <img src="<?php echo "$assetsPath/10010-logo.png"; ?>">
         <div class="score-container">8<div class="score-addition">+8</div></div>
         <div class="best-container">8</div>
@@ -95,9 +84,7 @@
     </div>
 
     <div class="above-game">
-      <p class="game-intro">
-      全球最火益智游戏，今天你<strong>2048</strong>了吗？
-      </p>
+      <p class="game-intro">全球最火益智游戏，今天你<strong>2048</strong>了吗？</p>
       <a class="restart-button">新游戏</a>
     </div>
 
@@ -143,15 +130,6 @@
       <div class="tile-container"><div class="tile tile-2 tile-position-1-4 tile-new"><div class="tile-inner">2</div></div><div class="tile tile-4 tile-position-3-4 tile-new"><div class="tile-inner">4</div></div><div class="tile tile-2 tile-position-4-1 tile-new"><div class="tile-inner">2</div></div><div class="tile tile-4 tile-position-4-4 tile-new"><div class="tile-inner">4</div></div></div>
     </div> 
 
-  <div class="sharing">
-  </div>
-
-        
-  <div id="sbg" class="sbg">
-    <div class="arron"></div>
-    <p id="msg" class="msgstyle">请点击右上角<br />点击【分享到朋友圈】<br /></p>
-  </div>
-
   </div>
 
 
@@ -164,7 +142,7 @@
       </ul>
       </div>
   </div>
-  <?php echo $this->render('menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$ ]); ?>
+  <?php echo $this->render('/wap/menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid ]); ?>
 </div>
 
 
@@ -179,43 +157,46 @@
   </div>
 </div>
 
-<div data-role="dialog" id="myscore" data-theme="c">
 
-  <div data-role="header"><h1>我的成绩</h1></div>
-  <div role="main" class="ui-content">
-    <ul data-role="listview" data-count-theme="c" data-inset="true">
-
-      <li>
-        <!--
-        <img src="<//?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
-        -->
-        <h2>Jack</h2>
-        <p>1688</p>
-      </li>
-
-    </ul>
-  </div>
-</div>
-
-<!--
 <div data-role="dialog" id="top10">
-  <?//php $rows = MStaff::getStaffScoreTop($user->gh_id, 10); ?>
+  <?php $rowsWeek = MG2048::getScoreTop($gh_id,  'week', 10); ?>
+  <?php $rowsMonth = MG2048::getScoreTop($gh_id,  'month', 10); ?>
+  <?php $rowsAll = MG2048::getScoreTop($gh_id,  '', 10); ?>
   <div data-role="header"><h1>英雄榜</h1></div>
   <div role="main" class="ui-content">
-    <ul data-role="listview" data-count-theme="b" data-inset="true">
-      <?//php foreach($rows as $row) { ?>
+    <ul data-role="listview" data-count-theme="c" data-inset="true" data-divider-theme="c">
+     <li data-role="list-divider">周排名</li>
+      <?php foreach($rowsWeek as $row) { ?>
       <li>
-        <img src="<?//php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
-        <h2><?//= $row['name'] ?></h2>
-        <p><?//= $row['title'] ?></p>
-        <span class="ui-li-count"><?//= $row['score'] ?></span>
+        <img src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
+        <h2><?= $row['nickname'] ?></h2>
+        
+        <span class="ui-li-count"><?= $row['max_score'] ?></span>
       </li>
-      <?//php } ?>
+      <?php } ?>
+
+      <li data-role="list-divider">月排名</li>
+      <?php foreach($rowsMonth as $row) { ?>
+      <li>
+        <img src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
+        <h2><?= $row['nickname'] ?></h2>
+        
+        <span class="ui-li-count"><?= $row['max_score'] ?></span>
+      </li>
+      <?php } ?>
+  
+      <li data-role="list-divider">总排名</li>
+      <?php foreach($rowsAll as $row) { ?>
+      <li>
+        <img src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
+        <h2><?= $row['nickname'] ?></h2>
+        
+        <span class="ui-li-count"><?= $row['max_score'] ?></span>
+      </li>
+      <?php } ?>
     </ul>
   </div>
 </div>
--->
-
 
 
 <?php
@@ -272,49 +253,34 @@ function showScore(msg)
 			}
 		}
 
-    //alert("bigNum is:"+bigNum);		
-    //alert("myScore:" + myScore);
-    //alert("myBestScore:" + myGameStateObj.score);
-    //alert("可点击...微信菜单\n 深度分享到朋友圈或转发给朋友  ;-)");
-    //alert('我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...");
-    //dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...";
-     
     //submit data to server
     $.ajax({
       type: "get",
-      async: true,
+      type:"GET",
       cache:false,
+      dataType:'json',
       url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/ajaxdata' ; ?>"+"&cat=g2048Save"+"&gh_id="+gh_id+"&openid="+openid+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
       success: function(json_data){
-        // if(msg=="ok")
-        if(msg != 0)
-        {
-          //alert("process ok");
-          $scoreRanking = msg; 
-        }
-        else
-        {
-          //alert("process NOT ok");
-          $scoreRanking = 0; 
-        }
 
-        if($scoreRanking == 0) /* not subscribed*/
+        if(json_data.isSubcribed == 0) /* not subscribed*/
         {
           dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...";
-          $("#result").html('<h1>Game over!</h1><br>我的盘面最大数是<b>'+bigNum+'</b><br>总分是<b>'+myGameStateObj.score+"</b><br>最好记录是<b>"+myScore+"<br><br>你能超过我吗？啊哈哈哈...");
+          $("#gameover_content").html('<h1 class=unicom-red>Game over!</h1>盘面最大数是<b>'+bigNum+'</b><br>总分<b>'+myGameStateObj.score+"</b><br>最好记录<b>"+myScore+"<br><br>你能超过我吗？啊哈哈哈...<p><a href='#' class='ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b' data-rel='back'>知道了</a></p>");
         }
         else
         {
-          dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n游戏排名是"+$scoreRanking +"名";
-          $("#result").html('<h1>Game over!</h1><br>我的盘面最大数是<b>'+bigNum+'</b><br>总分是<b>'+myGameStateObj.score+"</b><br>最好记录是<b>"+myScore+"</b><br>在所有襄阳联通关注号中游戏排名是<b>"+$scoreRanking+"</b><br><br>你能超过我吗？啊哈哈哈...");
+          dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n游戏排名是"+json_data.position +"名";
+          $("#gameover_content").html('<h1 class=unicom-red>Game over!</h1>盘面最大数是<b>'+bigNum+'</b><br>总分<b>'+myGameStateObj.score+"</b><br>最好记录<b>"+myScore+"</b><br>在所有襄阳联通关注号中游戏排名<b class=unicom-red>"+json_data.position+"</b><br>你能超过我吗？啊哈哈哈...<p><a href='#' class='ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b' data-rel='back'>知道了</a></p>");
         }
+
+
+        //$("#list_common_tbody").append(text).trigger('create');
 
         $("#popupDialog").popup("open");
 
       }
     });/*end ajax*/
                
-    //share(); //pop a mask div 
 }
 </script>
   
