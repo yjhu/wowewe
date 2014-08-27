@@ -33,9 +33,10 @@ class MG2048 extends ActiveRecord
 		return 'wx_g2048';
 	}
 
-	public static function getScoreTop($gh_id, $n=5)
+	public static function getScoreTop($gh_id, $period='week', $n=5)
 	{
-		$key = __METHOD__."{$gh_id}_{$n}";
+		//$key = __METHOD__."{$gh_id}_{$n}";
+		$key = md5(serialize([$_GET, $gh_id, $period, $n]));
 		$value = Yii::$app->cache->get($key);
 		if ($value !== false)
 			return $value;

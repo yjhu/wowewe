@@ -233,11 +233,10 @@ class OrderController extends Controller
 	public function actionStaffscoredetail($gh_id, $openid)
 	{
 		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);			
-U::W($user->getAttributes());		
 		$searchModel = new MUserSearch;
-		$searchModel->scene_pid = $user->scene_id;
+		$_GET['MUserSearch']['scene_pid'] = $user->scene_id;
+		//$searchModel->scene_pid = $user->scene_id;
 		$dataProvider = $searchModel->search($_GET);
-
 		return $this->render('staffscoredetail', [
 			'dataProvider' => $dataProvider,
 			'searchModel' => $searchModel,

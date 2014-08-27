@@ -34,11 +34,27 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'name',
 				'headerOptions' => array('style'=>'width:25%;'),	
 			],
+/*
 			[
 				'label' => '推广成绩',
 				'attribute' => 'score',
 				'headerOptions' => array('style'=>'width:25%;'),	
 			],
+*/
+			[
+				'label' => '推广成绩',
+				'attribute' => 'score',
+				'headerOptions' => array('style'=>'width:25%;'),	
+				'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+						return Html::a($model['score'], ['staffscoredetail', 'gh_id' => $model['gh_id'], 'openid' => $model['openid']], [
+							'title' => '推广用户详单',
+							'data-method' => 'post',
+							'data-pjax' => '0',
+						]);
+					},
+			],
+
 			[
 				'label' => '所在部门编号',
 				'attribute' => 'office_id',
