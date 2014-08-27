@@ -12,7 +12,8 @@ CREATE TABLE wx_g2048 (
 	big_num int(10) unsigned NOT NULL DEFAULT 0,
 	create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	KEY idx_gh_id_openid(gh_id, openid),
-	KEY idx_gh_id_openid(gh_id, score)	
+	KEY idx_gh_id_openid(gh_id, openid),	
+	KEY idx_gh_id_score(gh_id, score)	
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 */
 
@@ -35,15 +36,20 @@ class MG2048 extends ActiveRecord
 
 	public static function getScoreTop($gh_id, $period='week', $n=5)
 	{
-		//$key = __METHOD__."{$gh_id}_{$n}";
 		$key = md5(serialize([$_GET, $gh_id, $period, $n]));
 		$value = Yii::$app->cache->get($key);
 		if ($value !== false)
 			return $value;
 
 		$tableName = self::tableName();
-		$sql = "SELECT *, MAX(score) as max_score  from $tableName GROUP BY gh_id,openid ORDER BY max_score DESC LIMIT $n";		
-		$rows = Yii::$app->db->createCommand($sql)->queryAll();
+		if ($period == 'week')
+			$sql = "SELECT *, MAX(score) as max_score  from $tableName WHERE gh_id=:gh_id AND WEEKOFYEAR(create_time) = WEEKOFYEAR(NOW()) GROUP BY gh_id,openid ORDER BY max_score DESC LIMIT $n";	
+		else if ($period == 'month')
+			$sql = "SELECT *, MAX(score) as max_score  from $tableName WHERE gh_id=:gh_id AND MONTH(create_time) = MONTH(NOW()) GROUP BY gh_id,openid ORDER BY max_score DESC LIMIT $n";				
+		else
+			$sql = "SELECT *, MAX(score) as max_score  from $tableName WHERE gh_id=:gh_id GROUP BY gh_id,openid ORDER BY max_score DESC LIMIT $n";				
+		
+		$rows = Yii::$app->db->createCommand($sql,  [':gh_id'=>$gh_id])->queryAll();
 		foreach($rows as $idx => &$row)
 		{				
 			$user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid']]);
