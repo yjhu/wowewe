@@ -1,54 +1,82 @@
 ﻿<?php
-use yii\helpers\Html;
-//use yii\widgets\ActiveForm;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Url;
+  use yii\helpers\Html;
+  use yii\bootstrap\ActiveForm;
+  use yii\helpers\Url;
+  use app\models\U;
+  use app\models\MG2048;
 
-$this->title = '2048';
-//$this->params['breadcrumbs'][] = $this->title;
-$assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets';
+
+  use app\assets\JqmAsset;
+  JqmAsset::register($this);
+
+  $this->title = '2048';
+  $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets';
 ?>
+<?php $this->beginPage() ?>
 
-<!--
 <!DOCTYPE html>
-
-<html lang="en" manifest="cache.appcache"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html>
+<head>
   <meta charset="utf-8">
-  <title>2048</title>
--->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
 
-  <link href="<?php echo "$assetsPath/main.css?"; ?>" rel="stylesheet" type="text/css">
+<style type="text/CSS">
+  .ui-content {
+      padding: 0.5em !important;
+      margin-top: 1em !important;
+  }
+  .game-container {
+      margin-left: 1.2em !important;
+  }
+  .score-container, .best-container {
+    height: 30px !important;
+  }
 
-  <style>
-	.sbgshow{display:block;position:fixed;top:0;left:0;width:100%;height:100%;text-align:center;color:#fff;font-size:30px;line-height:1.7em;background:rgba(0,0,0,0.85);}
-	.sbgshow .arron{ position:absolute;top:8px;right:8px;width:100px;height:100px;background:url(http://baby.ci123.com/yunqi/m/weixin/images/arron.png) no-repeat; background-size:100px 100px;}
-	.sbgshow p{padding-top:78px;}
-	.sbg{display:none;position:fixed;top:0;left:0;width:100%;height:100%;text-align:center;color:#fff;font-size:26px;line-height:1.7em;background:rgba(0,0,0,0.85);}
-	.sbg .arron{ position:absolute;top:8px;right:8px;width:100px;height:100px;background:url(http://baby.ci123.com/yunqi/m/weixin/images/arron.png) no-repeat; background-size:100px 100px;}
-	.sbg p{padding-top:78px;}
-          .msgstyle {color:#F7EA45;}/*yellow*/
+  .unicom-red{
+    color:#d9080d;
+  }
+
 </style>
-
-
-  <script>
   
-        function share(){
-                document.getElementById("sbg").className="sbgshow";
-                window.setTimeout(hiddenMe, 9000);
-        }
-
-        function hiddenMe(){
-                document.getElementById("sbg").className="sbg";
-        }
-
-  </script>
+<link href="<?php echo "$assetsPath/main.css?"; ?>" rel="stylesheet" type="text/css">
 
 
-  <div class="row">
+<?php $this->head() ?>
+</head>
+
+<body>
+<?php $this->beginBody() ?>
+
+<div data-role="page" id="page1" data-theme="c">
+<!--
+<div data-role="header" data-position="fixed">
+  <h1>游戏2048</h1>
+</div>
+-->
+<?php echo $this->render('/wap/header1', ['menuId'=>'menu1','title' => '游戏2048']); ?>
+
+<div data-role="popup" id="popupDialog" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:450px">
+    <div data-role="header" data-theme="c">
+    <h1>Game over</h1>
+    </div>
+    <div id="gameover_content" role="main" class="ui-content">
+      <h3 class="ui-title">你的游戏排名时 第一名！</h3>
+      <p>本次成绩: 666</p>
+      <p>最好记录: 888</p>
+
+      <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">确定</a>
+    </div>
+</div>
+
+  <div data-role="content">
+
     <div class="heading">
+
       <h1 class="title">2048</h1>
+
       <div class="scores-container">
-              <link href="assets/main.css" rel="stylesheet" type="text/css"/>
+          
           <img src="<?php echo "$assetsPath/10010-logo.png"; ?>">
         <div class="score-container">8<div class="score-addition">+8</div></div>
         <div class="best-container">8</div>
@@ -56,9 +84,7 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
     </div>
 
     <div class="above-game">
-      <p class="game-intro">
-	  全球最火益智游戏，今天你<strong>2048</strong>了吗？
-	  </p>
+      <p class="game-intro">全球最火益智游戏，今天你<strong>2048</strong>了吗？</p>
       <a class="restart-button">新游戏</a>
     </div>
 
@@ -66,29 +92,11 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
       <div class="game-message">
         <p></p>
         <div class="lower">
-	        <a class="keep-playing-button">继续玩</a>
+          <a class="keep-playing-button">继续玩</a>
           <a class="retry-button">重新开始</a>
-	
+  
           <div class="score-sharing"></div>
-
-		  <!--
-          <div class="mailing-list">
-            <!\\-- MailChimp Signup Form --\\>
-            <form action="http://gabrielecirulli.us8.list-manage.com/subscribe/post?u=991201206817cfb4e4247ed6c&id=7928ea817b" method="post" name="mc-embedded-subscribe-form" class="mailing-list-form" target="_blank">
-              <strong>Get email updates from Gabriele</strong>
-
-              <input type="email" value="" name="EMAIL" class="mailing-list-email-field" placeholder="Your email address" spellcheck="false">
-
-              <!\\-- real people should not fill this in and expect good things - do not remove this or risk form bot signups--\\>
-              <div style="position: absolute; left: -9999px;">
-                <input type="text" name="b_991201206817cfb4e4247ed6c_7928ea817b" value="">
-              </div>
-
-              <input type="submit" value="Go" name="subscribe" class="mailing-list-subscribe-button">
-            </form>
-          </div>
-		  -->
-		  
+      
         </div>
       </div>
 
@@ -121,25 +129,103 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
 
       <div class="tile-container"><div class="tile tile-2 tile-position-1-4 tile-new"><div class="tile-inner">2</div></div><div class="tile tile-4 tile-position-3-4 tile-new"><div class="tile-inner">4</div></div><div class="tile tile-2 tile-position-4-1 tile-new"><div class="tile-inner">2</div></div><div class="tile tile-4 tile-position-4-4 tile-new"><div class="tile-inner">4</div></div></div>
     </div> 
-	<br>
-    <p style="color:#007529">
-      <strong class="important">[玩法]</strong> 
-
-	    <br>
-	    用手指上下左右滑动，将两个相同的数字合成一个，如2+2 合成4， 4+4 合成8... 直到1024+1024 合出2048.
-    </p>
-
-	  <hr>
-
-	<div class="sharing">
-    </div>
 
   </div>
+
+
+  <div data-role="footer" data-position="fixed">
+    <div data-role="navbar">
+      <ul>
+        <li><a href="#myscore" data-icon="heart">我的成绩</a></li>
+        <li><a href="#top10" data-icon="bullets">英雄榜</a></li>
+        <li><a href="#help" data-icon="info">帮助</a></li>
+      </ul>
+      </div>
+  </div>
+  <?php echo $this->render('/wap/menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid ]); ?>
+</div>
+
+
+<div data-role="dialog" id="help" data-theme="c">
+  <div data-role="header"><h1>帮助</h1></div>
+  <div role="main" class="ui-content">
+      <p style="color:#007529">
+      <strong class="important">玩法</strong> 
+      <br>
+      用手指上下左右滑动, 将相邻的两个相同的数字合成一个. 如2+2合成4, 4+4合成8... 直到1024+1024合出2048.
+
+      <br><br>
+      <strong class="important">查看排名</strong> 
+      <br>
+      通过底部工具栏, 点击我的成绩可查看我的得分和最好记录; 点击英雄榜可查看所有玩家周/月/总排名.
+
+      <br><br>
+      <strong class="important">分享与收藏</strong> 
+      <br>
+      通过微信... 可以把游戏或你的游戏成绩发送给朋友/分享到朋友圈和收藏.
+
+    </p>
+  </div>
+</div>
+
+
+<div data-role="dialog" id="myscore">
+  <?php $rows = MG2048::getMyScoreTop($gh_id, $openid, 10); U::W($rows);?>
+  <div data-role="header"><h1>我的成绩</h1></div>
+  <div role="main" class="ui-content">
+    <ul data-role="listview" data-count-theme="c" data-inset="true" data-divider-theme="c">
+
+      <?php foreach($rows as $row) { ?>
+      <li>
+        <p>成绩:<span><?= $row['score'] ?></span></p>
+        <p>时间:<span><?= $row['create_time'] ?></span></p>
+        <p>当周排名:<span><?= $row['position_week'] ?></span></p>
+        <p>当月排名:<span><?= $row['position_month'] ?></span></p>
+      </li>
+      <?php } ?>
+    </ul>
+  </div>
+</div>
+
+<div data-role="dialog" id="top10">
+  <?php $rowsWeek = MG2048::getScoreTop($gh_id,  'week', 10); ?>
+  <?php $rowsMonth = MG2048::getScoreTop($gh_id,  'month', 10); ?>
+  <?php $rowsAll = MG2048::getScoreTop($gh_id,  '', 10); ?>
+  <div data-role="header"><h1>英雄榜</h1></div>
+  <div role="main" class="ui-content">
+    <ul data-role="listview" data-count-theme="c" data-inset="true" data-divider-theme="c">
+     <li data-role="list-divider">周排名</li>
+      <?php foreach($rowsWeek as $row) { ?>
+      <li>
+        <img style="width:64px" src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
+        <h2><?= $row['nickname'] ?></h2>
         
-        <div id="sbg" class="sbg">
-                <div class="arron"></div>
-                <p id="msg" class="msgstyle">请点击右上角<br />点击【分享到朋友圈】<br /></p>
-        </div>
+        <span class="ui-li-count"><?= $row['max_score'] ?></span>
+      </li>
+      <?php } ?>
+
+      <li data-role="list-divider">月排名</li>
+      <?php foreach($rowsMonth as $row) { ?>
+      <li>
+        <img style="width:64px" src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
+        <h2><?= $row['nickname'] ?></h2>
+        
+        <span class="ui-li-count"><?= $row['max_score'] ?></span>
+      </li>
+      <?php } ?>
+  
+      <li data-role="list-divider">总排名</li>
+      <?php foreach($rowsAll as $row) { ?>
+      <li>
+        <img style="width:64px" src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
+        <h2><?= $row['nickname'] ?></h2>
+        
+        <span class="ui-li-count"><?= $row['max_score'] ?></span>
+      </li>
+      <?php } ?>
+    </ul>
+  </div>
+</div>
 
 
 <?php
@@ -153,6 +239,10 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets'
 ?>
 
 <script>
+
+var gh_id = '<?php echo $gh_id; ?>';
+var openid = '<?php echo $openid; ?>';
+
 var dataForWeixin={
 	appId:"<?php echo $appid; ?>",
 	MsgImg:"<?php echo $myImg; ?>",
@@ -185,121 +275,66 @@ function showScore(msg)
 				if((myGameStateObj.grid.cells == null) || (myGameStateObj.grid.cells[i][j] == null ))
 					continue;
 					
-                   		   if(myGameStateObj.grid.cells == null )
+        if(myGameStateObj.grid.cells == null )
 					continue; 
 				if((myGameStateObj.grid.cells[i][j].value) > bigNum)
 					bigNum = myGameStateObj.grid.cells[i][j].value;
 			}
 		}
-		//alert("bigNum is:"+bigNum);		
-		//alert("myScore:" + myScore);
-		//alert("myBestScore:" + myGameStateObj.score);
-		//alert("可点击...微信菜单\n 深度分享到朋友圈或转发给朋友  ;-)");
-                    //alert('我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...");
-		//dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...";
-                 
-                 
-                    //submit data to server
-                    $.ajax({
-                        type: "get",
-                        async: true,
-                        cache:false,
-                        url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/g2048save' ; ?>"+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
-                       // url: "process.php?bigNum="+bigNum+"&score="+myGameStateObj.score+"&myScore"+myScore,
-                        success: function(msg){
-                                /*
-                            var json_data = eval('('+msg+')');
 
-                            if(json_data.err && json_data.err.length == 0)
-                            {
-                                alert("process ok");
-                            }
-                            else
-                            {
-                                alert("process NOT ok");
-                            }
-                            */
-		       
-			// if(msg=="ok")
-			if(msg != 0)
-			{
-				 //alert("process ok");
-				$scoreRanking = msg; 
-			}
-			else
-			{
-				//alert("process NOT ok");
-				$scoreRanking = 0; 
-			}
+    //submit data to server
+    $.ajax({
+      type: "get",
+      type:"GET",
+      cache:false,
+      dataType:'json',
+      url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/ajaxdata' ; ?>"+"&cat=g2048Save"+"&gh_id="+gh_id+"&openid="+openid+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
+      success: function(json_data){
 
-			if($scoreRanking == 0) /* not subscribed*/
-			{
-				dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...";
-				$("#result").html('<h1>Game over!</h1><br>我的盘面最大数是<b>'+bigNum+'</b><br>总分是<b>'+myGameStateObj.score+"</b><br>最好记录是<b>"+myScore+"<br><br>你能超过我吗？啊哈哈哈...");
-			}
-			else
-			{
-				dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n游戏排名是"+$scoreRanking +"名";
-				$("#result").html('<h1>Game over!</h1><br>我的盘面最大数是<b>'+bigNum+'</b><br>总分是<b>'+myGameStateObj.score+"</b><br>最好记录是<b>"+myScore+"</b><br>在所有襄阳联通关注号中游戏排名是<b>"+$scoreRanking+"</b><br><br>你能超过我吗？啊哈哈哈...");
-			}
-				
-			$("#modal_id").trigger("click");
-                         
-                        }
-                    });/*end ajax*/
-                 
-                    //share(); //pop a mask div 
+        if(json_data.isSubcribed == 0) /* not subscribed*/
+        {
+          dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n你能有我牛X吗？啊哈哈哈...";
+          $("#gameover_content").html('<h1 class=unicom-red>Game over!</h1>盘面最大数是<b>'+bigNum+'</b><br>总分<b>'+myGameStateObj.score+"</b><br>最好记录<b>"+myScore+"<br><br>你能超过我吗？啊哈哈哈...<p><a href='#' class='ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b' data-rel='back'>知道了</a></p>");
+        }
+        else
+        {
+          dataForWeixin.desc = '我的盘面最大数是'+bigNum+'\n总分是'+myGameStateObj.score+"\n最好记录是"+myScore+"\n游戏排名是"+json_data.position +"名";
+          $("#gameover_content").html('<h1 class=unicom-red>Game over!</h1>盘面最大数是<b>'+bigNum+'</b><br>总分<b>'+myGameStateObj.score+"</b><br>最好记录<b>"+myScore+"</b><br>在所有襄阳联通关注号中游戏排名<b class=unicom-red>"+json_data.position+"</b><br>你能超过我吗？啊哈哈哈...<p><a href='#' class='ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b' data-rel='back'>知道了</a></p>");
+        }
+
+
+        //$("#list_common_tbody").append(text).trigger('create');
+
+        $("#popupDialog").popup("open");
+
+      }
+    });/*end ajax*/
+               
 }
-
 </script>
   
-  <script src="<?php echo "$assetsPath/bind_polyfill.js"; ?> "></script>
-  <script src="<?php echo "$assetsPath/classlist_polyfill.js";?> "></script>
-  <script src="<?php echo "$assetsPath/animframe_polyfill.js"; ?> "></script>
-  <script src="<?php echo "$assetsPath/keyboard_input_manager.js"; ?> " ></script>
-  <script src="<?php echo "$assetsPath/html_actuator.js?v=11"; ?> "></script>
-  <script src="<?php echo "$assetsPath/grid.js"; ?> "></script>
-  <script src="<?php echo "$assetsPath/tile.js"; ?> "></script>
-  <script src="<?php echo "$assetsPath/local_storage_manager.js";?>"></script>
-  <script src="<?php echo "$assetsPath/game_manager.js"; ?>"></script>
-  <script src="<?php echo "$assetsPath/application.js"; ?>"></script>
-
-<?php echo Html::img(Url::to('images/wx-tuiguang2.jpg'), ['class'=>'img-responsive']); ?>
+<script src="<?php echo "$assetsPath/bind_polyfill.js"; ?> "></script>
+<script src="<?php echo "$assetsPath/classlist_polyfill.js";?> "></script>
+<script src="<?php echo "$assetsPath/animframe_polyfill.js"; ?> "></script>
+<script src="<?php echo "$assetsPath/keyboard_input_manager.js"; ?> " ></script>
+<script src="<?php echo "$assetsPath/html_actuator.js?v=11"; ?> "></script>
+<script src="<?php echo "$assetsPath/grid.js"; ?> "></script>
+<script src="<?php echo "$assetsPath/tile.js"; ?> "></script>
+<script src="<?php echo "$assetsPath/local_storage_manager.js";?>"></script>
+<script src="<?php echo "$assetsPath/game_manager.js"; ?>"></script>
+<script src="<?php echo "$assetsPath/application.js"; ?>"></script>
 
 
-<?php 
-//	$show = empty($lucy_msg) ? false : true;
-	$show = true;
-	yii\bootstrap\Modal::begin([
-		'options' => [
-			//'style' => 'opacity:0.9;color:#ffffff;bgcolor:#000000;width:90%;',
-			'style' => 'opacity:0.9;',
-//			'id'=>'modal_id',
-		],
-        'header' => Html::img(Url::to('images/share.png'), ['class'=>'img-responsive']),   
-		'footer' => "&copy; <span style='color:#d71920'>襄阳联通</span> ".date('Y'),
-		//'size' => 'modal-lg',
-		'size' => 'modal-sm',
-		//'toggleButton' => ['label' => 'click me'],
-/*
-		'clientOptions' => [
-			'show' => $show,
-		],
-*/
-		'toggleButton' => ['label' => 'click me12', 'id'=>'modal_id', 'style'=>'display:none' ],
-		'closeButton' => [
-		//'label' => '&times;',
-		'label' => '',
-		]
-	]);
-?>
-<div id="result"><?php echo 'my score is test...' ?></div>
-
-<?php yii\bootstrap\Modal::end(); ?>
+<!--
+<?//php echo Html::img(Url::to('images/wx-tuiguang2.jpg'), ['class'=>'img-responsive']); ?>
+-->
 
 
-<?php //$this->registerJs('alert(345);$("#modal_id").trigger("click");', yii\web\View::POS_READY); ?>
+<?php $this->endBody() ?>
+</body>
 
+</html>
+<?php $this->endPage() ?>
 
 <?php
 /*

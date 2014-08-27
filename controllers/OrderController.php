@@ -15,6 +15,7 @@ use app\models\MMobnum;
 
 use app\models\MGh;
 use app\models\MUser;
+use app\models\MUserSearch;
 use app\models\MStaff;
 use app\models\MStaffSearch;
 
@@ -229,6 +230,18 @@ class OrderController extends Controller
 		return $this->redirect(['stafflist']);
 	}
 
+	public function actionStaffscoredetail($gh_id, $openid)
+	{
+		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);			
+		$searchModel = new MUserSearch;
+		$_GET['MUserSearch']['scene_pid'] = $user->scene_id;
+		//$searchModel->scene_pid = $user->scene_id;
+		$dataProvider = $searchModel->search($_GET);
+		return $this->render('staffscoredetail', [
+			'dataProvider' => $dataProvider,
+			'searchModel' => $searchModel,
+		]);
+	}
 	
 }
 

@@ -64,7 +64,21 @@ $basename = basename(__FILE__, '.php');
 	<div data-role="footer" data-position="fixed">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
+
+	<div data-role="popup" id="popupDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
+	    <div data-role="header" data-theme="b">
+	    <h1>取消订单?</h1>
+	    </div>
+	    <div role="main" class="ui-content">
+	        <h3 class="ui-title">您确定要取消此订单吗?</h3>
+	    	<p>订单取消后不能恢复，如果您需要请再次下单.</p>
+	        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">不想取消</a>
+	        <a href="#" id="btn-wyqxdd" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flow">我要取消订单</a>
+	    </div>
+	</div>	
 </div>
+
+
 
 <div data-role="page" id="orderdetail" data-theme="c">
 
@@ -155,10 +169,19 @@ function load_data2(i, n)
 	<p>商品名称:&nbsp;"+n.title+"</p>\
 	<p>价格:&nbsp;￥"+(n.feesum)/100+"</p>";
 
+
+	/*
 	if(n.status == 0) //wait to pay 
 		txt_mos ="<p>订单状态:&nbsp;"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
 	else
 		txt_mos ="<p>订单状态:&nbsp;"+n.statusName+"</p>";
+	*/
+
+	if(n.status == 0) //wait to pay 
+		txt_mos ="<p>订单状态:&nbsp;"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
+	else
+		txt_mos ="<p>订单状态:&nbsp;"+n.statusName+"</p>";
+
 
 	txt_mod = "</a></li>";
 
@@ -232,13 +255,11 @@ $(document).on("pageinit", "#myorder", function(){
 	$(document).on("tap",".qxdd",function(){
 
 		oid = $(this).attr('myOid');
-		//alert("取消订单: "+oid);
+		alert("取消订单: "+oid);
 		//closeorder = confirm('取消此订单,确定?');
 
-		if(confirm('取消此订单,确定?') == false)
-		{
-			return false;
-		}
+		$( "#popupDialog" ).popup( "open" );
+
 
 		$.ajax({
 		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderclose'], true) ; ?>",
