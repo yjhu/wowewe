@@ -9,25 +9,24 @@
     use app\models\MOffice;
 
 ?>
+
 <?php $this->beginPage() ?>
-
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
-	<?php 
-/*
-	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/css/themes/default/jquery.mobile-1.4.3.min.css');
-	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/_assets/css/jqm-demos.css');
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/js/jquery.js');
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/_assets/js/index.js');
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/js/jquery.mobile-1.4.3.min.js');
-*/
-	?>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    
+    <style type="text/CSS">
 
-<?php $this->head() ?>
+        .ui-header .ui-title, .ui-footer .ui-title {
+            margin-right: 0 !important; margin-left: 0 !important;
+        }
+    </style>
+
+	<?php $this->head() ?>
+
 </head>
 
 <body>
