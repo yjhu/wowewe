@@ -2,6 +2,9 @@
   use yii\helpers\Html;
   use yii\bootstrap\ActiveForm;
   use yii\helpers\Url;
+  use app\models\U;
+  use app\models\MG2048;
+
 
   use app\assets\JqmAsset;
   JqmAsset::register($this);
@@ -155,26 +158,45 @@
 </div>
 
 
-
-<!--
 <div data-role="dialog" id="top10">
-  <?//php $rows = MStaff::getStaffScoreTop($user->gh_id, 10); ?>
+  <?php $rowsWeek = MG2048::getScoreTop($gh_id,  'week', 10); ?>
+  <?php $rowsMonth = MG2048::getScoreTop($gh_id,  'month', 10); ?>
+  <?php $rowsAll = MG2048::getScoreTop($gh_id,  '', 10); ?>
   <div data-role="header"><h1>英雄榜</h1></div>
   <div role="main" class="ui-content">
-    <ul data-role="listview" data-count-theme="b" data-inset="true">
-      <?//php foreach($rows as $row) { ?>
+    <ul data-role="listview" data-count-theme="c" data-inset="true" data-divider-theme="c">
+     <li data-role="list-divider">周排名</li>
+      <?php foreach($rowsWeek as $row) { ?>
       <li>
-        <img src="<?//php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
-        <h2><?//= $row['name'] ?></h2>
-        <p><?//= $row['title'] ?></p>
-        <span class="ui-li-count"><?//= $row['score'] ?></span>
+        <img src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
+        <h2><?= $row['nickname'] ?></h2>
+        
+        <span class="ui-li-count"><?= $row['max_score'] ?></span>
       </li>
-      <?//php } ?>
+      <?php } ?>
+
+      <li data-role="list-divider">月排名</li>
+      <?php foreach($rowsMonth as $row) { ?>
+      <li>
+        <img src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
+        <h2><?= $row['nickname'] ?></h2>
+        
+        <span class="ui-li-count"><?= $row['max_score'] ?></span>
+      </li>
+      <?php } ?>
+  
+      <li data-role="list-divider">总排名</li>
+      <?php foreach($rowsAll as $row) { ?>
+      <li>
+        <img src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
+        <h2><?= $row['nickname'] ?></h2>
+        
+        <span class="ui-li-count"><?= $row['max_score'] ?></span>
+      </li>
+      <?php } ?>
     </ul>
   </div>
 </div>
--->
-
 
 
 <?php
