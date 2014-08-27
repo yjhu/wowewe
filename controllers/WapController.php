@@ -22,6 +22,8 @@ use app\models\MOrder;
 use app\models\MItem;
 use app\models\MMobnum;
 use app\models\MDisk;
+use app\models\MG2048;
+
 
 class WapController extends Controller
 {
@@ -912,7 +914,7 @@ EOD;
 
 			case 'g2048Save':
 				$gh_id = U::getSessionParam('gh_id');
-				$openid = U::getSessionParam('openid');				
+				$openid = U::getSessionParam('openid');					
 				Yii::$app->wx->setGhId($gh_id);
 				$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 				if ($user === null)
@@ -934,7 +936,7 @@ EOD;
 				}
 				$data['code'] = 0;
 				$data['isSubscribed'] = empty($user->subscribe) ? 0 : 1;
-				$data['position'] = \app\models\MG2048::getCurrentScorePosition($gh_id, $_GET['score']);
+				$data['position'] = MG2048::getCurrentScorePosition($gh_id, $_GET['score']);
 				break;
 				
 			default:
