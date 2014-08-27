@@ -81,7 +81,7 @@ class MStaff extends ActiveRecord
 			return $value;
 		
 		$sql = <<<EOD
-SELECT t1.score, t3.name, t3.office_id, t4.title, t2.scene_id, t2.headimgurl  FROM (SELECT scene_pid, count(*) as score FROM wx_user 
+SELECT t1.score, t3.name, t3.office_id, t4.title, t2.scene_id, t2.headimgurl,t2.gh_id,t2.openid  FROM (SELECT scene_pid, count(*) as score FROM wx_user 
 WHERE gh_id='$gh_id' and scene_pid != 0 GROUP BY scene_pid ORDER BY score desc) t1 
 LEFT JOIN wx_user t2 ON t1.scene_pid = t2.scene_id AND t2.scene_id != 0 
 LEFT JOIN wx_staff t3 ON t2.openid = t3.openid 

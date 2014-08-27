@@ -229,6 +229,16 @@ class OrderController extends Controller
 		return $this->redirect(['stafflist']);
 	}
 
+	public function actionStaffscoredetail()
+	{
+		$searchModel = new MUserSearch;
+		$dataProvider = $searchModel->search($_GET);
+
+		return $this->render('staffscoredetail', [
+			'dataProvider' => $dataProvider,
+			'searchModel' => $searchModel,
+		]);
+	}
 	
 }
 

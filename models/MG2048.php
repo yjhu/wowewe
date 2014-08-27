@@ -23,6 +23,8 @@ use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 
+use app\models\MUser;
+
 class MG2048 extends ActiveRecord
 {
 
@@ -41,13 +43,48 @@ class MG2048 extends ActiveRecord
 		$tableName = self::tableName();
 		$sql = "SELECT *, MAX(score) as max_score  from $tableName GROUP BY gh_id,openid ORDER BY max_score DESC LIMIT $n";		
 		$rows = Yii::$app->db->createCommand($sql)->queryAll();
-		foreach($rows as $idx => $row)
-		{			
-			if (empty($row['name']))
+		foreach($rows as $idx => &$row)
+		{				
+			$user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid']]);
+			if ($user === null)
+			{
 				unset($rows[$idx]);
+				continue;
+			}
+			$row['nickname'] = $user->nickname;
+			$row['headimgurl'] = $user->headimgurl;
 		}
-		Yii::$app->cache->set($key, $rows, YII_DEBUG ? 100 : 12*3600);
+		unset($row);
+		//U::W($rows);		
+		Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 3600);
 		return $rows;
+	}
+
+	public static function getMyScoreTop($gh_id, $openid, $n=5)
+	{
+		$tableName = self::tableName();
+		$sql = "SELECT * from $tableName WHERE gh_id=:gh_id AND openid=:openid ORDER BY score DESC LIMIT $n";
+		$rows = Yii::$app->db->createCommand($sql, [':gh_id'=>$gh_id, ':openid'=>$openid])->queryAll();
+		//U::W($rows);		
+		return $rows;
+	}
+
+	public static function getMyHistoryScore($gh_id, $openid, $n=1)
+	{
+		$tableName = self::tableName();
+		$sql = "SELECT * from $tableName WHERE gh_id=:gh_id AND openid=:openid ORDER BY id DESC LIMIT $n";
+		$rows = Yii::$app->db->createCommand($sql, [':gh_id'=>$gh_id, ':openid'=>$openid])->queryAll();
+		return $rows;
+	}
+
+	public static function getCurrentScorePosition($gh_id, $score)
+	{
+		$tableName = self::tableName();
+		$sql = "SELECT COUNT(*) FROM $tableName WHERE gh_id=:gh_id AND score >= :score";
+		$command = yii::$app->db->createCommand($sql, [':gh_id'=>$gh_id, ':score'=>$score]);
+		$n = $command->queryScalar();
+		U::W("getCurrentScorePosition=$n");
+		return $n;
 	}
 
 }
