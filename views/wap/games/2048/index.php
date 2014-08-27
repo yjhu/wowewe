@@ -169,6 +169,24 @@
 </div>
 
 
+<div data-role="dialog" id="myscore">
+  <?php $rows = MG2048::getMyScoreTop($gh_id, $openid, 10); U::W($rows);?>
+  <div data-role="header"><h1>我的成绩</h1></div>
+  <div role="main" class="ui-content">
+    <ul data-role="listview" data-count-theme="c" data-inset="true" data-divider-theme="c">
+
+      <?php foreach($rows as $row) { ?>
+      <li>
+        <p>成绩:<span><?= $row['score'] ?></span></p>
+        <p>时间:<span><?= $row['create_time'] ?></span></p>
+        <p>当周排名:<span><?= $row['position_week'] ?></span></p>
+        <p>当月排名:<span><?= $row['position_month'] ?></span></p>
+      </li>
+      <?php } ?>
+    </ul>
+  </div>
+</div>
+
 <div data-role="dialog" id="top10">
   <?php $rowsWeek = MG2048::getScoreTop($gh_id,  'week', 10); ?>
   <?php $rowsMonth = MG2048::getScoreTop($gh_id,  'month', 10); ?>
@@ -179,7 +197,7 @@
      <li data-role="list-divider">周排名</li>
       <?php foreach($rowsWeek as $row) { ?>
       <li>
-        <img src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
+        <img style="width:64px" src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
         <h2><?= $row['nickname'] ?></h2>
         
         <span class="ui-li-count"><?= $row['max_score'] ?></span>
@@ -189,7 +207,7 @@
       <li data-role="list-divider">月排名</li>
       <?php foreach($rowsMonth as $row) { ?>
       <li>
-        <img src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
+        <img style="width:64px" src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
         <h2><?= $row['nickname'] ?></h2>
         
         <span class="ui-li-count"><?= $row['max_score'] ?></span>
@@ -199,7 +217,7 @@
       <li data-role="list-divider">总排名</li>
       <?php foreach($rowsAll as $row) { ?>
       <li>
-        <img src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
+        <img style="width:64px" src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 64);  ?> ">
         <h2><?= $row['nickname'] ?></h2>
         
         <span class="ui-li-count"><?= $row['max_score'] ?></span>
