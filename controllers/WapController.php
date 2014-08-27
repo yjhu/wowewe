@@ -471,7 +471,7 @@ EOD;
 	public function actionG2048()
 	{
 		//$this->layout = 'wap';
-		  $this->layout =false;
+		$this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
 

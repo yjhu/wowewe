@@ -48,7 +48,7 @@ input {
   clear: both; }
 
 h1.title {
-  font-size: 80px;
+  font-size: 88px;
   font-weight: bold;
   margin: 0;
   display: block;
@@ -435,7 +435,7 @@ hr {
         font-size: 25px; } }
   .tile.tile-1024 .tile-inner {
     color: #f9f6f2;
-    background: #edc53f;
+    background: #ff4c01;
     box-shadow: 0 0 30px 10px rgba(243, 215, 116, 0.47619), inset 0 0 0 1px rgba(255, 255, 255, 0.28571);
     font-size: 35px; }
     @media screen and (max-width: 520px) {
@@ -451,7 +451,7 @@ hr {
         font-size: 15px; } }
   .tile.tile-super .tile-inner {
     color: #f9f6f2;
-    background: #f7ea45;
+    background: #d9080d;
     font-size: 30px; }
     @media screen and (max-width: 520px) {
       .tile.tile-super .tile-inner {
