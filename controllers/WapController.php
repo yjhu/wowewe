@@ -983,23 +983,6 @@ EOD;
         return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
-	//http://127.0.0.1/wx/web/index.php?r=wap/mobilelistxxx
-    public function actionMobilelistxxx()
-    {
-		$gh_id = MGh::GH_XIANGYANGUNICOM;
-		$openid = MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;
-		Yii::$app->session['gh_id'] = $gh_id;
-		Yii::$app->session['openid'] = $openid;			
-    
-	        $this->layout =false;
-		$gh_id = U::getSessionParam('gh_id');
-		$openid = U::getSessionParam('openid');
-		Yii::$app->wx->setGhId($gh_id);
-
-        //return $this->render('mobile');
-        return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid]);
-    }
-
     public function actionMobile()
     {
         $this->layout =false;

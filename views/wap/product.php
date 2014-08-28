@@ -4,6 +4,8 @@
 	use yii\widgets\Breadcrumbs;
 	use app\models\U;
 	use app\models\MOffice;
+
+	require_once 'cs.php';echo '<img src="'._cnzzTrackPageView(5420084).'" width="0" height="0"/>';
 ?>
 
 
@@ -39,6 +41,7 @@
 }
 </style>
 	
+
 	
 <div data-role="page" id="page2" data-theme="c">
 
@@ -247,111 +250,6 @@
 <?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>	
 </div> <!-- page2 end -->
 
-<div data-role="page" id="page3" data-theme="c">
-	<!--
-	<div data-role="header">
-		<h1>自由组合套餐</h1>
-	</div>
-	-->
-	
-	<?php echo $this->render('header1', ['menuId'=>'menu3','title' => '自由组合套餐']); ?>
-	
-	<div data-role="content">
-
-		<h2>订单详情</h2>
-		<!--
-		<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
-		-->
-		<p id="oid"></p>
-        <p id="selectNum"></p>
-        <p id="office"></p>
-		<p id="contact"></p>
-
-
-		<table data-role="table" id="table-custom-2" data-mode="columntoggle"   class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-text="选择要显示的列..." data-column-popup-theme="a">
-		 <thead>
-		   <tr class="ui-bar-d">
-			 <th data-priority="1">序号</th>
-			 <th data-priority="1">组合项</th>
-			 <th>详情</th>
-			 <th>费用</th>
-			 <!--
-			 <th data-priority="5">Reviews</th>
-			 -->
-		   </tr>
-		 </thead>
-		 <tbody>
-		   <tr>
-			 <th>1</th>
-			 <td>流量包</td>
-			 <td id="flowPack_name">300MB</td>
-			 <td id="flowPack_fee">16元</td>
-		   </tr>
-		   <tr>
-			 <th>2</th>
-			 <td>语音包</td>
-			 <td id="voicePack_name">300分钟</td>
-			 <td id="voicePack_fee">40元</td>
-		   </tr>
-		   <tr>
-			 <th>3</th>
-			 <td>短信彩信</td>
-			 <td id="msgPack_name">400条</td>
-			 <td id="msgPack_fee">20元</td>
-		   </tr>	
-		   <tr>
-			 <th>4</th>
-			 <td>来电显示</td>
-			 <td id="callshowPack_name">来显每月</td>
-			 <td id="callshowPack_fee">6元</td>
-		   </tr>
-
-           <tr>
-               <th>4</th>
-               <td>其他增值业务</td>
-               <td id="otherPack_name">来显每月</td>
-               <td id="otherPack_fee">6元</td>
-           </tr>
-
-
-		 </tbody>
-	   </table>
-		<p align="right" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
-		<span  id="total">
-		合计:
-		</span>
-		</p>	
-		<!--
-		<p>
-		<textarea cols="40" rows="8" name="address" id="address" placeholder="请输入您的收货地址"></textarea>
-		</P>
-		-->
-
-        <!--
-		<p>
-		<input type="button" value="确认订单" id="payBtn">
-		</p>
-		-->
-        <a data-ajax=false href="<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>" class="ui-btn" data-ajax="false">我知道了</a>
-
-		<!--
-		<p id="url"></p>
-		-->
-		<p align="right">
-
-        <!--
-		<a href="#page2" data-transition="slide">我想重新选择自由组合套餐</a>
-		-->
-
-		</p>
-
-	</div>
-
-	<div data-role="footer" data-position="fixed">
-		<h4>&copy; 襄阳联通 2014</h4>
-	</div>
-	<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
-</div>	<!-- page3 end -->
 
 <div data-role="page" id="contactPage" data-theme="c">
 
@@ -378,25 +276,20 @@
 	<div data-role="footer" data-position="fixed">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
+
+	<div data-role="popup" id="popupDialog-contactPage" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
+		<div data-role="header" data-theme="c">
+		<h1>温馨提示</h1>
+		</div>
+		<div role="main" id="popupDialog-contactPage-txt" class="ui-content">
+			<span class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext'><span><p>姓名输入有误，请重新填写。</p>
+		    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">确认</a>
+		</div>
+	</div>
+
 	<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>	<!-- contactPage end -->
 
-		<div data-role="footer" data-position="fixed">
-			<h4>&copy; 襄阳联通 2014</h4>
-		</div>
-
-		<div data-role="popup" id="popupDialog-contactPage" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
-			<div data-role="header" data-theme="c">
-			<h1>温馨提示</h1>
-			</div>
-			<div role="main" id="popupDialog-contactPage-txt" class="ui-content">
-				<span class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext'><span><p>姓名输入有误，请重新填写。</p>
-			    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">确认</a>
-			</div>
-		</div>
-
-		<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
-	</div>	<!-- contactPage end -->
 
 <div data-role="page" id="number-select" data-theme="c">
 	
@@ -469,7 +362,7 @@ $(document).on("pageshow", "#page2", function(){
 });
 
 $(document).on("pageinit", "#page2", function(){
-
+	//alert('here is page2');
    	function feeSummary()
 	{
 		feeSumVal= fee_flowPack + fee_pack + fee_msgPack + fee_callshowPack + fee_otherPack;
@@ -754,7 +647,7 @@ $(document).on("pageinit", "#page2", function(){
 });
 
 $(document).on("pageinit", "#page3", function(){
-
+	//alert('here is page3');
 	flowPack_name = <?php echo \app\models\MOrder::getFlowPackName(); ?>;
 	flowPack_fee =<?php echo \app\models\MOrder::getFlowPackFee(); ?>;
 
@@ -805,7 +698,7 @@ $(document).on("pageinit", "#page3", function(){
 
     localStorage.removeItem("luckNum");/*订单生成后，锁定该手机号*/
 
-   $("#office").html('所选营业厅: ' +office_name[office] );
+   	$("#office").html('所选营业厅: ' +office_name[office] );
 	$("#contact").html('用户信息<br>' +'姓名: '+ localStorage.getItem("username")+'<br>手机: '+ localStorage.getItem("usermobile")+'<br>身份证: '+ localStorage.getItem("userid")  );
 
 	var url = localStorage.getItem("url");
