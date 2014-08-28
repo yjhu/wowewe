@@ -63,15 +63,12 @@ class MG2048 extends ActiveRecord
 			$row['headimgurl'] = $user->headimgurl;
 		}
 		unset($row);
-		//U::W($rows);		
-		//Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 3600);
-		Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 10);
+		Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 3600);
 		return $rows;
 	}
 
 	public static function getMyScoreTop($gh_id, $openid, $n=10)
 	{
-//U::W("$gh_id, $openid, $n");		
 		$key = md5(serialize([$_GET, $gh_id, $openid, $n]));
 		$value = Yii::$app->cache->get($key);
 		if ($value !== false)
@@ -80,16 +77,13 @@ class MG2048 extends ActiveRecord
 		$tableName = self::tableName();
 		$sql = "SELECT * from $tableName WHERE gh_id=:gh_id AND openid=:openid ORDER BY score DESC LIMIT $n";
 		$rows = Yii::$app->db->createCommand($sql, [':gh_id'=>$gh_id, ':openid'=>$openid])->queryAll();
-//U::W($rows);		
 		foreach($rows as $idx => &$row)
 		{				
 			$row['position_week'] = self::getMyScorePosition($gh_id, $row['score'], $row['create_time'], 'week');
 			$row['position_month'] = self::getMyScorePosition($gh_id, $row['score'], $row['create_time'], 'month');
 		}
 		unset($row);		
-
-//		Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 3600);
-		Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 10);
+		Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 300);
 		return $rows;
 	}
 
