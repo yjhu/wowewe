@@ -9,6 +9,7 @@ use yii\web\HttpException;
 use app\models\U;
 use app\models\WxException;
 use app\models\MUser;
+use app\models\MGh;
 
 use app\models\RespText;
 use app\models\RespImage;
@@ -19,8 +20,8 @@ use app\models\RespMusic;
 class Wechat extends \yii\base\Object
 {
 	//const OPENID_TESTER1 = 'o6biBt5yaB7d3i0YTSkgFSAHmpdo';		// hoya hehb
-	const OPENID_TESTER1 = 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o';			// woso hehb	
-	//const OPENID_TESTER1 = 'oKgUduNHzUQlGRIDAghiY7ywSeWk';		// xiangyangunicom hbhe		
+	//const OPENID_TESTER1 = 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o';			// woso hehb	
+	const OPENID_TESTER1 = 'oKgUduNHzUQlGRIDAghiY7ywSeWk';		// xiangyangunicom hbhe		
 	//const OPENID_TESTER1 = 'oKgUduJJFo9ocN8qO9k2N5xrKoGE';		// xiangyangunicom kzeng		
 	//const OPENID_TESTER1 = 'oKgUduNaK7mfojofz2qnSxa_FTMs';		// xiangyangunicom gtsun			
 	
@@ -61,7 +62,7 @@ class Wechat extends \yii\base\Object
 	
 	public function init()
 	{
-//		U::W('Wap init...');
+		//U::W('Wap init...');
 	}
 
 	private function log($log)
