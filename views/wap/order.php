@@ -255,11 +255,11 @@ $(document).on("pageinit", "#myorder", function(){
 	$(document).on("tap",".qxdd",function(){
 
 		oid = $(this).attr('myOid');
-		alert("取消订单: "+oid);
-		//closeorder = confirm('取消此订单,确定?');
+		//alert("取消订单: "+oid);
+		closeorder = confirm('取消此订单,确定?');
 
-		$( "#popupDialog" ).popup( "open" );
-
+		//$( "#popupDialog" ).popup( "open" );
+	    //confirmAndDelete(oid);
 
 		$.ajax({
 		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderclose'], true) ; ?>",
