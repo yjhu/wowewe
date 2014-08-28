@@ -11,9 +11,9 @@ $basename = basename(__FILE__, '.php');
 ?>
 
 
-<div data-role="panel" id="<?php echo $menuId ?>" data-position="right" data-display="overlay">
+<div data-role="panel" id="<?php echo $menuId ?>" data-position="right" data-display="overlay" data-theme="b">
 
-  <ul data-role="listview" data-inset="false" data-divider-theme="a" class="ui-nodisc-icon ui-alt-icon">
+  <ul data-role="listview" data-inset="false"  class="ui-nodisc-icon ui-alt-icon">
     <li data-role="list-divider">选套餐</li>
 
     <li><a data-ajax=false href="<?php echo Url::to(['product', 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">自由组合套餐</a></li>
