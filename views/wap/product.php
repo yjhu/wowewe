@@ -2,12 +2,31 @@
 	use yii\helpers\Html;
     use yii\helpers\Url;
 	use yii\widgets\Breadcrumbs;
+	use app\assets\JqmAsset;
+	JqmAsset::register($this);
+	//$this->registerJs('alert("test")', yii\web\View::POS_READY);
 	use app\models\U;
 	use app\models\MOffice;
-
-	require_once 'cs.php';echo '<img src="'._cnzzTrackPageView(5420084).'" width="0" height="0"/>';
 ?>
 
+<?php $this->beginPage() ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+
+	<?php
+/*
+	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/css/themes/default/jquery.mobile-1.4.3.min.css');
+	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/_assets/css/jqm-demos.css'); 
+	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/js/jquery.js'); 
+	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/_assets/js/index.js'); 
+	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/js/jquery.mobile-1.4.3.min.js'); 
+*/
+	?>
 
 <style type="text/CSS">
 .tabSumm 
@@ -41,286 +60,401 @@
 }
 </style>
 	
+<?php $this->head() ?>
+</head>
 
-	
-<div data-role="page" id="page2" data-theme="c">
+<body>
+<?php $this->beginBody() ?>
+		
+	<div data-role="page" id="page2" data-theme="c">
 
-	<!--
-	<div data-role="header" data-theme="c">
-		<h1>自由组合套餐</h1>
-	</div>
-	-->
-
-	<?php echo $this->render('header1', ['menuId'=>'menu2','title' => '自由组合套餐']); ?>
-
-	<div data-role="content">
-	<form id="productForm">	
-	<div data-role="content" data-theme="c">	
-	<p  align=center>        
-	<img width="100%" src="../web/images/item/20140514113951768477440.jpg" alt=""/>
-	</p>
-
-		<p>
-		自由组合套餐
-        <span class="title_hint"> 自由选择， 随意组合， 私人定制， 沃随你变， 每月最低10元起</span>
-	</p>
-
-
-	<div class="ui-corner-all custom-corners">
-
-	  <div data-role="fieldcontain" data-theme="c">
-		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-		  <legend>卡类型</legend>
-		  <input type="radio" name="cardType" id="radio1_0" value="0" checked />
-		  <label for="radio1_0">普通卡</label>
-		  <input type="radio" name="cardType" id="radio1_1" value="1" />
-		  <label for="radio1_1">Micro卡</label>
-		  <input type="radio" name="cardType" id="radio1_2" value="2" />
-		  <label for="radio1_2">Nano卡</label>
-		</fieldset>
-	  </div>
-
-      <img width="100%" style="display:block" src="../web/images/item/card.jpg" alt=""/>
-
-		<!-- #ec7218 yellow -->
-		<p id="diy-create">自由组合套餐        月消费:8元</p>
-		<div id="TabbedPanels1" class="TabbedPanels">
-		  <ul class="TabbedPanelsTabGroup">
-			<li class="TabbedPanelsTab" tabindex="0" id="flowPackTabTitle">流量包<br><span class='tabSumm'>100MB</span></li>
-			<li class="TabbedPanelsTab" tabindex="0" id="packTabTitle">语音包<br><span class='tabSumm'>&nbsp;</span></li>
-			<li class="TabbedPanelsTab" tabindex="0" id="msgPackTabTitle">短彩信包<br><span class='tabSumm'>&nbsp;</span></li>
-			<li class="TabbedPanelsTab" tabindex="0" id="callshowPackTabTitle">来电显示<br><span class='tabSumm'>&nbsp;</span></li>
-            <li class="TabbedPanelsTab" tabindex="0" id="otherPackTabTitle">其他<br><span class='tabSumm'>&nbsp;</span></li>
-		  </ul>
-		  <div class="TabbedPanelsContentGroup">
-			<div class="TabbedPanelsContent">
-			  <div data-role="fieldcontain">
-				<fieldset data-role="controlgroup" data-theme="c">
-				  <legend>流量包</legend>
-				  <input type="radio" name="flowPack" id="flowPack_0" value="0"  checked />
-				  <label for="flowPack_0">100MB/10元&nbsp;&nbsp;</label>
-				  <input type="radio" name="flowPack" id="flowPack_1" value="1" />
-				  <label for="flowPack_1">300MB/20元&nbsp;&nbsp;</label>
-				  <input type="radio" name="flowPack" id="flowPack_2" value="2" />
-				  <label for="flowPack_2">500MB/30元&nbsp;&nbsp;</label>
-				  <input type="radio" name="flowPack" id="flowPack_3" value="3" />
-				  <label for="flowPack_3">1GB/60元&nbsp;&nbsp;</label>
-				  <input type="radio" name="flowPack" id="flowPack_4" value="4" />
-				  <label for="flowPack_4">2GB/90元&nbsp;&nbsp;</label>
-				  <input type="radio" name="flowPack" id="flowPack_5" value="5" />
-				  <label for="flowPack_5">3GB/120元&nbsp;&nbsp;</label>
-				  <input type="radio" name="flowPack" id="flowPack_6" value="6" />
-				  <label for="flowPack_6">4GB/150元&nbsp;&nbsp;</label>
-				  <input type="radio" name="flowPack" id="flowPack_7" value="7" />
-				  <label for="flowPack_7">6GB/190元&nbsp;&nbsp;</label>
-				  <input type="radio" name="flowPack" id="flowPack_8" value="8" />
-				  <label for="flowPack_8">11GB/290元&nbsp;&nbsp;</label>
-
-				</fieldset>
-				<p>&nbsp;流量包超出部分按0.2元/MB收费</p>
-			  </div>
-			</div>
-
-			<div class="TabbedPanelsContent">
-				<div data-role="fieldcontain">
-				<fieldset data-role="controlgroup" data-theme="c">
-				  <legend>语音包</legend>
-				  <input type="radio" name="voicePack" id="voicePack_0" value="0"  />
-				  <label for="voicePack_0">200分钟/40元&nbsp;&nbsp;0.2元/1分钟</label>
-				  <input type="radio" name="voicePack" id="voicePack_1" value="1" />
-				  <label for="voicePack_1">300分钟/50元&nbsp;&nbsp;0.16元/1分钟</label>
-				  <input type="radio" name="voicePack" id="voicePack_2" value="2" />
-				  <label for="voicePack_2">500分钟/70元&nbsp;&nbsp;0.14元/1分钟</label>
-				  <input type="radio" name="voicePack" id="voicePack_3" value="3" />
-				  <label for="voicePack_3">1000分钟/140元&nbsp;&nbsp;0.14元/1分钟</label>
-				  <input type="radio" name="voicePack" id="voicePack_4" value="4" />
-				  <label for="voicePack_4">2000分钟/200元&nbsp;&nbsp;0.1元/1分钟</label>
-				  <input type="radio" name="voicePack" id="voicePack_5" value="5" />
-				  <label for="voicePack_5">3000分钟/300元&nbsp;&nbsp;0.1元/1分钟</label>
-				  <input type="radio" name="voicePack" id="voicePack_notselect" value="999" checked />
-				  <label for="voicePack_notselect">不选择</label>		  
-				</fieldset>
-				<p>&nbsp;语音包超出后按0.15元/分钟收费</p>
-			  </div> 
-			</div>
-
-			<div class="TabbedPanelsContent">
-				<div data-role="fieldcontain">
-				<fieldset data-role="controlgroup" data-theme="c">
-				  <legend>短彩信包</legend>
-				  <input type="radio" name="msgPack" id="msgPack_0" value="0" />
-				  <label for="msgPack_0">200条/10元</label>
-				  <input type="radio" name="msgPack" id="msgPack_1" value="1" />
-				  <label for="msgPack_1">400条/20元</label>
-				  <input type="radio" name="msgPack" id="msgPack_2" value="2" />
-				  <label for="msgPack_2">600条/30元</label>
-				  <input type="radio" name="msgPack" id="msgPack_notselect" value="999" checked />
-				  <label for="msgPack_notselect">不选短彩信包按0.1元/条收费</label>
-				</fieldset>
-				<p>&nbsp;短彩信包超出后按0.1元/条收费</p>
-			  </div>
-			</div>         
-
-			<div class="TabbedPanelsContent">
-				<div data-role="fieldcontain">
-				  <fieldset data-role="controlgroup">
-					<legend>来电显示</legend>
-					<input type="radio" name="callshowPack" id="callshowPack_0" value="0" />
-					<label for="callshowPack_0">6元/月&nbsp;&nbsp;来电显示</label>
-					<input type="radio" name="callshowPack" id="callshowPack_notselect" value="999" checked />
-					<label for="callshowPack_notselect">不选择</label>
-				  </fieldset>
-				  <p>&nbsp;您开通语音包后，将默认开通来电显示包</p>
-				</div>
-			</div>
-
-          <div class="TabbedPanelsContent">
-              <div data-role="fieldcontain" data-theme="c">
-                  <fieldset data-role="controlgroup">
-                      <legend>其他增值业务</legend>
-                      <input type="radio" name="otherPack" id="otherPack_0" value="0" />
-                      <label for="otherPack_0">炫铃 5元/月</label>
-
-                      <input type="radio" name="otherPack" id="otherPack_1" value="1" />
-                      <label for="otherPack_1">手机邮箱 5元/月</label>
-
-                      <input type="radio" name="otherPack" id="otherPack_2" value="2" />
-                      <label for="otherPack_2">炫铃+手机邮箱 6元/月</label>
-
-                      <input type="radio" name="otherPack" id="otherPack_notselect" value="999" checked />
-                      <label for="otherPack_notselect">不选择</label>
-                  </fieldset>
-                  <p>&nbsp;</p>
-              </div>
-          </div>
-
-          </div>
-		</div>
-
-        <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
-
-   		<a href="#contactPage" class="ui-btn">用户信息</a>
-
-		<div id="officeArea">
-		<?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
-		</div>
-
-		<input type="button" value="确认套餐" id="submitBtn">
-
-		<br>
-		<div id="TabbedPanels2" class="TabbedPanels">
-		  <ul class="TabbedPanelsTabGroup">
-			<li class="TabbedPanelsTab" tabindex="0">图文详情</li>
-             <!--
-			<li class="TabbedPanelsTab" tabindex="0">商品评价</li>
-			-->
-		  </ul>
-		  <div class="TabbedPanelsContentGroup">
-			<div class="TabbedPanelsContent">
-
-				<div role="main" class="ui-content">
-					<p>
-                        <img width="100%" style="display:block" src="../web/images/item/zyzh-001.jpg" alt=""/>
-                        <img width="100%" style="display:block" src="../web/images/item/zyzh-002.jpg" alt=""/>
-                        <img width="100%" style="display:block" src="../web/images/item/zyzh-003.jpg" alt=""/>
-                        <img width="100%" style="display:block" src="../web/images/item/zyzh-004.jpg" alt=""/>
-                    </p>
-				</div><!-- /content -->        
-
-			</div>
-            <!--
-			<div class="TabbedPanelsContent">
-				<div role="main" class="ui-content">
-				<p> 好好好</p>
-				</div>
-			</div>
-              -->
-
-
-		  </div>
-		</div>       
-	</div>                
-</div>
-</form>		
-</div>
-	
-<div data-role="footer">
-	<h4>&copy; 襄阳联通 2014</h4>
-</div>
-<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>	
-</div> <!-- page2 end -->
-
-
-<div data-role="page" id="contactPage" data-theme="c">
-
-	<?php echo $this->render('header2', ['menuId'=>'menu4','title' => '自由组合套餐']); ?>
-
-	<div data-role="content">
-
-		<h2>用户信息</h2>
-		<div class="ui-field-contain">
-			<!--
-			<label for="username">姓名</label>
-			-->
-			<input type="text" name="username" id="username" placeholder="姓名" value="">
-
-			<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
-
-			<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
-		</div>
-
-		<input type="button" value="确认" id="addContactBtn">
-
-	</div>
-
-	<div data-role="footer" data-position="fixed">
-		<h4>&copy; 襄阳联通 2014</h4>
-	</div>
-
-	<div data-role="popup" id="popupDialog-contactPage" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
+		<!--
 		<div data-role="header" data-theme="c">
-		<h1>温馨提示</h1>
+			<h1>自由组合套餐</h1>
 		</div>
-		<div role="main" id="popupDialog-contactPage-txt" class="ui-content">
-			<span class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext'><span><p>姓名输入有误，请重新填写。</p>
-		    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">确认</a>
-		</div>
+		-->
+
+		<?php echo $this->render('header1', ['menuId'=>'menu2','title' => '自由组合套餐']); ?>
+
+		<div data-role="content">
+		<form id="productForm">	
+		<div data-role="content" data-theme="c">	
+		<p  align=center>        
+		<img width="100%" src="../web/images/item/20140514113951768477440.jpg" alt=""/>
+		</p>
+
+ 		<p>
+			自由组合套餐
+            <span class="title_hint"> 自由选择， 随意组合， 私人定制， 沃随你变， 每月最低10元起</span>
+		</p>
+
+
+		<div class="ui-corner-all custom-corners">
+
+		  <div data-role="fieldcontain" data-theme="c">
+			<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+			  <legend>卡类型</legend>
+			  <input type="radio" name="cardType" id="radio1_0" value="0" checked />
+			  <label for="radio1_0">普通卡</label>
+			  <input type="radio" name="cardType" id="radio1_1" value="1" />
+			  <label for="radio1_1">Micro卡</label>
+			  <input type="radio" name="cardType" id="radio1_2" value="2" />
+			  <label for="radio1_2">Nano卡</label>
+			</fieldset>
+		  </div>
+
+          <img width="100%" style="display:block" src="../web/images/item/card.jpg" alt=""/>
+
+			<!-- #ec7218 yellow -->
+			<p id="diy-create">自由组合套餐        月消费:8元</p>
+			<div id="TabbedPanels1" class="TabbedPanels">
+			  <ul class="TabbedPanelsTabGroup">
+				<li class="TabbedPanelsTab" tabindex="0" id="flowPackTabTitle">流量包<br><span class='tabSumm'>100MB</span></li>
+				<li class="TabbedPanelsTab" tabindex="0" id="packTabTitle">语音包<br><span class='tabSumm'>&nbsp;</span></li>
+				<li class="TabbedPanelsTab" tabindex="0" id="msgPackTabTitle">短彩信包<br><span class='tabSumm'>&nbsp;</span></li>
+				<li class="TabbedPanelsTab" tabindex="0" id="callshowPackTabTitle">来电显示<br><span class='tabSumm'>&nbsp;</span></li>
+                <li class="TabbedPanelsTab" tabindex="0" id="otherPackTabTitle">其他<br><span class='tabSumm'>&nbsp;</span></li>
+			  </ul>
+			  <div class="TabbedPanelsContentGroup">
+				<div class="TabbedPanelsContent">
+				  <div data-role="fieldcontain">
+					<fieldset data-role="controlgroup" data-theme="c">
+					  <legend>流量包</legend>
+					  <input type="radio" name="flowPack" id="flowPack_0" value="0"  checked />
+					  <label for="flowPack_0">100MB/10元&nbsp;&nbsp;</label>
+					  <input type="radio" name="flowPack" id="flowPack_1" value="1" />
+					  <label for="flowPack_1">300MB/20元&nbsp;&nbsp;</label>
+					  <input type="radio" name="flowPack" id="flowPack_2" value="2" />
+					  <label for="flowPack_2">500MB/30元&nbsp;&nbsp;</label>
+					  <input type="radio" name="flowPack" id="flowPack_3" value="3" />
+					  <label for="flowPack_3">1GB/60元&nbsp;&nbsp;</label>
+					  <input type="radio" name="flowPack" id="flowPack_4" value="4" />
+					  <label for="flowPack_4">2GB/90元&nbsp;&nbsp;</label>
+					  <input type="radio" name="flowPack" id="flowPack_5" value="5" />
+					  <label for="flowPack_5">3GB/120元&nbsp;&nbsp;</label>
+					  <input type="radio" name="flowPack" id="flowPack_6" value="6" />
+					  <label for="flowPack_6">4GB/150元&nbsp;&nbsp;</label>
+					  <input type="radio" name="flowPack" id="flowPack_7" value="7" />
+					  <label for="flowPack_7">6GB/190元&nbsp;&nbsp;</label>
+					  <input type="radio" name="flowPack" id="flowPack_8" value="8" />
+					  <label for="flowPack_8">11GB/290元&nbsp;&nbsp;</label>
+
+					</fieldset>
+					<p>&nbsp;流量包超出部分按0.2元/MB收费</p>
+				  </div>
+				</div>
+
+				<div class="TabbedPanelsContent">
+					<div data-role="fieldcontain">
+					<fieldset data-role="controlgroup" data-theme="c">
+					  <legend>语音包</legend>
+					  <input type="radio" name="voicePack" id="voicePack_0" value="0"  />
+					  <label for="voicePack_0">200分钟/40元&nbsp;&nbsp;0.2元/1分钟</label>
+					  <input type="radio" name="voicePack" id="voicePack_1" value="1" />
+					  <label for="voicePack_1">300分钟/50元&nbsp;&nbsp;0.16元/1分钟</label>
+					  <input type="radio" name="voicePack" id="voicePack_2" value="2" />
+					  <label for="voicePack_2">500分钟/70元&nbsp;&nbsp;0.14元/1分钟</label>
+					  <input type="radio" name="voicePack" id="voicePack_3" value="3" />
+					  <label for="voicePack_3">1000分钟/140元&nbsp;&nbsp;0.14元/1分钟</label>
+					  <input type="radio" name="voicePack" id="voicePack_4" value="4" />
+					  <label for="voicePack_4">2000分钟/200元&nbsp;&nbsp;0.1元/1分钟</label>
+					  <input type="radio" name="voicePack" id="voicePack_5" value="5" />
+					  <label for="voicePack_5">3000分钟/300元&nbsp;&nbsp;0.1元/1分钟</label>
+					  <input type="radio" name="voicePack" id="voicePack_notselect" value="999" checked />
+					  <label for="voicePack_notselect">不选择</label>		  
+					</fieldset>
+					<p>&nbsp;语音包超出后按0.15元/分钟收费</p>
+				  </div> 
+				</div>
+
+				<div class="TabbedPanelsContent">
+					<div data-role="fieldcontain">
+					<fieldset data-role="controlgroup" data-theme="c">
+					  <legend>短彩信包</legend>
+					  <input type="radio" name="msgPack" id="msgPack_0" value="0" />
+					  <label for="msgPack_0">200条/10元</label>
+					  <input type="radio" name="msgPack" id="msgPack_1" value="1" />
+					  <label for="msgPack_1">400条/20元</label>
+					  <input type="radio" name="msgPack" id="msgPack_2" value="2" />
+					  <label for="msgPack_2">600条/30元</label>
+					  <input type="radio" name="msgPack" id="msgPack_notselect" value="999" checked />
+					  <label for="msgPack_notselect">不选短彩信包按0.1元/条收费</label>
+					</fieldset>
+					<p>&nbsp;短彩信包超出后按0.1元/条收费</p>
+				  </div>
+				</div>         
+
+				<div class="TabbedPanelsContent">
+					<div data-role="fieldcontain">
+					  <fieldset data-role="controlgroup">
+						<legend>来电显示</legend>
+						<input type="radio" name="callshowPack" id="callshowPack_0" value="0" />
+						<label for="callshowPack_0">6元/月&nbsp;&nbsp;来电显示</label>
+						<input type="radio" name="callshowPack" id="callshowPack_notselect" value="999" checked />
+						<label for="callshowPack_notselect">不选择</label>
+					  </fieldset>
+					  <p>&nbsp;您开通语音包后，将默认开通来电显示包</p>
+					</div>
+				</div>
+
+              <div class="TabbedPanelsContent">
+                  <div data-role="fieldcontain" data-theme="c">
+                      <fieldset data-role="controlgroup">
+                          <legend>其他增值业务</legend>
+                          <input type="radio" name="otherPack" id="otherPack_0" value="0" />
+                          <label for="otherPack_0">炫铃 5元/月</label>
+
+                          <input type="radio" name="otherPack" id="otherPack_1" value="1" />
+                          <label for="otherPack_1">手机邮箱 5元/月</label>
+
+                          <input type="radio" name="otherPack" id="otherPack_2" value="2" />
+                          <label for="otherPack_2">炫铃+手机邮箱 6元/月</label>
+
+                          <input type="radio" name="otherPack" id="otherPack_notselect" value="999" checked />
+                          <label for="otherPack_notselect">不选择</label>
+                      </fieldset>
+                      <p>&nbsp;</p>
+                  </div>
+              </div>
+
+              </div>
+			</div>
+
+            <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
+
+       		<a href="#contactPage" class="ui-btn">用户信息</a>
+
+			<div id="officeArea">
+			<?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
+			</div>
+
+			<input type="button" value="确认套餐" id="submitBtn">
+
+			<br>
+			<div id="TabbedPanels2" class="TabbedPanels">
+			  <ul class="TabbedPanelsTabGroup">
+				<li class="TabbedPanelsTab" tabindex="0">图文详情</li>
+	             <!--
+				<li class="TabbedPanelsTab" tabindex="0">商品评价</li>
+				-->
+			  </ul>
+			  <div class="TabbedPanelsContentGroup">
+				<div class="TabbedPanelsContent">
+
+					<div role="main" class="ui-content">
+						<p>
+                            <img width="100%" style="display:block" src="../web/images/item/zyzh-001.jpg" alt=""/>
+                            <img width="100%" style="display:block" src="../web/images/item/zyzh-002.jpg" alt=""/>
+                            <img width="100%" style="display:block" src="../web/images/item/zyzh-003.jpg" alt=""/>
+                            <img width="100%" style="display:block" src="../web/images/item/zyzh-004.jpg" alt=""/>
+                        </p>
+					</div><!-- /content -->        
+
+				</div>
+                <!--
+				<div class="TabbedPanelsContent">
+					<div role="main" class="ui-content">
+					<p> 好好好</p>
+					</div>
+				</div>
+                  -->
+
+
+			  </div>
+			</div>       
+		</div>                
 	</div>
-
-	<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
-</div>	<!-- contactPage end -->
-
-
-<div data-role="page" id="number-select" data-theme="c">
-	
-	<?php echo $this->render('header2', ['menuId'=>'menu5','title' => '自由组合套餐']); ?>
-	
-	<div data-role="content">
-		<h2>请您选择手机号码</h2>
-		<div class="ui-grid-a" id="list_common_tbody">
-            <!--
-		<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >13545296480</a></div></div>
-		<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >33333333333</a></div></div>
-        <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >77777777777</a></div></div>
-        <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >55555555555</a></div></div>
-        <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >66666666666</a></div></div>
-        <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >88888888888</a></div></div>
-        -->
-		</div><!-- /grid-->
-
-        <p>
-            <input type="button" value="换一批号码看看" id="seleNumBtn">
-        </p>
-
+	</form>		
 	</div>
-
-	<div data-role="footer" data-position="fixed">
+		
+	<div data-role="footer">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
-	<?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
-</div>	<!-- page3 end -->	
+	<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>	
+	</div> <!-- page2 end -->
+	
+	<div data-role="page" id="page3" data-theme="c">
+		<!--
+		<div data-role="header">
+			<h1>自由组合套餐</h1>
+		</div>
+		-->
+		
+		<?php echo $this->render('header1', ['menuId'=>'menu3','title' => '自由组合套餐']); ?>
+		
+		<div data-role="content">
+
+			<h2>订单详情</h2>
+			<!--
+			<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="Columns to display..." data-column-popup-theme="a">
+			-->
+			<p id="oid"></p>
+            <p id="selectNum"></p>
+            <p id="office"></p>
+			<p id="contact"></p>
 
 
+			<table data-role="table" id="table-custom-2" data-mode="columntoggle"   class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-text="选择要显示的列..." data-column-popup-theme="a">
+			 <thead>
+			   <tr class="ui-bar-d">
+				 <th data-priority="1">序号</th>
+				 <th data-priority="1">组合项</th>
+				 <th>详情</th>
+				 <th>费用</th>
+				 <!--
+				 <th data-priority="5">Reviews</th>
+				 -->
+			   </tr>
+			 </thead>
+			 <tbody>
+			   <tr>
+				 <th>1</th>
+				 <td>流量包</td>
+				 <td id="flowPack_name">300MB</td>
+				 <td id="flowPack_fee">16元</td>
+			   </tr>
+			   <tr>
+				 <th>2</th>
+				 <td>语音包</td>
+				 <td id="voicePack_name">300分钟</td>
+				 <td id="voicePack_fee">40元</td>
+			   </tr>
+			   <tr>
+				 <th>3</th>
+				 <td>短信彩信</td>
+				 <td id="msgPack_name">400条</td>
+				 <td id="msgPack_fee">20元</td>
+			   </tr>	
+			   <tr>
+				 <th>4</th>
+				 <td>来电显示</td>
+				 <td id="callshowPack_name">来显每月</td>
+				 <td id="callshowPack_fee">6元</td>
+			   </tr>
+
+               <tr>
+                   <th>4</th>
+                   <td>其他增值业务</td>
+                   <td id="otherPack_name">来显每月</td>
+                   <td id="otherPack_fee">6元</td>
+               </tr>
+
+
+			 </tbody>
+		   </table>
+			<p align="right" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
+			<span  id="total">
+			合计:
+			</span>
+			</p>	
+			<!--
+			<p>
+			<textarea cols="40" rows="8" name="address" id="address" placeholder="请输入您的收货地址"></textarea>
+			</P>
+			-->
+
+			<!--
+			<p>
+			<input type="button" value="确认订单" id="payBtn">
+			</p>
+			-->
+
+
+            <a data-ajax=false href="<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>" class="ui-btn" data-ajax="false">我知道了</a>
+
+			<!--
+			<p id="url"></p>
+			-->
+			<p align="right">
+
+            <!--
+			<a href="#page2" data-transition="slide">我想重新选择自由组合套餐</a>
+			-->
+
+			</p>
+
+		</div>
+
+		<div data-role="footer" data-position="fixed">
+			<h4>&copy; 襄阳联通 2014</h4>
+		</div>
+		<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+	</div>	<!-- page3 end -->
+
+	<div data-role="page" id="contactPage" data-theme="c">
+
+		<?php echo $this->render('header2', ['menuId'=>'menu4','title' => '自由组合套餐']); ?>
+
+		<div data-role="content">
+
+			<h2>用户信息</h2>
+			<div class="ui-field-contain">
+				<!--
+				<label for="username">姓名</label>
+				-->
+				<input type="text" name="username" id="username" placeholder="姓名" value="">
+
+				<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
+
+				<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
+			</div>
+
+			<input type="button" value="确认" id="addContactBtn">
+
+		</div>
+
+		<div data-role="footer" data-position="fixed">
+			<h4>&copy; 襄阳联通 2014</h4>
+		</div>
+
+		<div data-role="popup" id="popupDialog-contactPage" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
+			<div data-role="header" data-theme="c">
+			<h1>温馨提示</h1>
+			</div>
+			<div role="main" id="popupDialog-contactPage-txt" class="ui-content">
+				<span class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext'><span><p>姓名输入有误，请重新填写。</p>
+			    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">确认</a>
+			</div>
+		</div>
+
+		<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+	</div>	<!-- contactPage end -->
+
+
+	<div data-role="page" id="number-select" data-theme="c">
+		
+		<?php echo $this->render('header2', ['menuId'=>'menu5','title' => '自由组合套餐']); ?>
+		
+		<div data-role="content">
+			<h2>请您选择手机号码</h2>
+			<div class="ui-grid-a" id="list_common_tbody">
+                <!--
+			<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >13545296480</a></div></div>
+			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >33333333333</a></div></div>
+            <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >77777777777</a></div></div>
+            <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >55555555555</a></div></div>
+            <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >66666666666</a></div></div>
+            <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >88888888888</a></div></div>
+            -->
+			</div><!-- /grid-->
+
+            <p>
+                <input type="button" value="换一批号码看看" id="seleNumBtn">
+            </p>
+
+		</div>
+
+		<div data-role="footer" data-position="fixed">
+			<h4>&copy; 襄阳联通 2014</h4>
+		</div>
+		<?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+	</div>	<!-- page3 end -->	
+	
+<?php $this->endBody() ?>
+</body>
+
+</html>
+<?php $this->endPage() ?>
 
 <script>
 var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
@@ -362,7 +496,7 @@ $(document).on("pageshow", "#page2", function(){
 });
 
 $(document).on("pageinit", "#page2", function(){
-	//alert('here is page2');
+
    	function feeSummary()
 	{
 		feeSumVal= fee_flowPack + fee_pack + fee_msgPack + fee_callshowPack + fee_otherPack;
@@ -647,7 +781,7 @@ $(document).on("pageinit", "#page2", function(){
 });
 
 $(document).on("pageinit", "#page3", function(){
-	//alert('here is page3');
+
 	flowPack_name = <?php echo \app\models\MOrder::getFlowPackName(); ?>;
 	flowPack_fee =<?php echo \app\models\MOrder::getFlowPackFee(); ?>;
 
@@ -698,7 +832,7 @@ $(document).on("pageinit", "#page3", function(){
 
     localStorage.removeItem("luckNum");/*订单生成后，锁定该手机号*/
 
-   	$("#office").html('所选营业厅: ' +office_name[office] );
+   $("#office").html('所选营业厅: ' +office_name[office] );
 	$("#contact").html('用户信息<br>' +'姓名: '+ localStorage.getItem("username")+'<br>手机: '+ localStorage.getItem("usermobile")+'<br>身份证: '+ localStorage.getItem("userid")  );
 
 	var url = localStorage.getItem("url");
@@ -737,10 +871,11 @@ $(document).on("pageinit", "#page3", function(){
 		if (isWeiXin()) {
 			var text = window.navigator.userAgent;
 			if (text.indexOf("Android") >= 0) {
-				alert('您的订单已经生成.');
+				alert('安卓订单已经生成.');
 				//alert("你的手机系统是：安卓");
+				location.href=url;
 			} else if (text.indexOf("iPhone") >= 0) {
-				//alert("你的手机系统是：苹果");
+				alert("你的手机系统是：苹果");
 				location.href=url;
 			} else if (text.indexOf("iPad") >= 0) {
                 location.href=url;

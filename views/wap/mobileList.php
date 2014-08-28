@@ -34,7 +34,9 @@
 
     <div data-role="page" id="page1" data-theme="c">
 
-		<?php echo $this->render('header1', ['menuId'=>'menu1','title' => "特惠手机"]); ?>
+		<div data-role="header">
+	    	<h1>特惠手机</h1>
+	    </div>
 
         <div data-role="content">
             <ul data-role="listview" data-inset="true">

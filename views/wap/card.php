@@ -266,6 +266,17 @@
 		<div data-role="footer" data-position="fixed">
 			<h4>&copy; 襄阳联通 2014</h4>
 		</div>
+
+		<div data-role="popup" id="popupDialog-contactPage" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
+			<div data-role="header" data-theme="c">
+			<h1>温馨提示</h1>
+			</div>
+			<div role="main" id="popupDialog-contactPage-txt" class="ui-content">
+				<span class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext'><span><p>姓名输入有误，请重新填写。</p>
+			    <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">确认</a>
+			</div>
+		</div>
+
 		<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 	</div>	<!-- contactPage end -->
 
@@ -512,7 +523,10 @@ $(document).on("pageinit", "#page3", function(){
 
 });
 
-
+function fillErrmsg(id,errmsg)
+{
+	 $(id).html("<p><a href='#' class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext ui-btn-inline'>Alert</a>"+errmsg+"</p><a href='#' class='ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b' data-rel='back'>确认</a>");
+}
 /*用户信息*/
 $(document).on("pageinit", "#contactPage", function(){
 
@@ -533,19 +547,25 @@ $(document).on("pageinit", "#contactPage", function(){
 		var usernameReg = /^[\u4E00-\u9FFF]+$/;
 		if(usernameReg.test(username) === false)
 		{
-			alert("姓名输入不合法");
+			fillErrmsg('#popupDialog-contactPage-txt','姓名输入不合法, 请重新输入.');
+			$('#popupDialog-contactPage').popup('open');
+			//alert("姓名输入不合法");
 			return  false;
 		}
 		var usermobileReg = /(^(1)\d{10}$)/;
 		if(usermobileReg.test(usermobile) === false)
 		{
-			alert("手机号码输入不合法");
+			fillErrmsg('#popupDialog-contactPage-txt','手机号码输入不合法, 请重新输入.');
+			$('#popupDialog-contactPage').popup('open');
+			//alert("手机号码输入不合法");
 			return  false;
 		}
 		var useridReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
 		if(useridReg.test(userid) === false)
 		{
-			alert("身份证输入不合法");
+			fillErrmsg('#popupDialog-contactPage-txt','身份证输入不合法, 请重新输入.');
+			$('#popupDialog-contactPage').popup('open');
+			//alert("身份证输入不合法");
 			return  false;
 		}
 

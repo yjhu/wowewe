@@ -187,14 +187,15 @@ class U
 			return Yii::$app->session[$key];
 		else if (Yii::$app->params['isWin'] && $key == 'gh_id' && Yii::$app->wx->localTest)
 		{
-			//return \app\models\MGh::GH_XIANGYANGUNICOM;
-			return \app\models\MGh::GH_WOSO;
+			return \app\models\MGh::GH_XIANGYANGUNICOM;
+			//return \app\models\MGh::GH_WOSO;
 		}
 		else if (Yii::$app->params['isWin'] && $key == 'openid' && Yii::$app->wx->localTest)
 		{
 			//return \app\models\MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;		
+			return \app\models\MGh::GH_XIANGYANGUNICOM_OPENID_KZENG;		
 			//return \app\models\MGh::GH_WOSO_OPENID_HBHE;		
-			return \app\models\MGh::GH_WOSO_OPENID_KZENG;				
+			//return \app\models\MGh::GH_WOSO_OPENID_KZENG;				
 		}
 		else 
 		{
