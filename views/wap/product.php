@@ -1,32 +1,10 @@
 <?php
 	use yii\helpers\Html;
     use yii\helpers\Url;
-	use yii\widgets\Breadcrumbs;
-	use app\assets\JqmAsset;
-	JqmAsset::register($this);
-	//$this->registerJs('alert("test")', yii\web\View::POS_READY);
+
 	use app\models\U;
 	use app\models\MOffice;
 ?>
-
-<?php $this->beginPage() ?>
-
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
-
-	<?php
-/*
-	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/css/themes/default/jquery.mobile-1.4.3.min.css');
-	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/_assets/css/jqm-demos.css'); 
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/js/jquery.js'); 
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/_assets/js/index.js'); 
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/js/jquery.mobile-1.4.3.min.js'); 
-*/
-	?>
 
 <style type="text/CSS">
 .tabSumm 
@@ -60,12 +38,6 @@
 }
 </style>
 	
-<?php $this->head() ?>
-</head>
-
-<body>
-<?php $this->beginBody() ?>
-		
 	<div data-role="page" id="page2" data-theme="c">
 
 		<!--
@@ -450,12 +422,6 @@
 		<?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 	</div>	<!-- page3 end -->	
 	
-<?php $this->endBody() ?>
-</body>
-
-</html>
-<?php $this->endPage() ?>
-
 <script>
 var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
 var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");

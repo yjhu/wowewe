@@ -53,7 +53,7 @@ class WapController extends Controller
 	public function init()
 	{
 		//U::W(['init....', $_GET,$_POST, $GLOBALS]);
-		//U::W(['init....', $_GET,$_POST]);
+		U::W(['init....', $_GET,$_POST]);
 	}
 
 	public function beforeAction($action)
@@ -650,8 +650,8 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_03a74ac96138	
 	public function actionProduct()
 	{
-		//$this->layout ='wapy';
-		$this->layout =false;
+		$this->layout ='wapy';
+		//$this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');				
 		return $this->render('product',['gh_id'=>$gh_id, 'openid'=>$openid]);
@@ -753,6 +753,7 @@ EOD;
 			$mobnum->locktime = time();
 			$mobnum->save(false);
 
+/*
 			// clear win flag
 			$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 			if ($model !== null)
@@ -775,7 +776,7 @@ EOD;
 
 			// send wx message to user
 			$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					
-
+*/
 		}
 		else
 		{
