@@ -16,7 +16,7 @@
 		use app\models\MyWechat;
 
 		Yii::$app->wx->setParameterComm();
-		Yii::$app->wx->setParameter("body", urlencode("testjsjsjsjs a"));
+		Yii::$app->wx->setParameter("body", urlencode("testjsjsjsjsa"));
 		Yii::$app->wx->setParameter("out_trade_no", Wechat::generateOutTradeNo());
 		Yii::$app->wx->setParameter("total_fee", "1");
 		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");

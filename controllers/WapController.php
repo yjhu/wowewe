@@ -186,7 +186,7 @@ EOD;
 		}
 		Yii::$app->wx->setParameterComm();
 /*		
-		Yii::$app->wx->setParameter("body", urlencode("item desc"));
+		Yii::$app->wx->setParameter("body", 'itemdesc');
 		Yii::$app->wx->setParameter("out_trade_no", Wechat::generateOutTradeNo());
 		Yii::$app->wx->setParameter("total_fee", "1");
 		Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
