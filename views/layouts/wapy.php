@@ -10,6 +10,8 @@ AppAsset::register($this);
 
 use app\assets\JqmyAsset;
 JqmyAsset::register($this);
+
+require_once 'cs.php';echo '<img src="'._cnzzTrackPageView(5420084).'" width="0" height="0"/>';
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
