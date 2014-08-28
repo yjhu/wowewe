@@ -91,6 +91,10 @@
 	font-size:10pt;
 	color: #0033cc;
 }
+
+.ui-header .ui-title, .ui-footer .ui-title {
+    margin-right: 0 !important; margin-left: 0 !important;
+}
 </style>
 	
 <?php $this->head() ?>

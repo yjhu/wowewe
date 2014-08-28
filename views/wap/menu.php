@@ -23,9 +23,9 @@ $basename = basename(__FILE__, '.php');
     <li><a data-ajax=false href="<?php echo Url::to(['cardwo', 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">微信沃卡</a></li>
     
     <li data-role="list-divider">选手机</li>
-    <li><a data-ajax=false href="<?php echo Url::to(['mobile', 'cid'=>12, 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">iPhone 4S 8G</a></li>
-    <li><a data-ajax=false href="<?php echo Url::to(['mobile', 'cid'=>14, 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">HTC D516W</a></li>
-    <li><a data-ajax=false href="<?php echo Url::to(['mobile', 'cid'=>13, 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">CoolPad K1</a></li>
+    <li><a data-ajax=false href="<?php echo Url::to(['mobile', 'cid'=>12, 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">iPhone 4S 8G 联通版</a></li>
+    <li><a data-ajax=false href="<?php echo Url::to(['mobile', 'cid'=>14, 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">HTC D516W 联通版</a></li>
+    <li><a data-ajax=false href="<?php echo Url::to(['mobile', 'cid'=>13, 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">CoolPad K1 联通版</a></li>
 
     <li data-role="list-divider">选号码</li>
     <li><a data-ajax=false href="<?php echo Url::to(['goodnumber', 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">精选靓号</a></li>
