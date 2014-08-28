@@ -753,7 +753,6 @@ EOD;
 			$mobnum->locktime = time();
 			$mobnum->save(false);
 
-/*
 			// clear win flag
 			$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 			if ($model !== null)
@@ -776,7 +775,7 @@ EOD;
 
 			// send wx message to user
 			$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);					
-*/
+
 		}
 		else
 		{
