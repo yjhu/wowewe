@@ -92,7 +92,7 @@ AppAsset::register($this);
 	<?php if (!\app\models\Wechat::supportWeixinPay()): ?>
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; 襄阳联通 <?= date('Y') ?></p>
+            <p class="pull-left">&copy; 沃手科技 <?= date('Y') ?> (鄂ICP备14010852号)</p>
             <p class="pull-right"><?php //echo Yii::powered() ?></p>
         </div>
     </footer>

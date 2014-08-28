@@ -643,9 +643,7 @@ EOD;
 		//return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
 		return $this->render('suggest',['ar' => $ar,'dataProvider' => $dataProvider, 'rows' =>$rows, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 	}	
-	
-	
-	
+			
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_1ad98f5481f3
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/product:gh_03a74ac96138	
 	public function actionProduct()
@@ -976,6 +974,20 @@ EOD;
     public function actionMobilelist()
     {
         $this->layout =false;
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
+		Yii::$app->wx->setGhId($gh_id);
+
+        //return $this->render('mobile');
+        return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+    public function actionMobilelistxxx()
+    {
+        $this->layout =false;
+			Yii::$app->session['gh_id'] = MGh::GH_XIANGYANGUNICOM;
+			Yii::$app->session['openid'] =  MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;			
+        
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
 		Yii::$app->wx->setGhId($gh_id);
