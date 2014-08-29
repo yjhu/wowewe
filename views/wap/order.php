@@ -9,34 +9,16 @@ use app\models\MStaff;
 use app\models\MOffice;
 use app\models\MOrder;
 
-use app\assets\JqmAsset;
-JqmAsset::register($this);
-
 $this->title = '襄阳联通';
 $basename = basename(__FILE__, '.php');
 
 ?>
 
-<?php $this->beginPage() ?>
+<style>
+	.orderlist{
 
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
-
-	<style>
-		.orderlist{
-
-		}
-	</style>
-	<?php $this->head() ?>
-</head>
-
-<body>
-<?php $this->beginBody() ?>
-
+	}
+</style>
 
 <div data-role="page" id="myorder" data-theme="c">
 
@@ -107,11 +89,7 @@ $basename = basename(__FILE__, '.php');
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
 </div>
-<?php $this->endBody() ?>
-</body>
 
-</html>
-<?php $this->endPage() ?>
 
 <script>
 var  currentPage = 1; 

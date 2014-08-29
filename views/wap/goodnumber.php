@@ -2,99 +2,85 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\MItem;
-use app\assets\JqmAsset;
-JqmAsset::register($this);
 
 use app\models\U;
 use app\models\MOffice;
 
 $item = \app\models\MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$cid]);
-if ($item === null)
-{
-	U::W("impossible! gh_id=$gh_id, cid=$cid .............");
-}
+//if ($item === null)
+//{
+//	U::W("impossible! gh_id=$gh_id, cid=$cid .............");
+//}
 //U::W($item);
 ?>
-<?php $this->beginPage() ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
 
-	<style type="text/CSS">
-		.tabSumm
-		{
-			color:#00C;
-		}
-		.keyword
-		{
-			color: red;
-			background-color: yellow;
-		}
-		.highlight
-		{
-			color: red;
-			background-color: yellow;
-		}
+<style type="text/CSS">
+	.tabSumm
+	{
+		color:#00C;
+	}
+	.keyword
+	{
+		color: red;
+		background-color: yellow;
+	}
+	.highlight
+	{
+		color: red;
+		background-color: yellow;
+	}
 
-		.productPkgHint
-		{
-			color: #cccccc;
-			font-size: 10pt;
-		}
+	.productPkgHint
+	{
+		color: #cccccc;
+		font-size: 10pt;
+	}
 
-		.fee
-		{
-			font-size: 18px;
-			color:#ff8600;
-			font-weight:  bolder;
-		}
+	.fee
+	{
+		font-size: 18px;
+		color:#ff8600;
+		font-weight:  bolder;
+	}
 
-		.title_hint
-		{
-			color:red;
-			font-size: 9pt;
-		}
+	.title_hint
+	{
+		color:red;
+		font-size: 9pt;
+	}
 
-		.ui-content {
-			padding: 0.5em !important;
-		}
+	.ui-content {
+		padding: 0.5em !important;
+	}
 
-		.TabbedPanelsContent {
-			padding: 0.1em  !important;
-		}
+	.TabbedPanelsContent {
+		padding: 0.1em  !important;
+	}
 
-		#seleNum_hint
-		{
-			color:red;
-			font-size: 13pt;
-		}
-		.n1
-		{
-			font-size: 12pt;
-			font-weight: bolder;
-		}
-		.n2
-		{
-			font-size: 10pt;
-			background-color: yellow;
-		}
-		.n3
-		{
-			font-size:10pt;
-			color: #0033cc;
-		}
+	#seleNum_hint
+	{
+		color:red;
+		font-size: 13pt;
+	}
+	.n1
+	{
+		font-size: 12pt;
+		font-weight: bolder;
+	}
+	.n2
+	{
+		font-size: 10pt;
+		background-color: yellow;
+	}
+	.n3
+	{
+		font-size:10pt;
+		color: #0033cc;
+	}
 
-	</style>
+</style>
 
-	<?php $this->head() ?>
-</head>
-
-<body>
-<?php $this->beginBody() ?>
 
 <div data-role="page" id="page2" data-theme="c">
 	<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
@@ -329,11 +315,6 @@ if ($item === null)
 	};
 </script>
 
-<?php $this->endBody() ?>
-</body>
-
-</html>
-<?php $this->endPage() ?>
 
 <script>
 	var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");

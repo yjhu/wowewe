@@ -10,17 +10,7 @@ $gh_id = U::getSessionParam('gh_id');
 $openid = U::getSessionParam('openid');
 ?>
 
-<?php $this->beginPage() ?>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title></title>
 
-<?php
-	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm_flatui/generated/jquery.mobile.flatui.min.css');
-?>
 <style type="text/css">
 
 #diskstart{
@@ -34,16 +24,11 @@ $openid = U::getSessionParam('openid');
 
 </style>
 
-	<?php $this->head() ?>
-</head> 
-<body>
-<?php $this->beginBody() ?>
 
+<div data-role="page" id="page1" data-theme="c">
 
-<div data-role="page" id="page1" data-theme="e">
-	<div data-role="header">
-		<h1>八月浪漫季</h1>
-	</div>
+	<?php echo $this->render('/wap/header1', ['menuId'=>'menu1','title' => '八月浪漫季']); ?>
+
 	<div data-role="content" id="diskstart">
 
 		<img width="100%" src="<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/metro_home_head2.jpg' ?>" alt="八月浪漫季">
@@ -79,6 +64,7 @@ $openid = U::getSessionParam('openid');
 	<div data-role="footer">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
+	<?php echo $this->render('/wap/menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid ]); ?>
 </div>
 
 <div data-role="page" id='dialogPage1' data-dialog="true" data-theme="c">
@@ -119,14 +105,6 @@ $openid = U::getSessionParam('openid');
 
 </div>
 
-<?php $this->endBody() ?>
-</body>
-
-<?php
-
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/css/jquery.home.min.js');
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/jquery.mobile-1.4.3.min.js');
-?>
 
 <script src="<?php echo "$assetsPath/jQueryRotate.2.2.js"; ?> "></script>
 <script src="<?php echo "$assetsPath/jquery.easing.min.js"; ?> "></script>
@@ -202,4 +180,4 @@ $openid = U::getSessionParam('openid');
 	});
 </script>
 </html>
-<?php $this->endPage() ?>
+

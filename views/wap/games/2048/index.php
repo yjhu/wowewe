@@ -5,21 +5,9 @@
   use app\models\U;
   use app\models\MG2048;
 
-
-  use app\assets\JqmAsset;
-  JqmAsset::register($this);
-
   $this->title = '2048';
   $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/2048/assets';
 ?>
-<?php $this->beginPage() ?>
-
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
 
 <style type="text/CSS">
   .ui-content {
@@ -41,12 +29,6 @@
   
 <link href="<?php echo "$assetsPath/main.css?"; ?>" rel="stylesheet" type="text/css">
 
-
-<?php $this->head() ?>
-</head>
-
-<body>
-<?php $this->beginBody() ?>
 
 <div data-role="page" id="page1" data-theme="c">
 <!--
@@ -329,12 +311,6 @@ function showScore(msg)
 <?//php echo Html::img(Url::to('images/wx-tuiguang2.jpg'), ['class'=>'img-responsive']); ?>
 -->
 
-
-<?php $this->endBody() ?>
-</body>
-
-</html>
-<?php $this->endPage() ?>
 
 <?php
 /*

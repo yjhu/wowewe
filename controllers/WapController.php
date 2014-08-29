@@ -472,7 +472,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/g2048:gh_03a74ac96138
 	public function actionG2048()
 	{
-		//$this->layout = 'wap';
+		//$this->layout = 'wapy';
 		$this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
@@ -508,7 +508,7 @@ EOD;
 	public function actionG2048save()
 	{            
 		$msg = 0;
-		$this->layout = false;
+		//$this->layout = false;
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');				
 		Yii::$app->wx->setGhId($gh_id);
@@ -562,8 +562,8 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/suggest:gh_03a74ac96138
 	public function actionSuggest()
 	{
-		//$this->layout = 'wap';
-	    $this->layout =false;
+		$this->layout = 'wapy';
+	    //$this->layout =false;
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');		
 		//Yii::$app->wx->setGhId($gh_id);
@@ -950,7 +950,7 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardwo:gh_1ad98f5481f3
     public function actionCardwo()
     {
-        $this->layout =false;
+        $this->layout ='wapy';
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
 		Yii::$app->wx->setGhId($gh_id);
@@ -962,7 +962,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_03a74ac96138
     public function actionCardxiaoyuan()
     {
-        $this->layout =false;
+        $this->layout ='wapy';
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
 	    Yii::$app->wx->setGhId($gh_id);
@@ -973,7 +973,7 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mobilelist:gh_03a74ac96138
     public function actionMobilelist()
     {
-        $this->layout =false;
+        $this->layout ='wapy';
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
 		Yii::$app->wx->setGhId($gh_id);
@@ -998,7 +998,7 @@ EOD;
 
     public function actionMobile()
     {
-        $this->layout =false;
+        $this->layout ='wapy';
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
 		Yii::$app->wx->setGhId($gh_id);
@@ -1021,7 +1021,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/disk:gh_03a74ac96138
 	public function actionDisk()
 	{
-		$this->layout =false;
+		$this->layout ='wapy';
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
 
@@ -1072,7 +1072,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/goodnumber:gh_03a74ac96138
 	public function actionGoodnumber()
 	{
-		$this->layout =false;
+		$this->layout ='wapy';
 
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
@@ -1085,7 +1085,7 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/order:gh_03a74ac96138
 	public function actionOrder()
 	{		
-		$this->layout = false;
+		$this->layout = 'wapy';
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
 

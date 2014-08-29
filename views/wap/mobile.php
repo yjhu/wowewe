@@ -2,36 +2,18 @@
 	use yii\helpers\Html;
     use yii\helpers\Url;
     use app\models\MItem;
-	use app\assets\JqmAsset;
-	JqmAsset::register($this);
 
     use app\models\U;
     use app\models\MOffice;
 
     $item = \app\models\MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$cid]);
-	if ($item === null)
-	{
-		U::W("impossible! gh_id=$gh_id, cid=$cid .............");
-	}
+	//if ($item === null)
+	//{
+	//	U::W("impossible! gh_id=$gh_id, cid=$cid .............");
+	//}
     //U::W($item);
 ?>
-<?php $this->beginPage() ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title></title>
-	<?php 
-/*
-	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/css/themes/default/jquery.mobile-1.4.3.min.css');
-	$this->registerCssFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/_assets/css/jqm-demos.css'); 
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/js/jquery.js'); 
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/_assets/js/index.js'); 
-	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/jqm/demos/js/jquery.mobile-1.4.3.min.js'); 
-*/
-	?>
 
 <style type="text/CSS">
 .tabSumm 
@@ -96,309 +78,304 @@
     margin-right: 0 !important; margin-left: 0 !important;
 }
 </style>
-	
-<?php $this->head() ?>
-</head>
 
-<body>
-<?php $this->beginBody() ?>
 
-	<div data-role="page" id="page2" data-theme="c">
+<div data-role="page" id="page2" data-theme="c">
 
-        <!--
-		<div data-role="header">
-            <a href="<?//php echo  Url::to(['wap/mobilelist'],true) ?>" data-rel="back">返回</a>
+    <!--
+	<div data-role="header">
+        <a href="<?//php echo  Url::to(['wap/mobilelist'],true) ?>" data-rel="back">返回</a>
 
-            <h1 id="title">
-                <?//php echo  $item->title; ?>
-            </h1>
-		</div>
-        -->
+        <h1 id="title">
+            <?//php echo  $item->title; ?>
+        </h1>
+	</div>
+    -->
 
-       
-        <?php echo $this->render('header1', ['menuId'=>'menu2','title' => $item->title ]); ?>
+   
+    <?php echo $this->render('header1', ['menuId'=>'menu2','title' => $item->title ]); ?>
 
-		<div data-role="content">
-		<form id="productForm">	
-		<div data-role="content" data-theme="c">	
-		<p  align=center id="imgURL">
-		    <img width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
-		</p>
+	<div data-role="content">
+	<form id="productForm">	
+	<div data-role="content" data-theme="c">	
+	<p  align=center id="imgURL">
+	    <img width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
+	</p>
 
-            <p id="desc">
-                <?php echo  $item->title_hint; ?>
-            </p>
+        <p id="desc">
+            <?php echo  $item->title_hint; ?>
+        </p>
 
-            <p id="price">
-            价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
-           <br><span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
-            </p>
+        <p id="price">
+        价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
+       <br><span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
+        </p>
 
-                <?php if ($cid == MItem::ITEM_CAT_MOBILE_IPHONE4S): ?>
+            <?php if ($cid == MItem::ITEM_CAT_MOBILE_IPHONE4S): ?>
+            <div class="ui-corner-all custom-corners">
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                        <legend>型号颜色</legend>
+                        <input type="radio" name="modelColor" id="modelColor_0" value="0" checked="checked">
+                        <label for="modelColor_0" id="modelColor_0">黑色</label>
+                        <input type="radio" name="modelColor" id="modelColor_1" value="1">
+                        <label for="modelColor_1" id="modelColor_1">白色</label>
+                    </fieldset>
+                </div>
+            <?php else: ?>
                 <div class="ui-corner-all custom-corners">
                     <div data-role="fieldcontain">
                         <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
                             <legend>型号颜色</legend>
-                            <input type="radio" name="modelColor" id="modelColor_0" value="0" checked="checked">
-                            <label for="modelColor_0" id="modelColor_0">黑色</label>
-                            <input type="radio" name="modelColor" id="modelColor_1" value="1">
+                            <input type="radio" name="modelColor" id="modelColor_1" value="1" checked="checked">
                             <label for="modelColor_1" id="modelColor_1">白色</label>
                         </fieldset>
                     </div>
-                <?php else: ?>
-                    <div class="ui-corner-all custom-corners">
-                        <div data-role="fieldcontain">
-                            <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-                                <legend>型号颜色</legend>
-                                <input type="radio" name="modelColor" id="modelColor_1" value="1" checked="checked">
-                                <label for="modelColor_1" id="modelColor_1">白色</label>
+            <?php endif; ?>
+
+	  <div data-role="fieldcontain">
+		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+		  <legend>优惠活动</legend>
+		  <input type="radio" name="prom" id="radio1_0" value="0" checked />
+		  <label for="radio1_0">买手机送话费</label>
+		</fieldset>
+	  </div>
+
+
+            <div id="TabbedPanels1" class="TabbedPanels">
+                <ul class="TabbedPanelsTabGroup">
+                    <li class="TabbedPanelsTab" tabindex="0" id="Title66">月消费66元</li>
+                    <li class="TabbedPanelsTab" tabindex="0" id="Title96">月消费96元</li>
+                    <li class="TabbedPanelsTab" tabindex="0" id="Title126">月消费126元</li>
+                </ul>
+                <div class="TabbedPanelsContentGroup">
+                    <div class="TabbedPanelsContent">
+                        <div role="main" class="ui-content">
+                            <fieldset data-role="controlgroup">
+                                <legend>套餐类型</legend>
+                                <input type="radio" name="plan66" id="plan66_0" value="0"  checked />
+                                <label for="plan66_0">A计划&nbsp;&nbsp;</label>
+                                <input type="radio" name="plan66" id="plan66_1" value="1" />
+                                <label for="plan66_1">B计划&nbsp;&nbsp;</label>
+                                <input type="radio" name="plan66" id="plan66_2" value="2" />
+                                <label for="plan66_2">C计划&nbsp;&nbsp;</label>
                             </fieldset>
-                        </div>
-                <?php endif; ?>
+                            <p id="plan66-show">&nbsp;</p>
 
-		  <div data-role="fieldcontain">
-			<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-			  <legend>优惠活动</legend>
-			  <input type="radio" name="prom" id="radio1_0" value="0" checked />
-			  <label for="radio1_0">买手机送话费</label>
-			</fieldset>
-		  </div>
-
-
-                <div id="TabbedPanels1" class="TabbedPanels">
-                    <ul class="TabbedPanelsTabGroup">
-                        <li class="TabbedPanelsTab" tabindex="0" id="Title66">月消费66元</li>
-                        <li class="TabbedPanelsTab" tabindex="0" id="Title96">月消费96元</li>
-                        <li class="TabbedPanelsTab" tabindex="0" id="Title126">月消费126元</li>
-                    </ul>
-                    <div class="TabbedPanelsContentGroup">
-                        <div class="TabbedPanelsContent">
-                            <div role="main" class="ui-content">
-                                <fieldset data-role="controlgroup">
-                                    <legend>套餐类型</legend>
-                                    <input type="radio" name="plan66" id="plan66_0" value="0"  checked />
-                                    <label for="plan66_0">A计划&nbsp;&nbsp;</label>
-                                    <input type="radio" name="plan66" id="plan66_1" value="1" />
-                                    <label for="plan66_1">B计划&nbsp;&nbsp;</label>
-                                    <input type="radio" name="plan66" id="plan66_2" value="2" />
-                                    <label for="plan66_2">C计划&nbsp;&nbsp;</label>
-                                </fieldset>
-                                <p id="plan66-show">&nbsp;</p>
-
-                            </div><!-- /content -->
-                        </div>
-
-                        <div class="TabbedPanelsContent">
-                            <div role="main" class="ui-content">
-                                <fieldset data-role="controlgroup">
-                                    <legend>套餐类型</legend>
-                                    <input type="radio" name="plan96" id="plan96_0" value="0"  checked />
-                                    <label for="plan96_0">A计划&nbsp;&nbsp;</label>
-                                    <input type="radio" name="plan96" id="plan96_1" value="1" />
-                                    <label for="plan96_1">B计划&nbsp;&nbsp;</label>
-                                    <input type="radio" name="plan96" id="plan96_2" value="2" />
-                                    <label for="plan96_2">C计划&nbsp;&nbsp;</label>
-                                </fieldset>
-                                <p id="plan96-show">&nbsp;</p>
-
-                            </div><!-- /content -->
-                        </div>
-
-                        <div class="TabbedPanelsContent">
-                            <div role="main" class="ui-content">
-                                <fieldset data-role="controlgroup">
-                                    <legend>套餐类型</legend>
-                                    <input type="radio" name="plan126" id="plan126_0" value="0"  checked />
-                                    <label for="plan126_0">A计划&nbsp;&nbsp;</label>
-                                    <input type="radio" name="plan126" id="plan126_1" value="1" />
-                                    <label for="plan126_1">B计划&nbsp;&nbsp;</label>
-                                    <input type="radio" name="plan126" id="plan126_2" value="2" />
-                                    <label for="plan126_2">C计划&nbsp;&nbsp;</label>
-                                </fieldset>
-                                <p id="plan126-show">&nbsp;</p>
-
-                            </div><!-- /content -->
-                        </div>
-
+                        </div><!-- /content -->
                     </div>
+
+                    <div class="TabbedPanelsContent">
+                        <div role="main" class="ui-content">
+                            <fieldset data-role="controlgroup">
+                                <legend>套餐类型</legend>
+                                <input type="radio" name="plan96" id="plan96_0" value="0"  checked />
+                                <label for="plan96_0">A计划&nbsp;&nbsp;</label>
+                                <input type="radio" name="plan96" id="plan96_1" value="1" />
+                                <label for="plan96_1">B计划&nbsp;&nbsp;</label>
+                                <input type="radio" name="plan96" id="plan96_2" value="2" />
+                                <label for="plan96_2">C计划&nbsp;&nbsp;</label>
+                            </fieldset>
+                            <p id="plan96-show">&nbsp;</p>
+
+                        </div><!-- /content -->
+                    </div>
+
+                    <div class="TabbedPanelsContent">
+                        <div role="main" class="ui-content">
+                            <fieldset data-role="controlgroup">
+                                <legend>套餐类型</legend>
+                                <input type="radio" name="plan126" id="plan126_0" value="0"  checked />
+                                <label for="plan126_0">A计划&nbsp;&nbsp;</label>
+                                <input type="radio" name="plan126" id="plan126_1" value="1" />
+                                <label for="plan126_1">B计划&nbsp;&nbsp;</label>
+                                <input type="radio" name="plan126" id="plan126_2" value="2" />
+                                <label for="plan126_2">C计划&nbsp;&nbsp;</label>
+                            </fieldset>
+                            <p id="plan126-show">&nbsp;</p>
+
+                        </div><!-- /content -->
+                    </div>
+
                 </div>
+            </div>
 
 
-           <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
+       <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
 
-	       <a href="#contactPage" class="ui-btn">用户信息</a>
+       <a href="#contactPage" class="ui-btn">用户信息</a>
 
-           <div id="officeArea">
-           <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
-           </div>
+       <div id="officeArea">
+       <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
+       </div>
 
-           <input type="button" value="确认订单" id="submitBtn">
-			
-			<br>
-			<div id="TabbedPanels2" class="TabbedPanels">
-			  <ul class="TabbedPanelsTabGroup">
-				<li class="TabbedPanelsTab" tabindex="0">图文详情</li>
-	            <!--
-				<li class="TabbedPanelsTab" tabindex="0">商品评价</li>
-				-->
-			  </ul>
-			  <div class="TabbedPanelsContentGroup">
-				<div class="TabbedPanelsContent">
-
-					<div role="main" class="ui-content">
-                        <?php echo  $item->detail; ?>
-					</div><!-- /content -->        
-
-				</div>
-
-                  <!--
-				<div class="TabbedPanelsContent">
-					<div role="main" class="ui-content">
-					<p> 好好好</p>
-					</div>
-				</div>
-                -->
-
-			  </div>
-			</div>       
-		</div>
-	</div>
-	</form>		
-	</div>
+       <input type="button" value="确认订单" id="submitBtn">
 		
-	<div data-role="footer">
-		<h4>&copy; 襄阳联通 2014</h4>
-	</div>
-    <?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
-	</div> <!-- page2 end -->
-	
-	
-	<div data-role="page" id="page3" data-theme="c">
-        <!--
-		<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
-			<h1 id="title"><?php echo  $item->title; ?></h1>
-		</div>
-        -->
-
-        <?php echo $this->render('header2', ['menuId'=>'menu3','title' => $item->title ]); ?>		
-
-		<div data-role="content">
-
-			<h2>订单详情</h2>
-			<p id="oid"></p>
-
-            <p><?php echo  $item->title_hint; ?></p>
-            <p id="selectNum">号码：13545296480</p>
-            <p id="office"></p>
-			<p id="contact"></p>
-
-			<p align="right" >
-             合计
-			<span  id="total" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
-			 ￥ 
-			</span>
-			</p>
-
+		<br>
+		<div id="TabbedPanels2" class="TabbedPanels">
+		  <ul class="TabbedPanelsTabGroup">
+			<li class="TabbedPanelsTab" tabindex="0">图文详情</li>
             <!--
-			<br>
-			<p>
-			<input type="button" value="确认订单" id="payBtn">
-			</p>
+			<li class="TabbedPanelsTab" tabindex="0">商品评价</li>
 			-->
-            <a data-ajax=false href="<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>" class="ui-btn">我知道了</a>
+		  </ul>
+		  <div class="TabbedPanelsContentGroup">
+			<div class="TabbedPanelsContent">
 
-			<!--
-			<p id="url"></p>
-			-->
+				<div role="main" class="ui-content">
+                    <?php echo  $item->detail; ?>
+				</div><!-- /content -->        
 
-		</div>
+			</div>
 
-		<div data-role="footer" data-position="fixed">
-			<h4>&copy; 襄阳联通 2014</h4>
-		</div>
-        <?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
-	</div>	<!-- page3 end -->
+              <!--
+			<div class="TabbedPanelsContent">
+				<div role="main" class="ui-content">
+				<p> 好好好</p>
+				</div>
+			</div>
+            -->
+
+		  </div>
+		</div>       
+	</div>
+</div>
+</form>		
+</div>
+	
+<div data-role="footer">
+	<h4>&copy; 襄阳联通 2014</h4>
+</div>
+<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div> <!-- page2 end -->
 
 
-<div data-role="page" id="contactPage" data-theme="c">
+<div data-role="page" id="page3" data-theme="c">
     <!--
 	<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
 		<h1 id="title"><?php echo  $item->title; ?></h1>
 	</div>
     -->
-    
-    <?php echo $this->render('header2', ['menuId'=>'menu4','title' => $item->title ]); ?>   
+
+    <?php echo $this->render('header2', ['menuId'=>'menu3','title' => $item->title ]); ?>		
 
 	<div data-role="content">
 
-		<h2>用户信息</h2>
-		<div class="ui-field-contain">
-			<!--
-			<label for="username">姓名</label>
-			-->
-			<input type="text" name="username" id="username" placeholder="姓名" value="">
+		<h2>订单详情</h2>
+		<p id="oid"></p>
 
-			<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
+        <p><?php echo  $item->title_hint; ?></p>
+        <p id="selectNum">号码：13545296480</p>
+        <p id="office"></p>
+		<p id="contact"></p>
 
-			<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
-		</div>
+		<p align="right" >
+         合计
+		<span  id="total" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
+		 ￥ 
+		</span>
+		</p>
 
-		<input type="button" value="确认" id="addContactBtn">
+        <!--
+		<br>
+		<p>
+		<input type="button" value="确认订单" id="payBtn">
+		</p>
+		-->
+        <a data-ajax=false href="<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>" class="ui-btn">我知道了</a>
+
+		<!--
+		<p id="url"></p>
+		-->
 
 	</div>
 
 	<div data-role="footer" data-position="fixed">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
+    <?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>	<!-- page3 end -->
 
-    <div data-role="popup" id="popupDialog-contactPage" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
-        <div data-role="header" data-theme="c">
-        <h1>温馨提示</h1>
-        </div>
-        <div role="main" id="popupDialog-contactPage-txt" class="ui-content">
-            <span class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext'><span><p>姓名输入有误，请重新填写。</p>
-            <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">确认</a>
-        </div>
+
+<div data-role="page" id="contactPage" data-theme="c">
+<!--
+<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
+	<h1 id="title"><?php echo  $item->title; ?></h1>
+</div>
+-->
+
+<?php echo $this->render('header2', ['menuId'=>'menu4','title' => $item->title ]); ?>   
+
+<div data-role="content">
+
+	<h2>用户信息</h2>
+	<div class="ui-field-contain">
+		<!--
+		<label for="username">姓名</label>
+		-->
+		<input type="text" name="username" id="username" placeholder="姓名" value="">
+
+		<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
+
+		<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
+	</div>
+
+	<input type="button" value="确认" id="addContactBtn">
+
+</div>
+
+<div data-role="footer" data-position="fixed">
+	<h4>&copy; 襄阳联通 2014</h4>
+</div>
+
+<div data-role="popup" id="popupDialog-contactPage" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
+    <div data-role="header" data-theme="c">
+    <h1>温馨提示</h1>
     </div>
+    <div role="main" id="popupDialog-contactPage-txt" class="ui-content">
+        <span class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext'><span><p>姓名输入有误，请重新填写。</p>
+        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">确认</a>
+    </div>
+</div>
 
-    <?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+<?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>	<!-- contactPage end -->
 
 
-	<div data-role="page" id="number-select" data-theme="c">
-        <!--
-		<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
-			<h1><?php echo  $item->title; ?></h1>
-		</div>
+<div data-role="page" id="number-select" data-theme="c">
+    <!--
+	<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
+		<h1><?php echo  $item->title; ?></h1>
+	</div>
+    -->
+	
+    <?php echo $this->render('header2', ['menuId'=>'menu5','title' => $item->title ]); ?>   
+
+	<div data-role="content">
+		<h2>请您选择手机号码</h2>
+        <div class="ui-grid-a" id="list_common_tbody">
+            <!--
+		<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >13545296480</a></div></div>
+		<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >33333333333</a></div></div>
+        <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >77777777777</a></div></div>
+        <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >55555555555</a></div></div>
+        <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >66666666666</a></div></div>
+        <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >88888888888</a></div></div>
         -->
-		
-        <?php echo $this->render('header2', ['menuId'=>'menu5','title' => $item->title ]); ?>   
+		</div><!-- /grid-->
 
-		<div data-role="content">
-			<h2>请您选择手机号码</h2>
-            <div class="ui-grid-a" id="list_common_tbody">
-                <!--
-			<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >13545296480</a></div></div>
-			<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >33333333333</a></div></div>
-            <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >77777777777</a></div></div>
-            <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >55555555555</a></div></div>
-            <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >66666666666</a></div></div>
-            <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >88888888888</a></div></div>
-            -->
-			</div><!-- /grid-->
+        <p>
+            <input type="button" value="换一批号码看看" id="seleNumBtn">
+        </p>
 
-            <p>
-                <input type="button" value="换一批号码看看" id="seleNumBtn">
-            </p>
-
-		</div>
+	</div>
 
 
-		<div data-role="footer" data-position="fixed">
-			<h4>&copy; 襄阳联通 2014</h4>
-		</div>
-        <?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
-	</div>	<!-- page3 end -->
+	<div data-role="footer" data-position="fixed">
+		<h4>&copy; 襄阳联通 2014</h4>
+	</div>
+    <?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>	<!-- page3 end -->
 
 
 <?php
@@ -425,11 +402,6 @@
 	};
 </script>
 
-<?php $this->endBody() ?>
-</body>
-
-</html>
-<?php $this->endPage() ?>
 
 <script>
     var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
@@ -802,60 +774,6 @@ $(document).on("pageinit", "#number-select", function(){
 
 <?php
 /*
-	<link rel="stylesheet" href="../css/themes/default/jquery.mobile-1.4.3.min.css">
-	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<link rel="shortcut icon" href="../favicon.ico">
-	<script src="../js/jquery.js"></script>
-	<script src="../_assets/js/index.js"></script>
-	<script src="../js/jquery.mobile-1.4.3.min.js"></script>
 
-
-if(productPkg == 0)
-{
-    //$("#title").html("【校园专享】沃派校园卡");
-    $("#imgURL").html("<img width=\"60%\" src=\"http://res.mall.10010.com/mall/res/uploader/temp/20140719115711-1726575840_310_310.jpg\" alt=\"\"/>");
-    $("#desc").html("【校园专享】沃派校园卡 26元/月 享500M省内流量 ");
-
-    $("#price").html(" 价格  <span class='fee'>￥50</span>");
-    $("#priceHint").html("含预存款50元");
-
-    $("#productPkgName").html("沃派校园套餐");
-    $("#productPkgHint").html("500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G ");
-    $("#richtextDesc").html("<img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201404210955181014136816.jpg\" alt=\"\" />\
-                                                <img width=\"100%\" style=\"display:block\" src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140801164013-1800990032.jpg\" alt=\"\" />\
-                                                <img width=\"100%\" style=\"display:block\" src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140421114304-463429008.jpg\" alt=\"\" />\
-                                                <a href=\"http://www.10010.com/pushpage/59800000134189.71.html\" target=\"_blank\"><img width=\"100%\" style=\"display:block\" src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201407201133341283576080.jpg\" alt=\"\" /> </a>\
-                                                <a href=\"http://www.10010.com/static/homepage/subjectpage/57100000121535.html\" target=\"_blank\"><img width=\"100%\" style=\"display:block\" src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201404091216411015373808.jpg\" alt=\"\" /></a>\
-                                                <img width=\"100%\" style=\"display:block\" src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140317125516342466672.jpg\" alt=\"\" />");
-
-
-}
-else if(productPkg == 1)
-{
-    //$("#title").html("【校园专享】微信沃卡 ");
-    $("#imgURL").html("<img width=\"60%\" src=\"http://res.mall.10010.com/mall/res/uploader/temp/20140421101117476467616_310_310.jpg\" alt=\"\"/>");
-    $("#desc").html("【校园专享】微信沃卡 永享六大微信特权 预存50得530元话费 500M微信定向流量+500M省内流量");
-    $("#productPkgName").html("微信沃卡");
-
-    $("#price").html(" 价格  <span class='fee'>￥50</span>");
-    $("#priceHint").html("含预存款50元");
-
-    $("#productPkgHint").html("500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G");
-    $("#richtextDesc").html("<img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201404210955181014136816.jpg\" alt=\"\" />\
-                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201407150942461222527408.jpg\" alt=\"\" />\
-                                                <a href=\"http://www.10010.com/pushpage/59800000134189.71.html\" target=\"_blank\">\
-                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201407201133341283576080.jpg\" alt=\"\" />\
-                                                </a>\
-                                                <a href=\"http://www.10010.com/static/homepage/subjectpage/57100000121535.html\" target=\"_blank\">\
-                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140715094313541965008.jpg\" alt=\"\" />\
-                                                </a>\
-                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140409121513440614720.jpg\" alt=\"\" />\
-                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140408222215453828688.jpg\" alt=\"\" />\
-                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140408222356-1139107584.jpg\" alt=\"\" />\
-                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201404082224242089061808.jpg\" alt=\"\" />\
-                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140408222436-275090176.jpg\" alt=\"\" /> \
-                                                <img width=\"100%\" style=\"display:block\"  src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140317125516342466672.jpg\" alt=\"\" />");
-
-}
 */
 ?>
