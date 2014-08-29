@@ -39,6 +39,16 @@ $basename = basename(__FILE__, '.php');
 	<div data-role="footer" data-position="fixed">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
+
+	<div data-role="popup" id="confirm" data-overlay-theme="a" data-theme="a" data-dismissible="false" style="max-width:400px;">
+	    <div role="main" class="ui-content">
+	        <h3 class="ui-title">您确定要取消此订单吗?</h3>
+	    	<p>订单删除后不能恢复，如果您需要请再次下单.</p>
+	        <a id="cancel" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back">不, 我再看看</a>
+	        <a id="yes" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-transition="flow">是的</a>
+	    </div>
+	</div>
+
 </div>
 
 
@@ -68,6 +78,15 @@ $basename = basename(__FILE__, '.php');
 	<div data-role="footer" data-position="fixed">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
+
+	<div data-role="popup" id="confirm_orderdetail" data-overlay-theme="a" data-theme="a" data-dismissible="false" style="max-width:400px;">
+	    <div role="main" class="ui-content">
+	        <h3 class="ui-title">您确定要取消此订单吗?</h3>
+	    	<p>订单删除后不能恢复，如果您需要请再次下单.</p>
+	        <a id="cancel" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back">不, 我再看看</a>
+	        <a id="yes" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-transition="flow">是的</a>
+	    </div>
+	</div>	
 </div>
 
 
@@ -204,34 +223,41 @@ $(document).on("pageinit", "#officeorder", function(){
 	});
 
 	/*取消订单*/
-	$(document).on("tap",".qxdd",function(){
+	$(document).on("tap",".qxdd",function(e){
+
+		//取消冒泡
+ 		e.stopPropagation();
 
 		oid = $(this).attr('myOid');
-		//alert("取消订单: "+oid);
-		//closeorder = confirm('取消此订单,确定?');
 
-		if(confirm('取消此订单,确定?') == false)
-		{
-			return false;
-		}
+		// Show the confirmation popup
+        $( "#confirm" ).popup( "open" );
+        $( "#confirm #yes" ).on( "click", function() {
+ 
+            $( "#confirm" ).popup( "close" );
+			$.ajax({
+			    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderclose'], true) ; ?>",
+			    type:"GET",
+			    cache:false,
+			    dataType:'json',
+			    data: "&oid="+oid,
+			    success: function(json_data){
+			        if(json_data)
+			        {
+			            
+			        }
+			        //$.mobile.changePage("#officeorder",{transition:"slide"});
+			      	getOfficeOrderList();
+			    }
+			});
 
-		$.ajax({
-		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderclose'], true) ; ?>",
-		    type:"GET",
-		    cache:false,
-		    dataType:'json',
-		    data: "&oid="+oid,
-		    success: function(json_data){
-		        if(json_data)
-		        {
-		            
-		        }
-		        //$.mobile.changePage("#officeorder",{transition:"slide"});
-		      	getOfficeOrderList();
-		    }
-		});
+        });
 
-		return false;
+        $( "#confirm #cancel" ).on( "click", function() {
+            $( "#confirm #yes" ).off();
+        });
+
+       return false;
 	});
 
 	/*订单详情*/
@@ -263,26 +289,33 @@ $(document).on("pageinit", "#orderdetail", function(){
 	$(document).on("tap",".qxdd_orderdetail",function(){
 
 		oid = $(this).attr('myOid');
+		// Show the confirmation popup
+	    $( "#confirm_orderdetail" ).popup( "open" );
+	    $( "#confirm_orderdetail #yes" ).on( "click", function() {
+	        $( "#confirm_orderdetail" ).popup( "close" );
 
-		if(confirm('取消此订单,确定?') == false)
-		{
-			return false;
-		}
+			$.ajax({
+			    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderclose'], true) ; ?>",
+			    type:"GET",
+			    cache:false,
+			    dataType:'json',
+			    data: "&oid="+oid,
+			    success: function(json_data){
+			        if(json_data)
+			        {
+			
+			        }
+			      	getOfficeOrderListDetail(oid);
+			    }
+			});
 
-		$.ajax({
-		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderclose'], true) ; ?>",
-		    type:"GET",
-		    cache:false,
-		    dataType:'json',
-		    data: "&oid="+oid,
-		    success: function(json_data){
-		        if(json_data)
-		        {
-		
-		        }
-		      	getOfficeOrderListDetail(oid);
-		    }
-		});
+	    });
+
+	    $( "#confirm_orderdetail #cancel" ).on( "click", function() {
+	        $( "#confirm_orderdetail #yes" ).off();
+	    });
+	   return false;	
+
 	});
 
 });

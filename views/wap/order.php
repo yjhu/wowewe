@@ -9,6 +9,7 @@ use app\models\MStaff;
 use app\models\MOffice;
 use app\models\MOrder;
 
+
 $this->title = '襄阳联通';
 $basename = basename(__FILE__, '.php');
 
@@ -19,6 +20,7 @@ $basename = basename(__FILE__, '.php');
 
 	}
 </style>
+
 
 <div data-role="page" id="myorder" data-theme="c">
 
@@ -47,17 +49,16 @@ $basename = basename(__FILE__, '.php');
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
 
-	<div data-role="popup" id="popupDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
-	    <div data-role="header" data-theme="b">
-	    <h1>取消订单?</h1>
-	    </div>
+	<div data-role="popup" id="confirm" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
 	    <div role="main" class="ui-content">
 	        <h3 class="ui-title">您确定要取消此订单吗?</h3>
-	    	<p>订单取消后不能恢复，如果您需要请再次下单.</p>
-	        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">不想取消</a>
-	        <a href="#" id="btn-wyqxdd" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-transition="flow">我要取消订单</a>
+	    	<p>订单删除后不能恢复，如果您需要请再次下单.</p>
+	        <a id="cancel" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-c" data-rel="back">不, 我再看看</a>
+	        <a id="yes" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-transition="flow">是的</a>
 	    </div>
 	</div>	
+
+
 </div>
 
 
@@ -88,6 +89,16 @@ $basename = basename(__FILE__, '.php');
 	<div data-role="footer" data-position="fixed">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
+
+	<div data-role="popup" id="confirm_orderdetail" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
+	    <div role="main" class="ui-content">
+	        <h3 class="ui-title">您确定要取消此订单吗?</h3>
+	    	<p>订单删除后不能恢复，如果您需要请再次下单.</p>
+	        <a id="cancel" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-c" data-rel="back">不, 我再看看</a>
+	        <a id="yes" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-transition="flow">是的</a>
+	    </div>
+	</div>
+
 </div>
 
 
@@ -141,19 +152,11 @@ function load_data2(i, n)
 		imgurl = '../web/images/item/jxlh-120x120.jpg';
 
 	text ="<li data-theme='c'><a href='#' class='ddxq' myOid='"+n.oid+"'>\
-	<img style='padding-top:20px' src='"+imgurl+"'>\
+	<img style='padding-top:20px' myOid="+n.oid+" src='"+imgurl+"'>\
 	<p>订单编号:&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
 	<p>下单时间:&nbsp;"+n.create_time+"</p>\
 	<p>商品名称:&nbsp;"+n.title+"</p>\
 	<p>价格:&nbsp;￥"+(n.feesum)/100+"</p>";
-
-
-	/*
-	if(n.status == 0) //wait to pay 
-		txt_mos ="<p>订单状态:&nbsp;"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
-	else
-		txt_mos ="<p>订单状态:&nbsp;"+n.statusName+"</p>";
-	*/
 
 	if(n.status == 0) //wait to pay 
 		txt_mos ="<p>订单状态:&nbsp;"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
@@ -229,36 +232,48 @@ $(document).on("pageinit", "#myorder", function(){
 		getMyOrderList();
 	});
 
+
 	/*取消订单*/
-	$(document).on("tap",".qxdd",function(){
+	$(document).on("tap",".qxdd",function(e){
+
+		//取消冒泡
+ 		e.stopPropagation();
 
 		oid = $(this).attr('myOid');
-		//alert("取消订单: "+oid);
-		closeorder = confirm('取消此订单,确定?');
 
-		//$( "#popupDialog" ).popup( "open" );
-	    //confirmAndDelete(oid);
+        // Show the confirmation popup
+        $( "#confirm" ).popup( "open" );
+        $( "#confirm #yes" ).on( "click", function() {
+ 
+            $( "#confirm" ).popup( "close" );
+			$.ajax({
+			    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderclose'], true) ; ?>",
+			    type:"GET",
+			    cache:false,
+			    dataType:'json',
+			    data: "&oid="+oid,
+			    success: function(json_data){
+			        if(json_data)
+			        {
+			            
+			        }
+			        //$.mobile.changePage("#myorder",{transition:"slide"});
+			      	getMyOrderList();
+			    }
+			});
 
-		$.ajax({
-		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderclose'], true) ; ?>",
-		    type:"GET",
-		    cache:false,
-		    dataType:'json',
-		    data: "&oid="+oid,
-		    success: function(json_data){
-		        if(json_data)
-		        {
-		            
-		        }
-		        //$.mobile.changePage("#myorder",{transition:"slide"});
-		      	getMyOrderList();
-		    }
-		});
+        });
 
-		return false;
+        $( "#confirm #cancel" ).on( "click", function() {
+            $( "#confirm #yes" ).off();
+        });
+
+       return false;
 	});
 
+
 	/*订单详情*/
+
 	$(document).on("tap",".ddxq",function(){
 		oid = $(this).attr('myOid');
 	
@@ -279,8 +294,8 @@ $(document).on("pageinit", "#myorder", function(){
 	
 	});
 
-});
 
+});
 
 
 $(document).on("pageinit", "#orderdetail", function(){
@@ -290,25 +305,33 @@ $(document).on("pageinit", "#orderdetail", function(){
 
 		oid = $(this).attr('myOid');
 
-		if(confirm('取消此订单,确定?') == false)
-		{
-			return false;
-		}
+	    // Show the confirmation popup
+	    $( "#confirm_orderdetail" ).popup( "open" );
+	    $( "#confirm_orderdetail #yes" ).on( "click", function() {
+	        $( "#confirm_orderdetail" ).popup( "close" );
 
-		$.ajax({
-		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderclose'], true) ; ?>",
-		    type:"GET",
-		    cache:false,
-		    dataType:'json',
-		    data: "&oid="+oid,
-		    success: function(json_data){
-		        if(json_data)
-		        {
-		
-		        }
-		        getMyOrderListDetail(oid);
-		    }
-		});
+	        $.ajax({
+			    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'orderclose'], true) ; ?>",
+			    type:"GET",
+			    cache:false,
+			    dataType:'json',
+			    data: "&oid="+oid,
+			    success: function(json_data){
+			        if(json_data)
+			        {
+			
+			        }
+			        getMyOrderListDetail(oid);
+			    }
+			});
+
+	    });
+
+	    $( "#confirm_orderdetail #cancel" ).on( "click", function() {
+	        $( "#confirm_orderdetail #yes" ).off();
+	    });
+	   return false;
+
 	});
 
 });
