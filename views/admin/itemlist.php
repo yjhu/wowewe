@@ -44,6 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			'title_hint',
 			'pkg_name', 'pkg_name_hint',
 			'pic_url',
+			'detail',
             [
 				'class' => 'yii\grid\ActionColumn',
 				'template' => '{itemupdate} {itemdelete}',

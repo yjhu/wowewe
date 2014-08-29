@@ -28,6 +28,8 @@ $this->params['breadcrumbs'][] = '修改';
 
 		<?= $form->field($model, 'pic_url')->textInput(['maxlength' => 128]) ?>
 
+		<?= $form->field($model, 'detail')->textArea() ?>
+
 		<div class="form-group">
 			<?= Html::submitButton($model->isNewRecord ? '创建' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 		</div>

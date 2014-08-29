@@ -165,12 +165,12 @@ JqmAsset::register($this);
                 -->
 
                 <div class="row" >
-                    <div class="col-md-6 col-xs-6" style="margin: 10px auto">
+                    <div class="col-md-6 col-xs-6">
                         <a data-ajax=false href="<?php echo Url::to(['wap/suggest'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-yhtc.jpg">
                         </a>
                     </div>
-                    <div class="col-md-6 col-xs-6" style="margin: 10px auto">
+                    <div class="col-md-6 col-xs-6">
                         <a data-ajax=false href="<?php echo Url::to(['wap/g2048'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-2048.jpg">
                         </a>
@@ -178,7 +178,7 @@ JqmAsset::register($this);
                 </div>
 
                 <div class="row" >
-                    <div class="col-md-12 col-xs-12">
+                    <div class="col-md-12 col-xs-12" style="margin: 10px auto">
                         <!--
                         <img width=100% src="../web/images/metro-gzyl.jpg">
                         -->
