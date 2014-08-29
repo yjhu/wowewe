@@ -984,7 +984,8 @@ EOD;
 
     public function actionMobilelistxxx()
     {
-        $this->layout =false;
+//        $this->layout =false;
+        $this->layout ='wapy';        
 			Yii::$app->session['gh_id'] = MGh::GH_XIANGYANGUNICOM;
 			Yii::$app->session['openid'] =  MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;			
         
