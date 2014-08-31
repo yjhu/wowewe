@@ -224,6 +224,31 @@ class MOffice extends ActiveRecord
 			$count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id])->count();
 		return $count;		
 	}
+
+	public static function getOfficeScoreTop($gh_id)
+	{
+		$key = __METHOD__."{$gh_id}";
+		$value = Yii::$app->cache->get($key);
+		if ($value !== false)
+			return $value;
+		$offices = MOffice::findAll(['gh_id' => $gh_id]);
+		$rows = [];
+		foreach($offices as $office)
+		{
+			$row = [];
+			$row['office_id'] = $office->office_id;
+			$row['scene_id'] = $office->scene_id;			
+			$row['title'] = $office->title;			
+			$row['cnt_office'] = $office->getScore();						
+			$row['cnt_staffs'] = $office->getScoreOfAllStaffs();
+			$row['cnt_sum'] = $row['cnt_office'] + $row['cnt_staffs'];						
+			$rows[] = $row;
+		}
+		//U::W($rows);		
+		Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 12*3600);
+		return $rows;
+	}
+	
 }
 
 /*
@@ -292,6 +317,23 @@ INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobi
 	{
 		return $password === $this->pswd;
 	}
+
+SELECT t1.gh_id, t1.office_id, t1.title, t1.scene_id, COUNT(*) as cnt_office FROM wx_office t1 
+INNER JOIN wx_user t2 ON t1.gh_id = t2.gh_id AND t1.scene_id = t2.scene_pid 
+WHERE t1.scene_id != 0
+GROUP BY t1.gh_id, t1.scene_id
+ORDER BY cnt_office DESC
+EOD;
+
+		$sql = <<<EOD
+SELECT t1.gh_id, t1.office_id, t1.title, t1.scene_id, COUNT(*) as cnt_office FROM wx_office t1 
+INNER JOIN wx_user t2 ON t1.gh_id = t2.gh_id AND t1.scene_id = t2.scene_pid 
+WHERE t1.gh_id='$gh_id' AND t1.scene_id != 0
+GROUP BY t1.gh_id, t1.scene_id
+ORDER BY cnt_office DESC
+EOD;
+		$rows = Yii::$app->db->createCommand($sql)->queryAll();
+		U::W($rows);
 
 */
 

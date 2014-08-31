@@ -18,6 +18,7 @@ use app\models\MUser;
 use app\models\MUserSearch;
 use app\models\MStaff;
 use app\models\MStaffSearch;
+use app\models\MOffice;
 
 class OrderController extends Controller
 {
@@ -241,6 +242,26 @@ class OrderController extends Controller
 			'dataProvider' => $dataProvider,
 			'searchModel' => $searchModel,
 		]);
+	}
+
+	public function actionOfficetop()
+	{
+		$rows = MOffice::getOfficeScoreTop(MGh::GH_XIANGYANGUNICOM);
+		$dataProvider = new ArrayDataProvider([
+			'allModels' => $rows,
+			'sort' => [
+				'attributes' => ['cnt_office', 'cnt_staffs', 'cnt_sum'],
+				'defaultOrder'=>[
+					'cnt_office' => SORT_DESC
+				]
+			],
+			'pagination' => [
+				'pageSize' => 50,
+			],
+		]);
+		return $this->render('officetop', [
+			'dataProvider' => $dataProvider,
+		]);		
 	}
 	
 }
