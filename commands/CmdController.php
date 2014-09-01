@@ -170,6 +170,8 @@ class CmdController extends Controller
 	}
 	
 	//C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/create-menu
+	//kzeng
+	//d:\xampp\php\php.exe d:\xampp\htdocs\wx\yii cmd/create-menu
 	public function actionCreateMenu()
 	{	
 		$gh_id = Yii::$app->wx->getGhid();
