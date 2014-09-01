@@ -27,6 +27,10 @@ JqmAsset::register($this);
         .ui-header .ui-title, .ui-footer .ui-title {
             margin-right: 0 !important; margin-left: 0 !important;
         }
+
+        .row {
+            margin-top: -15px !important;
+        }
     </style>
 
 
@@ -135,8 +139,9 @@ JqmAsset::register($this);
                         </a>
                     </div>
                 </div>
+
                 <div class="row" >
-                    <div class="col-md-12 col-xs-12" >
+                    <div class="col-md-12 col-xs-12">
                         <a data-ajax=false href="<?php echo Url::to(['wap/mobilelist'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-thsj.jpg">
                         </a>
