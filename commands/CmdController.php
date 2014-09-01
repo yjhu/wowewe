@@ -21,6 +21,8 @@ use app\models\MItem;
 use app\models\MSmQueue;
 
 use app\models\Wechat;
+use app\models\MMapbd;
+use app\models\MOffice;
 
 class CmdController extends Controller
 {
@@ -38,6 +40,15 @@ class CmdController extends Controller
 	//C:\xampp\php\php.exe C:\htdocs\wx\yii cmd
 	public function actionIndex()
 	{		
+/*
+//		$map = new MMapbd;
+//		$a = $map->getDistance(118.77147503233,32.054128923368,116.3521416286,39.965780080447);
+//echo $a;
+		$rows = MOffice::getNearestOffices(MGh::GH_XIANGYANGUNICOM, 114.323596,30.517117);
+		U::W($rows);	
+$rows = array_slice($rows, 0, 2);
+U::W($rows);	
+*/
 		echo 'Hello, world!!';
 	}
 
@@ -257,7 +268,8 @@ class CmdController extends Controller
 					new \app\models\ButtonView('游戏2048', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}")),
 				]),
 				new \app\models\ButtonComplex('沃订单', [
-					new \app\models\ButtonView('最近营业厅', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/xxxxxx:{$gh_id}")),
+					//new \app\models\ButtonView('最近营业厅', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/xxxxxx:{$gh_id}")),
+					new \app\models\ButtonClick('最近营业厅', 'FuncNearestOffice'),
 					new \app\models\ButtonView('我的订单', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/order:{$gh_id}")),
 				]),
 			]);
