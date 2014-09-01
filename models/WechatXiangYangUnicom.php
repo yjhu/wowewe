@@ -411,22 +411,45 @@ EOD;
 				}
 		}
 	}
+
+	public function FuncNearestOffice() 
+	{ 
+		$FromUserName = $this->getRequest('FromUserName');
+		$gh_id = $this->getRequest('ToUserName');
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
+		if ($model === null)
+			return '';
+//		if ($model->lon < 1)
+		{
+			$items = array(
+				new RespNewsItem('nearest offices', 'nearest offices', Url::to('images/metro-intro.jpg',true), ''),
+			);
+			return $this->responseNews($items);
+		}
+		
+	}
 	
 	protected function onLocation() 
 	{ 
-		return Wechat::NO_RESP;	
-		
 		$FromUserName = $this->getRequest('FromUserName');
 		$gh_id = $this->getRequest('ToUserName');
-		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);		
-		if ($model !== null)
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
+		if ($model === null)
+			return Wechat::NO_RESP;	
+			
+		$model->lat = $this->getRequest('Location_X');
+		$model->lon = $this->getRequest('Location_Y');
+		//$model->scale = $this->getRequest('Scale');			
+		$model->save(false);
+		$rows = MOffice::getNearestOffices($gh_id, $model->lon, $model->lat);
+		$rows = array_slice($rows, 0, 10);
+		$items = [];
+		foreach ($rows as $row)
 		{
-			$model->lat = $this->getRequest('Location_X');
-			$model->lon = $this->getRequest('Location_Y');
-			//$model->scale = $this->getRequest('Scale');			
-			$model->save(false);
-		}	
-		return Wechat::NO_RESP;	
+			//$items[] = new RespNewsItem("{$row['title']}({$row['address']}-distance{$row['distance']}M)", $row['title'], Url::to('images/metro-intro.jpg',true), Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true));
+			$items[] = new RespNewsItem("{$row['title']}({$row['address']}-distance{$row['distance']}M)", $row['title'], Url::to('images/metro-intro.jpg',true), Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true));
+		}
+		return $this->responseNews($items);
 	}
 
 	protected function onEventLocation()

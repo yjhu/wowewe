@@ -15,8 +15,21 @@ CREATE TABLE wx_office (
 	member_cnt int(10) unsigned NOT NULL DEFAULT '0',
 	mobile VARCHAR(16) NOT NULL DEFAULT '',
 	pswd VARCHAR(16) NOT NULL DEFAULT '123456',
+	lat float(10,6) NOT NULL DEFAULT '0.000000',
+	lon float(10,6) NOT NULL DEFAULT '0.000000',
+	lat_bd09 float(10,6) NOT NULL DEFAULT '0.000000',
+	lon_bd09 float(10,6) NOT NULL DEFAULT '0.000000',
 	KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE wx_office ADD lat float(10,6) NOT NULL DEFAULT '0.000000';
+ALTER TABLE wx_office ADD lon float(10,6) NOT NULL DEFAULT '0.000000';
+ALTER TABLE wx_office ADD lat_bd09 float(10,6) NOT NULL DEFAULT '0.000000';
+ALTER TABLE wx_office ADD lon_bd09 float(10,6) NOT NULL DEFAULT '0.000000';
+
+UPDATE wx_office SET lat='30.520065', lon='114.322433' WHERE gh_id = 'gh_03a74ac96138' AND office_id='1';
+UPDATE wx_office SET lat='30.574804', lon='114.334366' WHERE gh_id = 'gh_03a74ac96138' AND office_id='3';
+UPDATE wx_office SET lat='30.617111', lon='114.299980' WHERE gh_id = 'gh_03a74ac96138' AND office_id='6';
 
 //i want delete some fields
 ALTER TABLE wx_office DROP manager, DROP member_cnt, DROP mobile, DROP pswd;	
@@ -69,6 +82,7 @@ INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobi
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_03a74ac96138','','','南漳分公司','','','','');
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_03a74ac96138','','','保康分公司','','','','');
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_03a74ac96138','','','华盛公司','','','','');
+
 
 */
 
@@ -246,6 +260,31 @@ class MOffice extends ActiveRecord
 		}
 		//U::W($rows);		
 		Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 12*3600);
+		return $rows;
+	}
+
+	public static function getNearestOffices($gh_id, $lon, $lat)
+	{
+		$key = __METHOD__."{$gh_id}_{$lon}_{$lat}";
+		$value = Yii::$app->cache->get($key);
+		if ($value !== false)
+			return $value;
+		$map = new MMapbd;	
+		$rows = MOffice::find()->where(['gh_id' => $gh_id])->asArray()->all();
+		foreach($rows as $key => &$row)
+		{
+			if ($row['lon'] < 1)
+			{
+				unset($rows[$key]);
+				continue;
+			}
+			$row['distance'] = $map->getDistance($lon, $lat, $row['lon'], $row['lat']);
+		}		
+		unset($row);
+		//U::W($rows);	
+		\yii\helpers\ArrayHelper::multisort($rows, 'distance');
+		//U::W($rows);	
+		//Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 10*60);
 		return $rows;
 	}
 	

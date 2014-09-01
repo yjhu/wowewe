@@ -200,12 +200,12 @@ class Wechat extends \yii\base\Object
 	{
 		if ($this->localTest)		
 		{
-				return $this->getDemoRequestXml(Wechat::MSGTYPE_TEXT);
+				//return $this->getDemoRequestXml(Wechat::MSGTYPE_TEXT);
 				//return $this->getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_CLICK, 'FuncQueryAccount');	// FuncQueryFee
 				//return $this->getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_SUBSCRIBE);
 				//return $this->getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_UNSUBSCRIBE);				
 				//return $this->getDemoRequestXml(Wechat::MSGTYPE_IMAGE);
-				//return $this->getDemoRequestXml(Wechat::MSGTYPE_LOCATION);
+				return $this->getDemoRequestXml(Wechat::MSGTYPE_LOCATION);
 				//return $this->getDemoRequestXml(Wechat::MSGTYPE_LINK);
 				//return $this->getDemoRequestXml(Wechat::MSGTYPE_VOICE);
 				//return $this->getDemoRequestXml(Wechat::MSGTYPE_VIDEO);				

@@ -21,6 +21,8 @@ use app\models\MItem;
 use app\models\MSmQueue;
 
 use app\models\Wechat;
+use app\models\MMapbd;
+use app\models\MOffice;
 
 class CmdController extends Controller
 {
@@ -38,6 +40,13 @@ class CmdController extends Controller
 	//C:\xampp\php\php.exe C:\htdocs\wx\yii cmd
 	public function actionIndex()
 	{		
+//		$map = new MMapbd;
+//		$a = $map->getDistance(118.77147503233,32.054128923368,116.3521416286,39.965780080447);
+//echo $a;
+		$rows = MOffice::getNearestOffices(MGh::GH_XIANGYANGUNICOM, 114.323596,30.517117);
+		U::W($rows);	
+$rows = array_slice($rows, 0, 2);
+U::W($rows);	
 		echo 'Hello, world!!';
 	}
 
