@@ -77,6 +77,11 @@
 .ui-header .ui-title, .ui-footer .ui-title {
     margin-right: 0 !important; margin-left: 0 !important;
 }
+
+.line {
+color: red;
+text-decoration: line-through;
+}
 </style>
 
 
@@ -108,36 +113,43 @@
 
         <p id="price">
         价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
-       <br><span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
+        <span class="line"><small>原价￥<?php echo  ($item->old_price)/100; ?></small></span>
+        <br><span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
         </p>
 
-            <?php if ($cid == MItem::ITEM_CAT_MOBILE_IPHONE4S): ?>
+        <!--
+        <?//php if ($cid == MItem::ITEM_CAT_MOBILE_IPHONE4S): ?>
+        -->
+        <div class="ui-corner-all custom-corners">
+        <!--
+            <div data-role="fieldcontain">
+                <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+                    <legend>型号颜色</legend>
+                    <input type="radio" name="modelColor" id="modelColor_0" value="0" checked="checked">
+                    <label for="modelColor_0" id="modelColor_0">黑色</label>
+                    <input type="radio" name="modelColor" id="modelColor_1" value="1">
+                    <label for="modelColor_1" id="modelColor_1">白色</label>
+                </fieldset>
+            </div>
+        <?//php else: ?>
             <div class="ui-corner-all custom-corners">
                 <div data-role="fieldcontain">
                     <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
                         <legend>型号颜色</legend>
-                        <input type="radio" name="modelColor" id="modelColor_0" value="0" checked="checked">
-                        <label for="modelColor_0" id="modelColor_0">黑色</label>
-                        <input type="radio" name="modelColor" id="modelColor_1" value="1">
+                        <input type="radio" name="modelColor" id="modelColor_1" value="1" checked="checked">
                         <label for="modelColor_1" id="modelColor_1">白色</label>
                     </fieldset>
                 </div>
-            <?php else: ?>
-                <div class="ui-corner-all custom-corners">
-                    <div data-role="fieldcontain">
-                        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-                            <legend>型号颜色</legend>
-                            <input type="radio" name="modelColor" id="modelColor_1" value="1" checked="checked">
-                            <label for="modelColor_1" id="modelColor_1">白色</label>
-                        </fieldset>
-                    </div>
-            <?php endif; ?>
+        <?//php endif; ?>
+        -->
 
 	  <div data-role="fieldcontain">
 		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 		  <legend>优惠活动</legend>
 		  <input type="radio" name="prom" id="radio1_0" value="0" checked />
-		  <label for="radio1_0">买手机送话费</label>
+
+		  <!--<label for="radio1_0">买手机送话费</label>-->
+          <label for="radio1_0">充话费送手机</label>
 		</fieldset>
 	  </div>
 

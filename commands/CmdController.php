@@ -204,6 +204,7 @@ class CmdController extends Controller
 				]),
 			]);
 		}
+		/*
 		else if ($gh_id == MGh::GH_XIANGYANGUNICOM)
 		{
 			$menu = new \app\models\WxMenu([
@@ -235,6 +236,27 @@ class CmdController extends Controller
 					//new \app\models\ButtonView('靓号运程', Yii::$app->wx->WxGetOauth2Url('snsapi_base','wap/luck:'.Yii::$app->wx->getGhid())),
 					//new \app\models\ButtonView('游戏2048', 'http://wosotech.com/wx/webtest/2048/index.htm'),
 					new \app\models\ButtonView('游戏2048', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}")),
+				]),
+			]);
+		}
+		*/
+		else if ($gh_id == MGh::GH_XIANGYANGUNICOM)
+		{
+			$menu = new \app\models\WxMenu([
+				new \app\models\ButtonComplex('沃商城', [
+                    //new \app\models\ButtonView('沃派校园套餐', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardxiaoyuan:{$gh_id}")),
+                    new \app\models\ButtonView('单卡产品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}")),
+                    new \app\models\ButtonView('特惠手机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobilelist:{$gh_id}")),
+				]),
+				new \app\models\ButtonComplex('沃服务', [
+					new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
+					new \app\models\ButtonView('流量包订购', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
+					new \app\models\ButtonView('用户吐槽', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/suggest:{$gh_id}")),
+					new \app\models\ButtonView('游戏2048', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}")),
+				]),
+				new \app\models\ButtonComplex('沃订单', [
+					new \app\models\ButtonView('最近营业厅', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/xxxxxx:{$gh_id}")),
+					new \app\models\ButtonView('我的订单', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/order:{$gh_id}")),
 				]),
 			]);
 		}

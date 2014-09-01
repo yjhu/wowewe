@@ -22,17 +22,19 @@
 <div data-role="page" id="page1" data-theme="c">
 
 	<div data-role="header">
-    	<h1>特惠手机</h1>
+    	<h1>单卡产品</h1>
     </div>
 
     <div data-role="content">
         <ul data-role="listview" data-inset="true">
         <?php foreach($models as $model) { ?>
-            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
+            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/card', 'cid'=>$model->cid],true) ?>">
                     <img src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                     <h2><?= $model->title ?></h2>
                     <p><?= $model->title_hint ?></p>
-                    <p class='line'>原价: ￥<?= $model->old_price/100 ?></p>
+                    <!--
+                    <p class='line'>原价: ￥<//?= $model->old_price/100 ?></p>
+                    -->
                     <p>惊爆价: ￥<?= $model->price/100 ?></p>
                 </a>
             </li>

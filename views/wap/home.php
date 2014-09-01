@@ -59,20 +59,16 @@ JqmAsset::register($this);
                 另，画内色块间距，横竖都换成10（原来是5）
                 -->
 
+                <!--
                 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                    <!-- Indicators -->
                     <ol class="carousel-indicators">
                         <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
                         <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                        <!--
-                        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                        -->
                     </ol>
 
-                    <!-- Wrapper for slides -->
                     <div class="carousel-inner" role="listbox">
                         <div class="item active">
-	                        <a data-ajax=false href="<?php echo Url::to(['wap/disk'], true) ; ?>" >
+	                        <a data-ajax=false href="<?//php echo Url::to(['wap/disk'], true) ; ?>" >
                             <img src="../web/images/metro_home_head1.jpg" alt="八月浪漫季">
 		                    </a>
                             <div class="carousel-caption">
@@ -80,22 +76,14 @@ JqmAsset::register($this);
                         </div>
 
                         <div class="item">
-	                        <a data-ajax=false href="<?php echo Url::to(['wap/disk'], true) ; ?>" >
+	                        <a data-ajax=false href="<?//php echo Url::to(['wap/disk'], true) ; ?>" >
                             <img src="../web/images/metro_home_head2.jpg" alt="八月浪漫季">
 	                        </a>
                             <div class="carousel-caption">
                             </div>
                         </div>
-                        <!--
-                        <div class="item">
-                            <img src="../web/images/metro_home_head1.jpg" alt="八月浪漫季">
-                            <div class="carousel-caption">
-                            </div>
-                        </div>
-                        -->
                     </div>
 
-                    <!-- Controls -->
                     <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
                         <span class="glyphicon glyphicon-chevron-left"></span>
                         <span class="sr-only">Previous</span>
@@ -105,16 +93,17 @@ JqmAsset::register($this);
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
+                -->
 
-
+                <!--
                 <div class="row" style="margin-top: 10px">
                     <div class="col-md-6 col-xs-6" >
-                        <a data-ajax=false href="<?php echo Url::to(['wap/product'], true) ; ?>" >
+                        <a data-ajax=false href="<?//php echo Url::to(['wap/product'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-zyzhtc.jpg">
                         </a>
                     </div>
                     <div class="col-md-6 col-xs-6" >
-                        <a data-ajax=false href="<?php echo Url::to(['wap/cardwo'], true) ; ?>" >
+                        <a data-ajax=false href="<?//php echo Url::to(['wap/cardwo'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-wxwk.jpg">
                         </a>
                     </div>
@@ -122,17 +111,30 @@ JqmAsset::register($this);
 
                 <div class="row">
                     <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-                        <a data-ajax=false href="<?php echo Url::to(['wap/cardxiaoyuan'], true) ; ?>" >
+                        <a data-ajax=false href="<?//php echo Url::to(['wap/cardxiaoyuan'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-wpxytc.jpg">
                         </a>
                     </div>
                     <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-	                    <a data-ajax=false href="<?php echo Url::to(['wap/goodnumber'], true) ; ?>" >
+	                    <a data-ajax=false href="<?//php echo Url::to(['wap/goodnumber'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-jxlh.jpg">
                         </a>
                     </div>
                 </div>
+                -->
 
+                <div class="row">
+                    <div class="col-md-6 col-xs-6" style="margin: 10px auto">
+                        <a data-ajax=false href="<?php echo Url::to(['wap/cardlist'], true) ; ?>" >
+                            <img width=100% src="../web/images/metro-dkcp.jpg">
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-xs-6" style="margin: 10px auto">
+                        <a data-ajax=false href="<?php echo Url::to(['wap/xxxxx'], true) ; ?>" >
+                            <img width=100% src="../web/images/metro-zjyyt.jpg">
+                        </a>
+                    </div>
+                </div>
                 <div class="row" >
                     <div class="col-md-12 col-xs-12" >
                         <a data-ajax=false href="<?php echo Url::to(['wap/mobilelist'], true) ; ?>" >
