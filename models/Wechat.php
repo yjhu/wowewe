@@ -264,8 +264,16 @@ class Wechat extends \yii\base\Object
 	
 	protected function onView() { return $this->responseText($this->getRequestString()); }
 	
-	protected function onClick() { return $this->responseText($this->getRequestString()); }
-	
+//	protected function onClick() { return $this->responseText($this->getRequestString()); }
+
+	protected function onClick()
+	{ 
+		$func = $this->getRequest('EventKey');		
+		if (method_exists($this, $func))
+			return $this->$func();			
+		return $this->responseText($this->getRequestString());		
+	}
+		
 	protected function onEventLocation() { return $this->responseText($this->getRequestString()); }
 	
 	protected function onVoice() { return $this->responseText($this->getRequestString()); }
