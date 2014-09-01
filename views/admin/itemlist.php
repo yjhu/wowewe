@@ -36,6 +36,9 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { return MItem::getItemCatName($model->cid); },
 				'filter'=> MItem::getItemCatName(),
 			],
+			'quantity',
+			'old_price',
+			'old_price_hint',
 			'price', 
 			'price_hint',
 			[

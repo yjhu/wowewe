@@ -724,10 +724,29 @@ EOD;
 			case MItem::ITEM_CAT_GOODNUMBER:
 				$order->title = '精选靓号';			
 				$order->attr = "{$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}, {$_GET['plan126']}";
-				break;				
-				
+				break;	
+
+			case MItem::ITEM_CAT_MOBILE_APPLE_5C_8G_WHITE:
+			case MItem::ITEM_CAT_MOBILE_APPLE_5C_8G_BLUE:
+			case MItem::ITEM_CAT_MOBILE_HTC_8160_SILVER:
+			case MItem::ITEM_CAT_MOBILE_SAMSUNG_7506V_BLACK:
+			case MItem::ITEM_CAT_MOBILE_COOLPAD_7298A_CHUNLEI_WHITE:
+			case MItem::ITEM_CAT_MOBILE_LENOVOA_A850_BLACK:
+			case MItem::ITEM_CAT_MOBILE_COOLPAD_7295C_WHITE:
+			case MItem::ITEM_CAT_MOBILE_APPLE_5S_32G_SILVER:
+			case MItem::ITEM_CAT_MOBILE_COOLPAD_7296_BLACK:
+			case MItem::ITEM_CAT_MOBILE_COOLPAD_7296_WHITE:
+			case MItem::ITEM_CAT_MOBILE_COOLPAD_K1_WHITE:
+			case MItem::ITEM_CAT_MOBILE_COOLPAD_7235_BLACK:
+			case MItem::ITEM_CAT_MOBILE_COOLPAD_7230S_BLACK:
+			case MItem::ITEM_CAT_MOBILE_HISENSE_U939:
+			case MItem::ITEM_CAT_MOBILE_COOLPAD_7295C_BLACK:
+				$order->title = '特惠手机';			
+				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				break;
+
 			default:
-				U::W(['invalid data cat', $cid, __METHOD__,$_GET]);
+				U::W(['invalid data cat', $_GET["cid"], __METHOD__,$_GET]);
 				return;
 		}				
 		$order->feesum = $_GET['feeSum'] * 100;
@@ -979,8 +998,13 @@ EOD;
 		Yii::$app->wx->setGhId($gh_id);
 
         //return $this->render('mobile');
-        return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+        //$models = MItem::findAll(['kind'=>MItem::ITEM_KIND_MOBILE]);
+        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_DESC])->all();
+        return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
     }
+
+
+
 
     public function actionMobilelistxxx()
     {
@@ -1007,6 +1031,31 @@ EOD;
         //return $this->render('mobile');
         return $this->render('mobile', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
+
+
+  	 //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardlist:gh_03a74ac96138
+    public function actionCardlist()
+    {
+        $this->layout ='wapy';
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
+		Yii::$app->wx->setGhId($gh_id);
+
+        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_CARD])->orderBy(['price'=>SORT_DESC])->all();
+        return $this->render('cardlist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
+    }
+
+    public function actionCard()
+    {
+        $this->layout ='wapy';
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');
+		Yii::$app->wx->setGhId($gh_id);
+
+        //return $this->render('mobile');
+        return $this->render('card', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
 
 /*
 	//http://127.0.0.1/wx/web/index.php?r=wap/disk&gh_id=gh_03a74ac96138&openid=111

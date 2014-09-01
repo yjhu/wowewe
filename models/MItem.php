@@ -19,8 +19,16 @@ CREATE TABLE wx_item (
 	pic_url VARCHAR(256) NOT NULL DEFAULT '',
 	cid int(10) unsigned NOT NULL DEFAULT '0',
 	status int(10) unsigned NOT NULL DEFAULT '0',
+	quantity int(10) unsigned NOT NULL DEFAULT '0',
+	old_price int(10) unsigned NOT NULL DEFAULT '0',
+	old_price_hint VARCHAR(128) NOT NULL DEFAULT '',
 	KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE wx_item ADD quantity int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD old_price int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD	old_price_hint VARCHAR(128) NOT NULL DEFAULT '';
+ALTER TABLE wx_item ADD	kind tinyint(3) unsigned NOT NULL DEFAULT '0';
 
 INSERT INTO `wx_item` (`gh_id`, `price`, `price_hint`, `title`, `title_hint`, `pkg_name`, `pkg_name_hint`, `detail`, `pic_url`, `cid`, `status`) VALUES
 ('gh_03a74ac96138', 5000, '含预存款50元', '微信沃卡', '微信沃卡 <span class="title_hint"> 尊享微信6大特权, 50元入网得530元话费, 500M省内流量+500M微信定向流量, 仅需31元/月</span>', '微信沃卡', '500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wxwk001.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk002.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk003.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk004.jpg" alt="" />', '../web/images/item/wxwk000.jpg', 10, 0);
@@ -46,10 +54,30 @@ class MItem extends ActiveRecord
 	const ITEM_CAT_MOBILE_IPHONE4S = 12;
 	const ITEM_CAT_MOBILE_K1 = 13;
 	const ITEM_CAT_MOBILE_HTC516 = 14;
-
-
 	const ITEM_CAT_GOODNUMBER = 300;
 
+	const ITEM_CAT_MOBILE_APPLE_5C_8G_WHITE = 310;
+	const ITEM_CAT_MOBILE_APPLE_5C_8G_BLUE = 311;
+	const ITEM_CAT_MOBILE_HTC_8160_SILVER = 312;
+	const ITEM_CAT_MOBILE_SAMSUNG_7506V_BLACK = 313;
+	const ITEM_CAT_MOBILE_COOLPAD_7298A_CHUNLEI_WHITE = 314;
+	const ITEM_CAT_MOBILE_LENOVOA_A850_BLACK = 315;
+	const ITEM_CAT_MOBILE_COOLPAD_7295C_WHITE = 316;
+	
+	const ITEM_CAT_MOBILE_APPLE_5S_32G_SILVER = 317;
+	const ITEM_CAT_MOBILE_COOLPAD_7296_BLACK = 318;
+	const ITEM_CAT_MOBILE_COOLPAD_7296_WHITE = 319;
+	const ITEM_CAT_MOBILE_COOLPAD_K1_WHITE = 320;
+	const ITEM_CAT_MOBILE_COOLPAD_7235_BLACK = 321;
+	const ITEM_CAT_MOBILE_COOLPAD_7230S_BLACK = 322;
+	const ITEM_CAT_MOBILE_HISENSE_U939 = 323;
+	const ITEM_CAT_MOBILE_COOLPAD_7295C_BLACK = 324;
+
+
+	const ITEM_KIND_CARD = 2;
+	const ITEM_KIND_MOBILE = 1;
+
+	
 
 	public static function tableName()
 	{
@@ -66,6 +94,23 @@ class MItem extends ActiveRecord
             self::ITEM_CAT_MOBILE_K1 => 'K1',
             self::ITEM_CAT_MOBILE_HTC516 => 'HTC516',
 			self::ITEM_CAT_GOODNUMBER => '精选靓号',
+		
+			self::ITEM_CAT_MOBILE_APPLE_5C_8G_WHITE => '苹果5C 8G 白色',
+			self::ITEM_CAT_MOBILE_APPLE_5C_8G_BLUE => '苹果5C 8G 蓝色',
+			self::ITEM_CAT_MOBILE_HTC_8160_SILVER => 'HTC 8160 银色',
+			self::ITEM_CAT_MOBILE_SAMSUNG_7506V_BLACK => '三星 7506V 黑色',
+			self::ITEM_CAT_MOBILE_COOLPAD_7298A_CHUNLEI_WHITE => '酷派 7298A 春雷 白色',
+			self::ITEM_CAT_MOBILE_LENOVOA_A850_BLACK => '联想 A850+ 黑色',
+			self::ITEM_CAT_MOBILE_COOLPAD_7295C_WHITE => '酷派 7295C 白色',
+			self::ITEM_CAT_MOBILE_APPLE_5S_32G_SILVER => '苹果 5S 32G 银色',
+			self::ITEM_CAT_MOBILE_COOLPAD_7296_BLACK => '酷派 7296 黑色',
+			self::ITEM_CAT_MOBILE_COOLPAD_7296_WHITE => '酷派 7296 白色',
+			self::ITEM_CAT_MOBILE_COOLPAD_K1_WHITE => '酷派 K1 白色',
+			self::ITEM_CAT_MOBILE_COOLPAD_7235_BLACK => '酷派 7235 黑色',
+			self::ITEM_CAT_MOBILE_COOLPAD_7230S_BLACK => '酷派 7230S 黑色',
+			self::ITEM_CAT_MOBILE_HISENSE_U939 => '海信 U939',
+			self::ITEM_CAT_MOBILE_COOLPAD_7295C_BLACK => '酷派 7295C 黑色',
+
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
 	}
