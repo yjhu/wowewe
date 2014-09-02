@@ -269,7 +269,7 @@ class MOffice extends ActiveRecord
 		$value = Yii::$app->cache->get($key);
 		if ($value !== false)
 			return $value;
-		$map = new MMapbd;	
+		$map = new MMapApi;	
 		$rows = MOffice::find()->where(['gh_id' => $gh_id])->asArray()->all();
 		foreach($rows as $key => &$row)
 		{

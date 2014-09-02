@@ -446,11 +446,10 @@ EOD;
 		$i = 0;
 		foreach ($rows as $row)
 		{
-			$url = "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord={$model->lat},{$model->lon}&to={$row['title']}&tocoord={$row['lat']},{$row['lon']}&policy=0&referer=wosotech";
-//			$url = "http://api.map.baidu.com/direction?origin=latlng:{$model->lat},{$model->lon}|name:我位置&destination=latlng:{$row['lat']},{$row['lon']}|name:{$row['title']}&mode=transit&output=html&src=wosotech|wosotech";
-//$url ="http://api.map.baidu.com/marker?location=39.916979519873,116.41004950566&title=我的位置&content=百度奎科大厦&output=html";
-			$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? 'images/nearestoffice-info.jpg' : 'images/metro-intro.jpg',true), $url);
-			//$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to('images/metro-intro.jpg',true), Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true));
+			//$url = "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord={$model->lat},{$model->lon}&to={$row['title']}&tocoord={$row['lat']},{$row['lon']}&policy=0&referer=wosotech";
+			//$url = "http://api.map.baidu.com/direction?origin=latlng:{$model->lat},{$model->lon}|name:我位置&destination=latlng:{$row['lat']},{$row['lon']}|name:{$row['title']}&mode=transit&output=html&src=wosotech|wosotech";
+			$url = Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true);
+			$items[] = new RespNewsItem("{$row['title']}({$row['address']}-电话{$row['mobile']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? 'images/nearestoffice-info.jpg' : 'images/metro-intro.jpg',true), $url);
 			$i++;
 		}
 		return $this->responseNews($items);
