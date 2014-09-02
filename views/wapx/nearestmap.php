@@ -2,9 +2,6 @@
 use yii\helpers\Url;
 use app\models\MMapApi;
 
-//$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/assets/plugins/data-tables/DT_bootstrap.js', ['position'=>yii\web\View::POS_END]); 
-//$this->registerJsFile('http://api.map.baidu.com/api?v=2.0&ak=s6ypC3XmgZkknuK8GGjk3xsF', ['position'=>yii\web\View::POS_END]); 
-
 ?>
 <!DOCTYPE html>
 <html>
