@@ -271,6 +271,16 @@ function showScore(msg)
       cache:false,
       dataType:'json',
       url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/ajaxdata' ; ?>"+"&cat=g2048Save"+"&gh_id="+gh_id+"&openid="+openid+"&bigNum="+bigNum+"&score="+myGameStateObj.score+"&best="+myScore,
+      beforeSend: function(json_data){
+        //ShowLoading();
+        $.mobile.loading( 'show', {
+          text: '歇会儿, 请稍后...',
+          textVisible: true,
+          //theme: theme,
+          textonly: false,
+          html: ''
+        });
+      },
       success: function(json_data){
 
         if(json_data.isSubcribed == 0) /* not subscribed*/
@@ -289,6 +299,10 @@ function showScore(msg)
 
         $("#popupDialog").popup("open");
 
+      },
+      complete: function(json_data){
+        //HideLoading();
+        $.mobile.loading( "hide" );
       }
     });/*end ajax*/
                
