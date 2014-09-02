@@ -58,6 +58,9 @@ UPDATE wx_office SET lat_bd09='32.0567040857', lon_bd09='112.1427807138', lat='3
 UPDATE wx_office SET lat_bd09='31.8833807792', lon_bd09='111.2698470213', lat='31.8771540000', lon='111.2634270000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='23';
 UPDATE wx_office SET lat_bd09='31.8797357494', lon_bd09='111.2686621197', lat='31.8735070000', lon='111.2622350000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='24';
 
+UPDATE wx_office SET lat_bd09='30.4963970000', lon_bd09='114.4192950000', lat='30.490629', lon='114.413484' WHERE gh_id = 'gh_1ad98f5481f3' AND office_id='51';
+UPDATE wx_office SET lat_bd09='30.5183090000', lon_bd09='114.3233280000', lat='30.511008', lon='114.316840' WHERE gh_id = 'gh_1ad98f5481f3' AND office_id='52';
+
 
 //XIANGYANG GPS INFO END
 

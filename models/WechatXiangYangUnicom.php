@@ -441,15 +441,15 @@ EOD;
 		//$model->scale = $this->getRequest('Scale');			
 		$model->save(false);
 		$rows = MOffice::getNearestOffices($gh_id, $model->lon, $model->lat);
-		$rows = array_slice($rows, 0, 10);
+		$rows = array_slice($rows, 0, 4);
 		$items = [];
 		$i = 0;
 		foreach ($rows as $row)
 		{
 			//$url = "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord={$model->lat},{$model->lon}&to={$row['title']}&tocoord={$row['lat']},{$row['lon']}&policy=0&referer=wosotech";
-			//$url = "http://api.map.baidu.com/direction?origin=latlng:{$model->lat},{$model->lon}|name:我位置&destination=latlng:{$row['lat']},{$row['lon']}|name:{$row['title']}&mode=transit&output=html&src=wosotech|wosotech";
+			//$url = "http://api.map.baidu.com/direction?origin=latlng:{$model->lat},{$model->lon}|name:我的位置&destination=latlng:{$row['lat']},{$row['lon']}|name:{$row['title']}&mode=driving&region=襄阳&output=html&src=wosotech|wosotech";
 			$url = Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true);
-			$items[] = new RespNewsItem("{$row['title']}({$row['address']}-电话{$row['mobile']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? 'images/nearestoffice-info.jpg' : 'images/metro-intro.jpg',true), $url);
+			$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? 'images/nearestoffice-info.jpg' : 'images/metro-intro.jpg',true), $url);
 			$i++;
 		}
 		return $this->responseNews($items);
