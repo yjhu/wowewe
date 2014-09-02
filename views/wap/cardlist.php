@@ -29,7 +29,7 @@
         <ul data-role="listview" data-inset="true">
         <?php foreach($models as $model) { ?>
             <li><a data-ajax="false" href="<?php echo  Url::to(['wap/card', 'cid'=>$model->cid],true) ?>">
-                    <img src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
+                    <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                     <h2><?= $model->title ?></h2>
                     <p><?= $model->title_hint ?></p>
                     <!--
