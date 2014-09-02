@@ -419,14 +419,13 @@ EOD;
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
 		if ($model === null)
 			return '';
-//		if ($model->lon < 1)
+		//if ($model->lon < 1)
 		{
 			$items = array(
-				new RespNewsItem('nearest offices', 'nearest offices', Url::to('images/metro-intro.jpg',true), ''),
+				new RespNewsItem('附近营业厅查询', '如果你需要查询附近的营业厅，请点击文字输入框旁边的+号,把你的位置发给小沃, 即可查询喔-(如上图)', Url::to('images/nearestoffice.jpg',true), ''),
 			);
 			return $this->responseNews($items);
 		}
-		
 	}
 	
 	protected function onLocation() 
@@ -444,10 +443,15 @@ EOD;
 		$rows = MOffice::getNearestOffices($gh_id, $model->lon, $model->lat);
 		$rows = array_slice($rows, 0, 10);
 		$items = [];
+		$i = 0;
 		foreach ($rows as $row)
 		{
-			//$items[] = new RespNewsItem("{$row['title']}({$row['address']}-distance{$row['distance']}M)", $row['title'], Url::to('images/metro-intro.jpg',true), Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true));
-			$items[] = new RespNewsItem("{$row['title']}({$row['address']}-distance{$row['distance']}M)", $row['title'], Url::to('images/metro-intro.jpg',true), Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true));
+			$url = "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord={$model->lat},{$model->lon}&to={$row['title']}&tocoord={$row['lat']},{$row['lon']}&policy=0&referer=wosotech";
+//			$url = "http://api.map.baidu.com/direction?origin=latlng:{$model->lat},{$model->lon}|name:我位置&destination=latlng:{$row['lat']},{$row['lon']}|name:{$row['title']}&mode=transit&output=html&src=wosotech|wosotech";
+//$url ="http://api.map.baidu.com/marker?location=39.916979519873,116.41004950566&title=我的位置&content=百度奎科大厦&output=html";
+			$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? 'images/nearestoffice-info.jpg' : 'images/metro-intro.jpg',true), $url);
+			//$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to('images/metro-intro.jpg',true), Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true));
+			$i++;
 		}
 		return $this->responseNews($items);
 	}
