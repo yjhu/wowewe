@@ -30,6 +30,36 @@ ALTER TABLE wx_office ADD lon_bd09 float(10,6) NOT NULL DEFAULT '0.000000';
 UPDATE wx_office SET lat='30.520065', lon='114.322433' WHERE gh_id = 'gh_03a74ac96138' AND office_id='1';
 UPDATE wx_office SET lat='30.574804', lon='114.334366' WHERE gh_id = 'gh_03a74ac96138' AND office_id='3';
 UPDATE wx_office SET lat='30.617111', lon='114.299980' WHERE gh_id = 'gh_03a74ac96138' AND office_id='6';
+UPDATE wx_office SET lat='30.617111', lon='114.299980', lat_bd09='30.617111', lon_bd09='114.299980' WHERE gh_id = 'gh_03a74ac96138' AND office_id='6';
+
+//XIANGYANG GPS INFO 
+UPDATE wx_office SET lat_bd09='32.1153970000', lon_bd09='112.7717480000', lat='32.1094640678', lon='112.7652361297' WHERE gh_id = 'gh_03a74ac96138' AND office_id='1';
+UPDATE wx_office SET lat_bd09='32.1287956212', lon_bd09='112.7644646810', lat='32.1230200000', lon='112.7579100000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='2';
+UPDATE wx_office SET lat_bd09='31.7198170283', lon_bd09='112.2706539097', lat='31.7141380000', lon='112.2640440000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='3';
+UPDATE wx_office SET lat_bd09='31.7125650283', lon_bd09='112.2664239097', lat='31.7068860000', lon='112.2598140000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='4';
+UPDATE wx_office SET lat_bd09='32.0902490383', lon_bd09='112.1975186408', lat='32.0839890000', lon='112.1910710000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='5';
+UPDATE wx_office SET lat_bd09='32.0436327632', lon_bd09='112.1437720534', lat='32.0379520000', lon='112.1371720000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='6';
+UPDATE wx_office SET lat_bd09='32.0193676327', lon_bd09='112.1617267899', lat='32.0135900000', lon='112.1551780000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='7';
+UPDATE wx_office SET lat_bd09='32.0237720000', lon_bd09='112.1586380000', lat='32.0179923900', lon='112.1520854662' WHERE gh_id = 'gh_03a74ac96138' AND office_id='8';
+UPDATE wx_office SET lat_bd09='31.7822720000', lon_bd09='111.8511950000', lat='31.7759513760', lon='111.8448019889' WHERE gh_id = 'gh_03a74ac96138' AND office_id='9';
+UPDATE wx_office SET lat_bd09='31.7825006240', lon_bd09='111.8554630111', lat='31.7761800000', lon='111.8490700000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='10';
+UPDATE wx_office SET lat_bd09='32.3791448173', lon_bd09='111.6754709434', lat='32.3734670000', lon='111.6688980000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='11';
+UPDATE wx_office SET lat_bd09='32.3895210958', lon_bd09='111.6844945538', lat='32.3837490000', lon='111.6779470000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='12';
+UPDATE wx_office SET lat_bd09='32.2677741087', lon_bd09='111.6514546159', lat='32.2618750000', lon='111.6449440000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='13';
+UPDATE wx_office SET lat_bd09='32.2685751087', lon_bd09='111.6466576159', lat='32.2626760000', lon='111.6401470000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='14';
+UPDATE wx_office SET lat_bd09='32.1242896586', lon_bd09='112.2269758102', lat='32.1180630000', lon='112.2205550000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='15';
+UPDATE wx_office SET lat_bd09='32.0623648618', lon_bd09='112.1484136233', lat='32.0566820000', lon='112.1417990000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='16';
+UPDATE wx_office SET lat_bd09='32.0724396183', lon_bd09='112.1637159572', lat='32.0666510000', lon='112.1571280000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='17';
+UPDATE wx_office SET lat_bd09='32.0457927632', lon_bd09='112.1416120534', lat='32.0401120000', lon='112.1350120000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='18';
+UPDATE wx_office SET lat_bd09='32.0492924490', lon_bd09='112.1597993874', lat='32.0436000000', lon='112.1532000000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='19';
+UPDATE wx_office SET lat_bd09='32.0489583197', lon_bd09='112.1493941856', lat='32.0432775565', lon='112.1427941322' WHERE gh_id = 'gh_03a74ac96138' AND office_id='20';
+UPDATE wx_office SET lat_bd09='32.0521728900', lon_bd09='112.1325031975', lat='32.0464160000', lon='112.1259210000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='21';
+UPDATE wx_office SET lat_bd09='32.0567040857', lon_bd09='112.1427807138', lat='32.0510220000', lon='112.1361720000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='22';
+UPDATE wx_office SET lat_bd09='31.8833807792', lon_bd09='111.2698470213', lat='31.8771540000', lon='111.2634270000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='23';
+UPDATE wx_office SET lat_bd09='31.8797357494', lon_bd09='111.2686621197', lat='31.8735070000', lon='111.2622350000' WHERE gh_id = 'gh_03a74ac96138' AND office_id='24';
+
+
+//XIANGYANG GPS INFO END
 
 //i want delete some fields
 ALTER TABLE wx_office DROP manager, DROP member_cnt, DROP mobile, DROP pswd;	
