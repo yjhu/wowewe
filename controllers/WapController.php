@@ -1144,6 +1144,16 @@ EOD;
 		return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
 	}
 
+	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/nearestoffice:gh_03a74ac96138
+	public function actionNearestoffice()
+	{
+		$this->layout = 'wapy';
+	    //$this->layout =false;
+		$gh_id = U::getSessionParam('gh_id');
+		$openid = U::getSessionParam('openid');		
+
+		return $this->render('nearestoffice',['gh_id'=>$gh_id, 'openid'=>$openid]);
+	}
 
 
 }

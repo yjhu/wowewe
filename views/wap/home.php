@@ -134,7 +134,7 @@ JqmAsset::register($this);
                         </a>
                     </div>
                     <div class="col-md-6 col-xs-6" style="margin: 10px auto">
-                        <a data-ajax=false href="<?php echo Url::to(['wap/xxxxx'], true) ; ?>" >
+                        <a data-ajax=false href="<?php echo Url::to(['wap/nearestoffice'], true) ; ?>" >
                             <img width=100% src="../web/images/metro-zjyyt.jpg">
                         </a>
                     </div>
