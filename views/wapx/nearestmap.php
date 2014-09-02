@@ -33,6 +33,13 @@ var walking = function(pointA,pointB,map){
     walking.search(pointA, pointB);
 };
 
+//公交检索
+var bus = function(pointA,pointB,map){	
+	alert(89);
+    var transit = new BMap.TransitRoute(map, {renderOptions: {map: map, panel: "result", autoViewport: true}});
+    transit.search(pointA, pointB);
+};
+
 //驾车检索
 var driver = function(pointA,pointB,map){
 	var transit = new BMap.DrivingRoute(map, {
@@ -42,7 +49,7 @@ var driver = function(pointA,pointB,map){
 				enableDragging : true //起终点可进行拖拽
 			},  
  	});
- transit.search(pointA,pointB);
+	transit.search(pointA,pointB);
 };
 
 var initBMap = function(lng1,lat1){	
@@ -50,14 +57,17 @@ var initBMap = function(lng1,lat1){
 	map.centerAndZoom(pointB,16);
 	var pointB = new BMap.Point(lng1,lat1);
 	map.centerAndZoom(pointB,16);
-
-	map.addControl(new BMap.NavigationControl());
-	
+	map.addControl(new BMap.NavigationControl());	
 	var pointA = new BMap.Point("<?php echo $lon_begin; ?>","<?php echo $lat_begin; ?>");	//自己在的位置	
-	if(map.getDistance(pointA,pointB) > 1000)
+	if(map.getDistance(pointA,pointB) > 5000)
 	{
-		//大于1公里的驾车检索
+		//大于5公里的驾车检索
 		driver(pointA,pointB,map);
+	}
+	else if(map.getDistance(pointA,pointB) > 1000)
+	{
+		//大于1公里的公交检索
+		bus(pointA,pointB,map);
 	}
 	else
 	{
