@@ -16,15 +16,17 @@ use app\models\MUser;
 use app\models\MContact;
 use app\models\MOffice;
 
-class CbwapController extends Controller
+use app\models\Alipay;
+
+class AlipaymerchantController extends Controller
 {
 	public $enableCsrfValidation = false;
 	
 	public function actionIndex()
 	{		
-		U::W($_GET);
-		echo 'abc';
-		return;
+		$this->layout = false;
+		Alipay::logResult([__METHOD__,$_GET,$_POST]);		
+		return 'Alipaymerchant error';
 	}
 	
 	

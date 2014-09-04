@@ -216,6 +216,7 @@ class WapxController extends Controller
 		return $this->render('nearestmap', ['office' => $office, 'lon_begin'=>$lon, 'lat_begin'=>$lat, 'lon_end'=>$office->lon, 'lat_end'=>$office->lat]);
 	}
 
+
 }
 
 

@@ -140,8 +140,9 @@ EOD;
 		}
 		else if ($msg == '.debug')
 		{
-			$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
-			return $this->responseText("see my score? <a href=\"{$url}\">click me</a>");
+			//$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
+			$url = Url::to(['wap/testpay', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
+			return $this->responseText("see my score? <a href=\"{$url}\">clickme</a>");
 		}
 		else
 		{
