@@ -449,8 +449,13 @@ EOD;
 		{
 			//$url = "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord={$model->lat},{$model->lon}&to={$row['title']}&tocoord={$row['lat']},{$row['lon']}&policy=0&referer=wosotech";
 			//$url = "http://api.map.baidu.com/direction?origin=latlng:{$model->lat},{$model->lon}|name:我的位置&destination=latlng:{$row['lat']},{$row['lon']}|name:{$row['title']}&mode=driving&region=襄阳&output=html&src=wosotech|wosotech";
+			
+			$office_imgurl = 'images/office/'.'office'.$row['office_id'].'.jpg' ;
+			$office_imgurl_160 = $office_imgurl.'-160x160.jpg';
+
 			$url = Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true);
-			$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? 'images/nearestoffice-info.jpg' : 'images/metro-intro.jpg',true), $url);
+			//$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? 'images/nearestoffice-info.jpg' : 'images/metro-intro.jpg',true), $url);
+			$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? $office_imgurl : $office_imgurl_160, true), $url);
 			$i++;
 		}
 		return $this->responseNews($items);

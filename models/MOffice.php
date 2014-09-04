@@ -22,6 +22,7 @@ CREATE TABLE wx_office (
 	KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
 ALTER TABLE wx_office ADD lat float(10,6) NOT NULL DEFAULT '0.000000';
 ALTER TABLE wx_office ADD lon float(10,6) NOT NULL DEFAULT '0.000000';
 ALTER TABLE wx_office ADD lat_bd09 float(10,6) NOT NULL DEFAULT '0.000000';
@@ -61,8 +62,8 @@ UPDATE wx_office SET lat_bd09='31.8797357494', lon_bd09='111.2686621197', lat='3
 UPDATE wx_office SET lat_bd09='30.4963970000', lon_bd09='114.4192950000', lat='30.490629', lon='114.413484' WHERE gh_id = 'gh_1ad98f5481f3' AND office_id='51';
 UPDATE wx_office SET lat_bd09='30.5183090000', lon_bd09='114.3233280000', lat='30.511008', lon='114.316840' WHERE gh_id = 'gh_1ad98f5481f3' AND office_id='52';
 
-
 //XIANGYANG GPS INFO END
+
 
 //i want delete some fields
 ALTER TABLE wx_office DROP manager, DROP member_cnt, DROP mobile, DROP pswd;	
