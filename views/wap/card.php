@@ -370,6 +370,7 @@ $(document).on("pageinit", "#page2", function(){
 					localStorage.setItem("oid",json_data.oid);
 					localStorage.setItem("url",json_data.pay_url);
 
+					localStorage.removeItem("num");
 					//$.mobile.changePage("#page3",{transition:"slide"}); //page3 removed!
 					var url = "<?php echo Url::to(['wap/orderinfo'], true); ?>";
 					$.mobile.changePage((url+'&oid='+json_data.oid),{transition:"slide"});

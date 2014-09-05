@@ -92,16 +92,7 @@
 	<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>	<!-- page3 end -->
 
-
-<script>
-
-$(document).on("pageinit", "#page1", function(){
-	/*remove seleted mobile number from client*/
-	localStorage.removeItem("num");
-});
-
-
-</script>	
+	
 <?php
 /*
 
