@@ -64,7 +64,7 @@ class AlipaynotifyController extends Controller
 			U::W(['trade_status is not TRADE_FINISHED', $_GET, $_POST, $arr]);
 		}
 		if (!$model->save(false))
-			U::W(['save db error', $_GET,$_POST, $arr, model->getErrors()]);
+			U::W(['save db error', $_GET, $_POST, $arr, $model->getErrors()]);
 		return "success";
 	}
 	

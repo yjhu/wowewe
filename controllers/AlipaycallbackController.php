@@ -49,10 +49,10 @@ class AlipaycallbackController extends Controller
 			return "Invalid oid";
 		}
 		$model->pay_kind = MOrder::PAY_KIND_ALIWAP;
-		$model->aliwap_trade_no = $arr['trade_no'];
+		$model->aliwap_trade_no = $_GET['trade_no'];
 		$model->status = MOrder::STATUS_OK;
 		if (!$model->save(false))
-			U::W(['save db error', $_GET, $_POST, model->getErrors()]);
+			U::W(['save db error', $_GET, $_POST, $model->getErrors()]);
 			
 		return 'Pay OK';
 	}
