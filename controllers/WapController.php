@@ -55,7 +55,7 @@ class WapController extends Controller
 	public function init()
 	{
 		//U::W(['init....', $_GET,$_POST, $GLOBALS]);
-		//U::W(['init....', $_GET,$_POST]);
+		U::W(['init....', $_GET,$_POST]);
 	}
 
 	public function beforeAction($action)
@@ -1162,7 +1162,7 @@ EOD;
 	{		
 		$this->layout = 'wapy';
 
-		$oid = '53de91f9d3773';
+		$oid = '53df310d139ae';
 		$model = MOrder::findOne($oid);		
 		if (\Yii::$app->request->isPost) 
 		{
@@ -1185,6 +1185,8 @@ EOD;
 			$seller_email = 'wosotech@126.com';
 			$out_trade_no = $model->oid;
 			$subject = $model->detail;
+
+			 $model->feesum = 0.01;
 			$total_fee = $model->feesum;
 			$req_data = '<direct_trade_create_req><notify_url>'.$notify_url.'</notify_url><call_back_url>'.$call_back_url.'</call_back_url><seller_account_name>'.$seller_email.'</seller_account_name><out_trade_no>' . $out_trade_no . '</out_trade_no><subject>'.$subject.'</subject><total_fee>'.$total_fee.'</total_fee><merchant_url>'.$merchant_url.'</merchant_url></direct_trade_create_req>';
 			$para_token = array(

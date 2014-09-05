@@ -29,13 +29,31 @@ CREATE TABLE wx_order (
 	userid VARCHAR(32) NOT NULL DEFAULT '',
 	username VARCHAR(16) NOT NULL DEFAULT '',
 	usermobile VARCHAR(16) NOT NULL DEFAULT '',	
+	pay_kind tinyint(10) unsigned NOT NULL DEFAULT '0',
+	aliwap_trade_no VARCHAR(64) NOT NULL DEFAULT '',
+	aliwap_total_fee VARCHAR(16) NOT NULL DEFAULT '',
+	aliwap_trade_status VARCHAR(32) NOT NULL DEFAULT '',
+	aliwap_buyer_email VARCHAR(64) NOT NULL DEFAULT '',
+	aliwap_quantity int(10) unsigned NOT NULL DEFAULT '0',
+	aliwap_gmt_payment TIMESTAMP,
 	PRIMARY KEY (oid),
 	KEY gh_id_oid(gh_id,oid),
 	KEY gh_id_office_id(gh_id,office_id),
+	KEY gh_id_aliwap_trade_no(gh_id,aliwap_trade_no),	
 	KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
- 
+		
+ALTER TABLE wx_order ADD pay_kind tinyint(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_order ADD aliwap_trade_no VARCHAR(64) NOT NULL DEFAULT '';
+ALTER TABLE wx_order ADD aliwap_total_fee VARCHAR(16) NOT NULL DEFAULT '';
+ALTER TABLE wx_order ADD aliwap_trade_status VARCHAR(32) NOT NULL DEFAULT '';
+ALTER TABLE wx_order ADD aliwap_buyer_email VARCHAR(64) NOT NULL DEFAULT '';
+ALTER TABLE wx_order ADD aliwap_quantity int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_order ADD aliwap_gmt_payment TIMESTAMP;
+
+ALTER TABLE wx_order ADD KEY gh_id_aliwap_trade_no(gh_id,aliwap_trade_no);
+    
 DROP TABLE IF EXISTS wx_order_arc;
 CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
 
@@ -62,6 +80,8 @@ class MOrder extends ActiveRecord
 //	const STATUS_SHIPPED = 2;
 //	const STATUS_CLOSED_OFFICE = 8;	
 
+	const PAY_KIND_ALIWAP = 0;
+	
 	public function attributeLabels()
 	{
 		return [

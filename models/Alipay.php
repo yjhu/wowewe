@@ -18,7 +18,7 @@ class Alipay
 		$alipay_config['input_charset']= 'utf-8';
 		$alipay_config['cacert']    = getcwd().'\\cacert.pem';
 		$alipay_config['transport']    = 'http';			// https, http
-		U::W($alipay_config);		
+		//U::W($alipay_config);		
 		return $alipay_config;
 	}
 
@@ -271,4 +271,17 @@ class Alipay
 	}
 
 }
-?>
+
+/*
+2014-09-05 13:43:46,Array
+(
+    [partner] => 2088512154429274
+    [key] => 5q33nc4vhjcx46qbywbaoajm47w1nt5x
+    [private_key_path] => key/rsa_private_key.pem
+    [ali_public_key_path] => key/alipay_public_key.pem
+    [sign_type] => MD5
+    [input_charset] => utf-8
+    [cacert] => /mnt/wwwroot/wx/web\cacert.pem
+    [transport] => http
+)
+*/
