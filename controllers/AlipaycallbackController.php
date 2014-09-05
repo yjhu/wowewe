@@ -22,18 +22,19 @@ class AlipaycallbackController extends Controller
 	public $enableCsrfValidation = false;
 
 	//http://wosotech.com/wx/web/alipaycallback.php
-	//http://127.0.0.01/wx/web/alipaycallback.php?out_trade_no=1&trade_no=2&result=success&sign=a
+	//http://127.0.0.01/wx/web/alipaycallback.php?out_trade_no=54096fafee91e&trade_no=2&result=success&sign=a
 	public function actionIndex()
 	{		
 		U::W([__METHOD__,$_GET,$_POST]);
-		$this->layout = false;
+		//$this->layout = false;
+		$this->layout = 'wapy';
 		$alipay_config = Alipay::getAlipayConfig();
 		$alipayNotify = new AlipayNotify($alipay_config);
 		$verify_result = $alipayNotify->verifyReturn();
 		if(!$verify_result)
 		{
 			Alipay::logResult(['Alipaycallback error', __METHOD__,$_GET,$_POST]);
-			return 'Alipaycallback error';
+			//return 'Alipaycallback error';
 		}
 		$result = $_GET['result'];
 		if ($result != 'success')
@@ -52,9 +53,13 @@ class AlipaycallbackController extends Controller
 		$model->aliwap_trade_no = $_GET['trade_no'];
 		$model->status = MOrder::STATUS_OK;
 		if (!$model->save(false))
+		{
 			U::W(['save db error', $_GET, $_POST, $model->getErrors()]);
+			return 'system error';	
+		}
 			
-		return 'Pay OK';
+		//return 'Pay OK';
+		return $this->render('index',['gh_id'=>$model->gh_id, 'openid'=>$model->openid]);
 	}
 	
 	

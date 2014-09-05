@@ -70,7 +70,7 @@
 			<p align="right" >
 	         合计
 			<span  id="total" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
-			 ￥ 50
+			 ￥ <?= sprintf("%0.2f",$model->feesum/100); ?>
 			</span>
 			</p>
 
