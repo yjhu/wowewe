@@ -1007,21 +1007,20 @@ EOD;
 
 
 
+	// just for test pc web
+	public function actionMobilelistxxx()
+	{
+		$this->layout ='wapy';        
+		Yii::$app->session['gh_id'] = MGh::GH_XIANGYANGUNICOM;
+		Yii::$app->session['openid'] =  MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;			
 
-    public function actionMobilelistxxx()
-    {
-//        $this->layout =false;
-        $this->layout ='wapy';        
-			Yii::$app->session['gh_id'] = MGh::GH_XIANGYANGUNICOM;
-			Yii::$app->session['openid'] =  MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;			
-        
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
 		Yii::$app->wx->setGhId($gh_id);
 
-        //return $this->render('mobile');
-        return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid]);
-    }
+		$models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_DESC])->all();
+		return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
+	}
 
     public function actionMobile()
     {

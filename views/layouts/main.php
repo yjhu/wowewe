@@ -5,10 +5,6 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
-/**
- * @var \yii\web\View $this
- * @var string $content
- */
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -28,8 +24,8 @@ AppAsset::register($this);
         <?php
             NavBar::begin([
 				//'brandLabel' => Html::img($asset->baseUrl . '/logo.png'),
-                //'brandLabel' => '襄阳联通官方微信',
-				'brandLabel' => '襄阳联通',
+                'brandLabel' => '襄阳联通官方微信营业厅',
+				//'brandLabel' => '襄阳联通',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
                     'class' => 'navbar-inverse navbar-fixed-top',
@@ -42,7 +38,7 @@ AppAsset::register($this);
                     ['label' => '首页', 'url' => ['/site/index']],
                     //['label' => '关于', 'url' => ['/site/about']],
 					//['label' => '管理', 'url' => ['/admin/index'], 'visible'=>Yii::$app->user->isAdmin],	
-                    ['label' => '商城', 'url' => ['/wap/mobilelistxxx']],
+                    //['label' => '商城', 'url' => ['/wap/mobilelistxxx']],
 					[
 						'label' => '营业厅',
 						'visible' => Yii::$app->user->isOffice,
@@ -94,7 +90,11 @@ AppAsset::register($this);
 	<?php if (!\app\models\Wechat::supportWeixinPay()): ?>
     <footer class="footer">
         <div class="container">
+<!--
             <p class="pull-left">&copy; 沃手科技 <?= date('Y') ?> (鄂ICP备14010852号)</p>
+-->
+            <p class="pull-left">&copy; 襄阳联通 <?= date('Y') ?></p>
+
             <p class="pull-right"><?php //echo Yii::powered() ?></p>
         </div>
     </footer>
