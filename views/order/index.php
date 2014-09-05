@@ -69,12 +69,19 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { return "{$model->username}, {$model->userid}, {$model->usermobile}"; },
 				'headerOptions' => array('style'=>'width:120px;'),			
 			],
-
 			[
 				'attribute' => 'status',
 				'value'=>function ($model, $key, $index, $column) { return $model->statusName; },
 				'filter'=> MOrder::getOrderStatusName(),
 			],
+			[
+				'attribute' => 'pay_kind',
+				'label' => '付款方式',
+				'value'=>function ($model, $key, $index, $column) { return MOrder::getOrderPayKindOption($model->pay_kind); },
+				'filter'=> MOrder::getOrderPayKindOption(),
+				'headerOptions' => array('style'=>'width:60px;'),			
+			],
+
             [
 				'class' => 'yii\grid\ActionColumn',
 				'template' => '{view} {update}',

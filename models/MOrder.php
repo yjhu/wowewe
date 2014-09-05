@@ -80,7 +80,8 @@ class MOrder extends ActiveRecord
 //	const STATUS_SHIPPED = 2;
 //	const STATUS_CLOSED_OFFICE = 8;	
 
-	const PAY_KIND_ALIWAP = 0;
+	const PAY_KIND_CASH = 0;
+	const PAY_KIND_ALIWAP = 1;
 	
 	public function attributeLabels()
 	{
@@ -125,6 +126,15 @@ class MOrder extends ActiveRecord
 			self::STATUS_OK => '交易成功',
 		);		
 		return $arr;
+	}
+
+	static function getOrderPayKindOption($key=null)
+	{
+		$arr = array(
+			self::PAY_KIND_CASH => '现付',
+			self::PAY_KIND_ALIWAP => '支付宝',
+		);		
+		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
 	}
 
 	public function getStatusName()
