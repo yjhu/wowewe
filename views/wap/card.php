@@ -355,7 +355,7 @@ $(document).on("pageinit", "#page2", function(){
             realFee = localStorage.getItem('ychf')/100;
         else
             realFee = 50;
- 
+ 		/* realFee = 0.01 */
 
 		localStorage.setItem("item",$("form#productForm").serialize());
 		$.ajax({
