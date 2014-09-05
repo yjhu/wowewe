@@ -175,46 +175,6 @@
 </div> <!-- page2 end -->
 
 
-<div data-role="page" id="page3" data-theme="c">
-
-	<?php echo $this->render('header1', ['menuId'=>'menu3','title' => $item->title]); ?>
-	
-	<div data-role="content">
-
-		<h2>订单详情</h2>
-		<p id="oid"></p>
-
-        <p><?php echo  $item->title_hint; ?></p>
-        <p id="selectNum">号码：13545296480</p>
-        <p id="office"></p>
-		<p id="contact"></p>
-
-		<p align="right" >
-         合计
-		<span  id="total" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
-		 ￥ 50
-		</span>
-		</p>
-
-        <!--
-		<br>
-		<p>
-		<input type="button" value="确认订单" id="payBtn">
-		</p>
-		-->
-        <a data-ajax=false href="<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>" class="ui-btn">我知道了</a>
-
-		<!--
-		<p id="url"></p>
-		-->
-
-	</div>
-
-	<div data-role="footer" data-position="fixed">
-		<h4>&copy; 襄阳联通 2014</h4>
-	</div>
-	<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
-</div>	<!-- page3 end -->
 
 <div data-role="page" id="contactPage" data-theme="c">
 
@@ -283,7 +243,7 @@
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
 	<?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
-</div>	<!-- page3 end -->
+</div>	<!-- number-select end -->
 
 
 <?php
@@ -410,7 +370,9 @@ $(document).on("pageinit", "#page2", function(){
 					localStorage.setItem("oid",json_data.oid);
 					localStorage.setItem("url",json_data.pay_url);
 
-					$.mobile.changePage("#page3",{transition:"slide"});
+					//$.mobile.changePage("#page3",{transition:"slide"}); //page3 removed!
+					var url = "<?php echo Url::to(['wap/orderinfo'], true); ?>";
+					$.mobile.changePage((url+'&oid='+json_data.oid),{transition:"slide"});
 				}
 				else
 				{
@@ -424,73 +386,6 @@ $(document).on("pageinit", "#page2", function(){
 
 });
 
-$(document).on("pageinit", "#page3", function(){
-
-    var selectNum = localStorage.getItem("num");
-    $("#selectNum").html("号码: "+selectNum);
-	/*remove seleted mobile number from client*/
-	localStorage.removeItem("num");
-
-    office_name = <?php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
-
-    var item = localStorage.getItem("item");
-    item_new = item.replace(/&/g, ";") +';';
-    eval(item_new);
-
-    $("#office").html('所选营业厅: ' +office_name[office] );
-	$("#contact").html('用户信息<br>' +'姓名: '+ localStorage.getItem("username")+'<br>手机: '+ localStorage.getItem("usermobile")+'<br>身份证: '+ localStorage.getItem("userid")  );
-
-	var url = localStorage.getItem("url");
-	//$("#url").html("<a href='"+url+"'>Pay</a>");
-
-	$("#payBtn").click(function(){
-		//1.verfy  address
-
-		//2. submit form
-		//alert('pay ok');
-		/*
-		$.ajax({
-			url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
-			type:"GET",
-			data: $("form#productForm").serialize() +"&feeSum="+feeSum,
-			success:function(data){
-				data = eval('('+data+')');
-				if(data.status == 0)
-				{
-					//alert(data.oid);
-					localStorage.setItem("oid",data.oid);
-					localStorage.setItem("url",data.pay_url);
-					$.mobile.changePage("#page3",{transition:"slide"});
-				}
-				else
-				{
-					return false;
-				}
-			}
-		});
-		*/
-
-		if (isWeiXin()) {
-			var text = window.navigator.userAgent;
-			if (text.indexOf("Android") >= 0) {
-				alert('您的订单已经生成.');
-				//alert("你的手机系统是：安卓");
-			} else if (text.indexOf("iPhone") >= 0) {
-				//alert("你的手机系统是：苹果");
-				location.href=url;
-			} else if (text.indexOf("iPad") >= 0) {
-                location.href=url;
-            }
-            else {
-				alert("尚未识别您的手机");
-			}
-		} else {
-			alert("尚未识别您的手机");
-		}
-
-	   }); /*end of pay submit*/
-
-});
 
 function fillErrmsg(id,errmsg)
 {
