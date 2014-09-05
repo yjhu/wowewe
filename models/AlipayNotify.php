@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use \DOMDocument;
 use app\models\U;
 use app\models\Alipay;
 

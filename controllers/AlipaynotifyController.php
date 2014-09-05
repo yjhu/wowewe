@@ -2,19 +2,16 @@
 
 namespace app\controllers;
 
+use \DOMDocument;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-
 use app\models\U;
 use app\models\WxException;
-
 use app\models\MUser;
 use app\models\MOffice;
-
 use app\models\MOrder;
-use \DOMDocument;
 use app\models\Alipay;
 use app\models\AlipayNotify;
 
@@ -36,52 +33,39 @@ class AlipaynotifyController extends Controller
 			return "fail";
 		}
 
-		$doc = new DOMDocument();	
-		if ($alipay_config['sign_type'] == 'MD5') {
-			$doc->loadXML($_POST['notify_data']);
-		}
-
-		if ($alipay_config['sign_type'] == '0001') {
-			$doc->loadXML($alipayNotify->decrypt($_POST['notify_data']));
-		}
-
-		if(!empty($doc->getElementsByTagName( "notify" )->item(0)->nodeValue)) 
-		{
-			$oid = $doc->getElementsByTagName( "out_trade_no" )->item(0)->nodeValue;
-			$trade_no = $doc->getElementsByTagName( "trade_no" )->item(0)->nodeValue;
-			$trade_status = $doc->getElementsByTagName( "trade_status" )->item(0)->nodeValue;
-			if($trade_status == 'TRADE_FINISHED' || $trade_status == 'TRADE_SUCCESS')
-			{
-				U::W("DOMDocument,$oid, $trade_no, $trade_status");
-			}
-		}
-
-
-		U::W('my code............');
-		
 		if ($alipay_config['sign_type'] == 'MD5') 
 			$respObject = @simplexml_load_string($_POST['notify_data']);
 		else if ($alipay_config['sign_type'] == '0001') 
 			$respObject = @simplexml_load_string($alipayNotify->decrypt($_POST['notify_data']));
 		else
 			Alipay::logResult(['Alipaynotify sign_type error', __METHOD__,$_GET,$_POST]);
-		$respArr = json_decode(json_encode($respObject), true);						
-		U::W($respArr);
-		$arr = $respArr['notify'];
-		$trade_status = $arr['trade_status'];
-		if($trade_status == 'TRADE_FINISHED' || $trade_status == 'TRADE_SUCCESS')
+		$arr = json_decode(json_encode($respObject), true);
+		U::W($arr);
+		$oid = $arr['out_trade_no'];
+		$model = MOrder::findOne($oid);
+		if ($model === null)
 		{
-			$oid = $arr['out_trade_no'];
-			$trade_no = $arr['trade_no'];			
-			//$model = MOrder::findOne($oid);
+			U::W(['Invalid oid', $_GET, $_POST, $arr]);
+			return "success";
+		}
+		$model->pay_kind = MOrder::PAY_KIND_ALIWAP;
+		$model->aliwap_trade_no = $arr['trade_no'];
+		$model->aliwap_total_fee = $arr['total_fee'];
+		$model->aliwap_trade_status = $arr['trade_status'];
+		$model->aliwap_buyer_email = $arr['buyer_email'];
+		$model->aliwap_quantity = $arr['quantity'];
+		$model->aliwap_gmt_payment = $arr['gmt_payment'];
+		if($arr['trade_status'] == 'TRADE_FINISHED' || $arr['trade_status'] == 'TRADE_SUCCESS')
+		{
+			$model->status = MOrder::STATUS_OK;
 		}
 		else
 		{
-			U::W($respArr);
+			U::W(['trade_status is not TRADE_FINISHED', $_GET, $_POST, $arr]);
 		}
-		
+		if (!$model->save(false))
+			U::W(['save db error', $_GET,$_POST, $arr, model->getErrors()]);
 		return "success";
-
 	}
 	
 	
@@ -118,8 +102,32 @@ Array
     [buyer_id] => 2088002275139603
     [notify_id] => 10cfd9d2e9471e10e658d7ed55cb32d45c
     [use_coupon] => N
+    
 )
 
+
+		//$respArr = json_decode(json_encode($respObject), true);						
+		//$arr = $respArr['notify'];
+
+		$doc = new DOMDocument();	
+		if ($alipay_config['sign_type'] == 'MD5') {
+			$doc->loadXML($_POST['notify_data']);
+		}
+
+		if ($alipay_config['sign_type'] == '0001') {
+			$doc->loadXML($alipayNotify->decrypt($_POST['notify_data']));
+		}
+
+		if(!empty($doc->getElementsByTagName( "notify" )->item(0)->nodeValue)) 
+		{
+			$oid = $doc->getElementsByTagName( "out_trade_no" )->item(0)->nodeValue;
+			$trade_no = $doc->getElementsByTagName( "trade_no" )->item(0)->nodeValue;
+			$trade_status = $doc->getElementsByTagName( "trade_status" )->item(0)->nodeValue;
+			if($trade_status == 'TRADE_SUCCESS' || $trade_status == 'TRADE_FINISHED')
+			{
+				U::W("DOMDocument,$oid, $trade_no, $trade_status");
+			}
+		}
 
 */
 
