@@ -262,53 +262,6 @@ text-decoration: line-through;
 </div> <!-- page2 end -->
 
 
-<div data-role="page" id="page3" data-theme="c">
-    <!--
-	<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
-		<h1 id="title"><?php echo  $item->title; ?></h1>
-	</div>
-    -->
-
-    <?php echo $this->render('header2', ['menuId'=>'menu3','title' => $item->title ]); ?>		
-
-	<div data-role="content">
-
-		<h2>订单详情</h2>
-		<p id="oid"></p>
-
-        <p><?php echo  $item->title_hint; ?></p>
-        <p id="selectNum">号码：13545296480</p>
-        <p id="office"></p>
-		<p id="contact"></p>
-
-		<p align="right" >
-         合计
-		<span  id="total" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
-		 ￥ 
-		</span>
-		</p>
-
-        <!--
-		<br>
-		<p>
-		<input type="button" value="确认订单" id="payBtn">
-		</p>
-		-->
-        <a data-ajax=false href="<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>" class="ui-btn">我知道了</a>
-
-		<!--
-		<p id="url"></p>
-		-->
-
-	</div>
-
-	<div data-role="footer" data-position="fixed">
-		<h4>&copy; 襄阳联通 2014</h4>
-	</div>
-    <?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
-</div>	<!-- page3 end -->
-
-
 <div data-role="page" id="contactPage" data-theme="c">
 <!--
 <div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
@@ -387,7 +340,7 @@ text-decoration: line-through;
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
     <?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
-</div>	<!-- page3 end -->
+</div>	<!-- number-select end -->
 
 
 <?php
@@ -549,16 +502,22 @@ $(document).on("pageinit", "#page2", function(){
 		$.ajax({
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			type:"GET",
+            cache:false,
+            dataType:'json',
 			data: $("form#productForm").serialize()+"&cid="+cid+"&planFlag="+planFlag+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
-			success:function(data){
-				data = eval('('+data+')');
-				if(data.status == 0)
+			success:function(json_data){
+				//data = eval('('+data+')');
+
+				if(json_data.status == 0)
 				{
 					//alert(data.oid);
-					localStorage.setItem("oid",data.oid);
-					localStorage.setItem("url",data.pay_url);
+					localStorage.setItem("oid",json_data.oid);
+					localStorage.setItem("url",json_data.pay_url);
 
-                    $.mobile.changePage("#page3",{transition:"slide"});                 
+                    localStorage.removeItem("num");
+                    //$.mobile.changePage("#page3",{transition:"slide"});   
+                    var url = "<?php echo Url::to(['wap/orderinfo'], true); ?>";
+                    $.mobile.changePage((url+'&oid='+json_data.oid),{transition:"slide"});              
 				}
 				else
 				{
@@ -572,14 +531,15 @@ $(document).on("pageinit", "#page2", function(){
 
 });
 
+/*
 $(document).on("pageinit", "#page3", function(){
 
     var selectNum = localStorage.getItem("num");
     $("#selectNum").html("号码: "+selectNum);
-    /*remove seleted mobile number from client*/
+    //remove seleted mobile number from client
     localStorage.removeItem("num");
 
-    office_name = <?php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
+    office_name = <?//php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
 
     var item = localStorage.getItem("item");
     item_new = item.replace(/&/g, ";") +';';
@@ -588,7 +548,7 @@ $(document).on("pageinit", "#page3", function(){
     $("#office").html('所选营业厅: ' +office_name[office] );
 	$("#contact").html('用户信息<br>' +'姓名: '+ localStorage.getItem("username")+'<br>手机: '+ localStorage.getItem("usermobile")+'<br>身份证: '+ localStorage.getItem("userid")  );
 
-    /* show total*/
+    // show total
     if((localStorage.getItem('ychf')/100) >= 50)
         realFee = localStorage.getItem('ychf')/100;
     else
@@ -606,31 +566,6 @@ $(document).on("pageinit", "#page3", function(){
 
 
 	$("#payBtn").click(function(){
-		//1.verfy  address
-
-		//2. submit form
-		//alert('pay ok');
-		/*
-		$.ajax({
-			url: "<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
-			type:"GET",
-			data: $("form#productForm").serialize() +"&feeSum="+feeSum,
-			success:function(data){
-				data = eval('('+data+')');
-				if(data.status == 0)
-				{
-					//alert(data.oid);
-					localStorage.setItem("oid",data.oid);
-					localStorage.setItem("url",data.pay_url);
-					$.mobile.changePage("#page3",{transition:"slide"});
-				}
-				else
-				{
-					return false;
-				}
-			}
-		});
-		*/
 
 		if (isWeiXin()) {
 			var text = window.navigator.userAgent;
@@ -650,9 +585,11 @@ $(document).on("pageinit", "#page3", function(){
 			alert("尚未识别您的手机");
 		}
 
-	   }); /*end of pay submit*/
+	   }); //end of pay submit
 
 });
+*/
+
 
 function fillErrmsg(id,errmsg)
 {

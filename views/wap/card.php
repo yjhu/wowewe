@@ -360,6 +360,7 @@ $(document).on("pageinit", "#page2", function(){
 		localStorage.setItem("item",$("form#productForm").serialize());
 		$.ajax({
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
+			type:"GET",
 			cache:false,
 			dataType:'json',
 			data: $("form#productForm").serialize() +"&cid="+cid+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
