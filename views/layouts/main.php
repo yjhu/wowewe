@@ -95,7 +95,10 @@ AppAsset::register($this);
 -->
             <p class="pull-left">&copy; 襄阳联通 <?= date('Y') ?></p>
 
-            <p class="pull-right"><?php //echo Yii::powered() ?></p>
+
+            <p class="pull-right">
+			<?php //echo Yii::powered() ?>
+			</p>
         </div>
     </footer>
 	<?php endif; ?>
@@ -125,6 +128,8 @@ AppAsset::register($this);
 //'<li class="dropdown-header">Dropdown Header</li>',							
 //['label' => '<span class="glyphicon glyphicon-usd"></span> 我的积分','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
 //['label' => '<span class="glyphicon glyphicon-heart-empty"></span> 会员特权','url' => ['/post/create'],'linkOptions' => ['data-method' => 'post']],
+
+
 
 */
 

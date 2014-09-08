@@ -101,6 +101,18 @@ $config = [
 	'sm' => require(__DIR__ . '/sm.php'),		
 	
     ],
+
+'modules'=>[
+   'dynagrid'=>[
+        'class'=>'\kartik\dynagrid\Module',
+        // other settings (refer documentation)
+    ],
+    'gridview'=>[
+        'class'=>'\kartik\grid\Module',
+        // other module settings
+    ],
+],
+    
     'params' => $params,
 ];
 
