@@ -28,7 +28,7 @@
 
 .productPkgHint
 {
-    color: #cccccc;
+    color: #aaaaaa;
     font-size: 10pt;
 }
 
@@ -74,6 +74,11 @@
 	font-size:10pt;
 	color: #0033cc;
 }
+
+.ui-btn .ui-btn-green
+{
+	background-color: #5aba5a;
+}
 </style>
 	
 
@@ -111,57 +116,73 @@
             <?php echo  $item->pkg_name_hint; ?>
         </p>
 
-	  <div data-role="fieldcontain">
+
 		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 		  <legend>卡类型</legend>
+
+
 		  <input type="radio" name="cardType" id="radio1_0" value="0" checked />
 		  <label for="radio1_0">普通卡</label>
 		  <input type="radio" name="cardType" id="radio1_1" value="1" />
 		  <label for="radio1_1">Micro卡</label>
 		  <input type="radio" name="cardType" id="radio1_2" value="2" />
 		  <label for="radio1_2">Nano卡</label>
+
+		<a href="#popupInfo" data-rel="popup" data-transition="pop" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="help">help</a></p>
+		<div data-role="popup" id="popupInfo" class="ui-content" data-theme="a" style="max-width:350px;">
+		<img width="100%" style="display:block" src="../web/images/item/card.jpg" alt=""/>
+		</div>
 		</fieldset>
-	  </div>
 
-      <img width="100%" style="display:block" src="../web/images/item/card.jpg" alt=""/>
+	  
+	  <br>
 
-		<a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
+    <ul data-role="listview" data-inset="false">
 
-        <a href="#contactPage" class="ui-btn">用户信息</a>
+		<li>
+			<a href="#detail">
+			<p>产品详情</p>
+			</a>
+		</li>
+
+		<li>
+			<a href="#number-select">
+			<p id="sel-num">请选择手机号码</p>
+			</a>
+		</li>
+
+		<li>
+			<a href="#contactPage">
+			<p id="contact">用户信息</p>
+			</a>
+		</li>
+
+		<li>
+			<a href="#office-select">
+			<p id="officeName">营业厅</p>
+			</a>
+		</li>
+
+    </ul>
+	<br>
+		<!--
+		<a  href="#detail" class="ui-btn ui-icon-carat-r ui-btn-icon-right">产品详情</a>
+
+		<a  id="sel-num" href="#number-select" class="ui-btn ui-icon-carat-r ui-btn-icon-right">请选择手机号码</a>
+
+        <a id="contact" href="#contactPage" class="ui-btn ui-icon-carat-r ui-btn-icon-right">用户信息</a>
 
 		<div id="officeArea">
-		<?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
+		<?//php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
 		</div>
+		-->
 
-		<input type="button" value="确认套餐" id="submitBtn">
-		
-		<br>
-		<div id="TabbedPanels2" class="TabbedPanels">
-		  <ul class="TabbedPanelsTabGroup">
-			<li class="TabbedPanelsTab" tabindex="0">图文详情</li>
-            <!--
-			<li class="TabbedPanelsTab" tabindex="0">商品评价</li>
-			-->
-		  </ul>
-		  <div class="TabbedPanelsContentGroup">
-			<div class="TabbedPanelsContent">
+		<a  href="#" id="submitBtn" class="ui-btn" style="background-color: #5aba5a">确认套餐</a>
+		<!--
+		<input type="button" value="确认套餐" id="submitBtn" data-theme="a" style="background-color: green">
+		-->
 
-				<div role="main" class="ui-content">
-                    <?php echo  $item->detail; ?>
-				</div><!-- /content -->        
 
-			</div>
-
-              <!--
-			<div class="TabbedPanelsContent">
-				<div role="main" class="ui-content">
-				<p> 好好好</p>
-				</div>
-			</div>
-            -->
-
-		  </div>
-		</div>       
 	</div>
 </div>
 </form>		
@@ -246,6 +267,40 @@
 </div>	<!-- number-select end -->
 
 
+<div data-role="page" id="detail" data-theme="c">
+
+	<?php echo $this->render('header2', ['menuId'=>'menu6','title' => $item->title]); ?>
+
+	<div data-role="content">
+ 		<?php echo  $item->detail; ?>
+	</div>
+
+	<div data-role="footer" data-position="fixed">
+		<h4>&copy; 襄阳联通 2014</h4>
+	</div>
+	<?php echo $this->render('menu', ['menuId'=>'menu6','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
+
+
+<div data-role="page" id="office-select" data-theme="c">
+
+	<?php echo $this->render('header2', ['menuId'=>'menu7','title' => $item->title]); ?>
+
+	<div data-role="content">
+		<h2>请选择营业厅</h2>
+			<?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false),["id"=>"office"]); ?>
+        <p>
+            <input type="button" value="确定" id="seleOffice">
+        </p>
+	</div>
+
+	<div data-role="footer" data-position="fixed">
+		<h4>&copy; 襄阳联通 2014</h4>
+	</div>
+	<?php echo $this->render('menu', ['menuId'=>'menu7','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
+
+
 <?php
 
 	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
@@ -278,11 +333,6 @@
 	};
 </script>
 
-
-<script>
-var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
-</script>
-
 <script>
 var  currentPage = 1; /*init page num*/
 var size = 8;
@@ -304,8 +354,20 @@ $(document).on("pageshow", "#page2", function(){
 	if(localStorage.getItem("num") != null)
 	{			
 		//alert(localStorage.getItem("num"));
-		$("#sel-num")[0].innerHTML="您选的号码 "+localStorage.getItem("num");
+		$("#sel-num")[0].innerHTML="您选的号码 <span class='productPkgHint'>"+localStorage.getItem("num")+"</span>";
 		//$("#sel-num").trigger('create');
+	}
+
+	if(localStorage.getItem("username") != null)
+	{			
+		$("#contact")[0].innerHTML="用户信息 <span class='productPkgHint'>"+localStorage.getItem("username")+"...</span>";
+	}
+	
+	office_name = <?php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
+
+	if(localStorage.getItem("office") != null)
+	{
+		$("#officeName")[0].innerHTML="营业厅 <span class='productPkgHint'>"+ office_name[localStorage.getItem("office")] +"...</span>";
 	}
 });
 
@@ -330,12 +392,23 @@ $(document).on("pageinit", "#page2", function(){
             selectNum = localStorage.getItem("num");
         }
 
-        if($("[name=office]").val() == 0)
-        {
+       // if($("[name=office]").val() == 0)
+       // {
             //alert("请选择营业厅");
-            $("#officeArea").attr('style', 'border:1px solid #ffffff;background-color:#ff99ff;');
+        //    $("#officeArea").attr('style', 'border:1px solid #ffffff;background-color:#ff99ff;');
+        //    return false;
+       // }
+
+
+        if( localStorage.getItem("office") == null)
+        {
+            $.mobile.changePage("#office",{transition:"slide"});
             return false;
         }
+        else
+        {
+            office = localStorage.getItem("office");
+        }       
 
 
         if( localStorage.getItem("username") == null)
@@ -363,7 +436,7 @@ $(document).on("pageinit", "#page2", function(){
 			type:"GET",
 			cache:false,
 			dataType:'json',
-			data: $("form#productForm").serialize() +"&cid="+cid+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
+			data: $("form#productForm").serialize() +"&cid="+cid+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
 			success:function(json_data){
 				//data = eval('('+data+')');
 				if(json_data.status == 0)
@@ -445,6 +518,16 @@ $(document).on("pageinit", "#contactPage", function(){
 
 });
 
+
+$(document).on("pageinit", "#office-select", function(){
+
+	$("#seleOffice").click(function(){
+		var office = $('#office').val();
+		localStorage.setItem('office',office);
+		$.mobile.changePage("#page2",{transition:"slide"});
+	});
+
+});
 
 $(document).on("pageinit", "#number-select", function(){
 
