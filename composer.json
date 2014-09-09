@@ -22,6 +22,7 @@
 	"require-dev": {
 		"yiisoft/yii2-codeception": "*",
 		"yiisoft/yii2-debug": "*",
+		"kartik-v/yii2-dynagrid": "*",
 		"yiisoft/yii2-gii": "*"
 	},
 	"suggest": {
