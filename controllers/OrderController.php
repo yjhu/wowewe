@@ -274,6 +274,13 @@ class OrderController extends Controller
 			'searchModel' => $searchModel,
 		]);
 	}
+
+	public function actionIphone6delete($id)
+	{
+		$model = \app\models\MIphone6Sub::findOne($id);
+		$model->delete();
+		return $this->redirect(['iphone6sub']);
+	}
 	
 }
 

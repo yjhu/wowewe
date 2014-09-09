@@ -95,12 +95,24 @@ $this->params['breadcrumbs'][] = $this->title;
 				'filter'=> MOrder::getOrderPayKindOption(),
 				'headerOptions' => array('style'=>'width:60px;'),			
 			],
-
+*/
             [
 				'class' => 'yii\grid\ActionColumn',
-				'template' => '{view} {update}',
+				'template' => '{iphone6delete}',
+				'buttons' => [
+					'iphone6delete' => function ($url, $model) {
+						return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+						//return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(), [
+							'title' => Yii::t('yii', 'Delete'),
+							'data-confirm' => Yii::t('yii', '确认要删除此预订用户?'),
+							'data-method' => 'post',
+							'data-pjax' => '0',
+							//'data-pjax' => '1',
+						]);
+					}
+				],
+
 			],
-*/
         ],
     ]); ?>
 
