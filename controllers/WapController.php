@@ -55,7 +55,7 @@ class WapController extends Controller
 	public function init()
 	{
 		//U::W(['init....', $_GET,$_POST, $GLOBALS]);
-		//U::W(['init....', $_GET,$_POST]);
+		U::W(['init....', $_GET,$_POST]);
 	}
 
 	public function beforeAction($action)
@@ -468,6 +468,25 @@ EOD;
 			
 		}		
  		return $this->render('luck', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
+	}	
+
+	//http://127.0.0.1/wx/web/index.php?r=wap/iphone6sub
+	public function actionIphone6sub()
+	{
+		$this->layout = 'wap';
+		$model = new \app\models\MIphone6Sub;
+		if ($model->load(Yii::$app->request->post())) 
+		{
+			if (!$model->save())
+			{
+				U::W([$_GET, $_POST, $model->getErrors()]);
+				Yii::$app->session->setFlash('success','提交出错，请联系客服!');				
+			}
+			else
+				Yii::$app->session->setFlash('success','预订信息提交成功，请您敬侯佳音节！');
+			return $this->refresh();
+		}		
+ 		return $this->render('iphone6sub', ['model' => $model]);
 	}	
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/g2048:gh_1ad98f5481f3
