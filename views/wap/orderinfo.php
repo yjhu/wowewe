@@ -80,7 +80,7 @@
 	         <?= $form->field($model, 'detail')->textinput(['maxlength' => '64', 'placeholder'=>'detail'])->label(false); ?>
 	         <?= $form->field($model, 'feesum')->textinput(['maxlength' => '64', 'placeholder'=>'price', 'value'=>sprintf("%0.2f",$model->feesum/100)])->label(false); ?>
 			</div>
-	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'name' => 'contact-button']) ?>
+	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'name' => 'contact-button', 'style' => 'background-color: #5aba5a']) ?>
 
 	    <?php ActiveForm::end(); ?>
 

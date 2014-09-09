@@ -33,7 +33,7 @@
 
 .productPkgHint
 {
-    color: #cccccc;
+    color: #aaaaaa;
     font-size: 10pt;
 }
 
@@ -82,6 +82,7 @@
 color: red;
 text-decoration: line-through;
 }
+
 </style>
 
 
@@ -212,44 +213,43 @@ text-decoration: line-through;
                 </div>
             </div>
 
+            <br>
 
-       <a  id="sel-num" href="#number-select" class="ui-btn">请选择手机号码</a>
+            <ul data-role="listview" data-inset="false">
 
-       <a href="#contactPage" class="ui-btn">用户信息</a>
+                <li>
+                    <a href="#detail">
+                    <p>产品详情</p>
+                    </a>
+                </li>
 
-       <div id="officeArea">
-       <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
-       </div>
+                <li>
+                    <a href="#number-select">
+                    <p id="sel-num">请选择手机号码</p>
+                    </a>
+                </li>
 
-       <input type="button" value="确认订单" id="submitBtn">
-		
-		<br>
-		<div id="TabbedPanels2" class="TabbedPanels">
-		  <ul class="TabbedPanelsTabGroup">
-			<li class="TabbedPanelsTab" tabindex="0">图文详情</li>
-            <!--
-			<li class="TabbedPanelsTab" tabindex="0">商品评价</li>
-			-->
-		  </ul>
-		  <div class="TabbedPanelsContentGroup">
-			<div class="TabbedPanelsContent">
+                <li>
+                    <a href="#contactPage">
+                    <p id="contact">用户信息</p>
+                    </a>
+                </li>
 
-				<div role="main" class="ui-content">
-                    <?php echo  $item->detail; ?>
-				</div><!-- /content -->        
+                <li>
+                    <a href="#office-select">
+                    <p id="officeName">营业厅</p>
+                    </a>
+                </li>
 
-			</div>
+            </ul>
 
-              <!--
-			<div class="TabbedPanelsContent">
-				<div role="main" class="ui-content">
-				<p> 好好好</p>
-				</div>
-			</div>
-            -->
+        <br>
 
-		  </div>
-		</div>       
+        <a  href="#" id="submitBtn" class="ui-btn" style="background-color: #5aba5a">确认套餐</a>
+        <!--
+        <input type="button" value="确认套餐" id="submitBtn" data-theme="a" style="background-color: green">
+        -->		
+
 	</div>
 </div>
 </form>		
@@ -342,6 +342,39 @@ text-decoration: line-through;
     <?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>	<!-- number-select end -->
 
+<div data-role="page" id="detail" data-theme="c">
+
+    <?php echo $this->render('header2', ['menuId'=>'menu6','title' => $item->title]); ?>
+
+    <div data-role="content">
+        <?php echo  $item->detail; ?>
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+        <h4>&copy; 襄阳联通 2014</h4>
+    </div>
+    <?php echo $this->render('menu', ['menuId'=>'menu6','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
+
+
+<div data-role="page" id="office-select" data-theme="c">
+
+    <?php echo $this->render('header2', ['menuId'=>'menu7','title' => $item->title]); ?>
+
+    <div data-role="content">
+        <h2>请选择营业厅</h2>
+            <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false),["id"=>"office"]); ?>
+        <p>
+            <input type="button" value="确定" id="seleOffice">
+        </p>
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+        <h4>&copy; 襄阳联通 2014</h4>
+    </div>
+    <?php echo $this->render('menu', ['menuId'=>'menu7','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
+
 
 <?php
 	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
@@ -398,10 +431,24 @@ $(document).on("pageshow", "#page2", function(){
     if(localStorage.getItem("num") != null)
     {           
         //alert(localStorage.getItem("num"));
-        $("#sel-num")[0].innerHTML="您选的号码 "+localStorage.getItem("num");
+        $("#sel-num")[0].innerHTML="您选的号码 <span class='productPkgHint'>"+localStorage.getItem("num")+"</span>";
         //$("#sel-num").trigger('create');
     }
+
+    if(localStorage.getItem("username") != null)
+    {           
+        $("#contact")[0].innerHTML="用户信息 <span class='productPkgHint'>"+localStorage.getItem("username")+"...</span>";
+    }
+
+    office_name = <?php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
+
+    if(localStorage.getItem("office") != null)
+    {
+        $("#officeName")[0].innerHTML="营业厅 <span class='productPkgHint'>"+ office_name[localStorage.getItem("office")] +"...</span>";
+    }    
+    
 });
+
 
 $(document).on("pageinit", "#page2", function(){
 
@@ -468,11 +515,21 @@ $(document).on("pageinit", "#page2", function(){
         }
 
 
-        if($("[name=office]").val() == 0)
-        {
+       // if($("[name=office]").val() == 0)
+       // {
             //alert("请选择营业厅");
-            $("#officeArea").attr('style', 'border:1px solid #ffffff;background-color:#ff99ff;');
+        //    $("#officeArea").attr('style', 'border:1px solid #ffffff;background-color:#ff99ff;');
+        //    return false;
+       // }
+
+        if( localStorage.getItem("office") == null)
+        {
+            $.mobile.changePage("#office",{transition:"slide"});
             return false;
+        }
+        else
+        {
+            office = localStorage.getItem("office");
         }
 
         if( localStorage.getItem("username") == null)
@@ -504,7 +561,7 @@ $(document).on("pageinit", "#page2", function(){
 			type:"GET",
             cache:false,
             dataType:'json',
-			data: $("form#productForm").serialize()+"&cid="+cid+"&planFlag="+planFlag+"&feeSum="+realFee+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
+			data: $("form#productForm").serialize()+"&cid="+cid+"&planFlag="+planFlag+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
 			success:function(json_data){
 				//data = eval('('+data+')');
 
@@ -647,6 +704,15 @@ $(document).on("pageinit", "#contactPage", function(){
 
 });
 
+$(document).on("pageinit", "#office-select", function(){
+
+    $("#seleOffice").click(function(){
+        var office = $('#office').val();
+        localStorage.setItem('office',office);
+        $.mobile.changePage("#page2",{transition:"slide"});
+    });
+
+});
 
 $(document).on("pageinit", "#number-select", function(){
 
