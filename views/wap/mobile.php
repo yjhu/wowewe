@@ -245,7 +245,7 @@ text-decoration: line-through;
 
         <br>
 
-        <a  href="#" id="submitBtn" class="ui-btn" style="background-color: #5aba5a">确认套餐</a>
+        <a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">确认套餐</a>
         <!--
         <input type="button" value="确认套餐" id="submitBtn" data-theme="a" style="background-color: green">
         -->		
