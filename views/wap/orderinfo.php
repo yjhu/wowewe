@@ -57,9 +57,9 @@
 		<h2>订单详情</h2>
 
 			<p id="oid">订单号: <?= $model->oid; ?></p>
-	        <p id="title">商品名称: <?= $model->title; ?></p>
+	        <p id="title">商品名称: <?= MItem::getItemCatName($model->cid); ?></p>
 	        <p id="selectNum">所选号码: <?= $model->select_mobnum; ?></p>
-	        <p id="office">营业厅: <?= $model->office->title; ?></p>
+	        <p id="office">营业厅: <?= $model->office->title; ?> (<?= $model->office->address; ?>)</p>
 	        <hr color="#F7C708">
 			<p id="contact">
 				用户信息<br>姓名: <?= $model->username; ?> <br>
