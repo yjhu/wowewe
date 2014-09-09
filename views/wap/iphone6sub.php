@@ -6,7 +6,7 @@ use yii\helpers\Url;
 
 $this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js?v0.1');
 
-$this->title = 'IPhone6 预订';
+$this->title = 'iPhone6 预订';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -17,13 +17,15 @@ $this->title = 'IPhone6 预订';
 		);
 	?>
 
+	<h3><?php echo Html::encode($this->title) ?><!--，祝您好运！-->，已有<span style="font-size:48px;color:#ff0000;"><?= $n ?></span>人预订</h3>  
+
 	<?php if (Yii::$app->session->hasFlash('success')): ?>
 		<div class="alert alert-success flash-success">
 			<?php echo Yii::$app->session->getFlash('success'); ?>
 		</div>
 	<?php else: ?>
-		<h3><?php echo Html::encode($this->title) ?><!--，祝您好运！--></h3>
 	<?php endif; ?>
+
 
 <div class="row">
 	<div class="col-lg-12 col-md-12 col-sm-12">

@@ -263,6 +263,17 @@ class OrderController extends Controller
 			'dataProvider' => $dataProvider,
 		]);		
 	}
+
+	public function actionIphone6sub()
+	{
+		$searchModel = new \app\models\MIphone6SubSearch;
+		$dataProvider = $searchModel->search($_GET);
+
+		return $this->render('iphone6sub', [
+			'dataProvider' => $dataProvider,
+			'searchModel' => $searchModel,
+		]);
+	}
 	
 }
 

@@ -7,7 +7,7 @@ CREATE TABLE wx_iphone6sub (
 	id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	user_name VARCHAR(32) NOT NULL DEFAULT '',
 	user_contact VARCHAR(128) NOT NULL DEFAULT '',
-	user_id VARCHAR(16) NOT NULL DEFAULT '',
+	user_id VARCHAR(32) NOT NULL DEFAULT '',
 	create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	KEY idx_create_time(create_time)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -44,6 +44,7 @@ class MIphone6Sub extends ActiveRecord
 			'user_name'=>'姓名',
 			'user_contact'=>'联系方式',
 			'user_id'=>'身份证号码',
+			'create_time'=>'提交时间',
 		];
 	}
 
