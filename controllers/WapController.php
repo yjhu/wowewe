@@ -480,13 +480,15 @@ EOD;
 			if (!$model->save())
 			{
 				U::W([$_GET, $_POST, $model->getErrors()]);
-				Yii::$app->session->setFlash('success','提交出错，请联系客服!');				
+				//Yii::$app->session->setFlash('success','提交出错，请联系客服!');				
+				Yii::$app->session->setFlash('success','此身份证号码已存在!');				
 			}
 			else
 				Yii::$app->session->setFlash('success','预订信息提交成功，请您敬侯佳音节！');
 			return $this->refresh();
 		}		
- 		return $this->render('iphone6sub', ['model' => $model]);
+		$n = \app\models\MIphone6Sub::find()->count();								
+ 		return $this->render('iphone6sub', ['model' => $model, 'n'=>$n+999]);
 	}	
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/g2048:gh_1ad98f5481f3
