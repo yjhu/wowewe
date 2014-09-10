@@ -153,7 +153,8 @@ text-decoration: line-through;
                     </a>
                 </li>
 
-                <li>
+           
+                <li id="sel-num-li">
                     <a href="#number-select">
                     <p id="sel-num">请选择手机号码</p>
                     </a>
@@ -165,17 +166,17 @@ text-decoration: line-through;
                     </a>
                 </li>
 
-                <li>
+                <li id="contact-li">
                     <a href="#contactPage">
                     <p id="contact">用户信息</p>
                     </a>
                 </li>
 
-                <li>
+                <li id="office-li">
                     <a href="#office-select">
                     <p id="officeName">营业厅</p>
                     </a>
-                </li>
+                </li>  
 
             </ul>
 
@@ -427,6 +428,11 @@ planFlag = 'plan66';
 //$().ready(function() {
 var cid = <?php echo $_GET['cid']; ?>;
 
+var ctrl_mobnumber = "<?php echo  $item->ctrl_mobnumber; ?>";
+var ctrl_userinfo = "<?php echo  $item->ctrl_userinfo; ?>";
+var ctrl_office = "<?php echo  $item->ctrl_office; ?>";
+var ctrl_supportpay = "<?php echo  $item->ctrl_supportpay; ?>";
+
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
 	if (ua.match(/MicroMessenger/i) == 'micromessenger') {
@@ -437,6 +443,39 @@ function isWeiXin() {
 }
 
 $(document).on("pageshow", "#page2", function(){
+
+    /*item ctrl begin --------------------------------------------*/
+    if(ctrl_mobnumber == 0)
+    {
+        $("#sel-num-li").hide();
+    }
+    else
+    {
+        $("#sel-num-li").show();
+    }
+
+    if(ctrl_userinfo == 0)
+    {
+        $("#contact-li").hide();
+    }
+    else
+    {
+        $("#contact-li").show();
+    }
+    
+    if(ctrl_office == 0)
+    {
+        $("#office-li").hide();
+    }
+    else
+    {
+        $("#office-li").show();
+    }
+    
+
+
+    /*item ctrl end --------------------------------------------------*/
+
     if(localStorage.getItem("num") != null)
     {           
         //alert(localStorage.getItem("num"));
@@ -551,21 +590,26 @@ $(document).on("pageinit", "#page2", function(){
 
 	var cardType = 0;
 
-    $("[name=office]").change(function(){
-        if($("[name=office]").val() != 0)
-            $("#officeArea").removeAttr('style');
-    });
+    selectNum = null;
+    office = null;
+    username = null;
+    usermobile = null;
+    userid = null;
 
 	//submit form
     $(document).on("tap", "#submitBtn", function(){
-        if( localStorage.getItem("num") == null)
+
+        if(ctrl_mobnumber != 0)
         {
-            $.mobile.changePage("#number-select",{transition:"slide"});
-            return false;
-        }
-        else
-        {
-            selectNum = localStorage.getItem("num");
+            if( localStorage.getItem("num") == null)
+            {
+                $.mobile.changePage("#number-select",{transition:"slide"});
+                return false;
+            }
+            else
+            {
+                selectNum = localStorage.getItem("num");
+            }
         }
 
 
@@ -576,32 +620,46 @@ $(document).on("pageinit", "#page2", function(){
         //    return false;
        // }
 
-        if( localStorage.getItem("office") == null)
+        if(ctrl_office != 0)
         {
-            $.mobile.changePage("#office",{transition:"slide"});
+            if( localStorage.getItem("office") == null)
+            {
+                $.mobile.changePage("#office",{transition:"slide"});
+                return false;
+            }
+            else
+            {
+                office = localStorage.getItem("office");
+            }
+        }
+
+        if(ctrl_userinfo != 0)
+        {
+            if( localStorage.getItem("username") == null)
+            {
+                $.mobile.changePage("#contactPage",{transition:"slide"});
+                return false;
+            }
+            else
+            {
+                username = localStorage.getItem("username");
+                usermobile = localStorage.getItem("usermobile");
+                userid = localStorage.getItem("userid");
+            }
+        }      
+
+        if( localStorage.getItem("planFlag") == null)
+        {
+            $.mobile.changePage("#package",{transition:"slide"});
             return false;
         }
         else
         {
-            office = localStorage.getItem("office");
+            planFlag = localStorage.getItem("planFlag");
+            plan66 = localStorage.getItem("plan66");
+            plan96 = localStorage.getItem("plan96");
+            plan126 = localStorage.getItem("plan126");
         }
-
-        if( localStorage.getItem("username") == null)
-        {
-            $.mobile.changePage("#contactPage",{transition:"slide"});
-            return false;
-        }
-        else
-        {
-            username = localStorage.getItem("username");
-            usermobile = localStorage.getItem("usermobile");
-            userid = localStorage.getItem("userid");
-        }        
-
-        planFlag = localStorage.getItem("planFlag");
-        plan66 = localStorage.getItem("plan66");
-        plan96 = localStorage.getItem("plan96");
-        plan126 = localStorage.getItem("plan126");
 
         if((localStorage.getItem('ychf')/100) >= 50)
             realFee = localStorage.getItem('ychf')/100;
