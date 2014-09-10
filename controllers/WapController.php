@@ -1248,59 +1248,65 @@ EOD;
 		$model = MOrder::findOne($oid);		
 		if (\Yii::$app->request->isPost) 
 		{
-			$this->layout = false;		
-			 $model->setAttributes($_POST['MOrder'], false);
-			//U::W($model->getAttributes());
-			$alipay_config = Alipay::getAlipayConfig();			
-			$format = "xml";
-			$v = "2.0";
-			$req_id = uniqid();
-			$notify_url = "http://wosotech.com/wx/web/alipaynotify.php";
-			$call_back_url = "http://wosotech.com/wx/web/alipaycallback.php";
-			$merchant_url = "http://wosotech.com/wx/web/alipaymerchant.php";			
-			$seller_email = 'wosotech@126.com';
-			$out_trade_no = $model->oid;
-			$subject = $model->detail;
-			$total_fee = $model->feesum;
-			$req_data = '<direct_trade_create_req><notify_url>'.$notify_url.'</notify_url><call_back_url>'.$call_back_url.'</call_back_url><seller_account_name>'.$seller_email.'</seller_account_name><out_trade_no>' . $out_trade_no . '</out_trade_no><subject>'.$subject.'</subject><total_fee>'.$total_fee.'</total_fee><merchant_url>'.$merchant_url.'</merchant_url></direct_trade_create_req>';
-			$para_token = array(
-				"service" => "alipay.wap.trade.create.direct",
-				"partner" => trim($alipay_config['partner']),
-				"sec_id" => trim($alipay_config['sign_type']),
-				"format"	=> $format,
-				"v"	=> $v,
-				"req_id"	=> $req_id,
-				"req_data"	=> $req_data,
-				"_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
-			);
-			//U::W($para_token);
-			$alipaySubmit = new AlipaySubmit($alipay_config);
-			$html_text = $alipaySubmit->buildRequestHttp($para_token);
-			//U::W($html_text);
-			$html_text = urldecode($html_text);
-			$arr = $alipaySubmit->parseResponse($html_text);
-			if(!empty($arr['res_error'])) 
+			$model->setAttributes($_POST['MOrder'], false);
+			if ($model->pay_kind == MOrder::PAY_KIND_CASH) 
+				return $this->redirect(['wap/order']);		
+				
+			if ($model->pay_kind == MOrder::PAY_KIND_ALIWAP) 
 			{
-				U::W($arr);
-				$msg =  print_r($arr['res_error_arr'], true);
-				return $this->render('alipay_msg', ['msg' => $msg]);				
+				$this->layout = false;					 
+				//U::W($model->getAttributes());
+				$alipay_config = Alipay::getAlipayConfig();			
+				$format = "xml";
+				$v = "2.0";
+				$req_id = uniqid();
+				$notify_url = "http://wosotech.com/wx/web/alipaynotify.php";
+				$call_back_url = "http://wosotech.com/wx/web/alipaycallback.php";
+				$merchant_url = "http://wosotech.com/wx/web/alipaymerchant.php";			
+				$seller_email = 'wosotech@126.com';
+				$out_trade_no = $model->oid;
+				$subject = $model->detail;
+				$total_fee = $model->feesum;
+				$req_data = '<direct_trade_create_req><notify_url>'.$notify_url.'</notify_url><call_back_url>'.$call_back_url.'</call_back_url><seller_account_name>'.$seller_email.'</seller_account_name><out_trade_no>' . $out_trade_no . '</out_trade_no><subject>'.$subject.'</subject><total_fee>'.$total_fee.'</total_fee><merchant_url>'.$merchant_url.'</merchant_url></direct_trade_create_req>';
+				$para_token = array(
+					"service" => "alipay.wap.trade.create.direct",
+					"partner" => trim($alipay_config['partner']),
+					"sec_id" => trim($alipay_config['sign_type']),
+					"format"	=> $format,
+					"v"	=> $v,
+					"req_id"	=> $req_id,
+					"req_data"	=> $req_data,
+					"_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
+				);
+				//U::W($para_token);
+				$alipaySubmit = new AlipaySubmit($alipay_config);
+				$html_text = $alipaySubmit->buildRequestHttp($para_token);
+				//U::W($html_text);
+				$html_text = urldecode($html_text);
+				$arr = $alipaySubmit->parseResponse($html_text);
+				if(!empty($arr['res_error'])) 
+				{
+					U::W($arr);
+					$msg =  print_r($arr['res_error_arr'], true);
+					return $this->render('alipay_msg', ['msg' => $msg]);				
+				}
+				//U::W($arr);
+				$request_token = $arr['request_token'];
+				$req_data = '<auth_and_execute_req><request_token>'.$request_token.'</request_token></auth_and_execute_req>';
+				$parameter = array(
+					"service" => "alipay.wap.auth.authAndExecute",
+					"partner" => trim($alipay_config['partner']),
+					"sec_id" => trim($alipay_config['sign_type']),
+					"format"	=> $format,
+					"v"	=> $v,
+					"req_id"	=> $req_id,
+					"req_data"	=> $req_data,
+					"_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
+				);
+				$alipaySubmit = new AlipaySubmit($alipay_config);
+				$html_text = $alipaySubmit->buildRequestForm($parameter, 'get', 'OK');
+				return $this->render('alipay_submit', ['msg' => $html_text]);	
 			}
-			//U::W($arr);
-			$request_token = $arr['request_token'];
-			$req_data = '<auth_and_execute_req><request_token>'.$request_token.'</request_token></auth_and_execute_req>';
-			$parameter = array(
-				"service" => "alipay.wap.auth.authAndExecute",
-				"partner" => trim($alipay_config['partner']),
-				"sec_id" => trim($alipay_config['sign_type']),
-				"format"	=> $format,
-				"v"	=> $v,
-				"req_id"	=> $req_id,
-				"req_data"	=> $req_data,
-				"_input_charset"	=> trim(strtolower($alipay_config['input_charset']))
-			);
-			$alipaySubmit = new AlipaySubmit($alipay_config);
-			$html_text = $alipaySubmit->buildRequestForm($parameter, 'get', 'OK');
-			return $this->render('alipay_submit', ['msg' => $html_text]);								
 		}	
 		//$office = MOffice::findOne($model->office_id);
 		return $this->render('orderinfo',['gh_id'=>$gh_id, 'openid'=>$openid, 'model' => $model]);

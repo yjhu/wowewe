@@ -108,6 +108,8 @@ class MOrder extends ActiveRecord
 	{
 		return [
 			[['status'], 'integer'],            		
+			[['select_mobnum'],  'string', 'min' => 11, 'max' => 11],
+			[['select_mobnum'],  'number'],			
 		];
 	}
 
@@ -127,6 +129,7 @@ class MOrder extends ActiveRecord
 		$arr = array(
 			self::STATUS_AUTION => '等待付款',
 			self::STATUS_OK => '交易成功',
+			self::STATUS_CLOSED_USER => '取消订单',
 		);		
 		return $arr;
 	}
