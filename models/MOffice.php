@@ -19,9 +19,15 @@ CREATE TABLE wx_office (
 	lon float(10,6) NOT NULL DEFAULT '0.000000',
 	lat_bd09 float(10,6) NOT NULL DEFAULT '0.000000',
 	lon_bd09 float(10,6) NOT NULL DEFAULT '0.000000',
+	visable tinyint(3) NOT NULL DEFAULT 0,
 	KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
+ALTER TABLE wx_office ADD visable tinyint(3) NOT NULL DEFAULT 0;
+UPDATE wx_office SET visable=1 WHERE gh_id = 'gh_03a74ac96138' AND office_id<='24';
+UPDATE wx_office SET visable=2 WHERE gh_id = 'gh_03a74ac96138' AND office_id='25';
+UPDATE wx_office SET visable=1 WHERE gh_id = 'gh_1ad98f5481f3';
 
 ALTER TABLE wx_office ADD lat float(10,6) NOT NULL DEFAULT '0.000000';
 ALTER TABLE wx_office ADD lon float(10,6) NOT NULL DEFAULT '0.000000';
@@ -137,14 +143,30 @@ class MOffice extends ActiveRecord
 	public function rules()
 	{
 		return [
-			['title', 'string', 'max' => 128],
-			['title', 'filter', 'filter' => 'trim'],
+			[['title','address','manager','mobile'], 'string', 'max' => 128],
+			[['title','address','manager','mobile'], 'filter', 'filter' => 'trim'],
+			[['lat','lon', 'visable'], 'number'],
+		];
+	}
+
+	public function attributeLabels()
+	{
+		return [
+			'office_id' => '营业厅编号',
+			'title' => '营业厅名称',
+			'address' => '营业厅地址',
+			'manager' => '主管姓名',
+			'mobile' => '手机号',
+			'lat' => '纬度',
+			'lon' => '经度',
+			'visable' => '是否显示',
 		];
 	}
 
 	public static function getOfficeNameOption($gh_id, $json=true, $need_prompt=true)
 	{
-		$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
+		//$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
+		$offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();
 		$listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
 		foreach($offices as $office)
 		{
@@ -156,7 +178,8 @@ class MOffice extends ActiveRecord
 
 	public static function getOfficeNameOptionSimple($gh_id, $json=true, $need_prompt=true)
 	{
-		$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
+		//$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
+		$offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();		
 		$listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
 		foreach($offices as $office)
 		{
@@ -169,7 +192,8 @@ class MOffice extends ActiveRecord
 
 	public static function getOfficeNameOptionSimple1($gh_id, $json=true, $need_prompt=true)
 	{
-		$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(25)->asArray()->all();
+		//$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(25)->asArray()->all();
+		$offices = MOffice::find()->where("gh_id = :gh_id AND visable >= :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();				
 		$listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
 		foreach($offices as $office)
 		{

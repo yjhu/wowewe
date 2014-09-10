@@ -32,8 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'label' => '姓名',
 				'attribute' => 'name',
-				'headerOptions' => array('style'=>'width:25%;'),	
+				'headerOptions' => array('style'=>'width:20%;'),	
 			],
+			[
+				'label' => '手机号',
+				'attribute' => 'mobile',
+				'headerOptions' => array('style'=>'width:20%;'),	
+			],
+
 /*
 			[
 				'label' => '推广成绩',
@@ -44,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'label' => '推广成绩',
 				'attribute' => 'score',
-				'headerOptions' => array('style'=>'width:25%;'),	
+				'headerOptions' => array('style'=>'width:20%;'),	
 				'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
 						return Html::a($model['score'], ['staffscoredetail', 'gh_id' => $model['gh_id'], 'openid' => $model['openid']], [
@@ -58,13 +64,13 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'label' => '所在部门编号',
 				'attribute' => 'office_id',
-				'headerOptions' => array('style'=>'width:25%;'),	
+				'headerOptions' => array('style'=>'width:20%;'),	
 			],
 			[
 				'label' => '部门名称',
 				'attribute' => 'title',
 //				'headerOptions' => array('style'=>'width:200px;'),	
-				'headerOptions' => array('style'=>'width:25%;'),	
+				'headerOptions' => array('style'=>'width:20%;'),	
 			],
         ],
     ]); ?>

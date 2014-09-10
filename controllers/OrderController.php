@@ -19,6 +19,7 @@ use app\models\MUserSearch;
 use app\models\MStaff;
 use app\models\MStaffSearch;
 use app\models\MOffice;
+use app\models\MOfficeSearch;
 
 class OrderController extends Controller
 {
@@ -211,7 +212,7 @@ class OrderController extends Controller
 		$dataProvider = new ArrayDataProvider([
 			'allModels' => $rows,
 			'sort' => [
-				'attributes' => ['score', 'name'],
+				'attributes' => ['score', 'name', 'mobile'],
 			],
 			'pagination' => [
 				'pageSize' => 50,
@@ -268,7 +269,6 @@ class OrderController extends Controller
 	{
 		$searchModel = new \app\models\MIphone6SubSearch;
 		$dataProvider = $searchModel->search($_GET);
-
 		return $this->render('iphone6sub', [
 			'dataProvider' => $dataProvider,
 			'searchModel' => $searchModel,
@@ -280,6 +280,94 @@ class OrderController extends Controller
 		$model = \app\models\MIphone6Sub::findOne($id);
 		$model->delete();
 		return $this->redirect(['iphone6sub']);
+	}
+
+	public function actionIphone6subdownload()
+	{
+		$searchModel = new \app\models\MIphone6SubSearch;
+		$dataProvider = $searchModel->search($_GET);
+		//$dataProvider->setPagination(false);
+		//$data = $dataProvider->getModels();
+		$query = clone $dataProvider->query;
+		$data = $query->asArray()->all($dataProvider->db);
+		U::W($data);
+		$filename = Yii::$app->getRuntimePath().'/iphone6.csv';
+		$csv = new \app\models\ECSVExport($data);
+		$csv->toCSV($filename); 
+		Yii::$app->response->sendFile($filename);
+		return;
+	}
+
+	public function actionOfficelist()
+	{
+		$searchModel = new MOfficeSearch;
+		$dataProvider = $searchModel->search($_GET);
+		return $this->render('officelist', [
+			'dataProvider' => $dataProvider,
+			'searchModel' => $searchModel,
+		]);
+	}
+
+	public function actionOfficeView($id)
+	{
+		return $this->render('officeview', [
+			'model' => $this->findOfficeModel($id),
+		]);
+	}
+
+	public function actionOfficecreate()
+	{
+		$model = new MOffice;
+		if (Yii::$app->request->isPost) 
+		{
+			$model->load(Yii::$app->request->post());
+			$model->gh_id = Yii::$app->user->getGhid();
+			if ($model->save()) 
+			{
+				return $this->redirect(['officelist']);			
+			}
+			else
+			{
+				U::W($model->getErrors());
+			}
+		}
+		return $this->render('officecreateupdate', ['model' => $model]);				
+	}
+
+	public function actionOfficeupdate($id)
+	{
+		$model = MOffice::findOne($id);
+		if (!$model) {
+			throw new NotFoundHttpException();
+		}
+		if (\Yii::$app->request->isPost) 
+		{
+			$model->load(\Yii::$app->request->post());
+			if ($model->save()) 
+			{				
+				return $this->redirect(['officelist']);			
+			}
+			else
+			{
+				U::W($model->getErrors());
+			}			
+		}
+		return $this->render('officecreateupdate', ['model' => $model]);		
+	}
+
+	public function actionOfficedelete($id)
+	{
+		$this->findOfficeModel($id)->delete();
+		return $this->redirect(['officelist']);
+	}
+
+	protected function findOfficeModel($id)
+	{
+		if (($model = MOffice::findOne($id)) !== null) {
+			return $model;
+		} else {
+			throw new NotFoundHttpException('The requested page does not exist.');
+		}
 	}
 	
 }

@@ -45,6 +45,7 @@ AppAsset::register($this);
 						'items' => [
 							['label' => '订单管理','url' => ['/order/index'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '员工管理','url' => ['/order/stafflist'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '营业厅管理','url' => ['/order/officelist'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isAdmin],
 							'<li class="divider"></li>',
 							['label' => '员工推广成绩排行','url' => ['/order/stafftop'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isAdmin],
 							['label' => '营业厅推广成绩排行','url' => ['/order/officetop'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isAdmin],

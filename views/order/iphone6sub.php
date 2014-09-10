@@ -19,6 +19,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<h1><?php //echo Html::encode($this->title) ?></h1>
 
+    <p>
+		<?php //echo Html::a('下载 <span class="glyphicon glyphicon-arrow-down"></span>', ['iphone6subdownload'], ['class' => 'btn btn-success']) ?>
+    </p>
+
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([

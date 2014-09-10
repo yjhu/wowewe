@@ -9,12 +9,12 @@ CREATE TABLE wx_contract (
 	cid int(10) unsigned NOT NULL DEFAULT '0',
 	3g4g VARCHAR(16) NOT NULL DEFAULT '',
 	month_fee VARCHAR(8) NOT NULL DEFAULT '',
+	period int(10) unsigned NOT NULL DEFAULT '0',	
 	price int(10) unsigned NOT NULL DEFAULT '0',
 	prom_price int(10) unsigned NOT NULL DEFAULT '0',
 	ychf int(10) unsigned NOT NULL DEFAULT '0',
 	income_return int(10) unsigned NOT NULL DEFAULT '0',
 	month_return int(10) unsigned NOT NULL DEFAULT '0',
-	period int(10) unsigned NOT NULL DEFAULT '0',
 	KEY idx_gh_id_cid(gh_id,cid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
