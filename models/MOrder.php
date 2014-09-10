@@ -82,6 +82,7 @@ class MOrder extends ActiveRecord
 
 	const PAY_KIND_CASH = 0;
 	const PAY_KIND_ALIWAP = 1;
+	const PAY_KIND_WECHAT = 2;
 
 	const NO_CHOICE = 'null';
 	
@@ -133,8 +134,9 @@ class MOrder extends ActiveRecord
 	static function getOrderPayKindOption($key=null)
 	{
 		$arr = array(
-			self::PAY_KIND_CASH => '现付',
+			self::PAY_KIND_CASH => '自取',
 			self::PAY_KIND_ALIWAP => '支付宝',
+			self::PAY_KIND_WECHAT => '微信支付',
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
 	}

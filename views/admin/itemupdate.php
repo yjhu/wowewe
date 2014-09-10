@@ -30,6 +30,11 @@ $this->params['breadcrumbs'][] = '修改';
 
 		<?= $form->field($model, 'detail')->textArea() ?>
 
+		<?= $form->field($model, 'ctrl_mobnumber')->textInput(['maxlength' => 10]) ?>
+		<?= $form->field($model, 'ctrl_userinfo')->textInput(['maxlength' => 10]) ?>
+		<?= $form->field($model, 'ctrl_office')->textInput(['maxlength' => 10]) ?>
+		<?= $form->field($model, 'ctrl_supportpay')->textInput(['maxlength' => 10]) ?>
+
 		<div class="form-group">
 			<?= Html::submitButton($model->isNewRecord ? '创建' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 		</div>
