@@ -107,7 +107,7 @@ class MOrder extends ActiveRecord
 	public function rules()
 	{
 		return [
-			[['status'], 'integer'],            		
+			[['status', 'pay_kind'], 'integer'],            		
 			[['select_mobnum'],  'string', 'min' => 11, 'max' => 11],
 			[['select_mobnum'],  'number'],			
 		];
