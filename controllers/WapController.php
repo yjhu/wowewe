@@ -1249,8 +1249,12 @@ EOD;
 		if (\Yii::$app->request->isPost) 
 		{
 			$model->setAttributes($_POST['MOrder'], false);
+U::W($model->getAttributes());			
 			if ($model->pay_kind == MOrder::PAY_KIND_CASH) 
+			{
+				U::W('111111122');			
 				return $this->redirect(['wap/order']);		
+			}
 				
 			if ($model->pay_kind == MOrder::PAY_KIND_ALIWAP) 
 			{

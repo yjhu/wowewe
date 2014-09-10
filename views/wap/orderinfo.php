@@ -53,10 +53,12 @@
 	
 	<div data-role="content">
 		<script>
-
-			$("#paykind-field").hide();
-			$("#btn-pay").html("我知道了");
-
+			var supportpay = 0;
+			if(supportpay == 0)
+			{
+				$("#paykind-field").hide();
+				$("#btn-pay").html("我知道了");
+			}
 		</script>
 
 		<h2>订单详情</h2>
