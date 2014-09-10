@@ -59,7 +59,7 @@ INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac9
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '22', 'office#22','1', 1);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '23', 'office#23','1', 1);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '24', 'office#24','1', 1);
-
+INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '74', 'office#74','1', 1);
 */
 
 use Yii;
