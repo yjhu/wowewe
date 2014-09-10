@@ -87,17 +87,6 @@ text-decoration: line-through;
 
 
 <div data-role="page" id="page2" data-theme="c">
-
-    <!--
-	<div data-role="header">
-        <a href="<?//php echo  Url::to(['wap/mobilelist'],true) ?>" data-rel="back">返回</a>
-
-        <h1 id="title">
-            <?//php echo  $item->title; ?>
-        </h1>
-	</div>
-    -->
-
    
     <?php echo $this->render('header1', ['menuId'=>'menu2','title' => $item->title ]); ?>
 
@@ -154,65 +143,6 @@ text-decoration: line-through;
 		</fieldset>
 	  </div>
 
-
-            <div id="TabbedPanels1" class="TabbedPanels">
-                <ul class="TabbedPanelsTabGroup">
-                    <li class="TabbedPanelsTab" tabindex="0" id="Title66">月消费66元</li>
-                    <li class="TabbedPanelsTab" tabindex="0" id="Title96">月消费96元</li>
-                    <li class="TabbedPanelsTab" tabindex="0" id="Title126">月消费126元</li>
-                </ul>
-                <div class="TabbedPanelsContentGroup">
-                    <div class="TabbedPanelsContent">
-                        <div role="main" class="ui-content">
-                            <fieldset data-role="controlgroup">
-                                <legend>套餐类型</legend>
-                                <input type="radio" name="plan66" id="plan66_0" value="0"  checked />
-                                <label for="plan66_0">A计划&nbsp;&nbsp;</label>
-                                <input type="radio" name="plan66" id="plan66_1" value="1" />
-                                <label for="plan66_1">B计划&nbsp;&nbsp;</label>
-                                <input type="radio" name="plan66" id="plan66_2" value="2" />
-                                <label for="plan66_2">C计划&nbsp;&nbsp;</label>
-                            </fieldset>
-                            <p id="plan66-show">&nbsp;</p>
-
-                        </div><!-- /content -->
-                    </div>
-
-                    <div class="TabbedPanelsContent">
-                        <div role="main" class="ui-content">
-                            <fieldset data-role="controlgroup">
-                                <legend>套餐类型</legend>
-                                <input type="radio" name="plan96" id="plan96_0" value="0"  checked />
-                                <label for="plan96_0">A计划&nbsp;&nbsp;</label>
-                                <input type="radio" name="plan96" id="plan96_1" value="1" />
-                                <label for="plan96_1">B计划&nbsp;&nbsp;</label>
-                                <input type="radio" name="plan96" id="plan96_2" value="2" />
-                                <label for="plan96_2">C计划&nbsp;&nbsp;</label>
-                            </fieldset>
-                            <p id="plan96-show">&nbsp;</p>
-
-                        </div><!-- /content -->
-                    </div>
-
-                    <div class="TabbedPanelsContent">
-                        <div role="main" class="ui-content">
-                            <fieldset data-role="controlgroup">
-                                <legend>套餐类型</legend>
-                                <input type="radio" name="plan126" id="plan126_0" value="0"  checked />
-                                <label for="plan126_0">A计划&nbsp;&nbsp;</label>
-                                <input type="radio" name="plan126" id="plan126_1" value="1" />
-                                <label for="plan126_1">B计划&nbsp;&nbsp;</label>
-                                <input type="radio" name="plan126" id="plan126_2" value="2" />
-                                <label for="plan126_2">C计划&nbsp;&nbsp;</label>
-                            </fieldset>
-                            <p id="plan126-show">&nbsp;</p>
-
-                        </div><!-- /content -->
-                    </div>
-
-                </div>
-            </div>
-
             <br>
 
             <ul data-role="listview" data-inset="false">
@@ -226,6 +156,12 @@ text-decoration: line-through;
                 <li>
                     <a href="#number-select">
                     <p id="sel-num">请选择手机号码</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#package">
+                    <p id="package">套餐月费</p>
                     </a>
                 </li>
 
@@ -358,9 +294,7 @@ text-decoration: line-through;
 
 
 <div data-role="page" id="office-select" data-theme="c">
-
     <?php echo $this->render('header2', ['menuId'=>'menu7','title' => $item->title]); ?>
-
     <div data-role="content">
         <h2>请选择营业厅</h2>
             <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false),["id"=>"office"]); ?>
@@ -373,6 +307,81 @@ text-decoration: line-through;
         <h4>&copy; 襄阳联通 2014</h4>
     </div>
     <?php echo $this->render('menu', ['menuId'=>'menu7','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
+
+
+<div data-role="page" id="package" data-theme="c">
+    <?php echo $this->render('header2', ['menuId'=>'menu8','title' => $item->title]); ?>
+    <div data-role="content">
+
+                <div id="TabbedPanels1" class="TabbedPanels">
+                <ul class="TabbedPanelsTabGroup">
+                    <li class="TabbedPanelsTab" tabindex="0" id="Title66">月消费66元</li>
+                    <li class="TabbedPanelsTab" tabindex="0" id="Title96">月消费96元</li>
+                    <li class="TabbedPanelsTab" tabindex="0" id="Title126">月消费126元</li>
+                </ul>
+                <div class="TabbedPanelsContentGroup">
+                    <div class="TabbedPanelsContent">
+                        <div role="main" class="ui-content">
+                            <fieldset data-role="controlgroup">
+                                <legend>套餐类型</legend>
+                                <input type="radio" name="plan66" id="plan66_0" value="0"  checked />
+                                <label for="plan66_0">A计划&nbsp;&nbsp;</label>
+                                <input type="radio" name="plan66" id="plan66_1" value="1" />
+                                <label for="plan66_1">B计划&nbsp;&nbsp;</label>
+                                <input type="radio" name="plan66" id="plan66_2" value="2" />
+                                <label for="plan66_2">C计划&nbsp;&nbsp;</label>
+                            </fieldset>
+                            <p id="plan66-show">&nbsp;</p>
+
+                        </div><!-- /content -->
+                    </div>
+
+                    <div class="TabbedPanelsContent">
+                        <div role="main" class="ui-content">
+                            <fieldset data-role="controlgroup">
+                                <legend>套餐类型</legend>
+                                <input type="radio" name="plan96" id="plan96_0" value="0"  checked />
+                                <label for="plan96_0">A计划&nbsp;&nbsp;</label>
+                                <input type="radio" name="plan96" id="plan96_1" value="1" />
+                                <label for="plan96_1">B计划&nbsp;&nbsp;</label>
+                                <input type="radio" name="plan96" id="plan96_2" value="2" />
+                                <label for="plan96_2">C计划&nbsp;&nbsp;</label>
+                            </fieldset>
+                            <p id="plan96-show">&nbsp;</p>
+
+                        </div><!-- /content -->
+                    </div>
+
+                    <div class="TabbedPanelsContent">
+                        <div role="main" class="ui-content">
+                            <fieldset data-role="controlgroup">
+                                <legend>套餐类型</legend>
+                                <input type="radio" name="plan126" id="plan126_0" value="0"  checked />
+                                <label for="plan126_0">A计划&nbsp;&nbsp;</label>
+                                <input type="radio" name="plan126" id="plan126_1" value="1" />
+                                <label for="plan126_1">B计划&nbsp;&nbsp;</label>
+                                <input type="radio" name="plan126" id="plan126_2" value="2" />
+                                <label for="plan126_2">C计划&nbsp;&nbsp;</label>
+                            </fieldset>
+                            <p id="plan126-show">&nbsp;</p>
+
+                        </div><!-- /content -->
+                    </div>
+
+                </div>
+            </div>
+        <!--
+        <p>
+            <input type="button" value="确定" id="seleOffice">
+        </p>
+        -->
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+        <h4>&copy; 襄阳联通 2014</h4>
+    </div>
+    <?php echo $this->render('menu', ['menuId'=>'menu8','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
 
 
@@ -435,6 +444,43 @@ $(document).on("pageshow", "#page2", function(){
         //$("#sel-num").trigger('create');
     }
 
+    if(localStorage.getItem("planFlag")=="plan66")
+    {
+        planPrice = "66元/月";
+        if(localStorage.getItem("plan66")==0)
+            planName = "A计划";
+        else if(localStorage.getItem("plan66")==1)
+            planName = "B计划";
+        else if(localStorage.getItem("plan66")==2)
+            planName = "B计划"; 
+    }
+    else if(localStorage.getItem("planFlag")=="plan96")
+    {
+        planPrice = "96元/月";
+        if(localStorage.getItem("plan96")==0)
+            planName = "A计划";
+        else if(localStorage.getItem("plan96")==1)
+            planName = "B计划";
+        else if(localStorage.getItem("plan96")==2)
+            planName = "B计划"; 
+    }
+    else if(localStorage.getItem("planFlag")=="plan126")
+    {
+        planPrice = "126元/月";
+        if(localStorage.getItem("plan126")==0)
+            planName = "A计划";
+        else if(localStorage.getItem("plan126")==1)
+            planName = "B计划";
+        else if(localStorage.getItem("plan126")==2)
+            planName = "B计划"; 
+    }
+
+    if(localStorage.getItem("planFlag") != null)
+    {           
+        $("#package")[0].innerHTML="套餐月费 <span class='productPkgHint'>"+planPrice+"|"+planName+"</span>";
+        //$("#sel-num").trigger('create');
+    }
+
     if(localStorage.getItem("username") != null)
     {           
         $("#contact")[0].innerHTML="用户信息 <span class='productPkgHint'>"+localStorage.getItem("username")+"...</span>";
@@ -450,13 +496,12 @@ $(document).on("pageshow", "#page2", function(){
 });
 
 
-$(document).on("pageinit", "#page2", function(){
-
-	var cardType = 0;
-
+$(document).on("pageinit", "#package", function(){
     $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
     $("[name=plan66]").click(function(){
         planFlag = 'plan66';
+        localStorage.setItem("planFlag","plan66");
+        localStorage.setItem("plan66",$(this).val());
         //alert($(this).val());
         if($(this).val() == 0) /*plan a*/
             $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
@@ -472,6 +517,8 @@ $(document).on("pageinit", "#page2", function(){
     $("[name=plan96]").click(function(){
         //alert($(this).val());
         planFlag = 'plan96';
+        localStorage.setItem("planFlag","plan96");
+        localStorage.setItem("plan96",$(this).val());
         if($(this).val() == 0) /*plan a*/
             $("#plan96-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
         else if($(this).val() == 1)
@@ -486,6 +533,8 @@ $(document).on("pageinit", "#page2", function(){
     $("[name=plan126]").click(function(){
         //alert($(this).val());
         planFlag = 'plan126';
+        localStorage.setItem("planFlag","plan126");
+        localStorage.setItem("plan126",$(this).val());
         if($(this).val() == 0) /*plan a*/
             $("#plan126-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
         else if($(this).val() == 1)
@@ -496,6 +545,11 @@ $(document).on("pageinit", "#page2", function(){
             $("#plan126-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
 
     });
+});
+
+$(document).on("pageinit", "#page2", function(){
+
+	var cardType = 0;
 
     $("[name=office]").change(function(){
         if($("[name=office]").val() != 0)
@@ -544,6 +598,10 @@ $(document).on("pageinit", "#page2", function(){
             userid = localStorage.getItem("userid");
         }        
 
+        planFlag = localStorage.getItem("planFlag");
+        plan66 = localStorage.getItem("plan66");
+        plan96 = localStorage.getItem("plan96");
+        plan126 = localStorage.getItem("plan126");
 
         if((localStorage.getItem('ychf')/100) >= 50)
             realFee = localStorage.getItem('ychf')/100;
@@ -561,7 +619,7 @@ $(document).on("pageinit", "#page2", function(){
 			type:"GET",
             cache:false,
             dataType:'json',
-			data: $("form#productForm").serialize()+"&cid="+cid+"&planFlag="+planFlag+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
+			data: $("form#productForm").serialize()+"&cid="+cid+"&planFlag="+planFlag+"&plan66="+plan66+"&plan96="+plan96+"&plan126="+plan126+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
 			success:function(json_data){
 				//data = eval('('+data+')');
 

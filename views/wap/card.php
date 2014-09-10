@@ -145,19 +145,19 @@
 			</a>
 		</li>
 
-		<li>
+		<li id="sel-num-li">
 			<a href="#number-select">
 			<p id="sel-num">请选择手机号码</p>
 			</a>
 		</li>
 
-		<li>
+		<li id="contact-li">
 			<a href="#contactPage">
 			<p id="contact">用户信息</p>
 			</a>
 		</li>
 
-		<li>
+		<li id="office-li">
 			<a href="#office-select">
 			<p id="officeName">营业厅</p>
 			</a>
@@ -341,6 +341,16 @@ var count = 0;
 //$().ready(function() {
 var cid = <?php echo $cid; ?>;
 
+
+var ctrl_mobnumber = "<?php echo  $item->ctrl_mobnumber; ?>";
+var ctrl_userinfo = "<?php echo  $item->ctrl_userinfo; ?>";
+var ctrl_office = "<?php echo  $item->ctrl_office; ?>";
+var ctrl_supportpay = "<?php echo  $item->ctrl_supportpay; ?>";
+//alert(ctrl_mobnumber);
+//alert(ctrl_userinfo);
+//alert(ctrl_office);
+//alert(ctrl_supportpay);
+
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
 	if (ua.match(/MicroMessenger/i) == 'micromessenger') {
@@ -351,6 +361,41 @@ function isWeiXin() {
 }
 
 $(document).on("pageshow", "#page2", function(){
+
+	/*item ctrl begin --------------------------------------------*/
+	if(ctrl_mobnumber == 0)
+	{
+		$("#sel-num-li").hide();
+	}
+	else
+	{
+		$("#sel-num-li").show();
+	}
+
+	if(ctrl_userinfo == 0)
+	{
+		$("#contact-li").hide();
+	}
+	else
+	{
+		$("#contact-li").show();
+	}
+	
+	if(ctrl_office == 0)
+	{
+		$("#office-li").hide();
+	}
+	else
+	{
+		$("#office-li").show();
+	}
+	
+
+
+	/*item ctrl end --------------------------------------------------*/
+
+
+
 	if(localStorage.getItem("num") != null)
 	{			
 		//alert(localStorage.getItem("num"));
@@ -375,53 +420,55 @@ $(document).on("pageinit", "#page2", function(){
 
 	var cardType = 0;
 
-	$("[name=office]").change(function(){
-        if($("[name=office]").val() != 0)
-            $("#officeArea").removeAttr('style');
-    });
 	//submit form
 	$('#submitBtn').click(function(){
 
-        if( localStorage.getItem("num") == null)
-        {
-            $.mobile.changePage("#number-select",{transition:"slide"});
-            return false;
-        }
-        else
-        {
-            selectNum = localStorage.getItem("num");
-        }
+		selectNum = null;
+		office = null;
+		username = null;
+		usermobile = null;
+		userid = null;
 
-       // if($("[name=office]").val() == 0)
-       // {
-            //alert("请选择营业厅");
-        //    $("#officeArea").attr('style', 'border:1px solid #ffffff;background-color:#ff99ff;');
-        //    return false;
-       // }
-
-
-        if( localStorage.getItem("office") == null)
-        {
-            $.mobile.changePage("#office",{transition:"slide"});
-            return false;
+		if(ctrl_mobnumber != 0)
+		{
+	        if( localStorage.getItem("num") == null)
+	        {
+	            $.mobile.changePage("#number-select",{transition:"slide"});
+	            return false;
+	        }
+	        else
+	        {
+	            selectNum = localStorage.getItem("num");
+	        }
+    	}
+ 
+    	if(ctrl_office != 0)
+    	{
+	        if( localStorage.getItem("office") == null)
+	        {
+	            $.mobile.changePage("#office",{transition:"slide"});
+	            return false;
+	        }
+	        else
+	        {
+	            office = localStorage.getItem("office");
+	        }
         }
-        else
-        {
-            office = localStorage.getItem("office");
-        }       
-
-
-        if( localStorage.getItem("username") == null)
-        {
-            $.mobile.changePage("#contactPage",{transition:"slide"});
-            return false;
-        }
-        else
-        {
-	        username = localStorage.getItem("username");
-	        usermobile = localStorage.getItem("usermobile");
-	        userid = localStorage.getItem("userid");
-        }
+       
+        if(ctrl_userinfo != 0)
+    	{
+	        if( localStorage.getItem("username") == null)
+	        {
+	            $.mobile.changePage("#contactPage",{transition:"slide"});
+	            return false;
+	        }
+	        else
+	        {
+		        username = localStorage.getItem("username");
+		        usermobile = localStorage.getItem("usermobile");
+		        userid = localStorage.getItem("userid");
+	        }
+    	}
 
 
 		if((localStorage.getItem('ychf')/100) >= 50)
