@@ -25,14 +25,14 @@ class AlipaymerchantController extends Controller
 	public function actionIndex()
 	{		
 		$this->layout = false;
-		Alipay::logResult([__METHOD__,$_GET,$_POST]);		
-		return 'Alipaymerchant error';
+		return $this->redirect(['wap/order']);	
 	}
-	
-	
+		
 }
 
 /*
+		Alipay::logResult([__METHOD__,$_GET,$_POST]);		
+		return 'Alipaymerchant error';		
 
 */
 

@@ -321,6 +321,7 @@ EOD;
 		$order ->appid_recv = $arr['AppId'];
 		$order ->openid_recv = $arr['OpenId'];		
 		$order ->issubscribe_recv = $arr['IsSubscribe'];
+		$order->pay_kind = MOrder::PAY_KIND_WECHAT;		
 		$order->save(false);
 		if ($_GET['trade_state'] == 0	)
 		{
@@ -824,6 +825,8 @@ EOD;
 		$order->userid = (isset($_GET['userid']) && $_GET['userid'] !=  MOrder::NO_CHOICE) ? $_GET['userid'] : '';
 		$order->username = (isset($_GET['username']) && $_GET['username'] !=  MOrder::NO_CHOICE) ? $_GET['username'] : '';
 		$order->usermobile = (isset($_GET['usermobile']) && $_GET['usermobile'] !=  MOrder::NO_CHOICE) ? $_GET['usermobile'] : '';
+		//$order->pay_kind = isset($_GET['pay_kind']) ? $_GET['pay_kind'] : MOrder::PAY_KIND_CASH;
+		
 		$order->detail = $order->getDetailStr();
 
 		if ($_GET['selectNum'] != MOrder::NO_CHOICE)

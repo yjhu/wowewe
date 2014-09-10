@@ -85,15 +85,19 @@
 	         <?= $form->field($model, 'feesum')->textinput(['maxlength' => '64', 'placeholder'=>'price', 'value'=>sprintf("%0.2f",$model->feesum/100)])->label(false); ?>
 			</div>
 
-			<fieldset data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
-				<legend>支付方式</legend>
-				<input type="radio" name="paykind" id="paykind_0" value="0" checked="checked">
-				<label for="paykind_0">自取</label>
-				<input type="radio" name="paykind" id="paykind_1" value="1">
-				<label for="paykind_1">支付宝</label>
-				<input type="radio" name="paykind" id="paykind_2" value="2">
-				<label for="paykind_2">微信支付</label>
-			</fieldset>
+			<?php 
+			$itemPayKindOption = $model->getItemPayKindOption();
+			$supportpay_count = count($itemPayKindOption); 
+			?>
+
+			<?php if ($supportpay_count == 1): ?>
+
+			<?php else: ?>
+				<fieldset data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
+					<legend>支付方式</legend>
+					<?= $form->field($model, 'pay_kind')->radioList($model->getItemPayKindOption())->label(false); ?>
+				</fieldset>
+			<?php endif; ?>
 
 	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
 
