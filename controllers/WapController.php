@@ -749,7 +749,6 @@ EOD;
 				$order->attr = "{$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}, {$_GET['plan126']}";
 				break;	
 
-
 			//$order->title = '特惠手机';	
 			case MItem::ITEM_CAT_MOBILE_APPLE_5C_8G_WHITE:
 				$order->title = '苹果5C 8G 白色';	
@@ -817,26 +816,40 @@ EOD;
 				return;
 		}				
 		$order->feesum = $_GET['feeSum'] * 100;
-		$order->office_id = $_GET['office'];					
-		$order->select_mobnum = $_GET['selectNum'];		
-		$order->userid = isset($_GET['userid']) ? $_GET['userid'] : '';
-		$order->username = isset($_GET['username']) ? $_GET['username'] : '';
-		$order->usermobile = isset($_GET['usermobile']) ? $_GET['usermobile'] : '';
+		//$order->office_id = $_GET['office'];					
+		//$order->select_mobnum = $_GET['selectNum'];		
+		//$order->username = isset($_GET['username']) ? $_GET['username'] : '';
+		//$order->usermobile = isset($_GET['usermobile']) ? $_GET['usermobile'] : '';
+		$order->office_id = (isset($_GET['office']) && $_GET['office'] !=  MOrder::NO_CHOICE) ? $_GET['office'] : 0;
+		$order->userid = (isset($_GET['userid']) && $_GET['userid'] !=  MOrder::NO_CHOICE) ? $_GET['userid'] : '';
+		$order->username = (isset($_GET['username']) && $_GET['username'] !=  MOrder::NO_CHOICE) ? $_GET['username'] : '';
+		$order->usermobile = (isset($_GET['usermobile']) && $_GET['usermobile'] !=  MOrder::NO_CHOICE) ? $_GET['usermobile'] : '';
 		$order->detail = $order->getDetailStr();
 
-		$mobnum = MMobnum::findOne($_GET['selectNum']);
-		if ($mobnum === null ||$mobnum->status != MMobnum::STATUS_UNUSED)
+		if ($_GET['selectNum'] != MOrder::NO_CHOICE)
 		{
-			return json_encode(['status'=>1, 'errmsg'=>$mobnum === null ? "mobile doest not exist" : "mobile locked!"] );
+			$order->select_mobnum = $_GET['selectNum'];
+			$mobnum = MMobnum::findOne($_GET['selectNum']);
+			if ($mobnum === null ||$mobnum->status != MMobnum::STATUS_UNUSED)
+			{
+				return json_encode(['status'=>1, 'errmsg'=>$mobnum === null ? "mobile doest not exist" : "mobile locked!"] );
+			}
+		}
+		else
+		{
+			$order->select_mobnum = '';
 		}
 		
 		if ($order->save(false))
 		{
 			//U::W('save ok....');	
-			$mobnum->status = MMobnum::STATUS_LOCKED;
-			$mobnum->locktime = time();
-			$mobnum->save(false);
-
+			if (isset($mobnum))
+			{
+				$mobnum->status = MMobnum::STATUS_LOCKED;
+				$mobnum->locktime = time();
+				$mobnum->save(false);
+			}
+			
 			// clear win flag
 			$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 			if ($model !== null)

@@ -82,6 +82,8 @@ class MOrder extends ActiveRecord
 
 	const PAY_KIND_CASH = 0;
 	const PAY_KIND_ALIWAP = 1;
+
+	const NO_CHOICE = 'null';
 	
 	public function attributeLabels()
 	{
@@ -263,12 +265,12 @@ class MOrder extends ActiveRecord
 	{
 		$gh = MGh::findOne($this->gh_id);						
 		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
-		$office = MOffice::findOne($this->office_id);
 		$detail = $this->detail;
-		//$feesum = ($this->feesum)/100;
 		$feesum = sprintf("%0.2f",$this->feesum/100);
+		$office = MOffice::findOne($this->office_id);
+		$office_info = ($office !== null) ? "至{$office->title}({$office->address}, {$office->manager}, {$office->mobile})" : '';
 		$str = <<<EOD
-{$model->nickname}, 您已订购【{$detail}】, 手机号码为{$this->select_mobnum}。 订单编号为【{$this->oid}】, 订单金额为{$feesum}元, 用户信息为【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 请您在48小时内携身份证或相关证件至{$office->title}({$office->address}, {$office->manager}, {$office->mobile})办理, 逾期将自动关闭。 【{$gh->nickname}】
+{$model->nickname}, 您已订购【{$detail}】, 手机号码为{$this->select_mobnum}。 订单编号为【{$this->oid}】, 订单金额为{$feesum}元, 用户信息为【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 请您在48小时内携身份证或相关证件{$office_info}办理, 逾期将自动关闭。 【{$gh->nickname}】
 EOD;
 		return $str;
 	}	
@@ -290,10 +292,10 @@ EOD;
 	{
 		$gh = MGh::findOne($this->gh_id);						
 		$model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);						
-		$office = MOffice::findOne($this->office_id);
 		$detail = mb_substr( $this->detail, 0, 16, 'utf-8');
 		$feesum = sprintf("%0.2f",$this->feesum/100);
-		$title = mb_substr($office->title, 0, 5, 'utf-8');
+		$office = MOffice::findOne($this->office_id);
+		$title = ($office !== null) ? mb_substr($office->title, 0, 5, 'utf-8') : '';
 		$str = <<<EOD
 【{$gh->nickname}】{$title}订单【{$this->oid}】,{$detail},{$feesum}元,{$this->username},电话{$this->usermobile}
 EOD;
