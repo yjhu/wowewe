@@ -52,7 +52,12 @@
 	<?php echo $this->render('header1', ['menuId'=>'menu3','title' => '订单支付']); ?>
 	
 	<div data-role="content">
+		<script>
 
+			$("#paykind-field").hide();
+			$("#btn-pay").html("我知道了");
+
+		</script>
 
 		<h2>订单详情</h2>
 
@@ -90,6 +95,8 @@
 			$supportpay_count = count($itemPayKindOption); 
 			?>
 
+<?php
+/*
 			<?php if ($supportpay_count == 1): ?>
 
 			<?php else: ?>
@@ -98,8 +105,14 @@
 					<?= $form->field($model, 'pay_kind')->radioList($model->getItemPayKindOption())->label(false); ?>
 				</fieldset>
 			<?php endif; ?>
+*/
+?>			
+				<fieldset id="paykind-field" data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
+					<legend>支付方式</legend>
+					<?= $form->field($model, 'pay_kind')->radioList($model->getItemPayKindOption())->label(false); ?>
+				</fieldset>
 
-	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
+	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
 
 	    <?php ActiveForm::end(); ?>
 
@@ -110,6 +123,8 @@
 	</div>
 	<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>	<!-- page3 end -->
+
+
 
 	
 <?php
