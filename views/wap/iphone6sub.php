@@ -17,7 +17,7 @@ $this->title = 'iPhone6 预订';
 		);
 	?>
 
-	<h3><?php echo Html::encode($this->title) ?><!--，祝您好运！-->，已有<span style="font-size:48px;color:#ff0000;"><?= $n ?></span>人预订</h3>  
+	<h3><?php echo Html::encode($this->title) ?><!--，祝您好运！--> <br>已有<span style="font-size:48px;color:#ff0000;"><?= $n ?></span>人预订</h3>  
 
 	<?php if (Yii::$app->session->hasFlash('success')): ?>
 		<div class="alert alert-success flash-success">
