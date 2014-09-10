@@ -100,7 +100,7 @@ class OrderController extends Controller
 		if (\Yii::$app->request->isPost) 
 		{
 			$model->load(\Yii::$app->request->post());
-			if ($model->save(true, ['status'])) 
+			if ($model->save(true, ['status', 'select_mobnum'])) 
 			{				
 				$mobnum = MMobnum::findOne($model->select_mobnum);
 				if ($mobnum !== null)
@@ -109,6 +109,8 @@ class OrderController extends Controller
 						$mobnum->status = MMobnum::STATUS_USED;
 					else if ($model->status == MOrder::STATUS_AUTION)
 						$mobnum->status = MMobnum::STATUS_LOCKED;
+					else if ($model->status == MOrder::STATUS_CLOSED_USER)
+						$mobnum->status = MMobnum::STATUS_UNUSED;						
 					$mobnum->save(false);				
 				}
 				return $this->redirect(['index']);			
