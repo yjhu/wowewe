@@ -749,22 +749,38 @@ EOD;
 				$order->attr = "{$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}, {$_GET['plan126']}";
 				break;	
 
-			case MItem::ITEM_CAT_MOBILE_APPLE_5C_8G_WHITE:
-			case MItem::ITEM_CAT_MOBILE_APPLE_5C_8G_BLUE:
-			case MItem::ITEM_CAT_MOBILE_HTC_8160_SILVER:
-			case MItem::ITEM_CAT_MOBILE_SAMSUNG_7506V_BLACK:
-			case MItem::ITEM_CAT_MOBILE_COOLPAD_7298A_CHUNLEI_WHITE:
-			case MItem::ITEM_CAT_MOBILE_LENOVOA_A850_BLACK:
-			case MItem::ITEM_CAT_MOBILE_COOLPAD_7295C_WHITE:
-			case MItem::ITEM_CAT_MOBILE_APPLE_5S_32G_SILVER:
-			case MItem::ITEM_CAT_MOBILE_COOLPAD_7296_BLACK:
-			case MItem::ITEM_CAT_MOBILE_COOLPAD_7296_WHITE:
-			case MItem::ITEM_CAT_MOBILE_COOLPAD_K1_WHITE:
-			case MItem::ITEM_CAT_MOBILE_COOLPAD_7235_BLACK:
-			case MItem::ITEM_CAT_MOBILE_COOLPAD_7230S_BLACK:
-			case MItem::ITEM_CAT_MOBILE_HISENSE_U939:
-			case MItem::ITEM_CAT_MOBILE_COOLPAD_7295C_BLACK:
-				$order->title = '特惠手机';			
+
+				case MItem::ITEM_CAT_MOBILE_APPLE_5C_8G_WHITE:
+				$order->title = '苹果5C 8G 白色';		
+				case MItem::ITEM_CAT_MOBILE_APPLE_5C_8G_BLUE:
+				$order->title = '苹果5C 8G 蓝色';			
+				case MItem::ITEM_CAT_MOBILE_HTC_8160_SILVER:
+				$order->title = 'HTC 8160 银色';			
+				case MItem::ITEM_CAT_MOBILE_SAMSUNG_7506V_BLACK:
+				$order->title = '三星 7506V 黑色';			
+				case MItem::ITEM_CAT_MOBILE_COOLPAD_7298A_CHUNLEI_WHITE:
+				$order->title = '酷派 7298A 春雷 白色';			
+				case MItem::ITEM_CAT_MOBILE_LENOVOA_A850_BLACK:
+				$order->title = '联想 A850+ 黑色';			
+				case MItem::ITEM_CAT_MOBILE_COOLPAD_7295C_WHITE:
+				$order->title = '酷派 7295C 白色';			
+				case MItem::ITEM_CAT_MOBILE_APPLE_5S_32G_SILVER:
+				$order->title = '苹果 5S 32G 银色';			
+				case MItem::ITEM_CAT_MOBILE_COOLPAD_7296_BLACK:
+				$order->title = '酷派 7296 黑色';			
+				case MItem::ITEM_CAT_MOBILE_COOLPAD_7296_WHITE:
+				$order->title = '酷派 7296 白色';			
+				case MItem::ITEM_CAT_MOBILE_COOLPAD_K1_WHITE:
+				$order->title = '酷派 K1 白色';			
+				case MItem::ITEM_CAT_MOBILE_COOLPAD_7235_BLACK:
+				$order->title = '酷派 7235 黑色';			
+				case MItem::ITEM_CAT_MOBILE_COOLPAD_7230S_BLACK:
+				$order->title = '酷派 7230S 黑色';			
+				case MItem::ITEM_CAT_MOBILE_HISENSE_U939:
+				$order->title = '海信 U939';			
+				case MItem::ITEM_CAT_MOBILE_COOLPAD_7295C_BLACK:
+				$order->title = '酷派 7295C 黑色';			
+				//$order->title = '特惠手机';			
 				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
 				break;
 
