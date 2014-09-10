@@ -125,7 +125,7 @@ class MItem extends ActiveRecord
 	{
 		return [
 			[['cid'], 'integer'],            
-			[['price', 'price_hint', 'title', 'title_hint', 'pkg_name', 'pkg_name_hint', 'pic_url', 'detail'], 'safe'],
+			[['price', 'price_hint', 'title', 'title_hint', 'pkg_name', 'pkg_name_hint', 'pic_url', 'detail', 'ctrl_mobnumber', 'ctrl_userinfo', 'ctrl_office', 'ctrl_supportpay'], 'safe'],
 		];
 	}
 
