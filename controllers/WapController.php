@@ -458,15 +458,9 @@ EOD;
 			$loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$model->mobile."&output=json&callback=querycallback");
 			$loca = substr($loca, 14, -2);  
 			$loca = json_decode($loca, true);	
-			//$lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$model->mobile."&output=json&callback=querycallback");
-			//$lucy_msg = substr($lucy_msg, 14, -2);  
-			//$lucy_msg = json_decode($lucy_msg, true);	
 			$lucy_msg = U::getMobileLuck($model->mobile);
 			$lucy_msg['Mobile'] = $model->mobile;
-
 			$result = $this->renderPartial('luck_result', ['loca'=>$loca, 'lucy_msg'=>$lucy_msg]);
-			
-			
 		}		
  		return $this->render('luck', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 	}	
@@ -481,7 +475,6 @@ EOD;
 			if (!$model->save())
 			{
 				U::W([$_GET, $_POST, $model->getErrors()]);
-				//Yii::$app->session->setFlash('success','提交出错，请联系客服!');				
 				Yii::$app->session->setFlash('success','此身份证号码已存在!');				
 			}
 			else
@@ -514,12 +507,6 @@ EOD;
 			$subscribed = true;
 		else
 			$subscribed = false;
-/*
-		if (!Yii::$app->user->isGuest)
-			$username = Yii::$app->user->identity->username;
-		else
-			$username = '';
-*/
 		if ($model === null)
 			$username = '';
 		else
@@ -605,13 +592,7 @@ EOD;
 			{				
 				$ar->nickname = $model->nickname;
 				$ar->headimgurl = $model->headimgurl;				
-				if ($ar->save(true)) 
-				{
-					//return $this->redirect(['index']);
-					U::W(['kkkkkkkkkkkkkkkkkkkk']);
-					//$result = $this->renderPartial('result', ['msg'=>$msg]);
-				}
-				else
+				if (!$ar->save(true)) 
 				{
 					U::W($ar->getErrors());
 				}	
@@ -620,8 +601,6 @@ EOD;
 			{
 				U::W("openid=$openid is not subscribed");
 			}
-			//Yii::$app->session->setFlash('submit_ok');
-			//return $this->refresh();
 		}
 
 		$query =  \app\models\MSuggest::find();
@@ -682,18 +661,11 @@ EOD;
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prodsave:gh_1ad98f5481f3
 	public function actionProdsave()
 	{			
-		//U::W([$_GET, $_POST, $_SERVER]);
-		//U::W([$_GET, $_POST]);
-		//U::W('aaaaaaaaaaaaaaa');
-		//if (!Yii::$app->request->isAjax)
-		//	return;	
-		//U::W('bbbbb');			
 		$this->layout = false;
 		//$gh_id = Yii::$app->session['gh_id'];
 		//$openid = Yii::$app->session['openid'];
 		$gh_id = U::getSessionParam('gh_id');
-		$openid = U::getSessionParam('openid');		
-		
+		$openid = U::getSessionParam('openid');				
 		Yii::$app->wx->setGhId($gh_id);	
 		if (0)
 		{
@@ -749,8 +721,6 @@ EOD;
 				$order->title = '精选靓号';			
 				$order->attr = "{$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}, {$_GET['plan126']}";
 				break;	
-
-			//$order->title = '特惠手机';	
 			case MItem::ITEM_CAT_MOBILE_APPLE_5C_8G_WHITE:
 				$order->title = '苹果5C 8G 白色';	
 				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
@@ -1138,51 +1108,12 @@ EOD;
         return $this->render('card', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
-
-/*
-	//http://127.0.0.1/wx/web/index.php?r=wap/disk&gh_id=gh_03a74ac96138&openid=111
-	public function actionDisk()
-	{
-		$this->layout = false;
-		$gh_id = U::getSessionParam('gh_id');
-		$openid = U::getSessionParam('openid');    	
-		//$rotateParam = U::getRotateParam();
-		return $this->render('games/disk/index');
-	}
-*/
 	//http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/disk:gh_03a74ac96138
 	public function actionDisk()
 	{
 		$this->layout ='wapy';
 		$gh_id = U::getSessionParam('gh_id');
 		$openid = U::getSessionParam('openid');
-
-		/*
-		$model = MDisk::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-		$cur_time = time();	
-		$alreadyWin = 0;		
-		if ($model === null)
-			$restCnt = MDisk::MDISK_CNT_PER_DAY;
-		else if ($model->win == 1 && $cur_time - $model->win_time < 30*60)
-		{
-			$alreadyWin = 1;
-			$restCnt = $model->cnt;
-		}
-		else
-			$restCnt = $model->cnt;
-		*/
-
-/*			
-		if (win)
-		{
-			//display disk and alert you win already,
-		}
-		else if (has_disk_cnt)
-			goto disk_rotate
-		else
-			echo 'sorry, please come here tomorrow';
-*/			
-		//return $this->render('games/disk/index', ['alreadyWin'=>$alreadyWin, 'restCnt'=>$restCnt]);
 		return $this->render('games/disk/index');
 	}
 
