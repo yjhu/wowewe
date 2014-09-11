@@ -113,7 +113,7 @@
 
 			<fieldset id="paykind-field" data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
 				<legend>支付方式</legend>
-				<?= $form->field($model, 'pay_kind')->radioList($model->getItemPayKindOption(), ['id'=>'pay_kind_id'])->label(false); ?>
+				<?= $form->field($model, 'pay_kind')->radioList($model->getItemPayKindOption(), ['id'=>'pay_kind_id', 'itemOptions'=>['class'=>'radioItem']])->label(false); ?>
 			</fieldset>
 
 	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
