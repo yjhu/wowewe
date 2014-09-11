@@ -146,13 +146,21 @@ class MOrder extends ActiveRecord
 
 	function getItemPayKindOption()
 	{
-		$model = MItem::findOne($this->cid);
+		$model = MItem::findOne(['gh_id'=>$this->gh_id, 'cid'=>$this->cid]);
+		if ($model === null)
+			U::W('no item');
+		else
+		{
+			U::W($model->getAttributes());
+		}
+
 		if (empty($model->ctrl_supportpay))
 		{
 			$arr[self::PAY_KIND_CASH] = self::getOrderPayKindOption(self::PAY_KIND_CASH);
 			return $arr;
 		}
 		$cids = explode(',', trim($model->ctrl_supportpay));
+		
 		foreach ($cids as $cid)
 		{
 			$arr[$cid] = self::getOrderPayKindOption($cid);
