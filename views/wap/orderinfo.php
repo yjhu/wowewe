@@ -111,9 +111,20 @@
 
 			</script>
 
+			<!--
 			<fieldset id="paykind-field" data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
 				<legend>支付方式</legend>
-				<?= $form->field($model, 'pay_kind')->radioList($model->getItemPayKindOption(), ['id'=>'pay_kind_id', 'itemOptions'=>['class'=>'radioItem']])->label(false); ?>
+				<?//= $form->field($model, 'pay_kind')->radioList($model->getItemPayKindOption(), ['id'=>'pay_kind_id', 'itemOptions'=>['name'=>'yyy', 'class'=>'radioItem']])->label(false); ?>
+			</fieldset>
+			-->
+
+
+			<fieldset data-role="controlgroup" data-type="horizontal">
+			<legend>支付方式</legend>
+				<?php foreach($itemPayKindOption as $value => $text) { ?>
+				<input type="radio" name="paykind" id="paykind_<?= $value ?>" value="<?= $value ?>" />
+				<label for="paykind_<?= $value ?>"><?= $text ?></label>
+				<?php } ?>	
 			</fieldset>
 
 	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
@@ -126,37 +137,35 @@
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
 	<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
-</div>	<!-- page3 end -->
+</div>	
 
-	<script>
+<script>
 
-		$(document).on("pageinit", "#page1", function(){
-	
-		//var val = $('input:radio[name="$targetTypeName"]:checked').val();
-	
-		$("#btn-pay").html("我知道了");
+	$(document).on("pageinit", "#page1", function(){
+	//var val = $('input:radio[name="$targetTypeName"]:checked').val();
+	//alert("aa");
+	$("#btn-pay").html("我知道了");
 
+    $("[name=paykind]").click(function(){	
+    //$("#pay_kind_id").click(function(){
+    	alert("ki");
+    	//val=$('input:radio:checked').val();
+    	alert($(this).val());
+		if($(this).val() == 0)
+        {
+            $("#btn-pay").html("我知道了");
+        }
+        else
+        {
+        	$("#btn-pay").html("立即支付");
+        }
+        
+    });
 
-	    $("#pay_kind_id").click(function(){
-	    //$("#pay_kind_id").click(function(){
-	    	alert("ki");
-	    	//val=$('input:radio:checked').val();
-
-			if($(this).val() == 0)
-	        {
-	            $("#btn-pay").html("我知道了");
-	        }
-	        else
-	        {
-	        	$("#btn-pay").html("立即支付");
-	        }
-	        
-	    });
-
-	   });
+   });
 
 
-	</script>
+</script>
 
 	
 <?php
