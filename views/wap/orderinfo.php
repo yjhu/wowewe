@@ -118,13 +118,18 @@
 			</fieldset>
 			-->
 
+
 			<fieldset data-role="controlgroup" data-type="horizontal">
 			<legend>支付方式</legend>
-				<?php foreach($itemPayKindOption as $value => $text) { ?>
-				<input type="radio" name="paykind" id="paykind_<?= $value ?>" value="<?= $value ?>" />
+				<?php $flag=1; foreach($itemPayKindOption as $value => $text) { ?>
+				<?php if($flag==1){?>
+					<input type="radio" name="paykind" id="paykind_<?= $value ?>" value="<?= $value ?>" checked />
+				<?php }else{?>
+					<input type="radio" name="paykind" id="paykind_<?= $value ?>" value="<?= $value ?>" />
+				<?php } ?>
 				<label for="paykind_<?= $value ?>"><?= $text ?></label>
-				<?php } ?>	
-			</fieldset>
+				<?php $flag=0; } ?>	
+			</fieldset>			
 
 	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
 
@@ -144,7 +149,7 @@
 
 	$("#btn-pay").html("我知道了");
 
-    $("[name=paykind]").click(function(){	
+    $("[name=paykind]").click(function(){
 
 		if($(this).val() == 0)
         {
