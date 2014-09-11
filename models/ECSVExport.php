@@ -532,9 +532,9 @@ class ECSVExport
         $this->_filePointer =  fopen("php://temp", 'w');
 
 		
-		// added by hehbhehb for BOM begin, excel打开utf8文件时中文显示乱码, 还得在前面添加一个bom头，也就是说文件必须是utf8+bom时,在excel中才能正常显示汉字
-		fwrite($this->_filePointer, "\xEF\xBB\xBF");
-		//end
+        // added by hehbhehb for BOM utf-8 begin, excel打开utf8文件时中文显示乱码, 还得在前面添加一个bom头，也就是说文件必须是utf8+bom时,在excel中才能正常显示汉字
+        //fwrite($this->_filePointer, "\xEF\xBB\xBF");
+        //end
 
         $this->_writeData();        
         rewind($this->_filePointer);
