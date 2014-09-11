@@ -8,6 +8,7 @@
     use app\models\MOffice;
 	use app\models\MItem;
 
+	$basename = basename(__FILE__, '.php');
 ?>
 
 <style type="text/CSS">
@@ -85,7 +86,20 @@
 			</span>
 			</p>
 
-			<?php $form = ActiveForm::begin(['id' => 'contact-form','class'=>'ui-field-contain']); ?>
+			<?php //$form = ActiveForm::begin(['id' => 'contact-form','class'=>'ui-field-contain', 'data'=>['ajax']]); ?>
+
+			<?php $form = ActiveForm::begin([
+				'id' => "{$basename}_form",
+				'method' => 'post',
+				'options'=>['class'=>'ui-corner-all', 'data-ajax'=>'false'],
+				'fieldConfig' => [
+					'options' => ['class' => 'ui-field-contain'],
+					//'inputOptions' => [],
+					//'labelOptions' => [],
+				]               
+			]); ?>
+
+
 			<div style="display:none">
 	         <?= $form->field($model, 'oid')->textinput(['maxlength' => '64', 'placeholder'=>'oid'])->label(false); ?>
 	         <?= $form->field($model, 'detail')->textinput(['maxlength' => '64', 'placeholder'=>'detail'])->label(false); ?>
@@ -108,7 +122,7 @@
 				</fieldset>
 			<?php endif; ?>
 */
-?>			
+?>
 				<fieldset id="paykind-field" data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
 					<legend>支付方式</legend>
 					<?= $form->field($model, 'pay_kind')->radioList($model->getItemPayKindOption())->label(false); ?>

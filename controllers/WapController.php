@@ -1253,6 +1253,7 @@ EOD;
 			{
 				//return $this->redirect(['wap/order']);	
 				$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);	
+				U::W($user->getAttributes());
 				return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);				
 				//return $this->render('orderinfo',['gh_id'=>$gh_id, 'openid'=>$openid, 'model' => $model]);				
 			}
