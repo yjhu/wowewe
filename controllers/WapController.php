@@ -840,7 +840,7 @@ EOD;
 				U::W('sendWxm');
 				$manager->sendWxm($order->getWxNoticeToManager());
 				U::W('sendSm');
-				$manager->sendSm($order->getSmNoticeToManager());
+//		$manager->sendSm($order->getSmNoticeToManager());
 			}
 
 			// send wx message to user

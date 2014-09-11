@@ -41,8 +41,14 @@
 
 .title_hint
 {
-    color:red;
-    font-size: 9pt;
+    color:#000000;
+    font-size: 10pt;
+}
+
+.title
+{
+    color:#aaaaaa;
+    /*font-size: 10pt;*/
 }
 
 .ui-content {
@@ -79,14 +85,24 @@
 {
 	background-color: #44B549;
 }
+
+
+.item-cfg
+{
+	color: #ff4c01;
+}
 </style>
 	
+
 
 <div data-role="page" id="page2" data-theme="c">
 
 	<?php echo $this->render('header1', ['menuId'=>'menu2','title' => $item->title]); ?>
+	
+	<div data-role="popup" id="popupErrorMsg" data-theme="c">
+	<p id="errorMsg"></p>
+	</div>
 
-	<div data-role="content">
 	<form id="productForm">	
 	<div data-role="content" data-theme="c">	
 	<p  align=center id="imgURL">
@@ -96,29 +112,34 @@
     <p id="desc">
             <!--【校园专享】沃派校园卡 26元/月 享500M省内流量-->
             <?php echo  $item->title_hint; ?>
-        </p>
-
-    <p id="price">
-    价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
-   <br><span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
     </p>
 
+    <p id="price" class="title">
+		价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
+		<!--
+		<br>
+		<span id="priceHint" class="productPkgHint"><?//php echo  $item->price_hint; ?></span>
+		-->
+    </p>
+
+
+    	<input type="hidden" name="productPkg" vaule="0">
+		<!--
         <div class="ui-corner-all custom-corners">
         <div data-role="fieldcontain">
         <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
             <legend>套餐</legend>
             <input type="radio" name="productPkg" id="radio-choice-h-2a" value="0" checked="checked">
-            <label for="radio-choice-h-2a" id="productPkgName"><!--微信沃卡--> <?php echo  $item->pkg_name; ?></label>
+            <label for="radio-choice-h-2a" id="productPkgName"> <?//php echo  $item->pkg_name; ?></label>
         </fieldset>
         </div>
         <p id="productPkgHint" class="productPkgHint">
-            <!--500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G-->
-            <?php echo  $item->pkg_name_hint; ?>
+            <?//php echo  $item->pkg_name_hint; ?>
         </p>
-
+        -->
 
 		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-		  <legend>卡类型</legend>
+		  <legend class="title">卡类型</legend>
 
 
 		  <input type="radio" name="cardType" id="radio1_0" value="0" checked />
@@ -137,11 +158,11 @@
 	  
 	  <br>
 
-    <ul data-role="listview" data-inset="false">
+    <ul data-role="listview" data-inset="false" class="ui-nodisc-icon ui-alt-icon">
 
 		<li>
 			<a href="#detail">
-			<p>产品详情</p>
+			<p class="title">产品详情</p>
 			</a>
 		</li>
 
@@ -153,13 +174,13 @@
 
 		<li id="contact-li">
 			<a href="#contactPage">
-			<p id="contact">用户信息</p>
+			<p id="contact" class="item-cfg">用户信息</p>
 			</a>
 		</li>
 
 		<li id="office-li">
 			<a href="#office-select">
-			<p id="officeName">营业厅</p>
+			<p id="officeName" class="item-cfg">营业厅</p>
 			</a>
 		</li>
 
@@ -181,12 +202,10 @@
 		<!--
 		<input type="button" value="确认套餐" id="submitBtn" data-theme="a" style="background-color: green">
 		-->
+	<br>
 
-
-	</div>
 </div>
 </form>		
-</div>
 	
 <div data-role="footer">
 	<h4>&copy; 襄阳联通 2014</h4>
@@ -346,10 +365,6 @@ var ctrl_mobnumber = "<?php echo  $item->ctrl_mobnumber; ?>";
 var ctrl_userinfo = "<?php echo  $item->ctrl_userinfo; ?>";
 var ctrl_office = "<?php echo  $item->ctrl_office; ?>";
 var ctrl_supportpay = "<?php echo  $item->ctrl_supportpay; ?>";
-//alert(ctrl_mobnumber);
-//alert(ctrl_userinfo);
-//alert(ctrl_office);
-//alert(ctrl_supportpay);
 
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
@@ -441,25 +456,16 @@ $(document).on("pageinit", "#page2", function(){
 	            selectNum = localStorage.getItem("num");
 	        }
     	}
- 
-    	if(ctrl_office != 0)
-    	{
-	        if( localStorage.getItem("office") == null)
-	        {
-	            $.mobile.changePage("#office-select",{transition:"slide"});
-	            return false;
-	        }
-	        else
-	        {
-	            office = localStorage.getItem("office");
-	        }
-        }
-       
+
         if(ctrl_userinfo != 0)
     	{
 	        if( localStorage.getItem("username") == null)
 	        {
-	            $.mobile.changePage("#contactPage",{transition:"slide"});
+	        	//alert("aaa");
+	            //$.mobile.changePage("#contactPage",{transition:"slide"});
+	            $("#errorMsg").html("<span class='item-cfg'>请输入用户信息</span>");
+	            $("#popupErrorMsg").popup("open");
+
 	            return false;
 	        }
 	        else
@@ -468,8 +474,23 @@ $(document).on("pageinit", "#page2", function(){
 		        usermobile = localStorage.getItem("usermobile");
 		        userid = localStorage.getItem("userid");
 	        }
-    	}
-
+    	}    	
+ 
+    	if(ctrl_office != 0)
+    	{
+	        if( localStorage.getItem("office") == null)
+	        {
+	            //$.mobile.changePage("#office-select",{transition:"slide"});
+	           	$("#errorMsg").html("<span class='item-cfg'>请选择营业厅</span>");
+	            $( "#popupErrorMsg" ).popup( "open" );
+	            return false;
+	        }
+	        else
+	        {
+	            office = localStorage.getItem("office");
+	        }
+        }
+       
 
 		if((localStorage.getItem('ychf')/100) >= 50)
             realFee = localStorage.getItem('ychf')/100;

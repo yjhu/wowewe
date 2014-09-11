@@ -100,7 +100,8 @@
 
 			<?php 
 				$itemPayKindOption = $model->getItemPayKindOption();
-				$supportpay_count = count($itemPayKindOption); 
+				$supportpay_count = count($itemPayKindOption);
+				U::W($itemPayKindOption);
 			?>
 
 			<script>
@@ -108,7 +109,6 @@
 				if(supportpay_count == 1)
 					$("#paykind-field").hide();
 
-				$("#btn-pay").html("我知道了");
 			</script>
 
 			<fieldset id="paykind-field" data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
@@ -128,7 +128,35 @@
 	<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>	<!-- page3 end -->
 
+	<script>
 
+		$(document).on("pageinit", "#page1", function(){
+	
+		//var val = $('input:radio[name="$targetTypeName"]:checked').val();
+	
+		$("#btn-pay").html("我知道了");
+
+
+	    $("#pay_kind_id").click(function(){
+	    //$("#pay_kind_id").click(function(){
+	    	alert("ki");
+	    	//val=$('input:radio:checked').val();
+
+			if($(this).val() == 0)
+	        {
+	            $("#btn-pay").html("我知道了");
+	        }
+	        else
+	        {
+	        	$("#btn-pay").html("立即支付");
+	        }
+	        
+	    });
+
+	   });
+
+
+	</script>
 
 	
 <?php
