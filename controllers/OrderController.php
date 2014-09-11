@@ -288,10 +288,10 @@ class OrderController extends Controller
 	{
 		$searchModel = new \app\models\MIphone6SubSearch;
 		$dataProvider = $searchModel->search($_GET);
-		//$dataProvider->setPagination(false);
-		//$data = $dataProvider->getModels();
-		$query = clone $dataProvider->query;
-		$data = $query->asArray()->all($dataProvider->db);
+		$dataProvider->setPagination(false);
+		$data = $dataProvider->getModels();
+		//$query = clone $dataProvider->query;
+		//$data = $query->asArray()->all($dataProvider->db);
 		U::W($data);
 		$filename = Yii::$app->getRuntimePath().'/iphone6.csv';
 		$csv = new \app\models\ECSVExport($data);

@@ -697,8 +697,9 @@ class ECSVExport
         }
         
         if($row instanceof ActiveRecord) {
-           $headers = array_keys($row->getAttributes());
-            //$headers = array_values($row->attributeLabels());            
+           //$headers = array_keys($row->getAttributes());
+            $headers = array_values($row->attributeLabels());         
+            //U::W($headers);
         } else {
             $headers = array_keys($row);
         }
@@ -720,7 +721,10 @@ class ECSVExport
                 }
             }
         }                
-        
+
+        //added by hehb begin
+        $headers = $this->getGbkRows($headers);
+        //end
         fputcsv($this->_filePointer, $headers, $this->_delimiter, $this->_enclosure);
     }
     
@@ -748,6 +752,10 @@ class ECSVExport
         }
         
         array_walk($row, array('\app\models\ECSVExport','stripSlashes'));
+
+        //added by hehb begin
+        $row = $this->getGbkRows($row);
+        //end
         if(isset($this->_callback) && $this->_callback) {
             fputcsv($this->_filePointer, call_user_func($this->_callback, $row), $this->_delimiter, $this->_enclosure);                       
         } else {
@@ -766,4 +774,15 @@ class ECSVExport
         $value = stripslashes($value);
         $value = str_replace('\"', '"', $value);
     }
+
+    //added by hehb
+    public function getGbkRows($arr)
+    {
+        $rows = [];
+        foreach ($arr as $i => $v) {
+            $rows[$i] =iconv("UTF-8","GBK//IGNORE", $v);
+        }     
+        return $rows;
+    }
+    
 }

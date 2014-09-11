@@ -1120,8 +1120,7 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/home:gh_03a74ac96138
     public function actionHome()
     {
-        $this->layout = 'wap';
-
+           $this->layout = 'wap';
 	    $gh_id = U::getSessionParam('gh_id');
 	    $openid = U::getSessionParam('openid');
 		Yii::$app->session['gh_id'] = $gh_id;

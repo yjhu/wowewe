@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<h1><?php //echo Html::encode($this->title) ?></h1>
 
     <p>
-		<?php //echo Html::a('下载 <span class="glyphicon glyphicon-arrow-down"></span>', ['iphone6subdownload'], ['class' => 'btn btn-success']) ?>
+		<?php echo Html::a('下载 <span class="glyphicon glyphicon-arrow-down"></span>', ['iphone6subdownload'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -31,23 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		'options' => ['class' => 'table-responsive'],
 		'tableOptions' => ['class' => 'table table-striped'],        
         'columns' => [
-			//['class' => yii\grid\CheckboxColumn::className()],
             'id',
-/*
-			[
-				'label' => '营业厅',
-				'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
-				'filter'=> false,
-				'headerOptions' => array('style'=>'width:80px;'),			
-			],
-			[
-				'label' => '买家微信昵称',
-				'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
-				'filter'=> false,
-				'headerOptions' => array('style'=>'width:80px;'),			
-
-			],
-*/
 			[
 				'attribute' => 'user_name',
 				'headerOptions' => array('style'=>'width:200px;'),

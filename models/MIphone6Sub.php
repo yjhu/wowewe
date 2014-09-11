@@ -41,6 +41,7 @@ class MIphone6Sub extends ActiveRecord
 	public function attributeLabels()
 	{
 		return [
+			'id'=>'编号',
 			'user_name'=>'姓名',
 			'user_contact'=>'联系方式',
 			'user_id'=>'身份证号码',
