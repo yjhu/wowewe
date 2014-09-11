@@ -37,6 +37,7 @@
     font-size: 10pt;
 }
 
+
 .fee
 {
     font-size: 18px;
@@ -46,8 +47,8 @@
 
 .title_hint
 {
-    color:red;
-    font-size: 9pt;
+    color:#000000;
+    font-size: 10pt;
 }
 
 .ui-content {
@@ -79,8 +80,34 @@
 }
 
 .line {
-color: red;
+color: #aaaaaa;
 text-decoration: line-through;
+}
+/*-----------------------------------------------*/
+
+.title_comm
+{
+    color:#aaaaaa;
+    font-size: 10pt;
+}
+
+.title_unset
+{
+    color:#ff4c01;
+    font-size: 10pt;
+}
+
+.title_set
+{
+    color:#aaaaaa;
+    font-size: 10pt;
+}
+
+.title_set_content
+{
+    color:#000000;
+    font-size: 10pt;
+    text-align: right;
 }
 
 </style>
@@ -89,6 +116,10 @@ text-decoration: line-through;
 <div data-role="page" id="page2" data-theme="c">
    
     <?php echo $this->render('header1', ['menuId'=>'menu2','title' => $item->title ]); ?>
+
+    <div data-role="popup" id="popupErrorMsg" data-theme="c">
+    <p id="errorMsg"></p>
+    </div>
 
 	<div data-role="content">
 	<form id="productForm">	
@@ -101,7 +132,7 @@ text-decoration: line-through;
             <?php echo  $item->title_hint; ?>
         </p>
 
-        <p id="price">
+        <p id="price" class="title_comm">
         价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
         <span class="line"><small>原价￥<?php echo  ($item->old_price)/100; ?></small></span>
         <br><span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
@@ -132,60 +163,57 @@ text-decoration: line-through;
                 </div>
         <?//php endif; ?>
         -->
-
+        
+    <input type="hidden" name="prom" vaule="0">
+      <!--
 	  <div data-role="fieldcontain">
 		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 		  <legend>优惠活动</legend>
 		  <input type="radio" name="prom" id="radio1_0" value="0" checked />
-
-		  <!--<label for="radio1_0">买手机送话费</label>-->
           <label for="radio1_0">充话费送手机</label>
 		</fieldset>
 	  </div>
+      -->
+        <br>
+        <br>
 
-            <br>
+        <ul data-role="listview" data-inset="false" class="ui-nodisc-icon ui-alt-icon">
 
-            <ul data-role="listview" data-inset="false">
+            <li>
+                <a href="#detail">
+                <p class="title_comm">产品详情</p>
+                </a>
+            </li>
 
-                <li>
-                    <a href="#detail">
-                    <p>产品详情</p>
-                    </a>
-                </li>
+            <li id="sel-num-li">
+                <a href="#number-select">
+                <p id="sel-num" class="title_unset">请选择手机号码</p>
+                </a>
+            </li>
 
-           
-                <li id="sel-num-li">
-                    <a href="#number-select">
-                    <p id="sel-num">请选择手机号码</p>
-                    </a>
-                </li>
+            <li id="package-li">
+                <a href="#package">
+                <p id="package" class="title_unset">套餐月费</p>
+                </a>
+            </li>
 
-                <li>
-                    <a href="#package">
-                    <p id="package">套餐月费</p>
-                    </a>
-                </li>
+            <li id="contact-li">
+                <a href="#contactPage">
+                <p id="contact" class="title_unset">用户信息</p>
+                </a>
+            </li>
 
-                <li id="contact-li">
-                    <a href="#contactPage">
-                    <p id="contact">用户信息</p>
-                    </a>
-                </li>
+            <li id="office-li">
+                <a href="#office-select">
+                <p id="officeName" class="title_unset">营业厅</p>
+                </a>
+            </li>
 
-                <li id="office-li">
-                    <a href="#office-select">
-                    <p id="officeName">营业厅</p>
-                    </a>
-                </li>  
-
-            </ul>
-
+        </ul>
+        <br>
         <br>
 
         <a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">确认套餐</a>
-        <!--
-        <input type="button" value="确认套餐" id="submitBtn" data-theme="a" style="background-color: green">
-        -->		
 
 	</div>
 </div>
@@ -431,7 +459,9 @@ var cid = <?php echo $_GET['cid']; ?>;
 var ctrl_mobnumber = "<?php echo  $item->ctrl_mobnumber; ?>";
 var ctrl_userinfo = "<?php echo  $item->ctrl_userinfo; ?>";
 var ctrl_office = "<?php echo  $item->ctrl_office; ?>";
+var ctrl_package = 1; 
 var ctrl_supportpay = "<?php echo  $item->ctrl_supportpay; ?>";
+
 
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
@@ -472,16 +502,18 @@ $(document).on("pageshow", "#page2", function(){
         $("#office-li").show();
     }
     
-
+    if(ctrl_package == 0)
+    {
+        $("#package-li").hide();
+    }
+    else
+    {
+        $("#package-li").show();
+    }
 
     /*item ctrl end --------------------------------------------------*/
 
-    if(localStorage.getItem("num") != null)
-    {           
-        //alert(localStorage.getItem("num"));
-        $("#sel-num")[0].innerHTML="您选的号码 <span class='productPkgHint'>"+localStorage.getItem("num")+"</span>";
-        //$("#sel-num").trigger('create');
-    }
+
 
     if(localStorage.getItem("planFlag")=="plan66")
     {
@@ -491,7 +523,7 @@ $(document).on("pageshow", "#page2", function(){
         else if(localStorage.getItem("plan66")==1)
             planName = "B计划";
         else if(localStorage.getItem("plan66")==2)
-            planName = "B计划"; 
+            planName = "C计划"; 
     }
     else if(localStorage.getItem("planFlag")=="plan96")
     {
@@ -501,7 +533,7 @@ $(document).on("pageshow", "#page2", function(){
         else if(localStorage.getItem("plan96")==1)
             planName = "B计划";
         else if(localStorage.getItem("plan96")==2)
-            planName = "B计划"; 
+            planName = "C计划"; 
     }
     else if(localStorage.getItem("planFlag")=="plan126")
     {
@@ -511,26 +543,37 @@ $(document).on("pageshow", "#page2", function(){
         else if(localStorage.getItem("plan126")==1)
             planName = "B计划";
         else if(localStorage.getItem("plan126")==2)
-            planName = "B计划"; 
+            planName = "C计划"; 
     }
 
     if(localStorage.getItem("planFlag") != null)
     {           
-        $("#package")[0].innerHTML="套餐月费 <span class='productPkgHint'>"+planPrice+"|"+planName+"</span>";
+        $("#package")[0].innerHTML="套餐月费 &nbsp;&nbsp;&nbsp;&nbsp;<span class='title_set_content'>"+planPrice+"|"+planName+"</span>";
         //$("#sel-num").trigger('create');
+         $("#package").removeClass("title_unset").addClass("title_set");
+    }
+
+    if(localStorage.getItem("num") != null)
+    {           
+        //alert(localStorage.getItem("num"));
+        $("#sel-num")[0].innerHTML="选中号码 &nbsp;&nbsp;&nbsp;&nbsp;<span class='title_set_content'>"+localStorage.getItem("num")+"</span>";
+        //$("#sel-num").trigger('create');
+        $("#sel-num").removeClass("title_unset").addClass("title_set");
     }
 
     if(localStorage.getItem("username") != null)
     {           
-        $("#contact")[0].innerHTML="用户信息 <span class='productPkgHint'>"+localStorage.getItem("username")+"...</span>";
+        $("#contact")[0].innerHTML="用户信息 &nbsp;&nbsp;&nbsp;&nbsp;<span class='title_set_content'>"+localStorage.getItem("username")+"...</span>";
+        $("#contact").removeClass("title_unset").addClass("title_set");
     }
-
+    
     office_name = <?php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
 
     if(localStorage.getItem("office") != null)
     {
-        $("#officeName")[0].innerHTML="营业厅 <span class='productPkgHint'>"+ office_name[localStorage.getItem("office")] +"...</span>";
-    }    
+        $("#officeName")[0].innerHTML="营业厅 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='title_set_content'>"+ office_name[localStorage.getItem("office")] +"...</span>";
+        $("#officeName").removeClass("title_unset").addClass("title_set");
+    }
     
 });
 
@@ -603,7 +646,9 @@ $(document).on("pageinit", "#page2", function(){
         {
             if( localStorage.getItem("num") == null)
             {
-                $.mobile.changePage("#number-select",{transition:"slide"});
+                //$.mobile.changePage("#number-select",{transition:"slide"});
+                $("#errorMsg").html("<span class='title_unset'>请选择手机号码</span>");
+                $("#popupErrorMsg").popup("open");
                 return false;
             }
             else
@@ -612,16 +657,21 @@ $(document).on("pageinit", "#page2", function(){
             }
         }
 
-        if(ctrl_office != 0)
+        if(ctrl_package != 0)
         {
-            if( localStorage.getItem("office") == null)
+            if( localStorage.getItem("planFlag") == null)
             {
-                $.mobile.changePage("#office-select",{transition:"slide"});
+                //$.mobile.changePage("#package",{transition:"slide"});
+                $("#errorMsg").html("<span class='title_unset'>请选择套餐月费</span>");
+                $( "#popupErrorMsg" ).popup( "open" );
                 return false;
             }
             else
             {
-                office = localStorage.getItem("office");
+                planFlag = localStorage.getItem("planFlag");
+                plan66 = localStorage.getItem("plan66");
+                plan96 = localStorage.getItem("plan96");
+                plan126 = localStorage.getItem("plan126");
             }
         }
 
@@ -629,7 +679,11 @@ $(document).on("pageinit", "#page2", function(){
         {
             if( localStorage.getItem("username") == null)
             {
-                $.mobile.changePage("#contactPage",{transition:"slide"});
+                //alert("aaa");
+                //$.mobile.changePage("#contactPage",{transition:"slide"});
+                $("#errorMsg").html("<span class='title_unset'>请输入用户信息</span>");
+                $("#popupErrorMsg").popup("open");
+
                 return false;
             }
             else
@@ -638,20 +692,23 @@ $(document).on("pageinit", "#page2", function(){
                 usermobile = localStorage.getItem("usermobile");
                 userid = localStorage.getItem("userid");
             }
-        }      
-
-        if( localStorage.getItem("planFlag") == null)
+        }       
+ 
+        if(ctrl_office != 0)
         {
-            $.mobile.changePage("#package",{transition:"slide"});
-            return false;
+            if( localStorage.getItem("office") == null)
+            {
+                //$.mobile.changePage("#office-select",{transition:"slide"});
+                $("#errorMsg").html("<span class='title_unset'>请选择营业厅</span>");
+                $( "#popupErrorMsg" ).popup( "open" );
+                return false;
+            }
+            else
+            {
+                office = localStorage.getItem("office");
+            }
         }
-        else
-        {
-            planFlag = localStorage.getItem("planFlag");
-            plan66 = localStorage.getItem("plan66");
-            plan96 = localStorage.getItem("plan96");
-            plan126 = localStorage.getItem("plan126");
-        }
+       
 
         if((localStorage.getItem('ychf')/100) >= 50)
             realFee = localStorage.getItem('ychf')/100;
@@ -682,7 +739,8 @@ $(document).on("pageinit", "#page2", function(){
                     localStorage.removeItem("num");
                     //$.mobile.changePage("#page3",{transition:"slide"});   
                     var url = "<?php echo Url::to(['wap/orderinfo'], true); ?>";
-                    $.mobile.changePage((url+'&oid='+json_data.oid),{transition:"slide"});              
+                    //$.mobile.changePage((url+'&oid='+json_data.oid),{transition:"slide"});              
+                    window.location = url+'&oid='+json_data.oid;
 				}
 				else
 				{

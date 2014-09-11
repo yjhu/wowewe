@@ -118,7 +118,6 @@
 			</fieldset>
 			-->
 
-
 			<fieldset data-role="controlgroup" data-type="horizontal">
 			<legend>支付方式</legend>
 				<?php foreach($itemPayKindOption as $value => $text) { ?>
@@ -141,16 +140,12 @@
 
 <script>
 
-	$(document).on("pageinit", "#page1", function(){
-	//var val = $('input:radio[name="$targetTypeName"]:checked').val();
-	//alert("aa");
+	$(document).on("pageshow", "#page1", function(){
+
 	$("#btn-pay").html("我知道了");
 
     $("[name=paykind]").click(function(){	
-    //$("#pay_kind_id").click(function(){
-    	alert("ki");
-    	//val=$('input:radio:checked').val();
-    	alert($(this).val());
+
 		if($(this).val() == 0)
         {
             $("#btn-pay").html("我知道了");
@@ -159,7 +154,6 @@
         {
         	$("#btn-pay").html("立即支付");
         }
-        
     });
 
    });

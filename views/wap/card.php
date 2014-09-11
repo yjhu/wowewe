@@ -45,12 +45,6 @@
     font-size: 10pt;
 }
 
-.title
-{
-    color:#aaaaaa;
-    /*font-size: 10pt;*/
-}
-
 .ui-content {
     padding: 0.5em !important;
 }
@@ -86,11 +80,33 @@
 	background-color: #44B549;
 }
 
-
-.item-cfg
+/*-------------------------------*/
+.title_comm
 {
-	color: #ff4c01;
+    color:#aaaaaa;
+    font-size: 10pt;
 }
+
+.title_unset
+{
+    color:#ff4c01;
+    font-size: 10pt;
+}
+
+.title_set
+{
+    color:#aaaaaa;
+    font-size: 10pt;
+}
+
+.title_set_content
+{
+	color:#000000;
+    font-size: 10pt;
+    text-align: right;
+}
+
+
 </style>
 	
 
@@ -114,7 +130,7 @@
             <?php echo  $item->title_hint; ?>
     </p>
 
-    <p id="price" class="title">
+    <p id="price" class="title_comm">
 		价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
 		<!--
 		<br>
@@ -139,7 +155,7 @@
         -->
 
 		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-		  <legend class="title">卡类型</legend>
+		  <legend class="title_comm">卡类型</legend>
 
 
 		  <input type="radio" name="cardType" id="radio1_0" value="0" checked />
@@ -155,53 +171,40 @@
 		</div>
 		</fieldset>
 
-	  
 	  <br>
 
     <ul data-role="listview" data-inset="false" class="ui-nodisc-icon ui-alt-icon">
 
 		<li>
 			<a href="#detail">
-			<p class="title">产品详情</p>
+			<p class="title_comm">产品详情</p>
 			</a>
 		</li>
 
 		<li id="sel-num-li">
 			<a href="#number-select">
-			<p id="sel-num">请选择手机号码</p>
+			<p id="sel-num" class="title_unset">请选择手机号码</p>
 			</a>
 		</li>
 
 		<li id="contact-li">
 			<a href="#contactPage">
-			<p id="contact" class="item-cfg">用户信息</p>
+			<p id="contact" class="title_unset">用户信息</p>
 			</a>
 		</li>
 
 		<li id="office-li">
 			<a href="#office-select">
-			<p id="officeName" class="item-cfg">营业厅</p>
+			<p id="officeName" class="title_unset">营业厅</p>
 			</a>
 		</li>
 
     </ul>
+	
 	<br>
-		<!--
-		<a  href="#detail" class="ui-btn ui-icon-carat-r ui-btn-icon-right">产品详情</a>
+	<br>
 
-		<a  id="sel-num" href="#number-select" class="ui-btn ui-icon-carat-r ui-btn-icon-right">请选择手机号码</a>
-
-        <a id="contact" href="#contactPage" class="ui-btn ui-icon-carat-r ui-btn-icon-right">用户信息</a>
-
-		<div id="officeArea">
-		<?//php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
-		</div>
-		-->
-
-		<a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">确认套餐</a>
-		<!--
-		<input type="button" value="确认套餐" id="submitBtn" data-theme="a" style="background-color: green">
-		-->
+	<a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">确认套餐</a>
 	<br>
 
 </div>
@@ -409,25 +412,26 @@ $(document).on("pageshow", "#page2", function(){
 
 	/*item ctrl end --------------------------------------------------*/
 
-
-
 	if(localStorage.getItem("num") != null)
 	{			
 		//alert(localStorage.getItem("num"));
-		$("#sel-num")[0].innerHTML="您选的号码 <span class='productPkgHint'>"+localStorage.getItem("num")+"</span>";
+		$("#sel-num")[0].innerHTML="选中号码 &nbsp;&nbsp;&nbsp;&nbsp;<span class='title_set_content'>"+localStorage.getItem("num")+"</span>";
 		//$("#sel-num").trigger('create');
+		$("#sel-num").removeClass("title_unset").addClass("title_set");
 	}
 
 	if(localStorage.getItem("username") != null)
 	{			
-		$("#contact")[0].innerHTML="用户信息 <span class='productPkgHint'>"+localStorage.getItem("username")+"...</span>";
+		$("#contact")[0].innerHTML="用户信息 &nbsp;&nbsp;&nbsp;&nbsp;<span class='title_set_content'>"+localStorage.getItem("username")+"...</span>";
+		$("#contact").removeClass("title_unset").addClass("title_set");
 	}
 	
 	office_name = <?php echo \app\models\MOffice::getOfficeNameOption($gh_id); ?>;
 
 	if(localStorage.getItem("office") != null)
 	{
-		$("#officeName")[0].innerHTML="营业厅 <span class='productPkgHint'>"+ office_name[localStorage.getItem("office")] +"...</span>";
+		$("#officeName")[0].innerHTML="营业厅 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='title_set_content'>"+ office_name[localStorage.getItem("office")] +"...</span>";
+		$("#officeName").removeClass("title_unset").addClass("title_set");
 	}
 });
 
@@ -448,7 +452,9 @@ $(document).on("pageinit", "#page2", function(){
 		{
 	        if( localStorage.getItem("num") == null)
 	        {
-	            $.mobile.changePage("#number-select",{transition:"slide"});
+	            //$.mobile.changePage("#number-select",{transition:"slide"});
+	            $("#errorMsg").html("<span class='title_unset'>请选择手机号码</span>");
+	            $("#popupErrorMsg").popup("open");
 	            return false;
 	        }
 	        else
@@ -463,7 +469,7 @@ $(document).on("pageinit", "#page2", function(){
 	        {
 	        	//alert("aaa");
 	            //$.mobile.changePage("#contactPage",{transition:"slide"});
-	            $("#errorMsg").html("<span class='item-cfg'>请输入用户信息</span>");
+	            $("#errorMsg").html("<span class='title_unset'>请输入用户信息</span>");
 	            $("#popupErrorMsg").popup("open");
 
 	            return false;
@@ -481,7 +487,7 @@ $(document).on("pageinit", "#page2", function(){
 	        if( localStorage.getItem("office") == null)
 	        {
 	            //$.mobile.changePage("#office-select",{transition:"slide"});
-	           	$("#errorMsg").html("<span class='item-cfg'>请选择营业厅</span>");
+	           	$("#errorMsg").html("<span class='title_unset'>请选择营业厅</span>");
 	            $( "#popupErrorMsg" ).popup( "open" );
 	            return false;
 	        }
@@ -516,7 +522,8 @@ $(document).on("pageinit", "#page2", function(){
 					localStorage.removeItem("num");
 					//$.mobile.changePage("#page3",{transition:"slide"}); //page3 removed!
 					var url = "<?php echo Url::to(['wap/orderinfo'], true); ?>";
-					$.mobile.changePage((url+'&oid='+json_data.oid),{transition:"slide"});
+					//$.mobile.changePage((url+'&oid='+json_data.oid),{transition:"slide"});
+					window.location = url+'&oid='+json_data.oid;
 				}
 				else
 				{
