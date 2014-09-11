@@ -1252,10 +1252,6 @@ EOD;
 			if ($model->pay_kind == MOrder::PAY_KIND_CASH) 
 			{
 				return $this->redirect(['wap/order']);	
-				//$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);	
-				//U::W($user->getAttributes());
-				//return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);				
-				//return $this->render('orderinfo',['gh_id'=>$gh_id, 'openid'=>$openid, 'model' => $model]);				
 			}
 				
 			if ($model->pay_kind == MOrder::PAY_KIND_ALIWAP) 
