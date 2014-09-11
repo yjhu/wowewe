@@ -254,7 +254,7 @@ text-decoration: line-through;
     <?php echo $this->render('header2', ['menuId'=>'menu5','title' => $item->title ]); ?>   
 
 	<div data-role="content">
-		<h2>请您选择手机号码</h2>
+		<h3>请选择手机号码</h3>
         <div class="ui-grid-a" id="list_common_tbody">
             <!--
 		<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >13545296480</a></div></div>
@@ -297,7 +297,7 @@ text-decoration: line-through;
 <div data-role="page" id="office-select" data-theme="c">
     <?php echo $this->render('header2', ['menuId'=>'menu7','title' => $item->title]); ?>
     <div data-role="content">
-        <h2>请选择营业厅</h2>
+ 
             <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false),["id"=>"office"]); ?>
         <p>
             <input type="button" value="确定" id="seleOffice">
@@ -612,19 +612,11 @@ $(document).on("pageinit", "#page2", function(){
             }
         }
 
-
-       // if($("[name=office]").val() == 0)
-       // {
-            //alert("请选择营业厅");
-        //    $("#officeArea").attr('style', 'border:1px solid #ffffff;background-color:#ff99ff;');
-        //    return false;
-       // }
-
         if(ctrl_office != 0)
         {
             if( localStorage.getItem("office") == null)
             {
-                $.mobile.changePage("#office",{transition:"slide"});
+                $.mobile.changePage("#office-select",{transition:"slide"});
                 return false;
             }
             else
@@ -824,8 +816,12 @@ $(document).on("pageinit", "#office-select", function(){
 
     $("#seleOffice").click(function(){
         var office = $('#office').val();
-        localStorage.setItem('office',office);
-        $.mobile.changePage("#page2",{transition:"slide"});
+
+        if(office != 0)
+        {
+            localStorage.setItem('office',office);
+            $.mobile.changePage("#page2",{transition:"slide"});
+        }        
     });
 
 });
