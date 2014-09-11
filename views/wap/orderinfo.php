@@ -53,14 +53,6 @@
 	<?php echo $this->render('header1', ['menuId'=>'menu3','title' => '订单支付']); ?>
 	
 	<div data-role="content">
-		<script>
-			var supportpay = 0;
-			if(supportpay == 0)
-			{
-				$("#paykind-field").hide();
-				$("#btn-pay").html("我知道了");
-			}
-		</script>
 
 		<h2>订单详情</h2>
 
@@ -107,26 +99,22 @@
 			</div>
 
 			<?php 
-			$itemPayKindOption = $model->getItemPayKindOption();
-			$supportpay_count = count($itemPayKindOption); 
+				$itemPayKindOption = $model->getItemPayKindOption();
+				$supportpay_count = count($itemPayKindOption); 
 			?>
 
-<?php
-/*
-			<?php if ($supportpay_count == 1): ?>
+			<script>
+				var supportpay_count = <?php echo $supportpay_count; ?>;
+				if(supportpay_count == 1)
+					$("#paykind-field").hide();
 
-			<?php else: ?>
-				<fieldset data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
-					<legend>支付方式</legend>
-					<?= $form->field($model, 'pay_kind')->radioList($model->getItemPayKindOption())->label(false); ?>
-				</fieldset>
-			<?php endif; ?>
-*/
-?>
-				<fieldset id="paykind-field" data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
-					<legend>支付方式</legend>
-					<?= $form->field($model, 'pay_kind')->radioList($model->getItemPayKindOption())->label(false); ?>
-				</fieldset>
+				$("#btn-pay").html("我知道了");
+			</script>
+
+			<fieldset id="paykind-field" data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
+				<legend>支付方式</legend>
+				<?= $form->field($model, 'pay_kind')->radioList($model->getItemPayKindOption(), ['id'=>'pay_kind_id'])->label(false); ?>
+			</fieldset>
 
 	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
 
@@ -145,6 +133,14 @@
 	
 <?php
 /*
+			<?php if ($supportpay_count == 1): ?>
+
+			<?php else: ?>
+				<fieldset data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
+					<legend>支付方式</legend>
+					<?= $form->field($model, 'pay_kind')->radioList($model->getItemPayKindOption())->label(false); ?>
+				</fieldset>
+			<?php endif; ?>
 
 */
 ?>
