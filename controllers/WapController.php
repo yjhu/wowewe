@@ -1178,6 +1178,8 @@ EOD;
 		$model = MOrder::findOne($oid);		
 		if (\Yii::$app->request->isPost) 
 		{
+		       if (isset($_POST['paykind']))
+        		       $_POST['MOrder']['pay_kind'] = $_POST['paykind']; 
 			$model->setAttributes($_POST['MOrder'], false);
 			if ($model->pay_kind == MOrder::PAY_KIND_CASH) 
 			{
