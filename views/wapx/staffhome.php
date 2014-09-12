@@ -21,13 +21,21 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 */
 ?>
 
-<div data-role="page" id="<?= $basename ?>_page_1" data-quicklinks="true" data-title="襄阳联通">
+<div data-role="page" id="staffhome_page1" data-quicklinks="true" data-title="襄阳联通">
 
+<div data-role="popup" id="confirmx" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
+    <div role="main" class="ui-content">
+        <h3 class="ui-title">您确定要将微信号与员工信息解绑吗?</h3>
+    
+        <a id="cancelx" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-c" data-rel="back">不, 先保留</a>
+        <a id="yesx" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-transition="flow">解绑</a>
+    </div>
+</div>	
 
 	<?php echo $this->render('header', ['title' => '襄阳联通']); ?>
 
 	<?php $form = ActiveForm::begin([
-		'id' => "{$basename}_form",
+		'id' => "staffhome_form",
 		//'method' => 'get',
 		//'options'=>['class'=>'ui-corner-all'],
 		//'action' => ['wapx/staffscore'],
@@ -39,6 +47,8 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 			'labelOptions' => [],
 		]               
 	]); ?>
+
+
 
 	<div role="main" class="ui-content">
 		<div class="ui-grid-a">
@@ -73,16 +83,20 @@ $this->registerJs($js_code, yii\web\View::POS_END);
             <li><a href="#staffhome_stafftop" data-icon="bullets">推广明星</a></li>
 
 			<?php if (isset(Yii::$app->session['owner'])): ?>
-            <li><input name="Unbind" data-corners="false" data-icon="delete" data-iconpos="top" value="解绑" type="submit" onclick="return confirm('将微信号与员工信息解绑,确定?');"></li>
+            <li><input name="Unbind" id="Unbind" data-corners="false" data-icon="delete" data-iconpos="top" value="解绑" type="button"></li>
 			<?php endif; ?>
 
 			</ul>
 	    </div>
 
 	</div>
+
+
+
 	<?php ActiveForm::end(); ?>
 
 	<?php //echo $this->render('footer', ['title' => "&copy; 襄阳联通 ".date('Y')]); ?>
+
 
 </div>
 
@@ -110,6 +124,28 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 		</ul>
 	</div>
 </div>
+
+<script>
+
+$(document).on("click","#Unbind",function(){
+	alert("you tap");
+
+	$("#confirmx").popup("open");
+
+	$("#confirmx #yesx").on("click", function() {
+
+	    $("#confirmx").popup("close");
+		$("#staffhome_form").submit();//to unbind
+	});
+
+	$("#confirmx #cancelx").on("click", function() {
+	    $("#confirmx #yesx").off();
+	});
+
+	return false;
+});
+
+</script>
 
 <?php
 /*

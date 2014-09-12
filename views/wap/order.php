@@ -154,6 +154,38 @@ function load_data2(i, n)
 		imgurl = '../web/images/item/wpxytc-120x120.jpg';
 	else if(n.cid == 300)//精选靓号
 		imgurl = '../web/images/item/jxlh-120x120.jpg';
+	/*15 mobile*/
+	else if(n.cid == 310)
+		imgurl = '../web/images/item/iphone5c-white-700x500.jpg-120x120.jpg';
+	else if(n.cid == 311)
+		imgurl = '../web/images/item/iphone5c-blue-700x500.jpg-120x120.jpg';
+	else if(n.cid == 312)
+		imgurl = '../web/images/item/htc8160-silver-700x500.jpg-120x120.jpg';
+	else if(n.cid == 313)
+		imgurl = '../web/images/item/samsung7506v-black-700x500.jpg-120x120.jpg';
+	else if(n.cid == 314)
+		imgurl = '../web/images/item/coolpad7298a-white-700x500.jpg-120x120.jpg';
+	else if(n.cid == 315)
+		imgurl = '../web/images/item/lenovoa850-black-700x500.jpg-120x120.jpg';
+	else if(n.cid == 316)
+		imgurl = '../web/images/item/coolpad7295c-white-700x500.jpg-120x120.jpg';
+	else if(n.cid == 317)
+		imgurl = '../web/images/item/iphone5s-silver-700x500.jpg-120x120.jpg';
+	else if(n.cid == 318)
+		imgurl = '../web/images/item/coolpad7296-black-700x500.jpg-120x120.jpg';
+	else if(n.cid == 319)
+		imgurl = '../web/images/item/coolpad7296-white-700x500.jpg-120x120.jpg';
+	else if(n.cid == 320)
+		imgurl = '../web/images/item/coolpad-k1-120x120.jpg';
+	else if(n.cid == 321)
+		imgurl = '../web/images/item/coolpad7235-black-700x500.jpg-120x120.jpg';
+	else if(n.cid == 322)
+		imgurl = '../web/images/item/coolpad7230s-black-700x500.jpg-120x120.jpg';
+	else if(n.cid == 323)
+		imgurl = '../web/images/item/hisenseu939-black-700x500.jpg-120x120.jpg';
+	else if(n.cid == 324)
+		imgurl = '../web/images/item/coolpad7295c-black-700x500.jpg-120x120.jpg';
+
 
 	text ="<li data-theme='c'><a href='#' class='ddxq' myOid='"+n.oid+"'>\
 	<img style='padding-top:20px' myOid="+n.oid+" src='"+imgurl+"'>\
