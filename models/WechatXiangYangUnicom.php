@@ -38,23 +38,19 @@ class WechatXiangYangUnicom extends Wechat
 			$Ticket = $this->getRequest('Ticket');	
 			$scene_pid = substr($EventKey, 8);	
 			//U::W("sub....qr...., $EventKey, $scene_pid");
-			
 			$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
 			$model->scene_pid = $scene_pid;
 			$model->save(false);
-			//return $this->responseText("{$model->nickname}, 欢迎关注襄阳联通官方微信服务号！\n\n在这里，您可以逛沃商城，享沃服务，玩游戏，参与活动...... 天天惊喜，月月有奖！");
 			$items = array(
-				//new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('images/metro-intro.jpg',true), $this->WxGetOauth2Url('snsapi_base', "wap/home:{$gh_id}")),
-				new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
+				new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
 			);
 			return $this->responseNews($items);
 		}
 		else
 		{
 			$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
-			//return $this->responseText("{$model->nickname}, 欢迎关注襄阳联通官方微信服务号！\n\n在这里，您可以逛沃商城，享沃服务，玩游戏，参与活动...... 天天惊喜，月月有奖！");
 			$items = array(
-				new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
+				new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
 			);
 			return $this->responseNews($items);
 		}
@@ -148,7 +144,7 @@ EOD;
 		{
 			$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 			$items = array(
-				new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
+				new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
 			);
 			return $this->responseNews($items);
 		}
@@ -180,7 +176,7 @@ EOD;
 						//return Wechat::NO_RESP;
 						$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 						$items = array(
-							new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
+							new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
 						);
 						return $this->responseNews($items);
 					}
@@ -423,7 +419,7 @@ EOD;
 		//if ($model->lon < 1)
 		{
 			$items = array(
-				new RespNewsItem('附近营业厅查询', '如果你需要查询附近的营业厅，请点击文字输入框旁边的+号,把你的位置发给小沃, 即可查询喔-(如上图)', Url::to('images/nearestoffice.jpg',true), ''),
+				new RespNewsItem('附近营业厅查询', '如果你需要查询附近的营业厅，请点击文字输入框旁边的+号,把你的位置发给小沃, 即可查询喔-(如上图)', Url::to('@web/images/nearestoffice.jpg',true), ''),
 			);
 			return $this->responseNews($items);
 		}
@@ -450,11 +446,11 @@ EOD;
 			//$url = "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord={$model->lat},{$model->lon}&to={$row['title']}&tocoord={$row['lat']},{$row['lon']}&policy=0&referer=wosotech";
 			//$url = "http://api.map.baidu.com/direction?origin=latlng:{$model->lat},{$model->lon}|name:我的位置&destination=latlng:{$row['lat']},{$row['lon']}|name:{$row['title']}&mode=driving&region=襄阳&output=html&src=wosotech|wosotech";
 			
-			$office_imgurl = 'images/office/'.'office'.$row['office_id'].'.jpg' ;
+			$office_imgurl = '@web/images/office/'.'office'.$row['office_id'].'.jpg' ;
 			$office_imgurl_160 = $office_imgurl.'-160x160.jpg';
 
 			$url = Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true);
-			//$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? 'images/nearestoffice-info.jpg' : 'images/metro-intro.jpg',true), $url);
+			//$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? '@web/images/nearestoffice-info.jpg' : '@web/images/metro-intro.jpg',true), $url);
 			$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? $office_imgurl : $office_imgurl_160, true), $url);
 			$i++;
 		}
@@ -503,8 +499,8 @@ EOD;
 	public function FuncCustomService() 
 	{ 
 		$items = array(
-			new RespNewsItem('襄阳联通微商城正式上线', '襄阳联通微商城正式上线', Url::to('images/item/53a9477b995e3.png',true), Url::to(['site/about'],true)),
-			new RespNewsItem('新款热销商品推广', '新款热销商品推广', Url::to('images/item/53a95b64d03c1_b.png',true), Url::to(['site/about'],true)),
+			new RespNewsItem('襄阳联通微商城正式上线', '襄阳联通微商城正式上线', Url::to('@web/images/item/53a9477b995e3.png',true), Url::to(['site/about'],true)),
+			new RespNewsItem('新款热销商品推广', '新款热销商品推广', Url::to('@web/images/item/53a95b64d03c1_b.png',true), Url::to(['site/about'],true)),
 		);
 		return $this->responseNews($items);
 	}
@@ -568,21 +564,20 @@ EOD;
 				// return $this->responseText("{$model->nickname}, 您绑定的手机号码是 ". $model->mobile);
 				//返回图文消息
 				$items = array(
-					new RespNewsItem('话费账单', '话费账单概况：168元', Url::to('images/item/53a9477b995e3.png',true), Url::to(['wap/billDetail', 'openid'=>$FromUserName, 'gh_id'=>$gh_id],true)),
+					new RespNewsItem('话费账单', '话费账单概况：168元', Url::to('@web/images/item/53a9477b995e3.png',true), Url::to(['wap/billDetail', 'openid'=>$FromUserName, 'gh_id'=>$gh_id],true)),
 				);
 				return $this->responseNews($items);                
 			}
 		}
 	}
-*/
-
-/*
 			$items = array(
 				new RespNewsItem("{$model->nickname}，欢迎关注襄阳联通官方微信服务号", '欢迎关注襄阳联通官方微信服务号，在这里，您可以逛沃商城，享沃服务，游戏，参与活动...... 天天惊喜，月月有奖！', '', ''),
-				//new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), Url::to(['site/about'],true)),
-				//new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('images/onsubscribe.jpg',true), 'weixin://wxpay/bizpayurl?timestamp=1405737068&appid=wx79c2bf0249ede62a&noncestr=PSottf4eivpHqKlV&productid=1234&sign=e1f9bca3625bfd1bdb4753906753c9f13917f0ec'),
+				//new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('@web/images/onsubscribe.jpg',true), Url::to(['site/about'],true)),
+				//new RespNewsItem("{$model->nickname}，欢迎进入襄阳联通微信营业厅", '欢迎进入襄阳联通微信营业厅', Url::to('@web/images/onsubscribe.jpg',true), 'weixin://wxpay/bizpayurl?timestamp=1405737068&appid=wx79c2bf0249ede62a&noncestr=PSottf4eivpHqKlV&productid=1234&sign=e1f9bca3625bfd1bdb4753906753c9f13917f0ec'),
 			);
 			return $this->responseNews($items);
+			//return $this->responseText("{$model->nickname}, 欢迎关注襄阳联通官方微信服务号！\n\n在这里，您可以逛沃商城，享沃服务，玩游戏，参与活动...... 天天惊喜，月月有奖！");
+
 */
 
 }
