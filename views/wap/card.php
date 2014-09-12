@@ -204,7 +204,7 @@
 	<br>
 	<br>
 
-	<a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">购买</a>
+	<a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">一键购买</a>
 	<br>
 
 </div>
@@ -230,7 +230,7 @@
 			<!--
 			<label for="username">姓名</label>
 			-->
-			<input type="text" name="username" id="username" placeholder="姓名" value="">
+			<input type="text" name="username" id="username" placeholder="姓名" data-mini=false value="">
 
 			<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
 
@@ -265,7 +265,7 @@
 	<div data-role="content">
 		<h3>请选择手机号码</h3>
         <div class="ui-grid-a" id="list_common_tbody">
-            <!--
+        <!--
 		<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >13545296480</a></div></div>
 		<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >33333333333</a></div></div>
         <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >77777777777</a></div></div>
@@ -273,7 +273,7 @@
         <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >66666666666</a></div></div>
         <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >88888888888</a></div></div>
         -->
-		</div><!-- /grid-->
+		</div>
 
         <p>
             <input type="button" value="换一批号码看看" id="seleNumBtn">

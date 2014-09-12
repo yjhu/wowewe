@@ -213,7 +213,7 @@ text-decoration: line-through;
         <br>
         <br>
 
-        <a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">购买</a>
+        <a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">一键购买</a>
 
 	</div>
 </div>
@@ -273,18 +273,13 @@ text-decoration: line-through;
 
 
 <div data-role="page" id="number-select" data-theme="c">
-    <!--
-	<div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
-		<h1><?php echo  $item->title; ?></h1>
-	</div>
-    -->
 	
     <?php echo $this->render('header2', ['menuId'=>'menu5','title' => $item->title ]); ?>   
 
 	<div data-role="content">
 		<h3>请选择手机号码</h3>
         <div class="ui-grid-a" id="list_common_tbody">
-            <!--
+        <!--
 		<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >13545296480</a></div></div>
 		<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >33333333333</a></div></div>
         <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >77777777777</a></div></div>
@@ -292,8 +287,8 @@ text-decoration: line-through;
         <div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >66666666666</a></div></div>
         <div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:60px"><a href="" >88888888888</a></div></div>
         -->
-		</div><!-- /grid-->
-
+		</div>
+        
         <p>
             <input type="button" value="换一批号码看看" id="seleNumBtn">
         </p>
