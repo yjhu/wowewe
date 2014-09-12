@@ -204,7 +204,7 @@
 	<br>
 	<br>
 
-	<a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">确认套餐</a>
+	<a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">购买</a>
 	<br>
 
 </div>

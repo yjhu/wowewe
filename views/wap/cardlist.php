@@ -27,7 +27,7 @@
 
     <div data-role="content">
         <!--<ul data-role="listview" data-inset="true">-->
-         <ul data-role="listview" data-inset="false" class="ui-nodisc-icon ui-alt-icon">
+        <ul data-role="listview" data-inset="false" class="ui-nodisc-icon ui-alt-icon">
         <?php foreach($models as $model) { ?>
             <li><a data-ajax="false" href="<?php echo  Url::to(['wap/card', 'cid'=>$model->cid],true) ?>">
                     <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">

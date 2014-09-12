@@ -11,7 +11,7 @@ $basename = basename(__FILE__, '.php');
 ?>
 
 
-<div data-role="panel" id="<?php echo $menuId ?>" data-position="right" data-display="overlay" data-theme="b">
+<div data-role="panel" id="<?php echo $menuId ?>" data-position="right" data-display="overlay" data-theme="a">
 
   <ul data-role="listview" data-inset="false"  class="ui-nodisc-icon ui-alt-icon">
     <!--
