@@ -466,6 +466,8 @@ EOD;
 	}	
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/iphone6sub
+	//http://wosotech.com/wx/web/index.php?r=wap/oauth2cb&state=wap/cardlist:gh_03a74ac96138
+	//http://wosotech.com/wx/web/index.php?r=wap/iphone6sub
 	public function actionIphone6sub()
 	{
 		$this->layout = 'wap';
@@ -1097,6 +1099,7 @@ EOD;
         return $this->render('cardlist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
     }
 
+  	 //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/card:gh_03a74ac96138
     public function actionCard()
     {
         $this->layout ='wapy';

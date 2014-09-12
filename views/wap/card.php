@@ -310,6 +310,46 @@
 
 	<div data-role="content">
 
+<!--
+<script>
+var position_option = {
+                enableHighAccuracy: true,
+                maximumAge: 30000,
+                timeout: 20000
+	};
+
+if (navigator.geolocation)
+    navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionError, position_option);
+
+function getPositionSuccess( position ){
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+        alert( "您所在的位置： 纬度" + lat + "，经度" + lng );
+        if(typeof position.address !== "undefined"){
+                var country = position.address.country;
+                var province = position.address.region;
+                var city = position.address.city;
+                alert(' 您位于 ' + country + province + '省' + city +'市');
+        }
+}
+ 
+function getPositionError(error) {
+    switch (error.code) {
+        case error.TIMEOUT:
+            alert("连接超时，请重试");
+            break;
+        case error.PERMISSION_DENIED:
+            alert("您拒绝了使用位置共享服务，查询已取消");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("获取位置信息失败");
+            break;
+    }
+}
+
+</script>
+-->
+
 			<?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false),["id"=>"office"]); ?>
         <p>
             <input type="button" value="确定" id="seleOffice">

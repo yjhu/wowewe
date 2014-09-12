@@ -43,6 +43,14 @@ class CmdController extends Controller
 		echo 'Hello, world!!';
 	}
 
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/get-ad-url
+    public function actionGetAdUrl()
+    {		
+	$gh_id = Yii::$app->wx->getGhid();     
+        U::W(Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}"));
+        echo Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}");
+    }
+
 	//C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/sendsm
 	public function actionSendsm()	
 	{		
