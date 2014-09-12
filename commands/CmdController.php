@@ -46,9 +46,10 @@ class CmdController extends Controller
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/get-ad-url
     public function actionGetAdUrl()
     {		
-	$gh_id = Yii::$app->wx->getGhid();     
-        U::W(Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}"));
-        echo Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}");
+        $gh_id = Yii::$app->wx->getGhid();     
+        $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/card:{$gh_id}:cid=11");
+        U::W($url);
+        echo $url;
     }
 
 	//C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/sendsm
