@@ -10,7 +10,7 @@ class JqmyAsset extends \yii\web\JqueryAsset
 	public $baseUrl = '@web';
 
 	public $css = [
-		'js/jqm/xiangyangunicom.min.css',
+		'js/jqm/xiangyangunicom.min.whitepanel.css',
 		'js/jqm/jquery.mobile.icons.min.css',
 		'js/jqm/jquery.mobile.structure-1.4.3.min.css',
 		'js/jqm/SpryTabbedPanels.css',

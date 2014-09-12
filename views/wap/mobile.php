@@ -740,7 +740,7 @@ $(document).on("pageinit", "#page2", function(){
                     //$.mobile.changePage("#page3",{transition:"slide"});   
                     var url = "<?php echo Url::to(['wap/orderinfo'], true); ?>";
                     //$.mobile.changePage((url+'&oid='+json_data.oid),{transition:"slide"});              
-                    window.location = url+'&oid='+json_data.oid;
+                    window.location.href = url+'&oid='+json_data.oid;
 				}
 				else
 				{
