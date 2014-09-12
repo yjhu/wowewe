@@ -123,6 +123,8 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 </div>
 
 
+
+
 <script>
 $(document).on("pageinit", "#staffhome_page1", function(){
 
