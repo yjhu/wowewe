@@ -213,7 +213,7 @@ text-decoration: line-through;
         <br>
         <br>
 
-        <a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">确认套餐</a>
+        <a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">购买</a>
 
 	</div>
 </div>
@@ -739,8 +739,8 @@ $(document).on("pageinit", "#page2", function(){
                     localStorage.removeItem("num");
                     //$.mobile.changePage("#page3",{transition:"slide"});   
                     var url = "<?php echo Url::to(['wap/orderinfo'], true); ?>";
-                    //$.mobile.changePage((url+'&oid='+json_data.oid),{transition:"slide"});              
-                    window.location = url+'&oid='+json_data.oid;
+                    $.mobile.changePage((url+'&oid='+json_data.oid),{transition:"slide"});              
+                    //window.location.href = url+'&oid='+json_data.oid;
 				}
 				else
 				{

@@ -44,7 +44,8 @@ Yii::$app->wx->setGhid($gh_id);
         -->
 
 	    <!-- -->
-	    <ul data-role="listview" data-inset="true">
+	    <!--<ul data-role="listview" data-inset="true">-->
+        <ul data-role="listview" data-inset="false" class="ui-nodisc-icon ui-alt-icon">
 		    <?php foreach($rows as $row) { ?>
 		    <li>
 			    <img src="<?php echo U::getUserHeadimgurl($row['headimgurl'], 96);  ?> ">

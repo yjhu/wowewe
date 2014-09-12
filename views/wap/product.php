@@ -200,7 +200,7 @@
 			<?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false)); ?>
 			</div>
 
-			<input type="button" value="确认套餐" id="submitBtn">
+			<input type="button" value="购买" id="submitBtn">
 
 			<br>
 			<div id="TabbedPanels2" class="TabbedPanels">

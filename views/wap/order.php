@@ -28,7 +28,11 @@ $basename = basename(__FILE__, '.php');
 	<?php echo $this->render('header1', ['menuId'=>'menu1','title' => '我的订单']); ?>
 
 	<div role="main" class="ui-content">
+	
+		<!--
 		<ul data-role="listview" data-inset="false" id="list_common_tbody">
+		-->
+		<ul data-role="listview" data-inset="false" class="ui-nodisc-icon ui-alt-icon" id="list_common_tbody">
 		</ul>
 
 		<br>

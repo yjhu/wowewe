@@ -104,12 +104,7 @@
 				U::W($itemPayKindOption);
 			?>
 
-			<script>
-				var supportpay_count = <?php echo $supportpay_count; ?>;
-				if(supportpay_count == 1)
-					$("#paykind-field").hide();
 
-			</script>
 
 			<!--
 			<fieldset id="paykind-field" data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
@@ -119,7 +114,7 @@
 			-->
 
 
-			<fieldset data-role="controlgroup" data-type="horizontal">
+			<fieldset data-role="controlgroup" data-type="horizontal" id="paykind-field">
 			<legend>支付方式</legend>
 				<?php $flag=1; foreach($itemPayKindOption as $value => $text) { ?>
 				<?php if($flag==1){?>
@@ -129,8 +124,28 @@
 				<?php } ?>
 				<label for="paykind_<?= $value ?>"><?= $text ?></label>
 				<?php $flag=0; } ?>	
-			</fieldset>			
+			</fieldset>						
 
+			<script>
+				var supportpay_count = <?php echo $supportpay_count; ?>;
+					if(supportpay_count == 1)
+					$("#paykind-field").hide();
+
+					$("#btn-pay").html("我知道了");
+
+				    $("[name=paykind]").click(function(){
+			
+						if($(this).val() == 0)
+				        {
+				            $("#btn-pay").html("我知道了");
+				        }
+				        else
+				        {
+				        	$("#btn-pay").html("立即支付");
+				        }
+				    });
+
+			</script>
 	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
 
 	    <?php ActiveForm::end(); ?>
@@ -144,29 +159,9 @@
 </div>	
 
 <script>
-
-	$(document).on("pageshow", "#page1", function(){
-
 	$("#btn-pay").html("我知道了");
-
-    $("[name=paykind]").click(function(){
-
-		if($(this).val() == 0)
-        {
-            $("#btn-pay").html("我知道了");
-        }
-        else
-        {
-        	$("#btn-pay").html("立即支付");
-        }
-    });
-
-   });
-
-
 </script>
 
-	
 <?php
 /*
 			<?php if ($supportpay_count == 1): ?>
