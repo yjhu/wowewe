@@ -137,6 +137,7 @@ class WapxController extends Controller
 
 	public function actionStaffhome($gh_id, $openid)
 	{		
+
 		$this->layout = 'wapx';
 		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 		$model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
@@ -154,7 +155,7 @@ class WapxController extends Controller
 		if ($office === null)
 		{
 			U::W(['Invalid office.', __METHOD__, $gh_id, $openid]);
-		}		
+		}
 		if (Yii::$app->request->post('Unbind') !== null)
 		{
 			//$n = MStaff::updateAll(['openid' => ''], 'gh_id = :gh_id AND openid = :openid', [':gh_id'=>$gh_id, ':openid'=>$openid]);

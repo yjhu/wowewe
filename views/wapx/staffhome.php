@@ -23,14 +23,14 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 
 <div data-role="page" id="staffhome_page1" data-quicklinks="true" data-title="襄阳联通">
 
-<div data-role="popup" id="confirmx" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
-    <div role="main" class="ui-content">
-        <h3 class="ui-title">您确定要将微信号与员工信息解绑吗?</h3>
-    
-        <a id="cancelx" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-c" data-rel="back">不, 先保留</a>
-        <a id="yesx" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-transition="flow">解绑</a>
-    </div>
-</div>	
+	<div data-role="popup" id="confirm" data-overlay-theme="b" data-theme="a" data-dismissible="false" style="max-width:400px;">
+	    <div role="main" class="ui-content">
+	        <h3 class="ui-title">您确定要将微信号与员工信息解绑吗?</h3>
+	    
+	        <a id="cancel" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-c" data-rel="back">不, 先保留</a>
+	        <a id="yes" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-transition="flow">解绑</a>
+	    </div>
+	</div>
 
 	<?php echo $this->render('header', ['title' => '襄阳联通']); ?>
 
@@ -68,6 +68,7 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 		</div>
 	</div>
 
+	<input type="hidden" name="Unbind">
 	<div data-role="footer" data-position="fixed">
 		<div data-role="navbar">
 			<ul>
@@ -83,7 +84,7 @@ $this->registerJs($js_code, yii\web\View::POS_END);
             <li><a href="#staffhome_stafftop" data-icon="bullets">推广明星</a></li>
 
 			<?php if (isset(Yii::$app->session['owner'])): ?>
-            <li><input name="Unbind" id="Unbind" data-corners="false" data-icon="delete" data-iconpos="top" value="解绑" type="button"></li>
+            <li><input name="Unbindx" id="Unbind" data-corners="false" data-icon="delete" data-iconpos="top" value="解绑" type="button"></li>
 			<?php endif; ?>
 
 			</ul>
@@ -91,15 +92,11 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 
 	</div>
 
-
-
 	<?php ActiveForm::end(); ?>
 
 	<?php //echo $this->render('footer', ['title' => "&copy; 襄阳联通 ".date('Y')]); ?>
 
-
 </div>
-
 
 <div data-role="page" id="dialog_staff_qr" data-dialog="true">
 	<div data-role="header"><h1>我的推广二维码</h1></div>
@@ -125,24 +122,26 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 	</div>
 </div>
 
+
 <script>
+$(document).on("pageinit", "#staffhome_page1", function(){
 
-$(document).on("click","#Unbind",function(){
-	alert("you tap");
+	$(document).on("click","#Unbind",function(){
 
-	$("#confirmx").popup("open");
+		$("#confirm").popup("open");
 
-	$("#confirmx #yesx").on("click", function() {
+		$("#confirm #yes").on("click", function() {
+		    $("#confirm").popup("close");
+			$("#staffhome_form").submit();//to unbind
+		});
 
-	    $("#confirmx").popup("close");
-		$("#staffhome_form").submit();//to unbind
+		$("#confirm #cancel").on("click", function() {
+		    $("#confirm #yes").off();
+		});
+
+		return false;
 	});
 
-	$("#confirmx #cancelx").on("click", function() {
-	    $("#confirmx #yesx").off();
-	});
-
-	return false;
 });
 
 </script>
