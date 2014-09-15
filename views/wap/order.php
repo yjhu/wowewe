@@ -194,7 +194,7 @@ function load_data2(i, n)
 		imgurl = '../web/images/item/coolpad7295c-black-700x500.jpg-120x120.jpg';
 
 
-	text ="<li data-theme='c'><a href='#' class='ddxq' myOid='"+n.oid+"'>\
+	text ="<li><a href='#' class='ddxq' myOid='"+n.oid+"'>\
 	<img style='padding-top:20px' myOid="+n.oid+" src='"+imgurl+"'>\
 	<p>订单编号:&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
 	<p>下单时间:&nbsp;"+n.create_time+"</p>\
@@ -212,7 +212,6 @@ function load_data2(i, n)
 	text = text + txt_mos + txt_mod;
 
 	$("#list_common_tbody").append(text).trigger('create');
-	//$("#list_common_tbody").append(text);
 }
 
 function getMyOrderList()

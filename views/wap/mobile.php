@@ -310,7 +310,7 @@ text-decoration: line-through;
         <?php echo  $item->detail; ?>
     </div>
 
-    <div data-role="footer" data-position="fixed">
+    <div data-role="footer">
         <h4>&copy; 襄阳联通 2014</h4>
     </div>
     <?php echo $this->render('menu', ['menuId'=>'menu6','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
@@ -338,68 +338,41 @@ text-decoration: line-through;
     <?php echo $this->render('header2', ['menuId'=>'menu8','title' => $item->title]); ?>
     <div data-role="content">
 
-                <div id="TabbedPanels1" class="TabbedPanels">
-                <ul class="TabbedPanelsTabGroup">
-                    <li class="TabbedPanelsTab" tabindex="0" id="Title66">月消费66元</li>
-                    <li class="TabbedPanelsTab" tabindex="0" id="Title96">月消费96元</li>
-                    <li class="TabbedPanelsTab" tabindex="0" id="Title126">月消费126元</li>
-                </ul>
-                <div class="TabbedPanelsContentGroup">
-                    <div class="TabbedPanelsContent">
-                        <div role="main" class="ui-content">
-                            <fieldset data-role="controlgroup">
-                                <legend>套餐类型</legend>
-                                <input type="radio" name="plan66" id="plan66_0" value="0"  checked />
-                                <label for="plan66_0">A计划&nbsp;&nbsp;</label>
-                                <input type="radio" name="plan66" id="plan66_1" value="1" />
-                                <label for="plan66_1">B计划&nbsp;&nbsp;</label>
-                                <input type="radio" name="plan66" id="plan66_2" value="2" />
-                                <label for="plan66_2">C计划&nbsp;&nbsp;</label>
-                            </fieldset>
-                            <p id="plan66-show">&nbsp;</p>
+        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+            <legend class='title_comm'>套餐类型</legend>
+            <input type="radio" name="pkgModel" id="pkgModel_0" value="0" checked="checked">
+            <label for="pkgModel_0" id="pkgModel_0">3G</label>
+            <input type="radio" name="modelColor" id="pkgModel_1" value="1">
+            <label for="pkgModel_1" id="pkgModel_1">4G</label>
+        </fieldset>
 
-                        </div><!-- /content -->
-                    </div>
+        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+            <legend class='title_comm'>合约期长</legend>
+            <input type="radio" name="pkgPeri" id="pkgPeriod_0" value="0" checked="checked">
+            <label for="pkgPeriod_0" id="pkgPeriod_0">12月</label>
+            <input type="radio" name="modelColor" id="pkgPeriod_1" value="1">
+            <label for="pkgPeriod_1" id="pkgPeriod_1">24月</label>
+            <input type="radio" name="modelColor" id="pkgPeriod_2" value="2">
+            <label for="pkgPeriod_1" id="pkgPeriod_2">36月</label>
+        </fieldset>
 
-                    <div class="TabbedPanelsContent">
-                        <div role="main" class="ui-content">
-                            <fieldset data-role="controlgroup">
-                                <legend>套餐类型</legend>
-                                <input type="radio" name="plan96" id="plan96_0" value="0"  checked />
-                                <label for="plan96_0">A计划&nbsp;&nbsp;</label>
-                                <input type="radio" name="plan96" id="plan96_1" value="1" />
-                                <label for="plan96_1">B计划&nbsp;&nbsp;</label>
-                                <input type="radio" name="plan96" id="plan96_2" value="2" />
-                                <label for="plan96_2">C计划&nbsp;&nbsp;</label>
-                            </fieldset>
-                            <p id="plan96-show">&nbsp;</p>
+        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+            <legend class='title_comm'>合约期长</legend>
+            <input type="radio" name="pkgPeri" id="pkgPeriod_0" value="0" checked="checked">
+            <label for="pkgPeriod_0" id="pkgPeriod_0">66月</label>
+            <input type="radio" name="modelColor" id="pkgPeriod_1" value="1">
+            <label for="pkgPeriod_1" id="pkgPeriod_1">66月</label>
+            <input type="radio" name="modelColor" id="pkgPeriod_2" value="2">
+            <label for="pkgPeriod_1" id="pkgPeriod_2">36月</label>
+            <input type="radio" name="modelColor" id="pkgPeriod_3" value="3">
+            <label for="pkgPeriod_1" id="pkgPeriod_3">36月</label>
+        </fieldset>
 
-                        </div><!-- /content -->
-                    </div>
 
-                    <div class="TabbedPanelsContent">
-                        <div role="main" class="ui-content">
-                            <fieldset data-role="controlgroup">
-                                <legend>套餐类型</legend>
-                                <input type="radio" name="plan126" id="plan126_0" value="0"  checked />
-                                <label for="plan126_0">A计划&nbsp;&nbsp;</label>
-                                <input type="radio" name="plan126" id="plan126_1" value="1" />
-                                <label for="plan126_1">B计划&nbsp;&nbsp;</label>
-                                <input type="radio" name="plan126" id="plan126_2" value="2" />
-                                <label for="plan126_2">C计划&nbsp;&nbsp;</label>
-                            </fieldset>
-                            <p id="plan126-show">&nbsp;</p>
-
-                        </div><!-- /content -->
-                    </div>
-
-                </div>
-            </div>
-        <!--
         <p>
             <input type="button" value="确定" id="seleOffice">
         </p>
-        -->
+
     </div>
 
     <div data-role="footer" data-position="fixed">
@@ -407,6 +380,7 @@ text-decoration: line-through;
     </div>
     <?php echo $this->render('menu', ['menuId'=>'menu8','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
+
 
 
 <?php
@@ -509,7 +483,7 @@ $(document).on("pageshow", "#page2", function(){
     /*item ctrl end --------------------------------------------------*/
 
 
-
+    /*
     if(localStorage.getItem("planFlag")=="plan66")
     {
         planPrice = "66元/月";
@@ -547,6 +521,7 @@ $(document).on("pageshow", "#page2", function(){
         //$("#sel-num").trigger('create');
          $("#package").removeClass("title_unset").addClass("title_set");
     }
+    */
 
     if(localStorage.getItem("num") != null)
     {           
@@ -574,13 +549,15 @@ $(document).on("pageshow", "#page2", function(){
 
 
 $(document).on("pageinit", "#package", function(){
+
+    /*
     $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
     $("[name=plan66]").click(function(){
         planFlag = 'plan66';
         localStorage.setItem("planFlag","plan66");
         localStorage.setItem("plan66",$(this).val());
         //alert($(this).val());
-        if($(this).val() == 0) /*plan a*/
+        if($(this).val() == 0) 
             $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
         else if($(this).val() == 1)
             $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-b.png'>");
@@ -588,7 +565,6 @@ $(document).on("pageinit", "#package", function(){
             $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-c.png'>");
         else
             $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
-
     });
 
     $("[name=plan96]").click(function(){
@@ -596,7 +572,7 @@ $(document).on("pageinit", "#package", function(){
         planFlag = 'plan96';
         localStorage.setItem("planFlag","plan96");
         localStorage.setItem("plan96",$(this).val());
-        if($(this).val() == 0) /*plan a*/
+        if($(this).val() == 0) 
             $("#plan96-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
         else if($(this).val() == 1)
             $("#plan96-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-b.png'>");
@@ -612,7 +588,7 @@ $(document).on("pageinit", "#package", function(){
         planFlag = 'plan126';
         localStorage.setItem("planFlag","plan126");
         localStorage.setItem("plan126",$(this).val());
-        if($(this).val() == 0) /*plan a*/
+        if($(this).val() == 0) 
             $("#plan126-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
         else if($(this).val() == 1)
             $("#plan126-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-b.png'>");
@@ -622,6 +598,11 @@ $(document).on("pageinit", "#package", function(){
             $("#plan126-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
 
     });
+    */
+
+    alert("package page!");
+
+
 });
 
 $(document).on("pageinit", "#page2", function(){

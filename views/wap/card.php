@@ -297,7 +297,7 @@
  		<?php echo  $item->detail; ?>
 	</div>
 
-	<div data-role="footer" data-position="fixed">
+	<div data-role="footer">
 		<h4>&copy; 襄阳联通 2014</h4>
 	</div>
 	<?php echo $this->render('menu', ['menuId'=>'menu6','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
