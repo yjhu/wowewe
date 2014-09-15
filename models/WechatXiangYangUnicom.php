@@ -138,7 +138,7 @@ EOD;
 		{
 			//$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
 			$url = Url::to(['wap/testpay', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
-			return $this->responseText("see my score? <a href=\"{$url}\">clickme</a>");
+			return $this->responseText("see my score? <a href=\"{$url}\">clickme</a>, <a href=\"http://m.wsq.qq.com/263163652\">wsq</a>");
 		}
 		else
 		{
