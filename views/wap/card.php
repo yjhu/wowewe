@@ -310,30 +310,36 @@
 
 	<div data-role="content">
 
-<!--
 <script>
-var position_option = {
-                enableHighAccuracy: true,
-                maximumAge: 30000,
-                timeout: 20000
-	};
-
 if (navigator.geolocation)
-    navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionError, position_option);
+    navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionError, {enableHighAccuracy: true, maximumAge: 60000, timeout: 20000});
 
 function getPositionSuccess( position ){
         var lat = position.coords.latitude;
         var lng = position.coords.longitude;
-        alert( "您所在的位置： 纬度" + lat + "，经度" + lng );
-        if(typeof position.address !== "undefined"){
-                var country = position.address.country;
-                var province = position.address.region;
-                var city = position.address.city;
-                alert(' 您位于 ' + country + province + '省' + city +'市');
-        }
+        //alert( "您所在的位置： 纬度" + lat + "，经度" + lng );
+		var gh_id = "<?= $gh_id ?>";
+        $.ajax({
+            url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'getnearestoffice'], true) ; ?>",
+            type:"GET",
+	        cache:false,
+	        dataType:'json',
+            data: "&gh_id="+gh_id+"&lon="+lng+"&lat="+lat,
+            success: function(json_data){
+				//alert(json_data);
+                if(json_data.code == 0)
+                {
+					offices = json_data.offices;
+					alert(offices.length);
+                    //$.each(json_data, loadData);
+                }
+            }
+        });
+
 }
  
 function getPositionError(error) {
+/*
     switch (error.code) {
         case error.TIMEOUT:
             alert("连接超时，请重试");
@@ -345,10 +351,10 @@ function getPositionError(error) {
             alert("获取位置信息失败");
             break;
     }
+*/
 }
 
 </script>
--->
 
 			<?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false),["id"=>"office"]); ?>
         <p>

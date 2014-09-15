@@ -17,6 +17,7 @@ use app\models\WxException;
 use app\models\Wechat;
 use app\models\MUser;
 use app\models\MStaff;
+use app\models\MOffice;
 use app\models\MGh;
 use app\models\MOrder;
 use app\models\MItem;
@@ -1027,6 +1028,16 @@ EOD;
 				$data['code'] = 0;
 				$data['isSubscribed'] = empty($user->subscribe) ? 0 : 1;
 				$data['position'] = MG2048::getCurrentScorePosition($gh_id, $_GET['score']);
+				break;
+
+			case 'getnearestoffice':
+				$gh_id = U::getSessionParam('gh_id');			
+			        $lat = $_GET["lat"];
+			        $lon = $_GET["lon"];
+	        		$rows = MOffice::getNearestOffices($gh_id, $lon, $lat);
+	        		U::W($rows);
+	        		$data['code'] = 0;	        		
+	        		$data['offices'] = $rows;
 				break;
 				
 			default:
