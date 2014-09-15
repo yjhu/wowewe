@@ -57,7 +57,8 @@ ALTER TABLE wx_order ADD KEY gh_id_aliwap_trade_no(gh_id,aliwap_trade_no);
 DROP TABLE IF EXISTS wx_order_arc;
 CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
 
-
+//给卖家留言
+ALTER TABLE wx_order ADD memo VARCHAR(256) NOT NULL DEFAULT '';
 */
 
 use Yii;

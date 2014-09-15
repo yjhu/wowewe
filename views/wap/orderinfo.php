@@ -105,7 +105,7 @@
 			?>
 
 
-
+ 			<?= $form->field($model, 'memo')->textinput(['maxlength' => '256', 'placeholder'=>'给卖家留言'])->label(false); ?>
 			<!--
 			<fieldset id="paykind-field" data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
 				<legend>支付方式</legend>

@@ -88,6 +88,11 @@ $basename = basename(__FILE__, '.php');
 		<p><span class="orderlist">姓名:</span>&nbsp;<span id="username"></span></p>
 		<p><span class="orderlist">手机号码:</span>&nbsp;<span id="usermobile"></span></p>
 		<p><span class="orderlist">身份证:&nbsp;</span><span id="userid"></span></p>
+
+		<hr color="#F7C708">
+		<p><span class="orderlist">给卖家留言:&nbsp;</span><span id="memo"></span></p>
+
+
 	</div>
 
 	<div data-role="footer" data-position="fixed">
@@ -134,6 +139,8 @@ function load_data1(i, n)
 		$("#status").html(n.statusName +"<span style='color:blue' class='qxdd_orderdetail' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span>");
 	else
 		$("#status").html(n.statusName);
+
+	$("#memo").html(n.memo);
 }
 
 function load_data2(i, n)
