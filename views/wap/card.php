@@ -309,53 +309,6 @@
 	<?php echo $this->render('header2', ['menuId'=>'menu7','title' => $item->title]); ?>
 
 	<div data-role="content">
-
-<script>
-if (navigator.geolocation)
-    navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionError, {enableHighAccuracy: true, maximumAge: 60000, timeout: 20000});
-
-function getPositionSuccess( position ){
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
-        //alert( "您所在的位置： 纬度" + lat + "，经度" + lng );
-		var gh_id = "<?= $gh_id ?>";
-        $.ajax({
-            url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'getnearestoffice'], true) ; ?>",
-            type:"GET",
-	        cache:false,
-	        dataType:'json',
-            data: "&gh_id="+gh_id+"&lon="+lng+"&lat="+lat,
-            success: function(json_data){
-				//alert(json_data);
-                if(json_data.code == 0)
-                {
-					offices = json_data.offices;
-					alert(offices.length);
-                    //$.each(json_data, loadData);
-                }
-            }
-        });
-
-}
- 
-function getPositionError(error) {
-/*
-    switch (error.code) {
-        case error.TIMEOUT:
-            alert("连接超时，请重试");
-            break;
-        case error.PERMISSION_DENIED:
-            alert("您拒绝了使用位置共享服务，查询已取消");
-            break;
-        case error.POSITION_UNAVAILABLE:
-            alert("获取位置信息失败");
-            break;
-    }
-*/
-}
-
-</script>
-
 			<?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false),["id"=>"office"]); ?>
         <p>
             <input type="button" value="确定" id="seleOffice">
@@ -639,8 +592,67 @@ $(document).on("pageinit", "#contactPage", function(){
 
 });
 
+function load_data2(i, n)
+{
+	//alert(i);
+	//alert(n.office_id+"---"+n.title);
+	text = "<option value="+ n.office_id +">"+ n.title+"("+ n.address+")"+"</option>";
+	$("#office").append(text).trigger('create');
+}
+
 
 $(document).on("pageinit", "#office-select", function(){
+
+	if (navigator.geolocation)
+	    navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionError, {enableHighAccuracy: true, maximumAge: 60000, timeout: 20000});
+
+	function getPositionSuccess( position ){
+	        var lat = position.coords.latitude;
+	        var lng = position.coords.longitude;
+	        //alert( "您所在的位置： 纬度" + lat + "，经度" + lng );
+
+			var gh_id = "<?= $gh_id ?>";
+	        $.ajax({
+	            url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'getnearestoffice'], true) ; ?>",
+	            type:"GET",
+		        cache:false,
+		        dataType:'json',
+	            data: "&gh_id="+gh_id+"&lon="+lng+"&lat="+lat,
+	            success: function(json_data){
+					//alert('jd');
+
+					$("#office").html('');
+	                if(json_data.code == 0)
+	                {
+						offices = json_data.offices;
+						//alert(offices.length);
+	                    //$.each(json_data, loadData);
+
+	                    $.each(offices, load_data2);
+	                }
+
+	            }
+	        });
+
+	}
+	 
+	function getPositionError(error) {
+	/*
+	    switch (error.code) {
+	        case error.TIMEOUT:
+	            alert("连接超时，请重试");
+	            break;
+	        case error.PERMISSION_DENIED:
+	            alert("您拒绝了使用位置共享服务，查询已取消");
+	            break;
+	        case error.POSITION_UNAVAILABLE:
+	            alert("获取位置信息失败");
+	            break;
+	    }
+	*/
+	}
+
+
 
 	$("#seleOffice").click(function(){
 		var office = $('#office').val();
