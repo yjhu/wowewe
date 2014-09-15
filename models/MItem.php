@@ -35,6 +35,10 @@ ALTER TABLE wx_item ADD	ctrl_userinfo tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_office tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_supportpay VARCHAR(128) NOT NULL DEFAULT '';
 
+ALTER TABLE wx_item ADD	ctrl_pkg_model VARCHAR(32) NOT NULL DEFAULT '';
+ALTER TABLE wx_item ADD	ctrl_pkg_period VARCHAR(32) NOT NULL DEFAULT '';
+ALTER TABLE wx_item ADD	ctrl_pkg_monthprice VARCHAR(64) NOT NULL DEFAULT '';
+ALTER TABLE wx_item ADD	ctrl_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
 
 INSERT INTO `wx_item` (`gh_id`, `price`, `price_hint`, `title`, `title_hint`, `pkg_name`, `pkg_name_hint`, `detail`, `pic_url`, `cid`, `status`) VALUES
 ('gh_03a74ac96138', 5000, '含预存款50元', '微信沃卡', '微信沃卡 <span class="title_hint"> 尊享微信6大特权, 50元入网得530元话费, 500M省内流量+500M微信定向流量, 仅需31元/月</span>', '微信沃卡', '500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wxwk001.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk002.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk003.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk004.jpg" alt="" />', '../web/images/item/wxwk000.jpg', 10, 0);

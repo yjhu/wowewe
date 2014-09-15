@@ -192,7 +192,7 @@ text-decoration: line-through;
             </li>
 
             <li id="package-li">
-                <a href="#package">
+                <a href="#packagePage">
                 <p id="package" class="title_unset">套餐月费</p>
                 </a>
             </li>
@@ -334,43 +334,61 @@ text-decoration: line-through;
 </div>
 
 
-<div data-role="page" id="package" data-theme="c">
+<div data-role="page" id="packagePage" data-theme="c">
     <?php echo $this->render('header2', ['menuId'=>'menu8','title' => $item->title]); ?>
     <div data-role="content">
 
         <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
             <legend class='title_comm'>套餐类型</legend>
-            <input type="radio" name="pkgModel" id="pkgModel_0" value="0" checked="checked">
-            <label for="pkgModel_0" id="pkgModel_0">3G</label>
-            <input type="radio" name="modelColor" id="pkgModel_1" value="1">
-            <label for="pkgModel_1" id="pkgModel_1">4G</label>
+            <input type="radio" name="pkgModel" id="pkgModel_0" value="3g" >
+            <label for="pkgModel_0">3G普通套餐</label>
+            <input type="radio" name="pkgModel" id="pkgModel_1" value="4g">
+            <label for="pkgModel_1">4G/3G一体化套餐</label>
         </fieldset>
 
         <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
             <legend class='title_comm'>合约期长</legend>
-            <input type="radio" name="pkgPeri" id="pkgPeriod_0" value="0" checked="checked">
-            <label for="pkgPeriod_0" id="pkgPeriod_0">12月</label>
-            <input type="radio" name="modelColor" id="pkgPeriod_1" value="1">
-            <label for="pkgPeriod_1" id="pkgPeriod_1">24月</label>
-            <input type="radio" name="modelColor" id="pkgPeriod_2" value="2">
-            <label for="pkgPeriod_1" id="pkgPeriod_2">36月</label>
+            <input type="radio" name="pkgPeriod" id="pkgPeriod_0" value="12" >
+            <label for="pkgPeriod_0">12个月</label>
+            <input type="radio" name="pkgPeriod" id="pkgPeriod_1" value="24">
+            <label for="pkgPeriod_1">24个月</label>
+            <input type="radio" name="pkgPeriod" id="pkgPeriod_2" value="36">
+            <label for="pkgPeriod_2">36个月</label>
         </fieldset>
 
         <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-            <legend class='title_comm'>合约期长</legend>
-            <input type="radio" name="pkgPeri" id="pkgPeriod_0" value="0" checked="checked">
-            <label for="pkgPeriod_0" id="pkgPeriod_0">66月</label>
-            <input type="radio" name="modelColor" id="pkgPeriod_1" value="1">
-            <label for="pkgPeriod_1" id="pkgPeriod_1">66月</label>
-            <input type="radio" name="modelColor" id="pkgPeriod_2" value="2">
-            <label for="pkgPeriod_1" id="pkgPeriod_2">36月</label>
-            <input type="radio" name="modelColor" id="pkgPeriod_3" value="3">
-            <label for="pkgPeriod_1" id="pkgPeriod_3">36月</label>
+            <legend class='title_comm'>套餐月租</legend>
+            <input type="radio" name="pkgMonthprice" id="pkgMonthprice_0" value="0" >
+            <label for="pkgMonthprice_0">66元/月</label>
+            <input type="radio" name="pkgMonthprice" id="pkgMonthprice_1" value="1">
+            <label for="pkgMonthprice_1">96元/月</label>
+            <input type="radio" name="pkgMonthprice" id="pkgMonthprice_2" value="2">
+            <label for="pkgMonthprice_2">126元/月</label>
+            <input type="radio" name="pkgMonthprice" id="pkgMonthprice_3" value="3">
+            <label for="pkgMonthprice_3">156元/月</label>
         </fieldset>
 
+
+        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+            <legend class='title_comm'>套餐计划</legend>
+            <input type="radio" name="pkgPlan" id="pkgPlan_0" value="a" >
+            <label for="pkgPlan_0">A计划</label>
+            <input type="radio" name="pkgPlan" id="pkgPlan_1" value="b">
+            <label for="pkgPlan_1">B计划</label>
+            <input type="radio" name="pkgPlan" id="pkgPlan_2" value="c">
+            <label for="pkgPlan_2">C计划</label>
+        </fieldset>
+
+        <hr color="#F7C708">
+        <p><span class='title_comm'>国内通话:</span> 240分钟</p>
+        <p><span class='title_comm'>国内流量:</span> 300MB</p>
+
+        <p><span class='title_comm'>优惠购机款:</span> 5099元</p>
+        <p><span class='title_comm'>购机预存款:</span> 1200元</p>
+        <p><span class='title_comm'>分月返还款:</span> 50元</p>
 
         <p>
-            <input type="button" value="确定" id="seleOffice">
+            <input type="button" value="确定" id="selePackage">
         </p>
 
     </div>
@@ -409,7 +427,7 @@ text-decoration: line-through;
 
 
 <script>
-    var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+    //var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
     //var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
 </script>
 
@@ -547,61 +565,60 @@ $(document).on("pageshow", "#page2", function(){
     
 });
 
+function load_data1(i, n)
+{
+    //创建套餐控件组合界面 ...
+    $("#oid").html(n.oid);
+    $("#memo").html(n.memo);
+}
 
-$(document).on("pageinit", "#package", function(){
-
-    /*
-    $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
-    $("[name=plan66]").click(function(){
-        planFlag = 'plan66';
-        localStorage.setItem("planFlag","plan66");
-        localStorage.setItem("plan66",$(this).val());
-        //alert($(this).val());
-        if($(this).val() == 0) 
-            $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
-        else if($(this).val() == 1)
-            $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-b.png'>");
-        else if($(this).val() == 2)
-            $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-c.png'>");
-        else
-            $("#plan66-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
+function getPackageItemList(cid)
+{
+    alert('getPackageItemList');
+    $.ajax({
+    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'packageitemlist'], true) ; ?>",
+    type:"GET",
+    cache:false,
+    dataType:'json',
+    data: "&cid="+cid,
+    success: function(json_data){
+            if(json_data)
+            {
+               load_data1(0, json_data); 
+            }
+            //$.mobile.changePage("#orderdetail",{transition:"slide"});
+            //$('#orderdetail_content').listview('refresh');
+            //$("#status").trigger('create');
+        }
     });
+}
 
-    $("[name=plan96]").click(function(){
-        //alert($(this).val());
-        planFlag = 'plan96';
-        localStorage.setItem("planFlag","plan96");
-        localStorage.setItem("plan96",$(this).val());
-        if($(this).val() == 0) 
-            $("#plan96-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
-        else if($(this).val() == 1)
-            $("#plan96-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-b.png'>");
-        else if($(this).val() == 2)
-            $("#plan96-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-c.png'>");
-        else
-            $("#plan96-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
 
-    });
+$(document).on("pageinit", "#packagePage", function(){
+    
+    //alert("packagePage");   
+    //GET 显示界面相应配置项
+    getPackageItemList(cid); 
 
-    $("[name=plan126]").click(function(){
-        //alert($(this).val());
-        planFlag = 'plan126';
-        localStorage.setItem("planFlag","plan126");
-        localStorage.setItem("plan126",$(this).val());
-        if($(this).val() == 0) 
-            $("#plan126-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
-        else if($(this).val() == 1)
-            $("#plan126-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-b.png'>");
-        else if($(this).val() == 2)
-            $("#plan126-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-c.png'>");
-        else
-            $("#plan126-show").html("<img width='100%' style='display:block' src='../web/images/item/plan-a.png'>");
+    //SET 点击确认设置用户的配置
+    $(document).on("tap","#selePackage",function(){
 
-    });
-    */
-
-    alert("package page!");
-
+        $.ajax({
+            url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'packageitemlistset'], true) ; ?>",
+            type:"GET",
+            cache:false,
+            dataType:'json',
+            data: "&cid="+cid,
+            success: function(json_data){
+                if(json_data)
+                {
+                    
+                }
+                $.mobile.changePage("#page2",{transition:"slide"});
+            }
+        });
+       return false;
+    });    
 
 });
 
