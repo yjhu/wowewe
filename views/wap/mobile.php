@@ -631,6 +631,7 @@ function PkgItemQuery()
     {
         //alert('all cheched!');
         $("#pkginfo_common_body").show();
+        $("#selePackage").removeAttr("disabled");
 
         pkg3g4g = localStorage.getItem("pkg3g4g");
         pkgPeriod = localStorage.getItem("pkgPeriod");
@@ -663,6 +664,7 @@ $(document).on("pageinit", "#packagePage", function(){
     
     //alert("packagePage");   
     $("#pkginfo_common_body").hide();
+    $("#selePackage").attr("disabled", "disabled");
 
     $(document).on("tap","#selePackage",function(){
         $.mobile.changePage("#page2",{transition:"slide"});
