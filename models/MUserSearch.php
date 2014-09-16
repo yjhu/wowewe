@@ -63,9 +63,18 @@ class MUserSearch extends Model
 		$this->addCondition($query, 'nickname', true);
 		$this->addCondition($query, 'role');
 		$this->addCondition($query, 'status');
-		$this->addCondition($query, 'create_time');
+		//$this->addCondition($query, 'create_time');
 		$this->addCondition($query, 'update_time');
-		$this->addCondition($query, 'scene_pid');        
+		$this->addCondition($query, 'scene_pid');       
+		
+//                U::W($this->create_time);				
+		if (trim($this->create_time) !== '') 
+		{
+			//$query->andWhere(['create_time' => new \yii\db\Expression(date('create_time')) ]);
+			$query->andWhere('date(create_time)=:create_time', [':create_time' => $this->create_time]);
+		}
+
+		
 		return $dataProvider;
 	}
 

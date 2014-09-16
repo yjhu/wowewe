@@ -30,15 +30,35 @@ $this->title = 'Musers';
 		//['class'=>'kartik\grid\SerialColumn', 'order'=>DynaGrid::ORDER_FIX_LEFT],
 		'id',
 		'nickname',
+/*
 		[
 			'attribute'=>'create_time',
 			'filterType'=>GridView::FILTER_DATE,
+			//'filterType'=>GridView::FILTER_RANGE,
 			'format'=>'raw',
 			'width'=>'170px',
 			'filterWidgetOptions'=>[
 				'pluginOptions'=>['format'=>'yyyy-mm-dd']
 			],
 		],
+*/
+		[
+			'attribute'=>'create_time',
+			'filterType'=>GridView::FILTER_DATE_RANGE,
+			'format'=>'raw',
+			'width'=>'170px',
+			'filterWidgetOptions'=>[
+//				'pluginOptions'=>['format'=>'yyyy-mm-dd']
+
+    'pluginOptions'=>[
+    'timePicker'=>true,
+    'timePickerIncrement'=>15,
+    'format'=>'Y-m-d h:i A'
+    ]
+
+			],
+		],
+
 		[
 			'class'=>'kartik\grid\BooleanColumn',
 			'attribute'=>'status', 

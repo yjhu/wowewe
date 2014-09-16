@@ -52,7 +52,9 @@ class MOrderSearch extends Model
 		]);
 
 		if (Yii::$app->user->identity->gh_id == 'root')
-			U::W('root see order');
+		{
+			//U::W('root see order');
+		}
 		else if (Yii::$app->user->identity->openid == 'admin')
 		{
 			$this->gh_id = Yii::$app->user->identity->gh_id;
