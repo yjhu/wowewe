@@ -292,8 +292,24 @@ class OrderController extends Controller
 		$data = $dataProvider->getModels();
 		//$query = clone $dataProvider->query;
 		//$data = $query->asArray()->all($dataProvider->db);
-		U::W($data);
+		//U::W($data);
 		$filename = Yii::$app->getRuntimePath().'/iphone6.csv';
+		$csv = new \app\models\ECSVExport($data);
+		$csv->toCSV($filename); 
+		Yii::$app->response->sendFile($filename);
+		return;
+	}
+
+	public function actionOrderdownload()
+	{
+		$searchModel = new \app\models\MOrderSearch;
+		$dataProvider = $searchModel->search($_GET);
+		$dataProvider->setPagination(false);
+		$data = $dataProvider->getModels();
+		//$query = clone $dataProvider->query;
+		//$data = $query->asArray()->all($dataProvider->db);
+		//U::W($data);
+		$filename = Yii::$app->getRuntimePath().'/order.csv';
 		$csv = new \app\models\ECSVExport($data);
 		$csv->toCSV($filename); 
 		Yii::$app->response->sendFile($filename);

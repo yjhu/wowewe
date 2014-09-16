@@ -84,6 +84,7 @@ $this->title = 'Musers';
 		//'theme'=>'panel-danger',
 		//'theme'=>'panel-primary',
 		'theme'=>'panel-default',
+
 		'gridOptions'=>[
 			'dataProvider'=>$dataProvider,
 			'filterModel'=>$searchModel,
