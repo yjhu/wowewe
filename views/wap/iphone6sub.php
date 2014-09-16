@@ -6,7 +6,7 @@ use yii\helpers\Url;
 
 $this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js?v0.1');
 
-$this->title = 'iPhone6 预订';
+$this->title = \app\models\MIphone6Sub::getCatName($model->cat).' 预订';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
 

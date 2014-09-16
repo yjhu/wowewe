@@ -484,13 +484,15 @@ EOD;
  		return $this->render('luck', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 	}	
 
-	//http://127.0.0.1/wx/web/index.php?r=wap/iphone6sub
+	//http://127.0.0.1/wx/web/index.php?r=wap/iphone6sub&cat=0
 	//http://wosotech.com/wx/web/index.php?r=wap/oauth2cb&state=wap/cardlist:gh_03a74ac96138
 	//http://wosotech.com/wx/web/index.php?r=wap/iphone6sub
 	public function actionIphone6sub()
 	{
+        	$cat = isset($_GET['cat']) ? $_GET['cat'] : 0;
 		$this->layout = 'wap';
 		$model = new \app\models\MIphone6Sub;
+		$model->cat = $cat;
 		if ($model->load(Yii::$app->request->post())) 
 		{
 			if (!$model->save())
@@ -502,7 +504,7 @@ EOD;
 				Yii::$app->session->setFlash('success','预订信息提交成功，请您敬侯佳音节！');
 			return $this->refresh();
 		}		
-		$n = \app\models\MIphone6Sub::find()->count();								
+		$n = \app\models\MIphone6Sub::find()->where(['cat'=>$cat])->count();								
  		return $this->render('iphone6sub', ['model' => $model, 'n'=>$n+999]);
 	}	
 

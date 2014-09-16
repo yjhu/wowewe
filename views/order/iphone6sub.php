@@ -12,7 +12,8 @@ use app\models\MOrder;
  * @var app\models\MUserSearch $searchModel
  */
 
-$this->title = 'iPhone6 预订';
+//$this->title = 'iPhone6 预订';
+$this->title = '商品预订';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="muser-index">
@@ -32,6 +33,12 @@ $this->params['breadcrumbs'][] = $this->title;
 		'tableOptions' => ['class' => 'table table-striped'],        
         'columns' => [
             'id',
+			[
+				'attribute' => 'cat',
+				'headerOptions' => array('style'=>'width:100px;'),
+				'value'=>function ($model, $key, $index, $column) { return \app\models\MIphone6Sub::getCatName($model->cat); },
+				'filter'=> \app\models\MIphone6Sub::getCatName(),
+			],
 			[
 				'attribute' => 'user_name',
 				'headerOptions' => array('style'=>'width:200px;'),
