@@ -30,35 +30,41 @@ $this->title = 'Musers';
 		//['class'=>'kartik\grid\SerialColumn', 'order'=>DynaGrid::ORDER_FIX_LEFT],
 		'id',
 		'nickname',
-/*
 		[
 			'attribute'=>'create_time',
 			'filterType'=>GridView::FILTER_DATE,
 			//'filterType'=>GridView::FILTER_RANGE,
 			'format'=>'raw',
-			'width'=>'170px',
+			'width'=>'270px',
 			'filterWidgetOptions'=>[
-				'pluginOptions'=>['format'=>'yyyy-mm-dd']
+				'type' => \kartik\widgets\DatePicker::TYPE_RANGE,
+				'attribute2'=>'create_time_2',
+				'pluginOptions'=>[
+					'format'=>'yyyy-mm-dd',
+					'language'=>'zh-CN',
+				]
 			],
 		],
-*/
+
+/*
 		[
 			'attribute'=>'create_time',
 			'filterType'=>GridView::FILTER_DATE_RANGE,
 			'format'=>'raw',
 			'width'=>'170px',
 			'filterWidgetOptions'=>[
-//				'pluginOptions'=>['format'=>'yyyy-mm-dd']
-
-    'pluginOptions'=>[
-    'timePicker'=>true,
-    'timePickerIncrement'=>15,
-    'format'=>'Y-m-d h:i A'
-    ]
-
+				'convertFormat'=>true,
+				'pluginOptions'=>[
+					//'timePicker'=>true,
+					//'timePickerIncrement'=>15,
+					//'format'=>'Y-m-d h:i A'
+					'separator'=>' : ',
+					//'locale'=>'zh-CN',
+					'format'=>'Y-m-d'
+				]
 			],
 		],
-
+*/
 		[
 			'class'=>'kartik\grid\BooleanColumn',
 			'attribute'=>'status', 

@@ -22,6 +22,8 @@ class MUserSearch extends Model
 
 	public $create_time;
 
+	public $create_time_2;
+	
 	public $update_time;
 
 	public $scene_id;
@@ -32,7 +34,7 @@ class MUserSearch extends Model
 	{
 		return [
 			[['id', 'role', 'status'], 'integer'],
-			[['nickname', 'create_time', 'update_time', 'scene_id', 'scene_pid'], 'safe'],
+			[['nickname', 'create_time', 'create_time_2', 'update_time', 'scene_id', 'scene_pid'], 'safe'],
 		];
 	}
 
@@ -71,9 +73,14 @@ class MUserSearch extends Model
 		if (trim($this->create_time) !== '') 
 		{
 			//$query->andWhere(['create_time' => new \yii\db\Expression(date('create_time')) ]);
-			$query->andWhere('date(create_time)=:create_time', [':create_time' => $this->create_time]);
+			$query->andWhere('date(create_time)>=:create_time', [':create_time' => $this->create_time]);
 		}
 
+		if (trim($this->create_time_2) !== '') 
+		{
+			//$query->andWhere(['create_time' => new \yii\db\Expression(date('create_time')) ]);
+			$query->andWhere('date(create_time)<=:create_time_2', [':create_time_2' => $this->create_time_2]);
+		}
 		
 		return $dataProvider;
 	}
