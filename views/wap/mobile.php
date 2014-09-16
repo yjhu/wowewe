@@ -388,14 +388,21 @@ text-decoration: line-through;
             </fieldset>
         <?php endif; ?>
 
+        <!--
+        pkg_price":"6299", 产品包价格（元）
+        "prom_price":"5399", 优惠购机款（元）
+        "yck":"900", 预存款（元）
+        "income_return":"0", 
+        "month_return":"75" 分月返还金额
+        -->
 
         <hr color="#F7C708">
-        <p><span class='title_comm'>国内通话:</span> 240分钟</p>
-        <p><span class='title_comm'>国内流量:</span> 300MB</p>
+        <div id='pkginfo_common_body'>
+        <p id='pkg_price'><span class='title_comm'>产品包价格:</span> </p>
+        <p id='prom_price'><span class='title_comm'>优惠购机款:</span> </p>
+        <p id='yck'><span class='title_comm'>预存款:</span> </p>
 
-        <p><span class='title_comm'>优惠购机款:</span> 5099元</p>
-        <p><span class='title_comm'>购机预存款:</span> 1200元</p>
-        <p><span class='title_comm'>分月返还款:</span> 50元</p>
+        <p id='month_return'><span class='title_comm'>分月返还金额:</span> </p>
 
         <p>
             <input type="button" value="确定" id="selePackage">
@@ -459,6 +466,8 @@ var ctrl_office = "<?php echo  $item->ctrl_office; ?>";
 var ctrl_package = 1; 
 var ctrl_supportpay = "<?php echo  $item->ctrl_supportpay; ?>";
 
+var ctrl_pkg_plan = "<?php echo  $item->ctrl_pkg_plan; ?>";
+
 
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
@@ -468,6 +477,8 @@ function isWeiXin() {
 		return false;
 	}
 }
+
+
 
 $(document).on("pageshow", "#page2", function(){
 
@@ -551,11 +562,107 @@ $(document).on("pageshow", "#page2", function(){
     
 });
 
+function loadData2(i, n)
+{
+    $("#pkg_price").html("<span class='title_comm'>产品包价格:</span>"+n.pkg_price+"元");
+    $("#prom_price").html("<span class='title_comm'>优惠购机款:</span>"+n.prom_price+"元");
+    $("#yck").html("<span class='title_comm'>预存款:</span>"+n.yck+"元");
+    //$("#income_return").html("<span class='title_comm'>income_return:</span>"+n.income_return+"元");
+    $("#month_return").html("<span class='title_comm'>分月返还金额:</span>"+n.month_return+"元");
+}
+
+function PkgItemQuerycheck() 
+{ 
+  var ipt;
+  var textboxs = new Array(); // text类型的input集合 
+  var radioList = new Object(); 
+  //radio类型的input集合，因为Radio比较特殊，要一组一组检测，所以这里用一个Hashtable，根据radio的name作为Key来保存所有的Radio集合
+  
+  // 每一个name对应的Radio集合 
+  var inputs = document.getElementsByTagName("INPUT"); // 取form下的所有input 
+  
+  // 遍历所有INPUT 
+  for (var i=0; i<inputs.length; i++) 
+  { 
+    ipt = inputs[i]; 
+    
+    if (ipt.type == "radio")  
+    { 
+      radioes = radioList[ipt.name]; 
+      if (!radioes) 
+      { 
+        radioes = new Array(); 
+      } 
+      radioes[radioes.length] = ipt; 
+      radioList[ipt.name] = radioes; 
+    }
+  } 
+
+  // 遍历所有Radiobox组 
+  for (var radioboxName in radioList) 
+  { 
+    radioes = radioList[radioboxName]; 
+    var chk = false; // 是否有选中的 
+    var radio;  
+    // 检测该组Radio是否都选中了 
+    for (var j=0; j<radioes.length; j++) 
+    { 
+      var radio = radioes[j]; 
+      if (radio.checked) 
+      { 
+        chk = true; 
+        break; 
+      } 
+    } 
+    if (!chk) // 没有选中的 
+    { 
+      //alert("please select: " + radioboxName); 
+      return false; 
+    } 
+  } 
+
+  return true; 
+}
+
+
+function PkgItemQuery()
+{   //localStorage.getItem("num") == null
+    if(PkgItemQuerycheck())
+    {
+        //alert('all cheched!');
+        $("#pkginfo_common_body").show();
+
+        pkg3g4g = localStorage.getItem("pkg3g4g");
+        pkgPeriod = localStorage.getItem("pkgPeriod");
+        pkgMonthprice = localStorage.getItem("pkgMonthprice");
+        pkgPlan = localStorage.getItem("pkgPlan");
+
+        $.ajax({
+            url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'pkginfo'], true) ; ?>",
+            type:"GET",
+            cache:false,
+            dataType:'json',
+            data: "&cid="+cid+"&pkg3g4g="+pkg3g4g+"&pkgPeriod="+pkgPeriod+"&pkgMonthprice="+pkgMonthprice+"&pkgPlan="+pkgPlan,
+            success: function(json_data){
+                if(json_data)
+                {
+                   loadData2(0, json_data); 
+                }
+            }
+        });
+    }
+    else
+    {
+        //alert('not checked all');
+    }
+
+}
 
 
 $(document).on("pageinit", "#packagePage", function(){
     
     //alert("packagePage");   
+    $("#pkginfo_common_body").hide();
 
     $(document).on("tap","#selePackage",function(){
         $.mobile.changePage("#page2",{transition:"slide"});
@@ -563,18 +670,22 @@ $(document).on("pageinit", "#packagePage", function(){
 
     $("[name=pkg3g4g]").click(function(){
         localStorage.setItem("pkg3g4g",$(this).val());
+        PkgItemQuery();
     });
 
     $("[name=pkgPeriod]").click(function(){
         localStorage.setItem("pkgPeriod",$(this).val());
+        PkgItemQuery();
     });
 
     $("[name=pkgMonthprice]").click(function(){
         localStorage.setItem("pkgMonthprice",$(this).val());
+        PkgItemQuery();
     });
 
     $("[name=pkgPlan]").click(function(){
         localStorage.setItem("pkgPlan",$(this).val());
+        PkgItemQuery();
     });
 
 });
@@ -681,7 +792,6 @@ $(document).on("pageinit", "#page2", function(){
 			type:"GET",
             cache:false,
             dataType:'json',
-
 			data: $("form#productForm").serialize()+"&cid="+cid+"&pkg3g4g="+pkg3g4g+"&pkgPeriod="+pkgPeriod+"&pkgMonthprice="+pkgMonthprice+"&pkgPlan="+pkgPlan+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
 			success:function(json_data){
 				//data = eval('('+data+')');
