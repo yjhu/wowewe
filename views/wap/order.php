@@ -78,7 +78,7 @@ $basename = basename(__FILE__, '.php');
 		<p><span class="orderlist">订单状态:</span>&nbsp;<span id="status"></span></p>
 		<p><span class="orderlist">商品名称:</span>&nbsp;<span id="title"></span></p>
 		<p><span class="orderlist">下单时间:</span>&nbsp;<span id="create_time"></span></p>
-		<p><span class="orderlist">商品详情:</span>&nbsp;<span id="detail"></span></p>
+		<p><span class="orderlist">商品详情:</span>&nbsp;<span id="detail"></span>|<span id="val_pkg_3g4g"></span></p>
 		<p><span class="orderlist">营业厅:</span>&nbsp;<span id="office_id"></span></p>
 		<p><span class="orderlist">价格:</span>&nbsp;￥<span id="feesum"></span></p>
 		
@@ -126,10 +126,16 @@ office_name = <?php echo \app\models\MOffice::getOfficeNameOption($user->gh_id);
 
 function load_data1(i, n)
 {
+	if(n.val_pkg_3g4g == "3g")
+		val_pkg_3g4g_name="3G普通套餐";
+	else if(n.val_pkg_3g4g == "4g")
+		val_pkg_3g4g_name="4G/3G一体化套餐";
+
 	$("#oid").html(n.oid);
 	$("#title").html(n.title);
 	$("#create_time").html(n.create_time);
 	$("#detail").html(n.detail);
+	$("#val_pkg_3g4g").html(val_pkg_3g4g_name);
 	$("#feesum").html(n.feesum/100);
 	$("#username").html(n.username);
 	$("#usermobile").html(n.usermobile);
@@ -193,12 +199,16 @@ function load_data2(i, n)
 	else if(n.cid == 324)
 		imgurl = '../web/images/item/coolpad7295c-black-700x500.jpg-120x120.jpg';
 
+	if(n.val_pkg_3g4g == "3g")
+		val_pkg_3g4g_name="3G普通套餐";
+	else if(n.val_pkg_3g4g == "4g")
+		val_pkg_3g4g_name="4G/3G一体化套餐";
 
 	text ="<li><a href='#' class='ddxq' myOid='"+n.oid+"'>\
 	<img style='padding-top:20px' myOid="+n.oid+" src='"+imgurl+"'>\
 	<p>订单编号:&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
 	<p>下单时间:&nbsp;"+n.create_time+"</p>\
-	<p>商品名称:&nbsp;"+n.title+"</p>\
+	<p>商品名称:&nbsp;"+n.title+ '|' +val_pkg_3g4g_name+"</p>\
 	<p>价格:&nbsp;￥"+(n.feesum)/100+"</p>";
 
 	if(n.status == 0) //wait to pay 
