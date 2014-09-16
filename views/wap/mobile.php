@@ -338,46 +338,56 @@ text-decoration: line-through;
     <?php echo $this->render('header2', ['menuId'=>'menu8','title' => $item->title]); ?>
     <div data-role="content">
 
-        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-            <legend class='title_comm'>套餐类型</legend>
-            <input type="radio" name="pkgModel" id="pkgModel_0" value="3g" >
-            <label for="pkgModel_0">3G普通套餐</label>
-            <input type="radio" name="pkgModel" id="pkgModel_1" value="4g">
-            <label for="pkgModel_1">4G/3G一体化套餐</label>
-        </fieldset>
+        <?php 
+            $pkg3g4gOption = $item->getPkg3g4gOption();
+            $pkgPeriodOption = $item->getpkgPeriodOption();
+            $pkgMonthpriceOption = $item->getpkgMonthpriceOption();
+            $pkgPlanOption = $item->getpkgPlanOption();
+      
+            //U::W($pkg3g4gOption);
+        ?>
+        <!-- -->    
 
-        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-            <legend class='title_comm'>合约期长</legend>
-            <input type="radio" name="pkgPeriod" id="pkgPeriod_0" value="12" >
-            <label for="pkgPeriod_0">12个月</label>
-            <input type="radio" name="pkgPeriod" id="pkgPeriod_1" value="24">
-            <label for="pkgPeriod_1">24个月</label>
-            <input type="radio" name="pkgPeriod" id="pkgPeriod_2" value="36">
-            <label for="pkgPeriod_2">36个月</label>
-        </fieldset>
+        <?php if (!empty($pkg3g4gOption)): ?>
+            <fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" id="pkg3g4g-field">
+                <legend>套餐类型</legend>
+                    <?php foreach($pkg3g4gOption as $value => $text) { ?>
+                    <input type="radio" name="pkg3g4g" id="pkg3g4g_<?= $value ?>" value="<?= $value ?>" />
+                    <label for="pkg3g4g_<?= $value ?>"><?= $text ?></label>
+                    <?php } ?> 
+            </fieldset>
+        <?php endif; ?>
 
-        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-            <legend class='title_comm'>套餐月租</legend>
-            <input type="radio" name="pkgMonthprice" id="pkgMonthprice_0" value="0" >
-            <label for="pkgMonthprice_0">66元/月</label>
-            <input type="radio" name="pkgMonthprice" id="pkgMonthprice_1" value="1">
-            <label for="pkgMonthprice_1">96元/月</label>
-            <input type="radio" name="pkgMonthprice" id="pkgMonthprice_2" value="2">
-            <label for="pkgMonthprice_2">126元/月</label>
-            <input type="radio" name="pkgMonthprice" id="pkgMonthprice_3" value="3">
-            <label for="pkgMonthprice_3">156元/月</label>
-        </fieldset>
+        <?php if (!empty($pkgPeriodOption)): ?>
+            <fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" id="pkgPeriod-field">
+                <legend>合约期长</legend>
+                    <?php foreach($pkgPeriodOption as $value => $text) { ?>
+                    <input type="radio" name="pkgPeriod" id="pkgPeriod_<?= $value ?>" value="<?= $value ?>" />
+                    <label for="pkgPeriod_<?= $value ?>"><?= $text ?></label>
+                    <?php } ?> 
+            </fieldset>
+        <?php endif; ?>
 
+        <?php if (!empty($pkgMonthpriceOption)): ?>
+            <fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" id="pkgMonthprice-field">
+                <legend>套餐月租</legend>
+                    <?php foreach($pkgMonthpriceOption as $value => $text) { ?>
+                    <input type="radio" name="pkgMonthprice" id="pkgMonthprice_<?= $value ?>" value="<?= $value ?>" />
+                    <label for="pkgMonthprice_<?= $value ?>"><?= $text ?></label>
+                    <?php } ?> 
+            </fieldset>
+        <?php endif; ?>
 
-        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
-            <legend class='title_comm'>套餐计划</legend>
-            <input type="radio" name="pkgPlan" id="pkgPlan_0" value="a" >
-            <label for="pkgPlan_0">A计划</label>
-            <input type="radio" name="pkgPlan" id="pkgPlan_1" value="b">
-            <label for="pkgPlan_1">B计划</label>
-            <input type="radio" name="pkgPlan" id="pkgPlan_2" value="c">
-            <label for="pkgPlan_2">C计划</label>
-        </fieldset>
+        <?php if (!empty($pkgPlanOption)): ?>
+            <fieldset data-role="controlgroup" data-mini="true" data-type="horizontal" id="pkgPlan-field">
+                <legend>套餐计划</legend>
+                    <?php foreach($pkgPlanOption as $value => $text) { ?>
+                    <input type="radio" name="pkgPlan" id="pkgPlan_<?= $value ?>" value="<?= $value ?>" />
+                    <label for="pkgPlan_<?= $value ?>"><?= $text ?></label>
+                    <?php } ?> 
+            </fieldset>
+        <?php endif; ?>
+
 
         <hr color="#F7C708">
         <p><span class='title_comm'>国内通话:</span> 240分钟</p>
@@ -501,45 +511,21 @@ $(document).on("pageshow", "#page2", function(){
     /*item ctrl end --------------------------------------------------*/
 
 
-    /*
-    if(localStorage.getItem("planFlag")=="plan66")
+    if(localStorage.getItem("pkg3g4g")=="3g")
     {
-        planPrice = "66元/月";
-        if(localStorage.getItem("plan66")==0)
-            planName = "A计划";
-        else if(localStorage.getItem("plan66")==1)
-            planName = "B计划";
-        else if(localStorage.getItem("plan66")==2)
-            planName = "C计划"; 
+        pkg3g4g = "3G普通套餐";
     }
-    else if(localStorage.getItem("planFlag")=="plan96")
+    else
     {
-        planPrice = "96元/月";
-        if(localStorage.getItem("plan96")==0)
-            planName = "A计划";
-        else if(localStorage.getItem("plan96")==1)
-            planName = "B计划";
-        else if(localStorage.getItem("plan96")==2)
-            planName = "C计划"; 
-    }
-    else if(localStorage.getItem("planFlag")=="plan126")
-    {
-        planPrice = "126元/月";
-        if(localStorage.getItem("plan126")==0)
-            planName = "A计划";
-        else if(localStorage.getItem("plan126")==1)
-            planName = "B计划";
-        else if(localStorage.getItem("plan126")==2)
-            planName = "C计划"; 
+        pkg3g4g = "4G/3G一体化套餐";
     }
 
-    if(localStorage.getItem("planFlag") != null)
+    if(localStorage.getItem("pkg3g4g") != null)
     {           
-        $("#package")[0].innerHTML="套餐月费 &nbsp;&nbsp;&nbsp;&nbsp;<span class='title_set_content'>"+planPrice+"|"+planName+"</span>";
+        $("#package")[0].innerHTML="套餐月费 &nbsp;&nbsp;&nbsp;&nbsp;<span class='title_set_content'>"+pkg3g4g+"...</span>";
         //$("#sel-num").trigger('create');
          $("#package").removeClass("title_unset").addClass("title_set");
     }
-    */
 
     if(localStorage.getItem("num") != null)
     {           
@@ -565,60 +551,31 @@ $(document).on("pageshow", "#page2", function(){
     
 });
 
-function load_data1(i, n)
-{
-    //创建套餐控件组合界面 ...
-    $("#oid").html(n.oid);
-    $("#memo").html(n.memo);
-}
-
-function getPackageItemList(cid)
-{
-    alert('getPackageItemList');
-    $.ajax({
-    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'packageitemlist'], true) ; ?>",
-    type:"GET",
-    cache:false,
-    dataType:'json',
-    data: "&cid="+cid,
-    success: function(json_data){
-            if(json_data)
-            {
-               load_data1(0, json_data); 
-            }
-            //$.mobile.changePage("#orderdetail",{transition:"slide"});
-            //$('#orderdetail_content').listview('refresh');
-            //$("#status").trigger('create');
-        }
-    });
-}
 
 
 $(document).on("pageinit", "#packagePage", function(){
     
     //alert("packagePage");   
-    //GET 显示界面相应配置项
-    getPackageItemList(cid); 
 
-    //SET 点击确认设置用户的配置
     $(document).on("tap","#selePackage",function(){
+        $.mobile.changePage("#page2",{transition:"slide"});
+    });
 
-        $.ajax({
-            url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'packageitemlistset'], true) ; ?>",
-            type:"GET",
-            cache:false,
-            dataType:'json',
-            data: "&cid="+cid,
-            success: function(json_data){
-                if(json_data)
-                {
-                    
-                }
-                $.mobile.changePage("#page2",{transition:"slide"});
-            }
-        });
-       return false;
-    });    
+    $("[name=pkg3g4g]").click(function(){
+        localStorage.setItem("pkg3g4g",$(this).val());
+    });
+
+    $("[name=pkgPeriod]").click(function(){
+        localStorage.setItem("pkgPeriod",$(this).val());
+    });
+
+    $("[name=pkgMonthprice]").click(function(){
+        localStorage.setItem("pkgMonthprice",$(this).val());
+    });
+
+    $("[name=pkgPlan]").click(function(){
+        localStorage.setItem("pkgPlan",$(this).val());
+    });
 
 });
 
@@ -631,6 +588,11 @@ $(document).on("pageinit", "#page2", function(){
     username = null;
     usermobile = null;
     userid = null;
+
+    pkg3g4g = null;
+    pkgPeriod = null;
+    pkgMonthprice = null;
+    pkgPlan = null;
 
 	//submit form
     $(document).on("tap", "#submitBtn", function(){
@@ -652,7 +614,7 @@ $(document).on("pageinit", "#page2", function(){
 
         if(ctrl_package != 0)
         {
-            if( localStorage.getItem("planFlag") == null)
+            if( localStorage.getItem("pkg3g4g") == null)
             {
                 //$.mobile.changePage("#package",{transition:"slide"});
                 $("#errorMsg").html("<span class='title_unset'>请选择套餐月费</span>");
@@ -661,10 +623,10 @@ $(document).on("pageinit", "#page2", function(){
             }
             else
             {
-                planFlag = localStorage.getItem("planFlag");
-                plan66 = localStorage.getItem("plan66");
-                plan96 = localStorage.getItem("plan96");
-                plan126 = localStorage.getItem("plan126");
+                pkg3g4g = localStorage.getItem("pkg3g4g");
+                pkgPeriod = localStorage.getItem("pkgPeriod");
+                pkgMonthprice = localStorage.getItem("pkgMonthprice");
+                pkgPlan = localStorage.getItem("pkgPlan");
             }
         }
 
@@ -719,7 +681,8 @@ $(document).on("pageinit", "#page2", function(){
 			type:"GET",
             cache:false,
             dataType:'json',
-			data: $("form#productForm").serialize()+"&cid="+cid+"&planFlag="+planFlag+"&plan66="+plan66+"&plan96="+plan96+"&plan126="+plan126+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
+
+			data: $("form#productForm").serialize()+"&cid="+cid+"&pkg3g4g="+pkg3g4g+"&pkgPeriod="+pkgPeriod+"&pkgMonthprice="+pkgMonthprice+"&pkgPlan="+pkgPlan+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
 			success:function(json_data){
 				//data = eval('('+data+')');
 

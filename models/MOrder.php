@@ -59,6 +59,14 @@ CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx
 
 //给卖家留言
 ALTER TABLE wx_order ADD memo VARCHAR(256) NOT NULL DEFAULT '';
+
+
+ALTER TABLE wx_order ADD val_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '';
+ALTER TABLE wx_order ADD val_pkg_period int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_order ADD val_pkg_monthprice int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_order ADD val_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
+
+
 */
 
 use Yii;
