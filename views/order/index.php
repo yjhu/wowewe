@@ -74,6 +74,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				'headerOptions' => array('style'=>'width:120px;'),			
 			],
 			[
+				'label' => '留言',
+				'attribute' => 'memo',		
+			],
+			[
 				'attribute' => 'status',
 				'value'=>function ($model, $key, $index, $column) { return $model->statusName; },
 				'filter'=> MOrder::getOrderStatusName(),
