@@ -36,6 +36,12 @@ ALTER TABLE wx_item ADD	ctrl_office tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_supportpay VARCHAR(128) NOT NULL DEFAULT '';
 
 
+ALTER TABLE wx_item ADD	ctrl_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '';
+ALTER TABLE wx_item ADD	ctrl_pkg_period VARCHAR(32) NOT NULL DEFAULT '';
+ALTER TABLE wx_item ADD	ctrl_pkg_monthprice VARCHAR(64) NOT NULL DEFAULT '';
+ALTER TABLE wx_item ADD	ctrl_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
+
+
 INSERT INTO `wx_item` (`gh_id`, `price`, `price_hint`, `title`, `title_hint`, `pkg_name`, `pkg_name_hint`, `detail`, `pic_url`, `cid`, `status`) VALUES
 ('gh_03a74ac96138', 5000, '含预存款50元', '微信沃卡', '微信沃卡 <span class="title_hint"> 尊享微信6大特权, 50元入网得530元话费, 500M省内流量+500M微信定向流量, 仅需31元/月</span>', '微信沃卡', '500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wxwk001.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk002.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk003.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk004.jpg" alt="" />', '../web/images/item/wxwk000.jpg', 10, 0);
 ('gh_03a74ac96138', 5000, '含预存款50元', '沃派校园卡', '沃派校园套餐 <span class="title_hint"> 500M省内流量, 100分钟通话+100条短信, 存50得530元话费, 每月仅付26元</span>', '沃派校园套餐', '500M微信定向流量100分钟本地长市话100条短信500M省内流量自动升级至50元包1G/100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wpxytc_002.jpg" alt="" />', '../web/images/item/wpxytc_001.jpg', 11, 0),
@@ -128,6 +134,124 @@ class MItem extends ActiveRecord
 			[['price', 'price_hint', 'title', 'title_hint', 'pkg_name', 'pkg_name_hint', 'pic_url', 'detail', 'ctrl_mobnumber', 'ctrl_userinfo', 'ctrl_office', 'ctrl_supportpay'], 'safe'],
 		];
 	}
+
+
+	static function getPkg3g4gName($key=null)
+	{
+		$arr = array(
+			'3g' => '3G普通套餐',
+			'4g' => '4G/3G一体化套餐',
+		);		
+		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+	}
+
+	function getPkg3g4gOption()
+	{
+		if (empty($this->ctrl_pkg_3g4g))
+		{
+			//$arr['3g'] = self::getPkg3g4gName('3g');
+			return [];
+		}
+		$cids = explode(',', trim($this->ctrl_pkg_3g4g));
+		
+		foreach ($cids as $cid)
+		{
+			$arr[$cid] = self::getPkg3g4gName($cid);
+		}
+		return $arr;
+	}
+
+
+
+
+
+	static function getPkgPeriodName($key=null)
+	{
+		$arr = array(
+			'12' => '12个月',
+			'24' => '24个月',
+			'36' => '36个月',
+		);		
+		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+	}
+
+	function getpkgPeriodOption()
+	{
+		if (empty($this->ctrl_pkg_period))
+		{
+			return [];
+		}
+		$cids = explode(',', trim($this->ctrl_pkg_period));
+		
+		foreach ($cids as $cid)
+		{
+			$arr[$cid] = self::getPkgPeriodName($cid);
+		}
+		return $arr;
+	}
+
+
+	static function getPkgMonthpriceName($key=null)
+	{
+		$arr = array(
+			'46' => '46元/月',
+			'66' => '66元/月',
+			'96' => '96元/月',
+			'126' => '126元/月',
+			'156' => '156元/月',
+			'186' => '186元/月',
+			'226' => '226元/月',
+			'286' => '286元/月',
+			'386' => '386元/月',
+			'586' => '586元/月',
+			'886' => '886元/月',
+		);		
+		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+	}
+
+	function getpkgMonthpriceOption()
+	{
+		if (empty($this->ctrl_pkg_monthprice))
+		{
+			return [];
+		}
+		$cids = explode(',', trim($this->ctrl_pkg_monthprice));
+		
+		foreach ($cids as $cid)
+		{
+			$arr[$cid] = self::getPkgMonthpriceName($cid);
+		}
+		return $arr;
+	}
+
+
+	static function getPkgPlanName($key=null)
+	{
+		$arr = array(
+			'a' => 'A计划',
+			'b' => 'B计划',
+			'c' => 'C计划',
+		);		
+		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+	}
+
+	function getpkgPlanOption()
+	{
+		if (empty($this->ctrl_pkg_plan))
+		{
+			return [];
+		}
+		$cids = explode(',', trim($this->ctrl_pkg_plan));
+		
+		foreach ($cids as $cid)
+		{
+			$arr[$cid] = self::getPkgPlanName($cid);
+		}
+		return $arr;
+	}
+
+
+
 
 }
 
