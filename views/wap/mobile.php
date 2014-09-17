@@ -463,7 +463,7 @@ var cid = <?php echo $_GET['cid']; ?>;
 var ctrl_mobnumber = "<?php echo  $item->ctrl_mobnumber; ?>";
 var ctrl_userinfo = "<?php echo  $item->ctrl_userinfo; ?>";
 var ctrl_office = "<?php echo  $item->ctrl_office; ?>";
-var ctrl_package = 1; 
+var ctrl_package = "<?php echo  $item->ctrl_package; ?>";
 var ctrl_supportpay = "<?php echo  $item->ctrl_supportpay; ?>";
 
 var ctrl_pkg_plan = "<?php echo  $item->ctrl_pkg_plan; ?>";
@@ -524,16 +524,16 @@ $(document).on("pageshow", "#page2", function(){
 
     if(localStorage.getItem("pkg3g4g")=="3g")
     {
-        pkg3g4g = "3G普通套餐";
+        pkg3g4gName = "3G普通套餐";
     }
     else
     {
-        pkg3g4g = "4G/3G一体化套餐";
+        pkg3g4gName = "4G/3G一体化套餐";
     }
 
     if(localStorage.getItem("pkg3g4g") != null)
     {           
-        $("#package")[0].innerHTML="套餐月费 &nbsp;&nbsp;&nbsp;&nbsp;<span class='title_set_content'>"+pkg3g4g+"...</span>";
+        $("#package")[0].innerHTML="套餐月费 &nbsp;&nbsp;&nbsp;&nbsp;<span class='title_set_content'>"+pkg3g4gName+"...</span>";
         //$("#sel-num").trigger('create');
          $("#package").removeClass("title_unset").addClass("title_set");
     }
@@ -805,6 +805,8 @@ $(document).on("pageinit", "#page2", function(){
 					localStorage.setItem("url",json_data.pay_url);
 
                     localStorage.removeItem("num");
+                    localStorage.removeItem("pkg3g4g");
+
                     //$.mobile.changePage("#page3",{transition:"slide"});   
                     var url = "<?php echo Url::to(['wap/orderinfo'], true); ?>";
                     $.mobile.changePage((url+'&oid='+json_data.oid),{transition:"slide"});              

@@ -33,6 +33,7 @@ ALTER TABLE wx_item ADD	kind tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_mobnumber tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_userinfo tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_office tinyint(3) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD	ctrl_package tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_supportpay VARCHAR(128) NOT NULL DEFAULT '';
 
 
