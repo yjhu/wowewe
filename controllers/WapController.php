@@ -490,6 +490,8 @@ EOD;
 	{
 		$this->layout = 'wap';
 		$model = new \app\models\MIphone6Sub;
+		$cat = Yii::$app->request->get('cat', 0);    
+		$model->cat = $cat;
 		if ($model->load(Yii::$app->request->post())) 
 		{
 			if (!$model->save())
@@ -501,7 +503,7 @@ EOD;
 				Yii::$app->session->setFlash('success','预订信息提交成功，请您敬侯佳音节！');
 			return $this->refresh();
 		}		
-		$n = \app\models\MIphone6Sub::find()->count();								
+		$n = \app\models\MIphone6Sub::find()->where(['cat'=>$cat])->count();								
  		return $this->render('iphone6sub', ['model' => $model, 'n'=>$n+999]);
 	}	
 
