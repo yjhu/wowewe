@@ -486,12 +486,13 @@ EOD;
 
 	//http://127.0.0.1/wx/web/index.php?r=wap/iphone6sub&cat=0
 	//http://wosotech.com/wx/web/index.php?r=wap/oauth2cb&state=wap/cardlist:gh_03a74ac96138
-	//http://wosotech.com/wx/web/index.php?r=wap/iphone6sub
+	//http://wosotech.com/wx/web/index.php?r=wap/iphone6sub&cat=1
 	public function actionIphone6sub()
 	{
         	$cat = isset($_GET['cat']) ? $_GET['cat'] : 0;
 		$this->layout = 'wap';
 		$model = new \app\models\MIphone6Sub;
+		$cat = Yii::$app->request->get('cat', 0);    
 		$model->cat = $cat;
 		if ($model->load(Yii::$app->request->post())) 
 		{

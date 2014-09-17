@@ -17,7 +17,9 @@ class MOrderSearch extends Model
 
 	public $status;
 
-	public $create_time;
+	public $create_time;
+	
+	public $create_time_2;	
 
 	public $title;
 
@@ -31,7 +33,7 @@ class MOrderSearch extends Model
 	{
 		return [
 			[['office_id', 'status', 'cid'], 'integer'],            
-			[['gh_id', 'oid','create_time', 'title', 'detail', 'feesum'], 'safe'],
+			[['gh_id', 'oid','create_time', 'create_time_2', 'title', 'detail', 'feesum'], 'safe'],
 		];
 	}
 
@@ -78,6 +80,19 @@ class MOrderSearch extends Model
 		$this->addCondition($query, 'detail', true);
 		$this->addCondition($query, 'feesum');
 		$this->addCondition($query, 'cid');        
+
+		if (trim($this->create_time) !== '') 
+		{
+			//$query->andWhere(['create_time' => new \yii\db\Expression(date('create_time')) ]);
+			$query->andWhere('date(create_time)>=:create_time', [':create_time' => $this->create_time]);
+		}
+
+		if (trim($this->create_time_2) !== '') 
+		{
+			//$query->andWhere(['create_time' => new \yii\db\Expression(date('create_time')) ]);
+			$query->andWhere('date(create_time)<=:create_time_2', [':create_time_2' => $this->create_time_2]);
+		}
+		
 		return $dataProvider;
 	}
 

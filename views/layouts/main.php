@@ -49,7 +49,7 @@ AppAsset::register($this);
 							'<li class="divider"></li>',
 							['label' => '员工推广成绩排行','url' => ['/order/stafftop'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isAdmin],
 							['label' => '营业厅推广成绩排行','url' => ['/order/officetop'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isAdmin],
-							['label' => 'iPhone6 预订名单','url' => ['/order/iphone6sub'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isAdmin],
+							['label' => '商品预订名单','url' => ['/order/iphone6sub'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isAdmin],
 						]
 					],					
 					[
