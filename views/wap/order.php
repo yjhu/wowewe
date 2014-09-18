@@ -19,6 +19,31 @@ $basename = basename(__FILE__, '.php');
 	.orderlist{
 
 	}
+
+.title_comm
+{
+    color:#aaaaaa;
+    font-size: 11pt;
+}
+
+.title_unset
+{
+    color:#ff4c01;
+    font-size: 10pt;
+}
+
+.title_set
+{
+    color:#aaaaaa;
+    font-size: 10pt;
+}
+
+.title_set_content
+{
+    color:#000000;
+    font-size: 10pt;
+    text-align: right;
+}
 </style>
 
 
@@ -74,23 +99,23 @@ $basename = basename(__FILE__, '.php');
 
 	<div role="main" class="ui-content">
 	<h2>订单详情</h2>
-		<p><span class="orderlist">订单编号:</span>&nbsp;<span id="oid"></span></p>
-		<p><span class="orderlist">订单状态:</span>&nbsp;<span id="status"></span></p>
-		<p><span class="orderlist">商品名称:</span>&nbsp;<span id="title"></span></p>
-		<p><span class="orderlist">下单时间:</span>&nbsp;<span id="create_time"></span></p>
-		<p><span class="orderlist">商品详情:</span>&nbsp;<span id="detail"></span>&nbsp;&nbsp;<span id="val_pkg_3g4g"></span></p>
-		<p><span class="orderlist">营业厅:</span>&nbsp;<span id="office_id"></span></p>
-		<p><span class="orderlist">价格:</span>&nbsp;￥<span id="feesum"></span></p>
+		<p><span class="title_comm">订单编号:</span>&nbsp;<span id="oid"></span></p>
+		<p><span class="title_comm">订单状态:</span>&nbsp;<span id="status"></span></p>
+		<p><span class="title_comm">商品名称:</span>&nbsp;<span id="title"></span></p>
+		<p><span class="title_comm">下单时间:</span>&nbsp;<span id="create_time"></span></p>
+		<p><span class="title_comm">商品详情:</span>&nbsp;<span id="detail"></span>&nbsp;&nbsp;<span id="val_pkg_3g4g"></span></p>
+		<p><span class="title_comm">营业厅:</span>&nbsp;<span id="office_id"></span></p>
+		<p><span class="title_comm">价格:</span>&nbsp;￥<span id="feesum"></span></p>
 		
 		<hr color="#F7C708">
 		
-		<p><span class="orderlist">用户信息</span></p></li>
-		<p><span class="orderlist">姓名:</span>&nbsp;<span id="username"></span></p>
-		<p><span class="orderlist">手机号码:</span>&nbsp;<span id="usermobile"></span></p>
-		<p><span class="orderlist">身份证:&nbsp;</span><span id="userid"></span></p>
+		<p><span class="title_comm">用户信息</span></p></li>
+		<p><span class="title_comm">姓名:</span>&nbsp;<span id="username"></span></p>
+		<p><span class="title_comm">手机号码:</span>&nbsp;<span id="usermobile"></span></p>
+		<p><span class="title_comm">身份证:&nbsp;</span><span id="userid"></span></p>
 
 		<hr color="#F7C708">
-		<p><span class="orderlist">给卖家留言:&nbsp;</span><span id="memo"></span></p>
+		<p><span class="title_comm">给卖家留言:&nbsp;</span><span id="memo"></span></p>
 
 
 	</div>
@@ -210,15 +235,15 @@ function load_data2(i, n)
 
 	text ="<li><a href='#' class='ddxq' myOid='"+n.oid+"'>\
 	<img style='padding-top:20px' myOid="+n.oid+" src='"+imgurl+"'>\
-	<p>订单编号:&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
-	<p>下单时间:&nbsp;"+n.create_time+"</p>\
-	<p>商品名称:&nbsp;"+n.title+ '&nbsp;&nbsp;' +val_pkg_3g4g_name+"</p>\
-	<p>价格:&nbsp;￥"+(n.feesum)/100+"</p>";
+	<p><span class='title_comm'>订单编号:</span>&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
+	<p><span class='title_comm'>下单时间:</span>&nbsp;"+n.create_time+"</p>\
+	<p><span class='title_comm'>商品名称:</span>&nbsp;"+n.title+ '&nbsp;&nbsp;' +val_pkg_3g4g_name+"</p>\
+	<p><span class='title_comm'>价格:</span>&nbsp;￥"+(n.feesum)/100+"</p>";
 
 	if(n.status == 0) //wait to pay 
-		txt_mos ="<p>订单状态:&nbsp;"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
+		txt_mos ="<p><span class='title_comm'>订单状态:</span>&nbsp;"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
 	else
-		txt_mos ="<p>订单状态:&nbsp;"+n.statusName+"</p>";
+		txt_mos ="<p><span class='title_comm'>订单状态:</span>&nbsp;"+n.statusName+"</p>";
 
 
 	txt_mod = "</a></li>";
