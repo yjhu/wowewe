@@ -7,7 +7,7 @@ CREATE TABLE wx_pkg (
 	id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	gh_id VARCHAR(32) NOT NULL DEFAULT '',
 	cid int(10) unsigned NOT NULL DEFAULT '0',
-	
+
 	pkg3g4g VARCHAR(16) NOT NULL DEFAULT '',
 	monthprice int(10) unsigned NOT NULL DEFAULT '0',
 	period int(10) unsigned NOT NULL DEFAULT '0',	
@@ -166,9 +166,6 @@ INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, pr
 
 
 
-
-###
-
 */
 
 use Yii;
@@ -240,6 +237,13 @@ class MPkg extends ActiveRecord
 		return isset($arr[$k1][$k2]) ? $arr[$k1][$k2] : null;
 	}
 
+	public function rules()
+	{
+		return [
+			[['cid'], 'integer'],            
+			[['pkg3g4g', 'monthprice', 'period', 'plan', 'pkg_price', 'prom_price', 'yck', 'income_return', 'month_return'], 'safe'],
+		];
+	}
 
 }
 
