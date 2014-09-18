@@ -33,7 +33,13 @@ $this->params['breadcrumbs'][] = '修改';
 		<?= $form->field($model, 'ctrl_mobnumber')->textInput(['maxlength' => 10]) ?>
 		<?= $form->field($model, 'ctrl_userinfo')->textInput(['maxlength' => 10]) ?>
 		<?= $form->field($model, 'ctrl_office')->textInput(['maxlength' => 10]) ?>
+		<?= $form->field($model, 'ctrl_package')->textInput(['maxlength' => 10]) ?>
 		<?= $form->field($model, 'ctrl_supportpay')->textInput(['maxlength' => 10]) ?>
+
+		<?= $form->field($model, 'ctrl_pkg_3g4g')->textInput(['maxlength' => 128]) ?>
+		<?= $form->field($model, 'ctrl_pkg_period')->textInput(['maxlength' => 128]) ?>
+		<?= $form->field($model, 'ctrl_pkg_monthprice')->textInput(['maxlength' => 128]) ?>
+		<?= $form->field($model, 'ctrl_pkg_plan')->textInput(['maxlength' => 128]) ?>
 
 		<div class="form-group">
 			<?= Html::submitButton($model->isNewRecord ? '创建' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

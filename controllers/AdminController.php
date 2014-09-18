@@ -12,6 +12,9 @@ use yii\web\View;
 use app\models\MItem;
 use app\models\MItemSearch;
 
+use app\models\MPkg;
+use app\models\MPkgSearch;
+
 class AdminController extends Controller
 {
 	public $layout = 'main';
@@ -152,6 +155,58 @@ class AdminController extends Controller
 		return $this->redirect(['itemlist']);
 	}
 	
+	
+
+	public function actionPkglist()
+	{
+		$searchModel = new MPkgSearch;
+		$dataProvider = $searchModel->search($_GET);
+
+		return $this->render('pkglist', [
+			'dataProvider' => $dataProvider,
+			'searchModel' => $searchModel,
+		]);
+	}
+
+	public function actionPkgupdate($id)
+	{
+		$model = MPkg::findOne($id);
+		if (!$model) {
+			throw new NotFoundHttpException();
+		}
+		if (\Yii::$app->request->isPost) 
+		{
+			$model->load(\Yii::$app->request->post());
+			if ($model->save(false)) {
+				return $this->redirect(['pkglist']);			
+			}
+		}
+		return $this->render('pkgupdate', ['model' => $model]);		
+	}
+
+	public function actionPkgcreate()
+	{
+		$model = new MPkg;
+		if (\Yii::$app->request->isPost) 
+		{
+	               $model->load(\Yii::$app->request->post());
+			if ($model->save()) {
+				return $this->redirect(['pkglist']);			
+			}
+			else
+			{
+				U::W($model->getErrors());
+			}
+		}
+		return $this->render('pkgcreate', ['model' => $model]);				
+	}
+
+	public function actionPkgdelete($id)
+	{
+		$model = MPkg::findOne($id);	
+		$model->delete();
+		return $this->redirect(['pkglist']);
+	}	
 }
 
 /*

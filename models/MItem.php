@@ -33,6 +33,7 @@ ALTER TABLE wx_item ADD	kind tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_mobnumber tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_userinfo tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_office tinyint(3) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD	ctrl_package tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_supportpay VARCHAR(128) NOT NULL DEFAULT '';
 
 
@@ -131,10 +132,9 @@ class MItem extends ActiveRecord
 	{
 		return [
 			[['cid'], 'integer'],            
-			[['price', 'price_hint', 'title', 'title_hint', 'pkg_name', 'pkg_name_hint', 'pic_url', 'detail', 'ctrl_mobnumber', 'ctrl_userinfo', 'ctrl_office', 'ctrl_supportpay'], 'safe'],
+			[['price', 'price_hint', 'title', 'title_hint', 'pkg_name', 'pkg_name_hint', 'pic_url', 'detail', 'ctrl_mobnumber', 'ctrl_userinfo', 'ctrl_office', 'ctrl_package', 'ctrl_supportpay', 'ctrl_pkg_3g4g', 'ctrl_pkg_period', 'ctrl_pkg_monthprice', 'ctrl_pkg_plan'], 'safe'],
 		];
 	}
-
 
 	static function getPkg3g4gName($key=null)
 	{

@@ -57,7 +57,17 @@
 		<h2>订单详情</h2>
 
 			<p id="oid">订单号: <?= $model->oid; ?></p>
-	        <p id="title">商品名称: <?= MItem::getItemCatName($model->cid); ?></p>
+	        <p id="title">商品名称: <?= MItem::getItemCatName($model->cid); ?>&nbsp;&nbsp;
+				<?php if($item->ctrl_package == 0 ) 
+						echo '';
+					else if($model->val_pkg_3g4g == '3g')
+						echo '3G普通套餐'; 
+					else if($model->val_pkg_3g4g == '4g')
+						echo '4G/3G一体化套餐'; 
+					else
+						echo '';
+				?>
+	        </p>
 
 			<?php if($model->select_mobnum!=''){?>
 	        <p id="selectNum">所选号码: <?= $model->select_mobnum; ?></p>

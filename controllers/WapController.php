@@ -24,6 +24,7 @@ use app\models\MItem;
 use app\models\MMobnum;
 use app\models\MDisk;
 use app\models\MG2048;
+use app\models\MPkg;
 
 use app\models\Alipay;
 use app\models\AlipaySubmit;
@@ -483,11 +484,12 @@ EOD;
  		return $this->render('luck', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
 	}	
 
-	//http://127.0.0.1/wx/web/index.php?r=wap/iphone6sub
+	//http://127.0.0.1/wx/web/index.php?r=wap/iphone6sub&cat=0
 	//http://wosotech.com/wx/web/index.php?r=wap/oauth2cb&state=wap/cardlist:gh_03a74ac96138
 	//http://wosotech.com/wx/web/index.php?r=wap/iphone6sub&cat=1
 	public function actionIphone6sub()
 	{
+        	$cat = isset($_GET['cat']) ? $_GET['cat'] : 0;
 		$this->layout = 'wap';
 		$model = new \app\models\MIphone6Sub;
 		$cat = Yii::$app->request->get('cat', 0);    
@@ -729,15 +731,15 @@ EOD;
 				break;		
 			case MItem::ITEM_CAT_MOBILE_IPHONE4S:
 				$order->title = 'Apple iPhone4s';			
-				$order->attr = "{$_GET['modelColor']}, {$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['modelColor']}, {$_GET['prom']}";
 				break;				
 			case MItem::ITEM_CAT_MOBILE_K1:
 				$order->title = 'K1';			
-				$order->attr = "{$_GET['modelColor']}, {$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['modelColor']}, {$_GET['prom']}";
 				break;				
 			case MItem::ITEM_CAT_MOBILE_HTC516:
 				$order->title = 'HTC516';			
-				$order->attr = "{$_GET['modelColor']}, {$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['modelColor']}, {$_GET['prom']}";
 				break;		
 			case MItem::ITEM_CAT_GOODNUMBER:
 				$order->title = '精选靓号';			
@@ -745,72 +747,83 @@ EOD;
 				break;	
 			case MItem::ITEM_CAT_MOBILE_APPLE_5C_8G_WHITE:
 				$order->title = '苹果5C 8G 白色';	
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;	
 			case MItem::ITEM_CAT_MOBILE_APPLE_5C_8G_BLUE:
 				$order->title = '苹果5C 8G 蓝色';		
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;		
 			case MItem::ITEM_CAT_MOBILE_HTC_8160_SILVER:
 				$order->title = 'HTC 8160 银色';	
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;						
 			case MItem::ITEM_CAT_MOBILE_SAMSUNG_7506V_BLACK:
 				$order->title = '三星 7506V 黑色';	
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;						
 			case MItem::ITEM_CAT_MOBILE_COOLPAD_7298A_CHUNLEI_WHITE:
 				$order->title = '酷派 7298A 春雷 白色';	
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;						
 			case MItem::ITEM_CAT_MOBILE_LENOVOA_A850_BLACK:
 				$order->title = '联想 A850+ 黑色';	
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;						
 			case MItem::ITEM_CAT_MOBILE_COOLPAD_7295C_WHITE:
 				$order->title = '酷派 7295C 白色';
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;							
 			case MItem::ITEM_CAT_MOBILE_APPLE_5S_32G_SILVER:
 				$order->title = '苹果 5S 32G 银色';	
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;						
 			case MItem::ITEM_CAT_MOBILE_COOLPAD_7296_BLACK:
 				$order->title = '酷派 7296 黑色';		
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;					
 			case MItem::ITEM_CAT_MOBILE_COOLPAD_7296_WHITE:
 				$order->title = '酷派 7296 白色';		
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;					
 			case MItem::ITEM_CAT_MOBILE_COOLPAD_K1_WHITE:
 				$order->title = '酷派 K1 白色';		
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;					
 			case MItem::ITEM_CAT_MOBILE_COOLPAD_7235_BLACK:
 				$order->title = '酷派 7235 黑色';	
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;						
 			case MItem::ITEM_CAT_MOBILE_COOLPAD_7230S_BLACK:
 				$order->title = '酷派 7230S 黑色';
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;							
 			case MItem::ITEM_CAT_MOBILE_HISENSE_U939:
 				$order->title = '海信 U939';	
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;						
 			case MItem::ITEM_CAT_MOBILE_COOLPAD_7295C_BLACK:
 				$order->title = '酷派 7295C 黑色';					
-				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				$order->attr = "{$_GET['prom']}";
 				break;
 
 			default:
 				U::W(['invalid data cat', $_GET["cid"], __METHOD__,$_GET]);
 				return;
-		}				
+		}	
+
+		$order->val_pkg_3g4g = isset($_GET['pkg3g4g']) ? $_GET['pkg3g4g'] : '';
+		$order->val_pkg_period = isset($_GET['pkgPeriod']) ? $_GET['pkgPeriod'] : 0;
+		$order->val_pkg_monthprice = isset($_GET['pkgMonthprice']) ? $_GET['pkgMonthprice'] : 0;
+		$order->val_pkg_plan = isset($_GET['pkgPlan']) ? $_GET['pkgPlan'] : '';
+
+
 		$order->feesum = $_GET['feeSum'] * 100;
-		//$order->office_id = $_GET['office'];					
-		//$order->select_mobnum = $_GET['selectNum'];		
+
+		//U::W('---------------------------------');
+		//U::W($order->feesum);
+
+		//$order->office_id = $_GET['office'];		
+		//$order->select_mobnum = $_GET['selectNum'];
 		//$order->username = isset($_GET['username']) ? $_GET['username'] : '';
 		//$order->usermobile = isset($_GET['usermobile']) ? $_GET['usermobile'] : '';
 		$order->office_id = (isset($_GET['office']) && $_GET['office'] !=  MOrder::NO_CHOICE) ? $_GET['office'] : 0;
@@ -1041,13 +1054,32 @@ EOD;
 	        		$data['code'] = 0;	        		
 	        		$data['offices'] = $rows;
 				break;
-				
+
+			case 'pkginfo':
+				$gh_id = U::getSessionParam('gh_id');
+				$cid = isset($_GET["cid"]) ? $_GET["cid"] : MItem::ITEM_CAT_MOBILE_APPLE_5S_32G_SILVER;
+		        $pkg3g4g = isset($_GET["pkg3g4g"]) ? $_GET["pkg3g4g"] : '';
+		        $period = isset($_GET["pkgPeriod"]) ? $_GET["pkgPeriod"] : 12;
+		        $monthprice = isset($_GET["pkgMonthprice"]) ? $_GET["pkgMonthprice"] : 46;
+		        $plan = $_GET["pkgPlan"] =='null' ? '' : $_GET["pkgPlan"];
+
+				$data = MPkg::find()->select('*')->where(
+					"gh_id=:gh_id AND cid=:cid AND pkg3g4g=:pkg3g4g AND period=:period AND monthprice=:monthprice AND plan=:plan", 
+					[':gh_id'=>$gh_id, ':cid'=>$cid, ':pkg3g4g'=>$pkg3g4g, ':period'=>$period, ':monthprice'=>$monthprice, ':plan'=>$plan])->asArray()->one();	
+
+				//foreach($data as &$row)
+				//{
+				//	$row['statusName'] = MOrder::getOrderStatusName($row['status']);
+				//}	
+				//unset($row);
+				break;				
+
 			default:
 				U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
 				return;
 		}		
-		//U::W([$data]);
-		//U::W(json_encode($data));
+		U::W([$data]);
+		U::W(json_encode($data));
 		return json_encode($data);
 	}
 
@@ -1279,7 +1311,9 @@ EOD;
 			}
 		}	
 		//$office = MOffice::findOne($model->office_id);
-		return $this->render('orderinfo',['gh_id'=>$gh_id, 'openid'=>$openid, 'model' => $model]);
+		$item = MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$model->cid]);
+		//$item = MItem::findOne($model->cid);
+		return $this->render('orderinfo',['gh_id'=>$gh_id, 'openid'=>$openid, 'model' => $model, 'item' => $item]);
 	}
 
 }
