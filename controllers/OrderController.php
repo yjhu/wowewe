@@ -23,371 +23,392 @@ use app\models\MOfficeSearch;
 
 class OrderController extends Controller
 {
-	public $layout = 'main';
+    public $layout = 'main';
 
-	public $enableCsrfValidation = false;
-	
-	public function behaviors()
-	{
-		return [
-			'verbs' => [
-				'class' => \yii\filters\VerbFilter::className(),
-				'actions' => [
-					'delete' => ['post'],
-				],
-			],
-		];
-	}
+    public $enableCsrfValidation = false;
 
-	public function init()
-	{
-		//U::W(['init....', $_GET,$_POST, $GLOBALS]);
-		//U::W(['init....', $_GET,$_POST]);
-	}
+    public function behaviors()
+    {
+    	return [
+    		'verbs' => [
+    			'class' => \yii\filters\VerbFilter::className(),
+    			'actions' => [
+    				'delete' => ['post'],
+    			],
+    		],
+    	];
+    }
 
-	public function beforeAction($action)
-	{
-		return parent::beforeAction($action);
-	}
+    public function init()
+    {
+    	//U::W(['init....', $_GET,$_POST, $GLOBALS]);
+    	//U::W(['init....', $_GET,$_POST]);
+    }
 
-	public function afterAction($action, $result)
-	{
-		//U::W("{$this->id}/{$this->action->id}:".Yii::getLogger()->getElapsedTime());	
-		return parent::afterAction($action, $result);
-	}
+    public function beforeAction($action)
+    {
+    	return parent::beforeAction($action);
+    }
 
-	public function actionIndex()
-	{
-		$searchModel = new MOrderSearch;
-		$dataProvider = $searchModel->search($_GET);
+    public function afterAction($action, $result)
+    {
+    	//U::W("{$this->id}/{$this->action->id}:".Yii::getLogger()->getElapsedTime());	
+    	return parent::afterAction($action, $result);
+    }
 
-		return $this->render('index', [
-			'dataProvider' => $dataProvider,
-			'searchModel' => $searchModel,
-		]);
-	}
+    public function actionIndex()
+    {
+    	$searchModel = new MOrderSearch;
+    	$dataProvider = $searchModel->search($_GET);
+    	return $this->render('index', [
+    		'dataProvider' => $dataProvider,
+    		'searchModel' => $searchModel,
+    	]);
+    }
 
-	public function actionView($id)
-	{
-		return $this->render('view', [
-			'model' => $this->findModel($id),
-		]);
-	}
+    public function actionOrderdownload()
+    {
+        $searchModel = new \app\models\MOrderSearch;
+        $dataProvider = $searchModel->search($_GET);
+        //$dataProvider->query->select($attributes);
+        $dataProvider->query->select(['*', '(feesum)/100 as gh_id', "CONCAT('\'',userid) as appid_recv", "(CASE status WHEN 0 THEN '等待付款' WHEN 3 THEN '交易成功' WHEN 7 THEN '用户取消订单' WHEN 9 THEN '超时自动取消订单' ELSE '' END) as partner", "(CASE pay_kind WHEN 0 THEN '自取' WHEN 1 THEN '支付宝' WHEN 2 THEN '微信支付' ELSE '' END) as openid_recv"]);
+        $dataProvider->setPagination(false);
+        $data = $dataProvider->getModels();
 
-	public function actionCreate()
-	{
-		$model = new MOrder;
-		if (\Yii::$app->request->isPost) 
-		{
-	               $model->load(\Yii::$app->request->post());
-			if ($model->save()) {
-				return $this->redirect(['index']);			
-			}
-			else
-			{
-				U::W($model->getErrors());
-			}
-		}
-		return $this->render('create', ['model' => $model]);				
-	}
+        $date = date('Y-m-d-His');
+        $filename = Yii::$app->getRuntimePath()."/order-{$date}.csv";
+        $csv = new \app\models\ECSVExport($data);
+        //$attributes = ['oid', 'office_id', 'office.title', 'detail', 'gh_id', 'select_mobnum', 'create_time', 'appid_recv', 'username', 'usermobile', 'status', 'partner', 'pay_kind', 'memo', 'openid_recv'];        
+        $attributes = ['oid', 'office_id', 'office.title', 'detail', 'gh_id', 'select_mobnum', 'create_time', 'appid_recv', 'username', 'usermobile', 'partner', 'memo', 'openid_recv'];        
+        $csv->setInclude($attributes);                
+        $csv->setHeaders(['Gh Id'=>'金额', 'Appid Recv'=>'身份证', 'Partner'=>'订单状态', 'Openid Recv'=>'支付方式']);
+        $csv->toCSV($filename); 
+        Yii::$app->response->sendFile($filename);
+        return;
+    }
 
-	public function actionUpdate($id)
-	{
-		$model = MOrder::findOne($id);
-		if (!$model) {
-			throw new NotFoundHttpException();
-		}
-		if (\Yii::$app->request->isPost) 
-		{
-			$model->load(\Yii::$app->request->post());
-			if ($model->save(true, ['status', 'select_mobnum'])) 
-			{				
-				$mobnum = MMobnum::findOne($model->select_mobnum);
-				if ($mobnum !== null)
-				{
-					if ($model->status == MOrder::STATUS_OK)
-						$mobnum->status = MMobnum::STATUS_USED;
-					else if ($model->status == MOrder::STATUS_AUTION)
-						$mobnum->status = MMobnum::STATUS_LOCKED;
-					else if ($model->status == MOrder::STATUS_CLOSED_USER)
-						$mobnum->status = MMobnum::STATUS_UNUSED;						
-					$mobnum->save(false);				
-				}
-				return $this->redirect(['index']);			
-			}
-		}
-		return $this->render('update', ['model' => $model]);		
-	}
+    public function actionView($id)
+    {
+    	return $this->render('view', [
+    		'model' => $this->findModel($id),
+    	]);
+    }
 
-	public function actionDelete($id)
-	{
-		$this->findModel($id)->delete();
-		return $this->redirect(['index']);
-	}
+    public function actionCreate()
+    {
+    	$model = new MOrder;
+    	if (\Yii::$app->request->isPost) 
+    	{
+                   $model->load(\Yii::$app->request->post());
+    		if ($model->save()) {
+    			return $this->redirect(['index']);			
+    		}
+    		else
+    		{
+    			U::W($model->getErrors());
+    		}
+    	}
+    	return $this->render('create', ['model' => $model]);				
+    }
 
-	protected function findModel($id)
-	{
-		if (($model = MOrder::findOne($id)) !== null) {
-			return $model;
-		} else {
-			throw new NotFoundHttpException('The requested page does not exist.');
-		}
-	}
+    public function actionUpdate($id)
+    {
+    	$model = MOrder::findOne($id);
+    	if (!$model) {
+    		throw new NotFoundHttpException();
+    	}
+    	if (\Yii::$app->request->isPost) 
+    	{
+    		$model->load(\Yii::$app->request->post());
+    		if ($model->save(true, ['status', 'select_mobnum'])) 
+    		{				
+    			$mobnum = MMobnum::findOne($model->select_mobnum);
+    			if ($mobnum !== null)
+    			{
+    				if ($model->status == MOrder::STATUS_OK)
+    					$mobnum->status = MMobnum::STATUS_USED;
+    				else if ($model->status == MOrder::STATUS_AUTION)
+    					$mobnum->status = MMobnum::STATUS_LOCKED;
+    				else if ($model->status == MOrder::STATUS_CLOSED_USER)
+    					$mobnum->status = MMobnum::STATUS_UNUSED;						
+    				$mobnum->save(false);				
+    			}
+    			return $this->redirect(['index']);			
+    		}
+    	}
+    	return $this->render('update', ['model' => $model]);		
+    }
 
-	public function actionStafflist()
-	{
-		$searchModel = new MStaffSearch;
-		$dataProvider = $searchModel->search($_GET);
-		return $this->render('stafflist', [
-			'dataProvider' => $dataProvider,
-			'searchModel' => $searchModel,
-		]);
-	}
+    public function actionDelete($id)
+    {
+    	$this->findModel($id)->delete();
+    	return $this->redirect(['index']);
+    }
 
-	public function actionStaffView($id)
-	{
-		return $this->render('staffview', [
-			'model' => $this->findStaffModel($id),
-		]);
-	}
+    protected function findModel($id)
+    {
+    	if (($model = MOrder::findOne($id)) !== null) {
+    		return $model;
+    	} else {
+    		throw new NotFoundHttpException('The requested page does not exist.');
+    	}
+    }
 
-	public function actionStaffcreate()
-	{
-		$model = new MStaff;
-		if (Yii::$app->request->isPost) 
-		{
-			$model->load(Yii::$app->request->post());
-			$model->gh_id = Yii::$app->user->getGhid();
-			if ($model->save()) 
-			{
-				return $this->redirect(['stafflist']);			
-			}
-			else
-			{
-				U::W($model->getErrors());
-			}
-		}
-		return $this->render('staffcreate', ['model' => $model]);				
-	}
+    public function actionStafflist()
+    {
+    	$searchModel = new MStaffSearch;
+    	$dataProvider = $searchModel->search($_GET);
+    	return $this->render('stafflist', [
+    		'dataProvider' => $dataProvider,
+    		'searchModel' => $searchModel,
+    	]);
+    }
 
-	public function actionStaffupdate($id)
-	{
-		$model = MStaff::findOne($id);
-		if (!$model) {
-			throw new NotFoundHttpException();
-		}
-		if (\Yii::$app->request->isPost) 
-		{
-			$model->load(\Yii::$app->request->post());
-			if ($model->save()) 
-			{				
-				return $this->redirect(['stafflist']);			
-			}
-			else
-			{
-				U::W($model->getErrors());
-			}			
-		}
-		return $this->render('staffupdate', ['model' => $model]);		
-	}
+    public function actionStaffView($id)
+    {
+    	return $this->render('staffview', [
+    		'model' => $this->findStaffModel($id),
+    	]);
+    }
 
-	public function actionStaffdelete($id)
-	{
-		//if (!Yii::$app->request->getIsPjax())
-		//	return;
-		$this->findStaffModel($id)->delete();
-		return $this->redirect(['stafflist']);
-	}
+    public function actionStaffcreate()
+    {
+    	$model = new MStaff;
+    	if (Yii::$app->request->isPost) 
+    	{
+    		$model->load(Yii::$app->request->post());
+    		$model->gh_id = Yii::$app->user->getGhid();
+    		if ($model->save()) 
+    		{
+    			return $this->redirect(['stafflist']);			
+    		}
+    		else
+    		{
+    			U::W($model->getErrors());
+    		}
+    	}
+    	return $this->render('staffcreate', ['model' => $model]);				
+    }
 
-	protected function findStaffModel($id)
-	{
-		if (($model = MStaff::findOne($id)) !== null) {
-			return $model;
-		} else {
-			throw new NotFoundHttpException('The requested page does not exist.');
-		}
-	}
+    public function actionStaffupdate($id)
+    {
+    	$model = MStaff::findOne($id);
+    	if (!$model) {
+    		throw new NotFoundHttpException();
+    	}
+    	if (\Yii::$app->request->isPost) 
+    	{
+    		$model->load(\Yii::$app->request->post());
+    		if ($model->save()) 
+    		{				
+    			return $this->redirect(['stafflist']);			
+    		}
+    		else
+    		{
+    			U::W($model->getErrors());
+    		}			
+    	}
+    	return $this->render('staffupdate', ['model' => $model]);		
+    }
 
-	public function actionStafftop()
-	{
-		$rows = MStaff::getStaffScoreTop(MGh::GH_XIANGYANGUNICOM);
-		$dataProvider = new ArrayDataProvider([
-			'allModels' => $rows,
-			'sort' => [
-				'attributes' => ['score', 'name', 'mobile'],
-			],
-			'pagination' => [
-				'pageSize' => 50,
-			],
-		]);
-		return $this->render('stafftop', [
-			'dataProvider' => $dataProvider,
-		]);
-		
-	}
+    public function actionStaffdelete($id)
+    {
+    	//if (!Yii::$app->request->getIsPjax())
+    	//	return;
+    	$this->findStaffModel($id)->delete();
+    	return $this->redirect(['stafflist']);
+    }
 
-	public function actionStafftogglemanager($id)
-	{
-		$model = $this->findStaffModel($id);
-		$model->is_manager =$model->is_manager ? 0 : 1;
-		$model->save();
-		return $this->redirect(['stafflist']);
-	}
+    protected function findStaffModel($id)
+    {
+    	if (($model = MStaff::findOne($id)) !== null) {
+    		return $model;
+    	} else {
+    		throw new NotFoundHttpException('The requested page does not exist.');
+    	}
+    }
 
-	public function actionStaffscoredetail($gh_id, $openid)
-	{
-		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);			
-		$searchModel = new MUserSearch;
-		$_GET['MUserSearch']['scene_pid'] = $user->scene_id;
-		//$searchModel->scene_pid = $user->scene_id;
-		$dataProvider = $searchModel->search($_GET);
-		return $this->render('staffscoredetail', [
-			'dataProvider' => $dataProvider,
-			'searchModel' => $searchModel,
-		]);
-	}
+    public function actionStafftop()
+    {
+    	$rows = MStaff::getStaffScoreTop(MGh::GH_XIANGYANGUNICOM);
+    	$dataProvider = new ArrayDataProvider([
+    		'allModels' => $rows,
+    		'sort' => [
+    			'attributes' => ['score', 'name', 'mobile'],
+    		],
+    		'pagination' => [
+    			'pageSize' => 50,
+    		],
+    	]);
+    	return $this->render('stafftop', [
+    		'dataProvider' => $dataProvider,
+    	]);
+    	
+    }
 
-	public function actionOfficetop()
-	{
-		$rows = MOffice::getOfficeScoreTop(MGh::GH_XIANGYANGUNICOM);
-		$dataProvider = new ArrayDataProvider([
-			'allModels' => $rows,
-			'sort' => [
-				'attributes' => ['cnt_office', 'cnt_staffs', 'cnt_sum'],
-				'defaultOrder'=>[
-					'cnt_office' => SORT_DESC
-				]
-			],
-			'pagination' => [
-				'pageSize' => 50,
-			],
-		]);
-		return $this->render('officetop', [
-			'dataProvider' => $dataProvider,
-		]);		
-	}
+    public function actionStafftogglemanager($id)
+    {
+    	$model = $this->findStaffModel($id);
+    	$model->is_manager =$model->is_manager ? 0 : 1;
+    	$model->save();
+    	return $this->redirect(['stafflist']);
+    }
 
-	public function actionIphone6sub()
-	{
-		$searchModel = new \app\models\MIphone6SubSearch;
-		$dataProvider = $searchModel->search($_GET);
-		return $this->render('iphone6sub', [
-			'dataProvider' => $dataProvider,
-			'searchModel' => $searchModel,
-		]);
-	}
+    public function actionStaffscoredetail($gh_id, $openid)
+    {
+    	$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);			
+    	$searchModel = new MUserSearch;
+    	$_GET['MUserSearch']['scene_pid'] = $user->scene_id;
+    	//$searchModel->scene_pid = $user->scene_id;
+    	$dataProvider = $searchModel->search($_GET);
+    	return $this->render('staffscoredetail', [
+    		'dataProvider' => $dataProvider,
+    		'searchModel' => $searchModel,
+    	]);
+    }
 
-	public function actionIphone6delete($id)
-	{
-		$model = \app\models\MIphone6Sub::findOne($id);
-		$model->delete();
-		return $this->redirect(['iphone6sub']);
-	}
+    public function actionOfficetop()
+    {
+    	$rows = MOffice::getOfficeScoreTop(MGh::GH_XIANGYANGUNICOM);
+    	$dataProvider = new ArrayDataProvider([
+    		'allModels' => $rows,
+    		'sort' => [
+    			'attributes' => ['cnt_office', 'cnt_staffs', 'cnt_sum'],
+    			'defaultOrder'=>[
+    				'cnt_office' => SORT_DESC
+    			]
+    		],
+    		'pagination' => [
+    			'pageSize' => 50,
+    		],
+    	]);
+    	return $this->render('officetop', [
+    		'dataProvider' => $dataProvider,
+    	]);		
+    }
 
-	public function actionIphone6subdownload()
-	{
-		$searchModel = new \app\models\MIphone6SubSearch;
-		$dataProvider = $searchModel->search($_GET);
-		$dataProvider->setPagination(false);
-		$data = $dataProvider->getModels();
-		//$query = clone $dataProvider->query;
-		//$data = $query->asArray()->all($dataProvider->db);
-		//U::W($data);
-		$filename = Yii::$app->getRuntimePath().'/iphone6.csv';
-		$csv = new \app\models\ECSVExport($data);
-		$csv->toCSV($filename); 
-		Yii::$app->response->sendFile($filename);
-		return;
-	}
+    public function actionIphone6sub()
+    {
+    	$searchModel = new \app\models\MIphone6SubSearch;
+    	$dataProvider = $searchModel->search($_GET);
+    	return $this->render('iphone6sub', [
+    		'dataProvider' => $dataProvider,
+    		'searchModel' => $searchModel,
+    	]);
+    }
 
-	public function actionOrderdownload()
-	{
-		$searchModel = new \app\models\MOrderSearch;
-		$dataProvider = $searchModel->search($_GET);
-		$dataProvider->setPagination(false);
-		$data = $dataProvider->getModels();
-		//$query = clone $dataProvider->query;
-		//$data = $query->asArray()->all($dataProvider->db);
-		//U::W($data);
-		$filename = Yii::$app->getRuntimePath().'/order.csv';
-		$csv = new \app\models\ECSVExport($data);
-		$csv->toCSV($filename); 
-		Yii::$app->response->sendFile($filename);
-		return;
-	}
+    public function actionIphone6delete($id)
+    {
+    	$model = \app\models\MIphone6Sub::findOne($id);
+    	$model->delete();
+    	return $this->redirect(['iphone6sub']);
+    }
 
-	public function actionOfficelist()
-	{
-		$searchModel = new MOfficeSearch;
-		$dataProvider = $searchModel->search($_GET);
-		return $this->render('officelist', [
-			'dataProvider' => $dataProvider,
-			'searchModel' => $searchModel,
-		]);
-	}
+    public function actionIphone6subdownload()
+    {
+    	$searchModel = new \app\models\MIphone6SubSearch;
+    	$dataProvider = $searchModel->search($_GET);
+    	$dataProvider->setPagination(false);
+    	$data = $dataProvider->getModels();
+    	//$query = clone $dataProvider->query;
+    	//$data = $query->asArray()->all($dataProvider->db);
+    	//U::W($data);
+    	$filename = Yii::$app->getRuntimePath().'/iphone6.csv';
+    	$csv = new \app\models\ECSVExport($data);
+    	$csv->toCSV($filename); 
+    	Yii::$app->response->sendFile($filename);
+    	return;
+    }
+    /*
+    public function actionOrderdownload()
+    {
+    	$searchModel = new \app\models\MOrderSearch;
+    	$dataProvider = $searchModel->search($_GET);
+    	$dataProvider->setPagination(false);
+    	$data = $dataProvider->getModels();
+    	//$query = clone $dataProvider->query;
+    	//$data = $query->asArray()->all($dataProvider->db);
+    	//U::W($data);
+    	$date = date('Y-m-d-His');
+    	$filename = Yii::$app->getRuntimePath()."/order-{$date}.csv";
+    	$csv = new \app\models\ECSVExport($data);
+    	$csv->toCSV($filename); 
+    	Yii::$app->response->sendFile($filename);
+    	return;
+    }
+    */
+    public function actionOfficelist()
+    {
+    	$searchModel = new MOfficeSearch;
+    	$dataProvider = $searchModel->search($_GET);
+    	return $this->render('officelist', [
+    		'dataProvider' => $dataProvider,
+    		'searchModel' => $searchModel,
+    	]);
+    }
 
-	public function actionOfficeView($id)
-	{
-		return $this->render('officeview', [
-			'model' => $this->findOfficeModel($id),
-		]);
-	}
+    public function actionOfficeView($id)
+    {
+    	return $this->render('officeview', [
+    		'model' => $this->findOfficeModel($id),
+    	]);
+    }
 
-	public function actionOfficecreate()
-	{
-		$model = new MOffice;
-		if (Yii::$app->request->isPost) 
-		{
-			$model->load(Yii::$app->request->post());
-			$model->gh_id = Yii::$app->user->getGhid();
-			if ($model->save()) 
-			{
-				return $this->redirect(['officelist']);			
-			}
-			else
-			{
-				U::W($model->getErrors());
-			}
-		}
-		return $this->render('officecreateupdate', ['model' => $model]);				
-	}
+    public function actionOfficecreate()
+    {
+    	$model = new MOffice;
+    	if (Yii::$app->request->isPost) 
+    	{
+    		$model->load(Yii::$app->request->post());
+    		$model->gh_id = Yii::$app->user->getGhid();
+    		if ($model->save()) 
+    		{
+    			return $this->redirect(['officelist']);			
+    		}
+    		else
+    		{
+    			U::W($model->getErrors());
+    		}
+    	}
+    	return $this->render('officecreateupdate', ['model' => $model]);				
+    }
 
-	public function actionOfficeupdate($id)
-	{
-		$model = MOffice::findOne($id);
-		if (!$model) {
-			throw new NotFoundHttpException();
-		}
-		if (\Yii::$app->request->isPost) 
-		{
-			$model->load(\Yii::$app->request->post());
-			if ($model->save()) 
-			{				
-				return $this->redirect(['officelist']);			
-			}
-			else
-			{
-				U::W($model->getErrors());
-			}			
-		}
-		return $this->render('officecreateupdate', ['model' => $model]);		
-	}
+    public function actionOfficeupdate($id)
+    {
+    	$model = MOffice::findOne($id);
+    	if (!$model) {
+    		throw new NotFoundHttpException();
+    	}
+    	if (\Yii::$app->request->isPost) 
+    	{
+    		$model->load(\Yii::$app->request->post());
+    		if ($model->save()) 
+    		{				
+    			return $this->redirect(['officelist']);			
+    		}
+    		else
+    		{
+    			U::W($model->getErrors());
+    		}			
+    	}
+    	return $this->render('officecreateupdate', ['model' => $model]);		
+    }
 
-	public function actionOfficedelete($id)
-	{
-		$this->findOfficeModel($id)->delete();
-		return $this->redirect(['officelist']);
-	}
+    public function actionOfficedelete($id)
+    {
+    	$this->findOfficeModel($id)->delete();
+    	return $this->redirect(['officelist']);
+    }
 
-	protected function findOfficeModel($id)
-	{
-		if (($model = MOffice::findOne($id)) !== null) {
-			return $model;
-		} else {
-			throw new NotFoundHttpException('The requested page does not exist.');
-		}
-	}
-	
+    protected function findOfficeModel($id)
+    {
+    	if (($model = MOffice::findOne($id)) !== null) {
+    		return $model;
+    	} else {
+    		throw new NotFoundHttpException('The requested page does not exist.');
+    	}
+    }
+
 }
 
 /*

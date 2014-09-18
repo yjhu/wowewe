@@ -163,6 +163,38 @@ $csv->toCSV();
 	Yii::app()->getRequest()->sendFile('a.csv', $content, "text/csv", false);
 
 	exit();
+
+
+
+    public function actionOrderdownload()
+    {
+        $searchModel = new \app\models\MOrderSearch;
+        $dataProvider = $searchModel->search($_GET);
+        $attributes = ['oid', 'office_id', 'office.title', 'openid', 'detail', 'feesum', 'select_mobnum', 'create_time', 'userid', 'username', 'usermobile', 'status', 'pay_kind', 'memo'];
+//        $attributes = ['oid', 'office_id', 'openid', 'detail', 'feesum', 'select_mobnum', 'create_time', 'userid', 'username', 'usermobile', 'status', 'pay_kind', 'memo'];
+//        foreach ($attributes as $attribute)
+//            $headers[] = $row->getAttributeLabel($attribute);
+
+        //$dataProvider->query->select($attributes);
+        $dataProvider->setPagination(false);
+        $data = $dataProvider->getModels();
+
+//        $query = clone $dataProvider->query;
+//        $data = $query->asArray()->all($dataProvider->db);
+//        U::W($data);
+
+        $date = date('Y-m-d-His');
+        $filename = Yii::$app->getRuntimePath()."/order-{$date}.csv";
+        $csv = new \app\models\ECSVExport($data);
+        $csv->setInclude($attributes);                
+//        $csv->setExclude(['gh_id','iid','pay_kind','val_pkg_3g4g']);                
+//        $csv->setHeaders(['Office Id'=>'MyOfficeId', 'Memo'=>'MyMemo']);
+        $csv->toCSV($filename); 
+        Yii::$app->response->sendFile($filename);
+        return;
+    }
+
+	
 */
 
 class ECSVExport
@@ -228,7 +260,11 @@ class ECSVExport
      * @var array $_exclude 
      */
     protected $_exclude = array();
-    
+
+//hehb
+    protected $_include = array();
+//end
+
     /**
      * column delimiter
      * @var string $_delimiter 
@@ -447,7 +483,20 @@ class ECSVExport
     {
         return $this->_exclude;
     }
+
+//hehb
+    public function setInclude($arr)
+    {
+            $this->_include = $arr;
+            return $this;
+    }
     
+    public function getInclude()
+    {
+        return $this->_include;
+    }
+//end
+
     /**
      * get the set model relations
      * return array $this->_modelRelations 
@@ -696,14 +745,26 @@ class ECSVExport
             return;
         }
         
-        if($row instanceof ActiveRecord) {
-           //$headers = array_keys($row->getAttributes());
-            $headers = array_values($row->attributeLabels());         
-            //U::W($headers);
+        if($row instanceof ActiveRecord) 
+        {
+            if(count($this->_include) > 0) 
+            {
+                foreach ($this->_include as $attribute) 
+                {
+                    $headers[] = $row->getAttributeLabel($attribute);
+                }            
+            }
+            else
+            {
+                foreach ($row->attributes() as $attribute) 
+                {
+                    $headers[] = $row->getAttributeLabel($attribute);
+                }
+            }
         } else {
             $headers = array_keys($row);
         }
-                
+
         // remove excluded
         if(count($this->_exclude) > 0) {
             foreach($this->_exclude as $e) { 
@@ -713,14 +774,14 @@ class ECSVExport
                 }
             }
         }            
-        
+
         if(count($this->_headers) > 0) {
             foreach($headers as &$header) {
                 if(array_key_exists($header, $this->_headers)) {
                     $header = $this->_headers[$header];             
                 }
             }
-        }                
+        }     
 
         //added by hehb begin
         $headers = $this->getGbkRows($headers);
@@ -735,9 +796,39 @@ class ECSVExport
      */
     public function _writeRow($row)
     {
-        if($row instanceof ActiveRecord) {
-            $row = $row->getAttributes();
+        if($row instanceof ActiveRecord) 
+        {
+            if(count($this->_include) > 0) 
+            {
+                foreach ($this->_include as $attribute)
+                {               
+                    if (strpos($attribute, '.') !== false)
+                    {
+                        $v = $row;
+                        $attributeParts = explode('.', $attribute);
+                        foreach ($attributeParts as $a)
+                        {
+                            if (empty($v->{$a}))
+                            {
+                                $v = '';
+                                break;
+                            }
+                            else
+                                $v = $v->{$a};
+                        }      
+                        $arr[$attribute] = $v;
+                    }
+                    else
+                        $arr[$attribute] = $row->{$attribute};
+
+                }                               
+                $row = $arr;
+            }   
+            else            
+                $row = $row->getAttributes();
+//             $row = $row->getAttributes($this->_include);
         }
+
         // remove excluded
         if(count($this->_exclude) > 0) {
             foreach($this->_exclude as $e) { 
@@ -746,16 +837,17 @@ class ECSVExport
                 }
             }
         }
-        
+
         if($this->stripNewLines) {            
             array_walk($row, array('\app\models\ECSVExport','lambdaFail'));
         }
         
         array_walk($row, array('\app\models\ECSVExport','stripSlashes'));
 
-        //added by hehb begin
-        $row = $this->getGbkRows($row);
+        //added by hehb begin        
+        $row = $this->getGbkRows($row);        
         //end
+        
         if(isset($this->_callback) && $this->_callback) {
             fputcsv($this->_filePointer, call_user_func($this->_callback, $row), $this->_delimiter, $this->_enclosure);                       
         } else {

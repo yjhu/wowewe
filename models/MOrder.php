@@ -36,6 +36,11 @@ CREATE TABLE wx_order (
 	aliwap_buyer_email VARCHAR(64) NOT NULL DEFAULT '',
 	aliwap_quantity int(10) unsigned NOT NULL DEFAULT '0',
 	aliwap_gmt_payment TIMESTAMP,
+	memo VARCHAR(256) NOT NULL DEFAULT '',
+	val_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '',
+	val_pkg_period int(10) unsigned NOT NULL DEFAULT '0',
+	val_pkg_monthprice int(10) unsigned NOT NULL DEFAULT '0',
+	val_pkg_plan VARCHAR(8) NOT NULL DEFAULT '',
 	PRIMARY KEY (oid),
 	KEY gh_id_oid(gh_id,oid),
 	KEY gh_id_office_id(gh_id,office_id),
@@ -110,6 +115,9 @@ class MOrder extends ActiveRecord
 			'userid' => '身份证',
 			'username' => '姓名',
 			'usermobile' => '联系电话',
+			'office_id' => '营业厅编号',
+			'pay_kind' => '付款方式',
+			'memo' => '留言',
 		];
 	}
 

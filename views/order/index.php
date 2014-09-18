@@ -23,17 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-		<?php echo Html::a('下载 <span class="glyphicon glyphicon-arrow-down"></span>', ['orderdownload'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?php 
-	$columns = [
-		//['class'=>'kartik\grid\SerialColumn', 'order'=>DynaGrid::ORDER_FIX_LEFT],
-
+		$columns = [
             'oid',   
 			[
-				'label' => '营业厅',
+				//'label' => '营业厅',
+				'attribute' => 'office.title',
 				'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
 				'filter'=> false,
 				'headerOptions' => array('style'=>'width:80px;'),			
@@ -43,7 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
 				'filter'=> false,
 				'headerOptions' => array('style'=>'width:80px;'),			
-
 			],
 			[
 				'attribute' => 'detail',
@@ -99,8 +93,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					]
 				],
 			],
-*/	
-
+*/
 			[
 				'label' => '买家身份信息',
 				'value'=>function ($model, $key, $index, $column) { return "{$model->username}, {$model->userid}, {$model->usermobile}"; },
@@ -141,7 +134,8 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 	*/
 	];
-		
+
+/*		
 	echo DynaGrid::widget([
 		'columns'=>$columns,
 		'storage'=>DynaGrid::TYPE_COOKIE,
@@ -159,7 +153,23 @@ $this->params['breadcrumbs'][] = $this->title;
 		],
 		'options'=>['id'=>'dynagrid-order'] // a unique identifier is important
 	]);
+*/
 
+	echo GridView::widget([
+		'dataProvider'=> $dataProvider,
+		'filterModel' => $searchModel,
+		'columns' => $columns,
+		'bordered'=>false,
+		'export'=>false,
+		'panel' => [
+			'heading'=>'<h3 class="panel-title">订单列表</h3>',
+			//'type'=>'success',
+			'type'=>'default',			
+			'before'=>Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', ['orderdownload'], ['class' => 'btn btn-success']),
+			//'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
+			'showFooter'=>false
+		],
+	]);
 	?>
 
 </div>
@@ -246,5 +256,10 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
         ],
     ]); 
+
+    <p>
+		<?php echo Html::a('下载 <span class="glyphicon glyphicon-arrow-down"></span>', ['orderdownload'], ['class' => 'btn btn-success']) ?>
+    </p>
+
 
 */
