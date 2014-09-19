@@ -82,7 +82,6 @@ INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, pr
 INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 317, '3g', 586, 36, '', 6299, 0, 6299, 0, 174);
 INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 317, '3g', 886, 36, '', 6299, 0, 6299, 0, 174);
 
-
 #Apple iphone 5c 8G  --- 4G/3G一体化套餐
 INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 310, '4g', 76, 12, '', 3799, 3099, 700, 0, 58);
 INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 310, '4g', 106, 12, '', 3799, 2999, 800, 0, 66);
@@ -163,6 +162,161 @@ INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, pr
 INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 313, '3g', 386, 36, '', 3599, 0, 3599, 719, 80);
 INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 313, '3g', 586, 36, '', 3599, 0, 3599, 719, 80);
 INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 313, '3g', 886, 36, '', 3599, 0, 3599, 719, 80);
+
+##########################################################################################################
+
+#酷派7298A 春雷 白色 --- 4G/3G一体化套餐
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '4g', 76, 24, '', 999, 189, 810, 81, 30);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '4g', 106, 24, '', 999, 0, 999, 99, 37);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '4g', 136, 24, '', 999, 0, 999, 99, 37);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '4g', 166, 24, '', 999, 0, 999, 99, 37);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '4g', 169, 24, '', 999, 0, 999, 99, 37);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '4g', 296, 24, '', 999, 0, 999, 99, 37);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '4g', 396, 24, '', 999, 0, 999, 99, 37);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '4g', 596, 24, '', 999, 0, 999, 99, 37);
+
+#酷派7298A 春雷 白色   --- 3G普通套餐
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '3g', 66, 24, '', 999, 189, 810, 162, 27);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '3g', 96, 24, '', 999,  0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '3g', 126, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '3g', 156, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '3g', 186, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '3g', 226, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '3g', 286, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '3g', 386, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '3g', 586, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 314, '3g', 886, 24, '', 999, 0, 999, 199, 33);
+
+#联想A850+  黑色 --- 4G/3G一体化套餐
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '4g', 76, 24, '', 1199, 229, 970, 97, 36);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '4g', 106, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '4g', 136, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '4g', 166, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '4g', 169, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '4g', 296, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '4g', 396, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '4g', 596, 24, '', 1199, 0, 1199, 119, 45);
+
+#联想A850+  黑色  --- 3G普通套餐
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '3g', 66, 24, '', 1199, 289, 910, 182, 30);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '3g', 96, 24, '', 1199,  0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '3g', 126, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '3g', 156, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '3g', 186, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '3g', 226, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '3g', 286, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '3g', 386, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '3g', 586, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 315, '3g', 886, 24, '', 1199, 0, 1199, 239, 40);
+
+#酷派7295C   白色--- 3G普通套餐
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 316, '3g', 66, 24, '', 999, 189, 810, 162, 27);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 316, '3g', 96, 24, '', 999,  0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 316, '3g', 126, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 316, '3g', 156, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 316, '3g', 186, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 316, '3g', 226, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 316, '3g', 286, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 316, '3g', 386, 24, '', 999, 0, 999, 199, 33);
+
+#酷派7295C   黑色--- 3G普通套餐
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 324, '3g', 66, 24, '', 999, 189, 810, 162, 27);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 324, '3g', 96, 24, '', 999,  0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 324, '3g', 126, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 324, '3g', 156, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 324, '3g', 186, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 324, '3g', 226, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 324, '3g', 286, 24, '', 999, 0, 999, 199, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 324, '3g', 386, 24, '', 999, 0, 999, 199, 33);
+
+#酷派7296    黑色--- 4G/3G一体化套餐
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '4g', 76, 24, '', 1199, 289, 910, 91, 34);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '4g', 106, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '4g', 136, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '4g', 166, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '4g', 169, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '4g', 296, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '4g', 396, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '4g', 596, 24, '', 1199, 0, 1199, 119, 45);
+
+#酷派7296    白色--- 4G/3G一体化套餐
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '4g', 76, 24, '', 1199, 289, 910, 91, 34);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '4g', 106, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '4g', 136, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '4g', 166, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '4g', 169, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '4g', 296, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '4g', 396, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '4g', 596, 24, '', 1199, 0, 1199, 119, 45);
+
+#酷派7296    黑色--- --- 3G普通套餐
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '3g', 66, 24, '', 1199, 289, 910, 182, 30);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '3g', 96, 24, '', 1199,  0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '3g', 126, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '3g', 156, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '3g', 186, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '3g', 226, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '3g', 286, 24, '', 1199, 0, 1199, 239, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 318, '3g', 386, 24, '', 1199, 0, 1199, 239, 33);
+
+#酷派7296    白色--- --- 3G普通套餐
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '3g', 66, 24, '', 1199, 289, 910, 182, 30);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '3g', 96, 24, '', 1199,  0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '3g', 126, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '3g', 156, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '3g', 186, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '3g', 226, 24, '', 1199, 0, 1199, 239, 40);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '3g', 286, 24, '', 1199, 0, 1199, 239, 33);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 319, '3g', 386, 24, '', 1199, 0, 1199, 239, 33);
+
+#酷派7235   黑色 #########################################################################################
+#
+#
+#
+#
+##########################################################################################################
+
+
+#酷派K1   白色--- 4G/3G一体化套餐
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '4g', 76, 24, '', 1199, 339, 86, 86, 32);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '4g', 106, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '4g', 136, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '4g', 166, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '4g', 169, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '4g', 296, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '4g', 396, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '4g', 596, 24, '', 1199, 0, 1199, 119, 45);
+
+#酷派K1   白色------ --- 3G普通套餐
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '3g', 66, 24, '', 1199, 339, 860, 86, 32);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '3g', 96, 24, '', 1199,  0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '3g', 126, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '3g', 156, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '3g', 186, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '3g', 226, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '3g', 286, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '3g', 386, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '3g', 586, 24, '', 1199, 0, 1199, 119, 45);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 320, '3g', 886, 24, '', 1199, 0, 1199, 119, 45);
+
+#酷派7230s   黑色#########################################################################################
+#
+#
+#
+#
+##########################################################################################################
+
+#海信U939 ------ --- 3G普通套餐
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 323, '3g', 66, 24, '', 799, 0, 799, 159, 26);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 323, '3g', 96, 24, '', 799,  0, 799, 159, 26);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 323, '3g', 126, 24, '', 799, 0, 799, 159, 26);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 323, '3g', 156, 24, '', 799, 0, 799, 159, 26);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 323, '3g', 186, 24, '', 799, 0, 799, 159, 26);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 323, '3g', 226, 24, '', 799, 0, 799, 159, 26);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 323, '3g', 286, 24, '', 799, 0, 799, 159, 26);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 323, '3g', 386, 24, '', 799, 0, 799, 159, 26);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 323, '3g', 586, 24, '', 799, 0, 499, 99, 16);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 323, '3g', 886, 24, '', 799, 0, 499, 99, 16);
 
 
 
