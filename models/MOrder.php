@@ -48,30 +48,6 @@ CREATE TABLE wx_order (
 	KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-		
-ALTER TABLE wx_order ADD pay_kind tinyint(10) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_order ADD aliwap_trade_no VARCHAR(64) NOT NULL DEFAULT '';
-ALTER TABLE wx_order ADD aliwap_total_fee VARCHAR(16) NOT NULL DEFAULT '';
-ALTER TABLE wx_order ADD aliwap_trade_status VARCHAR(32) NOT NULL DEFAULT '';
-ALTER TABLE wx_order ADD aliwap_buyer_email VARCHAR(64) NOT NULL DEFAULT '';
-ALTER TABLE wx_order ADD aliwap_quantity int(10) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_order ADD aliwap_gmt_payment TIMESTAMP;
-
-ALTER TABLE wx_order ADD KEY gh_id_aliwap_trade_no(gh_id,aliwap_trade_no);
-    
-DROP TABLE IF EXISTS wx_order_arc;
-CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
-
-//给卖家留言
-ALTER TABLE wx_order ADD memo VARCHAR(256) NOT NULL DEFAULT '';
-
-
-ALTER TABLE wx_order ADD val_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '';
-ALTER TABLE wx_order ADD val_pkg_period int(10) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_order ADD val_pkg_monthprice int(10) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_order ADD val_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
-
-
 */
 
 use Yii;
@@ -668,4 +644,29 @@ EOD;
 		$str = <<<EOD
 【{$gh->nickname}】{$office->title}: {$model->nickname}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】
 EOD;
+
+
+		
+ALTER TABLE wx_order ADD pay_kind tinyint(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_order ADD aliwap_trade_no VARCHAR(64) NOT NULL DEFAULT '';
+ALTER TABLE wx_order ADD aliwap_total_fee VARCHAR(16) NOT NULL DEFAULT '';
+ALTER TABLE wx_order ADD aliwap_trade_status VARCHAR(32) NOT NULL DEFAULT '';
+ALTER TABLE wx_order ADD aliwap_buyer_email VARCHAR(64) NOT NULL DEFAULT '';
+ALTER TABLE wx_order ADD aliwap_quantity int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_order ADD aliwap_gmt_payment TIMESTAMP;
+
+ALTER TABLE wx_order ADD KEY gh_id_aliwap_trade_no(gh_id,aliwap_trade_no);
+    
+DROP TABLE IF EXISTS wx_order_arc;
+CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
+
+//给卖家留言
+ALTER TABLE wx_order ADD memo VARCHAR(256) NOT NULL DEFAULT '';
+
+
+ALTER TABLE wx_order ADD val_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '';
+ALTER TABLE wx_order ADD val_pkg_period int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_order ADD val_pkg_monthprice int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_order ADD val_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
+
 */

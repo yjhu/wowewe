@@ -1063,9 +1063,15 @@ EOD;
 		        $monthprice = isset($_GET["pkgMonthprice"]) ? $_GET["pkgMonthprice"] : 46;
 		        $plan = $_GET["pkgPlan"] =='null' ? '' : $_GET["pkgPlan"];
 
+				//$data = MPkg::find()->select('*')->where(
+				//	"gh_id=:gh_id AND cid=:cid AND pkg3g4g=:pkg3g4g AND period=:period AND monthprice=:monthprice AND plan=:plan", 
+				//	[':gh_id'=>$gh_id, ':cid'=>$cid, ':pkg3g4g'=>$pkg3g4g, ':period'=>$period, ':monthprice'=>$monthprice, ':plan'=>$plan])->asArray()->one();	
+
+
 				$data = MPkg::find()->select('*')->where(
-					"gh_id=:gh_id AND cid=:cid AND pkg3g4g=:pkg3g4g AND period=:period AND monthprice=:monthprice AND plan=:plan", 
-					[':gh_id'=>$gh_id, ':cid'=>$cid, ':pkg3g4g'=>$pkg3g4g, ':period'=>$period, ':monthprice'=>$monthprice, ':plan'=>$plan])->asArray()->one();	
+					"gh_id=:gh_id AND cid=:cid AND pkg3g4g=:pkg3g4g AND period=:period AND monthprice=:monthprice", 
+					[':gh_id'=>$gh_id, ':cid'=>$cid, ':pkg3g4g'=>$pkg3g4g, ':period'=>$period, ':monthprice'=>$monthprice])->asArray()->one();	
+
 
 				//foreach($data as &$row)
 				//{

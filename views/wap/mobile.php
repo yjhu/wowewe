@@ -385,11 +385,11 @@ text-decoration: line-through;
                     <input type="radio" name="pkgPlan" id="pkgPlan_<?= $value ?>" value="<?= $value ?>" />
                     <label for="pkgPlan_<?= $value ?>"><?= $text ?></label>
                     <?php } ?> 
+                <a href="#popupInfo" data-rel="popup" data-transition="pop" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="help">help</a></p>
+                <div data-role="popup" id="popupInfo" class="ui-content" data-theme="a">
+                <img width="100%" style="display:block" src="../web/images/item/plan.gif" alt=""/>
+                </div>           
             </fieldset>
-            <a href="#popupInfo" data-rel="popup" data-transition="pop" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="help">help</a></p>
-            <div data-role="popup" id="popupInfo" class="ui-content" data-theme="a">
-            <img width="100%" style="display:block" src="../web/images/item/plan.gif" alt=""/>
-            </div>
         <?php endif; ?>
 
         <!--
