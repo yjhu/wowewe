@@ -60,31 +60,30 @@ class OrderController extends Controller
     {
     	$searchModel = new MOrderSearch;
     	$dataProvider = $searchModel->search($_GET);
+    	
+    	if (isset($_GET['orderdownload']))
+    	{
+            //$dataProvider->query->select($attributes);
+            $dataProvider->query->select(['*', '(feesum)/100 as gh_id', "CONCAT('\'',userid) as appid_recv", "(CASE status WHEN 0 THEN '等待付款' WHEN 3 THEN '交易成功' WHEN 7 THEN '用户取消订单' WHEN 9 THEN '超时自动取消订单' ELSE '' END) as partner", "(CASE pay_kind WHEN 0 THEN '自取' WHEN 1 THEN '支付宝' WHEN 2 THEN '微信支付' ELSE '' END) as openid_recv"]);
+            $dataProvider->setPagination(false);
+            $data = $dataProvider->getModels();
+
+            $date = date('Y-m-d-His');
+            $filename = Yii::$app->getRuntimePath()."/order-{$date}.csv";
+            $csv = new \app\models\ECSVExport($data);
+            //$attributes = ['oid', 'office_id', 'office.title', 'detail', 'gh_id', 'select_mobnum', 'create_time', 'appid_recv', 'username', 'usermobile', 'status', 'partner', 'pay_kind', 'memo', 'openid_recv'];        
+            $attributes = ['oid', 'office_id', 'office.title', 'detail', 'gh_id', 'select_mobnum', 'create_time', 'appid_recv', 'username', 'usermobile', 'partner', 'memo', 'openid_recv'];        
+            $csv->setInclude($attributes);                
+            $csv->setHeaders(['Gh Id'=>'金额', 'Appid Recv'=>'身份证', 'Partner'=>'订单状态', 'Openid Recv'=>'支付方式']);
+            $csv->toCSV($filename); 
+            Yii::$app->response->sendFile($filename);
+            return;    	
+    	}
+    	
     	return $this->render('index', [
     		'dataProvider' => $dataProvider,
     		'searchModel' => $searchModel,
     	]);
-    }
-
-    public function actionOrderdownload()
-    {
-        $searchModel = new \app\models\MOrderSearch;
-        $dataProvider = $searchModel->search($_GET);
-        //$dataProvider->query->select($attributes);
-        $dataProvider->query->select(['*', '(feesum)/100 as gh_id', "CONCAT('\'',userid) as appid_recv", "(CASE status WHEN 0 THEN '等待付款' WHEN 3 THEN '交易成功' WHEN 7 THEN '用户取消订单' WHEN 9 THEN '超时自动取消订单' ELSE '' END) as partner", "(CASE pay_kind WHEN 0 THEN '自取' WHEN 1 THEN '支付宝' WHEN 2 THEN '微信支付' ELSE '' END) as openid_recv"]);
-        $dataProvider->setPagination(false);
-        $data = $dataProvider->getModels();
-
-        $date = date('Y-m-d-His');
-        $filename = Yii::$app->getRuntimePath()."/order-{$date}.csv";
-        $csv = new \app\models\ECSVExport($data);
-        //$attributes = ['oid', 'office_id', 'office.title', 'detail', 'gh_id', 'select_mobnum', 'create_time', 'appid_recv', 'username', 'usermobile', 'status', 'partner', 'pay_kind', 'memo', 'openid_recv'];        
-        $attributes = ['oid', 'office_id', 'office.title', 'detail', 'gh_id', 'select_mobnum', 'create_time', 'appid_recv', 'username', 'usermobile', 'partner', 'memo', 'openid_recv'];        
-        $csv->setInclude($attributes);                
-        $csv->setHeaders(['Gh Id'=>'金额', 'Appid Recv'=>'身份证', 'Partner'=>'订单状态', 'Openid Recv'=>'支付方式']);
-        $csv->toCSV($filename); 
-        Yii::$app->response->sendFile($filename);
-        return;
     }
 
     public function actionView($id)

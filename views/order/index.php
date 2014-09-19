@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 //use yii\grid\GridView;
 use kartik\dynagrid\DynaGrid;
 use kartik\grid\GridView;
@@ -165,7 +166,8 @@ $this->params['breadcrumbs'][] = $this->title;
 			'heading'=>'<h3 class="panel-title">订单列表</h3>',
 			//'type'=>'success',
 			'type'=>'default',			
-			'before'=>Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', ['orderdownload'], ['class' => 'btn btn-success']),
+//			'before'=>Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', ['orderdownload'], ['class' => 'btn btn-success']),
+			'before'=>Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', Url::to().'&orderdownload=1', ['class' => 'btn btn-success']),
 			//'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
 			'showFooter'=>false
 		],
