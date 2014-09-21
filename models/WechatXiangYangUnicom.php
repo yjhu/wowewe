@@ -409,6 +409,7 @@ EOD;
 		}
 	}
 
+/*
 	public function FuncNearestOffice() 
 	{ 
 		$FromUserName = $this->getRequest('FromUserName');
@@ -424,9 +425,68 @@ EOD;
 			return $this->responseNews($items);
 		}
 	}
+*/	
+
+	public function FuncNearestOffice() 
+	{ 
+U::W('FuncNearestOffice......');
+return $this->responseText("hello, FuncNearestOffice");
 	
+		$FromUserName = $this->getRequest('FromUserName');
+		$gh_id = $this->getRequest('ToUserName');
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
+		if ($model === null)
+			return Wechat::NO_RESP;	
+
+
+            $sendLocationInfo = $this->getRequest('SendLocationInfo');
+            
+		//$model->lat = $this->getRequest('Location_X');
+		//$model->lon = $this->getRequest('Location_Y');
+
+		$model->lat = $sendLocationInfo['Location_X'];
+		$model->lon = $sendLocationInfo['Location_Y'];
+		
+		//$model->scale = $this->getRequest('Scale');			
+		$model->save(false);
+		$rows = MOffice::getNearestOffices($gh_id, $model->lon, $model->lat);
+		$rows = array_slice($rows, 0, 4);
+		$items = [];
+		$i = 0;
+		foreach ($rows as $row)
+		{
+			//$url = "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord={$model->lat},{$model->lon}&to={$row['title']}&tocoord={$row['lat']},{$row['lon']}&policy=0&referer=wosotech";
+			//$url = "http://api.map.baidu.com/direction?origin=latlng:{$model->lat},{$model->lon}|name:我的位置&destination=latlng:{$row['lat']},{$row['lon']}|name:{$row['title']}&mode=driving&region=襄阳&output=html&src=wosotech|wosotech";
+			
+			$office_imgurl = '@web/images/office/'.'office'.$row['office_id'].'.jpg' ;
+			$office_imgurl_160 = $office_imgurl.'-160x160.jpg';
+
+			$url = Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true);
+			//$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? '@web/images/nearestoffice-info.jpg' : '@web/images/metro-intro.jpg',true), $url);
+			$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? $office_imgurl : $office_imgurl_160, true), $url);
+			$i++;
+		}
+		return $this->responseNews($items);
+/*
+		$FromUserName = $this->getRequest('FromUserName');
+		$gh_id = $this->getRequest('ToUserName');
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
+		if ($model === null)
+			return '';
+		//if ($model->lon < 1)
+		{
+			$items = array(
+				new RespNewsItem('附近营业厅查询', '如果你需要查询附近的营业厅，请点击文字输入框旁边的+号,把你的位置发给小沃, 即可查询喔-(如上图)', Url::to('@web/images/nearestoffice.jpg',true), ''),
+			);
+			return $this->responseNews($items);
+		}
+*/
+	}
+
 	protected function onLocation() 
 	{ 
+		//return Wechat::NO_RESP;	
+
 		$FromUserName = $this->getRequest('FromUserName');
 		$gh_id = $this->getRequest('ToUserName');
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
@@ -455,6 +515,7 @@ EOD;
 			$i++;
 		}
 		return $this->responseNews($items);
+
 	}
 
 	protected function onEventLocation()

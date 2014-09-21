@@ -42,6 +42,13 @@ class Wechat extends \yii\base\Object
 	const EVENT_CLICK = 'CLICK';
 	const EVENT_VIEW = 'VIEW';	
 
+    const EVENT_SCANCODE_PUSH = 'scancode_push';
+    const EVENT_SCANCODE_WAITMSG = 'scancode_waitmsg';
+    const EVENT_PIC_SYSPHOTO = 'pic_sysphoto';
+    const EVENT_PIC_PHOTO_OR_ALBUM = 'pic_photo_or_album';
+    const EVENT_PIC_WEIXIN = 'pic_weixin';
+    const EVENT_LOCATION_SELECT = 'location_select';
+
 	const NO_RESP = '';
 	const SIGNTYPE = 'sha1';
 	
@@ -231,7 +238,11 @@ class Wechat extends \yii\base\Object
 				U::W(['No post data!', __METHOD__, $GLOBALS]);
 				exit;
 			}
-			$arr = (array) simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+			//$arr = (array) simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+			$obj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+			$arr = json_decode(json_encode($obj), true);			
+                    //U::W($arr);			
+			
 			$this->_request = $arr;
 		}
 		if ($key === false)
@@ -245,9 +256,8 @@ class Wechat extends \yii\base\Object
 	protected function getRequestString() 
 	{		
 		$arr = $this->getRequest();
-		foreach($arr as $key => $val)
-			$items[] = "$key=$val";
-		return implode(',', $items);
+		return print_r($arr, true);
+		//return self::json_encode($arr);
 	}
 	
 	protected function onSubscribe() { return $this->responseText($this->getRequestString()); }
@@ -264,13 +274,21 @@ class Wechat extends \yii\base\Object
 	
 	protected function onView() { return $this->responseText($this->getRequestString()); }
 	
-//	protected function onClick() { return $this->responseText($this->getRequestString()); }
-
 	protected function onClick()
 	{ 
 		$func = $this->getRequest('EventKey');		
 		if (method_exists($this, $func))
 			return $this->$func();			
+		return $this->responseText($this->getRequestString());		
+	}
+
+	protected function onLocationSelect()
+	{ 
+		$func = $this->getRequest('EventKey');	
+U::W('onLocationSelect....'.$func);		
+		if (method_exists($this, $func))
+			return $this->$func();
+U::W('onLocationSelect...111.');					
 		return $this->responseText($this->getRequestString());		
 	}
 		
@@ -371,6 +389,10 @@ class Wechat extends \yii\base\Object
 
 						case Wechat::EVENT_VIEW:
 							$resp =$this->onView();
+							break;
+
+						case Wechat::EVENT_LOCATION_SELECT:
+							$resp =$this->onLocationSelect();
 							break;
 
 						default:
