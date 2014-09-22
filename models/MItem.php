@@ -170,6 +170,7 @@ class MItem extends ActiveRecord
 		$arr = array(
 			'12' => '12个月',
 			'24' => '24个月',
+			'30' => '30个月',
 			'36' => '36个月',
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');

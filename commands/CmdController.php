@@ -47,7 +47,7 @@ class CmdController extends Controller
     public function actionGetAdUrl()
     {		
         $gh_id = Yii::$app->wx->getGhid();     
-        $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobile:{$gh_id}:cid=317");
+        $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobile:{$gh_id}:cid=324");
         U::W($url);
         echo $url;
     }

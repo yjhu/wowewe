@@ -459,6 +459,12 @@ var feeSum = 0;
 var count = 0;
 var phonePrice = <?php echo ($item->price)/100; ?>;
 
+/******************************
+*init
+*******************************/
+localStorage.removeItem("num");
+localStorage.removeItem("pkg3g4g");
+
 
 planFlag = 'plan66';
 //$().ready(function() {
