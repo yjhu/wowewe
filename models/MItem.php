@@ -22,6 +22,9 @@ CREATE TABLE wx_item (
 	quantity int(10) unsigned NOT NULL DEFAULT '0',
 	old_price int(10) unsigned NOT NULL DEFAULT '0',
 	old_price_hint VARCHAR(128) NOT NULL DEFAULT '',
+
+	ctrl_soldout tinyint(3) unsigned NOT NULL DEFAULT '0',
+	
 	KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -41,6 +44,9 @@ ALTER TABLE wx_item ADD	ctrl_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '';
 ALTER TABLE wx_item ADD	ctrl_pkg_period VARCHAR(32) NOT NULL DEFAULT '';
 ALTER TABLE wx_item ADD	ctrl_pkg_monthprice VARCHAR(64) NOT NULL DEFAULT '';
 ALTER TABLE wx_item ADD	ctrl_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
+
+
+ALTER TABLE wx_item ADD	ctrl_soldout tinyint(3) unsigned NOT NULL DEFAULT '0';
 
 
 INSERT INTO `wx_item` (`gh_id`, `price`, `price_hint`, `title`, `title_hint`, `pkg_name`, `pkg_name_hint`, `detail`, `pic_url`, `cid`, `status`) VALUES
@@ -132,7 +138,7 @@ class MItem extends ActiveRecord
 	{
 		return [
 			[['cid'], 'integer'],            
-			[['price', 'price_hint', 'title', 'title_hint', 'pkg_name', 'pkg_name_hint', 'pic_url', 'detail', 'ctrl_mobnumber', 'ctrl_userinfo', 'ctrl_office', 'ctrl_package', 'ctrl_supportpay', 'ctrl_pkg_3g4g', 'ctrl_pkg_period', 'ctrl_pkg_monthprice', 'ctrl_pkg_plan'], 'safe'],
+			[['price', 'price_hint', 'title', 'title_hint', 'pkg_name', 'pkg_name_hint', 'pic_url', 'detail', 'ctrl_mobnumber', 'ctrl_userinfo', 'ctrl_office', 'ctrl_package', 'ctrl_supportpay', 'ctrl_pkg_3g4g', 'ctrl_pkg_period', 'ctrl_pkg_monthprice', 'ctrl_pkg_plan', 'ctrl_soldout'], 'safe'],
 		];
 	}
 
