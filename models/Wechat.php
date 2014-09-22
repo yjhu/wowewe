@@ -308,6 +308,7 @@ class Wechat extends \yii\base\Object
     {
         $gh_id = $this->getGhId();    
         $FromUserName = $this->getRequest('FromUserName');
+        U::W('222');            
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
         if ($model === null)
         {
@@ -319,11 +320,10 @@ class Wechat extends \yii\base\Object
             $model->setAttributes($arr, false);
             $model->gh_id = $this->getRequest('ToUserName');            
             $model->openid = $FromUserName;            
-        $model->msg_time = time();
-        if (!$model->save(false))
-            U::W([__METHOD__, $model->getErrors()]);    
-            
-        }
+            //$model->msg_time = time();
+            if (!$model->save(false))
+                U::W([__METHOD__, $model->getErrors()]);                
+            }
     }
     
     public function run($gh_id) 
