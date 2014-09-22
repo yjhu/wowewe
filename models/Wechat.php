@@ -284,10 +284,10 @@ class Wechat extends \yii\base\Object
 	protected function onLocationSelect()
 	{ 
 		$func = $this->getRequest('EventKey');	
-U::W('onLocationSelect....'.$func);		
+                U::W('onLocationSelect....'.$func);		
 		if (method_exists($this, $func))
 			return $this->$func();
-U::W('onLocationSelect...111.');					
+                U::W('onLocationSelect...111.');					
 		return $this->responseText($this->getRequestString());		
 	}
 		
@@ -319,10 +319,11 @@ U::W('onLocationSelect...111.');
 			$model->setAttributes($arr, false);
 			$model->gh_id = $this->getRequest('ToUserName');			
 			$model->openid = $FromUserName;			
-		}
 		$model->msg_time = time();
 		if (!$model->save(false))
 			U::W([__METHOD__, $model->getErrors()]);	
+			
+		}
 	}
 	
 	public function run($gh_id) 
