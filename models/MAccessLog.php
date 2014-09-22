@@ -5,19 +5,19 @@ namespace app\models;
 /*
 DROP TABLE IF EXISTS wx_access_log;
 CREATE TABLE wx_access_log (
-	id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,		
-	ToUserName VARCHAR(32) NOT NULL DEFAULT '',
-	FromUserName VARCHAR(32) NOT NULL DEFAULT '',
-	CreateTime int(10) unsigned NOT NULL DEFAULT '0',	
-	MsgId bigint(20) unsigned NOT NULL DEFAULT '0',
-	MsgType VARCHAR(32) NOT NULL DEFAULT '',
-	Content VARCHAR(256) NOT NULL DEFAULT '',
-	Event VARCHAR(32) NOT NULL DEFAULT '',
-	EventKey VARCHAR(1024) NOT NULL DEFAULT '',
-	EventKeyCRC bigint(20) unsigned NOT NULL DEFAULT '0',
-	KEY gh_id_idx(ToUserName),
-	KEY EventKeyCRC_idx(EventKeyCRC),
+    id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,        
+    ToUserName VARCHAR(32) NOT NULL DEFAULT '',
+    FromUserName VARCHAR(32) NOT NULL DEFAULT '',
+    CreateTime int(10) unsigned NOT NULL DEFAULT '0',    
+    MsgId bigint(20) unsigned NOT NULL DEFAULT '0',
+    MsgType VARCHAR(32) NOT NULL DEFAULT '',
+    Content VARCHAR(256) NOT NULL DEFAULT '',
+    Event VARCHAR(32) NOT NULL DEFAULT '',
+    EventKey VARCHAR(1024) NOT NULL DEFAULT '',
+    EventKeyCRC bigint(20) unsigned NOT NULL DEFAULT '0',
+    KEY gh_id_idx(ToUserName),
+    KEY EventKeyCRC_idx(EventKeyCRC),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -35,11 +35,11 @@ use app\models\MOffice;
 
 class MAccessLog extends ActiveRecord
 {
-	
-	public static function tableName()
-	{
-		return 'wx_access_log';
-	}
+    
+    public static function tableName()
+    {
+        return 'wx_access_log';
+    }
 
     public function beforeSave($insert)
     {
@@ -51,8 +51,8 @@ class MAccessLog extends ActiveRecord
         } 
         return false;
     }
-	
+    
 }
 
-/*		
+/*        
 */
