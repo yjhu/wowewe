@@ -66,7 +66,6 @@ $basename = basename(__FILE__, '.php');
         
     <li data-role="list-divider">沃服务</li>
     <li><a data-ajax=false href="<?php echo Url::to(['suggest', 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">用户吐槽</a></li>
-    <li><a data-ajax=false href="<?php echo Url::to(['order', 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">我的订单</a></li>
     <li><a data-ajax=false href="<?php echo Url::to(['wap/g2048', 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">游戏2048</a></li>
 
     <li data-role="list-divider">沃订单</li>

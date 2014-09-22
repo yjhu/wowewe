@@ -40,6 +40,13 @@ class WechatXiangYangUnicom extends Wechat
 			//U::W("sub....qr...., $EventKey, $scene_pid");
 			$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
 			$model->scene_pid = $scene_pid;
+	
+			if(chstr($EventKey,'OFFICE'))
+			{
+				$gid = substr($EventKey, 15);
+				$model->gid = $gid;
+			}
+
 			$model->save(false);
 			$items = array(
 				new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
@@ -138,7 +145,7 @@ EOD;
 		{
 			//$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
 			$url = Url::to(['wap/testpay', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
-			return $this->responseText("see my score? <a href=\"{$url}\">clickme</a>, <a href=\"http://m.wsq.qq.com/263163652\">wsq</a>");
+			return $this->responseText("Test only <a href=\"{$url}\">clickme</a>\n----------\n <a href=\"http://m.wsq.qq.com/263163652\">wsq</a>    \n----------\n  <a href=\"http://www.baidu.com/?surf_token=a40aeb590b4674cad5c74246ba41bd9f\">active wifi</a>");
 		}
 		else
 		{

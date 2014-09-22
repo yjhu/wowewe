@@ -27,10 +27,10 @@ CREATE TABLE wx_user (
 	lat float(10,6) NOT NULL DEFAULT '0.000000',
 	lon float(10,6) NOT NULL DEFAULT '0.000000',
 	prec float(10,6) NOT NULL DEFAULT '0.000000',
+	gid int(10) unsigned NOT NULL DEFAULT '0',
 	KEY idx_gh_id_scene_pid(gh_id,scene_pid),
 	UNIQUE KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 
 
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('root', 'root', 'root', '1', 9);
@@ -60,6 +60,10 @@ INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac9
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '23', 'office#23','1', 1);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '24', 'office#24','1', 1);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '74', 'office#74','1', 1);
+
+
+ALTER TABLE wx_user ADD gid int(10) unsigned NOT NULL DEFAULT '0';
+
 */
 
 use Yii;

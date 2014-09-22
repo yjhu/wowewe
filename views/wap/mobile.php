@@ -478,6 +478,12 @@ var ctrl_supportpay = "<?php echo  $item->ctrl_supportpay; ?>";
 
 var ctrl_pkg_plan = "<?php echo  $item->ctrl_pkg_plan; ?>";
 
+var ctrl_soldout = "<?php echo  $item->ctrl_soldout; ?>";
+
+//if(ctrl_soldout == 1)
+//{
+//    alert("已售完！");
+//}
 
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
