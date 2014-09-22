@@ -273,7 +273,9 @@ class CmdController extends Controller
 				]),
 				new \app\models\ButtonComplex('沃订单', [
 					//new \app\models\ButtonView('最近营业厅', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/xxxxxx:{$gh_id}")),
-					new \app\models\ButtonClick('最近营业厅', 'FuncNearestOffice'),
+					//new \app\models\ButtonClick('最近营业厅', 'FuncNearestOffice'),
+					//new \app\models\ButtonLocationSelect('最近营业厅.', 'FuncNearestOffice'),
+					new \app\models\ButtonLocationSelect('最近营业厅', 'FuncNearestOffice'),						
 					new \app\models\ButtonView('我的订单', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/order:{$gh_id}")),
 				]),
 			]);
