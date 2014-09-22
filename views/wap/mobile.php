@@ -110,6 +110,19 @@ text-decoration: line-through;
     text-align: right;
 }
 
+.transparent-block
+{
+    background:#fff url(<?php echo Yii::$app->getRequest()->baseUrl.'/images/soldout.jpg' ?>) no-repeat center;margin:0px auto;
+
+    /*overflow:hidden*/
+}
+
+
+.transparent
+{
+    filter:alpha(opacity=25);moz-opacity:.25;opacity:.25
+}
+
 </style>
 
 
@@ -125,7 +138,7 @@ text-decoration: line-through;
 	<form id="productForm">	
 	<div data-role="content" data-theme="c">	
 	<p  align=center id="imgURL">
-	    <img width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
+	    <img id='transparent' width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
 	</p>
 
         <p id="desc">
@@ -387,7 +400,7 @@ text-decoration: line-through;
                     <?php } ?> 
                 <a href="#popupInfo" data-rel="popup" data-transition="pop" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="help">help</a></p>
                 <div data-role="popup" id="popupInfo" class="ui-content" data-theme="a">
-                <img width="100%" style="display:block" src="../web/images/item/plan.gif" alt=""/>
+                <img width="100%" style="display:block" src="../web/images/item/plan.png" alt=""/>
                 </div>           
             </fieldset>
         <?php endif; ?>
@@ -480,10 +493,6 @@ var ctrl_pkg_plan = "<?php echo  $item->ctrl_pkg_plan; ?>";
 
 var ctrl_soldout = "<?php echo  $item->ctrl_soldout; ?>";
 
-//if(ctrl_soldout == 1)
-//{
-//    alert("已售完！");
-//}
 
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
@@ -535,6 +544,19 @@ $(document).on("pageshow", "#page2", function(){
         $("#package-li").show();
     }
 
+    if(ctrl_soldout == 1)
+    {
+        //alert("已售完！");
+        $("#imgURL").addClass("transparent-block");
+        $("#transparent").addClass("transparent");
+
+        $("#sel-num-li").hide();
+        $("#package-li").hide();
+        $("#contact-li").hide();
+        $("#office-li").hide();
+
+        $("#submitBtn").hide();
+    }
     /*item ctrl end --------------------------------------------------*/
 
 
