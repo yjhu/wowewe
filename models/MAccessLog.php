@@ -15,7 +15,9 @@ CREATE TABLE wx_access_log (
 	Content VARCHAR(256) NOT NULL DEFAULT '',
 	Event VARCHAR(32) NOT NULL DEFAULT '',
 	EventKey VARCHAR(1024) NOT NULL DEFAULT '',
-	KEY gh_id_idx(ToUserName)
+	EventKeyCRC bigint(20) unsigned NOT NULL DEFAULT '0',
+	KEY gh_id_idx(ToUserName),
+	KEY EventKeyCRC_idx(EventKeyCRC),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -39,6 +41,16 @@ class MAccessLog extends ActiveRecord
 		return 'wx_access_log';
 	}
 
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) 
+        {
+            $checksum = crc32($this->EventKey);        
+            $this->EventKeyCRC = sprintf("%u", $checksum);
+            return true;
+        } 
+        return false;
+    }
 	
 }
 
