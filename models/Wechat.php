@@ -241,8 +241,7 @@ class Wechat extends \yii\base\Object
 			//$arr = (array) simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
 			$obj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
 			$arr = json_decode(json_encode($obj), true);			
-                    //U::W($arr);			
-			
+                    //U::W($arr);						
 			$this->_request = $arr;
 		}
 		if ($key === false)
@@ -256,8 +255,8 @@ class Wechat extends \yii\base\Object
 	protected function getRequestString() 
 	{		
 		$arr = $this->getRequest();
-		return print_r($arr, true);
-		//return self::json_encode($arr);
+		//return print_r($arr, true);
+		return self::json_encode($arr);
 	}
 	
 	protected function onSubscribe() { return $this->responseText($this->getRequestString()); }

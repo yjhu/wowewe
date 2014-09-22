@@ -429,9 +429,7 @@ EOD;
 
 	public function FuncNearestOffice() 
 	{ 
-U::W('FuncNearestOffice......');
-return $this->responseText("hello, FuncNearestOffice");
-	
+            U::W('xxxxxyyyyy FuncNearestOffice......');	
 		$FromUserName = $this->getRequest('FromUserName');
 		$gh_id = $this->getRequest('ToUserName');
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
@@ -440,7 +438,7 @@ return $this->responseText("hello, FuncNearestOffice");
 
 
             $sendLocationInfo = $this->getRequest('SendLocationInfo');
-            
+            U::W(['xxxxx', $sendLocationInfo]);            
 		//$model->lat = $this->getRequest('Location_X');
 		//$model->lon = $this->getRequest('Location_Y');
 
