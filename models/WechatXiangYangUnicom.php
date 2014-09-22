@@ -11,6 +11,7 @@ use yii\web\HttpException;
 use app\models\U;
 use app\models\Wechat;
 use app\models\WxException;
+use app\models\MAccessLog;
 use app\models\MUser;
 use app\models\MGh;
 use app\models\MOffice;
@@ -24,8 +25,18 @@ use app\models\RespMusic;
 
 class WechatXiangYangUnicom extends Wechat
 {
+        protected function saveAccessLog() 
+        {
+	        $request = $this->getRequest();
+                //U::W($request);	        
+                $log = new MAccessLog;
+                $log->setAttributes($request, false);
+                //U::W($log->getAttributes());	                 
+                $log->save(false);
+        }
 	protected function onSubscribe() 
 	{
+              $this->saveAccessLog();  
 		$FromUserName = $this->getRequest('FromUserName');	
 		$openid = $this->getRequest('FromUserName');		
 		$gh_id = $this->getRequest('ToUserName');				
@@ -65,6 +76,7 @@ class WechatXiangYangUnicom extends Wechat
 
 	protected function onUnsubscribe() 
 	{ 
+              $this->saveAccessLog();  	
 		$FromUserName = $this->getRequest('FromUserName');
 		$gh_id = $this->getRequest('ToUserName');
 		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);		
@@ -131,6 +143,7 @@ EOD;
 
 	protected function onText() 
 	{ 
+              $this->saveAccessLog();  	
 		$openid = $this->getRequest('FromUserName');
 		$gh_id = $this->getRequest('ToUserName');	
 		$Content = $this->getRequest('Content');
@@ -416,24 +429,6 @@ EOD;
 		}
 	}
 
-/*
-	public function FuncNearestOffice() 
-	{ 
-		$FromUserName = $this->getRequest('FromUserName');
-		$gh_id = $this->getRequest('ToUserName');
-		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
-		if ($model === null)
-			return '';
-		//if ($model->lon < 1)
-		{
-			$items = array(
-				new RespNewsItem('附近营业厅查询', '如果你需要查询附近的营业厅，请点击文字输入框旁边的+号,把你的位置发给小沃, 即可查询喔-(如上图)', Url::to('@web/images/nearestoffice.jpg',true), ''),
-			);
-			return $this->responseNews($items);
-		}
-	}
-*/	
-
 	public function FuncNearestOffice() 
 	{ 
             U::W('xxxxxyyyyy FuncNearestOffice......');	
@@ -472,20 +467,6 @@ EOD;
 			$i++;
 		}
 		return $this->responseNews($items);
-/*
-		$FromUserName = $this->getRequest('FromUserName');
-		$gh_id = $this->getRequest('ToUserName');
-		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
-		if ($model === null)
-			return '';
-		//if ($model->lon < 1)
-		{
-			$items = array(
-				new RespNewsItem('附近营业厅查询', '如果你需要查询附近的营业厅，请点击文字输入框旁边的+号,把你的位置发给小沃, 即可查询喔-(如上图)', Url::to('@web/images/nearestoffice.jpg',true), ''),
-			);
-			return $this->responseNews($items);
-		}
-*/
 	}
 
 	protected function onLocation() 
@@ -541,25 +522,37 @@ EOD;
 		return Wechat::NO_RESP;
 	}
 
-	protected function onImage() 
-	{ 
-		return Wechat::NO_RESP;
-	}
+    protected function onView() 
+    {
+        $this->saveAccessLog();      
+        return parent::onView();    
+    }
 
-	protected function onScan() 
-	{
-		return Wechat::NO_RESP;		
-	}
+    protected function onClick()
+    {
+        $this->saveAccessLog();          
+        return parent::onClick();
+    }
 
-	protected function onVoice() 
-	{
-		return Wechat::NO_RESP;		
-	}
+    protected function onImage() 
+    { 
+        return Wechat::NO_RESP;
+    }
 
-	protected function onVideo() 
-	{
-		return Wechat::NO_RESP;		
-	}
+    protected function onScan() 
+    {
+        return Wechat::NO_RESP;		
+    }
+
+    protected function onVoice() 
+    {
+        return Wechat::NO_RESP;		
+    }
+
+    protected function onVideo() 
+    {
+        return Wechat::NO_RESP;		
+    }
 	
 /*
 	public function FuncCustomService() 
@@ -644,7 +637,36 @@ EOD;
 			return $this->responseNews($items);
 			//return $this->responseText("{$model->nickname}, 欢迎关注襄阳联通官方微信服务号！\n\n在这里，您可以逛沃商城，享沃服务，玩游戏，参与活动...... 天天惊喜，月月有奖！");
 
-*/
+		$FromUserName = $this->getRequest('FromUserName');
+		$gh_id = $this->getRequest('ToUserName');
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
+		if ($model === null)
+			return '';
+		//if ($model->lon < 1)
+		{
+			$items = array(
+				new RespNewsItem('附近营业厅查询', '如果你需要查询附近的营业厅，请点击文字输入框旁边的+号,把你的位置发给小沃, 即可查询喔-(如上图)', Url::to('@web/images/nearestoffice.jpg',true), ''),
+			);
+			return $this->responseNews($items);
+		}
+
+	public function FuncNearestOffice() 
+	{ 
+		$FromUserName = $this->getRequest('FromUserName');
+		$gh_id = $this->getRequest('ToUserName');
+		$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);				
+		if ($model === null)
+			return '';
+		//if ($model->lon < 1)
+		{
+			$items = array(
+				new RespNewsItem('附近营业厅查询', '如果你需要查询附近的营业厅，请点击文字输入框旁边的+号,把你的位置发给小沃, 即可查询喔-(如上图)', Url::to('@web/images/nearestoffice.jpg',true), ''),
+			);
+			return $this->responseNews($items);
+		}
+	}
+*/	
+
 
 }
 
