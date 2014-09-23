@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 	use yii\helpers\Html;
     use yii\helpers\Url;
     use app\models\MItem;
@@ -367,7 +367,7 @@ text-decoration: line-through;
                     <?php foreach($pkg3g4gOption as $value => $text) { ?>
                     <input type="radio" name="pkg3g4g" id="pkg3g4g_<?= $value ?>" value="<?= $value ?>" />
                     <label for="pkg3g4g_<?= $value ?>"><?= $text ?></label>
-                    <?php } ?> 
+                    <?php $pkg3g4gValue=$value; } ?> 
             </fieldset>
         <?php endif; ?>
 
@@ -388,6 +388,12 @@ text-decoration: line-through;
                     <input type="radio" name="pkgMonthprice" id="pkgMonthprice_<?= $value ?>" value="<?= $value ?>" />
                     <label for="pkgMonthprice_<?= $value ?>"><?= $text ?></label>
                     <?php } ?> 
+
+                    <?php if($pkg3g4gValue=='4g') { ?>
+                    <a href="#popupInfo1" data-rel="popup" data-transition="pop" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="help">help</a></p>
+                    <div data-role="popup" id="popupInfo1" class="ui-content" data-theme="a">
+                    <img width="100%" style="display:block" src="../web/images/item/plan4g.jpg" alt=""/>     
+                    <?php } ?>
             </fieldset>
         <?php endif; ?>
 
@@ -493,10 +499,6 @@ var ctrl_pkg_plan = "<?php echo  $item->ctrl_pkg_plan; ?>";
 
 var ctrl_soldout = "<?php echo  $item->ctrl_soldout; ?>";
 
-
-    $("#submitBtn").hide();
-
-}
 
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
