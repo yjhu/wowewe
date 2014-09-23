@@ -23,6 +23,7 @@ use app\models\MSmQueue;
 use app\models\Wechat;
 use app\models\MMapbd;
 use app\models\MOffice;
+use app\models\MGroup;
 
 class CmdController extends Controller
 {
@@ -42,6 +43,28 @@ class CmdController extends Controller
 	{		
 		echo 'Hello, world!!';
 	}
+
+
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/create-wx-groups
+    public function actionCreateWxGroups()
+    {		
+        $gh_id = Yii::$app->wx->getGhid();
+		$offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();		
+
+		foreach($offices as $office)
+		{
+			$office_id = $office['office_id'];
+			$gname = mb_substr($office['title'], 0, 10, 'utf-8');
+
+			$arr = Yii::$app->wx->WxGroupCreate(['group'=>['name'=>$gname]]);
+			//U::W("{$arr['group']['id']},{$arr['group']['name']}");		
+
+			$tableName = MGroup::tableName();
+			Yii::$app->db->createCommand("INSERT INTO $tableName (gh_id, gid, gname, office_id) VALUES (:gh_id, :gid, :gname, :office_id)", [':gh_id' => $gh_id, ':gid' => $arr['group']['id'],':gname' => $gname,':office_id' => $office_id])->execute();
+		}
+
+    }	
+
 
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/get-ad-url
     public function actionGetAdUrl()

@@ -4,10 +4,11 @@ namespace app\models;
 /*
 DROP TABLE IF EXISTS wx_group;
 CREATE TABLE wx_group (
-	iid int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	gh_id VARCHAR(32) NOT NULL DEFAULT '',
 	gid int(10) unsigned NOT NULL DEFAULT '0',
-	gname VARCHAR(256) NOT NULL DEFAULT '',
+	gname VARCHAR(64) NOT NULL DEFAULT '',
+	office_id int(10) unsigned NOT NULL DEFAULT '0',
 	KEY idx_gh_id_gid(gh_id,gid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

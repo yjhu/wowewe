@@ -22,6 +22,31 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'password')->textInput(['maxlength' => 32]) ?>
 
+<!--
+    <//?php
+        echo \kartik\widgets\StarRating::widget([
+        'name' => 'rating',
+        'pluginOptions' => [
+            'size' => 'lg',
+            'starCaptions'=> [
+                '0.5'=> 'Half Star',
+                '1'=> 'One Star',
+                '1.5'=> 'One & Half Star',
+                '2'=> 'Two Stars',
+                '2.5'=> 'Two & Half Stars',
+                '3'=> 'Three Stars',
+                '3.5'=> 'Three & Half Stars',
+                '4'=> 'Four Stars',
+                '4.5'=> 'Four & Half Stars',
+                '5'=> '非常好'
+            ],
+            'clearCaption' => '还未评价',
+
+        ],
+        ]);
+    ?>
+-->
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

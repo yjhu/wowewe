@@ -53,10 +53,14 @@ class WechatXiangYangUnicom extends Wechat
             $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
             $model->scene_pid = $scene_pid;
     
-            if(chstr($EventKey,'OFFICE'))
+            if(strstr($EventKey,'OFFICE'))
             {
-                $gid = substr($EventKey, 15);
-                $model->gid = $gid;
+                $office_id = substr($EventKey, 15);
+
+				$mg = MGroup::findOne(['gh_id'=>$gh_id, 'office_id'=>$office_id]);
+                $model->gid = $mg->gid;
+
+                Yii::$app->wx->WxGroupMoveMember($FromUserName, $mg->gid);
             }
 
             $model->save(false);
