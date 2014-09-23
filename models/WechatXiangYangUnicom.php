@@ -37,7 +37,7 @@ class WechatXiangYangUnicom extends Wechat
     
     protected function onSubscribe() 
     {
-              $this->saveAccessLog();  
+        $this->saveAccessLog();  
         $FromUserName = $this->getRequest('FromUserName');    
         $openid = $this->getRequest('FromUserName');        
         $gh_id = $this->getRequest('ToUserName');                
@@ -81,7 +81,7 @@ class WechatXiangYangUnicom extends Wechat
 
     protected function onUnsubscribe() 
     { 
-              $this->saveAccessLog();      
+        $this->saveAccessLog();
         $FromUserName = $this->getRequest('FromUserName');
         $gh_id = $this->getRequest('ToUserName');
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);        
@@ -148,7 +148,7 @@ EOD;
 
     protected function onText() 
     { 
-              $this->saveAccessLog();      
+        $this->saveAccessLog();      
         $openid = $this->getRequest('FromUserName');
         $gh_id = $this->getRequest('ToUserName');    
         $Content = $this->getRequest('Content');
@@ -436,7 +436,7 @@ EOD;
 
     public function FuncNearestOffice() 
     { 
-            U::W('xxxxxyyyyy FuncNearestOffice......');    
+        U::W('xxxxxyyyyy FuncNearestOffice......');    
         $FromUserName = $this->getRequest('FromUserName');
         $gh_id = $this->getRequest('ToUserName');
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);                
@@ -444,8 +444,8 @@ EOD;
             return Wechat::NO_RESP;    
 
 
-            $sendLocationInfo = $this->getRequest('SendLocationInfo');
-            U::W(['xxxxx', $sendLocationInfo]);            
+        $sendLocationInfo = $this->getRequest('SendLocationInfo');
+        U::W(['xxxxx', $sendLocationInfo]);            
         //$model->lat = $this->getRequest('Location_X');
         //$model->lon = $this->getRequest('Location_Y');
 
