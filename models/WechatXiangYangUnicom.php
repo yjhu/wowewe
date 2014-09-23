@@ -25,15 +25,16 @@ use app\models\RespMusic;
 
 class WechatXiangYangUnicom extends Wechat
 {
-        protected function saveAccessLog() 
-        {
-            $request = $this->getRequest();
-                //U::W($request);            
-                $log = new MAccessLog;
-                $log->setAttributes($request, false);
-                //U::W($log->getAttributes());                     
-                $log->save(false);
-        }
+    protected function saveAccessLog() 
+    {
+        $request = $this->getRequest();
+        //U::W($request);            
+        $log = new MAccessLog;
+        $log->setAttributes($request, false);
+        //U::W($log->getAttributes());                     
+        $log->save(false);
+    }
+    
     protected function onSubscribe() 
     {
               $this->saveAccessLog();  

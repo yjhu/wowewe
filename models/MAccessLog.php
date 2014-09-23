@@ -6,10 +6,10 @@ namespace app\models;
 DROP TABLE IF EXISTS wx_access_log;
 CREATE TABLE wx_access_log (
     id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,        
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     ToUserName VARCHAR(32) NOT NULL DEFAULT '',
     FromUserName VARCHAR(32) NOT NULL DEFAULT '',
-    CreateTime int(10) unsigned NOT NULL DEFAULT '0',    
+    CreateTime int(10) unsigned NOT NULL DEFAULT '0',
     MsgId bigint(20) unsigned NOT NULL DEFAULT '0',
     MsgType VARCHAR(32) NOT NULL DEFAULT '',
     Content VARCHAR(256) NOT NULL DEFAULT '',
@@ -17,10 +17,8 @@ CREATE TABLE wx_access_log (
     EventKey VARCHAR(1024) NOT NULL DEFAULT '',
     EventKeyCRC bigint(20) unsigned NOT NULL DEFAULT '0',
     KEY gh_id_idx(ToUserName),
-    KEY EventKeyCRC_idx(EventKeyCRC),
+    KEY EventKeyCRC_idx(EventKeyCRC)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
 */
 
 use Yii;

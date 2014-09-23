@@ -118,7 +118,7 @@ text-decoration: line-through;
 }
 
 
-img.transparent
+.transparent
 {
     filter:alpha(opacity=25);moz-opacity:.25;opacity:.25
 }
@@ -138,7 +138,7 @@ img.transparent
 	<form id="productForm">	
 	<div data-role="content" data-theme="c">	
 	<p  align=center id="imgURL">
-	    <img width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
+	    <img id='transparent' width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
 	</p>
 
         <p id="desc">
@@ -493,11 +493,6 @@ var ctrl_pkg_plan = "<?php echo  $item->ctrl_pkg_plan; ?>";
 
 var ctrl_soldout = "<?php echo  $item->ctrl_soldout; ?>";
 
-if(ctrl_soldout == 1)
-{
-    //alert("已售完！");
-    $(".transparent-block").addClass("transparent-block");
-    $(".transparent").addClass("transparent");
 
     $("#submitBtn").hide();
 
@@ -553,6 +548,19 @@ $(document).on("pageshow", "#page2", function(){
         $("#package-li").show();
     }
 
+    if(ctrl_soldout == 1)
+    {
+        //alert("已售完！");
+        $("#imgURL").addClass("transparent-block");
+        $("#transparent").addClass("transparent");
+
+        $("#sel-num-li").hide();
+        $("#package-li").hide();
+        $("#contact-li").hide();
+        $("#office-li").hide();
+
+        $("#submitBtn").hide();
+    }
     /*item ctrl end --------------------------------------------------*/
 
 
