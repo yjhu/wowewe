@@ -89,6 +89,7 @@ class WechatXiangYangUnicom extends Wechat
             //$model->delete();    
             $model->subscribe = 0;
             $model->scene_pid = 0;
+            $model->gid = 0;
             $model->save(false);
         }
         return '';

@@ -43,8 +43,8 @@ class MAccessLog extends ActiveRecord
     {
         if (parent::beforeSave($insert)) 
         {
-            if (is_array($this->EventKey))
-                U::W($this->EventKey);
+            //if (is_array($this->EventKey))
+            //    U::W($this->EventKey);
             $checksum = crc32(is_array($this->EventKey) ? json_encode($this->EventKey) : $this->EventKey);        
             $this->EventKeyCRC = sprintf("%u", $checksum);
             return true;

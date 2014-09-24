@@ -25,197 +25,197 @@ use app\models\MOffice;
 
 class WapxController extends Controller
 {
-	public function behaviors()
-	{
-		return [
-			'access' => [
-				'class' => AccessControl::className(),
-				'only' => ['logout'],
-				'rules' => [
-					[
-						'actions' => ['logout'],
-						'allow' => true,
-						'roles' => ['@'],
-					],
-				],
-			],
-			'verbs' => [
-				'class' => VerbFilter::className(),
-				'actions' => [
-					'logout' => ['post'],
-				],
-			],
-		];
-	}
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['logout'],
+                'rules' => [
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
 
-	public function init()
-	{
-		//U::W(['init....', $_GET,$_POST, $GLOBALS]);
-		//U::W(['init....', $_GET,$_POST]);
-	}
+    public function init()
+    {
+        //U::W(['init....', $_GET,$_POST, $GLOBALS]);
+        //U::W(['init....', $_GET,$_POST]);
+    }
 
-	public function beforeAction($action)
-	{
-		return true;
-	}
+    public function beforeAction($action)
+    {
+        return true;
+    }
 
-	public function actions()
-	{
-		return [
-			'captcha' => [
-				'class' => 'yii\captcha\CaptchaAction',
-				'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-			],
-		];
-	}
+    public function actions()
+    {
+        return [
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+        ];
+    }
 
-	//http://127.0.0.1/wx/web/index.php?r=wapx/staffsearch&gh_id=gh_03a74ac96138&openid=oKgUduNHzUQlGRIDAghiY7ywSeWk&owner=1
-	public function actionStaffsearch($gh_id, $openid)
-	{		
-		if (Yii::$app->request->isAjax)
-			U::W('is ajax....');
-		if (isset($_GET['owner']))
-		{
-			Yii::$app->session['owner'] = 1;
-		}
-		$this->layout = 'wapx';
-		//Yii::$app->wx->setGhId($gh_id);
-		$model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-		if ($model === null)
-		{
-			$model = new MStaff;		
-			$model->gh_id = $gh_id;
-			$model->openid = $openid;			
-		}		
-		else if (empty($model->office_id) || empty($model->mobile) || empty($model->name))
-		{
-			U::W('need fill more information');
-		}
-		else
-		{
-			return $this->redirect(['staffhome', 'gh_id'=>$gh_id, 'openid'=>$openid]);
-		}
-		
-		if ($model->load(Yii::$app->request->post())) 
-		{		
-			return $this->redirect(['staffbind', 'gh_id'=>$gh_id, 'openid'=>$openid, 'mobile'=>$model->mobile]);
-		}
-		return $this->render('staffsearch', ['model' => $model]);
-	}
+    //http://127.0.0.1/wx/web/index.php?r=wapx/staffsearch&gh_id=gh_03a74ac96138&openid=oKgUduNHzUQlGRIDAghiY7ywSeWk&owner=1
+    public function actionStaffsearch($gh_id, $openid)
+    {        
+        if (Yii::$app->request->isAjax)
+            U::W('is ajax....');
+        if (isset($_GET['owner']))
+        {
+            Yii::$app->session['owner'] = 1;
+        }
+        $this->layout = 'wapx';
+        //Yii::$app->wx->setGhId($gh_id);
+        $model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($model === null)
+        {
+            $model = new MStaff;        
+            $model->gh_id = $gh_id;
+            $model->openid = $openid;            
+        }        
+        else if (empty($model->office_id) || empty($model->mobile) || empty($model->name))
+        {
+            U::W('need fill more information');
+        }
+        else
+        {
+            return $this->redirect(['staffhome', 'gh_id'=>$gh_id, 'openid'=>$openid]);
+        }
+        
+        if ($model->load(Yii::$app->request->post())) 
+        {        
+            return $this->redirect(['staffbind', 'gh_id'=>$gh_id, 'openid'=>$openid, 'mobile'=>$model->mobile]);
+        }
+        return $this->render('staffsearch', ['model' => $model]);
+    }
 
-	public function actionStaffbind($gh_id, $openid)
-	{		
-		if (Yii::$app->request->isAjax)
-			U::W('is ajax....');
-		$this->layout = 'wapx';
-		$mobile = $_GET['mobile'];
-		//Yii::$app->wx->setGhId($gh_id);
-		$model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-		if ($model === null)
-		{
-			$model = MStaff::findOne(['mobile'=>$mobile]);
-			if ($model === null)
-			{
-				$model = new MStaff;					
-			}
-			$model->gh_id = $gh_id;
-			$model->openid = $openid;
-			$model->mobile = $mobile;
-		}
-		if ($model->load(Yii::$app->request->post())) 
-		{		
-			//U::W($model->getAttributes());
-			if ($model->save())			
-			{
-				return $this->redirect(['staffhome', 'gh_id'=>$gh_id, 'openid'=>$openid]);							
-			}
-			else
-				U::W($model->getErrors());
-		} 		
-		return $this->render('staffbind', ['model' => $model]);
-	}
+    public function actionStaffbind($gh_id, $openid)
+    {        
+        if (Yii::$app->request->isAjax)
+            U::W('is ajax....');
+        $this->layout = 'wapx';
+        $mobile = $_GET['mobile'];
+        //Yii::$app->wx->setGhId($gh_id);
+        $model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($model === null)
+        {
+            $model = MStaff::findOne(['mobile'=>$mobile]);
+            if ($model === null)
+            {
+                $model = new MStaff;                    
+            }
+            $model->gh_id = $gh_id;
+            $model->openid = $openid;
+            $model->mobile = $mobile;
+        }
+        if ($model->load(Yii::$app->request->post())) 
+        {        
+            //U::W($model->getAttributes());
+            if ($model->save())            
+            {
+                return $this->redirect(['staffhome', 'gh_id'=>$gh_id, 'openid'=>$openid]);                            
+            }
+            else
+                U::W($model->getErrors());
+        }         
+        return $this->render('staffbind', ['model' => $model]);
+    }
 
-	public function actionStaffhome($gh_id, $openid)
-	{		
+    public function actionStaffhome($gh_id, $openid)
+    {        
 
-		$this->layout = 'wapx';
-		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-		$model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-		if ($model === null) 
-		{
-			U::W(['Invalid openid.', __METHOD__, $gh_id, $openid]);	
-			return $this->redirect(['staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid]);
-		}
-		if (empty($model->office_id))
-		{
-			U::W(['Invalid office_id.', __METHOD__, $gh_id, $openid]);	
-			return $this->redirect(['staffbind', 'gh_id'=>$gh_id, 'openid'=>$openid, 'mobile'=>$model->mobile]);				
-		}
-		$office = MOffice::findOne($model->office_id);
-		if ($office === null)
-		{
-			U::W(['Invalid office.', __METHOD__, $gh_id, $openid]);
-		}
-		if (Yii::$app->request->post('Unbind') !== null)
-		{
-			//$n = MStaff::updateAll(['openid' => ''], 'gh_id = :gh_id AND openid = :openid', [':gh_id'=>$gh_id, ':openid'=>$openid]);
-			$n = MStaff::deleteAll('gh_id = :gh_id AND openid = :openid', [':gh_id'=>$gh_id, ':openid'=>$openid]);
-			U::W("Unbind $n");	
-			return $this->redirect(['staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid]);	
-		}
-		
-		return $this->render('staffhome', ['model' => $model, 'office'=>$office, 'user'=>$user]);
-	}
+        $this->layout = 'wapx';
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        $model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($model === null) 
+        {
+            U::W(['Invalid openid.', __METHOD__, $gh_id, $openid]);    
+            return $this->redirect(['staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid]);
+        }
+        if (empty($model->office_id))
+        {
+            U::W(['Invalid office_id.', __METHOD__, $gh_id, $openid]);    
+            return $this->redirect(['staffbind', 'gh_id'=>$gh_id, 'openid'=>$openid, 'mobile'=>$model->mobile]);                
+        }
+        $office = MOffice::findOne($model->office_id);
+        if ($office === null)
+        {
+            U::W(['Invalid office.', __METHOD__, $gh_id, $openid]);
+        }
+        if (Yii::$app->request->post('Unbind') !== null)
+        {
+            //$n = MStaff::updateAll(['openid' => ''], 'gh_id = :gh_id AND openid = :openid', [':gh_id'=>$gh_id, ':openid'=>$openid]);
+            $n = MStaff::deleteAll('gh_id = :gh_id AND openid = :openid', [':gh_id'=>$gh_id, ':openid'=>$openid]);
+            U::W("Unbind $n");    
+            return $this->redirect(['staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+        
+        return $this->render('staffhome', ['model' => $model, 'office'=>$office, 'user'=>$user]);
+    }
 
-	public function actionOfficeqr($gh_id, $openid)
-	{		
-		$this->layout = false;
-		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-		$model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-		if ($model === null) 
-		{
-			U::W(['Invalid openid.', __METHOD__, $gh_id, $openid]);	
-			return $this->redirect(['staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid]);
-		}
-		if (empty($model->office_id))
-		{
-			U::W(['Invalid office_id.', __METHOD__, $gh_id, $openid]);	
-			return $this->redirect(['staffbind', 'gh_id'=>$gh_id, 'openid'=>$openid, 'mobile'=>$model->mobile]);				
-		}
-		$office = MOffice::findOne($model->office_id);
-		return $this->render('officeqr', ['model' => $model, 'office'=>$office, 'user'=>$user]);
-	}
+    public function actionOfficeqr($gh_id, $openid)
+    {        
+        $this->layout = false;
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        $model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($model === null) 
+        {
+            U::W(['Invalid openid.', __METHOD__, $gh_id, $openid]);    
+            return $this->redirect(['staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid]);
+        }
+        if (empty($model->office_id))
+        {
+            U::W(['Invalid office_id.', __METHOD__, $gh_id, $openid]);    
+            return $this->redirect(['staffbind', 'gh_id'=>$gh_id, 'openid'=>$openid, 'mobile'=>$model->mobile]);                
+        }
+        $office = MOffice::findOne($model->office_id);
+        return $this->render('officeqr', ['model' => $model, 'office'=>$office, 'user'=>$user]);
+    }
 
 
 
-	//http://127.0.0.1/wx/web/index.php?r=wapx/officeorder&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
-	public function actionOfficeorder($gh_id, $openid)
-	{		
-		$this->layout = 'wapx';
-		$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-		$model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-		if ($model === null) 
-		{
-			U::W(['Invalid openid.', __METHOD__, $gh_id, $openid]);	
-			return $this->redirect(['staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid]);
-		}
-		if (empty($model->office_id))
-		{
-			U::W(['Invalid office_id.', __METHOD__, $gh_id, $openid]);	
-			return $this->redirect(['staffbind', 'gh_id'=>$gh_id, 'openid'=>$openid, 'mobile'=>$model->mobile]);				
-		}
-		$office = MOffice::findOne($model->office_id);
-		return $this->render('officeorder', ['model' => $model, 'office'=>$office, 'user'=>$user]);
+    //http://127.0.0.1/wx/web/index.php?r=wapx/officeorder&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
+    public function actionOfficeorder($gh_id, $openid)
+    {        
+        $this->layout = 'wapx';
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        $model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($model === null) 
+        {
+            U::W(['Invalid openid.', __METHOD__, $gh_id, $openid]);    
+            return $this->redirect(['staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid]);
+        }
+        if (empty($model->office_id))
+        {
+            U::W(['Invalid office_id.', __METHOD__, $gh_id, $openid]);    
+            return $this->redirect(['staffbind', 'gh_id'=>$gh_id, 'openid'=>$openid, 'mobile'=>$model->mobile]);                
+        }
+        $office = MOffice::findOne($model->office_id);
+        return $this->render('officeorder', ['model' => $model, 'office'=>$office, 'user'=>$user]);
 
-	}
+    }
 
-	//http://127.0.0.1/wx/web/index.php?r=wapx/nearestmap&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&office_id=1&lon=114.361676377&lat=30.5824773524
-	public function actionNearestmap($gh_id, $openid, $office_id, $lon, $lat)
-	{		
-		$this->layout = false;
-		$office = MOffice::findOne($office_id);
-		return $this->render('nearestmap', ['office' => $office, 'lon_begin'=>$lon, 'lat_begin'=>$lat, 'lon_end'=>$office->lon, 'lat_end'=>$office->lat]);
-	}
+    //http://127.0.0.1/wx/web/index.php?r=wapx/nearestmap&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&office_id=1&lon=114.361676377&lat=30.5824773524
+    public function actionNearestmap($gh_id, $openid, $office_id, $lon, $lat)
+    {        
+        $this->layout = false;
+        $office = MOffice::findOne($office_id);
+        return $this->render('nearestmap', ['office' => $office, 'lon_begin'=>$lon, 'lat_begin'=>$lat, 'lon_end'=>$office->lon, 'lat_end'=>$office->lat]);
+    }
 
 
 }
@@ -224,19 +224,19 @@ class WapxController extends Controller
 
 
 /*
-	http://127.0.0.1/wx/web/index.php?r=wapx/staffhome&gh_id=gh_1ad98f5481f3&openid=1
+    http://127.0.0.1/wx/web/index.php?r=wapx/staffhome&gh_id=gh_1ad98f5481f3&openid=1
 
-		if (empty($model->office_id) || empty($model->mobile) || empty($model->name))
-		{
-			$ar = MStaff::findOne(['mobile'=>$mobile]);
-			if ($ar !== null)
-			{
-				$model->office_id = $ar->office_id;
-				$model->name = $ar->name;
-				$model->mobile = $mobile;			
-			}		
-		}
-		//if ($model->load(Yii::$app->request->get())) 		
-		
-*/		
+        if (empty($model->office_id) || empty($model->mobile) || empty($model->name))
+        {
+            $ar = MStaff::findOne(['mobile'=>$mobile]);
+            if ($ar !== null)
+            {
+                $model->office_id = $ar->office_id;
+                $model->name = $ar->name;
+                $model->mobile = $mobile;            
+            }        
+        }
+        //if ($model->load(Yii::$app->request->get()))         
+        
+*/        
 
