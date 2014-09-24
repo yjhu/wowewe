@@ -29,7 +29,6 @@
   
 <link href="<?php echo "$assetsPath/main.css?"; ?>" rel="stylesheet" type="text/css">
 
-
 <div data-role="page" id="page1" data-theme="c">
 <!--
 <div data-role="header" data-position="fixed">
