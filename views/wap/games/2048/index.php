@@ -152,7 +152,7 @@
 
 
 <div data-role="dialog" id="myscore">
-  <?php $rows = MG2048::getMyScoreTop($gh_id, $openid, 10); U::W($rows);?>
+  <?php $rows = MG2048::getMyScoreTop($gh_id, $openid, 10);?>
   <div data-role="header"><h1>我的成绩</h1></div>
   <div role="main" class="ui-content">
     <ul data-role="listview" data-count-theme="c" data-inset="true" data-divider-theme="c">

@@ -16,6 +16,7 @@ use app\models\MUser;
 use app\models\MGh;
 use app\models\MOffice;
 use app\models\MStaff;
+use app\models\MGroup;
 
 use app\models\RespText;
 use app\models\RespImage;
@@ -46,21 +47,21 @@ class WechatXiangYangUnicom extends Wechat
         $EventKey = $this->getRequest('EventKey');
         if (!empty($EventKey))
         {
-            //a new user subscribe us with qr parameter, EventKey:qrscene_3 qrscene_OFFICE_3
+            //a new user subscribe us with qr parameter, EventKey:qrscene_3
             $Ticket = $this->getRequest('Ticket');    
             $scene_pid = substr($EventKey, 8);    
             //U::W("sub....qr...., $EventKey, $scene_pid");
             $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
-            $model->scene_pid = $scene_pid;
-    
-            if (stripos($EventKey,'OFFICE') !== false)                        
+            $model->scene_pid = $scene_pid;    
+            $office = MOffice::find()->where("gh_id = :gh_id AND scene_id = :scene_id", [':gh_id'=>$gh_id, ':scene_id'=>$scene_pid])->one();
+            if ($office !== null)
             {
-                $office_id = substr($EventKey, 15);
-                $mg = MGroup::findOne(['gh_id'=>$gh_id, 'office_id'=>$office_id]);
+                $mg = MGroup::findOne(['gh_id'=>$gh_id, 'office_id'=>$office->office_id]);
+                if ($mg === null)
+                    U::W([__METHOD__, "group does not exists!, {$office->office_id}"]);                                            
                 $model->gid = $mg->gid;
-                Yii::$app->wx->WxGroupMoveMember($FromUserName, $mg->gid);
+                $arr =  $this->WxGroupMoveMember($FromUserName, $mg->gid);
             }
-
             $model->save(false);
             $items = array(
                 new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
