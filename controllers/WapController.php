@@ -95,26 +95,26 @@ class WapController extends Controller
     {
         if (Yii::$app->wx->localTest)
         {
-                    $openid = Wechat::OPENID_TESTER1;
-                    //list($route, $gh_id) = explode(':', $_GET['state']);
-                    $arr = explode(':', $_GET['state']);
-                    $route = $arr[0];
-                    $gh_id = $arr[1];
-                    unset($arr[0], $arr[1]);
-                    $r[] = $route;
-                    foreach($arr as $str)
-                    {
-                        list($key, $val) = explode('=', $str);
-                        $r[$key] = $val;
-                    }
-                    Yii::$app->session['gh_id'] = $gh_id;
-                    Yii::$app->session['openid'] = $openid;            
-                    $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-                    //if ($user !== null)
-                    //    Yii::$app->user->login($user);
-                    //return $this->redirect([$route, 'gh_id'=>$gh_id, 'openid'=>$openid]);
-                    //return $this->redirect([$route]);
-                    return $this->redirect($r);
+            $openid = Wechat::OPENID_TESTER1;
+            //list($route, $gh_id) = explode(':', $_GET['state']);
+            $arr = explode(':', $_GET['state']);
+            $route = $arr[0];
+            $gh_id = $arr[1];
+            unset($arr[0], $arr[1]);
+            $r[] = $route;
+            foreach($arr as $str)
+            {
+                list($key, $val) = explode('=', $str);
+                $r[$key] = $val;
+            }
+            Yii::$app->session['gh_id'] = $gh_id;
+            Yii::$app->session['openid'] = $openid;            
+            $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+            //if ($user !== null)
+            //    Yii::$app->user->login($user);
+            //return $this->redirect([$route, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+            //return $this->redirect([$route]);
+            return $this->redirect($r);
         }
     
         if (empty($_GET['code']))
@@ -128,16 +128,16 @@ class WapController extends Controller
             return 'Sorry, we can not do anything for you without your authrization!';
         }
         
-                $arr = explode(':', $_GET['state']);
-                $route = $arr[0];
-                $gh_id = $arr[1];
-                unset($arr[0], $arr[1]);
-                $r[] = $route;
-                foreach($arr as $str)
-                {
-                    list($key, $val) = explode('=', $str);
-                    $r[$key] = $val;
-                }
+        $arr = explode(':', $_GET['state']);
+        $route = $arr[0];
+        $gh_id = $arr[1];
+        unset($arr[0], $arr[1]);
+        $r[] = $route;
+        foreach($arr as $str)
+        {
+            list($key, $val) = explode('=', $str);
+            $r[$key] = $val;
+        }
 
         Yii::$app->wx->setGhId($gh_id);
         $token = Yii::$app->wx->WxGetOauth2AccessToken($code);
