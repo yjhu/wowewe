@@ -47,6 +47,8 @@ AppAsset::register($this);
 							['label' => '员工管理','url' => ['/order/stafflist'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '营业厅管理','url' => ['/order/officelist'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isAdmin],
 							'<li class="divider"></li>',
+							['label' => '活动管理','url' => ['/activity/index'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '活动参与者名单','url' => ['/activity/actfollowerlist'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '员工推广成绩排行','url' => ['/order/stafftop'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isAdmin],
 							['label' => '营业厅推广成绩排行','url' => ['/order/officetop'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isAdmin],
 							['label' => '商品预订名单','url' => ['/order/iphone6sub'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isAdmin],

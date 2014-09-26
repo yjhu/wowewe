@@ -56,6 +56,12 @@ INSERT INTO `wx_item` (`gh_id`, `price`, `price_hint`, `title`, `title_hint`, `p
 ('gh_1ad98f5481f3', 5000, '含预存款50元', '沃派校园套餐', '沃派校园套餐 <span class="title_hint"> 500M省内流量, 100分钟通话+100条短信, 存50得530元话费, 每月仅付26元</span>', '沃派校园套餐', '500M微信定向流量, 100分钟本地长市话, 100条短信, 500M省内流量自动升级至50元包1G, 100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wpxytc_002.jpg" alt="" />', '../web/images/item/wpxytc_001.jpg', 11, 0),
 
 
+
+ALTER TABLE wx_item ADD	act_price int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD	act_num int(10) unsigned NOT NULL DEFAULT '0';
+
+
+
 */
 
 use Yii;
