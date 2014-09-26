@@ -53,6 +53,7 @@ class MyErrorAction extends \yii\web\ErrorAction
 				'name' => $name,
 				'message' => $message,
 				'exception' => $exception,
+				'code'=>$exception->getCode(),
 			]);
 		}
 	}

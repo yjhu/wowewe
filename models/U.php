@@ -200,7 +200,7 @@ class U
 		else 
 		{
 			U::W(["no session data for $key", $_SERVER, $_SESSION]);
-			throw new HttpException(500, "session does not exist, key=$key");
+			throw new HttpException(500, "session does not exist, key=$key", 9000);
 		}
 	}
 	
