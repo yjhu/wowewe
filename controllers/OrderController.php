@@ -20,6 +20,8 @@ use app\models\MStaff;
 use app\models\MStaffSearch;
 use app\models\MOffice;
 use app\models\MOfficeSearch;
+use app\models\MChannel;
+use app\models\MChannelSearch;
 
 class OrderController extends Controller
 {
@@ -403,7 +405,7 @@ class OrderController extends Controller
 
     public function actionOfficedelete($id)
     {
-        $this->findOfficeModel($id)->delete();
+        $this->findOfficeModel($id)->Release();
         return $this->redirect(['officelist']);
     }
 
@@ -414,6 +416,63 @@ class OrderController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionChannellist()
+    {
+        $searchModel = new MChannelSearch;
+        $dataProvider = $searchModel->search($_GET);
+        return $this->render('channellist', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+        ]);
+    }
+
+    public function actionChannelcreate()
+    {
+        $model = new MChannel;
+        if (Yii::$app->request->isPost) 
+        {
+            $model->load(Yii::$app->request->post());
+            $model->gh_id = Yii::$app->user->getGhid();
+            if ($model->save()) 
+            {
+                return $this->redirect(['channellist']);            
+            }
+            else
+            {
+                U::W($model->getErrors());
+            }
+        }
+        return $this->render('channelcreateupdate', ['model' => $model]);                
+    }
+
+    public function actionChannelupdate($id)
+    {
+        $model = MChannel::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException();
+        }
+        if (\Yii::$app->request->isPost) 
+        {
+            $model->load(\Yii::$app->request->post());
+            if ($model->save()) 
+            {                
+                return $this->redirect(['channellist']);            
+            }
+            else
+            {
+                U::W($model->getErrors());
+            }            
+        }
+        return $this->render('channelcreateupdate', ['model' => $model]);        
+    }
+
+    public function actionChanneldelete($id)
+    {
+        $model = MChannel::findOne($id);
+        $model->Release();
+        return $this->redirect(['channellist']);
     }
 
 }

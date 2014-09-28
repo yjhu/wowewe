@@ -21,9 +21,9 @@ use app\models\MItem;
 use app\models\MSmQueue;
 
 use app\models\Wechat;
-use app\models\MMapbd;
 use app\models\MOffice;
 use app\models\MGroup;
+use app\models\MChannel;
 
 class CmdController extends Controller
 {
@@ -44,6 +44,36 @@ class CmdController extends Controller
         echo 'Hello, world!!';
     }
 
+
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/create-channel-qrs
+    public function actionCreateChannelQrs()
+    {        
+        $gh_id = Yii::$app->wx->getGhid();
+        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'channel_names.txt';
+        $fh = fopen($file, "r");
+        $i = 0;
+        $scene_ids = array();
+        while (!feof($fh)) 
+        {
+            $line = fgets($fh);
+            if (empty($line))
+                continue;
+
+            $title = trim($line);
+            $model = MChannel::findOne(['gh_id'=>$gh_id, 'title'=>$title]);    
+            if ($model !== null)
+                continue;
+                
+            $model = new MChannel;
+            $model->gh_id = $gh_id;
+            $model->title = $title;
+            $url = $model->getQrImageUrl();
+            
+            $i++;
+//            if ($i > 2) break;
+        }
+        fclose($fh);
+    }    
 
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/create-wx-groups
     public function actionCreateWxGroups()
@@ -344,7 +374,7 @@ class CmdController extends Controller
             echo 'no match';
         */
     
-        $num_cat = MMobnum::getNumCat(MItem::ITEM_CAT_MOBILE_IPHONE4S);        
+        $num_cat = MMobnum::getNumCat(MItem::ITEM_CAT_MOBILE_IPHONE4S);
         $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'mobile_num.txt';
         $fh = fopen($file, "r");
         $i = 0;

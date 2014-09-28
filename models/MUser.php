@@ -194,9 +194,7 @@ class MUser extends ActiveRecord implements IdentityInterface
             $newFlag = true;
             $gh = MGh::findOne($gh_id);
             $scene_id = $gh->newSceneId();
-            //$gh->save(false);
             $this->scene_id = $scene_id;
-            //$this->save(false);
             //U::W("scene_id=$scene_id");                                
         }
         else
@@ -215,12 +213,20 @@ class MUser extends ActiveRecord implements IdentityInterface
         }
         if ($newFlag)
         {
-            if ($gh->save(false))
-                    $this->save(false);
+            if ($this->save(false))
+               $gh->save(false);                    
         }        
         $url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
         //U::W($url);
         return $url;
+    }
+
+    public function Release()
+    {    
+        $gh = MGh::findOne($this->gh_id);        
+        $gh->freeSceneId($this->scene_id);
+        if ($gh->save(false))
+            $this->delete();
     }
 
 }

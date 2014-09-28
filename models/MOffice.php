@@ -252,6 +252,14 @@ class MOffice extends ActiveRecord
         return $url;
     }
 
+    public function Release()
+    {    
+        $gh = MGh::findOne($this->gh_id);        
+        $gh->freeSceneId($this->scene_id);
+        if ($gh->save(false))
+            $this->delete();
+    }
+
     public function getScoreOfAllStaffs()
     {
         $staffs = MStaff::find()->where(['gh_id'=>$this->gh_id, 'office_id'=>$this->office_id])->asArray()->all();
