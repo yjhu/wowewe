@@ -753,6 +753,8 @@ $(document).on("pageinit", "#page2", function(){
 
 	//submit form
     $(document).on("tap", "#submitBtn", function(){
+        //避免重复提交表单！！！
+        $("#submitBtn").hide();
 
         if(ctrl_mobnumber != 0)
         {

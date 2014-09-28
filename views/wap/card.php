@@ -441,6 +441,9 @@ $(document).on("pageinit", "#page2", function(){
 	//submit form
 	$('#submitBtn').click(function(){
 
+        //避免重复提交表单！！！
+        $("#submitBtn").hide();
+        
 		selectNum = null;
 		office = null;
 		username = null;
