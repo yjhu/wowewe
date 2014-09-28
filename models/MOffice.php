@@ -4,23 +4,23 @@ namespace app\models;
 /*
 DROP TABLE IF EXISTS wx_office;
 CREATE TABLE wx_office (
-	office_id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	gh_id VARCHAR(32) NOT NULL DEFAULT '',
-	scene_id int(10) unsigned NOT NULL DEFAULT '0',
-	title VARCHAR(128) NOT NULL DEFAULT '',
-	branch VARCHAR(128) NOT NULL DEFAULT '',
-	region VARCHAR(128) NOT NULL DEFAULT '',
-	address VARCHAR(128) NOT NULL DEFAULT '',
-	manager VARCHAR(32) NOT NULL DEFAULT '',
-	member_cnt int(10) unsigned NOT NULL DEFAULT '0',
-	mobile VARCHAR(16) NOT NULL DEFAULT '',
-	pswd VARCHAR(16) NOT NULL DEFAULT '123456',
-	lat float(10,6) NOT NULL DEFAULT '0.000000',
-	lon float(10,6) NOT NULL DEFAULT '0.000000',
-	lat_bd09 float(10,6) NOT NULL DEFAULT '0.000000',
-	lon_bd09 float(10,6) NOT NULL DEFAULT '0.000000',
-	visable tinyint(3) NOT NULL DEFAULT 0,
-	KEY gh_id_idx(gh_id)
+    office_id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    gh_id VARCHAR(32) NOT NULL DEFAULT '',
+    scene_id int(10) unsigned NOT NULL DEFAULT '0',
+    title VARCHAR(128) NOT NULL DEFAULT '',
+    branch VARCHAR(128) NOT NULL DEFAULT '',
+    region VARCHAR(128) NOT NULL DEFAULT '',
+    address VARCHAR(128) NOT NULL DEFAULT '',
+    manager VARCHAR(32) NOT NULL DEFAULT '',
+    member_cnt int(10) unsigned NOT NULL DEFAULT '0',
+    mobile VARCHAR(16) NOT NULL DEFAULT '',
+    pswd VARCHAR(16) NOT NULL DEFAULT '123456',
+    lat float(10,6) NOT NULL DEFAULT '0.000000',
+    lon float(10,6) NOT NULL DEFAULT '0.000000',
+    lat_bd09 float(10,6) NOT NULL DEFAULT '0.000000',
+    lon_bd09 float(10,6) NOT NULL DEFAULT '0.000000',
+    visable tinyint(3) NOT NULL DEFAULT 0,
+    KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
@@ -72,8 +72,8 @@ UPDATE wx_office SET lat_bd09='30.5183090000', lon_bd09='114.3233280000', lat='3
 
 
 //i want delete some fields
-ALTER TABLE wx_office DROP manager, DROP member_cnt, DROP mobile, DROP pswd;	
-		
+ALTER TABLE wx_office DROP manager, DROP member_cnt, DROP mobile, DROP pswd;    
+        
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_03a74ac96138','襄阳','枣阳','枣阳营业厅','枣阳光武路85号老国税大楼','郑静','6','18607277303');
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_03a74ac96138','襄阳','枣阳','枣阳盛鑫广场营业厅','枣阳盛鑫广场','屈伸','4','18607277298');
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_03a74ac96138','襄阳','宜城','宜城营业厅','宜城市振兴大道315号','肖雨','2','18671000057');
@@ -135,217 +135,217 @@ use yii\behaviors\TimestampBehavior;
 //implements IdentityInterface
 class MOffice extends ActiveRecord 
 {
-	public static function tableName()
-	{
-		return 'wx_office';
-	}
+    public static function tableName()
+    {
+        return 'wx_office';
+    }
 
-	public function rules()
-	{
-		return [
-			[['title','address','manager','mobile'], 'string', 'max' => 128],
-			[['title','address','manager','mobile'], 'filter', 'filter' => 'trim'],
-			[['lat','lon', 'visable'], 'number'],
-		];
-	}
+    public function rules()
+    {
+        return [
+            [['title','address','manager','mobile'], 'string', 'max' => 128],
+            [['title','address','manager','mobile'], 'filter', 'filter' => 'trim'],
+            [['lat','lon', 'visable'], 'number'],
+        ];
+    }
 
-	public function attributeLabels()
-	{
-		return [
-			'office_id' => '营业厅编号',
-			'title' => '营业厅名称',
-			'address' => '营业厅地址',
-			'manager' => '主管姓名',
-			'mobile' => '手机号',
-			'lat' => '纬度',
-			'lon' => '经度',
-			'visable' => '是否显示',
-		];
-	}
+    public function attributeLabels()
+    {
+        return [
+            'office_id' => '营业厅编号',
+            'title' => '营业厅名称',
+            'address' => '营业厅地址',
+            'manager' => '主管姓名',
+            'mobile' => '手机号',
+            'lat' => '纬度',
+            'lon' => '经度',
+            'visable' => '是否显示',
+        ];
+    }
 
-	public static function getOfficeNameOption($gh_id, $json=true, $need_prompt=true)
-	{
-		//$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
-		$offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();
-		$listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
-		foreach($offices as $office)
-		{
-			$value = $office['office_id'];
-			$listData[$value]="{$office['title']}({$office['address']})";
-		}
-		return $json? json_encode($listData) : $listData;
-	}
+    public static function getOfficeNameOption($gh_id, $json=true, $need_prompt=true)
+    {
+        //$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
+        $offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();
+        $listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
+        foreach($offices as $office)
+        {
+            $value = $office['office_id'];
+            $listData[$value]="{$office['title']}({$office['address']})";
+        }
+        return $json? json_encode($listData) : $listData;
+    }
 
-	public static function getOfficeNameOptionSimple($gh_id, $json=true, $need_prompt=true)
-	{
-		//$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
-		$offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();		
-		$listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
-		foreach($offices as $office)
-		{
-			$value = $office['office_id'];
-			$text = $office['title'];
-			$listData[$value]=$text;
-		}
-		return $json? json_encode($listData) : $listData;
-	}
+    public static function getOfficeNameOptionSimple($gh_id, $json=true, $need_prompt=true)
+    {
+        //$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
+        $offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();        
+        $listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
+        foreach($offices as $office)
+        {
+            $value = $office['office_id'];
+            $text = $office['title'];
+            $listData[$value]=$text;
+        }
+        return $json? json_encode($listData) : $listData;
+    }
 
-	public static function getOfficeNameOptionSimple1($gh_id, $json=true, $need_prompt=true)
-	{
-		//$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(25)->asArray()->all();
-		$offices = MOffice::find()->where("gh_id = :gh_id AND visable >= :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();				
-		$listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
-		foreach($offices as $office)
-		{
-			$value = $office['office_id'];
-			$text = $office['title'];
-			$listData[$value]=$text;
-		}
-		return $json? json_encode($listData) : $listData;
-	}
+    public static function getOfficeNameOptionSimple1($gh_id, $json=true, $need_prompt=true)
+    {
+        //$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(25)->asArray()->all();
+        $offices = MOffice::find()->where("gh_id = :gh_id AND visable >= :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();                
+        $listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
+        foreach($offices as $office)
+        {
+            $value = $office['office_id'];
+            $text = $office['title'];
+            $listData[$value]=$text;
+        }
+        return $json? json_encode($listData) : $listData;
+    }
 
-	public static function getOfficeNameOptionAll($gh_id, $json=true, $need_prompt=true)
-	{
-		$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->asArray()->all();
-		$listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
-		foreach($offices as $office)
-		{
-			$value = $office['office_id'];
-			$text = $office['title'];
-			$listData[$value]=$text;
-		}
-		return $json? json_encode($listData) : $listData;
-	}
+    public static function getOfficeNameOptionAll($gh_id, $json=true, $need_prompt=true)
+    {
+        $offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->asArray()->all();
+        $listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
+        foreach($offices as $office)
+        {
+            $value = $office['office_id'];
+            $text = $office['title'];
+            $listData[$value]=$text;
+        }
+        return $json? json_encode($listData) : $listData;
+    }
 
-	public function getQrImageUrl()
-	{
-		$gh_id = $this->gh_id;
-		if (empty($this->scene_id))
-		{
-			$newFlag = true;
-			$gh = MGh::findOne($gh_id);
-			$scene_id = $gh->newSceneId();
-			//$gh->save(false);
-			$this->scene_id = $scene_id;
-			//$this->save(false);
-			//U::W("scene_id=$scene_id");								
-		}
-		else
-		{
-			$newFlag = false;		
-			$scene_id = $this->scene_id;
-		}
-		$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
-		//U::W($log_file_path);							
-		if (!file_exists($log_file_path))
-		{
-			Yii::$app->wx->setGhId($gh_id);	
-			$arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
-			$url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
-			Wechat::downloadFile($url, $log_file_path);
-		}
-		if ($newFlag)
-		{
-			$gh->save(false);
-			$this->save(false);
-		}		
-		$url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
-		//U::W($url);
-		return $url;
-	}
+    public function getQrImageUrl()
+    {
+        $gh_id = $this->gh_id;
+        if (empty($this->scene_id))
+        {
+            $newFlag = true;
+            $gh = MGh::findOne($gh_id);
+            $scene_id = $gh->newSceneId();
+            //$gh->save(false);
+            $this->scene_id = $scene_id;
+            //$this->save(false);
+            //U::W("scene_id=$scene_id");                                
+        }
+        else
+        {
+            $newFlag = false;        
+            $scene_id = $this->scene_id;
+        }
+        $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
+        //U::W($log_file_path);                            
+        if (!file_exists($log_file_path))
+        {
+            Yii::$app->wx->setGhId($gh_id);    
+            $arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
+            $url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
+            Wechat::downloadFile($url, $log_file_path);
+        }
+        if ($newFlag)
+        {
+            $gh->save(false);
+            $this->save(false);
+        }        
+        $url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
+        //U::W($url);
+        return $url;
+    }
 
-	public function getScoreOfAllStaffs()
-	{
-		$staffs = MStaff::find()->where(['gh_id'=>$this->gh_id, 'office_id'=>$this->office_id])->asArray()->all();
-		$openids = [];
-		//U::W($staffs);							
-		foreach($staffs as $staff)
-		{
-			if (!empty($staff['openid']))
-				$openids[] = $staff['openid'];
-		}
+    public function getScoreOfAllStaffs()
+    {
+        $staffs = MStaff::find()->where(['gh_id'=>$this->gh_id, 'office_id'=>$this->office_id])->asArray()->all();
+        $openids = [];
+        //U::W($staffs);                            
+        foreach($staffs as $staff)
+        {
+            if (!empty($staff['openid']))
+                $openids[] = $staff['openid'];
+        }
 
-		if (empty($openids))
-		{
-			$staff_count = 0;
-		}
-		else
-		{
-			$users = MUser::find()->where(['gh_id'=>$this->gh_id, 'openid'=>$openids])->asArray()->all();
-			$scene_ids = [];													
-			foreach($users as $user)
-			{
-				if ($user['scene_id'] != 0)
-					$scene_ids[] = $user['scene_id'];
-			}
-			//U::W($scene_ids);
-			if (empty($scene_ids))
-				$staff_count = 0;
-			else														
-				$staff_count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $scene_ids])->count();								
-		}
-		return $staff_count;		
-	}
+        if (empty($openids))
+        {
+            $staff_count = 0;
+        }
+        else
+        {
+            $users = MUser::find()->where(['gh_id'=>$this->gh_id, 'openid'=>$openids])->asArray()->all();
+            $scene_ids = [];                                                    
+            foreach($users as $user)
+            {
+                if ($user['scene_id'] != 0)
+                    $scene_ids[] = $user['scene_id'];
+            }
+            //U::W($scene_ids);
+            if (empty($scene_ids))
+                $staff_count = 0;
+            else                                                        
+                $staff_count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $scene_ids])->count();                                
+        }
+        return $staff_count;        
+    }
 
-	public function getScore()
-	{
-		//U::W("$this->gh_id, $this->scene_id, $this->office_id");	
-		if ($this->scene_id == 0)
-			$count = 0;
-		else
-			$count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id])->count();
-		return $count;		
-	}
+    public function getScore()
+    {
+        //U::W("$this->gh_id, $this->scene_id, $this->office_id");    
+        if ($this->scene_id == 0)
+            $count = 0;
+        else
+            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id])->count();
+        return $count;        
+    }
 
-	public static function getOfficeScoreTop($gh_id)
-	{
-		$key = __METHOD__."{$gh_id}";
-		$value = Yii::$app->cache->get($key);
-		if ($value !== false)
-			return $value;
-		$offices = MOffice::findAll(['gh_id' => $gh_id]);
-		$rows = [];
-		foreach($offices as $office)
-		{
-			$row = [];
-			$row['office_id'] = $office->office_id;
-			$row['scene_id'] = $office->scene_id;			
-			$row['title'] = $office->title;			
-			$row['cnt_office'] = $office->getScore();						
-			$row['cnt_staffs'] = $office->getScoreOfAllStaffs();
-			$row['cnt_sum'] = $row['cnt_office'] + $row['cnt_staffs'];						
-			$rows[] = $row;
-		}
-		//U::W($rows);		
-		Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 12*3600);
-		return $rows;
-	}
+    public static function getOfficeScoreTop($gh_id)
+    {
+        $key = __METHOD__."{$gh_id}";
+        $value = Yii::$app->cache->get($key);
+        if ($value !== false)
+            return $value;
+        $offices = MOffice::findAll(['gh_id' => $gh_id]);
+        $rows = [];
+        foreach($offices as $office)
+        {
+            $row = [];
+            $row['office_id'] = $office->office_id;
+            $row['scene_id'] = $office->scene_id;            
+            $row['title'] = $office->title;            
+            $row['cnt_office'] = $office->getScore();                        
+            $row['cnt_staffs'] = $office->getScoreOfAllStaffs();
+            $row['cnt_sum'] = $row['cnt_office'] + $row['cnt_staffs'];                        
+            $rows[] = $row;
+        }
+        //U::W($rows);        
+        Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 12*3600);
+        return $rows;
+    }
 
-	public static function getNearestOffices($gh_id, $lon, $lat)
-	{
-		$key = __METHOD__."{$gh_id}_{$lon}_{$lat}";
-		$value = Yii::$app->cache->get($key);
-		if ($value !== false)
-			return $value;
-		$map = new MMapApi;	
-		$rows = MOffice::find()->where(['gh_id' => $gh_id])->asArray()->all();
-		foreach($rows as $key => &$row)
-		{
-			if ($row['lon'] < 1)
-			{
-				unset($rows[$key]);
-				continue;
-			}
-			$row['distance'] = $map->getDistance($lon, $lat, $row['lon'], $row['lat']);
-		}		
-		unset($row);
-		//U::W($rows);	
-		\yii\helpers\ArrayHelper::multisort($rows, 'distance');
-		//U::W($rows);	
-		//Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 10*60);
-		return $rows;
-	}
-	
+    public static function getNearestOffices($gh_id, $lon, $lat)
+    {
+        $key = __METHOD__."{$gh_id}_{$lon}_{$lat}";
+        $value = Yii::$app->cache->get($key);
+        if ($value !== false)
+            return $value;
+        $map = new MMapApi;    
+        $rows = MOffice::find()->where(['gh_id' => $gh_id])->asArray()->all();
+        foreach($rows as $key => &$row)
+        {
+            if ($row['lon'] < 1)
+            {
+                unset($rows[$key]);
+                continue;
+            }
+            $row['distance'] = $map->getDistance($lon, $lat, $row['lon'], $row['lat']);
+        }        
+        unset($row);
+        //U::W($rows);    
+        \yii\helpers\ArrayHelper::multisort($rows, 'distance');
+        //U::W($rows);    
+        //Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 10*60);
+        return $rows;
+    }
+    
 }
 
 /*
@@ -375,45 +375,45 @@ INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobi
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_1ad98f5481f3','襄阳','保康','保康新街营业厅','保康新建街','王亚男','3','18507271778');
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_1ad98f5481f3','襄阳','','其它','','','167','');
 
-	public static function findIdentity($id)
-	{
-		return static::findOne($id);
-	}
+    public static function findIdentity($id)
+    {
+        return static::findOne($id);
+    }
 
-	public static function findByUsername($title)
-	{
-		return static::findOne(['title' => $title]);
-	}
+    public static function findByUsername($title)
+    {
+        return static::findOne(['title' => $title]);
+    }
 
-	public static function findIdentityByAccessToken($token, $type = null)
-	{
-		return null;
-	}
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return null;
+    }
 
-	public function getUsername()
-	{
-		return $this->title;
-	}
+    public function getUsername()
+    {
+        return $this->title;
+    }
 
-	public function getId()
-	{
-		return $this->office_id;
-	}
+    public function getId()
+    {
+        return $this->office_id;
+    }
 
-	public function getAuthKey()
-	{
-		return $this->office_id;
-	}
+    public function getAuthKey()
+    {
+        return $this->office_id;
+    }
 
-	public function validateAuthKey($authKey)
-	{
-		return $this->getAuthKey() === $authKey;
-	}
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
 
-	public function validatePassword($password)
-	{
-		return $password === $this->pswd;
-	}
+    public function validatePassword($password)
+    {
+        return $password === $this->pswd;
+    }
 
 SELECT t1.gh_id, t1.office_id, t1.title, t1.scene_id, COUNT(*) as cnt_office FROM wx_office t1 
 INNER JOIN wx_user t2 ON t1.gh_id = t2.gh_id AND t1.scene_id = t2.scene_pid 
@@ -422,15 +422,15 @@ GROUP BY t1.gh_id, t1.scene_id
 ORDER BY cnt_office DESC
 EOD;
 
-		$sql = <<<EOD
+        $sql = <<<EOD
 SELECT t1.gh_id, t1.office_id, t1.title, t1.scene_id, COUNT(*) as cnt_office FROM wx_office t1 
 INNER JOIN wx_user t2 ON t1.gh_id = t2.gh_id AND t1.scene_id = t2.scene_pid 
 WHERE t1.gh_id='$gh_id' AND t1.scene_id != 0
 GROUP BY t1.gh_id, t1.scene_id
 ORDER BY cnt_office DESC
 EOD;
-		$rows = Yii::$app->db->createCommand($sql)->queryAll();
-		U::W($rows);
+        $rows = Yii::$app->db->createCommand($sql)->queryAll();
+        U::W($rows);
 
 */
 

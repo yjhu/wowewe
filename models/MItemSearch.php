@@ -9,32 +9,32 @@ use app\models\MItem;
 
 class MItemSearch extends Model
 {
-	public $title;
+    public $title;
 
-	public $cid;
+    public $cid;
 
-	public function rules()
-	{
-		return [
-			[['cid'], 'integer'],            
-			[['title'], 'safe'],
-		];
-	}
+    public function rules()
+    {
+        return [
+            [['cid'], 'integer'],            
+            [['title'], 'safe'],
+        ];
+    }
 
-	public function search($params)
-	{
-		$query = MItem::find();
-		$dataProvider = new ActiveDataProvider([
-			'query' => $query,
-		]);
+    public function search($params)
+    {
+        $query = MItem::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
 
-		if (!($this->load($params) && $this->validate())) {
-			return $dataProvider;
-		}
-		$this->addCondition($query, 'cid');        
-		$this->addCondition($query, 'title', true);
-		return $dataProvider;
-	}
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+        $this->addCondition($query, 'cid');        
+        $this->addCondition($query, 'title', true);
+        return $dataProvider;
+    }
 
     protected function addCondition($query, $attribute, $partialMatch = false)
     {
