@@ -225,9 +225,7 @@ class MOffice extends ActiveRecord
             $newFlag = true;
             $gh = MGh::findOne($gh_id);
             $scene_id = $gh->newSceneId();
-            //$gh->save(false);
             $this->scene_id = $scene_id;
-            //$this->save(false);
             //U::W("scene_id=$scene_id");                                
         }
         else
@@ -246,8 +244,8 @@ class MOffice extends ActiveRecord
         }
         if ($newFlag)
         {
-            $gh->save(false);
-            $this->save(false);
+            if ($this->save(false))
+               $gh->save(false);
         }        
         $url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
         //U::W($url);
@@ -342,7 +340,7 @@ class MOffice extends ActiveRecord
         //U::W($rows);    
         \yii\helpers\ArrayHelper::multisort($rows, 'distance');
         //U::W($rows);    
-        //Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 10*60);
+        Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 5*60);
         return $rows;
     }
     
