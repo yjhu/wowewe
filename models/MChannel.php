@@ -27,6 +27,8 @@ use yii\behaviors\TimestampBehavior;
 use app\models\U;
 use app\models\MOffice;
 
+use app\models\MAccessLog;
+
 class MChannel extends ActiveRecord
 {
     public static function tableName()
@@ -106,7 +108,7 @@ class MChannel extends ActiveRecord
         if ($this->scene_id == 0)
             $count = 0;
         else
-            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id])->count();
+            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_id' => $scene_pid])->count();
         return $count;        
     }
 
@@ -116,6 +118,41 @@ class MChannel extends ActiveRecord
         $gh->freeSceneId($this->scene_id);
         if ($gh->save(false))
             $this->delete();
+    }
+
+    public function getScoreOfAllChannels($month)
+    {
+        if ($this->scene_id == 0)
+            $count = 0;
+        else
+            $count = MAccessLog::find()->where(['ToUserName'=>$this->gh_id, 'scene_id' => $this->scene_id, 'month(create_time)'=>$month])->count();
+        return $count;
+    }
+
+
+    public static function getChannelScoreTop($gh_id)
+    {
+        $key = __METHOD__."{$gh_id}";
+        $value = Yii::$app->cache->get($key);
+        if ($value !== false)
+            return $value;
+        $channels = MChannel::findAll(['gh_id' => $gh_id]);
+
+        $month=9;
+        
+        $rows = [];
+        foreach($channels as $channel)
+        {
+            $row = [];
+            $row['id'] = $channel->id;            
+            $row['title'] = $channel->title;         
+            $row['cnt_sum'] = $channel->getScoreOfAllChannels($month);
+                       
+            $rows[] = $row;
+        }
+        //U::W($rows);        
+        Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 12*3600);
+        return $rows;
     }
     
 }

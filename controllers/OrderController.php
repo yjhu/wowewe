@@ -475,6 +475,29 @@ class OrderController extends Controller
         return $this->redirect(['channellist']);
     }
 
+
+    public function actionChannelscoretop()
+    {
+        $rows = MChannel::getChannelScoreTop(MGh::GH_XIANGYANGUNICOM);
+
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $rows,
+            'sort' => [
+                'attributes' => ['id', 'title', 'cnt_sum'],
+                'defaultOrder'=>[
+                    'cnt_sum' => SORT_DESC
+                ]
+            ],
+            'pagination' => [
+                'pageSize' => 50,
+            ],
+        ]);
+        return $this->render('channelscoretop', [
+            'dataProvider' => $dataProvider,
+        ]);  
+    }
+
+
 }
 
 /*
