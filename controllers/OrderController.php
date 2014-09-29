@@ -22,6 +22,8 @@ use app\models\MOffice;
 use app\models\MOfficeSearch;
 use app\models\MChannel;
 use app\models\MChannelSearch;
+use app\models\MAccessLog;
+use app\models\MAccessLogSearch;
 
 class OrderController extends Controller
 {
@@ -474,6 +476,17 @@ class OrderController extends Controller
         $model->Release();
         return $this->redirect(['channellist']);
     }
+
+    public function actionChannelscoredetail()
+    {
+        $searchModel = new MAccessLogSearch;
+        $dataProvider = $searchModel->search($_GET);
+        return $this->render('channelscoredetail', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+        ]);
+    }
+
 
 
     public function actionChannelscoretop()

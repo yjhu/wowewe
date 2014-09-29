@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { 
 //					if ($model->score == 0)						
 //						return $model->score; 
-					return $model->score.' '.Html::a('<span>明细</span>', ['channelscoredetail', 'gh_id'=>$model->gh_id, 'scene_id'=>$model->scene_id], [
+					return $model->score.' '.Html::a('<span>明细</span>', ['channelscoredetail', 'ToUserName'=>$model->gh_id, 'scene_pid'=>$model->scene_id], [
 						'title' => '推广成绩',
 						'target' => '_blank',
 					]);
