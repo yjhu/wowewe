@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
+use yii\bootstrap\Button;
+use yii\bootstrap\ButtonGroup;
 
 use app\models\U;
 use app\models\MChannel;
@@ -19,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
 		<?php echo Html::a('新增渠道', ['channelcreate'], ['class' => 'btn btn-success']) ?>
+		<?php echo Html::a('渠道成绩排行', ['channelscoretop'], ['class' => 'btn btn-info']) ?>
     </p>
 
 	<?php \yii\widgets\Pjax::begin([
@@ -50,8 +53,14 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 			[
 				'label' => '推广成绩',
+                'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
-					return $model->score; 
+//					if ($model->score == 0)						
+//						return $model->score; 
+					return $model->score.' '.Html::a('<span>明细</span>', ['channelscoredetail', 'gh_id'=>$model->gh_id, 'scene_id'=>$model->scene_id], [
+						'title' => '推广成绩',
+						'target' => '_blank',
+					]);
 				},
 				'filter'=> false,
 			],
