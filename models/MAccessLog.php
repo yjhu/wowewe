@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS wx_access_log;
 CREATE TABLE wx_access_log (
     id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    scene_pid int(10) unsigned NOT NULL DEFAULT '0',    
     ToUserName VARCHAR(32) NOT NULL DEFAULT '',
     FromUserName VARCHAR(32) NOT NULL DEFAULT '',
     CreateTime int(10) unsigned NOT NULL DEFAULT '0',
@@ -19,6 +20,9 @@ CREATE TABLE wx_access_log (
     KEY gh_id_idx(ToUserName),
     KEY EventKeyCRC_idx(EventKeyCRC)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE wx_access_log ADD scene_pid int(10) unsigned NOT NULL DEFAULT '0' after create_time;
+
 */
 
 use Yii;
