@@ -108,7 +108,7 @@ class MChannel extends ActiveRecord
         if ($this->scene_id == 0)
             $count = 0;
         else
-            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_id' => $scene_pid])->count();
+            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id])->count();
         return $count;        
     }
 
@@ -125,7 +125,7 @@ class MChannel extends ActiveRecord
         if ($this->scene_id == 0)
             $count = 0;
         else
-            $count = MAccessLog::find()->where(['ToUserName'=>$this->gh_id, 'scene_id' => $this->scene_id, 'month(create_time)'=>$month])->count();
+            $count = MAccessLog::find()->where(['ToUserName'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'month(create_time)'=>$month])->count();
         return $count;
     }
 
@@ -139,7 +139,7 @@ class MChannel extends ActiveRecord
         $channels = MChannel::findAll(['gh_id' => $gh_id]);
 
         $month=9;
-        
+
         $rows = [];
         foreach($channels as $channel)
         {
