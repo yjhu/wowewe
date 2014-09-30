@@ -20,8 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
+    	<?php $currentMonth = date("n"); ?>
 		<?php echo Html::a('新增渠道', ['channelcreate'], ['class' => 'btn btn-success']) ?>
-		<?php echo Html::a('渠道成绩排行', ['channelscoretop'], ['class' => 'btn btn-info']) ?>
+		<?php echo Html::a('渠道成绩排行', ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
     </p>
 
 	<?php \yii\widgets\Pjax::begin([

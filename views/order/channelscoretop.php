@@ -1,8 +1,12 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
 
+use kartik\dynagrid\DynaGrid;
+use kartik\grid\GridView;
+
+//use yii\grid\GridView;
+use yii\helpers\Url;
 use app\models\MStaff;
 use app\models\MOffice;
 
@@ -21,10 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
+    	<?php $currentMonth = date("n"); ?>
+		
 		<?php echo Html::a('渠道管理', ['channellist'], ['class' => 'btn btn-success']) ?>
-		<?php echo Html::a('渠道成绩排行', ['channelscoretop'], ['class' => 'btn btn-info']) ?>
+		
+		<?php echo Html::a('渠道成绩排行', ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
     </p>
 
+	<?php echo Html::a('渠道8月份成绩排行', ['channelscoretop','month'=>8], ['class' => 'btn btn-info']) ?>
+	<?php echo Html::a('渠道9月份成绩排行', ['channelscoretop','month'=>9], ['class' => 'btn btn-info']) ?>
+	
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
 //        'filterModel' => $searchModel,
@@ -49,6 +59,17 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 
         ],
+
+		'bordered'=>false,
+		'export'=>false,
+		'panel' => [
+			'heading'=>'<h3 class="panel-title">渠道成绩排行</h3>',
+			'type'=>'default',			
+			'before'=>Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', Url::to().'&channelscoretopdownload=1', ['class' => 'btn btn-success']),
+			//'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
+			'showFooter'=>false
+		],
+
     ]); ?>
 
 </div>

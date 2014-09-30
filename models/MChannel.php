@@ -130,15 +130,15 @@ class MChannel extends ActiveRecord
     }
 
 
-    public static function getChannelScoreTop($gh_id)
+    public static function getChannelScoreTop($gh_id,$month)
     {
         $key = __METHOD__."{$gh_id}";
         $value = Yii::$app->cache->get($key);
         if ($value !== false)
             return $value;
         $channels = MChannel::findAll(['gh_id' => $gh_id]);
-
-        $month=9;
+        U::W('---------------------------');
+        U::W($month);
 
         $rows = [];
         foreach($channels as $channel)
