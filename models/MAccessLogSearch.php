@@ -62,9 +62,8 @@ class MAccessLogSearch extends Model
         $this->MsgType = Wechat::MSGTYPE_EVENT;
         $this->addCondition($query, 'MsgType');
 
-        $this->Event = Wechat::EVENT_SUBSCRIBE;
-        $this->addCondition($query, 'Event');
-        
+        $query->andWhere(['Event' =>  [Wechat::EVENT_SUBSCRIBE, Wechat::EVENT_UNSUBSCRIBE]]);
+
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
@@ -102,4 +101,5 @@ class MAccessLogSearch extends Model
             $query->andWhere([$attribute => $value]);
         }
     }
+    
 }

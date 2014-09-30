@@ -32,7 +32,6 @@ var walking = function(pointA,pointB,map){
 
 //公交检索
 var bus = function(pointA,pointB,map){	
-	alert(89);
     var transit = new BMap.TransitRoute(map, {renderOptions: {map: map, panel: "result", autoViewport: true}});
     transit.search(pointA, pointB);
 };

@@ -217,6 +217,16 @@ class WapxController extends Controller
         return $this->render('nearestmap', ['office' => $office, 'lon_begin'=>$lon, 'lat_begin'=>$lat, 'lon_end'=>$office->lon, 'lat_end'=>$office->lat]);
     }
 
+    //http://127.0.0.1/wx/web/index.php?r=wapx/officeposition&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&office_id=17
+    //http://wosotech.com/wx/web/index.php?r=wapx/officeposition&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&office_id=17
+    public function actionOfficeposition($gh_id, $openid, $office_id)
+    {        
+        $this->layout = false;
+        $office = MOffice::findOne($office_id);
+        $lon = 0;
+        $lat = 0;
+        return $this->render('officeposition', ['office' => $office, 'lon_begin'=>$lon, 'lat_begin'=>$lat, 'lon_end'=>$office->lon, 'lat_end'=>$office->lat]);        
+    }
 
 }
 
