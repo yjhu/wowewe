@@ -454,6 +454,7 @@ $(document).on("pageinit", "#page2", function(){
 		{
 	        if( localStorage.getItem("num") == null)
 	        {
+	        	$("#submitBtn").show();
 	            //$.mobile.changePage("#number-select",{transition:"slide"});
 	            $("#errorMsg").html("<span class='title_unset'>请选择手机号码</span>");
 	            $("#popupErrorMsg").popup("open");
@@ -469,6 +470,7 @@ $(document).on("pageinit", "#page2", function(){
     	{
 	        if( localStorage.getItem("username") == null)
 	        {
+	        	 $("#submitBtn").show();
 	        	//alert("aaa");
 	            //$.mobile.changePage("#contactPage",{transition:"slide"});
 	            $("#errorMsg").html("<span class='title_unset'>请输入用户信息</span>");
@@ -488,6 +490,7 @@ $(document).on("pageinit", "#page2", function(){
     	{
 	        if( localStorage.getItem("office") == null)
 	        {
+	        	 $("#submitBtn").show();
 	            //$.mobile.changePage("#office-select",{transition:"slide"});
 	           	$("#errorMsg").html("<span class='title_unset'>请选择营业厅</span>");
 	            $( "#popupErrorMsg" ).popup( "open" );
