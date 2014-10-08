@@ -25,8 +25,12 @@ CREATE TABLE wx_item (
 
 	ctrl_soldout tinyint(3) unsigned NOT NULL DEFAULT '0',
 	
+	act_price int(10) unsigned NOT NULL DEFAULT '0',
+	act_num int(10) unsigned NOT NULL DEFAULT '0',
+
 	KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 ALTER TABLE wx_item ADD quantity int(10) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD old_price int(10) unsigned NOT NULL DEFAULT '0';
