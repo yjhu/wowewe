@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\MActivity */
 
-$this->title = 'Create Mactivity';
-$this->params['breadcrumbs'][] = ['label' => 'Mactivities', 'url' => ['index']];
+$this->title = '创建活动';
+$this->params['breadcrumbs'][] = ['label' => '活动', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mactivity-create">

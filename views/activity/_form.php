@@ -20,6 +20,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'descr')->textInput(['maxlength' => 256]) ?>
 
+    <?= $form->field($model, 'iids')->textInput(['maxlength' => 256]) ?>
+
+	<?= $form->field($model, 'status')->dropDownList(['1'=>'有效', '0'=>'无效']) ?>
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '创建' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

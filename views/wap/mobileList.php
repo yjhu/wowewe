@@ -28,11 +28,7 @@
     <div data-role="content">
         
         <!--<ul data-role="listview" data-inset="true">-->
-        <ul data-role="listview" data-inset="false" class="ui-nodisc-icon ui-alt-icon">
-
-         <a data-ajax=false href="">
-          
-         </a>
+        <ul data-role="listview" data-inset="false" data-filter="true" data-filter-placeholder="搜索..." class="ui-nodisc-icon ui-alt-icon">
 
         <li><a data-ajax="false" href="http://m.10010.com/mobilegoodsdetail/711407153411.html?src=wolm&channel=cps&cid=8a94a89148bf746b0148bfe4ee5600ef&adid=8a94a89148c6577d0148c6c54ae50042&menuId=000300010001">
                 <img style='padding-top:20px' src="../web/images/item/huawei-3c-120x120.jpg">
@@ -40,6 +36,7 @@
                 <p>千元机之王 四核1.6GHz极速处理器</p>
                 <!--<p class='line'>原价: ￥<?//= $model->old_price/100 ?></p>-->
                 <p>惊爆价: ￥999</p>
+                <p>&nbsp;</p>
             </a>
         </li>
 
@@ -49,7 +46,7 @@
                 <p>全球首款八核4G CAT6手机 顶级品质5.0英寸全高清屏 八核1.7GHz极速处理器</p>
                 <!--<p class='line'>原价: ￥<?//= $model->old_price/100 ?></p>-->
                 <p>惊爆价: ￥2199</p>
-           
+                <p>&nbsp;</p>
             </a>
         </li>
 

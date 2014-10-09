@@ -35,9 +35,22 @@ class MActivity extends ActiveRecord
 	public function rules()
 	{
 		return [
-			[['start_time','end_time','title','descr'], 'safe'],
+			[['start_time','end_time','title','descr','iids'], 'safe'],
 		];
 	}
+
+
+	    public function attributeLabels()
+    {
+        return [
+            'start_time' => '开始时间',
+            'end_time' => '结束时间',
+            'title' => '活动标题',
+            'descr' => '描述',
+            'status' => '状态',
+            'iids' => '参与活动商品IDs列表',
+        ];
+    }
 
 }
 
