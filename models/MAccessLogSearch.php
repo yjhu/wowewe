@@ -30,7 +30,7 @@ class MAccessLogSearch extends Model
     public function rules()
     {
         return [
-            [['ToUserName', 'FromUserName','create_time', 'create_time_2', 'MsgType', 'Content', 'Event', 'EventKey'], 'safe'],
+            [['ToUserName', 'FromUserName','create_time', 'create_time_2', 'MsgType', 'Content', 'Event', 'EventKey', 'scene_pid'], 'safe'],
         ];
     }
 
@@ -48,17 +48,7 @@ class MAccessLogSearch extends Model
                 'pageSize' => 20,
             ],            
         ]);
-/*
-        if (Yii::$app->user->identity->gh_id == 'root')
-        {
-            //U::W('root see order');
-        }
-        else if (Yii::$app->user->identity->openid == 'admin')
-        {
-            $this->ToUserName = Yii::$app->user->identity->gh_id;
-            $this->addCondition($query, 'ToUserName');        
-        }
-*/
+        
         $this->MsgType = Wechat::MSGTYPE_EVENT;
         $this->addCondition($query, 'MsgType');
 
@@ -68,8 +58,11 @@ class MAccessLogSearch extends Model
             return $dataProvider;
         }
 
+        $this->addCondition($query, 'ToUserName');
+//        $this->addCondition($query, 'scene_pid');
+
         $this->addCondition($query, 'FromUserName', true);
-/*        
+        
         if (trim($this->create_time) !== '') 
         {
             $query->andWhere('date(create_time)>=:create_time', [':create_time' => $this->create_time]);
@@ -79,7 +72,7 @@ class MAccessLogSearch extends Model
         {
             $query->andWhere('date(create_time)<=:create_time_2', [':create_time_2' => $this->create_time_2]);
         }
-*/        
+        
         return $dataProvider;
     }
 

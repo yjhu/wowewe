@@ -233,7 +233,8 @@ class OrderController extends Controller
 
     public function actionStafftop()
     {
-        $rows = MStaff::getStaffScoreTop(MGh::GH_XIANGYANGUNICOM);
+        //$rows = MStaff::getStaffScoreTop(MGh::GH_XIANGYANGUNICOM);
+        $rows = MStaff::getStaffScoreTop(Yii::$app->user->getGhid());
         $dataProvider = new ArrayDataProvider([
             'allModels' => $rows,
             'sort' => [
@@ -477,9 +478,11 @@ class OrderController extends Controller
         return $this->redirect(['channellist']);
     }
 
-    public function actionChannelscoredetail()
+    public function actionChannelscoredetail($gh_id, $scene_pid)
     {
         $searchModel = new MAccessLogSearch;
+        $_GET['MAccessLogSearch']['ToUserName'] = $gh_id;    
+        $_GET['MAccessLogSearch']['scene_pid'] = $scene_pid;        
         $dataProvider = $searchModel->search($_GET);
         return $this->render('channelscoredetail', [
             'dataProvider' => $dataProvider,
@@ -491,11 +494,7 @@ class OrderController extends Controller
 
     public function actionChannelscoretop($month)
     {
-
-
-
-        $rows = MChannel::getChannelScoreTop(MGh::GH_XIANGYANGUNICOM,$month);
-
+        $rows = MChannel::getChannelScoreTop(Yii::$app->user->getGhid(), $month);
         $dataProvider = new ArrayDataProvider([
             'allModels' => $rows,
             'sort' => [
@@ -509,7 +508,48 @@ class OrderController extends Controller
             ],
         ]);
 
+        if (isset($_GET['channelscoretopdownload']))
+        {
+            //U::W("+++++++++++++channelscoretopdownload++++++++++++");
+            //$dataProvider->query->select(['*']);
+            //$dataProvider->setPagination(false);
+            //$data = $dataProvider->getModels();
+            $data = $rows;
+            $date = date('Y-m-d-His');
+            $filename = Yii::$app->getRuntimePath()."/channelscoretop-{$date}.csv";
+            $csv = new \app\models\ECSVExport($data);            
+            $attributes = ['id', 'title', 'cnt_sum'];        
+            $csv->setInclude($attributes);
+            $csv->setHeaders(['id'=>'渠道编号', 'title'=>'渠道名称', 'cnt_sum'=>'渠道推广数量']);
+            $csv->toCSV($filename); 
+            Yii::$app->response->sendFile($filename);
+            return;        
+        }
 
+        return $this->render('channelscoretop', [
+            'dataProvider' => $dataProvider,
+        ]);  
+
+    }
+
+
+/*
+    public function actionChannelscoretop($month)
+    {
+        $rows = MChannel::getChannelScoreTop(Yii::$app->user->getGhid(), $month);
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $rows,
+            'sort' => [
+                'attributes' => ['id', 'title', 'cnt_sum'],
+                'defaultOrder'=>[
+                    'cnt_sum' => SORT_DESC
+                ]
+            ],            
+            'pagination' => [
+                'pageSize' => 50,
+            ],
+        ]);
+        
         if (isset($_GET['channelscoretopdownload']))
         {
             U::W("+++++++++++++channelscoretopdownload++++++++++++");
@@ -530,15 +570,14 @@ class OrderController extends Controller
             Yii::$app->response->sendFile($filename);
             return;        
         }
-
+        
         return $this->render('channelscoretop', [
             'dataProvider' => $dataProvider,
-        ]);  
+        ]);
 
-
-
+        
     }
-
+*/    
 
 }
 

@@ -58,7 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { 
 //					if ($model->score == 0)						
 //						return $model->score; 
-					return $model->score.' '.Html::a('<span>明细</span>', ['channelscoredetail', 'ToUserName'=>$model->gh_id, 'scene_pid'=>$model->scene_id], [
+					return $model->score.' '.Html::a('<span>明细</span>', ['channelscoredetail', 'gh_id'=>$model->gh_id, 'scene_pid'=>$model->scene_id], [
 						'title' => '推广成绩',
 						'target' => '_blank',
 					]);
@@ -69,7 +69,6 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => '推广二维码',
                 'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
-
 /*
 					return Html::a('<span class="glyphicon glyphicon-qrcode"></span>', $model->getQrImageUrl(), [
 						'title' => '查看推广二维码',

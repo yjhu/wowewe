@@ -120,7 +120,7 @@ class MChannel extends ActiveRecord
             $this->delete();
     }
 
-    public function getScoreOfAllChannels($month)
+    public function getScoreFromLog($month)
     {
         if ($this->scene_id == 0)
             $count = 0;
@@ -132,22 +132,18 @@ class MChannel extends ActiveRecord
 
     public static function getChannelScoreTop($gh_id,$month)
     {
-        $key = __METHOD__."{$gh_id}";
+        $key = md5(serialize([$_GET, $gh_id, $month]));
         $value = Yii::$app->cache->get($key);
         if ($value !== false)
             return $value;
         $channels = MChannel::findAll(['gh_id' => $gh_id]);
-        U::W('---------------------------');
-        U::W($month);
-
         $rows = [];
         foreach($channels as $channel)
         {
             $row = [];
             $row['id'] = $channel->id;            
             $row['title'] = $channel->title;         
-            $row['cnt_sum'] = $channel->getScoreOfAllChannels($month);
-                       
+            $row['cnt_sum'] = $channel->getScoreFromLog($month);                       
             $rows[] = $row;
         }
         //U::W($rows);        
