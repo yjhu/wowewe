@@ -129,7 +129,6 @@ class MChannel extends ActiveRecord
         return $count;
     }
 
-
     public static function getChannelScoreTop($gh_id,$month)
     {
         $key = md5(serialize([$_GET, $gh_id, $month]));
