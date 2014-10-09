@@ -43,12 +43,15 @@ class MAccessLog extends ActiveRecord
         return 'wx_access_log';
     }
 
+    public function getUser()
+    {
+        return $this->hasOne(MUser::className(), ['gh_id' => 'ToUserName', 'openid' => 'FromUserName']);
+    }
+
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) 
         {
-            //if (is_array($this->EventKey))
-            //    U::W($this->EventKey);
             $checksum = crc32(is_array($this->EventKey) ? json_encode($this->EventKey) : $this->EventKey);        
             $this->EventKeyCRC = sprintf("%u", $checksum);
             return true;
