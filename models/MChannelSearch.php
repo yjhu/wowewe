@@ -32,7 +32,10 @@ class MChannelSearch extends Model
             'sort' => [
                 'defaultOrder' => [
                     'id' => SORT_ASC,
-                ]
+                ],
+                //'attributes' => [
+                //    'score','id',
+                //]
             ],
 
             'pagination' => [

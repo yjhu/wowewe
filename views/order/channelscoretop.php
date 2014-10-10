@@ -15,7 +15,9 @@ use app\models\MChannel;
 
 
 
-$this->title = '渠道成绩排行';
+$this->params['breadcrumbs'][] = ['label' => '渠道列表', 'url' => ['channellist']];
+//$this->params['breadcrumbs'][] = ['label' => $model->staff_id, 'url' => ['staffview', 'id' => $model->staff_id]];
+$this->title = '月成绩排行';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="muser-index">
@@ -24,17 +26,27 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
+<ul class="nav nav-tabs">
+	<?php $currentMonth = date("n"); ?>
+	<li <?php echo $month == $currentMonth ? 'class="active"' : ''; ?> >
+	<?php echo Html::a("渠道{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], []) ?>
+	</li>
+
+	<?php $currentMonth = date("n", strtotime('-1 month', time())); ?>
+	<li <?php echo $month == $currentMonth ? 'class="active"' : ''; ?> >
+	<?php echo Html::a("渠道{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], []) ?>
+	</li>
+
+	<?php $currentMonth = date("n", strtotime('-2 month', time())); ?>
+	<li <?php echo $month == $currentMonth ? 'class="active"' : ''; ?> >
+	<?php echo Html::a("渠道{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], []) ?>
+	</li>
+</ul>
+
     <p>
-    	<?php $currentMonth = date("n"); ?>
-		
-		<?php echo Html::a('渠道管理', ['channellist'], ['class' => 'btn btn-success']) ?>
-		
-		<?php echo Html::a('渠道成绩排行', ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
+		<?php //echo Html::a('渠道列表', ['channellist'], ['class' => 'btn btn-success']) ?>
     </p>
 
-	<?php echo Html::a('渠道8月份成绩排行', ['channelscoretop','month'=>8], ['class' => 'btn btn-info']) ?>
-	<?php echo Html::a('渠道9月份成绩排行', ['channelscoretop','month'=>9], ['class' => 'btn btn-info']) ?>
-	
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
 //        'filterModel' => $searchModel,
@@ -57,13 +69,13 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'cnt_sum',
 				'headerOptions' => array('style'=>'width:20%;'),	
 			],
-
         ],
 
 		'bordered'=>false,
 		'export'=>false,
 		'panel' => [
-			'heading'=>'<h3 class="panel-title">渠道成绩排行</h3>',
+			//'heading'=>"<h3 class=\"panel-title\">渠道{$month}月成绩排行</h3>",
+			'heading'=>"<h3 class=\"panel-title\">&nbsp;</h3>",
 			'type'=>'default',			
 			'before'=>Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', Url::to().'&channelscoretopdownload=1', ['class' => 'btn btn-success']),
 			//'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
@@ -77,5 +89,54 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 /*
 
+<!-- Tab panes -->
+<!--
+<div class="tab-content">
+  <div class="tab-pane active" id="home">.aaaa.</div>
+  <div class="tab-pane" id="profile">..bbb.</div>
+  <div class="tab-pane" id="messages">..cccc.</div>
+  <div class="tab-pane" id="settings">..ddd.</div>
+</div>
+-->
+    <?php
+
+echo yii\bootstrap\Tabs::widget([
+    'items' => [
+        [
+            'label' => '<a href="http://baidu.com">One</a>',
+			'encode'=>false,
+            'content' => 'Anim pariatur cliche...',
+            'active' => true
+        ],
+        [
+            'label' => '<a href="http://baidu.com">One</a>',
+			'encode'=>false,
+            'content' => 'Anim pariatur cliche...',
+        ],
+        [
+            'label' => '1111',
+            'content' => 'Anim pariatur cliche...',
+            'active' => true
+        ],
+        [
+            'label' => 'Two',
+            'content' => 'Anim pariatur cliche...',
+            'headerOptions' => [],
+            'options' => ['id' => 'myveryownID'],
+        ],
+    ],
+]); 
+
+?>
+
+    <p>
+		<?php echo Html::a('渠道列表', ['channellist'], ['class' => 'btn btn-success']) ?>
+    	<?php $currentMonth = date("n"); ?>
+		<?php echo Html::a("渠道{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
+    	<?php $currentMonth = date("n", strtotime('-1 month', time())); ?>
+		<?php echo Html::a("渠道{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
+    	<?php $currentMonth = date("n", strtotime('-2 month', time())); ?>
+		<?php echo Html::a("渠道{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
+    </p>
 
 */

@@ -133,8 +133,8 @@ class MChannel extends ActiveRecord
     {
         $key = md5(serialize([$_GET, $gh_id, $month]));
         $value = Yii::$app->cache->get($key);
-        if ($value !== false)
-            return $value;
+//        if ($value !== false)
+//            return $value;
         $channels = MChannel::findAll(['gh_id' => $gh_id]);
         $rows = [];
         foreach($channels as $channel)

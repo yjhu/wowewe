@@ -284,10 +284,10 @@ class Wechat extends \yii\base\Object
     protected function onLocationSelect()
     { 
         $func = $this->getRequest('EventKey');    
-                U::W('onLocationSelect....'.$func);        
+//                U::W('onLocationSelect....'.$func);        
         if (method_exists($this, $func))
             return $this->$func();
-                U::W('onLocationSelect...111.');                    
+//                U::W('onLocationSelect...111.');                    
         return $this->responseText($this->getRequestString());        
     }
         
