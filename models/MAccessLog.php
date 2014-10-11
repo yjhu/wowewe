@@ -54,6 +54,10 @@ class MAccessLog extends ActiveRecord
         {
             $checksum = crc32(is_array($this->EventKey) ? json_encode($this->EventKey) : $this->EventKey);        
             $this->EventKeyCRC = sprintf("%u", $checksum);
+            if ((!empty($this->EventKey)) && substr($this->EventKey, 0, 8) == 'qrscene_')
+            {
+                $this->scene_pid = substr($this->EventKey, 8);  
+            }
             return true;
         } 
         return false;

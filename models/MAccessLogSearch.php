@@ -59,7 +59,7 @@ class MAccessLogSearch extends Model
         }
 
         $this->addCondition($query, 'ToUserName');
-//        $this->addCondition($query, 'scene_pid');
+        $this->addCondition($query, 'scene_pid');
 
         $this->addCondition($query, 'FromUserName', true);
         

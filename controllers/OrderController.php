@@ -490,8 +490,6 @@ class OrderController extends Controller
         ]);
     }
 
-
-
     public function actionChannelscoretop($month)
     {
         $rows = MChannel::getChannelScoreTop(Yii::$app->user->getGhid(), $month);
@@ -528,6 +526,7 @@ class OrderController extends Controller
 
         return $this->render('channelscoretop', [
             'dataProvider' => $dataProvider,
+            'month'=>$month,
         ]);  
 
     }

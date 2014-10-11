@@ -9,7 +9,7 @@ use app\models\MStaff;
 use app\models\MOffice;
 
 
-$this->title = '渠道推广明细';
+$this->title = '累计推广成绩明细';
 $this->params['breadcrumbs'][] =  ['label'=>'渠道管理', 'url'=>['channellist']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -25,14 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 		'bordered'=>false,		
         'columns' => [
-/*
 			[
 				'label' => '关注时间',
-				'attribute' => 'create_time',
-				//'headerOptions' => array('style'=>'width:50%;'),	
-			],
-*/
-			[
 				'attribute'=>'create_time',
 				'filterType'=>GridView::FILTER_DATE,
 				//'filterType'=>GridView::FILTER_RANGE,
@@ -59,7 +53,10 @@ $this->params['breadcrumbs'][] = $this->title;
 					return "$headimgurl $nickname";
 				},
 				'headerOptions' => array('style'=>'width:30%;'),	
-
+			],
+			[
+				'attribute' => 'FromUserName',
+				'label' => '微信Id',
 			],
 			[
 				'filter'=> false,

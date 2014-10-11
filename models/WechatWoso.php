@@ -66,7 +66,7 @@ class WechatWoso extends Wechat
 		{
 			//$model->delete();	
 			$model->subscribe = 0;
-			$model->scene_pid = 0;
+			//$model->scene_pid = 0;
 			$model->save(false);
 		}
 		return '';

@@ -10,7 +10,7 @@ use app\models\U;
 use app\models\MChannel;
 use app\models\MOffice;
 
-$this->title = '渠道管理';
+$this->title = '渠道列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="muser-index">
@@ -20,9 +20,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-    	<?php $currentMonth = date("n"); ?>
 		<?php echo Html::a('新增渠道', ['channelcreate'], ['class' => 'btn btn-success']) ?>
-		<?php echo Html::a('渠道成绩排行', ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
+    	<?php $currentMonth = date("n"); ?>
+		<?php echo Html::a("渠道每月成绩排行", ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
     </p>
 
 	<?php \yii\widgets\Pjax::begin([
@@ -53,7 +53,8 @@ $this->params['breadcrumbs'][] = $this->title;
 				'filter'=> false,
 			],
 			[
-				'label' => '推广成绩',
+				'label' => '累计推广成绩',
+				'attribute' => 'score',
                 'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
 //					if ($model->score == 0)						
@@ -69,12 +70,6 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => '推广二维码',
                 'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
-/*
-					return Html::a('<span class="glyphicon glyphicon-qrcode"></span>', $model->getQrImageUrl(), [
-						'title' => '查看推广二维码',
-						'target' => '_blank',
-					]);
-*/
 					return Html::img($model->getQrImageUrl(), ['width'=>'64']);
 				},
 				'filter'=> false,
@@ -110,5 +105,20 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 /*
+					return Html::a('<span class="glyphicon glyphicon-qrcode"></span>', $model->getQrImageUrl(), [
+						'title' => '查看推广二维码',
+						'target' => '_blank',
+					]);
+
+    <p>
+		<?php echo Html::a('新增渠道', ['channelcreate'], ['class' => 'btn btn-success']) ?>
+    	<?php $currentMonth = date("n"); ?>
+		<?php echo Html::a("渠道{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
+    	<?php $currentMonth = date("n", strtotime('-1 month', time())); ?>
+		<?php echo Html::a("渠道{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
+    	<?php $currentMonth = date("n", strtotime('-2 month', time())); ?>
+		<?php echo Html::a("渠道{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
+    </p>
 
 */
+
