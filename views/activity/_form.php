@@ -12,6 +12,8 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
+  	<?= $form->field($model, 'gh_id')->hiddenInput(['value'=>Yii::$app->user->getGhid()])->label(false) ?>
+
     <?= $form->field($model, 'start_time')->textInput() ?>
 
     <?= $form->field($model, 'end_time')->textInput() ?>

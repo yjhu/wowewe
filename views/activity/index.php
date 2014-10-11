@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
+use app\models\MActivity;
+
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\MActivitySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -23,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
             'id',
             'gh_id',
@@ -31,9 +34,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'end_time',
             'title',
             // 'descr',
-            // 'status',
-            // 'iids',
+            [
+                //'label' => '部门名称',
+                'attribute' => 'status',
+                'value'=>function ($model, $key, $index, $column) { return MActivity::getStatusOptionName($model->status) ; },
+                'filter'=> MActivity::getStatusOptionName(),
+                'headerOptions' => array('style'=>'width:200px;'),      
+                //'visible'=>Yii::$app->user->identity->openid == 'admin',
+            ],
 
+            'iids',
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

@@ -7,7 +7,7 @@ CREATE TABLE wx_activity (
 	id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	gh_id VARCHAR(32) NOT NULL DEFAULT '',
 	start_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	end_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+	end_time TIMESTAMP, 
 	title VARCHAR(128) NOT NULL DEFAULT '',
 	descr VARCHAR(256) NOT NULL DEFAULT '',
 	status tinyint(10) unsigned NOT NULL DEFAULT '0',
@@ -35,14 +35,15 @@ class MActivity extends ActiveRecord
 	public function rules()
 	{
 		return [
-			[['start_time','end_time','title','descr','iids'], 'safe'],
+			[['gh_id','start_time','end_time','title','descr','status','iids'], 'safe'],
 		];
 	}
 
 
-	    public function attributeLabels()
+	public function attributeLabels()
     {
         return [
+        	'id' => '活动编号',
             'start_time' => '开始时间',
             'end_time' => '结束时间',
             'title' => '活动标题',
@@ -51,6 +52,19 @@ class MActivity extends ActiveRecord
             'iids' => '参与活动商品IDs列表',
         ];
     }
+
+
+    static function getStatusOptionName($key=null)
+    {
+        $arr = array(
+            '0' => '无效',
+            '1' => '有效',
+        );        
+        //return $arr;
+        return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+    }
+
+
 
 }
 
