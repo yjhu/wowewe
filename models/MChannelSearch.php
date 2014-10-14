@@ -16,11 +16,17 @@ class MChannelSearch extends Model
     public $title;
 
     public $mobile;
+
+    public $cat;
+
+    public $status;
+
+    public $level;
     
     public function rules()
     {
         return [
-            [['id', 'gh_id', 'title','mobile'], 'safe'],
+            [['id', 'gh_id', 'title','mobile', 'cat', 'status', 'level'], 'safe'],
         ];
     }
 
@@ -58,6 +64,8 @@ class MChannelSearch extends Model
         $this->addCondition($query, 'id');
         $this->addCondition($query, 'title', true);
         $this->addCondition($query, 'mobile', true);
+        $this->addCondition($query, 'cat');
+        $this->addCondition($query, 'status');
         
         return $dataProvider;
     }

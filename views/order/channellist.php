@@ -38,11 +38,21 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => '渠道编号',
 				'attribute' => 'id',
 				'headerOptions' => array('style'=>'width:100px;'),	
-				//'filter'=> false,				
+				'filter'=> false,				
 			],
 			[
 				'label' => '渠道名称',
 				'attribute' => 'title',
+			],
+			[
+				'attribute' => 'cat',
+				'value'=>function ($model, $key, $index, $column) { return MChannel::getCatOptionName($model->cat); },
+				'filter'=> MChannel::getCatOptionName(),
+			],
+			[
+				'attribute' => 'status',
+				'value'=>function ($model, $key, $index, $column) { return MChannel::getStatusOptionName($model->status); },
+				'filter'=> MChannel::getStatusOptionName(),
 			],
 			[
 				'attribute' => 'mobile',

@@ -10,10 +10,16 @@ CREATE TABLE wx_channel (
     scene_id int(10) unsigned NOT NULL DEFAULT '0',
     title VARCHAR(128) NOT NULL DEFAULT '',
     mobile VARCHAR(16) NOT NULL DEFAULT '',
+    cat tinyint(3) NOT NULL DEFAULT 0,
+    level tinyint(3) NOT NULL DEFAULT 0,
+    status int(10) unsigned NOT NULL DEFAULT 0,    
     UNIQUE KEY idx_gh_id_title(gh_id, title),    
     KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+ALTER TABLE wx_channel ADD cat tinyint(3) NOT NULL DEFAULT 0;
+ALTER TABLE wx_channel ADD level tinyint(3) NOT NULL DEFAULT 0;
+ALTER TABLE wx_channel ADD status int(10) unsigned NOT NULL DEFAULT 0;
 
 */
 
@@ -31,6 +37,30 @@ use app\models\MAccessLog;
 
 class MChannel extends ActiveRecord
 {
+    const CAT_LIANTONG_DEALER = 0;
+    const CAT_SOCIAL = 1;
+
+    const STATUS_WAIT = 1;
+    const STATUS_OK = 0;
+
+    static function getCatOptionName($key=null)
+    {
+        $arr = array(
+            self::CAT_LIANTONG_DEALER => '联通经销商',
+            self::CAT_SOCIAL => '社会化渠道',
+        );        
+        return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+    }
+
+    static function getStatusOptionName($key=null)
+    {
+        $arr = array(
+            self::STATUS_WAIT => '等待审核',
+            self::STATUS_OK => '正常',
+        );        
+        return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+    }
+
     public static function tableName()
     {
         return 'wx_channel';
@@ -55,6 +85,10 @@ class MChannel extends ActiveRecord
             'id' => '渠道编号',
             'title' => '名称',
             'mobile' => '手机号',
+            'cat' => '渠道类别',
+            'level' => '等级',
+            'status' => '状态',
+            'scene_id' => '推广Id',
         ];
     }
 
@@ -108,7 +142,7 @@ class MChannel extends ActiveRecord
         if ($this->scene_id == 0)
             $count = 0;
         else
-            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id])->count();
+            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])->count();            
         return $count;        
     }
 
@@ -133,8 +167,8 @@ class MChannel extends ActiveRecord
     {
         $key = md5(serialize([$_GET, $gh_id, $month]));
         $value = Yii::$app->cache->get($key);
-//        if ($value !== false)
-//            return $value;
+        if ($value !== false)
+            return $value;
         $channels = MChannel::findAll(['gh_id' => $gh_id]);
         $rows = [];
         foreach($channels as $channel)
@@ -145,7 +179,6 @@ class MChannel extends ActiveRecord
             $row['cnt_sum'] = $channel->getScoreFromLog($month);                       
             $rows[] = $row;
         }
-        //U::W($rows);        
         Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 12*3600);
         return $rows;
     }
