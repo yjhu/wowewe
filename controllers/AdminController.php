@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\View;
 
+use app\models\MGh;
+use app\models\MGhSearch;
+
 use app\models\MItem;
 use app\models\MItemSearch;
 
@@ -207,6 +210,18 @@ class AdminController extends Controller
 		$model->delete();
 		return $this->redirect(['pkglist']);
 	}	
+
+	public function actionGhlist()
+	{
+		$searchModel = new MGhSearch;
+		$dataProvider = $searchModel->search($_GET);
+
+		return $this->render('ghlist', [
+			'dataProvider' => $dataProvider,
+			'searchModel' => $searchModel,
+		]);
+	}
+	
 }
 
 /*

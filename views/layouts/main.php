@@ -64,6 +64,7 @@ AppAsset::register($this);
 							['label' => '套餐管理','url' => ['/admin/pkglist'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '订单管理','url' => ['/admin/trade'],'linkOptions' => ['data-method' => 'post']],
 							'<li class="divider"></li>',
+							['label' => '公众号管理','url' => ['/admin/ghlist'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '用户管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '消息管理','url' => ['/admin/msg'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '素材管理','url' => ['/admin/media'],'linkOptions' => ['data-method' => 'post']],
