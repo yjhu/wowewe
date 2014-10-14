@@ -225,6 +225,8 @@ function load_data2(i, n)
 		imgurl = '../web/images/item/hisenseu939-black-700x500.jpg-120x120.jpg';
 	else if(n.cid == 324)
 		imgurl = '../web/images/item/coolpad7295c-black-700x500.jpg-120x120.jpg';
+	else if(n.cid == 331)
+		imgurl = '../web/images/item/xiaomi-4-white-700x500.jpg-120x120.jpg';
 
 	if(n.val_pkg_3g4g == "3g")
 		val_pkg_3g4g_name="3G普通套餐";

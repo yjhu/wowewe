@@ -801,6 +801,10 @@ EOD;
 				$order->title = '酷派 7295C 黑色';					
 				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
 				break;
+			case MItem::ITEM_CAT_MOBILE_XIAOMI4:
+				$order->title = '小米4';	
+				$order->attr = "{$_GET['prom']}, {$_GET['planFlag']}, {$_GET['plan66']}, {$_GET['plan96']}";
+				break;				
 
 			default:
 				U::W(['invalid data cat', $_GET["cid"], __METHOD__,$_GET]);

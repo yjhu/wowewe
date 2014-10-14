@@ -12,6 +12,9 @@
 	//	U::W("impossible! gh_id=$gh_id, cid=$cid .............");
 	//}
     //U::W($item);
+
+    $item->price = $_GET['price']; 
+    $item->title_hint = $_GET['title_hint'];
 ?>
 
 
@@ -123,6 +126,11 @@ text-decoration: line-through;
     filter:alpha(opacity=25);moz-opacity:.25;opacity:.25
 }
 
+.activity {
+    color: red;
+    font-size:14px;
+    font-weight: bolder;
+} 
 </style>
 
 
@@ -146,7 +154,9 @@ text-decoration: line-through;
         </p>
 
         <p id="price" class="title_comm">
-        价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
+        价格  <!--<span class="fee">￥<//?php echo  ($item->price)/100; ?></span>-->
+        <span class="fee">￥<?php echo round($item->price/100); ?></span>
+
         <span class="line"><small>原价￥<?php echo  ($item->old_price)/100; ?></small></span>
         <br><span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
         </p>
