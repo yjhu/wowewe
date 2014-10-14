@@ -12,8 +12,13 @@ CREATE TABLE wx_activity (
 	descr VARCHAR(256) NOT NULL DEFAULT '',
 	status tinyint(10) unsigned NOT NULL DEFAULT '0',
 	iids VARCHAR(256) NOT NULL DEFAULT '',
+	discount float(4,2) NOT NULL DEFAULT '0.00',
 	KEY idx_gh_id(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE wx_activity ADD discount float(4,2) NOT NULL DEFAULT '0.00';
+
 
 */
 

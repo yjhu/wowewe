@@ -805,6 +805,10 @@ EOD;
                 $order->title = '酷派 7295C 黑色';                    
                 $order->attr = "{$_GET['prom']}";
                 break;
+            case MItem::ITEM_CAT_MOBILE_XIAOMI4:
+                $order->title = '小米4';                    
+                $order->attr = "{$_GET['prom']}";
+                break;
 
             default:
                 U::W(['invalid data cat', $_GET["cid"], __METHOD__,$_GET]);
@@ -1123,6 +1127,30 @@ EOD;
         //return $this->render('mobile');
         //$models = MItem::findAll(['kind'=>MItem::ITEM_KIND_MOBILE]);
         $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_DESC])->all();
+        
+
+        $query = new \yii\db\Query();
+        $query->select('*')->from(\app\models\MActivity::tableName())->where(['status'=>1])->orderBy(['id' => SORT_DESC])->all();   
+        $rows = $query->createCommand()->queryAll();
+        //U::W($rows);
+        foreach($models as &$model)
+        {
+             //U::W($model['iid']);
+             //U::W('-----------\n');
+            foreach($rows as &$row)
+            {
+                $ids = explode(",", $row['iids']); 
+                if (in_array($model['iid'], $ids)) 
+                {
+                   //U::W($model['title']."---".$model['iid']."在做促销活动！\n");
+                   //$model['title']=$model['title']."&nbsp;&nbsp;<span class='activity'>限时促销!</span>";
+                   $model['price']=($model['price']*$row['discount'])/10;
+                   $model['title_hint']="<span class='activity'>限时促销!</span>&nbsp;&nbsp;".$model['title_hint'];
+                }
+
+            }
+        }
+
         return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
     }
 

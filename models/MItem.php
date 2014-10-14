@@ -24,9 +24,6 @@ CREATE TABLE wx_item (
 	old_price_hint VARCHAR(128) NOT NULL DEFAULT '',
 
 	ctrl_soldout tinyint(3) unsigned NOT NULL DEFAULT '0',
-	
-	act_price int(10) unsigned NOT NULL DEFAULT '0',
-	act_num int(10) unsigned NOT NULL DEFAULT '0',
 
 	KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -59,10 +56,6 @@ INSERT INTO `wx_item` (`gh_id`, `price`, `price_hint`, `title`, `title_hint`, `p
 ('gh_1ad98f5481f3', 5000, '含预存款50元', '微信沃卡', '微信沃卡 <span class="title_hint"> 尊享微信6大特权, 50元入网得530元话费, 500M省内流量+500M微信定向流量, 仅需31元/月</span>', '微信沃卡', '500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wxwk001.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk002.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk003.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk004.jpg" alt="" />', '../web/images/item/wxwk000.jpg', 10, 0),
 ('gh_1ad98f5481f3', 5000, '含预存款50元', '沃派校园套餐', '沃派校园套餐 <span class="title_hint"> 500M省内流量, 100分钟通话+100条短信, 存50得530元话费, 每月仅付26元</span>', '沃派校园套餐', '500M微信定向流量, 100分钟本地长市话, 100条短信, 500M省内流量自动升级至50元包1G, 100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wpxytc_002.jpg" alt="" />', '../web/images/item/wpxytc_001.jpg', 11, 0),
 
-
-
-ALTER TABLE wx_item ADD	act_price int(10) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_item ADD	act_num int(10) unsigned NOT NULL DEFAULT '0';
 
 
 
@@ -110,6 +103,8 @@ class MItem extends ActiveRecord
 
 	const ITEM_CAT_MOBILE_HUAWEI_P7_BLACK = 329;
 	const ITEM_CAT_MOBILE_HUAWEI_P7_WHITE = 330;
+
+ 	const ITEM_CAT_MOBILE_XIAOMI4 = 331;
 	
 
 	const ITEM_KIND_CARD = 2;
@@ -148,6 +143,7 @@ class MItem extends ActiveRecord
 			self::ITEM_CAT_MOBILE_COOLPAD_7230S_BLACK => '酷派 7230S 黑色',
 			self::ITEM_CAT_MOBILE_HISENSE_U939 => '海信 U939',
 			self::ITEM_CAT_MOBILE_COOLPAD_7295C_BLACK => '酷派 7295C 黑色',
+			self::ITEM_CAT_MOBILE_XIAOMI4 => '小米4',
 
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');

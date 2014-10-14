@@ -84,7 +84,7 @@
 			<p align="right" >
 	         合计
 			<span  id="total" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
-			 ￥ <?= sprintf("%0.2f",$model->feesum/100); ?>
+			 ￥ <?= round(sprintf("%0.2f",$model->feesum/100)); ?>
 			</span>
 			</p>
 
@@ -141,7 +141,11 @@
 					if(supportpay_count == 1)
 					$("#paykind-field").hide();
 
-					$("#btn-pay").html("我知道了");
+					<?php if($item->ctrl_supportpay == 1) {?>
+						$("#btn-pay").html("立即支付");
+					<?php } else {?>
+						$("#btn-pay").html("我知道了");
+					<?php } ?>
 
 				    $("[name=paykind]").click(function(){
 			

@@ -14,9 +14,16 @@
     }
 
     .line {
-    color: #aaaaaa;
-    text-decoration: line-through;
+        color: #aaaaaa;
+        text-decoration: line-through;
     }
+
+    .activity {
+        color: red;
+        font-size:14px;
+        font-weight: bolder;
+    } 
+
 </style>
 
 <div data-role="page" id="page1" data-theme="c">
@@ -51,12 +58,12 @@
         </li>
 
         <?php foreach($models as $model) { ?>
-            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
+            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid, 'price'=>$model->price, 'title_hint'=>$model->title_hint],true) ?>">
                     <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                     <h2><?= $model->title ?></h2>
                     <p><?= $model->title_hint ?></p>
-                    <p class='line'>原价: ￥<?= $model->old_price/100 ?></p>
-                    <p>惊爆价: ￥<?= $model->price/100 ?></p>
+                    <p class='line'>原价: ￥<?= round($model->old_price/100) ?></p>
+                    <p>惊爆价: ￥<?= round($model->price/100) ?></p>
                 </a>
             </li>
         <?php } ?>
