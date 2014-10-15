@@ -65,6 +65,8 @@ INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac9
 
 ALTER TABLE wx_user ADD gid int(10) unsigned NOT NULL DEFAULT '0';
 
+INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_1ad98f5481f3', 'admin', 'admin','1', 2);
+
 */
 
 use Yii;

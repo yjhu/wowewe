@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\web\NotFoundHttpException;
+
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\MOrder;
@@ -55,7 +57,7 @@ class MOrderSearch extends Model
 
         if (Yii::$app->user->identity->gh_id == 'root')
         {
-            //U::W('root see order');
+             throw new NotFoundHttpException("Please selected one gh_id for the root first!");
         }
         else if (Yii::$app->user->identity->openid == 'admin')
         {

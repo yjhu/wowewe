@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\web\NotFoundHttpException;
+
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\MStaff;
@@ -43,7 +45,7 @@ class MStaffSearch extends Model
         ]);
         
         if (Yii::$app->user->identity->gh_id == 'root')
-            U::W('root see staff');
+             throw new NotFoundHttpException("Please selected one gh_id for the root first!");            
         else if (Yii::$app->user->identity->openid == 'admin')
         {
             $this->gh_id = Yii::$app->user->identity->gh_id;

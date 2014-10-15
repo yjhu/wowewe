@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\U;
 use app\models\MUser;
 use app\models\MUserSearch;
@@ -80,7 +81,7 @@ class AdminController extends Controller
 	{
 		$model = MUser::findOne($id);
 		if (!$model) {
-			throw new NotFoundHttpException();
+                 throw new NotFoundHttpException("id:$id does not exists");			
 		}
 		if (\Yii::$app->request->isPost) 
 		{
@@ -122,7 +123,7 @@ class AdminController extends Controller
 	{
 		$model = MItem::findOne($id);
 		if (!$model) {
-			throw new NotFoundHttpException();
+			throw new NotFoundHttpException('no this item');
 		}
 		if (\Yii::$app->request->isPost) 
 		{
@@ -175,7 +176,7 @@ class AdminController extends Controller
 	{
 		$model = MPkg::findOne($id);
 		if (!$model) {
-			throw new NotFoundHttpException();
+			throw new NotFoundHttpException('no this pkg');
 		}
 		if (\Yii::$app->request->isPost) 
 		{
@@ -221,6 +222,61 @@ class AdminController extends Controller
 			'searchModel' => $searchModel,
 		]);
 	}
+
+    public function actionGhcreate()
+    {
+        $model = new MGh;
+        if (Yii::$app->request->isPost) 
+        {
+            $model->load(Yii::$app->request->post());
+            if ($model->save()) 
+            {
+                return $this->redirect(['ghlist']);            
+            }
+            else
+            {
+                U::W($model->getErrors());
+            }
+        }
+        return $this->render('ghcreateupdate', ['model' => $model]);                
+    }
+
+    public function actionGhupdate($id)
+    {
+        $model = MGh::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException('no this gh');
+        }
+        if (\Yii::$app->request->isPost) 
+        {
+            $model->load(\Yii::$app->request->post());
+            if ($model->save()) 
+            {                
+                return $this->redirect(['ghlist']);            
+            }
+            else
+            {
+                U::W($model->getErrors());
+            }            
+        }
+        return $this->render('ghcreateupdate', ['model' => $model]);        
+    }
+
+    public function actionGhdelete($id)
+    {
+        $model = MGh::findOne($id);
+        $model->delete();
+        return $this->redirect(['ghlist']);
+    }
+
+    public function actionGhdoorback($id)
+    {
+        $user = MUser::findOne(['gh_id'=>$id, 'openid'=>'admin']);
+        if ($user === null)
+             throw new NotFoundHttpException("gh_id:$id does not exists");
+        Yii::$app->user->login($user);
+        return $this->redirect(['ghlist']);
+    }
 	
 }
 

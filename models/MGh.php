@@ -67,11 +67,11 @@ class MGh extends ActiveRecord
     public function rules()
     {
         return [
-            ['gh_id,wxname,appid,appsecret,token', 'required'],
+            [['gh_id','wxname','appid','appsecret','token'], 'required'],
             ['token', 'string', 'min' => 8, 'max' => 32],            
             ['gh_id', 'string', 'min' => 8, 'max' => 32],
-            ['wxname,appid,appsecret', 'string', 'max' => 64],
-            ['gh_id,wxname,nickname,appid,appsecret,token', 'filter', 'filter' => 'trim'],
+            [['wxname','appid','appsecret'], 'string', 'max' => 64],
+            [['gh_id','wxname','nickname','appid','appsecret','token'], 'filter', 'filter' => 'trim'],
         ];
     }
 

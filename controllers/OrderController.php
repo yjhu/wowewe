@@ -118,7 +118,7 @@ class OrderController extends Controller
     {
         $model = MOrder::findOne($id);
         if (!$model) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('no this order');
         }
         if (\Yii::$app->request->isPost) 
         {
@@ -197,7 +197,7 @@ class OrderController extends Controller
     {
         $model = MStaff::findOne($id);
         if (!$model) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('no this staff');
         }
         if (\Yii::$app->request->isPost) 
         {
@@ -389,7 +389,7 @@ class OrderController extends Controller
     {
         $model = MOffice::findOne($id);
         if (!$model) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('no this office');
         }
         if (\Yii::$app->request->isPost) 
         {
@@ -454,7 +454,7 @@ class OrderController extends Controller
     {
         $model = MChannel::findOne($id);
         if (!$model) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('no this channel');
         }
         if (\Yii::$app->request->isPost) 
         {

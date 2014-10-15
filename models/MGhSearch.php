@@ -3,46 +3,31 @@
 namespace app\models;
 
 use Yii;
-use yii\web\NotFoundHttpException;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\MChannel;
+use app\models\MGh;
 
-class MChannelSearch extends Model
+class MGhSearch extends Model
 {
-    public $id;
-
     public $gh_id;
-    
-    public $title;
-
-    public $mobile;
-
-    public $cat;
-
-    public $status;
-
-    public $level;
     
     public function rules()
     {
         return [
-            [['id', 'gh_id', 'title','mobile', 'cat', 'status', 'level'], 'safe'],
+//          [['id', 'gh_id', 'title','mobile', 'cat', 'status', 'level'], 'safe'],
+            [['gh_id',], 'safe'],
         ];
     }
 
     public function search($params)
     {
-        $query = MChannel::find();
+        $query = MGh::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
-                    'id' => SORT_ASC,
+                    'create_time' => SORT_DESC,
                 ],
-                //'attributes' => [
-                //    'score','id',
-                //]
             ],
 
             'pagination' => [
@@ -50,25 +35,13 @@ class MChannelSearch extends Model
             ],            
         ]);
         
-        if (Yii::$app->user->identity->gh_id == 'root')
-             throw new NotFoundHttpException("Please selected one gh_id for the root first!");
-        else if (Yii::$app->user->identity->openid == 'admin')
-        {
-            $this->gh_id = Yii::$app->user->identity->gh_id;
-            $this->addCondition($query, 'gh_id');        
-        }
-
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
-        $this->addCondition($query, 'id');
-        $this->addCondition($query, 'title', true);
-        $this->addCondition($query, 'mobile', true);
-        $this->addCondition($query, 'cat');
-        $this->addCondition($query, 'status');
-        
-        return $dataProvider;
+        $this->addCondition($query, 'gh_id', true);
+
+		return $dataProvider;
     }
 
     protected function addCondition($query, $attribute, $partialMatch = false)
