@@ -163,7 +163,7 @@ class WapController extends Controller
     //http://127.0.0.1/wx/web/index.php?r=wap/nativepackage
     public function actionNativepackage()
     {        
-        //U::W([__METHOD__, $GLOBALS]);    
+        U::W([__METHOD__, $GLOBALS]);    
         if (Yii::$app->wx->localTest)
         {
             $postStr = <<<EOD
@@ -228,7 +228,7 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/paynotify
     public function actionPaynotify()
     {        
-        //U::W(['actionPaynotify', $_GET,$_POST]);
+        U::W(['actionPaynotify', $_GET,$_POST]);
         // receive the pay notify from wx server and save the order to db
         // POST data
         if (Yii::$app->wx->localTest)        
@@ -879,7 +879,7 @@ EOD;
                 U::W('sendWxm');
                 $manager->sendWxm($order->getWxNoticeToManager());
                 U::W('sendSm');
-                        $manager->sendSm($order->getSmNoticeToManager());
+                $manager->sendSm($order->getSmNoticeToManager());
             }
 
             // send wx message to user
