@@ -17,10 +17,6 @@ CREATE TABLE wx_channel (
     KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-ALTER TABLE wx_channel ADD cat tinyint(3) NOT NULL DEFAULT 0;
-ALTER TABLE wx_channel ADD level tinyint(3) NOT NULL DEFAULT 0;
-ALTER TABLE wx_channel ADD status int(10) unsigned NOT NULL DEFAULT 0;
-
 */
 
         
@@ -74,6 +70,7 @@ class MChannel extends ActiveRecord
             [['title'], 'string', 'min' => 2, 'max' => 255],
             [['mobile'], 'string', 'length'=>11],
             [['id'], 'integer', 'integerOnly' =>true, 'min'=>1],
+            [['status','cat'], 'integer', 'integerOnly' =>true],
             [['gh_id', 'openid'], 'safe'],
             ['title', 'unique', 'message' => 'This title has already been taken.'],            
         ];
@@ -186,5 +183,10 @@ class MChannel extends ActiveRecord
 }
 
 /*
+ALTER TABLE wx_channel ADD cat tinyint(3) NOT NULL DEFAULT 0;
+ALTER TABLE wx_channel ADD level tinyint(3) NOT NULL DEFAULT 0;
+ALTER TABLE wx_channel ADD status int(10) unsigned NOT NULL DEFAULT 0;
+
+
 */            
 
