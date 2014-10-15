@@ -215,8 +215,8 @@ EOD;
         $detail = $model->detail;
         Yii::$app->wx->setParameter("body", $detail);
         Yii::$app->wx->setParameter("out_trade_no", $model->oid);
-        //Yii::$app->wx->setParameter("total_fee",  "{$model->feesum}");
-        Yii::$app->wx->setParameter("total_fee",  "1");
+        Yii::$app->wx->setParameter("total_fee",  "{$model->feesum}");
+        //Yii::$app->wx->setParameter("total_fee",  "1");
         Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");        
         $xmlStr = Yii::$app->wx->create_native_package();
         if (Yii::$app->wx->debug)
