@@ -219,7 +219,7 @@ class WapxController extends Controller
 
     //http://127.0.0.1/wx/web/index.php?r=wapx/officeposition&gh_id=gh_03a74ac96138&office_id=18
     //http://wosotech.com/wx/web/index.php?r=wapx/officeposition&gh_id=gh_03a74ac96138&office_id=18
-    public function actionOfficeposition($gh_id, $office_id)
+    public function actionOfficeposition($gh_id, $office_id, $openid=null)
     {        
         $this->layout = false;
         $office = MOffice::findOne($office_id);
