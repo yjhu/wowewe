@@ -80,11 +80,13 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => '推广二维码',
                 'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
-					return Html::img($model->getQrImageUrl(), ['width'=>'64']);
+					if ($model->status == MChannel::STATUS_OK)
+						return Html::img($model->getQrImageUrl(), ['width'=>'64']);
+					else
+						return '未分配';
 				},
 				'filter'=> false,
 			],
-
             [
 				'class' => 'yii\grid\ActionColumn',
 				'template' => '{channelupdate} {channeldelete}',

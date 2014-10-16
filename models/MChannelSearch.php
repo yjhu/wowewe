@@ -38,7 +38,7 @@ class MChannelSearch extends Model
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
-                    'id' => SORT_ASC,
+                    'id' => SORT_DESC,
                 ],
                 //'attributes' => [
                 //    'score','id',

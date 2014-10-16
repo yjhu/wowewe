@@ -13,17 +13,21 @@ $this->params['breadcrumbs'][] = $model->isNewRecord ? '新增' : '修改';
 
 	<div class="muser-form">
 
-		<?php $form = ActiveForm::begin(); ?>
+	<?php $form = ActiveForm::begin(); ?>
 
 		<?= $form->field($model, 'title')->textInput(['maxlength' => 64]) ?>
 
 		<?= $form->field($model, 'mobile')->textInput(['maxlength' => 24]) ?>
 
+		<?= $form->field($model, 'cat')->dropDownList(MChannel::getCatOptionName()) ?>
+
+		<?= $form->field($model, 'status')->dropDownList(MChannel::getStatusOptionName()) ?>
+
 		<div class="form-group">
-			<?= Html::submitButton($model->isNewRecord ? '增加' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+		<?= Html::submitButton($model->isNewRecord ? '增加' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
 		</div>
 
-		<?php ActiveForm::end(); ?>
+	<?php ActiveForm::end(); ?>
 
 	</div>
 
