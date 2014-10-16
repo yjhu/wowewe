@@ -8,8 +8,8 @@ use app\models\MMapApi;
 <head><title>营业厅位置</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
-<script src="<?php echo Yii::$app->getRequest()->baseUrl.'/../vendor/yiisoft/jquery/jquery.min.js'; ?> "></script>
-<script src="<?php echo Yii::$app->getRequest()->baseUrl.'/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js'; ?> "></script>
+<script src="<?php echo Yii::$app->getRequest()->baseUrl.'/../vendor/bower/jquery/dist/jquery.min.js'; ?> "></script>
+<script src="<?php echo Yii::$app->getRequest()->baseUrl.'/../vendor/bower/bootstrap/dist/js/bootstrap.min.js'; ?> "></script>
 
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=<?php echo MMapApi::getJsak(); ?>"></script>
 
@@ -23,12 +23,15 @@ var lon_begin = "<?php echo isset($lon_begin) ? $lon_begin : 0; ?>";
 var lat_begin = "<?php echo isset($lat_begin) ? $lat_begin : 0; ?>";
 var lat = "<?php echo $lat_end; ?>";
 var lng = "<?php echo $lon_end; ?>";
+var title = "<?php echo $office->title; ?>";
 
 function getPositionSuccess(position)
 {
 	var lat_begin = position.coords.latitude;
 	var lon_begin = position.coords.longitude;
 	initBMap(lng,lat,lon_begin,lat_begin);
+//	$("#direct_id").attr('href', "http://api.map.baidu.com/direction?origin=latlng:"+lat_begin+","+lon_begin+"|name:我的位置&destination=latlng:"+lat+","+lng+"|name:"+title+"&mode=driving&origin_region=武汉&destination_region=襄阳&output=html&src=wosotech|wosotech");
+	$("#direct_id").attr('href', "http://api.map.baidu.com/direction?origin=latlng:"+lat_begin+","+lon_begin+"|name:我的位置&destination=latlng:"+lat+","+lng+"|name:"+title+"&mode=driving&origin_region=襄阳&destination_region=襄阳&output=html&src=wosotech|wosotech");
 }
 	 
 function getPositionError(error) 
@@ -149,7 +152,7 @@ var initBMap = function(lng1,lat1,my_lng,my_lat)
           	电话：<a href="tel:<?php echo $office->mobile; ?>"><?php echo $office->mobile; ?></a>
           	<br />
 			地址：<?php echo $office->address; ?>
-			<a href="<?php echo "http://api.map.baidu.com/direction?origin=latlng:{$lat_begin},{$lon_begin}|name:我的位置&destination=latlng:{$lat_end},{$lon_end}|name:{$office->title}&mode=driving&region=襄阳&output=html&src=wosotech|wosotech"; ?>">我要导航</a>
+			<a id="direct_id" href="<?php echo "http://api.map.baidu.com/direction?origin=latlng:{$lat_begin},{$lon_begin}|name:我的位置&destination=latlng:{$lat_end},{$lon_end}|name:{$office->title}&mode=driving&origin_region=襄阳&destination_region=襄阳&output=html&src=wosotech|wosotech"; ?>">我要导航</a>
 			<br/>
    	    </div>
 </div>
