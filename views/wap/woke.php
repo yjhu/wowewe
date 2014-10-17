@@ -25,11 +25,25 @@ $basename = basename(__FILE__, '.php');
 	<?php echo $this->render('header1', ['menuId'=>'menu1','title' => '沃客计划']); ?>
 
 	<div role="main" class="ui-content">
-		<form>
+	
  
- 		 <?= Html::submitButton('立即注册', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
+		<?php $form = ActiveForm::begin([
+				'id' => "{$basename}_form",
+				'method' => 'post',
+				'options'=>['class'=>'ui-corner-all', 'data-ajax'=>'false'],
+				'fieldConfig' => [
+					'options' => ['class' => 'ui-field-contain'],
+					//'inputOptions' => [],
+					//'labelOptions' => [],
+				]               
+			]); ?>
 
-		</form>
+		 <?= Html::submitButton('立即注册', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'regBtn', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
+
+
+	    <?php ActiveForm::end(); ?>
+
+
 	</div>
 
 	<div data-role="footer" data-position="fixed">
