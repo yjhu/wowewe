@@ -19,6 +19,7 @@ use app\models\MUser;
 use app\models\MStaff;
 use app\models\MOffice;
 use app\models\MGh;
+use app\models\MChannel;
 use app\models\MOrder;
 use app\models\MItem;
 use app\models\MMobnum;
@@ -1272,12 +1273,32 @@ EOD;
         $this->layout = 'wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($user === null)
+            throw new NotFoundHttpException('user does not exists');
+        $model = MChannel::find()->where("gh_id = :gh_id AND openid = :openid", [':gh_id'=>$gh_id, ':openid'=>$openid])->one();
+        if ($model !== null)
+            return $this->redirect(['wokelist']);
 
-        //$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        //return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
-        return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (Yii::$app->request->isPost) 
+        {
+            $model->gh_id = $gh_id;
+            $model->openid = $openid;
+            $model->title = $user->nickname.$openid;
+            $model->status = MChannel::STATUS_OK;
+            $model->cat = MChannel::CAT_SOCIAL;
+            if ($model->save()) 
+            {
+                return $this->redirect(['wokelist']);            
+            }
+            else
+            {
+                U::W($model->getErrors());
+            }
+        }
+        
+        return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user]);
     }
-
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wokelist:gh_03a74ac96138
     public function actionWokelist()
@@ -1286,8 +1307,6 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
 
-        //$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        //return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
         return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
@@ -1299,11 +1318,9 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');        
 
-        //$oid = '53de91f9d3773';
         $model = MOrder::findOne($oid);        
         if (\Yii::$app->request->isPost) 
         {
-            U::W("--------------------------------------------------------");
                if (isset($_POST['paykind']))
                        $_POST['MOrder']['pay_kind'] = $_POST['paykind']; 
             $model->setAttributes($_POST['MOrder'], false);
