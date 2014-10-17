@@ -8,8 +8,8 @@ use app\models\MMapApi;
 <head><title>附近营业厅</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width,height=device-height,inital-scale=1.0,maximum-scale=1.0,user-scalable=no;">
-<script src="<?php echo Yii::$app->getRequest()->baseUrl.'/../vendor/yiisoft/jquery/jquery.min.js'; ?> "></script>
-<script src="<?php echo Yii::$app->getRequest()->baseUrl.'/../vendor/twbs/bootstrap/dist/js/bootstrap.min.js'; ?> "></script>
+<script src="<?php echo Yii::$app->getRequest()->baseUrl.'/../vendor/bower/jquery/dist/jquery.min.js'; ?> "></script>
+<script src="<?php echo Yii::$app->getRequest()->baseUrl.'/../vendor/bower/bootstrap/dist/js/bootstrap.min.js'; ?> "></script>
 
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=<?php echo MMapApi::getJsak(); ?>"></script>
 
