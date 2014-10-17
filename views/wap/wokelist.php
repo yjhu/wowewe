@@ -73,7 +73,7 @@
             </dt>
 
             <dd>
-                <p><span style="font-size:22px;font-weight: border">张小强</span></p>
+                <p><span style="font-size:22px;font-weight: border"><?= $user->nickname ?></span></p>
 
                 <!--
                 <div class="growth">
