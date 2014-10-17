@@ -66,7 +66,11 @@
             <dt>
                 <div class="perImg_bg">
                     <div class="perImg">
+                    <!--
                         <img id="myphoto" src="../web/images/woke/0.jpg" width="56">
+                    -->
+
+                    <img id="myphoto" src="<?php echo $user->headimgurl; ?>" width="56">
                     </div>
                 </div>
                 <p class="f9 marT7"><em id="vip_p" class="jin_vip"></em></p>
