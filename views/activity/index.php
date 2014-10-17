@@ -25,14 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'options' => ['class' => 'table-responsive'],
+        'tableOptions' => ['class' => 'table table-striped'],   
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'gh_id',
+             'title',
+            //'gh_id',
             'start_time',
             'end_time',
-            'title',
             // 'descr',
             [
                 //'label' => '部门名称',
