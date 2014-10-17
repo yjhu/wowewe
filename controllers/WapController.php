@@ -1264,6 +1264,34 @@ EOD;
         return $this->render('nearestoffice',['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
+
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/woke:gh_03a74ac96138
+    public function actionWoke()
+    {        
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+
+        //$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        //return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+        return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wokelist:gh_03a74ac96138
+    public function actionWokelist()
+    {        
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+
+        //$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        //return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/orderinfo:gh_03a74ac96138
     public function actionOrderinfo($oid)
     {
@@ -1347,6 +1375,10 @@ EOD;
         //$item = MItem::findOne($model->cid);
         return $this->render('orderinfo',['gh_id'=>$gh_id, 'openid'=>$openid, 'model' => $model, 'item' => $item]);
     }
+
+
+
+
 
 }
 

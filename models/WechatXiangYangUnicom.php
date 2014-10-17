@@ -165,6 +165,17 @@ EOD;
             $url = Url::to(['wap/testpay', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
             return $this->responseText("Test only <a href=\"{$url}\">clickme</a>\n----------\n <a href=\"http://m.wsq.qq.com/263163652\">wsq</a>    \n----------\n  <a href=\"http://www.baidu.com/?surf_token=a40aeb590b4674cad5c74246ba41bd9f\">active wifi</a>");
         }
+        else if ($msg == '.woke')
+        {
+            $url1 = Url::to(['wap/woke', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+            $urlStr1 = "<a href=\"{$url1}\">Test woke page</a>\n\n ";
+
+            $url2 = Url::to(['wap/wokelist', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+            $urlStr2 = "<a href=\"{$url2}\">Test wokelist page</a>\n\n ";
+
+            $urlStr = $urlStr1.$urlStr2;
+            return $this->responseText($urlStr);
+        }
         else
         {
             $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
