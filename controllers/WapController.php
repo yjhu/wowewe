@@ -58,7 +58,7 @@ class WapController extends Controller
     public function init()
     {
         //U::W(['init....', $_GET,$_POST, $GLOBALS]);
-        //U::W(['init....', $_GET,$_POST]);
+        U::W(['init....', $_GET,$_POST]);
     }
 
     public function beforeAction($action)
@@ -1270,18 +1270,27 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/woke:gh_03a74ac96138
     public function actionWoke()
     {        
+        U::W('ooooo');    
         $this->layout = 'wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
+            U::W([$gh_id, $openid]);
+        
         $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        U::W('11111');
         if ($user === null)
             throw new NotFoundHttpException('user does not exists');
+        U::W('222');            
         $model = MChannel::find()->where("gh_id = :gh_id AND openid = :openid", [':gh_id'=>$gh_id, ':openid'=>$openid])->one();
         if ($model !== null)
+        {
+            U::W('found channel');
             return $this->redirect(['wokelist']);
+        }
 
         if (Yii::$app->request->isPost) 
         {
+            U::W('POST....'.$gh_id.$openid);
             $model->gh_id = $gh_id;
             $model->openid = $openid;
             $model->title = $user->nickname.$openid;
@@ -1306,8 +1315,11 @@ EOD;
         $this->layout = 'wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($user === null)
+            throw new NotFoundHttpException('user does not exists');
 
-        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user]);
     }
 
 
