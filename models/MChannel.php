@@ -160,9 +160,9 @@ class MChannel extends ActiveRecord
         return $count;
     }
 
-    public static function getChannelScoreTop($gh_id,$month)
+    public static function getChannelScoreTop($gh_id, $month)
     {
-        $key = md5(serialize([$_GET, $gh_id, $month]));
+        $key = md5(serialize([__METHOD__, $gh_id, $month]));
         $value = Yii::$app->cache->get($key);
         if ($value !== false)
             return $value;
@@ -173,6 +173,8 @@ class MChannel extends ActiveRecord
             $row = [];
             $row['id'] = $channel->id;            
             $row['title'] = $channel->title;         
+            $row['cat'] = $channel->cat;                     
+            $row['status'] = $channel->status;                                 
             $row['cnt_sum'] = $channel->getScoreFromLog($month);                       
             $rows[] = $row;
         }

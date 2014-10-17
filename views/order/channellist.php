@@ -39,6 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'id',
 				'headerOptions' => array('style'=>'width:100px;'),	
 				'filter'=> false,				
+				'visible' => false,
 			],
 			[
 				'label' => '渠道名称',

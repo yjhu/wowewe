@@ -45,7 +45,7 @@ class AdminController extends Controller
 	public function actionIndex()
 	{
 		$searchModel = new MUserSearch;
-		$dataProvider = $searchModel->search($_GET);
+		$dataProvider = $searchModel->search(Yii::$app->request->get());
 
 		return $this->render('index', [
 			'dataProvider' => $dataProvider,
@@ -111,7 +111,7 @@ class AdminController extends Controller
 	public function actionItemlist()
 	{
 		$searchModel = new MItemSearch;
-		$dataProvider = $searchModel->search($_GET);
+		$dataProvider = $searchModel->search(Yii::$app->request->get());
 
 		return $this->render('itemlist', [
 			'dataProvider' => $dataProvider,
@@ -164,7 +164,7 @@ class AdminController extends Controller
 	public function actionPkglist()
 	{
 		$searchModel = new MPkgSearch;
-		$dataProvider = $searchModel->search($_GET);
+		$dataProvider = $searchModel->search(Yii::$app->request->get());
 
 		return $this->render('pkglist', [
 			'dataProvider' => $dataProvider,
@@ -215,7 +215,7 @@ class AdminController extends Controller
 	public function actionGhlist()
 	{
 		$searchModel = new MGhSearch;
-		$dataProvider = $searchModel->search($_GET);
+		$dataProvider = $searchModel->search(Yii::$app->request->get());
 
 		return $this->render('ghlist', [
 			'dataProvider' => $dataProvider,
@@ -288,7 +288,7 @@ class AdminController extends Controller
 //		return $this->render('VUserList');
 
 		$searchModel = new MUserSearch;
-		$dataProvider = $searchModel->search($_GET);
+		$dataProvider = $searchModel->search(Yii::$app->request->get());
 
 		return $this->render('VUserList', [
 			'dataProvider' => $dataProvider,
