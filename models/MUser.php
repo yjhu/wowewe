@@ -231,6 +231,11 @@ class MUser extends ActiveRecord implements IdentityInterface
             $this->delete();
     }
 
+    public function getChannel()
+    {
+        return $this->hasOne(MChannel::className(),  ['gh_id' => 'gh_id', 'openid' => 'openid']);
+    }
+
 }
 
 /*

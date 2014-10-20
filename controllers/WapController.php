@@ -421,29 +421,6 @@ EOD;
             U::W($arr);
     }
 
-    //http://127.0.0.1/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prom:gh_1ad98f5481f3
-    //http://wosotech.com/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
-    //http://wosotech.com/wx/webtest/wxpay-jsapi-demo.html
-    public function actionProm()
-    {
-        $this->layout = false;        
-        //$gh_id = $_GET['gh_id'];
-        //$gh_id = Yii::$app->session['gh_id'];    
-        //$openid = Yii::$app->session['openid'];
-        $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
-        
-        Yii::$app->wx->setGhId($gh_id);
-        //test native url begin        
-        //$productId = 'item1';
-        //$url = Yii::$app->wx->create_native_url($productId);    
-        //U::W($url);        
-        //$tag = Html::a('click here to pay', $url);        
-        $item = ['iid'=>'4198489411','title'=>'title1','price'=>'169900', 'new_price'=>'119900', 'url'=>'http://baidu.com', 'pic_url'=>'53a95055dcf97_b.png', 'seller_cids'=>'100'];
-         return $this->render('prom', ['item' => $item]);
-    }    
-
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_1ad98f5481f3
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_03a74ac96138    
     public function actionLuck()
@@ -490,7 +467,7 @@ EOD;
     //http://wosotech.com/wx/web/index.php?r=wap/iphone6sub&cat=1
     public function actionIphone6sub()
     {
-            $cat = isset($_GET['cat']) ? $_GET['cat'] : 0;
+        $cat = isset($_GET['cat']) ? $_GET['cat'] : 0;
         $this->layout = 'wap';
         $model = new \app\models\MIphone6Sub;
         $cat = Yii::$app->request->get('cat', 0);    
@@ -1094,31 +1071,6 @@ EOD;
         return json_encode($data);
     }
 
-    /*
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardwo:gh_1ad98f5481f3
-    public function actionCardwo()
-    {
-        $this->layout ='wapy';
-        $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
-        Yii::$app->wx->setGhId($gh_id);
-
-        return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_WO, 'gh_id'=>$gh_id, 'openid'=>$openid]);
-    }
-
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_1ad98f5481f3
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_03a74ac96138
-    public function actionCardxiaoyuan()
-    {
-        $this->layout ='wapy';
-        $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
-        Yii::$app->wx->setGhId($gh_id);
-
-        return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_XIAOYUAN, 'gh_id'=>$gh_id, 'openid'=>$openid]);
-    }
-    */
-
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mobilelist:gh_03a74ac96138
     public function actionMobilelist()
     {
@@ -1126,51 +1078,22 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-
-        //return $this->render('mobile');
-        //$models = MItem::findAll(['kind'=>MItem::ITEM_KIND_MOBILE]);
         $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_DESC])->all();
-        
-
         $query = new \yii\db\Query();
         $query->select('*')->from(\app\models\MActivity::tableName())->where(['status'=>1])->orderBy(['id' => SORT_DESC])->all();   
         $rows = $query->createCommand()->queryAll();
-        //U::W($rows);
         foreach($models as &$model)
         {
-             //U::W($model['iid']);
-             //U::W('-----------\n');
             foreach($rows as &$row)
             {
                 $ids = explode(",", $row['iids']); 
                 if (in_array($model['iid'], $ids)) 
                 {
-                   //U::W($model['title']."---".$model['iid']."在做促销活动！\n");
-                   //$model['title']=$model['title']."&nbsp;&nbsp;<span class='activity'>限时促销!</span>";
                    $model['price']=($model['price']*$row['discount'])/10;
                    $model['title_hint']="<span class='activity'>限时促销!</span>&nbsp;&nbsp;".$model['title_hint'];
                 }
-
             }
         }
-
-        return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
-    }
-
-
-
-    // just for test pc web
-    public function actionMobilelistxxx()
-    {
-        $this->layout ='wapy';        
-        Yii::$app->session['gh_id'] = MGh::GH_XIANGYANGUNICOM;
-        Yii::$app->session['openid'] =  MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;            
-
-        $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
-        Yii::$app->wx->setGhId($gh_id);
-
-        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_DESC])->all();
         return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
     }
 
@@ -1180,33 +1103,28 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-
-        //return $this->render('mobile');
-        return $this->render('mobile', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid]);
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        return $this->render('mobile', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user]);
     }
 
-
-       //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardlist:gh_03a74ac96138
+     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardlist:gh_03a74ac96138
     public function actionCardlist()
     {
         $this->layout ='wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-
         $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_CARD])->orderBy(['price'=>SORT_DESC])->all();
         return $this->render('cardlist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
     }
 
-       //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/card:gh_03a74ac96138
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/card:gh_03a74ac96138
     public function actionCard()
     {
         $this->layout ='wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-
-        //return $this->render('mobile');
         return $this->render('card', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
@@ -1226,10 +1144,8 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->session['gh_id'] = $gh_id;
-        Yii::$app->session['openid'] = $openid;        
-        
+        Yii::$app->session['openid'] = $openid;                
         Yii::$app->wx->setGhId($gh_id);
-
         return $this->render('home');
     }
 
@@ -1237,11 +1153,9 @@ EOD;
     public function actionGoodnumber()
     {
         $this->layout ='wapy';
-
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-
         return $this->render('goodnumber', ['cid'=>MItem::ITEM_CAT_GOODNUMBER, 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
@@ -1252,9 +1166,7 @@ EOD;
         $this->layout = 'wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
-
-        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-    
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);    
         return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
@@ -1868,6 +1780,53 @@ return $xmlStr;
     }
 
         
-*/    
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardwo:gh_1ad98f5481f3
+    public function actionCardwo()
+    {
+        $this->layout ='wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+
+        return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_WO, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_1ad98f5481f3
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_03a74ac96138
+    public function actionCardxiaoyuan()
+    {
+        $this->layout ='wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+
+        return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_XIAOYUAN, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prom:gh_1ad98f5481f3
+    //http://wosotech.com/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
+    //http://wosotech.com/wx/webtest/wxpay-jsapi-demo.html
+    public function actionProm()
+    {
+        $this->layout = false;        
+        //$gh_id = $_GET['gh_id'];
+        //$gh_id = Yii::$app->session['gh_id'];    
+        //$openid = Yii::$app->session['openid'];
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        
+        Yii::$app->wx->setGhId($gh_id);
+        //test native url begin        
+        //$productId = 'item1';
+        //$url = Yii::$app->wx->create_native_url($productId);    
+        //U::W($url);        
+        //$tag = Html::a('click here to pay', $url);        
+        $item = ['iid'=>'4198489411','title'=>'title1','price'=>'169900', 'new_price'=>'119900', 'url'=>'http://baidu.com', 'pic_url'=>'53a95055dcf97_b.png', 'seller_cids'=>'100'];
+         return $this->render('prom', ['item' => $item]);
+    }    
+
+    
+    */
 
 
