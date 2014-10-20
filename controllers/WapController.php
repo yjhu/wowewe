@@ -1094,6 +1094,7 @@ EOD;
         return json_encode($data);
     }
 
+    /*
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardwo:gh_1ad98f5481f3
     public function actionCardwo()
     {
@@ -1116,6 +1117,7 @@ EOD;
 
         return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_XIAOYUAN, 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
+    */
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mobilelist:gh_03a74ac96138
     public function actionMobilelist()

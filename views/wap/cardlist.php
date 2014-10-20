@@ -28,54 +28,52 @@
     <div data-role="content">
         <!--<ul data-role="listview" data-inset="true">-->
         <ul data-role="listview" data-inset="false" class="ui-nodisc-icon ui-alt-icon">
+
+        <li><a data-ajax="false" href="http://wap.10010.com/t/businessTransact/query3gFlow.htm?src=wolm&channel=cps&cid=8a94a89148bf746b0148bfe4ee5600ef&adid=8a94a89148c215960148c4e5b725006e&menuId=000300010001">
+                <img style='padding-top:20px' src="../web/images/item/liuliangbao-120x120.jpg">
+                <h2>3G国内流量包</h2>
+                <p>流量在手, 别无所求！</p>
+                <!--
+                <p class='line'>原价: ￥<//?= $model->old_price/100 ?></p>
+                -->
+                <!--
+                <p>惊爆价: ￥<?//= $model->price/100 ?></p>
+                -->
+                <p>&nbsp;</p>
+            </a>
+        </li>
+
+
+        <li><a data-ajax="false" href="http://m.10010.com/mobilegoodsdetail/711403121719.html?src=wolm&channel=cps&cid=8a94a89148bf746b0148bfe4ee5600ef&adid=8a94a8914879788001487d40ab930009">
+                <img style='padding-top:20px' src="../web/images/item/4Gliuliangbao-120x120.jpg">
+                <h2>4G全国套餐</h2>
+                <p>让您用得起 用得放心的套餐!</p>
+                <!--
+                <p class='line'>原价: ￥<//?= $model->old_price/100 ?></p>
+                -->
+                <!--
+                <p>惊爆价: ￥<?//= $model->price/100 ?></p>
+                -->
+                <p>&nbsp;</p>
+            </a>
+        </li>
+
+        <li><a data-ajax="false" href="http://www.10010.com/goodsdetail/711405149472.html?src=wolm&channel=cps&cid=8a94a89148bf746b0148bfe4ee5600ef&adid=8a94a8914879788001487d3a26690005&menuId=000300010001">
+                <img style='padding-top:20px' src="../web/images/item/ziyoutaocan-120x120.jpg">
+                <h2>4G组合套餐</h2>
+                <p>自由选择, 随意组合!</p>
+                <!--
+                <p class='line'>原价: ￥<//?= $model->old_price/100 ?></p>
+                -->
+                <!--
+                <p>惊爆价: ￥<?//= $model->price/100 ?></p>
+                -->
+                <p>&nbsp;</p>
+            </a>
+        </li>
+
         <?php foreach($models as $model) { ?>
 
-         <a data-ajax=false href="">
-            
-         </a>
-            <li><a data-ajax="false" href="http://wap.10010.com/t/businessTransact/query3gFlow.htm?src=wolm&channel=cps&cid=8a94a89148bf746b0148bfe4ee5600ef&adid=8a94a89148c215960148c4e5b725006e&menuId=000300010001">
-                    <img style='padding-top:20px' src="../web/images/item/liuliangbao-120x120.jpg">
-                    <h2>3G国内流量包</h2>
-                    <p>流量在手, 别无所求！</p>
-                    <!--
-                    <p class='line'>原价: ￥<//?= $model->old_price/100 ?></p>
-                    -->
-                    <!--
-                    <p>惊爆价: ￥<?//= $model->price/100 ?></p>
-                    -->
-                    <p>&nbsp;</p>
-                </a>
-            </li>
-
-
-            <li><a data-ajax="false" href="http://m.10010.com/mobilegoodsdetail/711403121719.html?src=wolm&channel=cps&cid=8a94a89148bf746b0148bfe4ee5600ef&adid=8a94a8914879788001487d40ab930009">
-                    <img style='padding-top:20px' src="../web/images/item/4Gliuliangbao-120x120.jpg">
-                    <h2>4G全国套餐</h2>
-                    <p>让您用得起 用得放心的套餐!</p>
-                    <!--
-                    <p class='line'>原价: ￥<//?= $model->old_price/100 ?></p>
-                    -->
-                    <!--
-                    <p>惊爆价: ￥<?//= $model->price/100 ?></p>
-                    -->
-                    <p>&nbsp;</p>
-                </a>
-            </li>
-
-  
-            <li><a data-ajax="false" href="http://www.10010.com/goodsdetail/711405149472.html?src=wolm&channel=cps&cid=8a94a89148bf746b0148bfe4ee5600ef&adid=8a94a8914879788001487d3a26690005&menuId=000300010001">
-                    <img style='padding-top:20px' src="../web/images/item/ziyoutaocan-120x120.jpg">
-                    <h2>4G组合套餐</h2>
-                    <p>自由选择, 随意组合!</p>
-                    <!--
-                    <p class='line'>原价: ￥<//?= $model->old_price/100 ?></p>
-                    -->
-                    <!--
-                    <p>惊爆价: ￥<?//= $model->price/100 ?></p>
-                    -->
-                    <p>&nbsp;</p>
-                </a>
-            </li>
 
             <li><a data-ajax="false" href="<?php echo  Url::to(['wap/card', 'cid'=>$model->cid],true) ?>">
                     <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
