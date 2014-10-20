@@ -6,6 +6,8 @@
     use app\models\U;
     use app\models\MOffice;
 
+    use app\models\MChannel;
+
     $item = \app\models\MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$cid]);
 	//if ($item === null)
 	//{
@@ -452,10 +454,12 @@ text-decoration: line-through;
 
 
 <?php
+	$wid = empty($user->channel) ? 0 : $user->channel->scene_id;
+	$srcid = MChannel::SRC_SHARE_FRIEND;
 	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
 	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
 	$appid = Yii::$app->wx->gh['appid'];
-	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid());
+	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid().":wid=$wid:srcid=$srcid");
 	$myImg = Url::to("$assetsPath/share-icon.jpg", true);
 	$title = '特惠手机';
 	$desc = '多款热销机型，优惠大放送，快来瞄瞄吧~~ 心动不如行动！';

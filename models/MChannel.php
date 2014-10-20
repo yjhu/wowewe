@@ -39,6 +39,8 @@ class MChannel extends ActiveRecord
     const STATUS_WAIT = 1;
     const STATUS_OK = 0;
 
+    const SRC_SHARE_FRIEND = 1;
+
     static function getCatOptionName($key=null)
     {
         $arr = array(
