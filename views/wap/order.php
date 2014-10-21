@@ -111,9 +111,11 @@ $basename = basename(__FILE__, '.php');
 		
 		<p><span class="title_comm">用户信息</span></p></li>
 		<p><span class="title_comm">姓名:</span>&nbsp;<span id="username"></span></p>
-		<p><span class="title_comm">手机号码:</span>&nbsp;<span id="usermobile"></span></p>
 		<p><span class="title_comm">身份证:&nbsp;</span><span id="userid"></span></p>
 
+		<p><span class="title_comm">收货地址</span></p></li>
+		<p><span class="title_comm">手机号码:</span>&nbsp;<span id="usermobile"></span></p>
+		<p><span class="title_comm">收货地址:&nbsp;</span><span id="address"></span></p>
 		<hr color="#F7C708">
 		<p><span class="title_comm">给卖家留言:&nbsp;</span><span id="memo"></span></p>
 
@@ -167,6 +169,7 @@ function load_data1(i, n)
 	$("#username").html(n.username);
 	$("#usermobile").html(n.usermobile);
 	$("#userid").html(n.userid);
+	$("#address").html(n.address);
 	$("#office_id").html(office_name[n.office_id]);
 	if(n.status == 0)
 		$("#status").html(n.statusName +"<span style='color:blue' class='qxdd_orderdetail' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span>");

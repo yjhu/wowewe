@@ -228,6 +228,12 @@ text-decoration: line-through;
                 </a>
             </li>
 
+            <li id="address-li">
+                <a href="#addressPage">
+                <p id="address" class="title_unset">收货地址</p>
+                </a>
+            </li>           
+
             <li id="office-li">
                 <a href="#office-select">
                 <p id="officeName" class="title_unset">营业厅</p>
@@ -252,6 +258,43 @@ text-decoration: line-through;
 </div> <!-- page2 end -->
 
 
+<!-- 用户收货地址 -->
+<div data-role="page" id="addressPage" data-theme="c">
+
+    <?php echo $this->render('header2', ['menuId'=>'menu9','title' => $item->title]); ?>
+
+    <div data-role="content">
+
+        <h2>用户收货地址</h2>
+        <div class="ui-field-contain">
+            <input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
+
+            <input type="text" name="addr" id="addr" placeholder="省市区街道-邮政编码" data-mini=false value="">
+        </div>
+
+        <input type="button" value="确认" id="addAddressBtn">
+
+    </div>
+
+    <div data-role="footer" data-position="fixed">
+        <h4>&copy; 襄阳联通 2014</h4>
+    </div>
+
+    <div data-role="popup" id="popupDialog-addressPage" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
+        <div data-role="header" data-theme="c">
+        <h1>温馨提示</h1>
+        </div>
+        <div role="main" id="popupDialog-addressPage-txt" class="ui-content">
+            <span class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext'><span><p>地址输入有误，请重新填写。</p>
+            <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">确认</a>
+        </div>
+    </div>
+
+    <?php echo $this->render('menu', ['menuId'=>'menu9','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>  <!-- addressPage end -->
+
+
+
 <div data-role="page" id="contactPage" data-theme="c">
 <!--
 <div data-role="header" data-add-back-btn="true" data-back-btn-text="返回">
@@ -269,8 +312,6 @@ text-decoration: line-through;
 		<label for="username">姓名</label>
 		-->
 		<input type="text" name="username" id="username" placeholder="姓名" value="">
-
-		<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
 
 		<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
 	</div>
@@ -453,9 +494,13 @@ text-decoration: line-through;
 
 
 
+
+
+
 <?php
 	$wid = empty($user->channel) ? 0 : $user->channel->scene_id;
-	$srcid = MChannel::SRC_SHARE_FRIEND;
+	//$srcid = MChannel::SRC_SHARE_FRIEND;
+    $srcid = 1;
 	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
 	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
 	$appid = Yii::$app->wx->gh['appid'];
@@ -508,6 +553,7 @@ var ctrl_userinfo = "<?php echo  $item->ctrl_userinfo; ?>";
 var ctrl_office = "<?php echo  $item->ctrl_office; ?>";
 var ctrl_package = "<?php echo  $item->ctrl_package; ?>";
 var ctrl_supportpay = "<?php echo  $item->ctrl_supportpay; ?>";
+var ctrl_address = "<?php echo  $item->ctrl_address; ?>";
 
 var ctrl_pkg_plan = "<?php echo  $item->ctrl_pkg_plan; ?>";
 
@@ -553,6 +599,15 @@ $(document).on("pageshow", "#page2", function(){
     else
     {
         $("#office-li").show();
+    }
+
+    if(ctrl_address == 0)
+    {
+        $("#address-li").hide();
+    }
+    else
+    {
+        $("#address-li").show();
     }
     
     if(ctrl_package == 0)
@@ -617,6 +672,12 @@ $(document).on("pageshow", "#page2", function(){
         $("#officeName")[0].innerHTML="营业厅 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class='title_set_content'>"+ office_name[localStorage.getItem("office")] +"...</span>";
         $("#officeName").removeClass("title_unset").addClass("title_set");
     }
+
+    if(localStorage.getItem("address") != null)
+    {           
+        $("#address")[0].innerHTML="收货地址 &nbsp;&nbsp;&nbsp;&nbsp;<span class='title_set_content'>"+localStorage.getItem("address")+"...</span>";
+        $("#address").removeClass("title_unset").addClass("title_set");
+    }       
     
 });
 
@@ -759,6 +820,7 @@ $(document).on("pageinit", "#page2", function(){
     username = null;
     usermobile = null;
     userid = null;
+    address = null;
 
     pkg3g4g = null;
     pkgPeriod = null;
@@ -820,11 +882,28 @@ $(document).on("pageinit", "#page2", function(){
             else
             {
                 username = localStorage.getItem("username");
-                usermobile = localStorage.getItem("usermobile");
                 userid = localStorage.getItem("userid");
             }
         }       
  
+
+        if(ctrl_address != 0)
+        {
+            if( localStorage.getItem("usermobile") == null)
+            {
+                $("#submitBtn").show();
+                $("#errorMsg").html("<span class='title_unset'>请输入收货信息</span>");
+                $("#popupErrorMsg").popup("open");
+
+                return false;
+            }
+            else
+            {
+                usermobile = localStorage.getItem("usermobile");
+                address = localStorage.getItem("address");
+            }
+        }
+
         if(ctrl_office != 0)
         {
             if( localStorage.getItem("office") == null)
@@ -858,7 +937,7 @@ $(document).on("pageinit", "#page2", function(){
 			type:"GET",
             cache:false,
             dataType:'json',
-			data: $("form#productForm").serialize()+"&cid="+cid+"&pkg3g4g="+pkg3g4g+"&pkgPeriod="+pkgPeriod+"&pkgMonthprice="+pkgMonthprice+"&pkgPlan="+pkgPlan+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid,
+			data: $("form#productForm").serialize()+"&cid="+cid+"&pkg3g4g="+pkg3g4g+"&pkgPeriod="+pkgPeriod+"&pkgMonthprice="+pkgMonthprice+"&pkgPlan="+pkgPlan+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address,
 			success:function(json_data){
 				//data = eval('('+data+')');
 
@@ -957,17 +1036,13 @@ $(document).on("pageinit", "#contactPage", function(){
 
 	if(localStorage.getItem('username') != '')
 		$('#username').val(localStorage.getItem('username'));
-	if(localStorage.getItem('usermobile') != '')
-		$('#usermobile').val(localStorage.getItem('usermobile'));
 	if(localStorage.getItem('userid') != '')
 		$('#userid').val(localStorage.getItem('userid'));
 
 	//alert('here is contact page');
 	$("#addContactBtn").click(function(){
 		var username = $('#username').val();
-		var usermobile = $('#usermobile').val();
 		var userid = $('#userid').val();
-
 
         var usernameReg = /^[\u4E00-\u9FFF]+$/;
         if(usernameReg.test(username) === false)
@@ -977,14 +1052,7 @@ $(document).on("pageinit", "#contactPage", function(){
             //alert("姓名输入不合法");
             return  false;
         }
-        var usermobileReg = /(^(1)\d{10}$)/;
-        if(usermobileReg.test(usermobile) === false)
-        {
-            fillErrmsg('#popupDialog-contactPage-txt','手机号码输入不合法, 请重新输入.');
-            $('#popupDialog-contactPage').popup('open');
-            //alert("手机号码输入不合法");
-            return  false;
-        }
+
         var useridReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
         if(useridReg.test(userid) === false)
         {
@@ -994,13 +1062,51 @@ $(document).on("pageinit", "#contactPage", function(){
             return  false;
         }
 
-
 		localStorage.setItem('username',username);
-		localStorage.setItem('usermobile',usermobile);
 		localStorage.setItem('userid',userid);
 
 		$.mobile.changePage("#page2",{transition:"slide"});
 	});
+
+});
+
+
+/*收货地址*/
+$(document).on("pageinit", "#addressPage", function(){
+
+    if(localStorage.getItem('usermobile') != '')
+        $('#usermobile').val(localStorage.getItem('usermobile'));
+    if(localStorage.getItem('address') != '')
+        $('#addr').val(localStorage.getItem('address'));
+
+    //alert('here is contact page');
+    $("#addAddressBtn").click(function(){
+        var address = $('#addr').val();
+        var usermobile = $('#usermobile').val();
+
+        var usermobileReg = /(^(1)\d{10}$)/;
+        if(usermobileReg.test(usermobile) === false)
+        {
+            fillErrmsg('#popupDialog-addressPage-txt','手机号码输入不合法, 请重新输入.');
+            $('#popupDialog-addressPage').popup('open');
+            //alert("手机号码输入不合法");
+            return  false;
+        }
+        //var addressReg = /^[\u4E00-\u9FFF]+$/;
+        //if(addressReg.test(address) === false)
+        if(address == "")
+        {
+            fillErrmsg('#popupDialog-addressPage-txt','收货地址输入不合法, 请重新输入.');
+            $('#popupDialog-addressPage').popup('open');
+            return  false;
+        }
+        //alert(address);
+
+        localStorage.setItem('usermobile',usermobile);
+        localStorage.setItem('address',address);
+
+        $.mobile.changePage("#page2",{transition:"slide"});
+    });
 
 });
 

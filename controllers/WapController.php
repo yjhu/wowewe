@@ -788,6 +788,41 @@ EOD;
                 $order->attr = "{$_GET['prom']}";
                 break;
 
+            case MItem::ITEM_CAT_CARD_45GLIULIANG:
+                $order->title = '45G包年流量套餐';                    
+               $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_CARD_96GLIULIANG:
+                $order->title = '96G包年流量套餐';                    
+               $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW100MB:
+                $order->title = '10元包100MB 3G省内流量包';                    
+               $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW300MB:
+                $order->title = '20元包300MB 3G省内流量包';                   
+               $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW500MB:
+                $order->title = '30元包1G 3G省内流量包';             
+               $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW1GB_1:
+                $order->title = '50元包100MB 3G省内流量包';                   
+               $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW2DOT5GB:
+                $order->title = '100元包2.5G 3G省内流量包';                    
+               $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW1GB_2:
+                $order->title = '100元包1G 全国流量半年包';                   
+               $order->attr = "{$_GET['cardType']}";
+                break;
+
             default:
                 U::W(['invalid data cat', $_GET["cid"], __METHOD__,$_GET]);
                 return;
@@ -804,6 +839,8 @@ EOD;
         //U::W('---------------------------------');
         //U::W($order->feesum);
 
+
+
         //$order->office_id = $_GET['office'];        
         //$order->select_mobnum = $_GET['selectNum'];
         //$order->username = isset($_GET['username']) ? $_GET['username'] : '';
@@ -813,7 +850,12 @@ EOD;
         $order->username = (isset($_GET['username']) && $_GET['username'] !=  MOrder::NO_CHOICE) ? $_GET['username'] : '';
         $order->usermobile = (isset($_GET['usermobile']) && $_GET['usermobile'] !=  MOrder::NO_CHOICE) ? $_GET['usermobile'] : '';
         //$order->pay_kind = isset($_GET['pay_kind']) ? $_GET['pay_kind'] : MOrder::PAY_KIND_CASH;
+        $order->address = (isset($_GET['address']) && $_GET['address'] !=  MOrder::NO_CHOICE) ? $_GET['address'] : '';
+
         
+        
+
+
         $order->detail = $order->getDetailStr();
 
         if ($_GET['selectNum'] != MOrder::NO_CHOICE)
@@ -829,10 +871,11 @@ EOD;
         {
             $order->select_mobnum = '';
         }
-        
+        //U::W('---------------------444------------');
+        //U::W($order->address);
         if ($order->save(false))
         {
-            //U::W('save ok....');    
+            U::W('save ok....');    
             if (isset($mobnum))
             {
                 $mobnum->status = MMobnum::STATUS_LOCKED;
@@ -1114,8 +1157,11 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_CARD])->orderBy(['price'=>SORT_DESC])->all();
-        return $this->render('cardlist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
+
+        $kind=$_GET['kind'];
+
+        $models = MItem::find()->where(['kind'=>$kind])->orderBy(['price'=>SORT_DESC])->all();
+        return $this->render('cardlist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models,'kind'=>$kind]);
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/card:gh_03a74ac96138

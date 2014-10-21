@@ -34,6 +34,8 @@ $this->params['breadcrumbs'][] = '修改';
 		<?= $form->field($model, 'ctrl_userinfo')->textInput(['maxlength' => 10]) ?>
 		<?= $form->field($model, 'ctrl_office')->textInput(['maxlength' => 10]) ?>
 		<?= $form->field($model, 'ctrl_package')->textInput(['maxlength' => 10]) ?>
+		<?= $form->field($model, 'ctrl_address')->textInput(['maxlength' => 10]) ?>
+
 		<?= $form->field($model, 'ctrl_supportpay')->textInput(['maxlength' => 10]) ?>
 
 		<?= $form->field($model, 'ctrl_pkg_3g4g')->textInput(['maxlength' => 128]) ?>
