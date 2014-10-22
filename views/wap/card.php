@@ -154,9 +154,21 @@
         </p>
         -->
 
+		<!-- kind == 4 流量包 -->
+		<?php if($item->kind == 4) {?>
+			<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+			  <!--<legend class="title_comm">开通</legend>-->
+
+			  <input type="radio" name="kaitong" id="radio1_1" value="立即开通" checked />
+			  <label for="radio1_1">立即开通</label>
+			  <input type="radio" name="kaitong" id="radio1_2" value="次月开通" />
+			  <label for="radio1_2">次月开通</label>
+			</fieldset>
+
+			<input type="hidden" name="cardType" vaule="0">
+		<?php } else { ?>
 		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
 		  <legend class="title_comm">卡类型</legend>
-
 
 		  <input type="radio" name="cardType" id="radio1_0" value="0" checked />
 		  <label for="radio1_0">普通卡</label>
@@ -170,12 +182,15 @@
 		<img width="100%" style="display:block" src="../web/images/item/card.jpg" alt=""/>
 		</div>
 		</fieldset>
+		<?php } ?>
+
+
 
 	  <br>
 
     <ul data-role="listview" data-inset="false" class="ui-nodisc-icon ui-alt-icon">
 
-		<li>
+		<li id="detail-li">
 			<a href="#detail">
 			<p class="title_comm">产品详情</p>
 			</a>
@@ -210,7 +225,13 @@
 	<br>
 	<br>
 
-	<a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">一键购买</a>
+	<!-- kind == 4 流量包 -->
+	<?php if($item->kind == 4) {?>
+		<a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">确认</a>
+	<?php } else { ?>
+		<a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">一键购买</a>
+	<?php } ?>
+
 	<br>
 
 </div>
@@ -413,7 +434,7 @@ var ctrl_userinfo = "<?php echo  $item->ctrl_userinfo; ?>";
 var ctrl_office = "<?php echo  $item->ctrl_office; ?>";
 var ctrl_supportpay = "<?php echo  $item->ctrl_supportpay; ?>";
 var ctrl_address = "<?php echo  $item->ctrl_address; ?>";
-
+var ctrl_detail = "<?php echo  $item->ctrl_detail; ?>";
 
 
 function isWeiXin() {
@@ -428,6 +449,15 @@ function isWeiXin() {
 $(document).on("pageshow", "#page2", function(){
 
 	/*item ctrl begin --------------------------------------------*/
+	if(ctrl_detail == 0)
+	{
+		$("#detail-li").hide();
+	}
+	else
+	{
+		$("#detail-li").show();
+	}
+
 	if(ctrl_mobnumber == 0)
 	{
 		$("#sel-num-li").hide();

@@ -30,6 +30,7 @@ CREATE TABLE wx_order (
     username VARCHAR(16) NOT NULL DEFAULT '',
     usermobile VARCHAR(16) NOT NULL DEFAULT '',   
     address VARCHAR(256) NOT NULL DEFAULT '',
+    kaitong VARCHAR(16) NOT NULL DEFAULT '',
     pay_kind tinyint(10) unsigned NOT NULL DEFAULT '0',
     aliwap_trade_no VARCHAR(64) NOT NULL DEFAULT '',
     aliwap_total_fee VARCHAR(16) NOT NULL DEFAULT '',
@@ -94,6 +95,7 @@ class MOrder extends ActiveRecord
             'username' => '姓名',
             'usermobile' => '联系电话',
             'address' => '收货地址',
+            'kaitong' => '开通',
             'office_id' => '营业厅编号',
             'pay_kind' => '付款方式',
             'memo' => '留言',
@@ -106,7 +108,8 @@ class MOrder extends ActiveRecord
             [['status', 'pay_kind'], 'integer'],                    
             [['select_mobnum'],  'string', 'min' => 11, 'max' => 11],
             [['select_mobnum'],  'number'],  
-            [['address'],  'string', 'min' => 5, 'max' => 256],          
+            [['address'],  'string', 'min' => 5, 'max' => 256], 
+            [['kaitong'],  'string', 'min' => 1, 'max' => 16],      
         ];
     }
 
@@ -675,4 +678,6 @@ ALTER TABLE wx_order ADD val_pkg_monthprice int(10) unsigned NOT NULL DEFAULT '0
 ALTER TABLE wx_order ADD val_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
 
 ALTER TABLE wx_order ADD address VARCHAR(256) NOT NULL DEFAULT '';
+ALTER TABLE wx_order ADD kaitong VARCHAR(16) NOT NULL DEFAULT '';
+
 */

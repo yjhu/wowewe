@@ -94,7 +94,7 @@ class CmdController extends Controller
         }
 
     }    
-
+    
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/get-ad-url
     public function actionGetAdUrl()
     {        

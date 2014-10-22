@@ -790,25 +790,25 @@ EOD;
 
             case MItem::ITEM_CAT_CARD_45GLIULIANG:
                 $order->title = '45G包年流量套餐';                    
-               $order->attr = "{$_GET['cardType']}";
+                $order->attr = "{$_GET['cardType']}";
                 break;
 
             case MItem::ITEM_CAT_CARD_96GLIULIANG:
                 $order->title = '96G包年流量套餐';                    
-               $order->attr = "{$_GET['cardType']}";
+                $order->attr = "{$_GET['cardType']}";
                 break;
 
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW100MB:
                 $order->title = '10元包100MB 3G省内流量包';                    
-               $order->attr = "{$_GET['cardType']}";
+                $order->attr = "{$_GET['cardType']}";
                 break;
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW300MB:
                 $order->title = '20元包300MB 3G省内流量包';                   
-               $order->attr = "{$_GET['cardType']}";
+                $order->attr = "{$_GET['cardType']}";
                 break;
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW500MB:
                 $order->title = '30元包1G 3G省内流量包';             
-               $order->attr = "{$_GET['cardType']}";
+                $order->attr = "{$_GET['cardType']}";
                 break;
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW1GB_1:
                 $order->title = '50元包100MB 3G省内流量包';                   
@@ -816,11 +816,11 @@ EOD;
                 break;
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW2DOT5GB:
                 $order->title = '100元包2.5G 3G省内流量包';                    
-               $order->attr = "{$_GET['cardType']}";
+                $order->attr = "{$_GET['cardType']}";
                 break;
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW1GB_2:
                 $order->title = '100元包1G 全国流量半年包';                   
-               $order->attr = "{$_GET['cardType']}";
+                $order->attr = "{$_GET['cardType']}";
                 break;
 
             default:
@@ -851,8 +851,8 @@ EOD;
         $order->usermobile = (isset($_GET['usermobile']) && $_GET['usermobile'] !=  MOrder::NO_CHOICE) ? $_GET['usermobile'] : '';
         //$order->pay_kind = isset($_GET['pay_kind']) ? $_GET['pay_kind'] : MOrder::PAY_KIND_CASH;
         $order->address = (isset($_GET['address']) && $_GET['address'] !=  MOrder::NO_CHOICE) ? $_GET['address'] : '';
+        $order->kaitong = (isset($_GET['kaitong']) && $_GET['kaitong'] !=  MOrder::NO_CHOICE) ? $_GET['kaitong'] : '';
 
-        
         
 
 
