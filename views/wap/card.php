@@ -132,10 +132,10 @@
 
     <p id="price" class="title_comm">
 		价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
-		<!--
+		
 		<br>
-		<span id="priceHint" class="productPkgHint"><?//php echo  $item->price_hint; ?></span>
-		-->
+		<span id="priceHint" class="productPkgHint"><?php echo $item->price_hint; ?></span>
+	
     </p>
 
 
@@ -188,13 +188,13 @@
 		</li>
 
 		<li id="contact-li">
-			<a href="#contactPage">
+			<a href="#contactPage" data-ajax="false">
 			<p id="contact" class="title_unset">用户信息</p>
 			</a>
 		</li>
 
 		<li id="address-li">
-			<a href="#addressPage">
+			<a href="#addressPage" data-ajax="false">
 			<p id="address" class="title_unset">收货地址</p>
 			</a>
 		</li>
@@ -233,11 +233,12 @@
 
 		<h2>用户信息</h2>
 		<div class="ui-field-contain">
-			<!--
-			<label for="username">姓名</label>
-			-->
 			<input type="text" name="username" id="username" placeholder="姓名" data-mini=false value="">
-
+			<?php //为虚拟物品 如流量包时，不需收货地址，但是需要用户填写充值的手机号码
+				if($item->kind == 4) {
+			?>
+				<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
+			<?php } ?>
 			<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
 		</div>
 
@@ -334,9 +335,9 @@
 
 	<div data-role="content">
 
-		<h2>用户收货地址</h2>
+		<h2>收货地址</h2>
 		<div class="ui-field-contain">
-			<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
+			<input type="tel" name="usermobile1" id="usermobile1" placeholder="手机号码" value="">
 
 			<input type="text" name="addr" id="addr" placeholder="省市区街道-邮政编码" data-mini=false value="">
 		</div>
@@ -402,7 +403,9 @@ var size = 8;
 var feeSum = 0;
 var count = 0;
 //$().ready(function() {
-var cid = <?php echo $cid; ?>;
+var cid = "<?php echo $cid; ?>";
+var kind = "<?php echo $item->kind; ?>";
+var price = "<?php echo $item->price; ?>";
 
 
 var ctrl_mobnumber = "<?php echo  $item->ctrl_mobnumber; ?>";
@@ -410,6 +413,8 @@ var ctrl_userinfo = "<?php echo  $item->ctrl_userinfo; ?>";
 var ctrl_office = "<?php echo  $item->ctrl_office; ?>";
 var ctrl_supportpay = "<?php echo  $item->ctrl_supportpay; ?>";
 var ctrl_address = "<?php echo  $item->ctrl_address; ?>";
+
+
 
 function isWeiXin() {
 	var ua = window.navigator.userAgent.toLowerCase();
@@ -539,6 +544,7 @@ $(document).on("pageinit", "#page2", function(){
 	        else
 	        {
 		        username = localStorage.getItem("username");
+		        usermobile = localStorage.getItem("usermobile");
 		        userid = localStorage.getItem("userid");
 	        }
     	}
@@ -576,12 +582,20 @@ $(document).on("pageinit", "#page2", function(){
 	        }
         }
 
-       
+       if(kind == 4 || kind == 3)/*流量包 , 上网卡*/
+       {
+   	 		realFee =  price/100;
+       }
+       else
+       {
+			if((localStorage.getItem('ychf')/100) >= 50)
+				realFee = localStorage.getItem('ychf')/100;
+			else
+				realFee = 50;
+       }
 
-		if((localStorage.getItem('ychf')/100) >= 50)
-            realFee = localStorage.getItem('ychf')/100;
-        else
-            realFee = 50;
+
+
  		/* realFee = 0.01 */
 
 		localStorage.setItem("item",$("form#productForm").serialize());
@@ -627,12 +641,15 @@ $(document).on("pageinit", "#contactPage", function(){
 
 	if(localStorage.getItem('username') != '')
 		$('#username').val(localStorage.getItem('username'));
+	if(localStorage.getItem('usermobile') != '')
+		$('#usermobile').val(localStorage.getItem('usermobile'));	
 	if(localStorage.getItem('userid') != '')
 		$('#userid').val(localStorage.getItem('userid'));
 
 	//alert('here is contact page');
 	$("#addContactBtn").click(function(){
 		var username = $('#username').val();
+		var usermobile = $('#usermobile').val();
 		var userid = $('#userid').val();
 
 
@@ -644,6 +661,19 @@ $(document).on("pageinit", "#contactPage", function(){
 			//alert("姓名输入不合法");
 			return  false;
 		}
+	
+		<?php //为虚拟物品 如流量包时，不需收货地址，但是需要用户填写充值的手机号码
+			if 	($item->kind == 4) {
+		?>
+			var usermobileReg = /(^(1)\d{10}$)/;
+			if(usermobileReg.test(usermobile) === false)
+			{
+				fillErrmsg('#popupDialog-contactPage-txt','手机号码输入不合法, 请重新输入.');
+				$('#popupDialog-contactPage').popup('open');
+				//alert("手机号码输入不合法");
+				return  false;
+			}
+		<?php } ?>
 
 		var useridReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
 		if(useridReg.test(userid) === false)
@@ -655,6 +685,7 @@ $(document).on("pageinit", "#contactPage", function(){
 		}
 
 		localStorage.setItem('username',username);
+		localStorage.setItem('usermobile',usermobile);
 		localStorage.setItem('userid',userid);
 
 		$.mobile.changePage("#page2",{transition:"slide"});
@@ -667,14 +698,15 @@ $(document).on("pageinit", "#contactPage", function(){
 $(document).on("pageinit", "#addressPage", function(){
 
 	if(localStorage.getItem('usermobile') != '')
-		$('#usermobile').val(localStorage.getItem('usermobile'));
+		$('#usermobile1').val(localStorage.getItem('usermobile'));
 	if(localStorage.getItem('address') != '')
 		$('#addr').val(localStorage.getItem('address'));
 
 	//alert('here is contact page');
 	$("#addAddressBtn").click(function(){
 		var address = $('#addr').val();
-		var usermobile = $('#usermobile').val();
+		var usermobile = $('#usermobile1').val();
+
 
 		var usermobileReg = /(^(1)\d{10}$)/;
 		if(usermobileReg.test(usermobile) === false)
@@ -684,6 +716,7 @@ $(document).on("pageinit", "#addressPage", function(){
 			//alert("手机号码输入不合法");
 			return  false;
 		}
+
 		//var addressReg = /^[\u4E00-\u9FFF]+$/;
 		//if(addressReg.test(address) === false)
 		if(address == "")

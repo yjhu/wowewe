@@ -15,6 +15,7 @@ $this->params['breadcrumbs'][] = '修改';
 		<?php $form = ActiveForm::begin(); ?>
 
 		<?= $form->field($model, 'price')->textInput(['maxlength' => 10]) ?>
+		<?= $form->field($model, 'old_price')->textInput(['maxlength' => 10]) ?>
 
 		<?= $form->field($model, 'price_hint')->textInput(['maxlength' => 128]) ?>
 

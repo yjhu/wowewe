@@ -15,15 +15,22 @@
     }
 
     .line {
-    color: red;
-    text-decoration: line-through;
+        color: #aaaaaa;
+        text-decoration: line-through;
     }
+
 </style>
 
 <div data-role="page" id="page1" data-theme="c">
 
 	<div data-role="header">
-    	<h1>单卡产品</h1>
+        <?php if ($kind == 4): ?>
+            <h1>5折流量包</h1>
+        <?php elseif ($kind == 3): ?>
+            <h1>8折上网卡</h1>
+        <?php else: ?>
+            <h1>单卡产品</h1>
+        <?php endif; ?>
     </div>
 
     <div data-role="content">
@@ -56,9 +63,9 @@
                     <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                     <h2><?= $model->title ?></h2>
                     <p><?= $model->title_hint ?></p>
-                    <!--
-                    <p class='line'>原价: ￥<//?= $model->old_price/100 ?></p>
-                    -->
+      
+                    <p class='line'>原价: ￥<?= $model->old_price/100 ?></p>
+              
                     <p>惊爆价: ￥<?= $model->price/100 ?></p>
                 </a>
             </li>

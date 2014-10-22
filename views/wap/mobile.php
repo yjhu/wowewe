@@ -265,7 +265,7 @@ text-decoration: line-through;
 
     <div data-role="content">
 
-        <h2>用户收货地址</h2>
+        <h2>收货地址</h2>
         <div class="ui-field-contain">
             <input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
 
