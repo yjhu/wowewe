@@ -370,10 +370,7 @@ class OrderController extends Controller
 
     public function actionOfficeupdate($id)
     {
-        $model = MOffice::findOne($id);
-        if (!$model) {
-            throw new NotFoundHttpException('no this office');
-        }
+        $model = $this->findOfficeModel($id);
         if (\Yii::$app->request->isPost) 
         {
             $model->load(\Yii::$app->request->post());
@@ -391,7 +388,7 @@ class OrderController extends Controller
 
     public function actionOfficedelete($id)
     {
-        $this->findOfficeModel($id)->Release();
+        $this->findOfficeModel($id)->delete();
         return $this->redirect(['officelist']);
     }
 
@@ -435,10 +432,7 @@ class OrderController extends Controller
 
     public function actionChannelupdate($id)
     {
-        $model = MChannel::findOne($id);
-        if (!$model) {
-            throw new NotFoundHttpException('no this channel');
-        }
+        $model = $this->findChannelModel($id);        
         if (\Yii::$app->request->isPost) 
         {
             $model->load(\Yii::$app->request->post());
@@ -456,9 +450,17 @@ class OrderController extends Controller
 
     public function actionChanneldelete($id)
     {
-        $model = MChannel::findOne($id);
-        $model->Release();
+        $this->findChannelModel($id)->delete();        
         return $this->redirect(['channellist']);
+    }
+
+    protected function findChannelModel($id)
+    {
+        if (($model = MChannel::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 
     public function actionChannelscoredetail($gh_id, $scene_pid)
@@ -476,7 +478,6 @@ class OrderController extends Controller
     public function actionChannelscoretop($month)
     {
         $rows = MChannel::getChannelScoreTop(Yii::$app->user->getGhid(), $month);
-
         $filter = new \app\models\FiltersForm;
         $filter->unsetAttributes();
         if(isset($_GET['FiltersForm'])) {		

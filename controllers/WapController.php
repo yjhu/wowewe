@@ -1179,48 +1179,32 @@ EOD;
         return $this->render('nearestoffice',['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
-
-
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/woke:gh_03a74ac96138
     public function actionWoke()
     {        
         $this->layout = 'wapy';
         $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
-        
-        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        if ($user === null)
+        $openid = U::getSessionParam('openid');        
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($model === null)
             throw new NotFoundHttpException('user does not exists');
-        $model = MChannel::find()->where("gh_id = :gh_id AND openid = :openid", [':gh_id'=>$gh_id, ':openid'=>$openid])->one();
-        if ($model !== null)
-        {
-            return $this->redirect(['wokelist']);
-        }
-
+            
+        if (!empty($model->scene_id))
+            return $this->redirect(['wokelist']);    
+            
         if (Yii::$app->request->isPost) 
         {
-            $model = new MChannel;
-            $model->gh_id = $gh_id;
-            $model->openid = $openid;
-            $model->title = $user->nickname.'-'.$openid;
-            $model->status = MChannel::STATUS_OK;
-            $model->cat = MChannel::CAT_SOCIAL;
-            if ($model->save()) 
+            if ($model->save())
             {
-                if ($model->status == MChannel::STATUS_OK)
-                {
-                    $qr = $model->getQrImageUrl();
-                    U::W($qr);
-                }
+                $qr = $model->getQrImageUrl();
                 return $this->redirect(['wokelist']);            
             }
             else
             {
                 U::W($model->getErrors());
             }
-        }
-        
-        return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user]);
+        }        
+        return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model]);
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wokelist:gh_03a74ac96138
@@ -1229,13 +1213,12 @@ EOD;
         $this->layout = 'wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
-        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        if ($user === null)
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($model === null)
             throw new NotFoundHttpException('user does not exists');
 
-        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user]);
+        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model]);
     }
-
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/orderinfo:gh_03a74ac96138
     public function actionOrderinfo($oid)
@@ -1827,6 +1810,47 @@ return $xmlStr;
     }    
 
     
-    */
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/woke:gh_03a74ac96138
+    public function actionWoke()
+    {        
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($user === null)
+            throw new NotFoundHttpException('user does not exists');
+        $model = MChannel::find()->where("gh_id = :gh_id AND openid = :openid", [':gh_id'=>$gh_id, ':openid'=>$openid])->one();
+        if ($model !== null)
+        {
+            return $this->redirect(['wokelist']);
+        }
+
+        if (Yii::$app->request->isPost) 
+        {
+            $model = new MChannel;
+            $model->gh_id = $gh_id;
+            $model->openid = $openid;
+            $model->title = $user->nickname.'-'.$openid;
+            $model->status = MChannel::STATUS_OK;
+            $model->cat = MChannel::CAT_SOCIAL;
+            if ($model->save()) 
+            {
+                if ($model->status == MChannel::STATUS_OK)
+                {
+                    $qr = $model->getQrImageUrl();
+                    U::W($qr);
+                }
+                return $this->redirect(['wokelist']);            
+            }
+            else
+            {
+                U::W($model->getErrors());
+            }
+        }
+        
+        return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user]);
+    }
+*/
 
 

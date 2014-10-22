@@ -67,13 +67,6 @@ $this->params['breadcrumbs'][] = $this->title;
 				'headerOptions' => array('style'=>'width:25%;'),	
 			],
 			[
-				'label' => '渠道类别',
-				'attribute' => 'cat',
-				'value'=>function ($model, $key, $index, $column) { return MChannel::getCatOptionName($model['cat']); },
-				'filter'=> MChannel::getCatOptionName(),
-				'headerOptions' => array('style'=>'width:25%;'),	
-			],
-			[
 				'label' => '渠道推广数量',
 				'attribute' => 'cnt_sum',
 				'headerOptions' => array('style'=>'width:20%;'),	
@@ -97,6 +90,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 /*
+
+			[
+				'label' => '渠道类别',
+				'attribute' => 'cat',
+				'value'=>function ($model, $key, $index, $column) { return MChannel::getCatOptionName($model['cat']); },
+				'filter'=> MChannel::getCatOptionName(),
+				'headerOptions' => array('style'=>'width:25%;'),	
+			],
 
 <!-- Tab panes -->
 <!--

@@ -23,15 +23,17 @@ CREATE TABLE wx_user (
     mobile VARCHAR(64) NOT NULL DEFAULT '',
     msg_time int(10) unsigned NOT NULL DEFAULT '0',
     scene_id int(10) unsigned NOT NULL DEFAULT '0',
+    scene_balance int(10) unsigned NOT NULL DEFAULT '0',
+    scene_level tinyint(3) unsigned NOT NULL DEFAULT 0,
     scene_pid int(10) unsigned NOT NULL DEFAULT '0',
     lat float(10,6) NOT NULL DEFAULT '0.000000',
     lon float(10,6) NOT NULL DEFAULT '0.000000',
     prec float(10,6) NOT NULL DEFAULT '0.000000',
     gid int(10) unsigned NOT NULL DEFAULT '0',
+    is_liantongstaff tinyint(3) unsigned NOT NULL DEFAULT 0,
     KEY idx_gh_id_scene_pid(gh_id,scene_pid),
     UNIQUE KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('root', 'root', 'root', '1', 9);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', 'admin', 'admin','1', 2);
@@ -63,8 +65,12 @@ INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac9
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '75', 'office#75','1', 1);
 
 
-ALTER TABLE wx_user ADD gid int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_user ADD is_liantongstaff tinyint(3) unsigned NOT NULL DEFAULT 0;
+ALTER TABLE wx_user ADD scene_balance int(10) unsigned NOT NULL DEFAULT '0' after scene_id;
+ALTER TABLE wx_user ADD scene_level tinyint(3) unsigned NOT NULL DEFAULT 0 after scene_id;
 
+
+ALTER TABLE wx_user ADD gid int(10) unsigned NOT NULL DEFAULT '0';
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_1ad98f5481f3', 'admin', 'admin','1', 2);
 
 */
@@ -176,6 +182,10 @@ class MUser extends ActiveRecord implements IdentityInterface
         return [
             'mobile'=>'手机号',
             'password'=>'密码',
+			'nickname'=>'微信昵称',
+			'create_time'=>'关注时间',
+			'is_liantongstaff'=>'联通员工',
+			'scene_id'=>'推广Id',
         ];
     }
 
@@ -197,7 +207,6 @@ class MUser extends ActiveRecord implements IdentityInterface
             $gh = MGh::findOne($gh_id);
             $scene_id = $gh->newSceneId();
             $this->scene_id = $scene_id;
-            //U::W("scene_id=$scene_id");                                
         }
         else
         {
@@ -205,7 +214,6 @@ class MUser extends ActiveRecord implements IdentityInterface
             $scene_id = $this->scene_id;
         }
         $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
-        //U::W($log_file_path);                            
         if (!file_exists($log_file_path))
         {
             Yii::$app->wx->setGhId($gh_id);    
@@ -223,12 +231,19 @@ class MUser extends ActiveRecord implements IdentityInterface
         return $url;
     }
 
-    public function Release()
-    {    
-        $gh = MGh::findOne($this->gh_id);        
-        $gh->freeSceneId($this->scene_id);
-        if ($gh->save(false))
-            $this->delete();
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            if (!empty($this->scene_id))
+            {
+                $gh = MGh::findOne($this->gh_id);        
+                $gh->freeSceneId($this->scene_id);
+                return $gh->save(false);
+            }
+            return true;            
+        } else {
+            return false;
+        }
     }
 
     public function getChannel()
@@ -298,6 +313,15 @@ ALTER TABLE wx_user DROP INDEX idx_gh_id_pid;
 ALTER TABLE wx_user ADD scene_id int(10) unsigned NOT NULL DEFAULT '0' after msg_time;
 ALTER TABLE wx_user CHANGE pid scene_pid int(10) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_user ADD KEY idx_gh_id_scene_pid(gh_id,scene_pid);
+
+
+    public function Release()
+    {    
+        $gh = MGh::findOne($this->gh_id);        
+        $gh->freeSceneId($this->scene_id);
+        if ($gh->save(false))
+            $this->delete();
+    }
 
 
 // for test

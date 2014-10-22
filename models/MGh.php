@@ -114,6 +114,8 @@ class MGh extends ActiveRecord
 
     public function freeSceneId($scene_id)
     {
+        if (empty($scene_id))
+            return;
         $scene_ids = explode(',', $this->scene_ids);
         foreach($scene_ids as $key=>$val)
         {
