@@ -494,12 +494,13 @@ text-decoration: line-through;
 
 <?php
 	//$wid = empty($user->scene_id) ? 0 : $user->scene_id;
-	$wid = U::getWid($gh_id, $openid);
+	
 	$src = MSceneDetail::SRC_SHARE_FRIEND;
+    $wid = U::getWid($gh_id, $openid).'_'.$src;
 	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
 	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
 	$appid = Yii::$app->wx->gh['appid'];
-	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobile:'.Yii::$app->wx->getGhid().":wid={$wid}_{$src}");
+	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobile:'.Yii::$app->wx->getGhid().":wid={$wid}");
 	$myImg = Url::to("$assetsPath/share-icon.jpg", true);
 	$title = '特惠手机';
 	$desc = '多款热销机型，优惠大放送，快来瞄瞄吧~~ 心动不如行动！';
@@ -553,6 +554,9 @@ var ctrl_address = "<?php echo  $item->ctrl_address; ?>";
 var ctrl_pkg_plan = "<?php echo  $item->ctrl_pkg_plan; ?>";
 
 var ctrl_soldout = "<?php echo  $item->ctrl_soldout; ?>";
+
+var wid = "<?php echo $wid; ?>";
+
 
 
 function isWeiXin() {
@@ -932,7 +936,7 @@ $(document).on("pageinit", "#page2", function(){
 			type:"GET",
             cache:false,
             dataType:'json',
-			data: $("form#productForm").serialize()+"&cid="+cid+"&pkg3g4g="+pkg3g4g+"&pkgPeriod="+pkgPeriod+"&pkgMonthprice="+pkgMonthprice+"&pkgPlan="+pkgPlan+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address,
+			data: $("form#productForm").serialize()+"&cid="+cid+"&pkg3g4g="+pkg3g4g+"&pkgPeriod="+pkgPeriod+"&pkgMonthprice="+pkgMonthprice+"&pkgPlan="+pkgPlan+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address+"&wid="+wid,
 			success:function(json_data){
 				//data = eval('('+data+')');
 
