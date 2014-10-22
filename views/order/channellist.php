@@ -46,16 +46,6 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'title',
 			],
 			[
-				'attribute' => 'cat',
-				'value'=>function ($model, $key, $index, $column) { return MChannel::getCatOptionName($model->cat); },
-				'filter'=> MChannel::getCatOptionName(),
-			],
-			[
-				'attribute' => 'status',
-				'value'=>function ($model, $key, $index, $column) { return MChannel::getStatusOptionName($model->status); },
-				'filter'=> MChannel::getStatusOptionName(),
-			],
-			[
 				'attribute' => 'mobile',
 			],
 			[
@@ -81,10 +71,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => '推广二维码',
                 'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
-					if ($model->status == MChannel::STATUS_OK)
 						return Html::img($model->getQrImageUrl(), ['width'=>'64']);
-					else
-						return '未分配';
 				},
 				'filter'=> false,
 			],
@@ -132,6 +119,17 @@ $this->params['breadcrumbs'][] = $this->title;
     	<?php $currentMonth = date("n", strtotime('-2 month', time())); ?>
 		<?php echo Html::a("渠道{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
     </p>
+
+			[
+				'attribute' => 'cat',
+				'value'=>function ($model, $key, $index, $column) { return MChannel::getCatOptionName($model->cat); },
+				'filter'=> MChannel::getCatOptionName(),
+			],
+			[
+				'attribute' => 'status',
+				'value'=>function ($model, $key, $index, $column) { return MChannel::getStatusOptionName($model->status); },
+				'filter'=> MChannel::getStatusOptionName(),
+			],
 
 */
 

@@ -65,7 +65,8 @@ AppAsset::register($this);
 							['label' => '商品管理','url' => ['/admin/itemlist'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '商品套餐管理','url' => ['/admin/pkglist'],'linkOptions' => ['data-method' => 'post']],
 							'<li class="divider"></li>',
-							['label' => '粉丝管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isRoot],
+							['label' => '粉丝管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post']],
+							//['label' => '粉丝管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isRoot],
 							//['label' => '消息管理','url' => ['/admin/msg'],'linkOptions' => ['data-method' => 'post']],
 							//['label' => '素材管理','url' => ['/admin/media'],'linkOptions' => ['data-method' => 'post']],
 						]

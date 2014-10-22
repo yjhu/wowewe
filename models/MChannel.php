@@ -10,13 +10,13 @@ CREATE TABLE wx_channel (
     scene_id int(10) unsigned NOT NULL DEFAULT '0',
     title VARCHAR(128) NOT NULL DEFAULT '',
     mobile VARCHAR(16) NOT NULL DEFAULT '',
-    cat tinyint(3) NOT NULL DEFAULT 0,
-    level tinyint(3) NOT NULL DEFAULT 0,
-    status int(10) unsigned NOT NULL DEFAULT 0,    
     UNIQUE KEY idx_gh_id_title(gh_id, title),    
     KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+ALTER TABLE wx_channel DROP cat;
+ALTER TABLE wx_channel DROP status;
+ALTER TABLE wx_channel DROP level;
 */
 
         
@@ -27,20 +27,21 @@ use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 
 use app\models\U;
+use app\models\MGh;
 use app\models\MOffice;
 
 use app\models\MAccessLog;
 
 class MChannel extends ActiveRecord
 {
-    const CAT_LIANTONG_DEALER = 0;
-    const CAT_SOCIAL = 1;
+//    const CAT_LIANTONG_DEALER = 0;
+//    const CAT_SOCIAL = 1;
 
-    const STATUS_WAIT = 1;
-    const STATUS_OK = 0;
+//    const STATUS_WAIT = 1;
+//    const STATUS_OK = 0;
 
-    const SRC_SHARE_FRIEND = 1;
 
+/*
     static function getCatOptionName($key=null)
     {
         $arr = array(
@@ -58,6 +59,7 @@ class MChannel extends ActiveRecord
         );        
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
+*/
 
     public static function tableName()
     {
@@ -72,7 +74,7 @@ class MChannel extends ActiveRecord
             [['title'], 'string', 'min' => 2, 'max' => 255],
             [['mobile'], 'string', 'length'=>11],
             [['id'], 'integer', 'integerOnly' =>true, 'min'=>1],
-            [['status','cat'], 'integer', 'integerOnly' =>true],
+//            [['status','cat'], 'integer', 'integerOnly' =>true],
             [['gh_id', 'openid'], 'safe'],
             ['title', 'unique', 'message' => 'This title has already been taken.'],            
         ];
@@ -84,9 +86,9 @@ class MChannel extends ActiveRecord
             'id' => '渠道编号',
             'title' => '名称',
             'mobile' => '手机号',
-            'cat' => '渠道类别',
-            'level' => '等级',
-            'status' => '状态',
+//            'cat' => '渠道类别',
+//            'level' => '等级',
+//            'status' => '状态',
             'scene_id' => '推广Id',
         ];
     }
@@ -145,12 +147,19 @@ class MChannel extends ActiveRecord
         return $count;        
     }
 
-    public function Release()
-    {    
-        $gh = MGh::findOne($this->gh_id);        
-        $gh->freeSceneId($this->scene_id);
-        if ($gh->save(false))
-            $this->delete();
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            if (!empty($this->scene_id))
+            {
+                $gh = MGh::findOne($this->gh_id);        
+                $gh->freeSceneId($this->scene_id);
+                return $gh->save(false);
+            }
+            return true;            
+        } else {
+            return false;
+        }
     }
 
     public function getScoreFromLog($month)
@@ -175,8 +184,6 @@ class MChannel extends ActiveRecord
             $row = [];
             $row['id'] = $channel->id;            
             $row['title'] = $channel->title;         
-            $row['cat'] = $channel->cat;                     
-            $row['status'] = $channel->status;                                 
             $row['cnt_sum'] = $channel->getScoreFromLog($month);                       
             $rows[] = $row;
         }
@@ -191,6 +198,20 @@ ALTER TABLE wx_channel ADD cat tinyint(3) NOT NULL DEFAULT 0;
 ALTER TABLE wx_channel ADD level tinyint(3) NOT NULL DEFAULT 0;
 ALTER TABLE wx_channel ADD status int(10) unsigned NOT NULL DEFAULT 0;
 
+    level tinyint(3) NOT NULL DEFAULT 0,
+    status int(10) unsigned NOT NULL DEFAULT 0,    
+    cat tinyint(3) NOT NULL DEFAULT 0,
 
-*/            
+
+    public function Release()
+    {    
+        $gh = MGh::findOne($this->gh_id);        
+        $gh->freeSceneId($this->scene_id);
+        if ($gh->save(false))
+            $this->delete();
+    }
+//            $row['cat'] = $channel->cat;                     
+//            $row['status'] = $channel->status;                                 
+    
+*/
 

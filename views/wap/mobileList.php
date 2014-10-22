@@ -4,6 +4,8 @@
 
     use app\models\U;
     use app\models\MOffice;
+    use app\models\MSceneDetail;
+	
 
 ?>
     
@@ -91,10 +93,13 @@
 </div> <!-- page1 end -->
 
 <?php
+	$wid = U::getWid($gh_id, $openid);
+	$src = MSceneDetail::SRC_SHARE_FRIEND;
 	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
 	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
 	$appid = Yii::$app->wx->gh['appid'];
-	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid());
+	//$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid());
+	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid().":wid={$wid}_{$src}");
 	$myImg = Url::to("$assetsPath/share-icon.jpg", true);
 	$title = '特惠手机';
 	$desc = '多款热销机型，优惠大放送，快来瞄瞄吧~~ 心动不如行动！';

@@ -7,14 +7,9 @@
     use app\models\MOffice;
 
     use app\models\MChannel;
+	use app\models\MSceneDetail;
 
-    $item = \app\models\MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$cid]);
-	//if ($item === null)
-	//{
-	//	U::W("impossible! gh_id=$gh_id, cid=$cid .............");
-	//}
-    //U::W($item);
-
+    $item = MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$cid]);
     $item->price = $_GET['price']; 
     $item->title_hint = $_GET['title_hint'];
 ?>
@@ -498,13 +493,13 @@ text-decoration: line-through;
 
 
 <?php
-	$wid = empty($user->channel) ? 0 : $user->channel->scene_id;
-	//$srcid = MChannel::SRC_SHARE_FRIEND;
-    $srcid = 1;
+	//$wid = empty($user->scene_id) ? 0 : $user->scene_id;
+	$wid = U::getWid($gh_id, $openid);
+	$src = MSceneDetail::SRC_SHARE_FRIEND;
 	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
 	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
 	$appid = Yii::$app->wx->gh['appid'];
-	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid().":wid=$wid:srcid=$srcid");
+	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobile:'.Yii::$app->wx->getGhid().":wid={$wid}_{$src}");
 	$myImg = Url::to("$assetsPath/share-icon.jpg", true);
 	$title = '特惠手机';
 	$desc = '多款热销机型，优惠大放送，快来瞄瞄吧~~ 心动不如行动！';

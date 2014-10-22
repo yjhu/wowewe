@@ -252,12 +252,19 @@ class MOffice extends ActiveRecord
         return $url;
     }
 
-    public function Release()
-    {    
-        $gh = MGh::findOne($this->gh_id);        
-        $gh->freeSceneId($this->scene_id);
-        if ($gh->save(false))
-            $this->delete();
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            if (!empty($this->scene_id))
+            {
+                $gh = MGh::findOne($this->gh_id);        
+                $gh->freeSceneId($this->scene_id);
+                return $gh->save(false);
+            }
+            return true;            
+        } else {
+            return false;
+        }
     }
 
     public function getScoreOfAllStaffs()

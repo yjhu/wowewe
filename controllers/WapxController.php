@@ -109,7 +109,6 @@ class WapxController extends Controller
             U::W('is ajax....');
         $this->layout = 'wapx';
         $mobile = $_GET['mobile'];
-        //Yii::$app->wx->setGhId($gh_id);
         $model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
         if ($model === null)
         {
@@ -124,9 +123,14 @@ class WapxController extends Controller
         }
         if ($model->load(Yii::$app->request->post())) 
         {        
-            //U::W($model->getAttributes());
             if ($model->save())            
             {
+                $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+                if ($user !== null)
+                {
+                    $user->is_liantongstaff = 1;
+                    $user->save(false);
+                }
                 return $this->redirect(['staffhome', 'gh_id'=>$gh_id, 'openid'=>$openid]);                            
             }
             else
