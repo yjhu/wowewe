@@ -834,7 +834,7 @@ EOD;
         
         if ($order->save(false))
         {
-            if (!empty($wid))
+            if (!empty($wid) && !empty($order->item->scene_percent))
             {
                  $ar = new MSceneDetail;
                  $ar->scene_id = $scene_id;             
