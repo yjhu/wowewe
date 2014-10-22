@@ -129,7 +129,7 @@ class MOrder extends ActiveRecord
                 $ar->scene_src_id = $this->scene_src_id;
                 $ar->gh_id = $this->gh_id;
                 $ar->openid = $this->openid;
-                $ar->amount = $this->scene_amt;
+                $ar->scene_amt = $this->scene_amt;
                 $ar->oid = $this->oid;
                 $ar->memo = $this->detail;                 
             }
