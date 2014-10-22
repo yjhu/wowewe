@@ -26,6 +26,7 @@ use app\models\MMobnum;
 use app\models\MDisk;
 use app\models\MG2048;
 use app\models\MPkg;
+use app\models\MSceneDetail;
 
 use app\models\Alipay;
 use app\models\AlipaySubmit;
@@ -809,6 +810,8 @@ EOD;
         //$order->pay_kind = isset($_GET['pay_kind']) ? $_GET['pay_kind'] : MOrder::PAY_KIND_CASH;
         $order->address = (isset($_GET['address']) && $_GET['address'] !=  MOrder::NO_CHOICE) ? $_GET['address'] : '';
         $order->kaitong = (isset($_GET['kaitong']) && $_GET['kaitong'] !=  MOrder::NO_CHOICE) ? $_GET['kaitong'] : '';
+        
+
         $order->detail = $order->getDetailStr();
         if ($_GET['selectNum'] != MOrder::NO_CHOICE)
         {

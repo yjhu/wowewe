@@ -186,7 +186,7 @@ class MOrder extends ActiveRecord
 
     public function getItem()
     {
-        $model = MItem::findOne(['gh_id'=>$this->gh_id, 'cid'=>cid]);
+        $model = MItem::findOne(['gh_id'=>$this->gh_id, 'cid'=>$this->cid]);
         return $model;
     }
 
