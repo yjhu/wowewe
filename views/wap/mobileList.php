@@ -93,13 +93,13 @@
 </div> <!-- page1 end -->
 
 <?php
-	$wid = U::getWid($gh_id, $openid);
-	$src = MSceneDetail::SRC_SHARE_FRIEND;
+	$src = MSceneDetail::SRC_ID_SHARE_FRIEND;
+	$wid = implode('_', [U::getWid($gh_id, $openid), $src]);
 	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
 	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
 	$appid = Yii::$app->wx->gh['appid'];
 	//$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid());
-	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid().":wid={$wid}_{$src}");
+	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid().":wid={$wid}");
 	$myImg = Url::to("$assetsPath/share-icon.jpg", true);
 	$title = '特惠手机';
 	$desc = '多款热销机型，优惠大放送，快来瞄瞄吧~~ 心动不如行动！';

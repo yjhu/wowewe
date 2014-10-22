@@ -9,6 +9,7 @@ CREATE TABLE wx_scene_detail (
     gh_id VARCHAR(32) NOT NULL DEFAULT '',
     openid VARCHAR(32) NOT NULL DEFAULT '',    
     scene_id int(10) unsigned NOT NULL DEFAULT '0',    
+    src_id int(10) unsigned NOT NULL DEFAULT '0',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     amount int(10) NOT NULL DEFAULT '0',
     oid VARCHAR(32) NOT NULL DEFAULT '',
@@ -31,7 +32,7 @@ use app\models\MOrder;
 class MSceneDetail extends ActiveRecord
 {
 
-    const SRC_SHARE_FRIEND = 1;
+    const SRC_ID_SHARE_FRIEND = 1;
     
     public static function tableName()
     {

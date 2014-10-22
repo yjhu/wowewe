@@ -493,10 +493,8 @@ text-decoration: line-through;
 
 
 <?php
-	//$wid = empty($user->scene_id) ? 0 : $user->scene_id;
-	
-	$src = MSceneDetail::SRC_SHARE_FRIEND;
-    $wid = U::getWid($gh_id, $openid).'_'.$src;
+	$src = MSceneDetail::SRC_ID_SHARE_FRIEND;
+	$wid = implode('_', [U::getWid($gh_id, $openid), $src]);
 	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
 	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
 	$appid = Yii::$app->wx->gh['appid'];
