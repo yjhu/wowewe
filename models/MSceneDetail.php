@@ -30,6 +30,8 @@ use app\models\MOrder;
 
 class MSceneDetail extends ActiveRecord
 {
+
+    const SRC_SHARE_FRIEND = 1;
     
     public static function tableName()
     {
