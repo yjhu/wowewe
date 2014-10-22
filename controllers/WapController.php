@@ -836,13 +836,12 @@ EOD;
         {
             if (!empty($wid))
             {
-                 $amount = $order->feesum;
                  $ar = new MSceneDetail;
                  $ar->scene_id = $scene_id;             
                  $ar->src_id = $src_id;
                  $ar->gh_id = $gh_id;
                  $ar->openid = $openid;
-                 $ar->amount = $amount;
+                 $ar->amount = $order->feesum * $order->item->scene_percent /100;
                  $ar->oid = $order->oid;
                  $ar->memo = $order->detail;                 
                  $ar->save(false);

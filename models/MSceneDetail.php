@@ -14,6 +14,7 @@ CREATE TABLE wx_scene_detail (
     amount int(10) NOT NULL DEFAULT '0',
     oid VARCHAR(32) NOT NULL DEFAULT '',
     memo VARCHAR(256) NOT NULL DEFAULT '',    
+    status tinyint(1) unsigned NOT NULL DEFAULT '0',    
     KEY idx_gh_id_scene_id(gh_id, scene_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -33,6 +34,9 @@ class MSceneDetail extends ActiveRecord
 {
 
     const SRC_ID_SHARE_FRIEND = 1;
+
+    const STATUS_AUCTION = 0;
+    const STATUS_CONFIRMED = 1;    
     
     public static function tableName()
     {

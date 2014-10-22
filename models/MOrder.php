@@ -184,6 +184,12 @@ class MOrder extends ActiveRecord
         return $model;
     }
 
+    public function getItem()
+    {
+        $model = MItem::findOne(['gh_id'=>$this->gh_id, 'cid'=>cid]);
+        return $model;
+    }
+
     public function getOffice()
     {
         return $this->hasOne(MOffice::className(), ['office_id' => 'office_id']);

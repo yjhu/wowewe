@@ -41,6 +41,7 @@ ALTER TABLE wx_item ADD	ctrl_package tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_supportpay VARCHAR(128) NOT NULL DEFAULT '';
 ALTER TABLE wx_item ADD	ctrl_address tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_detail tinyint(3) unsigned NOT NULL DEFAULT '1';
+ALTER TABLE wx_item ADD	scene_percent int(10) unsigned NOT NULL DEFAULT '0';
 
 ALTER TABLE wx_item ADD	ctrl_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '';
 ALTER TABLE wx_item ADD	ctrl_pkg_period VARCHAR(32) NOT NULL DEFAULT '';
