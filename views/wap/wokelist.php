@@ -9,6 +9,9 @@
     
 <style type="text/CSS">
 
+    #qrBtn{
+        background-image: ../web/images/woke/qr.png;
+    }
     .ui-header .ui-title, .ui-footer .ui-title {
         margin-right: 0 !important; margin-left: 0 !important;
     }
@@ -77,8 +80,22 @@
             </dt>
 
             <dd>
-                <p><span style="font-size:22px;font-weight: border"><?= $user->nickname ?></span></p>
+                <p><span style="font-size:22px;font-weight: border"><?= $user->nickname ?></span> 
+                &nbsp;&nbsp;&nbsp;&nbsp;
 
+                <!--
+                <img src="../web/images/woke/qr.png" width="24px" height="24px">
+                -->
+                <a href="#qrBtnPopup" data-rel="popup" data-position-to="window" id="qrBtn">
+                    <img src="../web/images/woke/qr.png" width="24px" height="24px">
+                </a>
+                <div data-role="popup" id="qrBtnPopup" class="photopopup" data-overlay-theme="a" data-corners="false" data-tolerance="30,15">
+                <!--<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>-->
+                <img src="../web/images/woke/qr.png">
+                </div>
+
+                </p>
+                    
                 <!--
                 <div class="growth">
                 <div style="width: 10.41%;" class="percent"></div>

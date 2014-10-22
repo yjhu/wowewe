@@ -28,7 +28,8 @@ CREATE TABLE wx_order (
     issubscribe_recv tinyint(1) unsigned NOT NULL DEFAULT '0',
     userid VARCHAR(32) NOT NULL DEFAULT '',
     username VARCHAR(16) NOT NULL DEFAULT '',
-    usermobile VARCHAR(16) NOT NULL DEFAULT '',    
+    usermobile VARCHAR(16) NOT NULL DEFAULT '',   
+    address VARCHAR(256) NOT NULL DEFAULT '',
     pay_kind tinyint(10) unsigned NOT NULL DEFAULT '0',
     aliwap_trade_no VARCHAR(64) NOT NULL DEFAULT '',
     aliwap_total_fee VARCHAR(16) NOT NULL DEFAULT '',
@@ -47,6 +48,7 @@ CREATE TABLE wx_order (
     KEY gh_id_aliwap_trade_no(gh_id,aliwap_trade_no),    
     KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 */
 
@@ -91,6 +93,7 @@ class MOrder extends ActiveRecord
             'userid' => '身份证',
             'username' => '姓名',
             'usermobile' => '联系电话',
+            'address' => '收货地址',
             'office_id' => '营业厅编号',
             'pay_kind' => '付款方式',
             'memo' => '留言',
@@ -102,7 +105,8 @@ class MOrder extends ActiveRecord
         return [
             [['status', 'pay_kind'], 'integer'],                    
             [['select_mobnum'],  'string', 'min' => 11, 'max' => 11],
-            [['select_mobnum'],  'number'],            
+            [['select_mobnum'],  'number'],  
+            [['address'],  'string', 'min' => 5, 'max' => 256],          
         ];
     }
 
@@ -291,8 +295,9 @@ class MOrder extends ActiveRecord
         $feesum = sprintf("%0.2f",$this->feesum/100);
         $office = MOffice::findOne($this->office_id);
         $office_info = ($office !== null) ? "至{$office->title}({$office->address}, {$office->manager}, {$office->mobile})" : '';
+        $select_mobnum_info = ($this->select_mobnum !== null) ? ", 手机号码为{$this->select_mobnum}" : '';
         $str = <<<EOD
-{$model->nickname}, 您已订购【{$detail}】, 手机号码为{$this->select_mobnum}。 订单编号为【{$this->oid}】, 订单金额为{$feesum}元, 用户信息为【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 请您在48小时内携身份证或相关证件{$office_info}办理, 逾期将自动关闭。 【{$gh->nickname}】
+{$model->nickname}, 您已订购【{$detail}】{$select_mobnum_info}。 订单编号为【{$this->oid}】, 订单金额为{$feesum}元, 用户信息为【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 请您在24小时内携身份证或相关证件{$office_info}办理, 逾期将自动关闭。 【{$gh->nickname}】
 EOD;
         return $str;
     }    
@@ -669,4 +674,5 @@ ALTER TABLE wx_order ADD val_pkg_period int(10) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_order ADD val_pkg_monthprice int(10) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_order ADD val_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
 
+ALTER TABLE wx_order ADD address VARCHAR(256) NOT NULL DEFAULT '';
 */
