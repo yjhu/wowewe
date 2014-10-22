@@ -7,6 +7,8 @@ CREATE TABLE wx_order (
     oid VARCHAR(32) NOT NULL DEFAULT '',
     gh_id VARCHAR(32) NOT NULL DEFAULT '',
     openid VARCHAR(32) NOT NULL DEFAULT '',
+    scene_id int(10) unsigned NOT NULL DEFAULT '0',    
+    src_id int(10) unsigned NOT NULL DEFAULT '0',    
     iid int(10) unsigned NOT NULL DEFAULT '0',
     feesum int(10) unsigned NOT NULL DEFAULT '0',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,    
@@ -50,6 +52,9 @@ CREATE TABLE wx_order (
     KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
+ALTER TABLE wx_order ADD src_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
+ALTER TABLE wx_order ADD scene_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
 
 */
 

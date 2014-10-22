@@ -579,18 +579,14 @@ EOD;
         //$this->layout =false;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');        
-        //Yii::$app->wx->setGhId($gh_id);
-        
         $ar = new \app\models\MSuggest;
         $ar->gh_id = $gh_id;
-        $ar->openid = $openid;
-        
+        $ar->openid = $openid;        
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);        
         $subscribed = ($model !== null && $model->subscribe) ? true : false;
         if ($ar->load(Yii::$app->request->post())) 
         {
             if ($subscribed)
-            //if (1)
             {                
                 $ar->nickname = $model->nickname;
                 $ar->headimgurl = $model->headimgurl;                
@@ -622,7 +618,6 @@ EOD;
         $query = new \yii\db\Query();
         $query->select('*')->from(\app\models\MSuggest::tableName())->where(['gh_id'=>$gh_id])->orderBy(['id' => SORT_DESC])->limit(10);   
         $rows = $query->createCommand()->queryAll();
-        //U::W($rows);
         foreach($rows as &$row)
         {
             $create_time= strtotime($row['create_time']);
@@ -631,21 +626,15 @@ EOD;
             $d_hours = round($d/3600);
             $d_minutes = round($d/60);
             if($d_days>0 && $d_days<4){
-                //document.write(d_days+"天前");
                 $row['create_time_new'] = $d_days."天前";
             }else if($d_days<=0 && $d_hours>0){
-                //document.write(d_hours+"小时前");
                 $row['create_time_new'] = $d_hours."小时前";
             }else if($d_hours<=0 && $d_minutes>0){
-                //document.write(d_minutes+"分钟前");
                 $row['create_time_new'] = $d_minutes."分钟前";
             }else{
                 $row['create_time_new'] = $row['create_time'];
             }
         }
-
-         //return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
-        //return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
         return $this->render('suggest',['ar' => $ar,'dataProvider' => $dataProvider, 'rows' =>$rows, 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }    
             
@@ -664,38 +653,18 @@ EOD;
     public function actionProdsave()
     {            
         $this->layout = false;
-        //$gh_id = Yii::$app->session['gh_id'];
-        //$openid = Yii::$app->session['openid'];
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');                
         Yii::$app->wx->setGhId($gh_id);    
-        if (0)
-        {
-            $_GET["cid"] = MItem::ITEM_CAT_DIY;
-        }
         $order = new MOrder;
         $order->oid = MOrder::generateOid();
         $order->gh_id = $gh_id;
         $order->openid = $openid;
         $order->cid = $_GET["cid"];
+
         switch ($_GET["cid"]) 
         {
             case MItem::ITEM_CAT_DIY:
-                if (0)
-                {
-                    $_GET['cardType'] = 1;
-                    $_GET['flowPack'] =2;
-                    $_GET['voicePack'] = 1;
-                    $_GET['msgPack'] = 1;
-                    $_GET['callshowPack'] = 1;
-                    $_GET['otherPack'] = 1;
-                    $_GET['feeSum'] = 1;
-                    $_GET['selectNum'] = '18672725352';
-                    $_GET['office'] = 1;
-                    $_GET['username'] = 'hehb';
-                    $_GET['usermobile'] = '18672725352';
-                    $_GET['userid'] = '422428197452232344';                    
-                }            
                 $order->title = '自由组合套餐';            
                 $order->attr = "{$_GET['cardType']},{$_GET['flowPack']},{$_GET['voicePack']},{$_GET['msgPack']},{$_GET['callshowPack']},{$_GET['otherPack']}";                
                 break;
@@ -832,19 +801,7 @@ EOD;
         $order->val_pkg_period = isset($_GET['pkgPeriod']) ? $_GET['pkgPeriod'] : 0;
         $order->val_pkg_monthprice = isset($_GET['pkgMonthprice']) ? $_GET['pkgMonthprice'] : 0;
         $order->val_pkg_plan = isset($_GET['pkgPlan']) ? $_GET['pkgPlan'] : '';
-
-
         $order->feesum = $_GET['feeSum'] * 100;
-
-        //U::W('---------------------------------');
-        //U::W($order->feesum);
-
-
-
-        //$order->office_id = $_GET['office'];        
-        //$order->select_mobnum = $_GET['selectNum'];
-        //$order->username = isset($_GET['username']) ? $_GET['username'] : '';
-        //$order->usermobile = isset($_GET['usermobile']) ? $_GET['usermobile'] : '';
         $order->office_id = (isset($_GET['office']) && $_GET['office'] !=  MOrder::NO_CHOICE) ? $_GET['office'] : 0;
         $order->userid = (isset($_GET['userid']) && $_GET['userid'] !=  MOrder::NO_CHOICE) ? $_GET['userid'] : '';
         $order->username = (isset($_GET['username']) && $_GET['username'] !=  MOrder::NO_CHOICE) ? $_GET['username'] : '';
@@ -852,12 +809,7 @@ EOD;
         //$order->pay_kind = isset($_GET['pay_kind']) ? $_GET['pay_kind'] : MOrder::PAY_KIND_CASH;
         $order->address = (isset($_GET['address']) && $_GET['address'] !=  MOrder::NO_CHOICE) ? $_GET['address'] : '';
         $order->kaitong = (isset($_GET['kaitong']) && $_GET['kaitong'] !=  MOrder::NO_CHOICE) ? $_GET['kaitong'] : '';
-
-        
-
-
         $order->detail = $order->getDetailStr();
-
         if ($_GET['selectNum'] != MOrder::NO_CHOICE)
         {
             $order->select_mobnum = $_GET['selectNum'];
@@ -871,11 +823,31 @@ EOD;
         {
             $order->select_mobnum = '';
         }
-        //U::W('---------------------444------------');
-        //U::W($order->address);
+
+        $wid = Yii::$app->request->get('wid', '');
+        if (!empty($wid))
+        {
+             list($scene_id, $src_id) = explode('_', $wid);
+             $order->scene_id = $scene_id;             
+             $order->src_id = $src_id;
+        }
+        
         if ($order->save(false))
         {
-            U::W('save ok....');    
+            if (!empty($wid))
+            {
+                 $amount = $order->feesum;
+                 $ar = new MSceneDetail;
+                 $ar->scene_id = $scene_id;             
+                 $ar->src_id = $src_id;
+                 $ar->gh_id = $gh_id;
+                 $ar->openid = $openid;
+                 $ar->amount = $amount;
+                 $ar->oid = $order->oid;
+                 $ar->memo = $order->detail;                 
+                 $ar->save(false);
+            }
+        
             if (isset($mobnum))
             {
                 $mobnum->status = MMobnum::STATUS_LOCKED;
@@ -918,7 +890,6 @@ EOD;
         Yii::$app->wx->clearGh();
         Yii::$app->wx->setGhId($gh_id);        
         
-        //U::W(json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]));
         return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
     }
 
@@ -1897,6 +1868,29 @@ return $xmlStr;
         
         return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user]);
     }
+
+        if (0)
+        {
+            $_GET["cid"] = MItem::ITEM_CAT_DIY;
+        }
+    
+
+                if (0)
+                {
+                    $_GET['cardType'] = 1;
+                    $_GET['flowPack'] =2;
+                    $_GET['voicePack'] = 1;
+                    $_GET['msgPack'] = 1;
+                    $_GET['callshowPack'] = 1;
+                    $_GET['otherPack'] = 1;
+                    $_GET['feeSum'] = 1;
+                    $_GET['selectNum'] = '18672725352';
+                    $_GET['office'] = 1;
+                    $_GET['username'] = 'hehb';
+                    $_GET['usermobile'] = '18672725352';
+                    $_GET['userid'] = '422428197452232344';                    
+                }            
+    
 */
 
 
