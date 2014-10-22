@@ -69,6 +69,7 @@ use app\models\U;
 use app\models\MUser;
 use app\models\MItem;
 use app\models\MOffice;
+use app\models\MSceneDetail;
 
 class MOrder extends ActiveRecord
 {
@@ -124,13 +125,13 @@ class MOrder extends ActiveRecord
             if ($insert)
             {
                 $ar = new MSceneDetail;
-                $ar->scene_id = $scene_id;             
-                $ar->scene_src_id = $scene_src_id;
-                $ar->gh_id = $gh_id;
-                $ar->openid = $openid;
-                $ar->amount = $order->feesum * $order->item->scene_percent /100;
-                $ar->oid = $order->oid;
-                $ar->memo = $order->detail;                 
+                $ar->scene_id = $this->scene_id;             
+                $ar->scene_src_id = $this->scene_src_id;
+                $ar->gh_id = $this->gh_id;
+                $ar->openid = $this->openid;
+                $ar->amount = $this->scene_amt;
+                $ar->oid = $this->oid;
+                $ar->memo = $this->detail;                 
             }
             else
             {
