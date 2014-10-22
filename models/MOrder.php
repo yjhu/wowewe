@@ -139,7 +139,7 @@ class MOrder extends ActiveRecord
             $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_AUCTION;
             $ar->save(false);
         }        
-        parent::afterSave();        
+        parent::afterSave($insert, $changedAttributes);        
     }
 
     static function getOrderStatusName($key=null)
