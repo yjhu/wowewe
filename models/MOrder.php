@@ -8,7 +8,8 @@ CREATE TABLE wx_order (
     gh_id VARCHAR(32) NOT NULL DEFAULT '',
     openid VARCHAR(32) NOT NULL DEFAULT '',
     scene_id int(10) unsigned NOT NULL DEFAULT '0',    
-    src_id int(10) unsigned NOT NULL DEFAULT '0',    
+    scene_src_id int(10) unsigned NOT NULL DEFAULT '0',    
+    scene_amt int(10) NOT NULL DEFAULT '0',
     iid int(10) unsigned NOT NULL DEFAULT '0',
     feesum int(10) unsigned NOT NULL DEFAULT '0',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,    
@@ -53,7 +54,8 @@ CREATE TABLE wx_order (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
-ALTER TABLE wx_order ADD src_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
+ALTER TABLE wx_order ADD scene_amt int(10) NOT NULL DEFAULT '0' after openid;
+ALTER TABLE wx_order ADD scene_src_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
 ALTER TABLE wx_order ADD scene_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
 
 */
@@ -74,9 +76,6 @@ class MOrder extends ActiveRecord
     const STATUS_OK = 3;        
     const STATUS_CLOSED_USER = 7;        
     const STATUS_CLOSED_AUTO = 9;            
-//    const STATUS_PAYED = 1;        
-//    const STATUS_SHIPPED = 2;
-//    const STATUS_CLOSED_OFFICE = 8;    
 
     const PAY_KIND_CASH = 0;
     const PAY_KIND_ALIWAP = 1;
@@ -116,6 +115,30 @@ class MOrder extends ActiveRecord
             [['address'],  'string', 'min' => 5, 'max' => 256], 
             [['kaitong'],  'string', 'min' => 1, 'max' => 16],      
         ];
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {        
+        if (!empty($this->scene_id) && !empty($this->scene_amt))
+        {
+            if ($insert)
+            {
+                $ar = new MSceneDetail;
+                $ar->scene_id = $scene_id;             
+                $ar->scene_src_id = $scene_src_id;
+                $ar->gh_id = $gh_id;
+                $ar->openid = $openid;
+                $ar->amount = $order->feesum * $order->item->scene_percent /100;
+                $ar->oid = $order->oid;
+                $ar->memo = $order->detail;                 
+            }
+            else
+            {
+            }
+            $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_AUCTION;
+            $ar->save(false);
+        }        
+        parent::afterSave();        
     }
 
     static function getOrderStatusName($key=null)
@@ -690,5 +713,9 @@ ALTER TABLE wx_order ADD val_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
 
 ALTER TABLE wx_order ADD address VARCHAR(256) NOT NULL DEFAULT '';
 ALTER TABLE wx_order ADD kaitong VARCHAR(16) NOT NULL DEFAULT '';
+
+//    const STATUS_PAYED = 1;        
+//    const STATUS_SHIPPED = 2;
+//    const STATUS_CLOSED_OFFICE = 8;    
 
 */

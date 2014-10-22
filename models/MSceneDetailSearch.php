@@ -17,14 +17,14 @@ class MSceneDetailSearch extends Model
 
     public $create_time_2;    
 
-    public $amount;
+    public $scene_amt;
     
     public $memo;
     
     public function rules()
     {
         return [
-            [['gh_id', 'scene_id','create_time', 'create_time_2', 'amount', 'memo'], 'safe'],
+            [['gh_id', 'scene_id','create_time', 'create_time_2', 'scene_amt', 'memo'], 'safe'],
         ];
     }
 
@@ -50,7 +50,7 @@ class MSceneDetailSearch extends Model
             return $dataProvider;
         }
 
-        $this->addCondition($query, 'amount');
+        $this->addCondition($query, 'scene_amt');
         $this->addCondition($query, 'memo', true);
         
         if (trim($this->create_time) !== '') 

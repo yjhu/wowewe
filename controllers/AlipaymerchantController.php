@@ -20,19 +20,19 @@ use app\models\Alipay;
 
 class AlipaymerchantController extends Controller
 {
-	public $enableCsrfValidation = false;
-	
-	public function actionIndex()
-	{		
-		$this->layout = false;
-		return $this->redirect(['wap/order']);	
-	}
-		
+    public $enableCsrfValidation = false;
+    
+    public function actionIndex()
+    {        
+        $this->layout = false;
+        return $this->redirect(['wap/order']);    
+    }
+        
 }
 
 /*
-		Alipay::logResult([__METHOD__,$_GET,$_POST]);		
-		return 'Alipaymerchant error';		
+        Alipay::logResult([__METHOD__,$_GET,$_POST]);        
+        return 'Alipaymerchant error';        
 
 */
 
