@@ -4,8 +4,11 @@
 
     use app\models\U;
     use app\models\MOffice;
-
+    use app\models\MChannel;
+    use app\models\MSceneDetail;
 ?>
+
+
     
 <style type="text/CSS">
 
@@ -108,15 +111,18 @@
                 <em class="seeM_btn"><img src="/wolm/images/seeM_btn.png" width="7"></em>
                 -->
           
-                <p class="f13">我的沃点：<span style="font-size:12pt;font-weight:bolder">0.00</span> 点</p>
-                <p class="f13">提现沃点：<span style="font-size:12pt;font-weight:bolder">0.00</span> 点</p>
+                <p class="f13">我的沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $rows['wdwd']; ?></span> 点</p>
+                <p class="f13">提现沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $rows['ktwd']; ?></span> 点</p>
             </dd>
         </dl>
  
         </li>
-
+        <!--
         <li><a href="#wddd"><img src="../web/images/woke/wddd.gif" alt="我的订单" class="ui-li-icon ui-corner-none">我的订单<span class="ui-li-count">0</span></a></li>
-        <li><a href="#wdcf"><img src="../web/images/woke/wdcf.gif" alt="我的财富" class="ui-li-icon ui-corner-none">我的财富<span class="ui-li-count">100</span></a></li>
+        -->
+        <li><a href="#wdcf"><img src="../web/images/woke/wdcf.gif" alt="我的财富" class="ui-li-icon ui-corner-none">我的财富<span class="ui-li-count"><?=  $rows['wdwd']; ?></span></a></li>
+        
+        <!--
         <li><a href="#tqjl"><img src="../web/images/woke/tqjl.gif" alt="提现记录" class="ui-li-icon ui-corner-none">提现记录<span class="ui-li-count">0</span></a></li>
         <li><a href="#"><img src="../web/images/woke/wdyhk.gif" alt="我的银行卡" class="ui-li-icon ui-corner-none">我的银行卡<span class="ui-li-count">0</span></a></li>
         <li><a href="#"><img src="../web/images/woke/aqsz.gif" alt="安全设置" class="ui-li-icon ui-corner-none">安全设置</a></li>
@@ -125,7 +131,7 @@
         <li><a href="#"><img src="../web/images/woke/wdsc.gif" alt="我的收藏" class="ui-li-icon ui-corner-none">我的收藏<span class="ui-li-count">10</span></a></li>
         <li><a href="#"><img src="../web/images/woke/wdmy.gif" alt="我的盟友" class="ui-li-icon ui-corner-none">我的盟友<span class="ui-li-count">20</span></a></li>
         <li><a href="#"><img src="../web/images/woke/wdrw.gif" alt="我的任务" class="ui-li-icon ui-corner-none">我的任务<span class="ui-li-count">2</span></a></li>
-
+        -->
 
         </ul>
 
@@ -216,7 +222,7 @@
     <div class="ui-bar ui-bar-a" style="height:60px">
     我的沃点
     <br>
-    <span style="font-size:28pt;font-weight:bolder;color:#ff6500">0.00</span> 
+    <span style="font-size:28pt;font-weight:bolder;color:#ff6500"><?=  $rows['wdwd']; ?></span> 
     </div>
     </div>
 </div>
@@ -226,7 +232,7 @@
     <div class="ui-bar ui-bar-a" style="height:60px">
         可提现沃点
         <br>
-        <span style="font-size:18pt;">0.00</span> 
+        <span style="font-size:18pt;"><?=  $rows['ktwd']; ?></span> 
     </div>
     </div>
 
@@ -234,30 +240,33 @@
     <div class="ui-bar ui-bar-b" style="height:60px">
         预期沃点
         <br>
-        <span style="font-size:18pt;">0.00</span> 
+        <span style="font-size:18pt;"><?=  $rows['yqwd']; ?></span> 
     </div>
     </div>
 
     <div class="ui-block-a">
     <div class="ui-bar ui-bar-a" style="height:60px">
-        累计结算沃点
+        已提沃点 
         <br>
-        <span style="font-size:18pt;">0.00</span> 
+        <span style="font-size:18pt;"><?=  $rows['ytwd']; ?></span> 
     </div>
     </div>
 
     <div class="ui-block-b">
     <div class="ui-bar ui-bar-b" style="height:60px">
-        累计提现沃点
+        <!--
+        累计结算沃点xxx
         <br>
-        <span style="font-size:18pt;">0.00</span> 
+        <span style="font-size:18pt;">0</span> 
+        -->
     </div>
     </div>    
 
 </div>
 
 <ol data-role="listview" data-inset="true">
-    <li>每日计算预期沃点</li>
+    <!--<li>每日计算预期沃点</li>-->
+    <li>1沃点=人民币1分</li>
     <li>每月20日结算沃点</li>
     <li>我的沃点 = 可提现沃点＋预期沃点</li>
     <li>预期沃点即未结算订单带来预估值</li>
