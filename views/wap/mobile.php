@@ -262,7 +262,7 @@ text-decoration: line-through;
 
         <h2>收货地址</h2>
         <div class="ui-field-contain">
-            <input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
+            <input type="tel" name="usermobile1" id="usermobile1" placeholder="手机号码" value="">
 
             <input type="text" name="addr" id="addr" placeholder="省市区街道-邮政编码" data-mini=false value="">
         </div>
@@ -307,7 +307,7 @@ text-decoration: line-through;
 		<label for="username">姓名</label>
 		-->
 		<input type="text" name="username" id="username" placeholder="姓名" value="">
-
+        <input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
 		<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
 	</div>
 
@@ -1035,12 +1035,15 @@ $(document).on("pageinit", "#contactPage", function(){
 
 	if(localStorage.getItem('username') != '')
 		$('#username').val(localStorage.getItem('username'));
+    if(localStorage.getItem('usermobile') != '')
+        $('#usermobile').val(localStorage.getItem('usermobile'));   
 	if(localStorage.getItem('userid') != '')
 		$('#userid').val(localStorage.getItem('userid'));
 
 	//alert('here is contact page');
 	$("#addContactBtn").click(function(){
 		var username = $('#username').val();
+        var usermobile = $('#usermobile').val();
 		var userid = $('#userid').val();
 
         var usernameReg = /^[\u4E00-\u9FFF]+$/;
@@ -1049,6 +1052,15 @@ $(document).on("pageinit", "#contactPage", function(){
             fillErrmsg('#popupDialog-contactPage-txt','姓名输入不合法, 请重新输入.');
             $('#popupDialog-contactPage').popup('open');
             //alert("姓名输入不合法");
+            return  false;
+        }
+
+        var usermobileReg = /(^(1)\d{10}$)/;
+        if(usermobileReg.test(usermobile) === false)
+        {
+            fillErrmsg('#popupDialog-contactPage-txt','手机号码输入不合法, 请重新输入.');
+            $('#popupDialog-contactPage').popup('open');
+            //alert("手机号码输入不合法");
             return  false;
         }
 
@@ -1062,6 +1074,7 @@ $(document).on("pageinit", "#contactPage", function(){
         }
 
 		localStorage.setItem('username',username);
+        localStorage.setItem('usermobile',usermobile);
 		localStorage.setItem('userid',userid);
 
 		$.mobile.changePage("#page2",{transition:"slide"});
@@ -1074,14 +1087,14 @@ $(document).on("pageinit", "#contactPage", function(){
 $(document).on("pageinit", "#addressPage", function(){
 
     if(localStorage.getItem('usermobile') != '')
-        $('#usermobile').val(localStorage.getItem('usermobile'));
+        $('#usermobile1').val(localStorage.getItem('usermobile'));
     if(localStorage.getItem('address') != '')
         $('#addr').val(localStorage.getItem('address'));
 
     //alert('here is contact page');
     $("#addAddressBtn").click(function(){
         var address = $('#addr').val();
-        var usermobile = $('#usermobile').val();
+        var usermobile = $('#usermobile1').val();
 
         var usermobileReg = /(^(1)\d{10}$)/;
         if(usermobileReg.test(usermobile) === false)

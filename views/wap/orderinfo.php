@@ -80,11 +80,14 @@
 				身份证: <?= $model->userid; ?>
 			</p>
 
+			<?php if($model->address != null) { ?>
 			<p id="address">
 				联系方式<br>
 				手机: <?= $model->usermobile; ?><br>
 				收货地址: <?= $model->address; ?>
 			</p>
+			<?php } ?>
+
 			<p align="right" >
 	         合计
 			<span  id="total" style="font-size: 18px; color:#ff8600; font-weight:  bolder">
