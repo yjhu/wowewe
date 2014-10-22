@@ -208,12 +208,6 @@ EOD;
             exit;        
         }
         Yii::$app->wx->setParameterComm();
-/*        
-        Yii::$app->wx->setParameter("body", 'itemdesc');
-        Yii::$app->wx->setParameter("out_trade_no", Wechat::generateOutTradeNo());
-        Yii::$app->wx->setParameter("total_fee", "1");
-        Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
-*/
         $detail = $model->detail;
         Yii::$app->wx->setParameter("body", $detail);
         Yii::$app->wx->setParameter("out_trade_no", $model->oid);
@@ -328,10 +322,12 @@ EOD;
             U::W(['oid does not exist!', __METHOD__, $_GET, $_POST]);
             return 'success';
         }
-        if ($_GET['trade_state'] == 0    )
-            $order ->status = MOrder::STATUS_PAYED;
+        if ($_GET['trade_state'] == 0)
+            $order ->status = MOrder::STATUS_OK;
         else
-            $order ->status = MOrder::STATUS_PAYED_ERR;
+        {
+            U::W(['status error', __METHOD__, $_GET, $_POST]);
+        }
 
         $order ->notify_id = $_GET['notify_id'];
         $order ->partner = $_GET['partner'];
@@ -349,13 +345,13 @@ EOD;
             Yii::$app->wx->clearGh();        
             Yii::$app->wx->setAppId($arr['AppId']);
             $arr = Yii::$app->wx->WxPayDeliverNotify($arr['OpenId'], $_GET['transaction_id'], $_GET["out_trade_no"]);
-            U::W($arr);
+            //U::W($arr);
             try
             {        
                 Yii::$app->wx->clearGh();
                 Yii::$app->wx->setGhId($order->gh_id);
                 $arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$order->openid,'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice(true)]]);                    
-                U::W($arr);        
+                //U::W($arr);        
             }
             catch (\Exception $e)
             {
@@ -830,18 +826,20 @@ EOD;
         $wid = Yii::$app->request->get('wid', '');
         if (!empty($wid))
         {
-             list($scene_id, $src_id) = explode('_', $wid);
+             list($scene_id, $scene_src_id) = explode('_', $wid);
              $order->scene_id = $scene_id;             
-             $order->src_id = $src_id;
+             $order->scene_src_id = $scene_src_id;
+             $order->scene_amt = $order->feesum * $order->item->scene_percent /100;
         }
         
         if ($order->save(false))
         {
+/*        
             if (!empty($wid) && !empty($order->item->scene_percent))
             {
                  $ar = new MSceneDetail;
                  $ar->scene_id = $scene_id;             
-                 $ar->src_id = $src_id;
+                 $ar->scene_src_id = $scene_src_id;
                  $ar->gh_id = $gh_id;
                  $ar->openid = $openid;
                  $ar->amount = $order->feesum * $order->item->scene_percent /100;
@@ -849,7 +847,7 @@ EOD;
                  $ar->memo = $order->detail;                 
                  $ar->save(false);
             }
-        
+*/        
             if (isset($mobnum))
             {
                 $mobnum->status = MMobnum::STATUS_LOCKED;
@@ -1277,8 +1275,8 @@ EOD;
         $model = MOrder::findOne($oid);        
         if (\Yii::$app->request->isPost) 
         {
-               if (isset($_POST['paykind']))
-                       $_POST['MOrder']['pay_kind'] = $_POST['paykind']; 
+            if (isset($_POST['paykind']))
+                $_POST['MOrder']['pay_kind'] = $_POST['paykind']; 
             $model->setAttributes($_POST['MOrder'], false);
 
             $model->save(false);
@@ -1921,6 +1919,9 @@ return $xmlStr;
                     $_GET['userid'] = '422428197452232344';                    
                 }            
     
+        Yii::$app->wx->setParameter("body", 'itemdesc');
+        Yii::$app->wx->setParameter("out_trade_no", Wechat::generateOutTradeNo());
+        Yii::$app->wx->setParameter("total_fee", "1");
+        Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
 */
-
 
