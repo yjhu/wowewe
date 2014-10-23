@@ -1061,6 +1061,27 @@ EOD;
                 //unset($row);
                 break;                
 
+            case 'woketixian':
+                $gh_id = U::getSessionParam('gh_id');
+                $openid = U::getSessionParam('openid');                    
+                Yii::$app->wx->setGhId($gh_id);
+                $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        
+                $model = new \app\models\MSceneDetail;
+                $model->gh_id = $gh_id;
+                $model->openid = $openid;
+                $model->scene = $user->scene_id;
+                $model->scene_amt = (-1)*$_GET['ljtx'];
+                $model->memo = $_GET['memo'];
+                  
+                if (!$model->save(false))
+                {
+                    U::W([__METHOD__, $model->getErrors()]);
+                    return json_encode(['code'=>1, 'errmsg'=>'save score to db error']);
+                }        
+              
+                break;
+
             default:
                 U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
                 return;
@@ -1212,18 +1233,16 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wokelist:gh_03a74ac96138
     public function actionWokelist()
     {        
+        U::W("-----------11111111--------------\n");        
         $this->layout = 'wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-
-        if ($model === null)
-            throw new NotFoundHttpException('user does not exists');
-
-        //$scenedetail = MSceneDetail::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-
-
-        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model]);
+        U::W("---------22222222222--------------\n");        
+        $scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt<0',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        U::W("------------------333333-------\n");
+        U::W(count($scenes));
+        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes]);
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/orderinfo:gh_03a74ac96138

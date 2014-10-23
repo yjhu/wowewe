@@ -307,14 +307,34 @@
     </div>
     <br>
 
+    <form> 
+    <label for="ktwd-max">最多可提沃点: 1888 沃点</label>
+    <label for="ljtxSlider">现在提现沃点</label>
+    <input type="range" name="ljtxSlider" id="ljtxSlider" data-highlight="true" data-theme=a data-mini="true" min="100" max="1888" value="100">
+    <input type="button" id="ljtxBtn" value="立即提现">
+    </form>
+
+    <br><br><br>
    
+    <ul data-role="listview" data-inset="true" class="ui-nodisc-icon ui-alt-icon">
+        <?php foreach($scenes as $scene) { ?>
+        <li>
+            <p><?= $scene->memo ?></p>
+            <p><?= $scene->scene_amt ?></p>
+            <p><?= $scene->create_time ?></p>
+        </li>
+        <?php } ?>
+    </ul>
+
+    <!--
     <center>
         <span>
         <img src="../web/images/woke/womei_sad.png" width="96px" height="96px">
         <p>没有找到提现记录哦！</p>
         </span>
     </enter>
-    
+    -->
+
 </div>
 
 <div data-role="footer" data-position="fixed">
@@ -323,6 +343,45 @@
  <?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
 
+
+
+<script>
+//var ktwd = "<?=  $user->getWokeKtwd(); ?>";
+var ktwd = 1888;
+
+    $(document).on("pageinit", "#tqjl", function(){
+
+        $(document).on("click","#ljtxBtn",function(){
+           var ljtx = $("#ljtxSlider").val();
+           if(ktwd < 100)
+           {
+                alert("提现最低值为100沃点。");
+                return false; 
+           }
+
+            $.ajax({
+                url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'woketixian'], true) ; ?>",
+                type:"GET",
+                cache:false,
+                dataType:'json',
+                data: "&ljtx="+ljtx+"&memo=提现",
+                success: function(json_data){
+                    if(json_data)
+                    {
+
+                    }
+                    //getMyOrderListDetail(oid);
+                }
+            });
+
+            alert("提现成功:"+$("#ljtxSlider").val()+"沃点。");
+            return false;
+
+        });
+
+    });
+
+</script>
 
 <?php
 /*
