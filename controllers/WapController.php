@@ -1216,38 +1216,14 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        $scene = MSceneDetail::findOne(['gh_id'=>$gh_id]);
 
         if ($model === null)
             throw new NotFoundHttpException('user does not exists');
 
         //$scenedetail = MSceneDetail::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 
-        //预期沃点
-        $yqwd = MSceneDetail::find()->where(['gh_id'=>$gh_id, 'scene_id'=>$scene->scene_id, 'status'=>MSceneDetail::STATUS_AUCTION])->sum('scene_amt');                                
-        if($yqwd == null)
-            $yqwd = 0;
 
-        //可提沃点
-         $ktwd = MSceneDetail::find()->where(['gh_id'=>$gh_id, 'scene_id'=>$scene->scene_id, 'status'=>MSceneDetail::STATUS_CONFIRMED])->sum('scene_amt');                                
-         if($ktwd == null)
-            $ktwd = 0;
-
-        //已提沃点
-         $ytwd = MSceneDetail::find()->where(['gh_id'=>$gh_id, 'scene_id'=>$scene->scene_id, 'status'=>MSceneDetail::STATUS_CONFIRMED])->sum('scene_amt');                                
-         if($ytwd == null)
-            $ytwd = 0;
-
-
-        //我的沃点 = 预期沃点+可提沃点
-         $wdwd = $yqwd + $ktwd;
-
-         $rows['yqwd'] = $yqwd;
-         $rows['ktwd'] = $ktwd;
-         $rows['wdwd'] = $wdwd;
-         $rows['ytwd'] = $ytwd;
-
-        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'rows' =>$rows]);
+        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model]);
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/orderinfo:gh_03a74ac96138

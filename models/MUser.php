@@ -251,6 +251,31 @@ class MUser extends ActiveRecord implements IdentityInterface
         return $this->hasOne(MChannel::className(),  ['gh_id' => 'gh_id', 'openid' => 'openid']);
     }
 
+    public function getWokeKtwd()
+    {
+        //可提沃点
+        if(empty($this->scene_id))
+            return 0;
+        return MSceneDetail::find()->where(['gh_id'=>$this->gh_id, 'scene_id'=>$this->scene_id, 'status'=>MSceneDetail::STATUS_CONFIRMED])->sum('scene_amt');                                
+    }
+
+    public function getWokeYqwd()
+    {
+        //预期沃点
+        if(empty($this->scene_id))
+            return 0;
+        return MSceneDetail::find()->where(['gh_id'=>$this->gh_id, 'scene_id'=>$this->scene_id, 'status'=>MSceneDetail::STATUS_CONFIRMED])->sum('scene_amt');
+    }
+
+    public function getWokeYtwd()
+    {
+        //已提沃点
+        if(empty($this->scene_id))
+            return 0;
+        return MSceneDetail::find()->where(['gh_id'=>$this->gh_id, 'scene_id'=>$this->scene_id, 'status'=>MSceneDetail::STATUS_CONFIRMED])->sum('scene_amt');
+    }
+
+
 }
 
 /*
