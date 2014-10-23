@@ -112,8 +112,8 @@
                 <em class="seeM_btn"><img src="/wolm/images/seeM_btn.png" width="7"></em>
                 -->
           
-                <p class="f13">我的沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeYqwd() + $user->getWokeYqwd(); ?></span> 点</p>
-                <p class="f13">提现沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeKtwd(); ?></span> 点</p>
+                <p class="f13">我的沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeYqwd() + $user->getWokeKtwd(); ?></span> 点</p>
+                <p class="f13">可提现沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeKtwd(); ?></span> 点</p>
             </dd>
         </dl>
  
@@ -121,10 +121,11 @@
         <!--
         <li><a href="#wddd"><img src="../web/images/woke/wddd.gif" alt="我的订单" class="ui-li-icon ui-corner-none">我的订单<span class="ui-li-count">0</span></a></li>
         -->
-        <li><a href="#wdcf"><img src="../web/images/woke/wdcf.gif" alt="我的财富" class="ui-li-icon ui-corner-none">我的财富<span class="ui-li-count"><?=  $user->getWokeYqwd() + $user->getWokeYqwd(); ?></span></a></li>
+        <li><a href="#wdcf"><img src="../web/images/woke/wdcf.gif" alt="我的财富" class="ui-li-icon ui-corner-none">我的财富<span class="ui-li-count"><?=  $user->getWokeYqwd() + $user->getWokeKtwd(); ?></span></a></li>
         
+        
+        <li><a href="#tqjl"><img src="../web/images/woke/tqjl.gif" alt="提现记录" class="ui-li-icon ui-corner-none">提现记录<span class="ui-li-count"><?=  $user->getWokeYtwd(); ?></span></a></li>
         <!--
-        <li><a href="#tqjl"><img src="../web/images/woke/tqjl.gif" alt="提现记录" class="ui-li-icon ui-corner-none">提现记录<span class="ui-li-count">0</span></a></li>
         <li><a href="#"><img src="../web/images/woke/wdyhk.gif" alt="我的银行卡" class="ui-li-icon ui-corner-none">我的银行卡<span class="ui-li-count">0</span></a></li>
         <li><a href="#"><img src="../web/images/woke/aqsz.gif" alt="安全设置" class="ui-li-icon ui-corner-none">安全设置</a></li>
         <li><a href="#"><img src="../web/images/woke/wdhb.gif" alt="我的海报" class="ui-li-icon ui-corner-none">我的海报</a></li>
@@ -249,7 +250,7 @@
     <div class="ui-bar ui-bar-a" style="height:60px">
         已提现沃点 
         <br>
-        <span style="font-size:18pt;"><0</span> 
+        <span style="font-size:18pt;"><?=  $user->getWokeYtwd(); ?></span> 
     </div>
     </div>
 
@@ -291,7 +292,7 @@
         <div class="ui-bar ui-bar-a" style="height:60px">
            累计提现(点)
             <br>
-            <span style="font-size:18pt;">0.00</span> 
+            <span style="font-size:18pt;"><?=  $user->getWokeYtwd(); ?></span> 
         </div>
         </div>
 
@@ -299,21 +300,21 @@
         <div class="ui-bar ui-bar-b" style="height:60px">
             折合人民币(元)
             <br>
-            <span style="font-size:18pt;">0.00</span> 
+            <span style="font-size:18pt;"><?=  $user->getWokeYtwd()/100; ?></span> 
         </div>
         </div>
 
     </div>
     <br>
 
-
-    
+   
     <center>
-    <span>
-    <img src="../web/images/woke/womei_sad.png" width="96px" height="96px">
-    <p>没有找到提现记录哦！</p>
-   </span>
-   <c/enter>
+        <span>
+        <img src="../web/images/woke/womei_sad.png" width="96px" height="96px">
+        <p>没有找到提现记录哦！</p>
+        </span>
+    </enter>
+    
 </div>
 
 <div data-role="footer" data-position="fixed">
