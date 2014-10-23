@@ -105,7 +105,10 @@ $basename = basename(__FILE__, '.php');
 		<p><span class="title_comm">下单时间:</span>&nbsp;<span id="create_time"></span></p>
 		<p><span class="title_comm">商品详情:</span>&nbsp;<span id="detail"></span>&nbsp;&nbsp;<span id="val_pkg_3g4g"></span></p>
 		<p><span class="title_comm">营业厅:</span>&nbsp;<span id="office_id"></span></p>
-		<p><span class="title_comm">价格:</span>&nbsp;￥<span id="feesum"></span></p>
+		<p><span class="title_comm">价格:</span>&nbsp;
+		￥<span id="feesum"></span>&nbsp;&nbsp;
+		<span id="kaitong"></span>
+		</p>
 		
 		<hr color="#F7C708">
 		
@@ -176,6 +179,8 @@ function load_data1(i, n)
 	else
 		$("#status").html(n.statusName);
 
+	$("#kaitong").html(n.kaitong);
+
 	$("#memo").html(n.memo);
 }
 
@@ -230,6 +235,23 @@ function load_data2(i, n)
 		imgurl = '../web/images/item/coolpad7295c-black-700x500.jpg-120x120.jpg';
 	else if(n.cid == 331)
 		imgurl = '../web/images/item/xiaomi-4-white-700x500.jpg-120x120.jpg';
+	else if(n.cid == 700)
+		imgurl = '../web/images/item/45gliuliang-700x500.jpg-120x120.jpg';
+	else if(n.cid == 701)
+		imgurl = '../web/images/item/96gliuliang-700x500.jpg-120x120.jpg';
+	else if(n.cid == 702)
+		imgurl = '../web/images/item/flow100mb-700x500.jpg-120x120.jpg';
+	else if(n.cid == 703)
+		imgurl = '../web/images/item/flow300mb-700x500.jpg-120x120.jpg';
+	else if(n.cid == 704)
+		imgurl = '../web/images/item/flow500mb-700x500.jpg-120x120.jpg';
+	else if(n.cid == 705)
+		imgurl = '../web/images/item/flow1gb-01-700x500.jpg-120x120.jpg';
+	else if(n.cid == 706)
+		imgurl = '../web/images/item/flow2.5g-700x500.jpg-120x120.jpg';
+	else if(n.cid == 707)
+		imgurl = '../web/images/item/flow1gb-02-700x500.jpg-120x120.jpg';
+
 
 	if(n.val_pkg_3g4g == "3g")
 		val_pkg_3g4g_name="3G普通套餐";
@@ -243,7 +265,7 @@ function load_data2(i, n)
 	<p><span class='title_comm'>订单编号:</span>&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
 	<p><span class='title_comm'>下单时间:</span>&nbsp;"+n.create_time+"</p>\
 	<p><span class='title_comm'>商品名称:</span>&nbsp;"+n.title+ '&nbsp;&nbsp;' +val_pkg_3g4g_name+"</p>\
-	<p><span class='title_comm'>价格:</span>&nbsp;￥"+(n.feesum)/100+"</p>";
+	<p><span class='title_comm'>价格:</span>&nbsp;￥"+(n.feesum)/100+"&nbsp;&nbsp;"+(n.kaitong)+"</p>";
 
 	if(n.status == 0) //wait to pay 
 		txt_mos ="<p><span class='title_comm'>订单状态:</span>&nbsp;"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";

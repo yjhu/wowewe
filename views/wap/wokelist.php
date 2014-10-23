@@ -246,7 +246,7 @@
 
     <div class="ui-block-a">
     <div class="ui-bar ui-bar-a" style="height:60px">
-        已提沃点 
+        已提现沃点 
         <br>
         <span style="font-size:18pt;"><?=  $rows['ytwd']; ?></span> 
     </div>

@@ -334,9 +334,14 @@ class MOrder extends ActiveRecord
         $office = MOffice::findOne($this->office_id);
         $office_info = ($office !== null) ? "至{$office->title}({$office->address}, {$office->manager}, {$office->mobile})" : '';
         $select_mobnum_info = ($this->select_mobnum !== null) ? ", 手机号码为{$this->select_mobnum}" : '';
+//        $str = <<<EOD
+//{$model->nickname}, 您已订购【{$detail}】{$select_mobnum_info}。 订单编号为【{$this->oid}】, 订单金额为{$feesum}元, 用户信息为【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 请您在24小时内携身份证或相关证件{$office_info}办理, 逾期将自动关闭。 【{$gh->nickname}】
+//EOD;
+
         $str = <<<EOD
-{$model->nickname}, 您已订购【{$detail}】{$select_mobnum_info}。 订单编号为【{$this->oid}】, 订单金额为{$feesum}元, 用户信息为【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 请您在24小时内携身份证或相关证件{$office_info}办理, 逾期将自动关闭。 【{$gh->nickname}】
+{$model->nickname}, 您已订购【{$detail}】。 订单编号【{$this->oid}】, {$this->kaitong},订单金额{$feesum}元,  用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 【{$gh->nickname}】
 EOD;
+
         return $str;
     }    
 

@@ -80,6 +80,10 @@
 	background-color: #44B549;
 }
 
+.ui-header .ui-title, .ui-footer .ui-title {
+    margin-right: 0 !important; margin-left: 0 !important;
+}
+
 /*-------------------------------*/
 .title_comm
 {

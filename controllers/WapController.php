@@ -773,11 +773,11 @@ EOD;
                 $order->attr = "{$_GET['cardType']}";
                 break;
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW500MB:
-                $order->title = '30元包1G 3G省内流量包';             
+                $order->title = '30元包500MB 3G省内流量包';             
                 $order->attr = "{$_GET['cardType']}";
                 break;
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW1GB_1:
-                $order->title = '50元包100MB 3G省内流量包';                   
+                $order->title = '50元包1G 3G省内流量包';                   
                $order->attr = "{$_GET['cardType']}";
                 break;
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW2DOT5GB:
@@ -1239,17 +1239,17 @@ EOD;
         //$scenedetail = MSceneDetail::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
 
         //预期沃点
-        $yqwd = MSceneDetail::find()->where(['gh_id'=>$gh_id, 'scene_id'=>$scene->scene_id, 'status'=>MSceneDetail::STATUS_AUCTION])->sum('amount');                                
+        $yqwd = MSceneDetail::find()->where(['gh_id'=>$gh_id, 'scene_id'=>$scene->scene_id, 'status'=>MSceneDetail::STATUS_AUCTION])->sum('scene_amt');                                
         if($yqwd == null)
             $yqwd = 0;
 
         //可提沃点
-         $ktwd = MSceneDetail::find()->where(['gh_id'=>$gh_id, 'scene_id'=>$scene->scene_id, 'status'=>MSceneDetail::STATUS_CONFIRMED])->sum('amount');                                
+         $ktwd = MSceneDetail::find()->where(['gh_id'=>$gh_id, 'scene_id'=>$scene->scene_id, 'status'=>MSceneDetail::STATUS_CONFIRMED])->sum('scene_amt');                                
          if($ktwd == null)
             $ktwd = 0;
 
         //已提沃点
-         $ytwd = MSceneDetail::find()->where(['gh_id'=>$gh_id, 'scene_id'=>$scene->scene_id, 'status'=>MSceneDetail::STATUS_CONFIRMED])->sum('amount');                                
+         $ytwd = MSceneDetail::find()->where(['gh_id'=>$gh_id, 'scene_id'=>$scene->scene_id, 'status'=>MSceneDetail::STATUS_CONFIRMED])->sum('scene_amt');                                
          if($ytwd == null)
             $ytwd = 0;
 
