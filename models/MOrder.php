@@ -7,6 +7,7 @@ CREATE TABLE wx_order (
     oid VARCHAR(32) NOT NULL DEFAULT '',
     gh_id VARCHAR(32) NOT NULL DEFAULT '',
     openid VARCHAR(32) NOT NULL DEFAULT '',
+    scene_auto_id int(10) NOT NULL DEFAULT '0',        
     scene_id int(10) unsigned NOT NULL DEFAULT '0',    
     scene_src_id int(10) unsigned NOT NULL DEFAULT '0',    
     scene_amt int(10) NOT NULL DEFAULT '0',
@@ -54,6 +55,7 @@ CREATE TABLE wx_order (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+ALTER TABLE wx_order ADD scene_auto_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
 ALTER TABLE wx_order ADD scene_amt int(10) NOT NULL DEFAULT '0' after openid;
 ALTER TABLE wx_order ADD scene_src_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
 ALTER TABLE wx_order ADD scene_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
@@ -118,28 +120,46 @@ class MOrder extends ActiveRecord
         ];
     }
 
-    public function afterSave($insert, $changedAttributes)
-    {        
-        if (!empty($this->scene_id) && !empty($this->scene_amt))
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) 
         {
-            if ($insert)
+            if (!empty($this->scene_id) && !empty($this->scene_amt))
             {
-                $ar = new MSceneDetail;
-                $ar->scene_id = $this->scene_id;             
-                $ar->scene_src_id = $this->scene_src_id;
-                $ar->gh_id = $this->gh_id;
-                $ar->openid = $this->openid;
-                $ar->scene_amt = $this->scene_amt;
-                $ar->oid = $this->oid;
-                $ar->memo = $this->detail;                 
-            }
-            else
-            {
-            }
-            $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_AUCTION;
-            $ar->save(false);
-        }        
-        parent::afterSave($insert, $changedAttributes);        
+                if ($insert)
+                {
+                    $ar = new MSceneDetail;
+                    $ar->scene_id = $this->scene_id;             
+                    $ar->scene_src_id = $this->scene_src_id;
+                    $ar->gh_id = $this->gh_id;
+                    $ar->openid = $this->openid;
+                    $ar->scene_amt = $this->scene_amt;
+                    $ar->oid = $this->oid;
+                    $ar->memo = $this->detail;                                 
+                    $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_AUCTION;
+                    if (!$ar->save(false))
+                    {
+                        U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
+                        return false;
+                    }
+                    $this->scene_auto_id = $this->pdo->lastInsertId();
+                }
+                else
+                {
+                    if (($ar = MSceneDetail::findOne($this->scene_auto_id)) !== null) 
+                    {
+                        $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_AUCTION;
+                        if (!$ar->save(false))
+                        {
+                            U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
+                            return false;
+                        }                        
+                    }                    
+                }
+            }              
+            return true;
+        }
+        return false;
     }
 
     static function getOrderStatusName($key=null)
@@ -719,4 +739,33 @@ ALTER TABLE wx_order ADD kaitong VARCHAR(16) NOT NULL DEFAULT '';
 //    const STATUS_SHIPPED = 2;
 //    const STATUS_CLOSED_OFFICE = 8;    
 
+    public function afterSave($insert, $changedAttributes)
+    {        
+        if (!empty($this->scene_id) && !empty($this->scene_amt))
+        {
+            if ($insert)
+            {
+                $ar = new MSceneDetail;
+                $ar->scene_id = $this->scene_id;             
+                $ar->scene_src_id = $this->scene_src_id;
+                $ar->gh_id = $this->gh_id;
+                $ar->openid = $this->openid;
+                $ar->scene_amt = $this->scene_amt;
+                $ar->oid = $this->oid;
+                $ar->memo = $this->detail;                                 
+                $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_AUCTION;
+                if ($ar->save(false))
+                {
+                    $this->scene_auto_id = $this->pdo->lastInsertId();
+                    $this->
+                }                                
+            }
+            else
+            {
+            }
+        }        
+        parent::afterSave($insert, $changedAttributes);        
+    }
 */
+
+

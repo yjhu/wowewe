@@ -31,11 +31,17 @@ class MOrderSearch extends Model
 
     public $feesum;        
 
+    public $select_mobnum;
+
+    public $memo;
+
+    public $pay_kind;
+    
     public function rules()
     {
         return [
             [['office_id', 'status', 'cid'], 'integer'],            
-            [['gh_id', 'oid','create_time', 'create_time_2', 'title', 'detail', 'feesum'], 'safe'],
+            [['gh_id', 'oid','create_time', 'create_time_2', 'title', 'detail', 'feesum', 'memo', 'pay_kind'], 'safe'],
         ];
     }
 
@@ -73,7 +79,6 @@ class MOrderSearch extends Model
         }
         
         if (!($this->load($params) && $this->validate())) {
-            //$this->addCondition($query, 'oid', true);        
             return $dataProvider;
         }
 
@@ -82,6 +87,8 @@ class MOrderSearch extends Model
         $this->addCondition($query, 'detail', true);
         $this->addCondition($query, 'feesum');
         $this->addCondition($query, 'cid');        
+        $this->addCondition($query, 'pay_kind');        
+        $this->addCondition($query, 'memo', true);        
 
         if (trim($this->create_time) !== '') 
         {

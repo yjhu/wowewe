@@ -833,21 +833,7 @@ EOD;
         }
         
         if ($order->save(false))
-        {
-/*        
-            if (!empty($wid) && !empty($order->item->scene_percent))
-            {
-                 $ar = new MSceneDetail;
-                 $ar->scene_id = $scene_id;             
-                 $ar->scene_src_id = $scene_src_id;
-                 $ar->gh_id = $gh_id;
-                 $ar->openid = $openid;
-                 $ar->amount = $order->feesum * $order->item->scene_percent /100;
-                 $ar->oid = $order->oid;
-                 $ar->memo = $order->detail;                 
-                 $ar->save(false);
-            }
-*/        
+        {        
             if (isset($mobnum))
             {
                 $mobnum->status = MMobnum::STATUS_LOCKED;
@@ -877,7 +863,6 @@ EOD;
 
             // send wx message to user
             $arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);                    
-
         }
         else
         {
