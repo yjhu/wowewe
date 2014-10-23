@@ -142,7 +142,7 @@ class MOrder extends ActiveRecord
                         U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
                         return false;
                     }
-                    $this->scene_auto_id = $this->pdo->lastInsertId();
+                    $this->scene_auto_id = Yii::$app->db->getLastInsertID();
                 }
                 else
                 {
