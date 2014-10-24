@@ -35,13 +35,15 @@ class MOrderSearch extends Model
 
     public $memo;
 
+    public $memo_reply;
+    
     public $pay_kind;
     
     public function rules()
     {
         return [
             [['office_id', 'status', 'cid'], 'integer'],            
-            [['gh_id', 'oid','create_time', 'create_time_2', 'title', 'detail', 'feesum', 'memo', 'pay_kind'], 'safe'],
+            [['gh_id', 'oid','create_time', 'create_time_2', 'title', 'detail', 'feesum', 'memo', 'memo_reply', 'pay_kind'], 'safe'],
         ];
     }
 

@@ -43,6 +43,7 @@ CREATE TABLE wx_order (
     aliwap_quantity int(10) unsigned NOT NULL DEFAULT '0',
     aliwap_gmt_payment TIMESTAMP,
     memo VARCHAR(256) NOT NULL DEFAULT '',
+    memo_reply VARCHAR(128) NOT NULL DEFAULT '',
     val_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '',
     val_pkg_period int(10) unsigned NOT NULL DEFAULT '0',
     val_pkg_monthprice int(10) unsigned NOT NULL DEFAULT '0',
@@ -54,7 +55,7 @@ CREATE TABLE wx_order (
     KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-
+ALTER TABLE wx_order ADD memo_reply VARCHAR(128) NOT NULL DEFAULT '' after memo;
 ALTER TABLE wx_order ADD scene_auto_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
 ALTER TABLE wx_order ADD scene_amt int(10) NOT NULL DEFAULT '0' after openid;
 ALTER TABLE wx_order ADD scene_src_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
@@ -106,6 +107,7 @@ class MOrder extends ActiveRecord
             'office_id' => '营业厅编号',
             'pay_kind' => '付款方式',
             'memo' => '留言',
+            'memo_reply' => '备注',
         ];
     }
 
@@ -117,6 +119,7 @@ class MOrder extends ActiveRecord
             [['select_mobnum'],  'number'],  
             [['address'],  'string', 'min' => 5, 'max' => 256], 
             [['kaitong'],  'string', 'min' => 1, 'max' => 16],      
+            [['memo_reply'],  'string', 'min' => 1, 'max' => 100],                  
         ];
     }
 
