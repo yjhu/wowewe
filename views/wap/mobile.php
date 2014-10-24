@@ -9,9 +9,6 @@
     use app\models\MChannel;
 	use app\models\MSceneDetail;
 
-    $item = MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$cid]);
-    $item->price = $_GET['price']; 
-    $item->title_hint = $_GET['title_hint'];
 ?>
 
 
@@ -498,7 +495,7 @@ text-decoration: line-through;
 	$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
 	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
 	$appid = Yii::$app->wx->gh['appid'];
-	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobile:'.Yii::$app->wx->getGhid().":wid={$wid}");
+	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobile:'.Yii::$app->wx->getGhid().":cid={$item->cid}:wid={$wid}");
 	$myImg = Url::to("$assetsPath/share-icon.jpg", true);
 	$title = '特惠手机';
 	$desc = '多款热销机型，优惠大放送，快来瞄瞄吧~~ 心动不如行动！';

@@ -5,8 +5,6 @@
     use app\models\U;
     use app\models\MOffice;
     use app\models\MSceneDetail;
-	
-
 ?>
     
 <style type="text/CSS">
@@ -74,7 +72,7 @@
         </li>
 
         <?php foreach($models as $model) { ?>
-            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid, 'price'=>$model->price, 'title_hint'=>$model->title_hint],true) ?>">
+            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
                     <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                     <h2><?= $model->title ?></h2>
                     <p><?= $model->title_hint ?></p>
@@ -121,7 +119,6 @@
 
 <?php
 /*
- *
- *
+            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid, 'price'=>$model->price, 'title_hint'=>$model->title_hint],true) ?>">
+
  */
-?>
