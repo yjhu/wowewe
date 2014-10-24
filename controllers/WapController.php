@@ -1126,7 +1126,8 @@ EOD;
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
         $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        return $this->render('mobile', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user]);
+        $item = MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$_GET['cid']]);
+        return $this->render('mobile', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user, 'item'=>$item]);
     }
 
      //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardlist:gh_03a74ac96138
