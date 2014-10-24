@@ -84,7 +84,7 @@
                     <img id="myphoto" src="<?php echo $user->headimgurl; ?>" width="56">
                     </div>
                 </div>
-                <p class="f9 marT7"><em id="vip_p" class="jin_vip"></em></p>
+                <p class="f9 marT7"><em id="vip_p" class="zuan_vip"></em></p>
             </dt>
 
             <dd>
@@ -99,7 +99,10 @@
                 </a>
                 <div data-role="popup" id="qrBtnPopup" class="photopopup" data-overlay-theme="a" data-corners="false" data-tolerance="30,15">
                 <!--<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>-->
-                <img src="../web/images/woke/qr.png">
+                <!--<img src="../web/images/woke/qr.png">-->
+
+                <?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
+
                 </div>
 
                 </p>
@@ -332,11 +335,14 @@
 
     <hr color="#F7C708">
 
-    <h3>沃点提取记录</h3>
-    <ul data-role="listview" data-inset="true" >
-        <?php foreach($scenes as $scene) { ?>
-        
+   
+    <ul data-role="listview" data-inset="false" >
+        <?php $flag=0; foreach($scenes as $scene) {?>
             
+            <?php if($flag == 0) {?>
+             <h3>沃点提取记录</h3>
+            <?php } ?>
+
             <?php if($scene->status == 0) { ?>
                 <li class="c_txwdlist_0">
             <?php } else { ?>
@@ -362,17 +368,18 @@
             <?php } ?>
             </div>
         </li>
-        <?php } ?>
+        <?php $flag++; } ?>
     </ul>
 
-    <!--
+    <?php if($flag == 0) { ?>
+    <br>
     <center>
         <span>
         <img src="../web/images/woke/womei_sad.png" width="96px" height="96px">
         <p>没有找到提现记录哦！</p>
         </span>
     </enter>
-    -->
+    <?php } ?>
 
 </div>
 
@@ -385,12 +392,7 @@
 
 
 <script>
-//var ktwd = "<?=  $user->getWokeKtwd(); ?>";
-var ktwd = 1888;
-
-
-
-
+var ktwd = "<?=  $user->getWokeKtwd(); ?>";
 
 $(document).on("pageinit", "#wdcf", function(){
 

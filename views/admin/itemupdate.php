@@ -31,6 +31,8 @@ $this->params['breadcrumbs'][] = '修改';
 
 		<?= $form->field($model, 'detail')->textArea() ?>
 
+		<?= $form->field($model, 'scene_percent')->textInput(['maxlength' => 10]) ?>
+
 		<?= $form->field($model, 'ctrl_mobnumber')->textInput(['maxlength' => 10]) ?>
 		<?= $form->field($model, 'ctrl_userinfo')->textInput(['maxlength' => 10]) ?>
 		<?= $form->field($model, 'ctrl_office')->textInput(['maxlength' => 10]) ?>
