@@ -332,17 +332,10 @@
     <input type="range" name="ljtxSlider" id="ljtxSlider" data-highlight="true" data-theme=a data-mini="true" min="100" max="<?=  $user->getWokeKtwd(); ?>" step="100" value="100">
     <input type="button" id="ljtxBtn" value="立即提现">
     </form>
-
-    <hr color="#F7C708">
-
-   
+   <br>
     <ul data-role="listview" data-inset="false" >
         <?php $flag=0; foreach($scenes as $scene) {?>
             
-            <?php if($flag == 0) {?>
-             <h3>沃点提取记录</h3>
-            <?php } ?>
-
             <?php if($scene->status == 0) { ?>
                 <li class="c_txwdlist_0">
             <?php } else { ?>
