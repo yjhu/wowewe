@@ -59,7 +59,7 @@ class WapController extends Controller
     public function init()
     {
         //U::W(['init....', $_GET,$_POST, $GLOBALS]);
-        //U::W(['init....', $_GET,$_POST]);
+        U::W(['init....', $_GET,$_POST]);
     }
 
     public function beforeAction($action)
@@ -824,9 +824,11 @@ EOD;
         }
 
         $wid = Yii::$app->request->get('wid', '');
+U::W("HELLO, {$wid}");        
         if (!empty($wid))
         {
              list($scene_id, $scene_src_id) = explode('_', $wid);
+U::W("FINE, {$scene_id}, {$scene_src_id}");                     
              $order->scene_id = $scene_id;             
              $order->scene_src_id = $scene_src_id;
              $order->scene_amt = $order->feesum * $order->item->scene_percent /100;
@@ -1137,9 +1139,7 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-
         $kind=$_GET['kind'];
-
         $models = MItem::find()->where(['kind'=>$kind])->orderBy(['price'=>SORT_DESC])->all();
         return $this->render('cardlist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models,'kind'=>$kind]);
     }
