@@ -1063,14 +1063,16 @@ EOD;
 
             case 'woketixian':
                 $gh_id = U::getSessionParam('gh_id');
-                $openid = U::getSessionParam('openid');                    
+                $openid = U::getSessionParam('openid'); 
+                U::W("----------assdfsdf1-----------");
+                U::W($openid);                   
                 Yii::$app->wx->setGhId($gh_id);
                 $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
         
                 $model = new \app\models\MSceneDetail;
                 $model->gh_id = $gh_id;
                 $model->openid = $openid;
-                $model->scene = $user->scene_id;
+                $model->scene_id = $user->scene_id;
                 $model->scene_amt = (-1)*$_GET['ljtx'];
                 $model->memo = $_GET['memo'];
                   
@@ -1230,7 +1232,7 @@ EOD;
         return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model]);
     }
 
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wokelist:gh_03a74ac96138
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wokelist:gh_03a74ac96138:openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
     public function actionWokelist()
     {        
         U::W("-----------11111111--------------\n");        

@@ -47,6 +47,10 @@
     .tong_vip{background:url(../web/images/woke/tongpai.png) no-repeat 0 0;-webkit-background-size: contain;-moz-background-size: contain;-o-background-size: contain;background-size: contain;}
 
 
+    .c_txwdlist_0 { font-size:14px; background-color: #FFF0CC !important;} 
+    .c_txwdlist_1 { font-size:14px; background-color: #C3FFC0 !important;} 
+
+
 </style>
 
 <div data-role="page" id="wokelist" data-theme="c">
@@ -224,7 +228,14 @@
     <div class="ui-bar ui-bar-a" style="height:60px">
     我的沃点
     <br>
-    <span style="font-size:28pt;font-weight:bolder;color:#ff6500"><?=  $user->getWokeKtwd()+$user->getWokeYqwd(); ?></span> 
+    <!--
+    <span style="font-size:28pt;font-weight:bolder;color:#ff6500">
+    -->
+    <span style="font-size:28pt;font-weight:bolder;">
+    <?=  $user->getWokeKtwd()+$user->getWokeYqwd(); ?>
+    <img src="../web/images/woke/money.png" width="32px" height="32px">
+
+    </span> 
     </div>
     </div>
 </div>
@@ -234,7 +245,7 @@
     <div class="ui-bar ui-bar-a" style="height:60px">
         可提现沃点
         <br>
-        <span style="font-size:18pt;"><?=  $user->getWokeKtwd(); ?></span> 
+        <span id="ktxwd_span" style="font-size:18pt;"><?=  $user->getWokeKtwd(); ?></span> 
     </div>
     </div>
 
@@ -285,6 +296,11 @@
 
 <div data-role="page" id="tqjl" data-theme="c">
 <?php echo $this->render('header2', ['menuId'=>'menu3','title' => '提取记录' ]); ?>
+
+<div data-role="popup" id="popupUserMsg" data-theme="c">
+<p id="userMsg"></p>
+</div>
+
 <div data-role="content">
 
     <div class="ui-grid-a">
@@ -292,7 +308,7 @@
         <div class="ui-bar ui-bar-a" style="height:60px">
            累计提现(点)
             <br>
-            <span style="font-size:18pt;"><?=  $user->getWokeYtwd(); ?></span> 
+            <span style="font-size:18pt; color:#028724"><?=  $user->getWokeYtwd(); ?></span> 
         </div>
         </div>
 
@@ -300,7 +316,7 @@
         <div class="ui-bar ui-bar-b" style="height:60px">
             折合人民币(元)
             <br>
-            <span style="font-size:18pt;"><?=  $user->getWokeYtwd()/100; ?></span> 
+            <span style="font-size:18pt; color:#028724"><?=  $user->getWokeYtwd()/100; ?></span> 
         </div>
         </div>
 
@@ -308,20 +324,43 @@
     <br>
 
     <form> 
-    <label for="ktwd-max">最多可提沃点: 1888 沃点</label>
+    <label for="ktwd-max">最多可提沃点: <?=  $user->getWokeKtwd(); ?> 沃点</label>
     <label for="ljtxSlider">现在提现沃点</label>
-    <input type="range" name="ljtxSlider" id="ljtxSlider" data-highlight="true" data-theme=a data-mini="true" min="100" max="1888" value="100">
+    <input type="range" name="ljtxSlider" id="ljtxSlider" data-highlight="true" data-theme=a data-mini="true" min="100" max="<?=  $user->getWokeKtwd(); ?>" step="100" value="100">
     <input type="button" id="ljtxBtn" value="立即提现">
     </form>
 
-    <br><br><br>
-   
-    <ul data-role="listview" data-inset="true" class="ui-nodisc-icon ui-alt-icon">
+    <hr color="#F7C708">
+
+    <h3>沃点提取记录</h3>
+    <ul data-role="listview" data-inset="true" >
         <?php foreach($scenes as $scene) { ?>
-        <li>
-            <p><?= $scene->memo ?></p>
-            <p><?= $scene->scene_amt ?></p>
-            <p><?= $scene->create_time ?></p>
+        
+            
+            <?php if($scene->status == 0) { ?>
+                <li class="c_txwdlist_0">
+            <?php } else { ?>
+                <li class="c_txwdlist_1">
+            <?php } ?>
+    
+            <div>
+            <span class=""><?= $scene->create_time ?></span>
+            &nbsp;&nbsp;
+            <?php if($scene->status == 0) { ?>
+                <span class="c_memo"><?= $scene->memo ?></span>
+            <?php } else { ?>
+                <span class="c_memo">提现成功</span>
+            <?php } ?>
+            &nbsp;&nbsp;
+            <span class="c_scene_amt"><?= abs($scene->scene_amt) ?></span>沃点
+            &nbsp;&nbsp;
+
+            <?php if($scene->status == 0) { ?>
+                 <img src="../web/images/woke/wait.png">
+            <?php } else { ?>
+                 <img src="../web/images/woke/ok.png">
+            <?php } ?>
+            </div>
         </li>
         <?php } ?>
     </ul>
@@ -349,37 +388,55 @@
 //var ktwd = "<?=  $user->getWokeKtwd(); ?>";
 var ktwd = 1888;
 
-    $(document).on("pageinit", "#tqjl", function(){
 
-        $(document).on("click","#ljtxBtn",function(){
-           var ljtx = $("#ljtxSlider").val();
-           if(ktwd < 100)
-           {
-                alert("提现最低值为100沃点。");
-                return false; 
-           }
 
-            $.ajax({
-                url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'woketixian'], true) ; ?>",
-                type:"GET",
-                cache:false,
-                dataType:'json',
-                data: "&ljtx="+ljtx+"&memo=提现",
-                success: function(json_data){
-                    if(json_data)
-                    {
 
-                    }
-                    //getMyOrderListDetail(oid);
+
+$(document).on("pageinit", "#wdcf", function(){
+
+    $(document).on("tap","#ktxwd_span",function(){
+        $.mobile.changePage("#tqjl",{transition:"slide"});
+    });
+
+});
+
+
+$(document).on("pageinit", "#tqjl", function(){
+
+    $(document).on("click","#ljtxBtn",function(){
+       var ljtx = $("#ljtxSlider").val();
+       if(ktwd < 100)
+       {
+            alert("提现最低值为100沃点。");
+            return false; 
+       }
+
+        $.ajax({
+            url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'woketixian'], true) ; ?>",
+            type:"GET",
+            cache:false,
+            dataType:'json',
+            data: "&ljtx="+ljtx+"&memo=提现申请",
+            success: function(json_data){
+                if(json_data)
+                {
+
                 }
-            });
-
-            alert("提现成功:"+$("#ljtxSlider").val()+"沃点。");
-            return false;
-
+            }
         });
 
+        alert("提现成功:"+$("#ljtxSlider").val()+"沃点。");
+
+       // $("#userMsg").html("提现成功:"+$("#ljtxSlider").val()+"沃点。");
+       // $("#popupUserMsg").popup("open");
+        //return false;
+
+        window.location.reload();
+        return false;
+
     });
+
+});
 
 </script>
 
