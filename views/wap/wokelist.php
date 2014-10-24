@@ -336,6 +336,7 @@
     <ul data-role="listview" data-inset="false" >
         <?php $flag=0; foreach($scenes as $scene) {?>
             
+  
             <?php if($scene->status == 0) { ?>
                 <li class="c_txwdlist_0">
             <?php } else { ?>
