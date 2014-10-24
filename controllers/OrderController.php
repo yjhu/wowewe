@@ -123,7 +123,7 @@ class OrderController extends Controller
         if (\Yii::$app->request->isPost) 
         {
             $model->load(\Yii::$app->request->post());
-            if ($model->save(true, ['status', 'select_mobnum'])) 
+            if ($model->save(true, ['status', 'select_mobnum', 'memo_reply'])) 
             {                
                 $mobnum = MMobnum::findOne($model->select_mobnum);
                 if ($mobnum !== null)
