@@ -1243,9 +1243,16 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
         U::W("---------22222222222--------------\n");        
         $scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt<0',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        
+        //可提现沃点
+        $ktxwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=1',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        
+        //预期沃点
+        $yqwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=0',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        
         U::W("------------------333333-------\n");
         U::W(count($scenes));
-        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes]);
+        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes]);
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/orderinfo:gh_03a74ac96138

@@ -46,11 +46,11 @@
     .yin_vip{background:url(../web/images/woke/yinpai.png) no-repeat 0 0;-webkit-background-size: contain;-moz-background-size: contain;-o-background-size: contain;background-size: contain;}
     .tong_vip{background:url(../web/images/woke/tongpai.png) no-repeat 0 0;-webkit-background-size: contain;-moz-background-size: contain;-o-background-size: contain;background-size: contain;}
 
-
     .c_txwdlist_0 { font-size:14px; background-color: #FFF0CC !important;} 
     .c_txwdlist_1 { font-size:14px; background-color: #C3FFC0 !important;} 
 
-
+    .c_list_0 { font-size:14px; background-color: #fff !important;} 
+    .c_list_1 { font-size:14px; background-color: #eee !important;} 
 </style>
 
 <div data-role="page" id="wokelist" data-theme="c">
@@ -256,7 +256,7 @@
     <div class="ui-bar ui-bar-b" style="height:60px">
         预期沃点
         <br>
-        <span style="font-size:18pt;"><?=  $user->getWokeYqwd(); ?></span> 
+        <span id="yqwd_span" style="font-size:18pt;"><?=  $user->getWokeYqwd(); ?></span> 
     </div>
     </div>
 
@@ -387,7 +387,7 @@
 
 
 <!-- 可提现沃点 页面-->
-<div data-role="page" id="tqjl" data-theme="c">
+<div data-role="page" id="ktxwd" data-theme="c">
 <?php echo $this->render('header2', ['menuId'=>'menu4','title' => '可提现沃点' ]); ?>
 
 <div data-role="content">
@@ -405,48 +405,24 @@
         </div>
         </div>
     </div>
-    <br>
+    <br><br>
 
-    <form> 
-    <label for="ktwd-max">最多可提沃点: <?=  $user->getWokeKtwd(); ?> 沃点</label>
-    <label for="ljtxSlider">现在提现沃点</label>
-    <input type="range" name="ljtxSlider" id="ljtxSlider" data-highlight="true" data-theme=a data-mini="true" min="100" max="<?=  $user->getWokeKtwd(); ?>" step="100" value="100">
-    <input type="button" id="ljtxBtn" value="立即提现">
-    </form>
-
-    <hr color="#F7C708">
-
-   
-    <ul data-role="listview" data-inset="false" >
-        <?php $flag=0; foreach($scenes as $scene) {?>
-            
-            <?php if($flag == 0) {?>
-             <h3>沃点提取记录</h3>
-            <?php } ?>
-
-            <?php if($scene->status == 0) { ?>
-                <li class="c_txwdlist_0">
-            <?php } else { ?>
-                <li class="c_txwdlist_1">
-            <?php } ?>
+    <ul data-role="listview" data-inset="true" >
+        <?php $flag=0; foreach($ktxwd_scenes as $ktxwd_scene) {?>
     
-            <div>
-            <span class=""><?= $scene->create_time ?></span>
-            &nbsp;&nbsp;
-            <?php if($scene->status == 0) { ?>
-                <span class="c_memo"><?= $scene->memo ?></span>
+            <?php if($flag%2==0) { ?>
+                <li class="c_list_0">
             <?php } else { ?>
-                <span class="c_memo">提现成功</span>
+                <li class="c_list_1">
             <?php } ?>
-            &nbsp;&nbsp;
-            <span class="c_scene_amt"><?= abs($scene->scene_amt) ?></span>沃点
-            &nbsp;&nbsp;
 
-            <?php if($scene->status == 0) { ?>
-                 <img src="../web/images/woke/wait.png">
-            <?php } else { ?>
-                 <img src="../web/images/woke/ok.png">
-            <?php } ?>
+            <div>
+            <span><?= $ktxwd_scene->create_time ?></span>
+            &nbsp;&nbsp;
+            <span><?= $ktxwd_scene->memo ?></span>
+            &nbsp;&nbsp;
+            <span><?= abs($ktxwd_scene->scene_amt) ?></span>沃点
+            &nbsp;&nbsp;
             </div>
         </li>
         <?php $flag++; } ?>
@@ -457,7 +433,7 @@
     <center>
         <span>
         <img src="../web/images/woke/womei_sad.png" width="96px" height="96px">
-        <p>没有找到提现记录哦！</p>
+        <p>没有找到任何记录哦！</p>
         </span>
     </enter>
     <?php } ?>
@@ -467,18 +443,73 @@
 <div data-role="footer" data-position="fixed">
     <h4>&copy; 襄阳联通 2014</h4>
 </div>
- <?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+ <?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
 
 
+<!-- 预期沃点 页面-->
+<div data-role="page" id="yqwd" data-theme="c">
+<?php echo $this->render('header2', ['menuId'=>'menu5','title' => '预期沃点' ]); ?>
 
+<div data-role="content">
+
+    <div class="ui-grid-solo">
+        <div class="ui-block-a">
+
+        <div class="ui-bar ui-bar-a" style="height:60px">
+        预期沃点
+        <br>
+
+        <span style="font-size:28pt;font-weight:bolder;">
+        <?=  $user->getWokeYqwd(); ?>
+        </span> 
+        </div>
+        </div>
+    </div>
+    <br><br>
+
+    <ul data-role="listview" data-inset="true" >
+        <?php $flag=0; foreach($yqwd_scenes as $yqwd_scene) {?>
+    
+            <?php if($flag%2==0) { ?>
+                <li class="c_list_0">
+            <?php } else { ?>
+                <li class="c_list_1">
+            <?php } ?>
+
+            <div>
+            <span><?= $yqwd_scene->create_time ?></span>
+            &nbsp;&nbsp;
+            <span><?= $yqwd_scene->memo ?></span>
+            &nbsp;&nbsp;
+            <span><?= abs($yqwd_scene->scene_amt) ?></span>沃点
+            &nbsp;&nbsp;
+            </div>
+        </li>
+        <?php $flag++; } ?>
+    </ul>
+
+    <?php if($flag == 0) { ?>
+    <br>
+    <center>
+        <span>
+        <img src="../web/images/woke/womei_sad.png" width="96px" height="96px">
+        <p>没有找到任何记录哦！</p>
+        </span>
+    </enter>
+    <?php } ?>
+
+</div>
+
+<div data-role="footer" data-position="fixed">
+    <h4>&copy; 襄阳联通 2014</h4>
+</div>
+ <?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
 
 
 <script>
 var ktwd = "<?=  $user->getWokeKtwd(); ?>";
-
-
-
 
 
 $(document).on("pageinit", "#wdcf", function(){
@@ -487,19 +518,24 @@ $(document).on("pageinit", "#wdcf", function(){
         $.mobile.changePage("#ktxwd",{transition:"slide"});
     });
 
+    $(document).on("tap","#yqwd_span",function(){
+        $.mobile.changePage("#yqwd",{transition:"slide"});
+    });  
+
     $(document).on("tap","#ytxwd_span",function(){
         $.mobile.changePage("#tqjl",{transition:"slide"});
     });
+
 });
 
 
 $(document).on("pageinit", "#ktxwd", function(){
-
-    alert("ktxwd");
-
+    //alert("ktxwd");
 });
 
-
+$(document).on("pageinit", "#yqwd", function(){
+    //alert("yqwd");
+});
 
 $(document).on("pageinit", "#tqjl", function(){
 
