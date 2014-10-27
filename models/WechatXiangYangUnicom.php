@@ -32,13 +32,33 @@ class WechatXiangYangUnicom extends Wechat
         //U::W($request);            
         $log = new MAccessLog;
         $log->setAttributes($request, false);
-        //U::W($log->getAttributes());                     
-        $log->save(false);
+U::W("CCC2004");        
+        U::W($request);         
+        U::W($log->getAttributes()); 
+
+U::W("CCC2005");
+
+            try
+            {
+                if ($log->save(false))
+                    U::W("log save ok");                        
+                else
+                    U::W("log save err");                        
+            }
+            catch(\Exception $e)
+            {
+                U::W("exception"); 
+                U::W($e->getMessage());
+            }            
+        
+U::W("CCC2006");                        
     }
     
     protected function onSubscribe() 
     {
+U::W("aaa1111");    
         $this->saveAccessLog();  
+U::W("bbbb2222");            
         $FromUserName = $this->getRequest('FromUserName');    
         $openid = $this->getRequest('FromUserName');        
         $gh_id = $this->getRequest('ToUserName');                
@@ -47,6 +67,7 @@ class WechatXiangYangUnicom extends Wechat
         $EventKey = $this->getRequest('EventKey');
         if (!empty($EventKey))
         {
+U::W("333333333");            
             //a new user subscribe us with qr parameter, EventKey:qrscene_3
             $Ticket = $this->getRequest('Ticket');    
             $scene_pid = substr($EventKey, 8);    
@@ -70,37 +91,45 @@ class WechatXiangYangUnicom extends Wechat
         }
         else
         {
-            /*
-            $url_1 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD])."\">单卡产品</a>";
-            $url_2 = "<a href=\"".Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid])."\">特惠手机</a>";
-            $url_3 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD])."\">8折包年上网卡</a>"; 
-            $url_4 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD])."\">5折专享流量包</a>";
+U::W("444444");                    
+            
+            $url_1 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD], true)."\">单卡产品</a>";
+            $url_2 = "<a href=\"".Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">特惠手机</a>";
+            $url_3 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD], true)."\">8折包年上网卡</a>"; 
+            $url_4 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
             $url_5 = "<a href=\"http://wsq.qq.com/reflow/263163652-1044?_wv=1&source=\">用户吐槽</a>";
             $url_6 = "<a href=\"http://m.wsq.qq.com/263163652\">襄阳沃社区</a>";
-            $url_7 = "<a href=\"".Url::to(['wap/g2048', 'gh_id'=>$gh_id, 'openid'=>$openid])."\">游戏2048</a>";
-            $url_8 = "<a href=\"".Url::to(['nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid])."\">最近营业厅</a>";
-            $url_9 = "<a href=\"".Url::to(['order', 'gh_id'=>$gh_id, 'openid'=>$openid])."\">您的订单</a>";
+            $url_7 = "<a href=\"".Url::to(['wap/g2048', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">游戏2048</a>";
+            $url_8 = "<a href=\"".Url::to(['nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
+            $url_9 = "<a href=\"".Url::to(['order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
             $url_10 = "<a href=\"http://lm.10010.com/wolm/ot/guideDetail.html\">沃联盟</a>";
-            */
-            //return $this->responseText(" {$model->nickname}，您好，欢迎进入襄阳联通官方微信服务号！在这儿，您可以逛逛沃商城，看看{$url_1}，{$url_2}，还有{$url_3}和{$url_4}；沃服务：{$url_5}，在{$url_6}里与数十万联通用户一起聊聊襄阳的那些事儿，玩玩{$url_7}，查询{$url_8}，管理{$url_9}；您还可以参与{$url_10}，“成功面前你不孤单，致富路上有沃相伴”，“快速赚钱，只需4步”！");
-            return $this->responseText("test");
+
+            $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
+            $nickname = empty($model->nickname) ? '' : $model->nickname;            
+            return $this->responseText(" {$nickname}，您好，欢迎进入襄阳联通官方微信服务号！在这儿，您可以逛逛沃商城，看看{$url_1}，{$url_2}，还有{$url_3}和{$url_4}；沃服务：{$url_5}，在{$url_6}里与数十万联通用户一起聊聊襄阳的那些事儿，玩玩{$url_7}，查询{$url_8}，管理{$url_9}；您还可以参与{$url_10}，“成功面前你不孤单，致富路上有沃相伴”，“快速赚钱，只需4步”！");
+            //return $this->responseText("test");
         }
     }
 
     protected function onUnsubscribe() 
     { 
+U::W("u1");         
         $this->saveAccessLog();
+U::W("u2");                 
         $FromUserName = $this->getRequest('FromUserName');
         $gh_id = $this->getRequest('ToUserName');
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);        
+U::W("u3");                 
         if ($model !== null)
         {
             //$model->delete();    
+U::W("u4");                     
             $model->subscribe = 0;
             //$model->scene_pid = 0;
             $model->gid = 0;
             $model->save(false);
         }
+        U::W("u5");         
         return '';
     }
 

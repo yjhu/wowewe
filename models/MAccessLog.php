@@ -47,22 +47,28 @@ class MAccessLog extends ActiveRecord
     {
         return $this->hasOne(MUser::className(), ['gh_id' => 'ToUserName', 'openid' => 'FromUserName']);
     }
-
+/*
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) 
         {
+            U::W('ZK1');
             $checksum = crc32(is_array($this->EventKey) ? json_encode($this->EventKey) : $this->EventKey);        
+            U::W('ZK2');            
             $this->EventKeyCRC = sprintf("%u", $checksum);
+            U::W('ZK3');                        
             if ((!empty($this->EventKey)) && substr($this->EventKey, 0, 8) == 'qrscene_')
             {
+                        U::W('ZK4');                        
                 $this->scene_pid = substr($this->EventKey, 8);  
             }
+                        U::W('ZK5');                        
             return true;
         } 
+                        U::W('ZK6');                                
         return false;
     }
-    
+*/    
 }
 
 /*        
