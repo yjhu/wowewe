@@ -125,12 +125,6 @@ class WapxController extends Controller
         {        
             if ($model->save())            
             {
-                $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-                if ($user !== null)
-                {
-                    $user->is_liantongstaff = 1;
-                    $user->save(false);
-                }
                 return $this->redirect(['staffhome', 'gh_id'=>$gh_id, 'openid'=>$openid]);                            
             }
             else
@@ -252,5 +246,11 @@ class WapxController extends Controller
         }
         //if ($model->load(Yii::$app->request->get()))         
         
-*/        
+                $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+                if ($user !== null)
+                {
+                    $user->is_liantongstaff = 1;
+                    $user->save(false);
+                }
+                */
 

@@ -22,6 +22,7 @@ use app\models\MSmQueue;
 
 use app\models\Wechat;
 use app\models\MOffice;
+use app\models\MStaff;
 use app\models\MGroup;
 use app\models\MChannel;
 
@@ -408,7 +409,24 @@ class CmdController extends Controller
         fclose($fh);    
     }
 
-    
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/set-liantong-flag
+    // /usr/bin/php /mnt/wwwroot/wx/yii cmd/set-liantong-flag
+    public function actionSetLiantongFlag()
+    {        
+        $gh_id = Yii::$app->wx->getGhid();
+        $models = MStaff::find()->where("gh_id = :gh_id AND openid != '' ", [':gh_id'=>$gh_id])->asArray()->all();        
+        foreach($models as $model)
+        {
+            $gh_id = $model['gh_id'];
+            $openid = $model['openid'];
+            $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+            if ($user !== null && $user->is_liantongstaff == 0)
+            {
+                $user->is_liantongstaff = 1;
+                $user->save(false);
+            }
+        }
+    }
 }
 
 /*        
