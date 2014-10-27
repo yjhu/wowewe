@@ -264,7 +264,7 @@
     <div class="ui-bar ui-bar-a" style="height:60px">
         已提现沃点 
         <br>
-        <span style="font-size:18pt;"><?=  $user->getWokeYtwd(); ?></span> 
+        <span id="ytxwd_span" style="font-size:18pt;"><?=  $user->getWokeYtwd(); ?></span> 
     </div>
     </div>
 
@@ -391,16 +391,120 @@
 
 
 
+
+<!-- 可提现沃点 页面-->
+<div data-role="page" id="tqjl" data-theme="c">
+<?php echo $this->render('header2', ['menuId'=>'menu4','title' => '可提现沃点' ]); ?>
+
+<div data-role="content">
+
+    <div class="ui-grid-solo">
+        <div class="ui-block-a">
+
+        <div class="ui-bar ui-bar-a" style="height:60px">
+        可提现沃点
+        <br>
+
+        <span style="font-size:28pt;font-weight:bolder;">
+        <?=  $user->getWokeKtwd(); ?>
+        </span> 
+        </div>
+        </div>
+    </div>
+    <br>
+
+    <form> 
+    <label for="ktwd-max">最多可提沃点: <?=  $user->getWokeKtwd(); ?> 沃点</label>
+    <label for="ljtxSlider">现在提现沃点</label>
+    <input type="range" name="ljtxSlider" id="ljtxSlider" data-highlight="true" data-theme=a data-mini="true" min="100" max="<?=  $user->getWokeKtwd(); ?>" step="100" value="100">
+    <input type="button" id="ljtxBtn" value="立即提现">
+    </form>
+
+    <hr color="#F7C708">
+
+   
+    <ul data-role="listview" data-inset="false" >
+        <?php $flag=0; foreach($scenes as $scene) {?>
+            
+            <?php if($flag == 0) {?>
+             <h3>沃点提取记录</h3>
+            <?php } ?>
+
+            <?php if($scene->status == 0) { ?>
+                <li class="c_txwdlist_0">
+            <?php } else { ?>
+                <li class="c_txwdlist_1">
+            <?php } ?>
+    
+            <div>
+            <span class=""><?= $scene->create_time ?></span>
+            &nbsp;&nbsp;
+            <?php if($scene->status == 0) { ?>
+                <span class="c_memo"><?= $scene->memo ?></span>
+            <?php } else { ?>
+                <span class="c_memo">提现成功</span>
+            <?php } ?>
+            &nbsp;&nbsp;
+            <span class="c_scene_amt"><?= abs($scene->scene_amt) ?></span>沃点
+            &nbsp;&nbsp;
+
+            <?php if($scene->status == 0) { ?>
+                 <img src="../web/images/woke/wait.png">
+            <?php } else { ?>
+                 <img src="../web/images/woke/ok.png">
+            <?php } ?>
+            </div>
+        </li>
+        <?php $flag++; } ?>
+    </ul>
+
+    <?php if($flag == 0) { ?>
+    <br>
+    <center>
+        <span>
+        <img src="../web/images/woke/womei_sad.png" width="96px" height="96px">
+        <p>没有找到提现记录哦！</p>
+        </span>
+    </enter>
+    <?php } ?>
+
+</div>
+
+<div data-role="footer" data-position="fixed">
+    <h4>&copy; 襄阳联通 2014</h4>
+</div>
+ <?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
+
+
+
+
+
 <script>
 var ktwd = "<?=  $user->getWokeKtwd(); ?>";
+
+
+
+
 
 $(document).on("pageinit", "#wdcf", function(){
 
     $(document).on("tap","#ktxwd_span",function(){
-        $.mobile.changePage("#tqjl",{transition:"slide"});
+        $.mobile.changePage("#ktxwd",{transition:"slide"});
     });
 
+    $(document).on("tap","#ytxwd_span",function(){
+        $.mobile.changePage("#tqjl",{transition:"slide"});
+    });
 });
+
+
+$(document).on("pageinit", "#ktxwd", function(){
+
+    alert("ktxwd");
+
+});
+
 
 
 $(document).on("pageinit", "#tqjl", function(){

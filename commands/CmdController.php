@@ -319,19 +319,25 @@ class CmdController extends Controller
                     //new \app\models\ButtonView('小米4预订', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=204274384&idx=1&sn=ae4d0925e811da0c652209d42e7ac04e#rd'),
                 ]),
                 new \app\models\ButtonComplex('沃服务', [
-                    new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
+                    new \app\models\ButtonView('我的订单', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/order:{$gh_id}")),
+                    new \app\models\ButtonLocationSelect('最近营业厅', 'FuncNearestOffice'),
+                    //new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
                     //new \app\models\ButtonView('流量包订购', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
                     //new \app\models\ButtonView('用户吐槽', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/suggest:{$gh_id}")),
                     new \app\models\ButtonView('用户吐槽', 'http://wsq.qq.com/reflow/263163652-1044?_wv=1&source='),
                     new \app\models\ButtonView('襄阳沃社区', 'http://m.wsq.qq.com/263163652 '),
                     new \app\models\ButtonView('游戏2048', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}")),
                 ]),
-                new \app\models\ButtonComplex('沃订单', [
+                new \app\models\ButtonComplex('沃联盟', [
                     //new \app\models\ButtonView('最近营业厅', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/xxxxxx:{$gh_id}")),
                     //new \app\models\ButtonClick('最近营业厅', 'FuncNearestOffice'),
                     //new \app\models\ButtonLocationSelect('最近营业厅.', 'FuncNearestOffice'),
-                    new \app\models\ButtonLocationSelect('最近营业厅', 'FuncNearestOffice'),                        
-                    new \app\models\ButtonView('我的订单', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/order:{$gh_id}")),
+                    new \app\models\ButtonView('沃联盟介绍', 'http://lm.10010.com/wolm/ot/guideDetail.html'),
+                    new \app\models\ButtonView('登录沃联盟', 'http://lm.10010.com/wolm/ot/index.html'),
+                    new \app\models\ButtonView('新手指南', 'http://lm.10010.com/wolm/ot/newComer.html'),
+                    new \app\models\ButtonView('财富手册', 'http://lm.10010.com/wolm/ot/earnStep.html'),
+                    new \app\models\ButtonView('收益说明', 'http://lm.10010.com/wolm/ot/incomeDeclr.html'),
+
                 ]),
             ]);
         }
