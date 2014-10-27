@@ -32,33 +32,21 @@ class WechatXiangYangUnicom extends Wechat
         //U::W($request);            
         $log = new MAccessLog;
         $log->setAttributes($request, false);
-U::W("CCC2004");        
-        U::W($request);         
-        U::W($log->getAttributes()); 
-
-U::W("CCC2005");
-
-            try
-            {
-                if ($log->save(false))
-                    U::W("log save ok");                        
-                else
-                    U::W("log save err");                        
-            }
-            catch(\Exception $e)
-            {
-                U::W("exception"); 
-                U::W($e->getMessage());
-            }            
-        
-U::W("CCC2006");                        
+        //U::W($log->getAttributes()); 
+        try
+        {
+            if (!$log->save(false))
+            U::W("MAccessLog save err");
+        }
+        catch(\Exception $e)
+        {
+            U::W('exception:'.$e->getMessage());
+        }            
     }
     
     protected function onSubscribe() 
     {
-U::W("aaa1111");    
         $this->saveAccessLog();  
-U::W("bbbb2222");            
         $FromUserName = $this->getRequest('FromUserName');    
         $openid = $this->getRequest('FromUserName');        
         $gh_id = $this->getRequest('ToUserName');                
@@ -67,7 +55,6 @@ U::W("bbbb2222");
         $EventKey = $this->getRequest('EventKey');
         if (!empty($EventKey))
         {
-U::W("333333333");            
             //a new user subscribe us with qr parameter, EventKey:qrscene_3
             $Ticket = $this->getRequest('Ticket');    
             $scene_pid = substr($EventKey, 8);    
@@ -91,7 +78,6 @@ U::W("333333333");
         }
         else
         {
-U::W("444444");                    
             
             $url_1 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD], true)."\">单卡产品</a>";
             $url_2 = "<a href=\"".Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">特惠手机</a>";
@@ -113,23 +99,18 @@ U::W("444444");
 
     protected function onUnsubscribe() 
     { 
-U::W("u1");         
         $this->saveAccessLog();
-U::W("u2");                 
         $FromUserName = $this->getRequest('FromUserName');
         $gh_id = $this->getRequest('ToUserName');
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);        
-U::W("u3");                 
         if ($model !== null)
         {
             //$model->delete();    
-U::W("u4");                     
             $model->subscribe = 0;
             //$model->scene_pid = 0;
             $model->gid = 0;
             $model->save(false);
         }
-        U::W("u5");         
         return '';
     }
 
