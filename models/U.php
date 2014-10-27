@@ -213,12 +213,12 @@ class U
             if (empty($wid))
             {
                 $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-                $wid = $user->scene_id;
+                $wid = "{$user->scene_id}_0";
             }
         }
         else
-        {
-            $wid = Yii::$app->session->set('wid', $wid);
+        {            
+            Yii::$app->session->set('wid', $wid);
         }
         return $wid;
     }
