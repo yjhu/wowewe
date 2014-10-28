@@ -1211,6 +1211,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $this->layout = 'wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');        
+        //$openid = \app\models\MGh::GH_XIANGYANGUNICOM_OPENID_KZENG;
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
         if ($model === null)
             throw new NotFoundHttpException('user does not exists');

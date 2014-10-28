@@ -168,7 +168,20 @@ EOD;
         $openid = $this->getRequest('FromUserName');
         $gh_id = $this->getRequest('ToUserName');    
         $Content = $this->getRequest('Content');
-        $msg = trim($Content);    
+        $msg = trim($Content);   
+
+        $url_1 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD], true)."\">单卡产品</a>";
+        $url_2 = "<a href=\"".Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">特惠手机</a>";
+        $url_3 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD], true)."\">8折包年上网卡</a>"; 
+        $url_4 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
+        $url_5 = "<a href=\"http://wsq.qq.com/reflow/263163652-1044?_wv=1&source=\">用户吐槽</a>";
+        $url_6 = "<a href=\"http://m.wsq.qq.com/263163652\">襄阳沃社区</a>";
+        $url_7 = "<a href=\"".Url::to(['wap/g2048', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">游戏2048</a>";
+        $url_8 = "<a href=\"".Url::to(['nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
+        $url_9 = "<a href=\"".Url::to(['order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
+        $url_10 = "<a href=\"http://lm.10010.com/wolm/ot/guideDetail.html\">沃联盟</a>";
+
+
         if ($msg == '我是襄阳联通员工')
         {
             $url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
@@ -199,11 +212,17 @@ EOD;
         }
         else
         {
+            /*
             $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
             $items = array(
                 new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
             );
             return $this->responseNews($items);
+            */
+            $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+            $nickname = empty($model->nickname) ? '' : $model->nickname;            
+            return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n在这儿, 您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
+
         }
     }
 
