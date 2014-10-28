@@ -24,7 +24,7 @@ use app\models\RespMusic;
 
 class WechatWoso extends Wechat
 {
-	protected function onSubscribe() 
+	protected function onSubscribe($isNewFan) 
 	{
 		$FromUserName = $this->getRequest('FromUserName');	
 		$openid = $this->getRequest('FromUserName');		

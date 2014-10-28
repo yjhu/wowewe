@@ -259,7 +259,7 @@ class Wechat extends \yii\base\Object
         return self::json_encode($arr);
     }
     
-    protected function onSubscribe() { return $this->responseText($this->getRequestString()); }
+    protected function onSubscribe($isNewFan) { return $this->responseText($this->getRequestString()); }
     
     protected function onUnsubscribe() { return $this->responseText($this->getRequestString()); }
     
@@ -308,10 +308,11 @@ class Wechat extends \yii\base\Object
     {
         $gh_id = $this->getGhId();    
         $FromUserName = $this->getRequest('FromUserName');
-        U::W('222');            
+        $isNewUser = false;        
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
         if ($model === null)
         {
+            $isNewUser = true;
             $model = new MUser;        
         }
         if (empty($model->nickname) ||!$model->subscribe)
@@ -324,6 +325,7 @@ class Wechat extends \yii\base\Object
             if (!$model->save(false))
                 U::W([__METHOD__, $model->getErrors()]);                
         }
+        return $isNewUser;
     }
     
     public function run($gh_id) 
@@ -335,7 +337,7 @@ class Wechat extends \yii\base\Object
             $MsgType = $this->getRequest('MsgType');
             U::W('TTTTTTTTTTT44444');                    
             //$this->setGhId($this->getRequest('ToUserName'));
-            $this->checkOpenid();
+            $isNewFan = $this->checkOpenid();
             U::W('TTTTTTTTTTT555');                    
             switch ($MsgType) 
             {
@@ -368,7 +370,7 @@ class Wechat extends \yii\base\Object
                     switch ($Event) 
                     {
                         case Wechat::EVENT_SUBSCRIBE:
-                            $resp =$this->onSubscribe();
+                            $resp =$this->onSubscribe($isNewFan);
                             break;
 
                         case Wechat::EVENT_UNSUBSCRIBE:

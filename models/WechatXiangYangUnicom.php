@@ -17,6 +17,7 @@ use app\models\MGh;
 use app\models\MOffice;
 use app\models\MStaff;
 use app\models\MGroup;
+use app\models\MSceneDetail;
 
 use app\models\RespText;
 use app\models\RespImage;
@@ -36,7 +37,7 @@ class WechatXiangYangUnicom extends Wechat
         $log->save(false);
     }
     
-    protected function onSubscribe() 
+    protected function onSubscribe($isNewFan) 
     {
         $this->saveAccessLog();  
         $FromUserName = $this->getRequest('FromUserName');    
@@ -59,22 +60,33 @@ class WechatXiangYangUnicom extends Wechat
 
         if (!empty($EventKey))
         {
-            //a new user subscribe us with qr parameter, EventKey:qrscene_3
+            //a new fan subscribe with qr parameter, EventKey:qrscene_3
             $Ticket = $this->getRequest('Ticket');    
             $scene_pid = substr($EventKey, 8);    
-            //U::W("sub....qr...., $EventKey, $scene_pid");
+            //U::W("EventKey=$EventKey, scene_pid=$scene_pid");
             $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
-            $model->scene_pid = $scene_pid;    
-            $office = MOffice::find()->where("gh_id = :gh_id AND scene_id = :scene_id", [':gh_id'=>$gh_id, ':scene_id'=>$scene_pid])->one();
-            if ($office !== null)
-            {
-                $mg = MGroup::findOne(['gh_id'=>$gh_id, 'office_id'=>$office->office_id]);
-                if ($mg === null)
-                    U::W([__METHOD__, "group does not exists!, {$office->office_id}"]);                                            
-                $model->gid = $mg->gid;
-                $arr =  $this->WxGroupMoveMember($FromUserName, $mg->gid);
-            }
-            $model->save(false);
+            if ($isNewFan)            
+            {                            
+                //if father is office, move it to the office group
+                $office = MOffice::find()->where("gh_id = :gh_id AND scene_id = :scene_id", [':gh_id'=>$gh_id, ':scene_id'=>$scene_pid])->one();
+                if ($office !== null)
+                {
+                    $mg = MGroup::findOne(['gh_id'=>$gh_id, 'office_id'=>$office->office_id]);
+                    if ($mg === null)
+                        U::W([__METHOD__, "group does not exists!, {$office->office_id}"]);                                            
+                    $model->gid = $mg->gid;
+                    $arr =  $this->WxGroupMoveMember($FromUserName, $mg->gid);
+                }            
+
+                $model->scene_pid = $scene_pid;                            
+                $model->save(false);
+
+                $parent = MUser::findOne(['gh_id'=>$gh_id, 'scene_pid'=>$scene_pid]);
+                if ($parent !== null)
+                {
+                    MSceneDetail                
+                }
+            }          
             $nickname = empty($model->nickname) ? '' : $model->nickname;            
             return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n在这儿, 您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
         }
@@ -94,7 +106,6 @@ class WechatXiangYangUnicom extends Wechat
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);        
         if ($model !== null)
         {
-            //$model->delete();    
             $model->subscribe = 0;
             //$model->scene_pid = 0;
             $model->gid = 0;
