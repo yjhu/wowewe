@@ -323,7 +323,7 @@ class Wechat extends \yii\base\Object
             //$model->msg_time = time();
             if (!$model->save(false))
                 U::W([__METHOD__, $model->getErrors()]);                
-            }
+        }
     }
     
     public function run($gh_id) 
@@ -411,7 +411,7 @@ class Wechat extends \yii\base\Object
         }
         catch(\Exception $e)
         {
-            U::W($e->getMessage());
+            U::W('Exception:'.$e->getMessage());
             return self::NO_RESP;
         }
     }

@@ -8,11 +8,13 @@ CREATE TABLE wx_scene_detail (
     id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     gh_id VARCHAR(32) NOT NULL DEFAULT '',
     openid VARCHAR(32) NOT NULL DEFAULT '',    
+    cat tinyint(1) unsigned NOT NULL DEFAULT '0',        
     scene_id int(10) unsigned NOT NULL DEFAULT '0',    
     scene_src_id int(10) unsigned NOT NULL DEFAULT '0',
     scene_amt int(10) NOT NULL DEFAULT '0',    
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     oid VARCHAR(32) NOT NULL DEFAULT '',
+    openid_fan VARCHAR(32) NOT NULL DEFAULT '',        
     memo VARCHAR(256) NOT NULL DEFAULT '',    
     status tinyint(1) unsigned NOT NULL DEFAULT '0',    
     KEY idx_gh_id_scene_id(gh_id, scene_id)
@@ -37,6 +39,11 @@ class MSceneDetail extends ActiveRecord
 
     const STATUS_AUCTION = 0;
     const STATUS_CONFIRMED = 1;    
+    const STATUS_CANCEL = 2;
+
+    const CAT_ITEM = 0;
+    const CAT_FAN = 1;    
+    const CAT_REWARD = 2;
     
     public static function tableName()
     {
@@ -56,4 +63,5 @@ class MSceneDetail extends ActiveRecord
 }
 
 /*        
+select count(*) as c, scene_pid from wx_access_log where date(create_time)='2014-10-26' and Event='subscribe' group by scene_pid order by c desc;
 */

@@ -55,11 +55,8 @@ CREATE TABLE wx_order (
     KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-ALTER TABLE wx_order ADD memo_reply VARCHAR(128) NOT NULL DEFAULT '' after memo;
-ALTER TABLE wx_order ADD scene_auto_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
-ALTER TABLE wx_order ADD scene_amt int(10) NOT NULL DEFAULT '0' after openid;
-ALTER TABLE wx_order ADD scene_src_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
-ALTER TABLE wx_order ADD scene_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
+DROP TABLE IF EXISTS wx_order_arc;
+CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
 
 */
 
@@ -774,6 +771,13 @@ ALTER TABLE wx_order ADD kaitong VARCHAR(16) NOT NULL DEFAULT '';
         }        
         parent::afterSave($insert, $changedAttributes);        
     }
+
+ALTER TABLE wx_order ADD memo_reply VARCHAR(128) NOT NULL DEFAULT '' after memo;
+ALTER TABLE wx_order ADD scene_auto_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
+ALTER TABLE wx_order ADD scene_amt int(10) NOT NULL DEFAULT '0' after openid;
+ALTER TABLE wx_order ADD scene_src_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
+ALTER TABLE wx_order ADD scene_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
+    
 */
 
 

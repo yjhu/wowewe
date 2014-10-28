@@ -33,15 +33,7 @@ class WechatXiangYangUnicom extends Wechat
         $log = new MAccessLog;
         $log->setAttributes($request, false);
         //U::W($log->getAttributes()); 
-        try
-        {
-            if (!$log->save(false))
-            U::W("MAccessLog save err");
-        }
-        catch(\Exception $e)
-        {
-            U::W('exception:'.$e->getMessage());
-        }            
+        $log->save(false);
     }
     
     protected function onSubscribe() 
@@ -175,12 +167,12 @@ EOD;
         if ($msg == '我是襄阳联通员工')
         {
             $url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
-			$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-			if ($user !== null && $user->is_liantongstaff == 0)
-			{
-				$user->is_liantongstaff = 1;
-				$user->save(false);
-			}
+            $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+            if ($user !== null && $user->is_liantongstaff == 0)
+            {
+                $user->is_liantongstaff = 1;
+                $user->save(false);
+            }
             return $this->responseText("襄阳联通内部员工通道, 参与推广, 查看成绩, <a href=\"{$url}\">请点击这里进入...</a>");
         }
         else if ($msg == '.debug')
