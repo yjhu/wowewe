@@ -24,6 +24,7 @@ use app\models\RespImage;
 use app\models\RespNews;
 use app\models\RespNewsItem;
 use app\models\RespMusic;
+use app\models\RespTransfer;
 
 class WechatXiangYangUnicom extends Wechat
 {
@@ -80,12 +81,12 @@ class WechatXiangYangUnicom extends Wechat
 
                 $model->scene_pid = $scene_pid;                            
                 $model->save(false);
-
+/*
                 $parent = MUser::findOne(['gh_id'=>$gh_id, 'scene_pid'=>$scene_pid]);
                 if ($parent !== null)
                 {
-                    MSceneDetail                
                 }
+*/
             }          
             $nickname = empty($model->nickname) ? '' : $model->nickname;            
             return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n在这儿, 您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
@@ -167,6 +168,8 @@ EOD;
 
     protected function onText() 
     { 
+        U::W('onText...........');
+        
         $this->saveAccessLog();      
         $openid = $this->getRequest('FromUserName');
         $gh_id = $this->getRequest('ToUserName');    
@@ -215,18 +218,18 @@ EOD;
         }
         else
         {
-            /*
-            $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-            $items = array(
-                new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
-            );
-            return $this->responseNews($items);
-            */
+
+//            $arr = $this->WxGetOnlineKfList();
+//            U::W($arr);
+            
+//            return $this->responseTransfer();
+
             $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
             $nickname = empty($model->nickname) ? '' : $model->nickname;            
             return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n在这儿, 您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
 
         }
+        
     }
 
     protected function onTextOld() 
@@ -729,7 +732,13 @@ EOD;
     new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
     );
     return $this->responseNews($items);
-*/    
+
+            $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+            $items = array(
+                new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
+            );
+            return $this->responseNews($items);
+            */
 
 
 }

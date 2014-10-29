@@ -16,6 +16,7 @@ use app\models\RespImage;
 use app\models\RespNews;
 use app\models\RespNewsItem;
 use app\models\RespMusic;
+use app\models\RespTransfer;
 
 class Wechat extends \yii\base\Object
 {
@@ -416,6 +417,11 @@ class Wechat extends \yii\base\Object
             U::W('Exception:'.$e->getMessage());
             return self::NO_RESP;
         }
+    }
+
+    protected function responseTransfer()
+    {
+        return new RespTransfer($this->getRequest('FromUserName'), $this->getRequest('ToUserName'));
     }
 
     protected function responseText($content, $funcFlag = 0)
@@ -880,7 +886,14 @@ EOD;
         $this->checkWxApiResp($arr, [__METHOD__, $openid, $to_groupid]);
         return $arr;                        
     }
-    
+
+    public function WxGetOnlineKfList()
+    {
+        $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist", ['access_token'=>$this->accessToken]);
+        $this->checkWxApiResp($arr, [__METHOD__]);
+        return $arr;        
+    }
+
     public function getSignature($arrdata,$method="sha1") 
     {
         if (!function_exists($method))
