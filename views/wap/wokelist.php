@@ -416,10 +416,25 @@
                 <li class="c_list_1">
             <?php } ?>
 
+            <?php
+                if($ktxwd_scene->cat == 0)//item
+                {
+                    $memo = $ktxwd_scene->memo;
+                }
+                else if($ktxwd_scene->cat == 1) //fan
+                {
+                    $memo = "粉丝推广";
+                }
+                else//reward
+                {
+                    $memo = "签到任务";
+                }
+            ?>
+
             <div>
             <span><?= $ktxwd_scene->create_time ?></span>
             &nbsp;&nbsp;
-            <span><?= $ktxwd_scene->memo ?></span>
+            <span><?= $memo ?></span>
             &nbsp;&nbsp;
             <span><?= abs($ktxwd_scene->scene_amt) ?></span>沃点
             &nbsp;&nbsp;
@@ -476,15 +491,32 @@
             <?php } else { ?>
                 <li class="c_list_1">
             <?php } ?>
-
+            
+            <?php
+                if($yqwd_scene->cat == 0)//item
+                {
+                    $memo = $yqwd_scene->memo;
+                }
+                else if($yqwd_scene->cat == 1) //fan
+                {
+                    $memo = "粉丝推广";
+                }
+                else//reward
+                {
+                    $memo = "签到任务";
+                }
+            ?>
+            
             <div>
             <span><?= $yqwd_scene->create_time ?></span>
             &nbsp;&nbsp;
-            <span><?= $yqwd_scene->memo ?></span>
+            <span><?= $memo ?></span>
             &nbsp;&nbsp;
             <span><?= abs($yqwd_scene->scene_amt) ?></span>沃点
             &nbsp;&nbsp;
             </div>
+
+
         </li>
         <?php $flag++; } ?>
     </ul>
