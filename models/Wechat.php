@@ -889,6 +889,18 @@ EOD;
 
     public function WxGetOnlineKfList()
     {
+        
+        $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist", ['access_token'=>$this->accessToken]);
+        $this->checkWxApiResp($arr, [__METHOD__]);
+        $arr = empty($arr['kf_online_list']) ? [] : $arr['kf_online_list']; 
+        //Yii::$app->cache->set($key, $arr, YII_DEBUG ? 10 : 2*60);
+        //U::W('NO CACHE SERVICED');   
+        //U::W('################################\n'); 
+        //U::W($arr);      
+        return $arr; 
+                
+
+     /*
         $key = __METHOD__;
         $arr = Yii::$app->cache->get($key);
         if ($arr === false)
@@ -899,7 +911,8 @@ EOD;
             Yii::$app->cache->set($key, $arr, YII_DEBUG ? 10 : 2*60);
             U::W('NO CACHE SERVICED');            
         }
-        return $arr;    
+        return $arr; 
+      */
     }
 
     public function getSignature($arrdata,$method="sha1") 

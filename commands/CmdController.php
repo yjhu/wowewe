@@ -76,6 +76,16 @@ class CmdController extends Controller
         fclose($fh);
     }    
 
+
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/get-kf-status
+    public function actionGetKfStatus()
+    {
+        $arr = Yii::$app->wx->WxGetOnlineKfList();
+        U::W($arr);
+        print_r($arr);
+    } 
+
+
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/create-wx-groups
     public function actionCreateWxGroups()
     {        
