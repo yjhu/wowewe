@@ -31,7 +31,6 @@ class MsgController extends Controller
 
     public function actionIndex($gh_id)
     {
-        U::W("01010101");
         $wxConfig = require(__DIR__ . '/../config/wx.php');
         switch ($gh_id) 
         {

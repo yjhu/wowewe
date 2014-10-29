@@ -889,9 +889,17 @@ EOD;
 
     public function WxGetOnlineKfList()
     {
-        $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist", ['access_token'=>$this->accessToken]);
-        $this->checkWxApiResp($arr, [__METHOD__]);
-        return $arr;        
+        $key = __METHOD__;
+        $arr = Yii::$app->cache->get($key);
+        if ($arr === false)
+        {
+            $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist", ['access_token'=>$this->accessToken]);
+            $this->checkWxApiResp($arr, [__METHOD__]);
+            $arr = empty($arr['kf_online_list']) ? [] : $arr['kf_online_list'];            
+            Yii::$app->cache->set($key, $arr, YII_DEBUG ? 10 : 2*60);
+            U::W('NO CACHE SERVICED');            
+        }
+        return $arr;    
     }
 
     public function getSignature($arrdata,$method="sha1") 
@@ -1555,6 +1563,32 @@ define('APPSERCERT', "c4d53595acf30e9caf09c155b3d95253");    // woso
             return  $this->arrayToXml($nativeObj);
            
     }
+
+2014-10-29 10:26:34,Array
+(
+    [kf_online_list] => Array
+        (
+            [0] => Array
+                (
+                    [kf_account] => gtsun@xiangyangunicom
+                    [status] => 1
+                    [kf_id] => 1001
+                    [auto_accept] => 100
+                    [accepted_case] => 0
+                )
+
+            [1] => Array
+                (
+                    [kf_account] => kzeng@xiangyangunicom
+                    [status] => 1
+                    [kf_id] => 1003
+                    [auto_accept] => 0
+                    [accepted_case] => 0
+                )
+
+        )
+
+)    
 */
 
 

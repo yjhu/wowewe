@@ -219,10 +219,10 @@ EOD;
         else
         {
 
-//            $arr = $this->WxGetOnlineKfList();
-//            U::W($arr);
-            
-//            return $this->responseTransfer();
+            $arr = $this->WxGetOnlineKfList();
+            U::W($arr);
+            if (count($arr) > 0)
+                return $this->responseTransfer();
 
             $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
             $nickname = empty($model->nickname) ? '' : $model->nickname;            
