@@ -21,7 +21,7 @@ CREATE TABLE wx_user (
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_time TIMESTAMP NOT NULL DEFAULT 0,
     mobile VARCHAR(64) NOT NULL DEFAULT '',
-    msg_time int(10) unsigned NOT NULL DEFAULT '0',
+    msg_time TIMESTAMP NOT NULL DEFAULT 0,    
     scene_id int(10) unsigned NOT NULL DEFAULT '0',
     scene_balance int(10) unsigned NOT NULL DEFAULT '0',
     scene_level tinyint(3) unsigned NOT NULL DEFAULT 0,
@@ -72,6 +72,9 @@ ALTER TABLE wx_user ADD scene_level tinyint(3) unsigned NOT NULL DEFAULT 0 after
 
 ALTER TABLE wx_user ADD gid int(10) unsigned NOT NULL DEFAULT '0';
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_1ad98f5481f3', 'admin', 'admin','1', 2);
+
+
+ALTER TABLE wx_user CHANGE msg_time msg_time TIMESTAMP NOT NULL DEFAULT 0;
 
 */
 
@@ -194,7 +197,7 @@ class MUser extends ActiveRecord implements IdentityInterface
         if ($this->scene_id == 0)
             $count = 0;
         else
-            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id])->count();
+            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])->count();                        
         return $count;    
     }
 
