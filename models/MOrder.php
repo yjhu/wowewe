@@ -136,7 +136,7 @@ class MOrder extends ActiveRecord
                     $ar->scene_amt = $this->scene_amt;
                     $ar->oid = $this->oid;
                     $ar->memo = $this->detail;                                 
-                    $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_AUCTION;
+                    $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_INIT;
                     if (!$ar->save(false))
                     {
                         U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
@@ -148,7 +148,7 @@ class MOrder extends ActiveRecord
                 {
                     if (($ar = MSceneDetail::findOne($this->scene_auto_id)) !== null) 
                     {
-                        $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_AUCTION;
+                        $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_INIT;
                         if (!$ar->save(false))
                         {
                             U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
@@ -758,7 +758,7 @@ ALTER TABLE wx_order ADD kaitong VARCHAR(16) NOT NULL DEFAULT '';
                 $ar->scene_amt = $this->scene_amt;
                 $ar->oid = $this->oid;
                 $ar->memo = $this->detail;                                 
-                $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_AUCTION;
+                $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_INIT;
                 if ($ar->save(false))
                 {
                     $this->scene_auto_id = $this->pdo->lastInsertId();

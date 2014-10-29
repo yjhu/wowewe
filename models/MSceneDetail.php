@@ -37,7 +37,7 @@ class MSceneDetail extends ActiveRecord
 
     const SRC_ID_SHARE_FRIEND = 1;
 
-    const STATUS_AUCTION = 0;
+    const STATUS_INIT = 0;
     const STATUS_CONFIRMED = 1;    
     const STATUS_CANCEL = 2;
 
@@ -53,6 +53,11 @@ class MSceneDetail extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'scene_id' => 'scene_id']);
+    }
+
+    public function getUserFan()
+    {
+        return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid_fan']);
     }
 
     public function getOrder()
