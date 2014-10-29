@@ -17,8 +17,11 @@ CREATE TABLE wx_scene_detail (
     openid_fan VARCHAR(32) NOT NULL DEFAULT '',        
     memo VARCHAR(256) NOT NULL DEFAULT '',    
     status tinyint(1) unsigned NOT NULL DEFAULT '0',    
+    KEY idx_gh_id_openid(gh_id, openid),    
     KEY idx_gh_id_scene_id(gh_id, scene_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE wx_scene_detail ADD KEY idx_gh_id_openid(gh_id, openid);
 
 */
 
