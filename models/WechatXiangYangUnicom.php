@@ -66,7 +66,9 @@ class WechatXiangYangUnicom extends Wechat
             $scene_pid = substr($EventKey, 8);    
             //U::W("EventKey=$EventKey, scene_pid=$scene_pid");
             $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
-            if ($isNewFan)            
+            if ($isNewFan 
+                || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_KZENG
+                || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_HBHE)  
             {                            
                 //if father is office, move it to the office group
                 $office = MOffice::find()->where("gh_id = :gh_id AND scene_id = :scene_id", [':gh_id'=>$gh_id, ':scene_id'=>$scene_pid])->one();
