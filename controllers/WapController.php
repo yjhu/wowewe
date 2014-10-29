@@ -1250,10 +1250,15 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         
         //预期沃点
         $yqwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=0',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+
+        //预期沃点 包含粉丝取消关注
+        $yqwd_fans_qx_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=0 OR status=3',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
         
+        
+
         U::W("------------------333333-------\n");
         U::W(count($scenes));
-        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes]);
+        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes]);
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/orderinfo:gh_03a74ac96138

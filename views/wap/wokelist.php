@@ -484,7 +484,7 @@
     <br><br>
 
     <ul data-role="listview" data-inset="true" >
-        <?php $flag=0; foreach($yqwd_scenes as $yqwd_scene) {?>
+        <?php $flag=0; foreach($yqwd_fans_qx_scenes as $yqwd_fans_qx_scene) {?>
     
             <?php if($flag%2==0) { ?>
                 <li class="c_list_0">
@@ -492,12 +492,15 @@
                 <li class="c_list_1">
             <?php } ?>
             
+            
+
+
             <?php
-                if($yqwd_scene->cat == 0)//item
+                if($yqwd_fans_qx_scene->cat == 0)//item
                 {
-                    $memo = $yqwd_scene->memo;
+                    $memo = $yqwd_fans_qx_scene->memo;
                 }
-                else if($yqwd_scene->cat == 1) //fan
+                else if($yqwd_fans_qx_scene->cat == 1) //fan
                 {
                     $memo = "粉丝推广";
                 }
@@ -508,12 +511,21 @@
             ?>
             
             <div>
-            <span><?= $yqwd_scene->create_time ?></span>
-            &nbsp;&nbsp;
-            <span><?= $memo ?></span>
-            &nbsp;&nbsp;
-            <span><?= abs($yqwd_scene->scene_amt) ?></span>沃点
-            &nbsp;&nbsp;
+
+                <?php if($yqwd_fans_qx_scene->status == 3) {?>
+                <span class="line">
+                <?php } else {?>
+                <span>
+                <?php } ?>
+
+                <span><?= $yqwd_fans_qx_scene->create_time ?></span>
+                &nbsp;&nbsp;
+                <span><?= $memo ?></span>
+                &nbsp;&nbsp;
+                <span><?= abs($yqwd_fans_qx_scene->scene_amt) ?></span>沃点
+                &nbsp;&nbsp;
+
+                </span>
             </div>
 
 
