@@ -6,11 +6,16 @@ use app\models\RespBase;
 
 class RespTransfer extends RespBase
 {
-	public function __construct($ToUserName, $FromUserName)
+       public $KfAccount;
+       
+	public function __construct($ToUserName, $FromUserName, $KfAccount=null)
 	{
 		parent::__construct($ToUserName, $FromUserName, 0);
 		$this->MsgType = 'transfer_customer_service';
-		$this->template = <<<XML
+		$this->KfAccount = $KfAccount;
+		if (empty($this->KfAccount))
+		{
+		    $this->template = <<<XML
 <xml>
 <ToUserName><![CDATA[%s]]></ToUserName>
 <FromUserName><![CDATA[%s]]></FromUserName>
@@ -18,11 +23,29 @@ class RespTransfer extends RespBase
 <MsgType><![CDATA[%s]]></MsgType>
 </xml>
 XML;
+            }
+            else
+            {
+		    $this->template = <<<XML
+<xml>
+<ToUserName><![CDATA[%s]]></ToUserName>
+<FromUserName><![CDATA[%s]]></FromUserName>
+<CreateTime>%s</CreateTime>
+<MsgType><![CDATA[%s]]></MsgType>
+<TransInfo>
+<KfAccount>%s</KfAccount>
+</TransInfo>
+</xml>
+XML;
+            }
 	}
 
 	public function __toString()
 	{
-		return sprintf($this->template, $this->ToUserName, $this->FromUserName, time(), $this->MsgType);
+	       if (empty($this->KfAccount)) 
+    		    return sprintf($this->template, $this->ToUserName, $this->FromUserName, time(), $this->MsgType);
+    		else
+    		    return sprintf($this->template, $this->ToUserName, $this->FromUserName, time(), $this->MsgType, $this->KfAccount);
 	}
 	
 }

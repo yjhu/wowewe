@@ -419,9 +419,9 @@ class Wechat extends \yii\base\Object
         }
     }
 
-    protected function responseTransfer()
+    protected function responseTransfer($KfAccount=null)
     {
-        return new RespTransfer($this->getRequest('FromUserName'), $this->getRequest('ToUserName'));
+        return new RespTransfer($this->getRequest('FromUserName'), $this->getRequest('ToUserName'), $KfAccount);
     }
 
     protected function responseText($content, $funcFlag = 0)
