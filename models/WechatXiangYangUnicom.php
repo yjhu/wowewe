@@ -123,23 +123,24 @@ class WechatXiangYangUnicom extends Wechat
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);        
         if ($model !== null)
         {
-            scene_pid = $model->scene_pid; 
+            $scene_pid = $model->scene_pid; 
             $model->subscribe = 0;
             //$model->scene_pid = 0;
             $model->gid = 0;
             $model->save(false);
 
             // cancel MSceneDetail
-            if (scene_pid > 0)
+            if ($scene_pid > 0)
             {
-                $ar = MSceneDetail::findOne(['gh_id'=>$gh_id, 'scene_id'=>scene_pid, 'openid_fan'=>$FromUserName]);
+                U::W("scene detail....... $scene_pid");
+            
+                $ar = MSceneDetail::findOne(['gh_id'=>$gh_id, 'scene_id'=>$scene_pid, 'openid_fan'=>$FromUserName]);
                 if ($ar !== null) 
                 {
                     $ar->status = MSceneDetail::STATUS_CANCEL;
                     if (!$ar->save(false))
                         U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
-                }                    
-                
+                }                                    
             }
             
         }

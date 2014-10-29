@@ -322,11 +322,10 @@ class Wechat extends \yii\base\Object
             $model->setAttributes($arr, false);
             $model->gh_id = $this->getRequest('ToUserName');            
             $model->openid = $FromUserName;            
+            $model->msg_time = date("Y-m-d H:i:s");
+            if (!$model->save(false))
+                U::W([__METHOD__, $model->getErrors()]);            
         }
-        //$model->msg_time = time();
-        $model->msg_time = date();
-        if (!$model->save(false))
-            U::W([__METHOD__, $model->getErrors()]);
         return $isNewUser;
     }
     
