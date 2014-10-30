@@ -38,7 +38,7 @@ AppAsset::register($this);
                     ['label' => '首页', 'url' => ['/site/index']],
                     //['label' => '关于', 'url' => ['/site/about']],
 					//['label' => '管理', 'url' => ['/admin/index'], 'visible'=>Yii::$app->user->isAdmin],	
-                    //['label' => '商城', 'url' => ['/wap/mobilelistxxx']],
+                    ['label' => '商城', 'url' => ['/wap/mobilelistxxx']],
 					[
 						'label' => '营业厅',
 						'visible' => Yii::$app->user->isOffice,
