@@ -151,6 +151,65 @@
         -->
 
         </ul>
+<br><br>
+      <?php
+
+        use miloschuman\highcharts\Highcharts;
+        use yii\web\JsExpression;
+
+        echo Highcharts::widget([
+
+            'scripts' => [
+            //    'modules/exporting',
+                'themes/grid-light',
+            ],
+            'options' => [
+                'credits' => ['enabled' => false],
+                'title' => [
+                    'text' => '预期沃点最近7天统计',
+                ],
+                'xAxis' => [
+                    'categories' => ['1', '2',  '3', '4', '5', '6', '7'],
+                ],
+     
+                'series' => [
+                    [
+                        'type' => 'column',
+                        'name' => '预期沃点',
+                        //'data' => $user->getWokeYqwdLast7Days(),
+                        'data' => [10,500,100,200,150,50,30],
+                    ],
+
+                    /*
+                    [
+                        'type' => 'column',
+                        'name' => 'John',
+                        'data' => [2, 3, 5, 7, 6],
+                    ],
+                    [
+                        'type' => 'column',
+                        'name' => 'Joe',
+                        'data' => [4, 3, 3, 9, 0],
+                    ],
+                    */
+
+                    /*
+                    [
+                        'type' => 'spline',
+                        'name' => 'Average',
+                        'data' => [3, 2.67, 3, 6.33, 3.33],
+                        'marker' => [
+                            'lineWidth' => 2,
+                            'lineColor' => new JsExpression('Highcharts.getOptions().colors[3]'),
+                            'fillColor' => 'white',
+                        ],
+                    ],
+                    */
+
+                ],
+            ]
+        ]);
+        ?>
 
     </div>
 
@@ -470,6 +529,7 @@
 </div>
 
 
+
 <!-- 预期沃点 页面-->
 <div data-role="page" id="yqwd" data-theme="c">
 <?php echo $this->render('header2', ['menuId'=>'menu5','title' => '预期沃点' ]); ?>
@@ -485,15 +545,14 @@
 
         <span style="font-size:28pt;font-weight:bolder;">
         <?=  $user->getWokeYqwd(); ?>
-
-        <br>
-
-        <? print_r($user->getWokeYqwdLast7Days()); ?>
         </span> 
         </div>
         </div>
     </div>
-    <br><br>
+    <br>
+    <a  href="#YqwdLast7daysPage" id="viewYqwdLast7days" class="ui-btn" style="background-color: #f7b2" data-ajax="false">浏览预期沃点最近7天统计</a>
+
+    <br>
 
     <ul data-role="listview" data-inset="true" id="my_list2">
         <?php $flag=0; foreach($yqwd_fans_qx_scenes as $yqwd_fans_qx_scene) {?>
@@ -563,6 +622,27 @@
 </div>
 
 
+
+
+<!-- 预期沃点图表展示7天数据 页面-->
+<div data-role="page" id="YqwdLast7daysPage" data-theme="c">
+<?php echo $this->render('header2', ['menuId'=>'menu6','title' => '预期沃点最近7天统计' ]); ?>
+
+<div data-role="content">
+
+
+  
+
+</div>
+
+<div data-role="footer" data-position="fixed">
+    <h4>&copy; 襄阳联通 2014</h4>
+</div>
+ <?php echo $this->render('menu', ['menuId'=>'menu6','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
+
+
+
 <script>
 var ktwd = "<?=  $user->getWokeKtwd(); ?>";
 
@@ -588,7 +668,7 @@ $(document).on("pageinit", "#ktxwd", function(){
     //alert("ktxwd");
 });
 
-$(document).on("pageinit", "#yqwd", function(){
+$(document).on("pageshow", "#yqwd", function(){
     //alert("yqwd");
 });
 
