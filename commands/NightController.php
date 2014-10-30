@@ -67,16 +67,20 @@ class NightController extends Controller
 		// auto close the orders exceed 2 days
 		$n = Yii::$app->db->createCommand()->update($tableName, ['status' => MOrder::STATUS_CLOSED_AUTO], 'status=:status AND create_time < DATE_SUB(NOW(), INTERVAL 2 day)', [':status'=>MOrder::STATUS_AUTION])->execute();
 		U::W("UPDATE $tableName, $n");		
+
+/*		
 		//move the unsuccessful orders exceed 90 days to bak table
 		$n = Yii::$app->db->createCommand("INSERT INTO {$tableName}_arc SELECT * FROM $tableName WHERE status!=:status AND create_time < DATE_SUB(NOW(), INTERVAL 90 day)", [':status'=>MOrder::STATUS_OK])->execute();
 		U::W("INSERT $tableName, $n");		
+		
 		$n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE status!=:status AND create_time < DATE_SUB(NOW(), INTERVAL 90 day)", [':status'=>MOrder::STATUS_OK])->execute();
 		U::W("DELETE $tableName, $n");		
-
+*/
 		//release mobile number
 		$tableName = MMobnum::tableName();
 		$n = Yii::$app->db->createCommand()->update($tableName, ['status' => MMobnum::STATUS_UNUSED, 'locktime' => 0], 'status=:status AND locktime < :locktime', [':status'=>MMobnum::STATUS_LOCKED, ':locktime'=>time()-2*24*3600])->execute();
 		U::W("UPDATE $tableName, $n");	
+		
 		$n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE status=:status", [':status'=>MMobnum::STATUS_USED])->execute();
 		U::W("DELETE $tableName, $n");
 	}
