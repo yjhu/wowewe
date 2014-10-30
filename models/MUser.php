@@ -315,13 +315,25 @@ class MUser extends ActiveRecord implements IdentityInterface
 
         //今天
         $d1 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(create_time)=to_days(now())',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d1==null) $d1=0;
         //昨天
-        $d2 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)<=1',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
-        $d3 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)<=2',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
-        $d4 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)<=3',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
-        $d5 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)<=4',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
-        $d6 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)<=5',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
-        $d7 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)<=6',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        $d2 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=1',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d2==null) $d2=0;
+
+        $d3 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=2',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d3==null) $d3=0;
+
+        $d4 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=3',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d4==null) $d4=0;
+
+        $d5 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=4',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d5==null) $d5=0;
+
+        $d6 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=5',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d6==null) $d6=0;
+
+        $d7 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=6',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d7==null) $d7=0;
 
         $last7days['d1'] = $d1;
         $last7days['d2'] = $d2;
@@ -331,8 +343,10 @@ class MUser extends ActiveRecord implements IdentityInterface
         $last7days['d6'] = $d6;
         $last7days['d7'] = $d7;
 
+
         U::W("###########$$$$$$$$$$$$$$$$$$$$$$$\n");
         U::W($last7days);
+        return array_values($last7days);
         return empty($last7days) ? 0 : $last7days;
     }
 
