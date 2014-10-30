@@ -282,6 +282,37 @@ class MUser extends ActiveRecord implements IdentityInterface
     }
 
 
+    public function getWokeYqwdLast7Days()
+    {
+        //已提沃点
+        if(empty($this->scene_id))
+            return 0;
+
+        //今天
+        $d1 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(create_time)=to_days(now())',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        //昨天
+        $d2 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)<=1',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        $d3 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)<=2',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        $d4 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)<=3',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        $d5 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)<=4',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        $d6 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)<=5',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        $d7 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)<=6',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+
+        $last7days['d1'] = $d1;
+        $last7days['d2'] = $d2;
+        $last7days['d3'] = $d3;
+        $last7days['d4'] = $d4;
+        $last7days['d5'] = $d5;
+        $last7days['d6'] = $d6;
+        $last7days['d7'] = $d7;
+
+        U::W("###########$$$$$$$$$$$$$$$$$$$$$$$\n");
+        U::W($last7days);
+        return empty($last7days) ? 0 : $last7days;
+    }
+
+
+
 }
 
 /*

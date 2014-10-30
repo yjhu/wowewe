@@ -485,6 +485,10 @@
 
         <span style="font-size:28pt;font-weight:bolder;">
         <?=  $user->getWokeYqwd(); ?>
+
+        <br>
+
+        <? print_r($user->getWokeYqwdLast7Days()); ?>
         </span> 
         </div>
         </div>
