@@ -3,23 +3,16 @@
 use yii\helpers\Html;
 //use yii\grid\GridView;
 
-/**
- * @var yii\web\View $this
- * @var yii\data\ActiveDataProvider $dataProvider
- * @var app\models\MUserSearch $searchModel
- */
+$this->title = '粉丝管理';
+$this->params['breadcrumbs'][] = $this->title;
 
-$this->title = 'Musers';
-//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="muser-index">
 
 	<h1><?php //echo Html::encode($this->title) ?></h1>
-
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
-
     <p>
-		<?php echo Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+		<?php //echo Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 <?php 
@@ -28,14 +21,25 @@ $this->title = 'Musers';
 	use kartik\grid\GridView;
 	$columns = [
 		//['class'=>'kartik\grid\SerialColumn', 'order'=>DynaGrid::ORDER_FIX_LEFT],
-		'id',
-		'nickname',
+		//'id',
+			[
+				'attribute' => 'nickname',
+				'label' => '微信昵称',
+				'format'=>'html',
+                'value'=>function ($model, $key, $index, $column) { 
+					$nickname = $model->nickname;
+					$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
+					return "$headimgurl $nickname";
+				},
+//				'headerOptions' => array('style'=>'width:30%;'),	
+			],
+
 		[
 			'attribute'=>'create_time',
 			'filterType'=>GridView::FILTER_DATE,
 			//'filterType'=>GridView::FILTER_RANGE,
 			'format'=>'raw',
-			'width'=>'270px',
+			//'width'=>'270px',
 			'filterWidgetOptions'=>[
 				'type' => \kartik\widgets\DatePicker::TYPE_RANGE,
 				'attribute2'=>'create_time_2',
@@ -44,6 +48,15 @@ $this->title = 'Musers';
 					'language'=>'zh-CN',
 				]
 			],
+		],
+		[
+			'attribute' => 'is_liantongstaff',
+			'value'=>function ($model, $key, $index, $column) { return empty($model->is_staff)?'':'是'; },
+			'filter'=> ['0'=>'否', '1'=>'是'],
+		],
+		[
+			'attribute' => 'scene_id',
+			'value'=>function ($model, $key, $index, $column) { return empty($model->scene_id)?'':$model->scene_id; },
 		],
 
 /*
@@ -64,7 +77,6 @@ $this->title = 'Musers';
 				]
 			],
 		],
-*/
 		[
 			'class'=>'kartik\grid\BooleanColumn',
 			'attribute'=>'status', 
@@ -76,6 +88,10 @@ $this->title = 'Musers';
 			'order'=>DynaGrid::ORDER_FIX_RIGHT
 		],
 		['class'=>'kartik\grid\CheckboxColumn',  'order'=>DynaGrid::ORDER_FIX_RIGHT],
+*/
+		[
+			'class' => 'yii\grid\ActionColumn',
+		]
 	];
 		
 	echo DynaGrid::widget([
@@ -84,7 +100,6 @@ $this->title = 'Musers';
 		//'theme'=>'panel-danger',
 		//'theme'=>'panel-primary',
 		'theme'=>'panel-default',
-
 		'gridOptions'=>[
 			'dataProvider'=>$dataProvider,
 			'filterModel'=>$searchModel,

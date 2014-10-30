@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
+		'filterModel' => $filter,	
 		'options' => ['class' => 'table-responsive'],
 		'tableOptions' => ['class' => 'table table-striped'],        
         'columns' => [
@@ -58,6 +58,8 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => '渠道编号',
 				'attribute' => 'id',
 				'headerOptions' => array('style'=>'width:15%;'),	
+				'filter'=> true,
+				'visible' => false,
 			],
 			[
 				'label' => '渠道名称',
@@ -88,6 +90,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 /*
+
+			[
+				'label' => '渠道类别',
+				'attribute' => 'cat',
+				'value'=>function ($model, $key, $index, $column) { return MChannel::getCatOptionName($model['cat']); },
+				'filter'=> MChannel::getCatOptionName(),
+				'headerOptions' => array('style'=>'width:25%;'),	
+			],
 
 <!-- Tab panes -->
 <!--

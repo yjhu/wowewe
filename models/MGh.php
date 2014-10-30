@@ -67,11 +67,11 @@ class MGh extends ActiveRecord
     public function rules()
     {
         return [
-            ['gh_id,wxname,appid,appsecret,token', 'required'],
+            [['gh_id','wxname','appid','appsecret','token'], 'required'],
             ['token', 'string', 'min' => 8, 'max' => 32],            
             ['gh_id', 'string', 'min' => 8, 'max' => 32],
-            ['wxname,appid,appsecret', 'string', 'max' => 64],
-            ['gh_id,wxname,nickname,appid,appsecret,token', 'filter', 'filter' => 'trim'],
+            [['wxname','appid','appsecret'], 'string', 'max' => 64],
+            [['gh_id','wxname','nickname','appid','appsecret','token'], 'filter', 'filter' => 'trim'],
         ];
     }
 
@@ -87,6 +87,7 @@ class MGh extends ActiveRecord
         return false;
     }
 
+    // scene_id is distributed in MChannel, MOffice, MUser
     public function newSceneId()
     {
         if (empty($this->scene_ids))
@@ -114,6 +115,8 @@ class MGh extends ActiveRecord
 
     public function freeSceneId($scene_id)
     {
+        if (empty($scene_id))
+            return;
         $scene_ids = explode(',', $this->scene_ids);
         foreach($scene_ids as $key=>$val)
         {

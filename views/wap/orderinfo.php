@@ -77,9 +77,16 @@
 	        <hr color="#F7C708">
 			<p id="contact">
 				用户信息<br>姓名: <?= $model->username; ?> <br>
-				手机: <?= $model->usermobile; ?><br>
 				身份证: <?= $model->userid; ?>
 			</p>
+
+			<?php if($model->address != null) { ?>
+			<p id="address">
+				联系方式<br>
+				手机: <?= $model->usermobile; ?><br>
+				收货地址: <?= $model->address; ?>
+			</p>
+			<?php } ?>
 
 			<p align="right" >
 	         合计
@@ -123,7 +130,7 @@
 			</fieldset>
 			-->
 
-
+			<div>
 			<fieldset data-role="controlgroup" data-type="horizontal" id="paykind-field">
 			<legend>支付方式</legend>
 				<?php $flag=1; foreach($itemPayKindOption as $value => $text) { ?>
@@ -135,16 +142,23 @@
 				<label for="paykind_<?= $value ?>"><?= $text ?></label>
 				<?php $flag=0; } ?>	
 			</fieldset>						
+			</div>
 
 			<script>
+				url = localStorage.getItem("url");
+				//alert(url);
+				$("#btn-pay-weixin").attr('href',url);
+
 				var supportpay_count = <?php echo $supportpay_count; ?>;
 					if(supportpay_count == 1)
 					$("#paykind-field").hide();
 
-					<?php if($item->ctrl_supportpay == 1) {?>
-						$("#btn-pay").html("立即支付");
-					<?php } else {?>
+					$("#btn-pay-weixin").hide();
+
+					<?php if($item->ctrl_supportpay == 0) {?>
 						$("#btn-pay").html("我知道了");
+					<?php } else {?>
+						$("#btn-pay").html("立即支付");
 					<?php } ?>
 
 				    $("[name=paykind]").click(function(){
@@ -152,15 +166,27 @@
 						if($(this).val() == 0)
 				        {
 				            $("#btn-pay").html("我知道了");
+				            $("#btn-pay-weixin").hide();
+				            $("#btn-pay").show();
+				        }
+				        else if($(this).val() == 1)
+				        {
+				        	$("#btn-pay").html("立即支付");
+				        	$("#btn-pay-weixin").hide();
+				        	$("#btn-pay").show();
 				        }
 				        else
 				        {
-				        	$("#btn-pay").html("立即支付");
+				        	$("#btn-pay-weixin").show();
+				        	$("#btn-pay").hide();
 				        }
 				    });
 
 			</script>
+
 	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
+
+			<a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin" style="background-color: #44B549">立即支付</a>
 
 	    <?php ActiveForm::end(); ?>
 

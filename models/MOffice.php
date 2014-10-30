@@ -252,54 +252,36 @@ class MOffice extends ActiveRecord
         return $url;
     }
 
-    public function Release()
-    {    
-        $gh = MGh::findOne($this->gh_id);        
-        $gh->freeSceneId($this->scene_id);
-        if ($gh->save(false))
-            $this->delete();
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            if (!empty($this->scene_id))
+            {
+                $gh = MGh::findOne($this->gh_id);        
+                $gh->freeSceneId($this->scene_id);
+                return $gh->save(false);
+            }
+            return true;            
+        } else {
+            return false;
+        }
     }
 
     public function getScoreOfAllStaffs()
     {
-        $staffs = MStaff::find()->where(['gh_id'=>$this->gh_id, 'office_id'=>$this->office_id])->asArray()->all();
-        $openids = [];
-        //U::W($staffs);                            
+        $staffs = MStaff::find()->where(['gh_id'=>$this->gh_id, 'office_id'=>$this->office_id])->all();
+        $staff_count = 0;
         foreach($staffs as $staff)
-        {
-            if (!empty($staff['openid']))
-                $openids[] = $staff['openid'];
-        }
-
-        if (empty($openids))
-        {
-            $staff_count = 0;
-        }
-        else
-        {
-            $users = MUser::find()->where(['gh_id'=>$this->gh_id, 'openid'=>$openids])->asArray()->all();
-            $scene_ids = [];                                                    
-            foreach($users as $user)
-            {
-                if ($user['scene_id'] != 0)
-                    $scene_ids[] = $user['scene_id'];
-            }
-            //U::W($scene_ids);
-            if (empty($scene_ids))
-                $staff_count = 0;
-            else                                                        
-                $staff_count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $scene_ids])->count();                                
-        }
+            $staff_count += $staff->getScore();
         return $staff_count;        
     }
 
     public function getScore()
     {
-        //U::W("$this->gh_id, $this->scene_id, $this->office_id");    
         if ($this->scene_id == 0)
             $count = 0;
         else
-            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id])->count();
+            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])->count();
         return $count;        
     }
 
@@ -438,6 +420,37 @@ EOD;
         $rows = Yii::$app->db->createCommand($sql)->queryAll();
         U::W($rows);
 
-*/
+    public function getScoreOfAllStaffs()
+    {
+        $staffs = MStaff::find()->where(['gh_id'=>$this->gh_id, 'office_id'=>$this->office_id])->asArray()->all();
+        $openids = [];
+        //U::W($staffs);                            
+        foreach($staffs as $staff)
+        {
+            if (!empty($staff['openid']))
+                $openids[] = $staff['openid'];
+        }
 
+        if (empty($openids))
+        {
+            $staff_count = 0;
+        }
+        else
+        {
+            $users = MUser::find()->where(['gh_id'=>$this->gh_id, 'openid'=>$openids])->asArray()->all();
+            $scene_ids = [];                                                    
+            foreach($users as $user)
+            {
+                if ($user['scene_id'] != 0)
+                    $scene_ids[] = $user['scene_id'];
+            }
+            //U::W($scene_ids);
+            if (empty($scene_ids))
+                $staff_count = 0;
+            else                                                        
+                $staff_count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $scene_ids])->count();                                
+        }
+        return $staff_count;        
+    }
+*/
 

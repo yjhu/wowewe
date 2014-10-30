@@ -109,7 +109,6 @@ class WapxController extends Controller
             U::W('is ajax....');
         $this->layout = 'wapx';
         $mobile = $_GET['mobile'];
-        //Yii::$app->wx->setGhId($gh_id);
         $model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
         if ($model === null)
         {
@@ -124,7 +123,6 @@ class WapxController extends Controller
         }
         if ($model->load(Yii::$app->request->post())) 
         {        
-            //U::W($model->getAttributes());
             if ($model->save())            
             {
                 return $this->redirect(['staffhome', 'gh_id'=>$gh_id, 'openid'=>$openid]);                            
@@ -217,9 +215,9 @@ class WapxController extends Controller
         return $this->render('nearestmap', ['office' => $office, 'lon_begin'=>$lon, 'lat_begin'=>$lat, 'lon_end'=>$office->lon, 'lat_end'=>$office->lat]);
     }
 
-    //http://127.0.0.1/wx/web/index.php?r=wapx/officeposition&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&office_id=17
-    //http://wosotech.com/wx/web/index.php?r=wapx/officeposition&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&office_id=17
-    public function actionOfficeposition($gh_id, $openid, $office_id)
+    //http://127.0.0.1/wx/web/index.php?r=wapx/officeposition&gh_id=gh_03a74ac96138&office_id=18
+    //http://wosotech.com/wx/web/index.php?r=wapx/officeposition&gh_id=gh_03a74ac96138&office_id=18
+    public function actionOfficeposition($gh_id, $office_id, $openid=null)
     {        
         $this->layout = false;
         $office = MOffice::findOne($office_id);
@@ -248,5 +246,11 @@ class WapxController extends Controller
         }
         //if ($model->load(Yii::$app->request->get()))         
         
-*/        
+                $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+                if ($user !== null)
+                {
+                    $user->is_liantongstaff = 1;
+                    $user->save(false);
+                }
+                */
 

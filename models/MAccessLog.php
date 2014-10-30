@@ -62,6 +62,19 @@ class MAccessLog extends ActiveRecord
         } 
         return false;
     }
+
+    public function setAttributes($values, $safeOnly = true)
+    {
+        if (is_array($values)) 
+        {
+            foreach($values as $key=>$value)
+            {
+                if (is_array($value))
+                    unset($values[$key]);
+            }
+        }
+        parent::setAttributes($values, $safeOnly);
+    }
     
 }
 

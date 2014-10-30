@@ -28,14 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
 		$columns = [
             'oid',   
 			[
-				//'label' => '营业厅',
+				'label' => '营业厅',
 				'attribute' => 'office.title',
 				'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
 				'filter'=> false,
 				'headerOptions' => array('style'=>'width:80px;'),			
 			],
 			[
-				'label' => '买家微信昵称',
+				'label' => '微信昵称',
 				'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
 				'filter'=> false,
 				'headerOptions' => array('style'=>'width:80px;'),			
@@ -58,7 +58,6 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'select_mobnum',
 				'headerOptions' => array('style'=>'width:80px;'),			
 			],
-
 			[
 				'attribute'=>'create_time',
 				'filterType'=>GridView::FILTER_DATE,
@@ -103,6 +102,10 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'label' => '留言',
 				'attribute' => 'memo',		
+			],
+			[
+				'label' => '备注',
+				'attribute' => 'memo_reply',		
 			],
 			[
 				'attribute' => 'status',

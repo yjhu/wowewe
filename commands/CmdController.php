@@ -22,6 +22,7 @@ use app\models\MSmQueue;
 
 use app\models\Wechat;
 use app\models\MOffice;
+use app\models\MStaff;
 use app\models\MGroup;
 use app\models\MChannel;
 
@@ -75,6 +76,16 @@ class CmdController extends Controller
         fclose($fh);
     }    
 
+
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/get-kf-status
+    public function actionGetKfStatus()
+    {
+        $arr = Yii::$app->wx->WxGetOnlineKfList();
+        U::W($arr);
+        print_r($arr);
+    } 
+
+
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/create-wx-groups
     public function actionCreateWxGroups()
     {        
@@ -94,7 +105,7 @@ class CmdController extends Controller
         }
 
     }    
-
+    
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/get-ad-url
     public function actionGetAdUrl()
     {        
@@ -310,25 +321,34 @@ class CmdController extends Controller
             $menu = new \app\models\WxMenu([
                 new \app\models\ButtonComplex('沃商城', [
                     //new \app\models\ButtonView('沃派校园套餐', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardxiaoyuan:{$gh_id}")),
-                    new \app\models\ButtonView('单卡产品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}")),
+                    new \app\models\ButtonView('单卡产品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_CARD)),
                     new \app\models\ButtonView('特惠手机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobilelist:{$gh_id}")),
-                    new \app\models\ButtonView('官网直通车', 'http://m.10010.com/'),
-                    new \app\models\ButtonView('iPhone6火热预订', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=204243902&idx=1&sn=37207b6183533131e661c22ec43a083b#rd'),
-                    new \app\models\ButtonView('小米4预订', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=204274384&idx=1&sn=ae4d0925e811da0c652209d42e7ac04e#rd'),
+                    new \app\models\ButtonView('8折上网卡', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_INTERNET_CARD)),
+                    new \app\models\ButtonView('5折流量包', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD)),
+                    //new \app\models\ButtonView('官网直通车', 'http://m.10010.com/'),
+                    //new \app\models\ButtonView('iPhone6火热预订', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=204243902&idx=1&sn=37207b6183533131e661c22ec43a083b#rd'),
+                    //new \app\models\ButtonView('小米4预订', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=204274384&idx=1&sn=ae4d0925e811da0c652209d42e7ac04e#rd'),
                 ]),
                 new \app\models\ButtonComplex('沃服务', [
-                    new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
-                    new \app\models\ButtonView('流量包订购', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
-                    new \app\models\ButtonView('用户吐槽', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/suggest:{$gh_id}")),
+                    new \app\models\ButtonView('我的订单', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/order:{$gh_id}")),
+                    new \app\models\ButtonLocationSelect('最近营业厅', 'FuncNearestOffice'),
+                    //new \app\models\ButtonView('账单查询', 'http://wap.10010.com/t/siteMap.htm?menuId=query'),
+                    //new \app\models\ButtonView('流量包订购', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
+                    //new \app\models\ButtonView('用户吐槽', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/suggest:{$gh_id}")),
+                    new \app\models\ButtonView('用户吐槽', 'http://wsq.qq.com/reflow/263163652-1044?_wv=1&source='),
                     new \app\models\ButtonView('襄阳沃社区', 'http://m.wsq.qq.com/263163652 '),
                     new \app\models\ButtonView('游戏2048', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/g2048:{$gh_id}")),
                 ]),
-                new \app\models\ButtonComplex('沃订单', [
+                new \app\models\ButtonComplex('沃联盟', [
                     //new \app\models\ButtonView('最近营业厅', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/xxxxxx:{$gh_id}")),
                     //new \app\models\ButtonClick('最近营业厅', 'FuncNearestOffice'),
                     //new \app\models\ButtonLocationSelect('最近营业厅.', 'FuncNearestOffice'),
-                    new \app\models\ButtonLocationSelect('最近营业厅', 'FuncNearestOffice'),                        
-                    new \app\models\ButtonView('我的订单', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/order:{$gh_id}")),
+                    new \app\models\ButtonView('沃联盟介绍', 'http://lm.10010.com/wolm/ot/guideDetail.html'),
+                    new \app\models\ButtonView('登录沃联盟', 'http://lm.10010.com/wolm/ot/index.html'),
+                    new \app\models\ButtonView('新手指南', 'http://lm.10010.com/wolm/ot/newComer.html'),
+                    new \app\models\ButtonView('财富手册', 'http://lm.10010.com/wolm/ot/earnStep.html'),
+                    new \app\models\ButtonView('收益说明', 'http://lm.10010.com/wolm/ot/incomeDeclr.html'),
+
                 ]),
             ]);
         }
@@ -399,7 +419,24 @@ class CmdController extends Controller
         fclose($fh);    
     }
 
-    
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/set-liantong-flag
+    // /usr/bin/php /mnt/wwwroot/wx/yii cmd/set-liantong-flag
+    public function actionSetLiantongFlag()
+    {        
+        $gh_id = Yii::$app->wx->getGhid();
+        $models = MStaff::find()->where("gh_id = :gh_id AND openid != '' ", [':gh_id'=>$gh_id])->asArray()->all();        
+        foreach($models as $model)
+        {
+            $gh_id = $model['gh_id'];
+            $openid = $model['openid'];
+            $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+            if ($user !== null && $user->is_liantongstaff == 0)
+            {
+                $user->is_liantongstaff = 1;
+                $user->save(false);
+            }
+        }
+    }
 }
 
 /*        

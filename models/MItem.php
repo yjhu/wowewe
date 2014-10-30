@@ -39,7 +39,9 @@ ALTER TABLE wx_item ADD	ctrl_userinfo tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_office tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_package tinyint(3) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_item ADD	ctrl_supportpay VARCHAR(128) NOT NULL DEFAULT '';
-
+ALTER TABLE wx_item ADD	ctrl_address tinyint(3) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD	ctrl_detail tinyint(3) unsigned NOT NULL DEFAULT '1';
+ALTER TABLE wx_item ADD	scene_percent int(10) unsigned NOT NULL DEFAULT '0';
 
 ALTER TABLE wx_item ADD	ctrl_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '';
 ALTER TABLE wx_item ADD	ctrl_pkg_period VARCHAR(32) NOT NULL DEFAULT '';
@@ -48,6 +50,7 @@ ALTER TABLE wx_item ADD	ctrl_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
 
 
 ALTER TABLE wx_item ADD	ctrl_soldout tinyint(3) unsigned NOT NULL DEFAULT '0';
+
 
 
 INSERT INTO `wx_item` (`gh_id`, `price`, `price_hint`, `title`, `title_hint`, `pkg_name`, `pkg_name_hint`, `detail`, `pic_url`, `cid`, `status`) VALUES
@@ -105,12 +108,21 @@ class MItem extends ActiveRecord
 	const ITEM_CAT_MOBILE_HUAWEI_P7_WHITE = 330;
 
  	const ITEM_CAT_MOBILE_XIAOMI4 = 331;
-	
 
-	const ITEM_KIND_CARD = 2;
+ 	const ITEM_CAT_CARD_45GLIULIANG = 700;
+ 	const ITEM_CAT_CARD_96GLIULIANG = 701;
+
+ 	const ITEM_KIND_INTERNET_CARD_FLOW100MB = 702;
+ 	const ITEM_KIND_INTERNET_CARD_FLOW300MB = 703;
+ 	const ITEM_KIND_INTERNET_CARD_FLOW500MB = 704;
+ 	const ITEM_KIND_INTERNET_CARD_FLOW1GB_1 = 705;
+ 	const ITEM_KIND_INTERNET_CARD_FLOW2DOT5GB = 706;
+ 	const ITEM_KIND_INTERNET_CARD_FLOW1GB_2 = 707;
+
 	const ITEM_KIND_MOBILE = 1;
-
-	
+	const ITEM_KIND_CARD = 2;
+	const ITEM_KIND_INTERNET_CARD = 3;
+	const ITEM_KIND_FLOW_CARD = 4;
 
 	public static function tableName()
 	{
@@ -144,6 +156,14 @@ class MItem extends ActiveRecord
 			self::ITEM_CAT_MOBILE_HISENSE_U939 => '海信 U939',
 			self::ITEM_CAT_MOBILE_COOLPAD_7295C_BLACK => '酷派 7295C 黑色',
 			self::ITEM_CAT_MOBILE_XIAOMI4 => '小米4',
+			self::ITEM_CAT_CARD_45GLIULIANG => '45G包年流量套餐',
+			self::ITEM_CAT_CARD_96GLIULIANG => '96G包年流量套餐',
+			self::ITEM_KIND_INTERNET_CARD_FLOW100MB => '10元包100MB 3G省内流量包',
+			self::ITEM_KIND_INTERNET_CARD_FLOW300MB => '20元包300MB 3G省内流量包',
+			self::ITEM_KIND_INTERNET_CARD_FLOW500MB => '30元包500MB 3G省内流量包',
+			self::ITEM_KIND_INTERNET_CARD_FLOW1GB_1 => '50元包1G 3G省内流量包',
+			self::ITEM_KIND_INTERNET_CARD_FLOW2DOT5GB => '100元包2.5G 3G省内流量包',
+			self::ITEM_KIND_INTERNET_CARD_FLOW1GB_2 => '100元包1G 全国流量半年包',
 
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
@@ -153,7 +173,7 @@ class MItem extends ActiveRecord
 	{
 		return [
 			[['cid'], 'integer'],            
-			[['price', 'price_hint', 'title', 'title_hint', 'pkg_name', 'pkg_name_hint', 'pic_url', 'detail', 'ctrl_mobnumber', 'ctrl_userinfo', 'ctrl_office', 'ctrl_package', 'ctrl_supportpay', 'ctrl_pkg_3g4g', 'ctrl_pkg_period', 'ctrl_pkg_monthprice', 'ctrl_pkg_plan', 'ctrl_soldout'], 'safe'],
+			[['price', 'old_price', 'price_hint', 'title', 'title_hint', 'pkg_name', 'pkg_name_hint', 'pic_url', 'detail', 'ctrl_mobnumber', 'ctrl_userinfo', 'ctrl_office', 'ctrl_package', 'ctrl_supportpay', 'ctrl_pkg_3g4g', 'ctrl_pkg_period', 'ctrl_pkg_monthprice', 'ctrl_pkg_plan', 'ctrl_soldout', 'ctrl_address', 'scene_percent'], 'safe'],
 		];
 	}
 

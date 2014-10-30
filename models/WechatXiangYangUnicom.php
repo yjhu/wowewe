@@ -17,12 +17,14 @@ use app\models\MGh;
 use app\models\MOffice;
 use app\models\MStaff;
 use app\models\MGroup;
+use app\models\MSceneDetail;
 
 use app\models\RespText;
 use app\models\RespImage;
 use app\models\RespNews;
 use app\models\RespNewsItem;
 use app\models\RespMusic;
+use app\models\RespTransfer;
 
 class WechatXiangYangUnicom extends Wechat
 {
@@ -32,11 +34,11 @@ class WechatXiangYangUnicom extends Wechat
         //U::W($request);            
         $log = new MAccessLog;
         $log->setAttributes($request, false);
-        //U::W($log->getAttributes());                     
+        //U::W($log->getAttributes()); 
         $log->save(false);
     }
     
-    protected function onSubscribe() 
+    protected function onSubscribe($isNewFan) 
     {
         $this->saveAccessLog();  
         $FromUserName = $this->getRequest('FromUserName');    
@@ -45,36 +47,71 @@ class WechatXiangYangUnicom extends Wechat
         $MsgType = $this->getRequest('MsgType');
         $Event = $this->getRequest('Event');    
         $EventKey = $this->getRequest('EventKey');
+
+        $url_1 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD], true)."\">单卡产品</a>";
+        $url_2 = "<a href=\"".Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">特惠手机</a>";
+        $url_3 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD], true)."\">8折包年上网卡</a>"; 
+        $url_4 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
+        $url_5 = "<a href=\"http://wsq.qq.com/reflow/263163652-1044?_wv=1&source=\">用户吐槽</a>";
+        $url_6 = "<a href=\"http://m.wsq.qq.com/263163652\">襄阳沃社区</a>";
+        $url_7 = "<a href=\"".Url::to(['wap/g2048', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">游戏2048</a>";
+        $url_8 = "<a href=\"".Url::to(['nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
+        $url_9 = "<a href=\"".Url::to(['order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
+        $url_10 = "<a href=\"http://lm.10010.com/wolm/ot/guideDetail.html\">沃联盟</a>";
+
         if (!empty($EventKey))
         {
-            //a new user subscribe us with qr parameter, EventKey:qrscene_3
+            //a new fan subscribe with qr parameter, EventKey:qrscene_3
             $Ticket = $this->getRequest('Ticket');    
             $scene_pid = substr($EventKey, 8);    
-            //U::W("sub....qr...., $EventKey, $scene_pid");
+            //U::W("EventKey=$EventKey, scene_pid=$scene_pid");
             $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
-            $model->scene_pid = $scene_pid;    
-            $office = MOffice::find()->where("gh_id = :gh_id AND scene_id = :scene_id", [':gh_id'=>$gh_id, ':scene_id'=>$scene_pid])->one();
-            if ($office !== null)
-            {
-                $mg = MGroup::findOne(['gh_id'=>$gh_id, 'office_id'=>$office->office_id]);
-                if ($mg === null)
-                    U::W([__METHOD__, "group does not exists!, {$office->office_id}"]);                                            
-                $model->gid = $mg->gid;
-                $arr =  $this->WxGroupMoveMember($FromUserName, $mg->gid);
-            }
-            $model->save(false);
-            $items = array(
-                new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
-            );
-            return $this->responseNews($items);
+            if ($isNewFan 
+                || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_KZENG
+                || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_HBHE)  
+            {                            
+                //if father is office, move it to the office group
+                $office = MOffice::find()->where("gh_id = :gh_id AND scene_id = :scene_id", [':gh_id'=>$gh_id, ':scene_id'=>$scene_pid])->one();
+                if ($office !== null)
+                {
+                    $mg = MGroup::findOne(['gh_id'=>$gh_id, 'office_id'=>$office->office_id]);
+                    if ($mg === null)
+                        U::W([__METHOD__, "group does not exists!, {$office->office_id}"]);                                            
+                    $model->gid = $mg->gid;
+                    $arr =  $this->WxGroupMoveMember($FromUserName, $mg->gid);
+                }            
+
+                $model->scene_pid = $scene_pid;                            
+                $model->save(false);
+
+                // insert cash into MSceneDetail
+                $father = MUser::findOne(['gh_id'=>$gh_id, 'scene_id'=>$scene_pid]);
+                if ($father !== null)
+                {
+                    $ar = new MSceneDetail;
+                    $ar->gh_id = $father->gh_id;
+                    $ar->openid = $father->openid;
+                    $ar->scene_id = $father->scene_id;
+                    $ar->cat = MSceneDetail::CAT_FAN;
+                    $ar->scene_amt = 100;
+                    $ar->memo = 'RECOMMEND';
+                    $ar->openid_fan = $openid;
+                    if (!$ar->save(false))
+                        U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
+                }
+
+            }    
+            else
+                U::W("SORRY, $FromUserName IS NOT NEW");
+                
+            $nickname = empty($model->nickname) ? '' : $model->nickname;            
+            return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
         }
         else
         {
             $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
-            $items = array(
-                new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
-            );
-            return $this->responseNews($items);
+            $nickname = empty($model->nickname) ? '' : $model->nickname;            
+            return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
         }
     }
 
@@ -86,11 +123,26 @@ class WechatXiangYangUnicom extends Wechat
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);        
         if ($model !== null)
         {
-            //$model->delete();    
+            $scene_pid = $model->scene_pid; 
             $model->subscribe = 0;
             //$model->scene_pid = 0;
             $model->gid = 0;
             $model->save(false);
+
+            // cancel MSceneDetail
+            if ($scene_pid > 0)
+            {
+                U::W("scene detail....... $scene_pid");
+            
+                $ar = MSceneDetail::findOne(['gh_id'=>$gh_id, 'scene_id'=>$scene_pid, 'openid_fan'=>$FromUserName]);
+                if ($ar !== null) 
+                {
+                    $ar->status = MSceneDetail::STATUS_CANCEL;
+                    if (!$ar->save(false))
+                        U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
+                }                                    
+            }
+            
         }
         return '';
     }
@@ -148,15 +200,35 @@ EOD;
 
     protected function onText() 
     { 
+        U::W('onText...........');
+        
         $this->saveAccessLog();      
         $openid = $this->getRequest('FromUserName');
         $gh_id = $this->getRequest('ToUserName');    
         $Content = $this->getRequest('Content');
-        $msg = trim($Content);    
+        $msg = trim($Content);   
+
+        $url_1 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD], true)."\">单卡产品</a>";
+        $url_2 = "<a href=\"".Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">特惠手机</a>";
+        $url_3 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD], true)."\">8折包年上网卡</a>"; 
+        $url_4 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
+        $url_5 = "<a href=\"http://wsq.qq.com/reflow/263163652-1044?_wv=1&source=\">用户吐槽</a>";
+        $url_6 = "<a href=\"http://m.wsq.qq.com/263163652\">襄阳沃社区</a>";
+        $url_7 = "<a href=\"".Url::to(['wap/g2048', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">游戏2048</a>";
+        $url_8 = "<a href=\"".Url::to(['nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
+        $url_9 = "<a href=\"".Url::to(['order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
+        $url_10 = "<a href=\"http://lm.10010.com/wolm/ot/guideDetail.html\">沃联盟</a>";
+
+
         if ($msg == '我是襄阳联通员工')
         {
             $url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
-            //return $this->responseText("<a href=\"{$url}\">联通内部员工通道, 点击这里进入...</a>");
+            $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+            if ($user !== null && $user->is_liantongstaff == 0)
+            {
+                $user->is_liantongstaff = 1;
+                $user->save(false);
+            }
             return $this->responseText("襄阳联通内部员工通道, 参与推广, 查看成绩, <a href=\"{$url}\">请点击这里进入...</a>");
         }
         else if ($msg == '.debug')
@@ -165,14 +237,35 @@ EOD;
             $url = Url::to(['wap/testpay', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
             return $this->responseText("Test only <a href=\"{$url}\">clickme</a>\n----------\n <a href=\"http://m.wsq.qq.com/263163652\">wsq</a>    \n----------\n  <a href=\"http://www.baidu.com/?surf_token=a40aeb590b4674cad5c74246ba41bd9f\">active wifi</a>");
         }
+        else if ($msg == '.woke')
+        {
+            $url1 = Url::to(['wap/woke', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+            $urlStr1 = "<a href=\"{$url1}\">Test woke page</a>\n\n ";
+
+            $url2 = Url::to(['wap/wokelist', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+            $urlStr2 = "<a href=\"{$url2}\">Test wokelist page</a>\n\n ";
+
+            $urlStr = $urlStr1.$urlStr2;
+            return $this->responseText($urlStr);
+        }
         else
         {
+
+            $arr = $this->WxGetOnlineKfList();
+            U::W($arr);
+
+            $kfStr = "";
+            if (count($arr) > 0)
+                return $this->responseTransfer();
+            else
+                $kfStr = "客服人员暂时不在线。";
+
             $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-            $items = array(
-                new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
-            );
-            return $this->responseNews($items);
+            $nickname = empty($model->nickname) ? '' : $model->nickname;            
+            return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! {$kfStr}\n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
+
         }
+        
     }
 
     protected function onTextOld() 
@@ -670,7 +763,18 @@ EOD;
             return $this->responseNews($items);
         }
     }
-*/    
+
+    $items = array(
+    new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
+    );
+    return $this->responseNews($items);
+
+            $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+            $items = array(
+                new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
+            );
+            return $this->responseNews($items);
+            */
 
 
 }

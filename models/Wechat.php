@@ -16,6 +16,7 @@ use app\models\RespImage;
 use app\models\RespNews;
 use app\models\RespNewsItem;
 use app\models\RespMusic;
+use app\models\RespTransfer;
 
 class Wechat extends \yii\base\Object
 {
@@ -259,7 +260,7 @@ class Wechat extends \yii\base\Object
         return self::json_encode($arr);
     }
     
-    protected function onSubscribe() { return $this->responseText($this->getRequestString()); }
+    protected function onSubscribe($isNewFan) { return $this->responseText($this->getRequestString()); }
     
     protected function onUnsubscribe() { return $this->responseText($this->getRequestString()); }
     
@@ -308,10 +309,11 @@ class Wechat extends \yii\base\Object
     {
         $gh_id = $this->getGhId();    
         $FromUserName = $this->getRequest('FromUserName');
-        U::W('222');            
+        $isNewUser = false;        
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
         if ($model === null)
         {
+            $isNewUser = true;
             $model = new MUser;        
         }
         if (empty($model->nickname) ||!$model->subscribe)
@@ -320,10 +322,11 @@ class Wechat extends \yii\base\Object
             $model->setAttributes($arr, false);
             $model->gh_id = $this->getRequest('ToUserName');            
             $model->openid = $FromUserName;            
-            //$model->msg_time = time();
+            $model->msg_time = date("Y-m-d H:i:s");
             if (!$model->save(false))
-                U::W([__METHOD__, $model->getErrors()]);                
-            }
+                U::W([__METHOD__, $model->getErrors()]);            
+        }
+        return $isNewUser;
     }
     
     public function run($gh_id) 
@@ -335,7 +338,7 @@ class Wechat extends \yii\base\Object
             $MsgType = $this->getRequest('MsgType');
             U::W('TTTTTTTTTTT44444');                    
             //$this->setGhId($this->getRequest('ToUserName'));
-            $this->checkOpenid();
+            $isNewFan = $this->checkOpenid();
             U::W('TTTTTTTTTTT555');                    
             switch ($MsgType) 
             {
@@ -368,7 +371,7 @@ class Wechat extends \yii\base\Object
                     switch ($Event) 
                     {
                         case Wechat::EVENT_SUBSCRIBE:
-                            $resp =$this->onSubscribe();
+                            $resp =$this->onSubscribe($isNewFan);
                             break;
 
                         case Wechat::EVENT_UNSUBSCRIBE:
@@ -411,9 +414,14 @@ class Wechat extends \yii\base\Object
         }
         catch(\Exception $e)
         {
-            U::W($e->getMessage());
+            U::W('Exception:'.$e->getMessage());
             return self::NO_RESP;
         }
+    }
+
+    protected function responseTransfer($KfAccount=null)
+    {
+        return new RespTransfer($this->getRequest('FromUserName'), $this->getRequest('ToUserName'), $KfAccount);
     }
 
     protected function responseText($content, $funcFlag = 0)
@@ -878,7 +886,35 @@ EOD;
         $this->checkWxApiResp($arr, [__METHOD__, $openid, $to_groupid]);
         return $arr;                        
     }
-    
+
+    public function WxGetOnlineKfList()
+    {
+        
+        $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist", ['access_token'=>$this->accessToken]);
+        $this->checkWxApiResp($arr, [__METHOD__]);
+        $arr = empty($arr['kf_online_list']) ? [] : $arr['kf_online_list']; 
+        //Yii::$app->cache->set($key, $arr, YII_DEBUG ? 10 : 2*60);
+        //U::W('NO CACHE SERVICED');   
+        //U::W('################################\n'); 
+        //U::W($arr);      
+        return $arr; 
+                
+
+     /*
+        $key = __METHOD__;
+        $arr = Yii::$app->cache->get($key);
+        if ($arr === false)
+        {
+            $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist", ['access_token'=>$this->accessToken]);
+            $this->checkWxApiResp($arr, [__METHOD__]);
+            $arr = empty($arr['kf_online_list']) ? [] : $arr['kf_online_list'];            
+            Yii::$app->cache->set($key, $arr, YII_DEBUG ? 10 : 2*60);
+            U::W('NO CACHE SERVICED');            
+        }
+        return $arr; 
+      */
+    }
+
     public function getSignature($arrdata,$method="sha1") 
     {
         if (!function_exists($method))
@@ -1540,6 +1576,32 @@ define('APPSERCERT', "c4d53595acf30e9caf09c155b3d95253");    // woso
             return  $this->arrayToXml($nativeObj);
            
     }
+
+2014-10-29 10:26:34,Array
+(
+    [kf_online_list] => Array
+        (
+            [0] => Array
+                (
+                    [kf_account] => gtsun@xiangyangunicom
+                    [status] => 1
+                    [kf_id] => 1001
+                    [auto_accept] => 100
+                    [accepted_case] => 0
+                )
+
+            [1] => Array
+                (
+                    [kf_account] => kzeng@xiangyangunicom
+                    [status] => 1
+                    [kf_id] => 1003
+                    [auto_accept] => 0
+                    [accepted_case] => 0
+                )
+
+        )
+
+)    
 */
 
 

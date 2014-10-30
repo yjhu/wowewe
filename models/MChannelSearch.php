@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\NotFoundHttpException;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\MChannel;
@@ -17,16 +18,18 @@ class MChannelSearch extends Model
 
     public $mobile;
 
-    public $cat;
+//    public $cat;
 
-    public $status;
+//    public $status;
 
-    public $level;
+//    public $level;
     
     public function rules()
     {
         return [
-            [['id', 'gh_id', 'title','mobile', 'cat', 'status', 'level'], 'safe'],
+//            [['id', 'gh_id', 'title','mobile', 'cat', 'status', 'level'], 'safe'],
+//            [['id', 'gh_id', 'title','mobile', 'status', 'level'], 'safe'],
+            [['id', 'gh_id', 'title','mobile'], 'safe'],
         ];
     }
 
@@ -37,7 +40,7 @@ class MChannelSearch extends Model
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
-                    'id' => SORT_ASC,
+                    'id' => SORT_DESC,
                 ],
                 //'attributes' => [
                 //    'score','id',
@@ -50,7 +53,7 @@ class MChannelSearch extends Model
         ]);
         
         if (Yii::$app->user->identity->gh_id == 'root')
-            U::W('root see channel');
+             throw new NotFoundHttpException("Please selected one gh_id for the root first!");
         else if (Yii::$app->user->identity->openid == 'admin')
         {
             $this->gh_id = Yii::$app->user->identity->gh_id;
@@ -64,8 +67,8 @@ class MChannelSearch extends Model
         $this->addCondition($query, 'id');
         $this->addCondition($query, 'title', true);
         $this->addCondition($query, 'mobile', true);
-        $this->addCondition($query, 'cat');
-        $this->addCondition($query, 'status');
+//        $this->addCondition($query, 'cat');
+//        $this->addCondition($query, 'status');
         
         return $dataProvider;
     }

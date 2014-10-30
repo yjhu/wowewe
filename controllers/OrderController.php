@@ -63,7 +63,7 @@ class OrderController extends Controller
     public function actionIndex()
     {
         $searchModel = new MOrderSearch;
-        $dataProvider = $searchModel->search($_GET);
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
         
         if (isset($_GET['orderdownload']))
         {
@@ -118,12 +118,12 @@ class OrderController extends Controller
     {
         $model = MOrder::findOne($id);
         if (!$model) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('no this order');
         }
         if (\Yii::$app->request->isPost) 
         {
             $model->load(\Yii::$app->request->post());
-            if ($model->save(true, ['status', 'select_mobnum'])) 
+            if ($model->save(true, ['status', 'select_mobnum', 'memo_reply'])) 
             {                
                 $mobnum = MMobnum::findOne($model->select_mobnum);
                 if ($mobnum !== null)
@@ -160,7 +160,7 @@ class OrderController extends Controller
     public function actionStafflist()
     {
         $searchModel = new MStaffSearch;
-        $dataProvider = $searchModel->search($_GET);
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
         return $this->render('stafflist', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -197,7 +197,7 @@ class OrderController extends Controller
     {
         $model = MStaff::findOne($id);
         if (!$model) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('no this staff');
         }
         if (\Yii::$app->request->isPost) 
         {
@@ -264,7 +264,7 @@ class OrderController extends Controller
         $searchModel = new MUserSearch;
         $_GET['MUserSearch']['scene_pid'] = $user->scene_id;
         //$searchModel->scene_pid = $user->scene_id;
-        $dataProvider = $searchModel->search($_GET);
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
         return $this->render('staffscoredetail', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -294,7 +294,7 @@ class OrderController extends Controller
     public function actionIphone6sub()
     {
         $searchModel = new \app\models\MIphone6SubSearch;
-        $dataProvider = $searchModel->search($_GET);
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
         return $this->render('iphone6sub', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -311,7 +311,7 @@ class OrderController extends Controller
     public function actionIphone6subdownload()
     {
         $searchModel = new \app\models\MIphone6SubSearch;
-        $dataProvider = $searchModel->search($_GET);
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
         $dataProvider->setPagination(false);
         $data = $dataProvider->getModels();
         //$query = clone $dataProvider->query;
@@ -323,28 +323,11 @@ class OrderController extends Controller
         Yii::$app->response->sendFile($filename);
         return;
     }
-    /*
-    public function actionOrderdownload()
-    {
-        $searchModel = new \app\models\MOrderSearch;
-        $dataProvider = $searchModel->search($_GET);
-        $dataProvider->setPagination(false);
-        $data = $dataProvider->getModels();
-        //$query = clone $dataProvider->query;
-        //$data = $query->asArray()->all($dataProvider->db);
-        //U::W($data);
-        $date = date('Y-m-d-His');
-        $filename = Yii::$app->getRuntimePath()."/order-{$date}.csv";
-        $csv = new \app\models\ECSVExport($data);
-        $csv->toCSV($filename); 
-        Yii::$app->response->sendFile($filename);
-        return;
-    }
-    */
+
     public function actionOfficelist()
     {
         $searchModel = new MOfficeSearch;
-        $dataProvider = $searchModel->search($_GET);
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
         return $this->render('officelist', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -387,10 +370,7 @@ class OrderController extends Controller
 
     public function actionOfficeupdate($id)
     {
-        $model = MOffice::findOne($id);
-        if (!$model) {
-            throw new NotFoundHttpException();
-        }
+        $model = $this->findOfficeModel($id);
         if (\Yii::$app->request->isPost) 
         {
             $model->load(\Yii::$app->request->post());
@@ -408,7 +388,7 @@ class OrderController extends Controller
 
     public function actionOfficedelete($id)
     {
-        $this->findOfficeModel($id)->Release();
+        $this->findOfficeModel($id)->delete();
         return $this->redirect(['officelist']);
     }
 
@@ -424,7 +404,7 @@ class OrderController extends Controller
     public function actionChannellist()
     {
         $searchModel = new MChannelSearch;
-        $dataProvider = $searchModel->search($_GET);
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
         return $this->render('channellist', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -452,10 +432,7 @@ class OrderController extends Controller
 
     public function actionChannelupdate($id)
     {
-        $model = MChannel::findOne($id);
-        if (!$model) {
-            throw new NotFoundHttpException();
-        }
+        $model = $this->findChannelModel($id);        
         if (\Yii::$app->request->isPost) 
         {
             $model->load(\Yii::$app->request->post());
@@ -473,9 +450,17 @@ class OrderController extends Controller
 
     public function actionChanneldelete($id)
     {
-        $model = MChannel::findOne($id);
-        $model->Release();
+        $this->findChannelModel($id)->delete();        
         return $this->redirect(['channellist']);
+    }
+
+    protected function findChannelModel($id)
+    {
+        if (($model = MChannel::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 
     public function actionChannelscoredetail($gh_id, $scene_pid)
@@ -483,7 +468,7 @@ class OrderController extends Controller
         $searchModel = new MAccessLogSearch;
         $_GET['MAccessLogSearch']['ToUserName'] = $gh_id;    
         $_GET['MAccessLogSearch']['scene_pid'] = $scene_pid;        
-        $dataProvider = $searchModel->search($_GET);
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
         return $this->render('channelscoredetail', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
@@ -493,6 +478,13 @@ class OrderController extends Controller
     public function actionChannelscoretop($month)
     {
         $rows = MChannel::getChannelScoreTop(Yii::$app->user->getGhid(), $month);
+        $filter = new \app\models\FiltersForm;
+        $filter->unsetAttributes();
+        if(isset($_GET['FiltersForm'])) {		
+            $filter->setAttributes($_GET['FiltersForm'], false);
+        }
+        $rows = $filter->filterArrayData($rows);		
+        
         $dataProvider = new ArrayDataProvider([
             'allModels' => $rows,
             'sort' => [
@@ -527,12 +519,47 @@ class OrderController extends Controller
         return $this->render('channelscoretop', [
             'dataProvider' => $dataProvider,
             'month'=>$month,
+            'filter'=>$filter,            
         ]);  
 
     }
 
 
+
+}
+
 /*
+    public function actionDisp()
+    {
+    
+//        $this->view->registerCssFile('http://www.yiibook.com/themes/classic/css/yiibook.css');    
+//        return $this->render('VUserList');
+
+        $searchModel = new MOrderSearch;
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
+
+        return $this->render('VUserList', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+        ]);
+        
+    }
+
+        $sql = <<<EOD
+select t1.score, t3.name, t3.office_id, t4.title, t2.scene_id  from (select scene_pid, count(*) as score from wx_user 
+where gh_id='gh_03a74ac96138' and scene_pid != 0 group by scene_pid order by score desc) t1 
+left join wx_user t2 on t1.scene_pid = t2.scene_id and t2.scene_id != 0 
+left join wx_staff t3 on t2.openid = t3.openid 
+left join wx_office t4 on t3.office_id = t4.office_id
+EOD;
+        $rows = Yii::$app->db->createCommand($sql)->queryAll();
+        foreach($rows as $key => $row)
+        {
+            if (empty($row['name']))
+                unset($rows[$key]);
+        }
+        //$rows = MStaff::getStaffScoreTop(MGh::GH_WOSO);
+        
     public function actionChannelscoretop($month)
     {
         $rows = MChannel::getChannelScoreTop(Yii::$app->user->getGhid(), $month);
@@ -576,41 +603,43 @@ class OrderController extends Controller
 
         
     }
-*/    
 
-}
+    $count = Yii::$app->db->createCommand('SELECT COUNT(*) FROM user WHERE status=:status', [':status' => 1])->queryScalar();
+    $dataProvider = new SqlDataProvider([
+        'sql' => 'SELECT FROM user WHERE status=:status',
+        'params' => [':status' => 1],
+        'totalCount' => $count,
+        'sort' => [
+            'attributes' => [
+                'age',
+                'name' => [
+                    'asc' => ['first_name' => SORT_ASC, 'last_name' => SORT_ASC],
+                    'desc' => ['first_name' => SORT_DESC, 'last_name' => SORT_DESC],
+                    'default' => SORT_DESC,
+                    'label' => 'Name',
+                ],
+            ],
+        ],
+        'pagination' => [
+            'pageSize' => 20,
+        ],
+    ]);
 
-/*
-    public function actionDisp()
+    public function actionOrderdownload()
     {
-    
-//        $this->view->registerCssFile('http://www.yiibook.com/themes/classic/css/yiibook.css');    
-//        return $this->render('VUserList');
-
-        $searchModel = new MOrderSearch;
-        $dataProvider = $searchModel->search($_GET);
-
-        return $this->render('VUserList', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-        ]);
-        
+        $searchModel = new \app\models\MOrderSearch;
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
+        $dataProvider->setPagination(false);
+        $data = $dataProvider->getModels();
+        //$query = clone $dataProvider->query;
+        //$data = $query->asArray()->all($dataProvider->db);
+        //U::W($data);
+        $date = date('Y-m-d-His');
+        $filename = Yii::$app->getRuntimePath()."/order-{$date}.csv";
+        $csv = new \app\models\ECSVExport($data);
+        $csv->toCSV($filename); 
+        Yii::$app->response->sendFile($filename);
+        return;
     }
-
-        $sql = <<<EOD
-select t1.score, t3.name, t3.office_id, t4.title, t2.scene_id  from (select scene_pid, count(*) as score from wx_user 
-where gh_id='gh_03a74ac96138' and scene_pid != 0 group by scene_pid order by score desc) t1 
-left join wx_user t2 on t1.scene_pid = t2.scene_id and t2.scene_id != 0 
-left join wx_staff t3 on t2.openid = t3.openid 
-left join wx_office t4 on t3.office_id = t4.office_id
-EOD;
-        $rows = Yii::$app->db->createCommand($sql)->queryAll();
-        foreach($rows as $key => $row)
-        {
-            if (empty($row['name']))
-                unset($rows[$key]);
-        }
-        //$rows = MStaff::getStaffScoreTop(MGh::GH_WOSO);
-        
-*/
+    */
 

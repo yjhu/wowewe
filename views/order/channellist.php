@@ -39,20 +39,11 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'id',
 				'headerOptions' => array('style'=>'width:100px;'),	
 				'filter'=> false,				
+				'visible' => false,
 			],
 			[
 				'label' => '渠道名称',
 				'attribute' => 'title',
-			],
-			[
-				'attribute' => 'cat',
-				'value'=>function ($model, $key, $index, $column) { return MChannel::getCatOptionName($model->cat); },
-				'filter'=> MChannel::getCatOptionName(),
-			],
-			[
-				'attribute' => 'status',
-				'value'=>function ($model, $key, $index, $column) { return MChannel::getStatusOptionName($model->status); },
-				'filter'=> MChannel::getStatusOptionName(),
 			],
 			[
 				'attribute' => 'mobile',
@@ -80,11 +71,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => '推广二维码',
                 'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
-					return Html::img($model->getQrImageUrl(), ['width'=>'64']);
+						return Html::img($model->getQrImageUrl(), ['width'=>'64']);
 				},
 				'filter'=> false,
 			],
-
             [
 				'class' => 'yii\grid\ActionColumn',
 				'template' => '{channelupdate} {channeldelete}',
@@ -129,6 +119,17 @@ $this->params['breadcrumbs'][] = $this->title;
     	<?php $currentMonth = date("n", strtotime('-2 month', time())); ?>
 		<?php echo Html::a("渠道{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
     </p>
+
+			[
+				'attribute' => 'cat',
+				'value'=>function ($model, $key, $index, $column) { return MChannel::getCatOptionName($model->cat); },
+				'filter'=> MChannel::getCatOptionName(),
+			],
+			[
+				'attribute' => 'status',
+				'value'=>function ($model, $key, $index, $column) { return MChannel::getStatusOptionName($model->status); },
+				'filter'=> MChannel::getStatusOptionName(),
+			],
 
 */
 

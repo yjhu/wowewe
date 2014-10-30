@@ -7,6 +7,10 @@ CREATE TABLE wx_order (
     oid VARCHAR(32) NOT NULL DEFAULT '',
     gh_id VARCHAR(32) NOT NULL DEFAULT '',
     openid VARCHAR(32) NOT NULL DEFAULT '',
+    scene_auto_id int(10) NOT NULL DEFAULT '0',        
+    scene_id int(10) unsigned NOT NULL DEFAULT '0',    
+    scene_src_id int(10) unsigned NOT NULL DEFAULT '0',    
+    scene_amt int(10) NOT NULL DEFAULT '0',
     iid int(10) unsigned NOT NULL DEFAULT '0',
     feesum int(10) unsigned NOT NULL DEFAULT '0',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,    
@@ -28,7 +32,9 @@ CREATE TABLE wx_order (
     issubscribe_recv tinyint(1) unsigned NOT NULL DEFAULT '0',
     userid VARCHAR(32) NOT NULL DEFAULT '',
     username VARCHAR(16) NOT NULL DEFAULT '',
-    usermobile VARCHAR(16) NOT NULL DEFAULT '',    
+    usermobile VARCHAR(16) NOT NULL DEFAULT '',   
+    address VARCHAR(256) NOT NULL DEFAULT '',
+    kaitong VARCHAR(16) NOT NULL DEFAULT '',
     pay_kind tinyint(10) unsigned NOT NULL DEFAULT '0',
     aliwap_trade_no VARCHAR(64) NOT NULL DEFAULT '',
     aliwap_total_fee VARCHAR(16) NOT NULL DEFAULT '',
@@ -37,6 +43,7 @@ CREATE TABLE wx_order (
     aliwap_quantity int(10) unsigned NOT NULL DEFAULT '0',
     aliwap_gmt_payment TIMESTAMP,
     memo VARCHAR(256) NOT NULL DEFAULT '',
+    memo_reply VARCHAR(128) NOT NULL DEFAULT '',
     val_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '',
     val_pkg_period int(10) unsigned NOT NULL DEFAULT '0',
     val_pkg_monthprice int(10) unsigned NOT NULL DEFAULT '0',
@@ -47,6 +54,9 @@ CREATE TABLE wx_order (
     KEY gh_id_aliwap_trade_no(gh_id,aliwap_trade_no),    
     KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS wx_order_arc;
+CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
 
 */
 
@@ -59,6 +69,7 @@ use app\models\U;
 use app\models\MUser;
 use app\models\MItem;
 use app\models\MOffice;
+use app\models\MSceneDetail;
 
 class MOrder extends ActiveRecord
 {
@@ -66,9 +77,6 @@ class MOrder extends ActiveRecord
     const STATUS_OK = 3;        
     const STATUS_CLOSED_USER = 7;        
     const STATUS_CLOSED_AUTO = 9;            
-//    const STATUS_PAYED = 1;        
-//    const STATUS_SHIPPED = 2;
-//    const STATUS_CLOSED_OFFICE = 8;    
 
     const PAY_KIND_CASH = 0;
     const PAY_KIND_ALIWAP = 1;
@@ -91,9 +99,12 @@ class MOrder extends ActiveRecord
             'userid' => '身份证',
             'username' => '姓名',
             'usermobile' => '联系电话',
+            'address' => '收货地址',
+            'kaitong' => '开通',
             'office_id' => '营业厅编号',
             'pay_kind' => '付款方式',
             'memo' => '留言',
+            'memo_reply' => '备注',
         ];
     }
 
@@ -102,8 +113,53 @@ class MOrder extends ActiveRecord
         return [
             [['status', 'pay_kind'], 'integer'],                    
             [['select_mobnum'],  'string', 'min' => 11, 'max' => 11],
-            [['select_mobnum'],  'number'],            
+            [['select_mobnum'],  'number'],  
+            [['address'],  'string', 'min' => 5, 'max' => 256], 
+            [['kaitong'],  'string', 'min' => 1, 'max' => 16],      
+            [['memo_reply'],  'string', 'min' => 1, 'max' => 100],                  
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) 
+        {
+            if (!empty($this->scene_id) && !empty($this->scene_amt))
+            {
+                if ($insert)
+                {
+                    $ar = new MSceneDetail;
+                    $ar->scene_id = $this->scene_id;             
+                    $ar->scene_src_id = $this->scene_src_id;
+                    $ar->gh_id = $this->gh_id;
+                    $ar->openid = $this->openid;
+                    $ar->scene_amt = $this->scene_amt;
+                    $ar->oid = $this->oid;
+                    $ar->memo = $this->detail;                                 
+                    $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_INIT;
+                    if (!$ar->save(false))
+                    {
+                        U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
+                        return false;
+                    }
+                    $this->scene_auto_id = Yii::$app->db->getLastInsertID();
+                }
+                else
+                {
+                    if (($ar = MSceneDetail::findOne($this->scene_auto_id)) !== null) 
+                    {
+                        $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_INIT;
+                        if (!$ar->save(false))
+                        {
+                            U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
+                            return false;
+                        }                        
+                    }                    
+                }
+            }              
+            return true;
+        }
+        return false;
     }
 
     static function getOrderStatusName($key=null)
@@ -169,6 +225,12 @@ class MOrder extends ActiveRecord
     public function getUser()
     {
         $model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
+        return $model;
+    }
+
+    public function getItem()
+    {
+        $model = MItem::findOne(['gh_id'=>$this->gh_id, 'cid'=>$this->cid]);
         return $model;
     }
 
@@ -291,9 +353,15 @@ class MOrder extends ActiveRecord
         $feesum = sprintf("%0.2f",$this->feesum/100);
         $office = MOffice::findOne($this->office_id);
         $office_info = ($office !== null) ? "至{$office->title}({$office->address}, {$office->manager}, {$office->mobile})" : '';
+        $select_mobnum_info = ($this->select_mobnum !== null) ? ", 手机号码为{$this->select_mobnum}" : '';
+//        $str = <<<EOD
+//{$model->nickname}, 您已订购【{$detail}】{$select_mobnum_info}。 订单编号为【{$this->oid}】, 订单金额为{$feesum}元, 用户信息为【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 请您在24小时内携身份证或相关证件{$office_info}办理, 逾期将自动关闭。 【{$gh->nickname}】
+//EOD;
+
         $str = <<<EOD
-{$model->nickname}, 您已订购【{$detail}】, 手机号码为{$this->select_mobnum}。 订单编号为【{$this->oid}】, 订单金额为{$feesum}元, 用户信息为【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 请您在48小时内携身份证或相关证件{$office_info}办理, 逾期将自动关闭。 【{$gh->nickname}】
+{$model->nickname}, 您已订购【{$detail}】。 订单编号【{$this->oid}】, {$this->kaitong},订单金额{$feesum}元,  用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 【{$gh->nickname}】
 EOD;
+
         return $str;
     }    
 
@@ -669,4 +737,47 @@ ALTER TABLE wx_order ADD val_pkg_period int(10) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_order ADD val_pkg_monthprice int(10) unsigned NOT NULL DEFAULT '0';
 ALTER TABLE wx_order ADD val_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
 
+ALTER TABLE wx_order ADD address VARCHAR(256) NOT NULL DEFAULT '';
+ALTER TABLE wx_order ADD kaitong VARCHAR(16) NOT NULL DEFAULT '';
+
+//    const STATUS_PAYED = 1;        
+//    const STATUS_SHIPPED = 2;
+//    const STATUS_CLOSED_OFFICE = 8;    
+
+    public function afterSave($insert, $changedAttributes)
+    {        
+        if (!empty($this->scene_id) && !empty($this->scene_amt))
+        {
+            if ($insert)
+            {
+                $ar = new MSceneDetail;
+                $ar->scene_id = $this->scene_id;             
+                $ar->scene_src_id = $this->scene_src_id;
+                $ar->gh_id = $this->gh_id;
+                $ar->openid = $this->openid;
+                $ar->scene_amt = $this->scene_amt;
+                $ar->oid = $this->oid;
+                $ar->memo = $this->detail;                                 
+                $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_INIT;
+                if ($ar->save(false))
+                {
+                    $this->scene_auto_id = $this->pdo->lastInsertId();
+                    $this->
+                }                                
+            }
+            else
+            {
+            }
+        }        
+        parent::afterSave($insert, $changedAttributes);        
+    }
+
+ALTER TABLE wx_order ADD memo_reply VARCHAR(128) NOT NULL DEFAULT '' after memo;
+ALTER TABLE wx_order ADD scene_auto_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
+ALTER TABLE wx_order ADD scene_amt int(10) NOT NULL DEFAULT '0' after openid;
+ALTER TABLE wx_order ADD scene_src_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
+ALTER TABLE wx_order ADD scene_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
+    
 */
+
+

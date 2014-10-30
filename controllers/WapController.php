@@ -19,12 +19,14 @@ use app\models\MUser;
 use app\models\MStaff;
 use app\models\MOffice;
 use app\models\MGh;
+use app\models\MChannel;
 use app\models\MOrder;
 use app\models\MItem;
 use app\models\MMobnum;
 use app\models\MDisk;
 use app\models\MG2048;
 use app\models\MPkg;
+use app\models\MSceneDetail;
 
 use app\models\Alipay;
 use app\models\AlipaySubmit;
@@ -163,7 +165,7 @@ class WapController extends Controller
     //http://127.0.0.1/wx/web/index.php?r=wap/nativepackage
     public function actionNativepackage()
     {        
-        //U::W([__METHOD__, $GLOBALS]);    
+        U::W([__METHOD__, $GLOBALS]);    
         if (Yii::$app->wx->localTest)
         {
             $postStr = <<<EOD
@@ -206,17 +208,11 @@ EOD;
             exit;        
         }
         Yii::$app->wx->setParameterComm();
-/*        
-        Yii::$app->wx->setParameter("body", 'itemdesc');
-        Yii::$app->wx->setParameter("out_trade_no", Wechat::generateOutTradeNo());
-        Yii::$app->wx->setParameter("total_fee", "1");
-        Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
-*/
         $detail = $model->detail;
         Yii::$app->wx->setParameter("body", $detail);
         Yii::$app->wx->setParameter("out_trade_no", $model->oid);
-        //Yii::$app->wx->setParameter("total_fee",  "{$model->feesum}");
-        Yii::$app->wx->setParameter("total_fee",  "1");
+        Yii::$app->wx->setParameter("total_fee",  "{$model->feesum}");
+        //Yii::$app->wx->setParameter("total_fee",  "1");
         Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");        
         $xmlStr = Yii::$app->wx->create_native_package();
         if (Yii::$app->wx->debug)
@@ -228,7 +224,7 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/paynotify
     public function actionPaynotify()
     {        
-        //U::W(['actionPaynotify', $_GET,$_POST]);
+        U::W(['actionPaynotify', $_GET,$_POST]);
         // receive the pay notify from wx server and save the order to db
         // POST data
         if (Yii::$app->wx->localTest)        
@@ -326,10 +322,12 @@ EOD;
             U::W(['oid does not exist!', __METHOD__, $_GET, $_POST]);
             return 'success';
         }
-        if ($_GET['trade_state'] == 0    )
-            $order ->status = MOrder::STATUS_PAYED;
+        if ($_GET['trade_state'] == 0)
+            $order ->status = MOrder::STATUS_OK;
         else
-            $order ->status = MOrder::STATUS_PAYED_ERR;
+        {
+            U::W(['status error', __METHOD__, $_GET, $_POST]);
+        }
 
         $order ->notify_id = $_GET['notify_id'];
         $order ->partner = $_GET['partner'];
@@ -347,13 +345,13 @@ EOD;
             Yii::$app->wx->clearGh();        
             Yii::$app->wx->setAppId($arr['AppId']);
             $arr = Yii::$app->wx->WxPayDeliverNotify($arr['OpenId'], $_GET['transaction_id'], $_GET["out_trade_no"]);
-            U::W($arr);
+            //U::W($arr);
             try
             {        
                 Yii::$app->wx->clearGh();
                 Yii::$app->wx->setGhId($order->gh_id);
                 $arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$order->openid,'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice(true)]]);                    
-                U::W($arr);        
+                //U::W($arr);        
             }
             catch (\Exception $e)
             {
@@ -420,29 +418,6 @@ EOD;
             U::W($arr);
     }
 
-    //http://127.0.0.1/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prom:gh_1ad98f5481f3
-    //http://wosotech.com/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
-    //http://wosotech.com/wx/webtest/wxpay-jsapi-demo.html
-    public function actionProm()
-    {
-        $this->layout = false;        
-        //$gh_id = $_GET['gh_id'];
-        //$gh_id = Yii::$app->session['gh_id'];    
-        //$openid = Yii::$app->session['openid'];
-        $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
-        
-        Yii::$app->wx->setGhId($gh_id);
-        //test native url begin        
-        //$productId = 'item1';
-        //$url = Yii::$app->wx->create_native_url($productId);    
-        //U::W($url);        
-        //$tag = Html::a('click here to pay', $url);        
-        $item = ['iid'=>'4198489411','title'=>'title1','price'=>'169900', 'new_price'=>'119900', 'url'=>'http://baidu.com', 'pic_url'=>'53a95055dcf97_b.png', 'seller_cids'=>'100'];
-         return $this->render('prom', ['item' => $item]);
-    }    
-
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_1ad98f5481f3
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/luck:gh_03a74ac96138    
     public function actionLuck()
@@ -489,7 +464,7 @@ EOD;
     //http://wosotech.com/wx/web/index.php?r=wap/iphone6sub&cat=1
     public function actionIphone6sub()
     {
-            $cat = isset($_GET['cat']) ? $_GET['cat'] : 0;
+        $cat = isset($_GET['cat']) ? $_GET['cat'] : 0;
         $this->layout = 'wap';
         $model = new \app\models\MIphone6Sub;
         $cat = Yii::$app->request->get('cat', 0);    
@@ -601,18 +576,14 @@ EOD;
         //$this->layout =false;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');        
-        //Yii::$app->wx->setGhId($gh_id);
-        
         $ar = new \app\models\MSuggest;
         $ar->gh_id = $gh_id;
-        $ar->openid = $openid;
-        
+        $ar->openid = $openid;        
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);        
         $subscribed = ($model !== null && $model->subscribe) ? true : false;
         if ($ar->load(Yii::$app->request->post())) 
         {
             if ($subscribed)
-            //if (1)
             {                
                 $ar->nickname = $model->nickname;
                 $ar->headimgurl = $model->headimgurl;                
@@ -644,7 +615,6 @@ EOD;
         $query = new \yii\db\Query();
         $query->select('*')->from(\app\models\MSuggest::tableName())->where(['gh_id'=>$gh_id])->orderBy(['id' => SORT_DESC])->limit(10);   
         $rows = $query->createCommand()->queryAll();
-        //U::W($rows);
         foreach($rows as &$row)
         {
             $create_time= strtotime($row['create_time']);
@@ -653,21 +623,15 @@ EOD;
             $d_hours = round($d/3600);
             $d_minutes = round($d/60);
             if($d_days>0 && $d_days<4){
-                //document.write(d_days+"天前");
                 $row['create_time_new'] = $d_days."天前";
             }else if($d_days<=0 && $d_hours>0){
-                //document.write(d_hours+"小时前");
                 $row['create_time_new'] = $d_hours."小时前";
             }else if($d_hours<=0 && $d_minutes>0){
-                //document.write(d_minutes+"分钟前");
                 $row['create_time_new'] = $d_minutes."分钟前";
             }else{
                 $row['create_time_new'] = $row['create_time'];
             }
         }
-
-         //return $this->render('product', ['model' => $model, 'result'=>$result, 'lucy_msg'=>$lucy_msg, 'subscribed'=>$subscribed, 'username'=>$username]);
-        //return $this->render('suggest', ['model' => $model1, 'subscribed'=>$subscribed, 'username'=>$username]);
         return $this->render('suggest',['ar' => $ar,'dataProvider' => $dataProvider, 'rows' =>$rows, 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }    
             
@@ -686,38 +650,18 @@ EOD;
     public function actionProdsave()
     {            
         $this->layout = false;
-        //$gh_id = Yii::$app->session['gh_id'];
-        //$openid = Yii::$app->session['openid'];
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');                
         Yii::$app->wx->setGhId($gh_id);    
-        if (0)
-        {
-            $_GET["cid"] = MItem::ITEM_CAT_DIY;
-        }
         $order = new MOrder;
         $order->oid = MOrder::generateOid();
         $order->gh_id = $gh_id;
         $order->openid = $openid;
         $order->cid = $_GET["cid"];
+
         switch ($_GET["cid"]) 
         {
             case MItem::ITEM_CAT_DIY:
-                if (0)
-                {
-                    $_GET['cardType'] = 1;
-                    $_GET['flowPack'] =2;
-                    $_GET['voicePack'] = 1;
-                    $_GET['msgPack'] = 1;
-                    $_GET['callshowPack'] = 1;
-                    $_GET['otherPack'] = 1;
-                    $_GET['feeSum'] = 1;
-                    $_GET['selectNum'] = '18672725352';
-                    $_GET['office'] = 1;
-                    $_GET['username'] = 'hehb';
-                    $_GET['usermobile'] = '18672725352';
-                    $_GET['userid'] = '422428197452232344';                    
-                }            
                 $order->title = '自由组合套餐';            
                 $order->attr = "{$_GET['cardType']},{$_GET['flowPack']},{$_GET['voicePack']},{$_GET['msgPack']},{$_GET['callshowPack']},{$_GET['otherPack']}";                
                 break;
@@ -810,6 +754,41 @@ EOD;
                 $order->attr = "{$_GET['prom']}";
                 break;
 
+            case MItem::ITEM_CAT_CARD_45GLIULIANG:
+                $order->title = '45G包年流量套餐';                    
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_CARD_96GLIULIANG:
+                $order->title = '96G包年流量套餐';                    
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW100MB:
+                $order->title = '10元包100MB 3G省内流量包';                    
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW300MB:
+                $order->title = '20元包300MB 3G省内流量包';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW500MB:
+                $order->title = '30元包500MB 3G省内流量包';             
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW1GB_1:
+                $order->title = '50元包1G 3G省内流量包';                   
+               $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW2DOT5GB:
+                $order->title = '100元包2.5G 3G省内流量包';                    
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW1GB_2:
+                $order->title = '100元包1G 全国流量半年包';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
             default:
                 U::W(['invalid data cat', $_GET["cid"], __METHOD__,$_GET]);
                 return;
@@ -819,25 +798,17 @@ EOD;
         $order->val_pkg_period = isset($_GET['pkgPeriod']) ? $_GET['pkgPeriod'] : 0;
         $order->val_pkg_monthprice = isset($_GET['pkgMonthprice']) ? $_GET['pkgMonthprice'] : 0;
         $order->val_pkg_plan = isset($_GET['pkgPlan']) ? $_GET['pkgPlan'] : '';
-
-
         $order->feesum = $_GET['feeSum'] * 100;
-
-        //U::W('---------------------------------');
-        //U::W($order->feesum);
-
-        //$order->office_id = $_GET['office'];        
-        //$order->select_mobnum = $_GET['selectNum'];
-        //$order->username = isset($_GET['username']) ? $_GET['username'] : '';
-        //$order->usermobile = isset($_GET['usermobile']) ? $_GET['usermobile'] : '';
         $order->office_id = (isset($_GET['office']) && $_GET['office'] !=  MOrder::NO_CHOICE) ? $_GET['office'] : 0;
         $order->userid = (isset($_GET['userid']) && $_GET['userid'] !=  MOrder::NO_CHOICE) ? $_GET['userid'] : '';
         $order->username = (isset($_GET['username']) && $_GET['username'] !=  MOrder::NO_CHOICE) ? $_GET['username'] : '';
         $order->usermobile = (isset($_GET['usermobile']) && $_GET['usermobile'] !=  MOrder::NO_CHOICE) ? $_GET['usermobile'] : '';
         //$order->pay_kind = isset($_GET['pay_kind']) ? $_GET['pay_kind'] : MOrder::PAY_KIND_CASH;
+        $order->address = (isset($_GET['address']) && $_GET['address'] !=  MOrder::NO_CHOICE) ? $_GET['address'] : '';
+        $order->kaitong = (isset($_GET['kaitong']) && $_GET['kaitong'] !=  MOrder::NO_CHOICE) ? $_GET['kaitong'] : '';
         
-        $order->detail = $order->getDetailStr();
 
+        $order->detail = $order->getDetailStr();
         if ($_GET['selectNum'] != MOrder::NO_CHOICE)
         {
             $order->select_mobnum = $_GET['selectNum'];
@@ -851,10 +822,20 @@ EOD;
         {
             $order->select_mobnum = '';
         }
+
+        $wid = Yii::$app->request->get('wid', '');
+U::W("HELLO, {$wid}");        
+        if (!empty($wid))
+        {
+             list($scene_id, $scene_src_id) = explode('_', $wid);
+U::W("FINE, {$scene_id}, {$scene_src_id}");                     
+             $order->scene_id = $scene_id;             
+             $order->scene_src_id = $scene_src_id;
+             $order->scene_amt = $order->feesum * $order->item->scene_percent /100;
+        }
         
         if ($order->save(false))
-        {
-            //U::W('save ok....');    
+        {        
             if (isset($mobnum))
             {
                 $mobnum->status = MMobnum::STATUS_LOCKED;
@@ -879,12 +860,11 @@ EOD;
                 U::W('sendWxm');
                 $manager->sendWxm($order->getWxNoticeToManager());
                 U::W('sendSm');
-                        $manager->sendSm($order->getSmNoticeToManager());
+                $manager->sendSm($order->getSmNoticeToManager());
             }
 
             // send wx message to user
             $arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);                    
-
         }
         else
         {
@@ -897,7 +877,6 @@ EOD;
         Yii::$app->wx->clearGh();
         Yii::$app->wx->setGhId($gh_id);        
         
-        //U::W(json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]));
         return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
     }
 
@@ -1084,6 +1063,29 @@ EOD;
                 //unset($row);
                 break;                
 
+            case 'woketixian':
+                $gh_id = U::getSessionParam('gh_id');
+                $openid = U::getSessionParam('openid'); 
+                U::W("----------assdfsdf1-----------");
+                U::W($openid);                   
+                Yii::$app->wx->setGhId($gh_id);
+                $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        
+                $model = new \app\models\MSceneDetail;
+                $model->gh_id = $gh_id;
+                $model->openid = $openid;
+                $model->scene_id = $user->scene_id;
+                $model->scene_amt = (-1)*$_GET['ljtx'];
+                $model->memo = $_GET['memo'];
+                  
+                if (!$model->save(false))
+                {
+                    U::W([__METHOD__, $model->getErrors()]);
+                    return json_encode(['code'=>1, 'errmsg'=>'save score to db error']);
+                }        
+              
+                break;
+
             default:
                 U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
                 return;
@@ -1093,29 +1095,6 @@ EOD;
         return json_encode($data);
     }
 
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardwo:gh_1ad98f5481f3
-    public function actionCardwo()
-    {
-        $this->layout ='wapy';
-        $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
-        Yii::$app->wx->setGhId($gh_id);
-
-        return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_WO, 'gh_id'=>$gh_id, 'openid'=>$openid]);
-    }
-
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_1ad98f5481f3
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_03a74ac96138
-    public function actionCardxiaoyuan()
-    {
-        $this->layout ='wapy';
-        $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
-        Yii::$app->wx->setGhId($gh_id);
-
-        return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_XIAOYUAN, 'gh_id'=>$gh_id, 'openid'=>$openid]);
-    }
-
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/mobilelist:gh_03a74ac96138
     public function actionMobilelist()
     {
@@ -1123,51 +1102,22 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-
-        //return $this->render('mobile');
-        //$models = MItem::findAll(['kind'=>MItem::ITEM_KIND_MOBILE]);
         $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_DESC])->all();
-        
-
         $query = new \yii\db\Query();
         $query->select('*')->from(\app\models\MActivity::tableName())->where(['status'=>1])->orderBy(['id' => SORT_DESC])->all();   
         $rows = $query->createCommand()->queryAll();
-        //U::W($rows);
         foreach($models as &$model)
         {
-             //U::W($model['iid']);
-             //U::W('-----------\n');
             foreach($rows as &$row)
             {
                 $ids = explode(",", $row['iids']); 
                 if (in_array($model['iid'], $ids)) 
                 {
-                   //U::W($model['title']."---".$model['iid']."在做促销活动！\n");
-                   //$model['title']=$model['title']."&nbsp;&nbsp;<span class='activity'>限时促销!</span>";
                    $model['price']=($model['price']*$row['discount'])/10;
                    $model['title_hint']="<span class='activity'>限时促销!</span>&nbsp;&nbsp;".$model['title_hint'];
                 }
-
             }
         }
-
-        return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
-    }
-
-
-
-    // just for test pc web
-    public function actionMobilelistxxx()
-    {
-        $this->layout ='wapy';        
-        Yii::$app->session['gh_id'] = MGh::GH_XIANGYANGUNICOM;
-        Yii::$app->session['openid'] =  MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;            
-
-        $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
-        Yii::$app->wx->setGhId($gh_id);
-
-        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_DESC])->all();
         return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
     }
 
@@ -1177,33 +1127,30 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-
-        //return $this->render('mobile');
-        return $this->render('mobile', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid]);
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        $item = MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$_GET['cid']]);
+        return $this->render('mobile', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user, 'item'=>$item]);
     }
 
-
-       //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardlist:gh_03a74ac96138
+     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardlist:gh_03a74ac96138
     public function actionCardlist()
     {
         $this->layout ='wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-
-        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_CARD])->orderBy(['price'=>SORT_DESC])->all();
-        return $this->render('cardlist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
+        $kind=$_GET['kind'];
+        $models = MItem::find()->where(['kind'=>$kind])->orderBy(['price'=>SORT_DESC])->all();
+        return $this->render('cardlist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models,'kind'=>$kind]);
     }
 
-       //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/card:gh_03a74ac96138
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/card:gh_03a74ac96138
     public function actionCard()
     {
         $this->layout ='wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-
-        //return $this->render('mobile');
         return $this->render('card', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
@@ -1223,10 +1170,8 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->session['gh_id'] = $gh_id;
-        Yii::$app->session['openid'] = $openid;        
-        
+        Yii::$app->session['openid'] = $openid;                
         Yii::$app->wx->setGhId($gh_id);
-
         return $this->render('home');
     }
 
@@ -1234,11 +1179,9 @@ EOD;
     public function actionGoodnumber()
     {
         $this->layout ='wapy';
-
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-
         return $this->render('goodnumber', ['cid'=>MItem::ITEM_CAT_GOODNUMBER, 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
@@ -1249,9 +1192,7 @@ EOD;
         $this->layout = 'wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
-
-        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-    
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);    
         return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
@@ -1264,6 +1205,62 @@ EOD;
         return $this->render('nearestoffice',['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/woke:gh_03a74ac96138
+    public function actionWoke()
+    {        
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');        
+        //$openid = \app\models\MGh::GH_XIANGYANGUNICOM_OPENID_KZENG;
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($model === null)
+            throw new NotFoundHttpException('user does not exists');
+            
+        if (!empty($model->scene_id))
+            return $this->redirect(['wokelist']);    
+            
+        if (Yii::$app->request->isPost) 
+        {
+            if ($model->save())
+            {
+                $qr = $model->getQrImageUrl();
+                return $this->redirect(['wokelist']);            
+            }
+            else
+            {
+                U::W($model->getErrors());
+            }
+        }        
+        return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model]);
+    }
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wokelist:gh_03a74ac96138:openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
+    public function actionWokelist()
+    {        
+        U::W("-----------11111111--------------\n");        
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        U::W("---------22222222222--------------\n");        
+        $scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt<0',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        
+        //可提现沃点
+        $ktxwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=1',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        
+        //预期沃点
+        $yqwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=0',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+
+        //预期沃点 包含粉丝取消关注
+        $yqwd_fans_qx_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=0 OR status=3',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        
+        
+
+        U::W("------------------333333-------\n");
+        U::W(count($scenes));
+        return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes]);
+    }
+
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/orderinfo:gh_03a74ac96138
     public function actionOrderinfo($oid)
     {
@@ -1271,13 +1268,11 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');        
 
-        //$oid = '53de91f9d3773';
         $model = MOrder::findOne($oid);        
         if (\Yii::$app->request->isPost) 
         {
-            U::W("--------------------------------------------------------");
-               if (isset($_POST['paykind']))
-                       $_POST['MOrder']['pay_kind'] = $_POST['paykind']; 
+            if (isset($_POST['paykind']))
+                $_POST['MOrder']['pay_kind'] = $_POST['paykind']; 
             $model->setAttributes($_POST['MOrder'], false);
 
             $model->save(false);
@@ -1347,6 +1342,10 @@ EOD;
         //$item = MItem::findOne($model->cid);
         return $this->render('orderinfo',['gh_id'=>$gh_id, 'openid'=>$openid, 'model' => $model, 'item' => $item]);
     }
+
+
+
+
 
 }
 
@@ -1805,6 +1804,120 @@ return $xmlStr;
     }
 
         
-*/    
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardwo:gh_1ad98f5481f3
+    public function actionCardwo()
+    {
+        $this->layout ='wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
 
+        return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_WO, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_1ad98f5481f3
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/cardxiaoyuan:gh_03a74ac96138
+    public function actionCardxiaoyuan()
+    {
+        $this->layout ='wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+
+        return $this->render('card', ['cid'=>MItem::ITEM_CAT_CARD_XIAOYUAN, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/prom:gh_1ad98f5481f3
+    //http://wosotech.com/wx/web/index.php?r=wap/prom&gh_id=gh_1ad98f5481f3
+    //http://wosotech.com/wx/webtest/wxpay-jsapi-demo.html
+    public function actionProm()
+    {
+        $this->layout = false;        
+        //$gh_id = $_GET['gh_id'];
+        //$gh_id = Yii::$app->session['gh_id'];    
+        //$openid = Yii::$app->session['openid'];
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        
+        Yii::$app->wx->setGhId($gh_id);
+        //test native url begin        
+        //$productId = 'item1';
+        //$url = Yii::$app->wx->create_native_url($productId);    
+        //U::W($url);        
+        //$tag = Html::a('click here to pay', $url);        
+        $item = ['iid'=>'4198489411','title'=>'title1','price'=>'169900', 'new_price'=>'119900', 'url'=>'http://baidu.com', 'pic_url'=>'53a95055dcf97_b.png', 'seller_cids'=>'100'];
+         return $this->render('prom', ['item' => $item]);
+    }    
+
+    
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/woke:gh_03a74ac96138
+    public function actionWoke()
+    {        
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($user === null)
+            throw new NotFoundHttpException('user does not exists');
+        $model = MChannel::find()->where("gh_id = :gh_id AND openid = :openid", [':gh_id'=>$gh_id, ':openid'=>$openid])->one();
+        if ($model !== null)
+        {
+            return $this->redirect(['wokelist']);
+        }
+
+        if (Yii::$app->request->isPost) 
+        {
+            $model = new MChannel;
+            $model->gh_id = $gh_id;
+            $model->openid = $openid;
+            $model->title = $user->nickname.'-'.$openid;
+            $model->status = MChannel::STATUS_OK;
+            $model->cat = MChannel::CAT_SOCIAL;
+            if ($model->save()) 
+            {
+                if ($model->status == MChannel::STATUS_OK)
+                {
+                    $qr = $model->getQrImageUrl();
+                    U::W($qr);
+                }
+                return $this->redirect(['wokelist']);            
+            }
+            else
+            {
+                U::W($model->getErrors());
+            }
+        }
+        
+        return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user]);
+    }
+
+        if (0)
+        {
+            $_GET["cid"] = MItem::ITEM_CAT_DIY;
+        }
+    
+
+                if (0)
+                {
+                    $_GET['cardType'] = 1;
+                    $_GET['flowPack'] =2;
+                    $_GET['voicePack'] = 1;
+                    $_GET['msgPack'] = 1;
+                    $_GET['callshowPack'] = 1;
+                    $_GET['otherPack'] = 1;
+                    $_GET['feeSum'] = 1;
+                    $_GET['selectNum'] = '18672725352';
+                    $_GET['office'] = 1;
+                    $_GET['username'] = 'hehb';
+                    $_GET['usermobile'] = '18672725352';
+                    $_GET['userid'] = '422428197452232344';                    
+                }            
+    
+        Yii::$app->wx->setParameter("body", 'itemdesc');
+        Yii::$app->wx->setParameter("out_trade_no", Wechat::generateOutTradeNo());
+        Yii::$app->wx->setParameter("total_fee", "1");
+        Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
+*/
 
