@@ -20,8 +20,6 @@ use app\models\RespTransfer;
 
 class Wechat extends \yii\base\Object
 {
-//    const OPENID_TESTER1 = 'oKgUduNHzUQlGRIDAghiY7ywSeWk';        // xiangyangunicom hbhe        
-    
     const MSGTYPE_TEXT = 'text';
     const MSGTYPE_IMAGE = 'image';
     const MSGTYPE_LOCATION = 'location';
@@ -100,23 +98,41 @@ class Wechat extends \yii\base\Object
 
     public function getUser()
     {
+        if($this->_user === null)
+        {
+            U::W('Panic, please initUser first!');
+        }
         return $this->_user;
-        if($this->_user !== null)
-            return $this->_user;   
-/*            
-        $gh_id = $this->getGhId();
-        $openid = $this->getRequest('FromUserName');        
-        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);        
-*/        
-        $this->_user = $user;
-        return $user;
     }
 
     public function setUser($user)
     {
         $this->_user = $user;
     }
-    
+
+    public function initUser() 
+    {
+        $gh_id = $this->getGhId();    
+        $FromUserName = $this->getRequest('FromUserName');
+        $isNewUser = false;
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
+        if ($model === null)
+        {
+            $isNewUser = true;
+            $model = new MUser;        
+            $model->gh_id = $gh_id;
+            $model->openid = $FromUserName;                        
+        }
+        if (empty($model->nickname) ||!$model->subscribe)
+        {
+            $arr = $this->WxGetUserInfoSafe($FromUserName);
+            $model->setAttributes($arr, false);
+        }
+        $model->msg_time = date("Y-m-d H:i:s");
+        $this->setUser($model);
+        return $isNewUser;
+    }    
+        
     public function getGh()
     {
         if($this->_gh !== null)
@@ -298,10 +314,8 @@ class Wechat extends \yii\base\Object
     protected function onLocationSelect()
     { 
         $func = $this->getRequest('EventKey');    
-//                U::W('onLocationSelect....'.$func);        
         if (method_exists($this, $func))
             return $this->$func();
-//                U::W('onLocationSelect...111.');                    
         return $this->responseText($this->getRequestString());        
     }
         
@@ -318,30 +332,6 @@ class Wechat extends \yii\base\Object
         throw new \Exception(U::toString(['Invalid MsgType or Event', __METHOD__, $this->getRequest()]));    
     }
 
-    public function checkOpenid() 
-    {
-        $gh_id = $this->getGhId();    
-        $FromUserName = $this->getRequest('FromUserName');
-        $isNewUser = false;        
-        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
-        if ($model === null)
-        {
-            $isNewUser = true;
-            $model = new MUser;        
-        }
-        if (empty($model->nickname) ||!$model->subscribe)
-        {
-            $arr = $this->WxGetUserInfoSafe($FromUserName);            
-            $model->setAttributes($arr, false);
-            $model->gh_id = $this->getRequest('ToUserName');            
-            $model->openid = $FromUserName;            
-            $model->msg_time = date("Y-m-d H:i:s");
-            if (!$model->save(false))
-                U::W([__METHOD__, $model->getErrors()]);            
-        }
-        return $isNewUser;
-    }
-    
     public function run($gh_id) 
     {
         try
@@ -351,7 +341,7 @@ class Wechat extends \yii\base\Object
             $this->valid();        
             $MsgType = $this->getRequest('MsgType');
             U::W('TTTTTTTTTTT44444');                    
-            $isNewFan = $this->checkOpenid();
+            $isNewFan = $this->initUser();
             U::W('TTTTTTTTTTT555');                    
             switch ($MsgType) 
             {
@@ -420,14 +410,19 @@ class Wechat extends \yii\base\Object
                 default:
                     $resp = $this->onUnknown();
                     break;
-            }            
+            }         
+            
+            $user = $this->getUser();
+            if (!$user->save(false))
+                U::W([__METHOD__, $user->getErrors()]);
+            
             $xml = empty($resp) ? self::NO_RESP : sprintf("%s", $resp);
             $this->log($xml);            
             return $xml;
         }
         catch(\Exception $e)
         {
-            U::W('Exception:'.$e->getMessage());
+            U::W('Exception:'.$e->getMessage().U::getTraceMsg(5));
             return self::NO_RESP;
         }
     }
@@ -1608,6 +1603,42 @@ define('APPSERCERT', "c4d53595acf30e9caf09c155b3d95253");    // woso
         )
 
 )    
-*/
+
+    public function checkOpenid() 
+    {
+        $gh_id = $this->getGhId();    
+        $FromUserName = $this->getRequest('FromUserName');
+        $isNewUser = false;        
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
+        if ($model === null)
+        {
+            $isNewUser = true;
+            $model = new MUser;        
+            $model->gh_id = $gh_id;
+            $model->openid = $FromUserName;                        
+        }
+        if (empty($model->nickname) ||!$model->subscribe)
+        {
+            $arr = $this->WxGetUserInfoSafe($FromUserName);            
+            $model->setAttributes($arr, false);
+        }
+            $model->msg_time = date("Y-m-d H:i:s");
+            if (!$model->save(false))
+                U::W([__METHOD__, $model->getErrors()]);            
+        
+        return $isNewUser;
+    }
+
+//    const OPENID_TESTER1 = 'oKgUduNHzUQlGRIDAghiY7ywSeWk';        // xiangyangunicom hbhe        
+    
+    
+        if($this->_user !== null)
+            return $this->_user;   
+        $gh_id = $this->getGhId();
+        $openid = $this->getRequest('FromUserName');        
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);        
+        $this->_user = $user;
+        return $user;
+*/        
 
 
