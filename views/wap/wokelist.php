@@ -51,6 +51,14 @@
 
     .c_list_0 { font-size:14px; background-color: #fff !important;} 
     .c_list_1 { font-size:14px; background-color: #eee !important;} 
+
+   
+    #my_list1>li, #my_list2>li
+    {
+         background-color: #ffffff !important;
+    } 
+
+
 </style>
 
 <div data-role="page" id="wokelist" data-theme="c">
@@ -84,7 +92,7 @@
                     <img id="myphoto" src="<?php echo $user->headimgurl; ?>" width="56">
                     </div>
                 </div>
-                <p class="f9 marT7"><em id="vip_p" class="zuan_vip"></em></p>
+                <p class="f9 marT7"><em id="vip_p" class="pu_vip"></em></p>
             </dt>
 
             <dd>
@@ -245,26 +253,26 @@
 <br>
 <div class="ui-grid-a">
     <div class="ui-block-a">
-    <div class="ui-bar ui-bar-a" style="height:60px">
+    <div id="ktxwd_span" class="ui-bar ui-bar-a" style="height:60px">
         可提现沃点
         <br>
-        <span id="ktxwd_span" style="font-size:18pt;"><?=  $user->getWokeKtwd(); ?></span> 
+        <span style="font-size:18pt;"><?=  $user->getWokeKtwd(); ?></span> 
     </div>
     </div>
 
     <div class="ui-block-b">
-    <div class="ui-bar ui-bar-b" style="height:60px">
+    <div id="yqwd_span" class="ui-bar ui-bar-b" style="height:60px">
         预期沃点
         <br>
-        <span id="yqwd_span" style="font-size:18pt;"><?=  $user->getWokeYqwd(); ?></span> 
+        <span style="font-size:18pt;"><?=  $user->getWokeYqwd(); ?></span> 
     </div>
     </div>
 
     <div class="ui-block-a">
-    <div class="ui-bar ui-bar-a" style="height:60px">
+    <div id="ytxwd_span" class="ui-bar ui-bar-a" style="height:60px">
         已提现沃点 
         <br>
-        <span id="ytxwd_span" style="font-size:18pt;"><?=  $user->getWokeYtwd(); ?></span> 
+        <span style="font-size:18pt;"><?=  $user->getWokeYtwd(); ?></span> 
     </div>
     </div>
 
@@ -280,7 +288,7 @@
 
 </div>
 
-<ol data-role="listview" data-inset="true">
+<ol data-role="listview" data-inset="true" id="my_list1">
     <!--<li>每日计算预期沃点</li>-->
     <li>1沃点=人民币1分</li>
     <li>每月20日结算沃点</li>
@@ -483,7 +491,7 @@
     </div>
     <br><br>
 
-    <ul data-role="listview" data-inset="true" >
+    <ul data-role="listview" data-inset="true" id="my_list2">
         <?php $flag=0; foreach($yqwd_fans_qx_scenes as $yqwd_fans_qx_scene) {?>
     
             <?php if($flag%2==0) { ?>
@@ -492,8 +500,6 @@
                 <li class="c_list_1">
             <?php } ?>
             
-            
-
 
             <?php
                 if($yqwd_fans_qx_scene->cat == 0)//item
@@ -512,8 +518,9 @@
             
             <div>
 
-                <?php if($yqwd_fans_qx_scene->status == 3) {?>
-                <span class="line">
+     
+                <?php if($yqwd_fans_qx_scene->status == 2) {?>
+                <span style="color: #aaaaaa;text-decoration: line-through">
                 <?php } else {?>
                 <span>
                 <?php } ?>
