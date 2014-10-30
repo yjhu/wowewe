@@ -22,6 +22,7 @@ CREATE TABLE wx_user (
     update_time TIMESTAMP NOT NULL DEFAULT 0,
     mobile VARCHAR(64) NOT NULL DEFAULT '',
     msg_time TIMESTAMP NOT NULL DEFAULT 0,    
+    msg_cnt int(10) unsigned NOT NULL DEFAULT '0',        
     scene_id int(10) unsigned NOT NULL DEFAULT '0',
     scene_balance int(10) unsigned NOT NULL DEFAULT '0',
     scene_level tinyint(3) unsigned NOT NULL DEFAULT 0,
@@ -68,6 +69,8 @@ INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac9
 ALTER TABLE wx_user ADD is_liantongstaff tinyint(3) unsigned NOT NULL DEFAULT 0;
 ALTER TABLE wx_user ADD scene_balance int(10) unsigned NOT NULL DEFAULT '0' after scene_id;
 ALTER TABLE wx_user ADD scene_level tinyint(3) unsigned NOT NULL DEFAULT 0 after scene_id;
+
+ALTER TABLE wx_user ADD msg_cnt int(10) unsigned NOT NULL DEFAULT '0' after msg_time;
 
 
 ALTER TABLE wx_user ADD gid int(10) unsigned NOT NULL DEFAULT '0';
@@ -252,6 +255,28 @@ class MUser extends ActiveRecord implements IdentityInterface
     public function getChannel()
     {
         return $this->hasOne(MChannel::className(),  ['gh_id' => 'gh_id', 'openid' => 'openid']);
+    }
+
+    public function isActivedFan()
+    {
+                U::W('MY CNT'. $this->msg_cnt);    
+        $flag = true;
+        if ($this->subscribe == 0)
+        {
+        U::W('NO SUB');
+            return false;
+        }
+        if (time() - strtotime($this->create_time) < 30*24*3600)    
+        {
+                U::W('NO TIME');
+            return false;
+         }
+        if ($this->msg_cnt < 2)
+        {
+                U::W('NO CNT'. $this->msg_cnt);
+            return false;            
+           }
+        return true;            
     }
 
     public function getWokeYqwd()

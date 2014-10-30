@@ -121,7 +121,8 @@ class Wechat extends \yii\base\Object
             $isNewUser = true;
             $model = new MUser;        
             $model->gh_id = $gh_id;
-            $model->openid = $FromUserName;                        
+            $model->openid = $FromUserName;     
+            $model->msg_cnt = 0;
         }
         if (empty($model->nickname) ||!$model->subscribe)
         {
@@ -129,6 +130,7 @@ class Wechat extends \yii\base\Object
             $model->setAttributes($arr, false);
         }
         $model->msg_time = date("Y-m-d H:i:s");
+        $model->msg_cnt += 1;
         $this->setUser($model);
         return $isNewUser;
     }    
