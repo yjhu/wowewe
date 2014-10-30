@@ -97,7 +97,7 @@ class WapController extends Controller
     {
         if (Yii::$app->wx->localTest)
         {
-            $openid = Wechat::OPENID_TESTER1;
+            $openid = MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;
             //list($route, $gh_id) = explode(':', $_GET['state']);
             $arr = explode(':', $_GET['state']);
             $route = $arr[0];
@@ -1732,7 +1732,7 @@ return $xmlStr;
     {
         if (Yii::$app->wx->localTest)
         {
-                    $openid = Wechat::OPENID_TESTER1;
+                    $openid = MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;
                     //list($route, $gh_id) = explode(':', $_GET['state']);
                     $arr = explode(':', $_GET['state']);
                     $route = $arr[0];

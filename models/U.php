@@ -393,7 +393,31 @@ class U
         return false;
     }
 
+    public static function callSimsimi($keyword)
+    {
+        $params['key'] = "d4677d44-aec1-4045-96c7-d8c521268ace";
+        $params['lc'] = "ch";
+        $params['ft'] = "1.0";
+        $params['text'] = $keyword;
+        
+        $url = "http://sandbox.api.simsimi.com/request.p?".http_build_query($params);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);
 
+        $message = json_decode($output, true);
+        $result = "";
+        if ($message['result'] == 100){
+            $result = $message['response'];
+        }else{
+            $result = $message['result']."-".$message['msg'];
+        }
+        return $result;
+    }
+
+    
 /*
     public static function getDataForWeixin($appId, $MsgImg, $url, $title, $desc)
     {

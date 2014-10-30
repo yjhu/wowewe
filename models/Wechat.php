@@ -20,11 +20,7 @@ use app\models\RespTransfer;
 
 class Wechat extends \yii\base\Object
 {
-    //const OPENID_TESTER1 = 'o6biBt5yaB7d3i0YTSkgFSAHmpdo';        // hoya hehb
-    //const OPENID_TESTER1 = 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o';            // woso hehb    
-    const OPENID_TESTER1 = 'oKgUduNHzUQlGRIDAghiY7ywSeWk';        // xiangyangunicom hbhe        
-    //const OPENID_TESTER1 = 'oKgUduJJFo9ocN8qO9k2N5xrKoGE';        // xiangyangunicom kzeng        
-    //const OPENID_TESTER1 = 'oKgUduNaK7mfojofz2qnSxa_FTMs';        // xiangyangunicom gtsun            
+//    const OPENID_TESTER1 = 'oKgUduNHzUQlGRIDAghiY7ywSeWk';        // xiangyangunicom hbhe        
     
     const MSGTYPE_TEXT = 'text';
     const MSGTYPE_IMAGE = 'image';
@@ -64,6 +60,7 @@ class Wechat extends \yii\base\Object
     private $_gh;
     private $_appid;
     private $_accessToken;    
+    private $_user;
 
     // wxpay package parameters
     public $_parameters;    
@@ -99,6 +96,25 @@ class Wechat extends \yii\base\Object
     public function setAppId($appid)
     {
         $this->_appid = $appid;
+    }
+
+    public function getUser()
+    {
+        return $this->_user;
+        if($this->_user !== null)
+            return $this->_user;   
+/*            
+        $gh_id = $this->getGhId();
+        $openid = $this->getRequest('FromUserName');        
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);        
+*/        
+        $this->_user = $user;
+        return $user;
+    }
+
+    public function setUser($user)
+    {
+        $this->_user = $user;
     }
     
     public function getGh()
@@ -239,10 +255,8 @@ class Wechat extends \yii\base\Object
                 U::W(['No post data!', __METHOD__, $GLOBALS]);
                 exit;
             }
-            //$arr = (array) simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $obj = simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $arr = json_decode(json_encode($obj), true);            
-                    //U::W($arr);                        
             $this->_request = $arr;
         }
         if ($key === false)
@@ -256,7 +270,6 @@ class Wechat extends \yii\base\Object
     protected function getRequestString() 
     {        
         $arr = $this->getRequest();
-        //return print_r($arr, true);
         return self::json_encode($arr);
     }
     
@@ -333,11 +346,11 @@ class Wechat extends \yii\base\Object
     {
         try
         {        
+            //$this->setGhId($this->getRequest('ToUserName'));
             $this->setGhId($gh_id);
             $this->valid();        
             $MsgType = $this->getRequest('MsgType');
             U::W('TTTTTTTTTTT44444');                    
-            //$this->setGhId($this->getRequest('ToUserName'));
             $isNewFan = $this->checkOpenid();
             U::W('TTTTTTTTTTT555');                    
             switch ($MsgType) 
@@ -453,8 +466,7 @@ class Wechat extends \yii\base\Object
 
     public function getDemoRequestXml($MsgType, $Event=Wechat::EVENT_SUBSCRIBE, $EventKey = 'FuncQueryAccount') 
     {
-        $openid = Wechat::OPENID_TESTER1;
-        //$gh_id = Yii::$app->wx->getGhid();
+        $openid = MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;
         $gh_id = $this->getGhId();
         switch ($MsgType) 
         {
@@ -888,18 +900,13 @@ EOD;
     }
 
     public function WxGetOnlineKfList()
-    {
-        
+    {        
         $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist", ['access_token'=>$this->accessToken]);
         $this->checkWxApiResp($arr, [__METHOD__]);
         $arr = empty($arr['kf_online_list']) ? [] : $arr['kf_online_list']; 
-        //Yii::$app->cache->set($key, $arr, YII_DEBUG ? 10 : 2*60);
-        //U::W('NO CACHE SERVICED');   
-        //U::W('################################\n'); 
         //U::W($arr);      
         return $arr; 
                 
-
      /*
         $key = __METHOD__;
         $arr = Yii::$app->cache->get($key);
@@ -909,7 +916,6 @@ EOD;
             $this->checkWxApiResp($arr, [__METHOD__]);
             $arr = empty($arr['kf_online_list']) ? [] : $arr['kf_online_list'];            
             Yii::$app->cache->set($key, $arr, YII_DEBUG ? 10 : 2*60);
-            U::W('NO CACHE SERVICED');            
         }
         return $arr; 
       */

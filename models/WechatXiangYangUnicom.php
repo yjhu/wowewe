@@ -132,8 +132,6 @@ class WechatXiangYangUnicom extends Wechat
             // cancel MSceneDetail
             if ($scene_pid > 0)
             {
-                U::W("scene detail....... $scene_pid");
-            
                 $ar = MSceneDetail::findOne(['gh_id'=>$gh_id, 'scene_id'=>$scene_pid, 'openid_fan'=>$FromUserName]);
                 if ($ar !== null) 
                 {
@@ -141,67 +139,13 @@ class WechatXiangYangUnicom extends Wechat
                     if (!$ar->save(false))
                         U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
                 }                                    
-            }
-            
+            }            
         }
-        return '';
-    }
-
-    const STATE_NONE = 'NONE';    
-    const STATE_MOBILE = 'MOBILE';    
-    const STATE_CHANGE_MOBILE = 'CHANGE_MOBILE';    
-    const STATE_OFFICE = 'OFFICE';        
-    const STATE_MENU_ONE = 'MENU_ONE';
-    const PROMPT_MENU_ONE = <<<EOD
-请选择:
-1. 我的推广二维码
-2. 我的推广人数
-3. 所在部门的推广二维码
-4. 所在部门的推广人数
-5. 修改手机号
-6. 修改所在部门
-7. 解除绑定
-0. 退出
-EOD;
-
-    protected function getState($gh_id, $openid) 
-    { 
-        $key = "STATE_{$gh_id}_{$openid}";
-        $state = Yii::$app->cache->get($key);
-        return $state === false ? self::STATE_NONE : $state;
-    }
-    
-    protected function setState($gh_id, $openid, $state) 
-    { 
-        $key = "STATE_{$gh_id}_{$openid}";
-        Yii::$app->cache->set($key, $state, 3600);    
-    }
-
-    protected function deleteState($gh_id, $openid) 
-    { 
-        $key = "STATE_{$gh_id}_{$openid}";
-        Yii::$app->cache->delete($key);    
-    }
-
-    protected function getOfficePrompt($gh_id) 
-    { 
-    
-        //$offices =MOffice::find(['gh_id'=>$gh_id])->asArray()->all();        
-        //$offices =MOffice::find()->where(['gh_id'=>$gh_id])->asArray()->all();        
-        $offices =MOffice::find()->where("gh_id = '$gh_id' AND office_id <=25 ")->asArray()->all();
-        $str = "请选择部门:\n";
-        foreach($offices as $office)
-        {
-            $str .= "{$office['office_id']}. {$office['title']}\n";
-        }
-        $str .= "0. 退出";
-        return $str;        
+        return Wechat::NO_RESP;            
     }
 
     protected function onText() 
     { 
-        U::W('onText...........');
-        
         $this->saveAccessLog();      
         $openid = $this->getRequest('FromUserName');
         $gh_id = $this->getRequest('ToUserName');    
@@ -252,13 +196,13 @@ EOD;
         {
 
             $arr = $this->WxGetOnlineKfList();
-            U::W($arr);
-
-            $kfStr = "";
             if (count($arr) > 0)
                 return $this->responseTransfer();
-            else
-                $kfStr = "客服人员暂时不在线。";
+
+            $txt = U::callSimsimi($msg);
+            return $this->responseText($txt);
+            
+            $kfStr = "客服人员暂时不在线。";
 
             $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
             $nickname = empty($model->nickname) ? '' : $model->nickname;            
@@ -266,6 +210,186 @@ EOD;
 
         }
         
+    }
+    
+    public function FuncNearestOffice() 
+    { 
+        U::W('xxxxxyyyyy FuncNearestOffice......');    
+        $FromUserName = $this->getRequest('FromUserName');
+        $gh_id = $this->getRequest('ToUserName');
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);                
+        if ($model === null)
+            return Wechat::NO_RESP;    
+
+        $sendLocationInfo = $this->getRequest('SendLocationInfo');
+        U::W(['xxxxx', $sendLocationInfo]);            
+        //$model->lat = $this->getRequest('Location_X');
+        //$model->lon = $this->getRequest('Location_Y');
+
+        $model->lat = $sendLocationInfo['Location_X'];
+        $model->lon = $sendLocationInfo['Location_Y'];
+        
+        //$model->scale = $this->getRequest('Scale');            
+        $model->save(false);
+        $rows = MOffice::getNearestOffices($gh_id, $model->lon, $model->lat);
+        $rows = array_slice($rows, 0, 4);
+        $items = [];
+        $i = 0;
+        foreach ($rows as $row)
+        {
+            //$url = "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord={$model->lat},{$model->lon}&to={$row['title']}&tocoord={$row['lat']},{$row['lon']}&policy=0&referer=wosotech";
+            //$url = "http://api.map.baidu.com/direction?origin=latlng:{$model->lat},{$model->lon}|name:我的位置&destination=latlng:{$row['lat']},{$row['lon']}|name:{$row['title']}&mode=driving&region=襄阳&output=html&src=wosotech|wosotech";
+            
+            $office_imgurl = '@web/images/office/'.'office'.$row['office_id'].'.jpg' ;
+            $office_imgurl_160 = $office_imgurl.'-160x160.jpg';
+
+            $url = Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true);
+            //$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? '@web/images/nearestoffice-info.jpg' : '@web/images/metro-intro.jpg',true), $url);
+            $items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? $office_imgurl : $office_imgurl_160, true), $url);
+            $i++;
+        }
+        return $this->responseNews($items);
+    }
+
+    protected function onLocation() 
+    { 
+        //return Wechat::NO_RESP;    
+
+        $FromUserName = $this->getRequest('FromUserName');
+        $gh_id = $this->getRequest('ToUserName');
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);                
+        if ($model === null)
+            return Wechat::NO_RESP;    
+            
+        $model->lat = $this->getRequest('Location_X');
+        $model->lon = $this->getRequest('Location_Y');
+        //$model->scale = $this->getRequest('Scale');            
+        $model->save(false);
+        $rows = MOffice::getNearestOffices($gh_id, $model->lon, $model->lat);
+        $rows = array_slice($rows, 0, 4);
+        $items = [];
+        $i = 0;
+        foreach ($rows as $row)
+        {
+            //$url = "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord={$model->lat},{$model->lon}&to={$row['title']}&tocoord={$row['lat']},{$row['lon']}&policy=0&referer=wosotech";
+            //$url = "http://api.map.baidu.com/direction?origin=latlng:{$model->lat},{$model->lon}|name:我的位置&destination=latlng:{$row['lat']},{$row['lon']}|name:{$row['title']}&mode=driving&region=襄阳&output=html&src=wosotech|wosotech";
+            
+            $office_imgurl = '@web/images/office/'.'office'.$row['office_id'].'.jpg' ;
+            $office_imgurl_160 = $office_imgurl.'-160x160.jpg';
+
+            $url = Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true);
+            //$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? '@web/images/nearestoffice-info.jpg' : '@web/images/metro-intro.jpg',true), $url);
+            $items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? $office_imgurl : $office_imgurl_160, true), $url);
+            $i++;
+        }
+        return $this->responseNews($items);
+
+    }
+
+    protected function onEventLocation()
+    { 
+        return Wechat::NO_RESP;    
+        
+        $FromUserName = $this->getRequest('FromUserName');
+        $gh_id = $this->getRequest('ToUserName');
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);        
+        if ($model !== null)
+        {
+            $model->lat = $this->getRequest('Latitude');
+            $model->lon = $this->getRequest('Longitude');
+            $model->prec = $this->getRequest('Precision');
+            $model->save(false);
+            U::W("{$model->lat}, {$model->lon}");            
+        }    
+        return Wechat::NO_RESP;
+    }
+
+    protected function onView() 
+    {
+        $this->saveAccessLog();      
+        return parent::onView();    
+    }
+
+    protected function onClick()
+    {
+        $this->saveAccessLog();          
+        return parent::onClick();
+    }
+
+    protected function onImage() 
+    { 
+        return Wechat::NO_RESP;
+    }
+
+    protected function onScan() 
+    {
+        return Wechat::NO_RESP;        
+    }
+
+    protected function onVoice() 
+    {
+        return Wechat::NO_RESP;        
+    }
+
+    protected function onVideo() 
+    {
+        return Wechat::NO_RESP;        
+    }
+    
+
+
+}
+
+/*
+    const STATE_NONE = 'NONE';    
+    const STATE_MOBILE = 'MOBILE';    
+    const STATE_CHANGE_MOBILE = 'CHANGE_MOBILE';    
+    const STATE_OFFICE = 'OFFICE';        
+    const STATE_MENU_ONE = 'MENU_ONE';
+    const PROMPT_MENU_ONE = <<<EOD
+请选择:
+1. 我的推广二维码
+2. 我的推广人数
+3. 所在部门的推广二维码
+4. 所在部门的推广人数
+5. 修改手机号
+6. 修改所在部门
+7. 解除绑定
+0. 退出
+EOD;
+
+    protected function getState($gh_id, $openid) 
+    { 
+        $key = "STATE_{$gh_id}_{$openid}";
+        $state = Yii::$app->cache->get($key);
+        return $state === false ? self::STATE_NONE : $state;
+    }
+    
+    protected function setState($gh_id, $openid, $state) 
+    { 
+        $key = "STATE_{$gh_id}_{$openid}";
+        Yii::$app->cache->set($key, $state, 3600);    
+    }
+
+    protected function deleteState($gh_id, $openid) 
+    { 
+        $key = "STATE_{$gh_id}_{$openid}";
+        Yii::$app->cache->delete($key);    
+    }
+
+    protected function getOfficePrompt($gh_id) 
+    { 
+    
+        //$offices =MOffice::find(['gh_id'=>$gh_id])->asArray()->all();        
+        //$offices =MOffice::find()->where(['gh_id'=>$gh_id])->asArray()->all();        
+        $offices =MOffice::find()->where("gh_id = '$gh_id' AND office_id <=25 ")->asArray()->all();
+        $str = "请选择部门:\n";
+        foreach($offices as $office)
+        {
+            $str .= "{$office['office_id']}. {$office['title']}\n";
+        }
+        $str .= "0. 退出";
+        return $str;        
     }
 
     protected function onTextOld() 
@@ -527,132 +651,6 @@ EOD;
         }
     }
 
-    public function FuncNearestOffice() 
-    { 
-        U::W('xxxxxyyyyy FuncNearestOffice......');    
-        $FromUserName = $this->getRequest('FromUserName');
-        $gh_id = $this->getRequest('ToUserName');
-        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);                
-        if ($model === null)
-            return Wechat::NO_RESP;    
-
-
-        $sendLocationInfo = $this->getRequest('SendLocationInfo');
-        U::W(['xxxxx', $sendLocationInfo]);            
-        //$model->lat = $this->getRequest('Location_X');
-        //$model->lon = $this->getRequest('Location_Y');
-
-        $model->lat = $sendLocationInfo['Location_X'];
-        $model->lon = $sendLocationInfo['Location_Y'];
-        
-        //$model->scale = $this->getRequest('Scale');            
-        $model->save(false);
-        $rows = MOffice::getNearestOffices($gh_id, $model->lon, $model->lat);
-        $rows = array_slice($rows, 0, 4);
-        $items = [];
-        $i = 0;
-        foreach ($rows as $row)
-        {
-            //$url = "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord={$model->lat},{$model->lon}&to={$row['title']}&tocoord={$row['lat']},{$row['lon']}&policy=0&referer=wosotech";
-            //$url = "http://api.map.baidu.com/direction?origin=latlng:{$model->lat},{$model->lon}|name:我的位置&destination=latlng:{$row['lat']},{$row['lon']}|name:{$row['title']}&mode=driving&region=襄阳&output=html&src=wosotech|wosotech";
-            
-            $office_imgurl = '@web/images/office/'.'office'.$row['office_id'].'.jpg' ;
-            $office_imgurl_160 = $office_imgurl.'-160x160.jpg';
-
-            $url = Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true);
-            //$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? '@web/images/nearestoffice-info.jpg' : '@web/images/metro-intro.jpg',true), $url);
-            $items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? $office_imgurl : $office_imgurl_160, true), $url);
-            $i++;
-        }
-        return $this->responseNews($items);
-    }
-
-    protected function onLocation() 
-    { 
-        //return Wechat::NO_RESP;    
-
-        $FromUserName = $this->getRequest('FromUserName');
-        $gh_id = $this->getRequest('ToUserName');
-        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);                
-        if ($model === null)
-            return Wechat::NO_RESP;    
-            
-        $model->lat = $this->getRequest('Location_X');
-        $model->lon = $this->getRequest('Location_Y');
-        //$model->scale = $this->getRequest('Scale');            
-        $model->save(false);
-        $rows = MOffice::getNearestOffices($gh_id, $model->lon, $model->lat);
-        $rows = array_slice($rows, 0, 4);
-        $items = [];
-        $i = 0;
-        foreach ($rows as $row)
-        {
-            //$url = "http://apis.map.qq.com/uri/v1/routeplan?type=bus&from=我的位置&fromcoord={$model->lat},{$model->lon}&to={$row['title']}&tocoord={$row['lat']},{$row['lon']}&policy=0&referer=wosotech";
-            //$url = "http://api.map.baidu.com/direction?origin=latlng:{$model->lat},{$model->lon}|name:我的位置&destination=latlng:{$row['lat']},{$row['lon']}|name:{$row['title']}&mode=driving&region=襄阳&output=html&src=wosotech|wosotech";
-            
-            $office_imgurl = '@web/images/office/'.'office'.$row['office_id'].'.jpg' ;
-            $office_imgurl_160 = $office_imgurl.'-160x160.jpg';
-
-            $url = Url::to(['wapx/nearestmap', 'gh_id'=>$gh_id, 'openid'=>$FromUserName, 'office_id'=>$row['office_id'], 'lon'=>$model->lon, 'lat'=>$model->lat], true);
-            //$items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? '@web/images/nearestoffice-info.jpg' : '@web/images/metro-intro.jpg',true), $url);
-            $items[] = new RespNewsItem("{$row['title']}({$row['address']}-距离{$row['distance']}米)", $row['title'], Url::to($i == 0 ? $office_imgurl : $office_imgurl_160, true), $url);
-            $i++;
-        }
-        return $this->responseNews($items);
-
-    }
-
-    protected function onEventLocation()
-    { 
-        return Wechat::NO_RESP;    
-        
-        $FromUserName = $this->getRequest('FromUserName');
-        $gh_id = $this->getRequest('ToUserName');
-        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);        
-        if ($model !== null)
-        {
-            $model->lat = $this->getRequest('Latitude');
-            $model->lon = $this->getRequest('Longitude');
-            $model->prec = $this->getRequest('Precision');
-            $model->save(false);
-            U::W("{$model->lat}, {$model->lon}");            
-        }    
-        return Wechat::NO_RESP;
-    }
-
-    protected function onView() 
-    {
-        $this->saveAccessLog();      
-        return parent::onView();    
-    }
-
-    protected function onClick()
-    {
-        $this->saveAccessLog();          
-        return parent::onClick();
-    }
-
-    protected function onImage() 
-    { 
-        return Wechat::NO_RESP;
-    }
-
-    protected function onScan() 
-    {
-        return Wechat::NO_RESP;        
-    }
-
-    protected function onVoice() 
-    {
-        return Wechat::NO_RESP;        
-    }
-
-    protected function onVideo() 
-    {
-        return Wechat::NO_RESP;        
-    }
-    
-/*
     public function FuncCustomService() 
     { 
         $items = array(
@@ -774,8 +772,6 @@ EOD;
                 new RespNewsItem("{$model->nickname}, 欢迎进入襄阳联通官方微信营业厅", '猛戳进入首页！', Url::to('@web/images/metro-intro.jpg',true), Url::to(['wap/home', 'gh_id'=>$gh_id, 'openid'=>$openid], true)),
             );
             return $this->responseNews($items);
-            */
 
-
-}
+*/
 
