@@ -22,6 +22,7 @@ CREATE TABLE wx_user (
     update_time TIMESTAMP NOT NULL DEFAULT 0,
     mobile VARCHAR(64) NOT NULL DEFAULT '',
     msg_time TIMESTAMP NOT NULL DEFAULT 0,    
+    msg_cnt int(10) unsigned NOT NULL DEFAULT '0',        
     scene_id int(10) unsigned NOT NULL DEFAULT '0',
     scene_balance int(10) unsigned NOT NULL DEFAULT '0',
     scene_level tinyint(3) unsigned NOT NULL DEFAULT 0,
@@ -68,6 +69,8 @@ INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac9
 ALTER TABLE wx_user ADD is_liantongstaff tinyint(3) unsigned NOT NULL DEFAULT 0;
 ALTER TABLE wx_user ADD scene_balance int(10) unsigned NOT NULL DEFAULT '0' after scene_id;
 ALTER TABLE wx_user ADD scene_level tinyint(3) unsigned NOT NULL DEFAULT 0 after scene_id;
+
+ALTER TABLE wx_user ADD msg_cnt int(10) unsigned NOT NULL DEFAULT '0' after msg_time;
 
 
 ALTER TABLE wx_user ADD gid int(10) unsigned NOT NULL DEFAULT '0';
@@ -254,6 +257,28 @@ class MUser extends ActiveRecord implements IdentityInterface
         return $this->hasOne(MChannel::className(),  ['gh_id' => 'gh_id', 'openid' => 'openid']);
     }
 
+    public function isActivedFan()
+    {
+                U::W('MY CNT'. $this->msg_cnt);    
+        $flag = true;
+        if ($this->subscribe == 0)
+        {
+        U::W('NO SUB');
+            return false;
+        }
+        if (time() - strtotime($this->create_time) < 30*24*3600)    
+        {
+                U::W('NO TIME');
+            return false;
+         }
+        if ($this->msg_cnt < 2)
+        {
+                U::W('NO CNT'. $this->msg_cnt);
+            return false;            
+           }
+        return true;            
+    }
+
     public function getWokeYqwd()
     {
         //预期沃点
@@ -280,6 +305,51 @@ class MUser extends ActiveRecord implements IdentityInterface
         $n = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt<0',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_CONFIRMED])->sum('scene_amt');
         return empty($n) ? 0 : abs($n); 
     }
+
+
+    public function getWokeYqwdLast7Days()
+    {
+        //已提沃点
+        if(empty($this->scene_id))
+            return 0;
+
+        //今天
+        $d1 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(create_time)=to_days(now())',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d1==null) $d1=0;
+        //昨天
+        $d2 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=1',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d2==null) $d2=0;
+
+        $d3 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=2',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d3==null) $d3=0;
+
+        $d4 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=3',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d4==null) $d4=0;
+
+        $d5 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=4',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d5==null) $d5=0;
+
+        $d6 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=5',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d6==null) $d6=0;
+
+        $d7 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=6',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        if($d7==null) $d7=0;
+
+        $last7days['d1'] = $d1;
+        $last7days['d2'] = $d2;
+        $last7days['d3'] = $d3;
+        $last7days['d4'] = $d4;
+        $last7days['d5'] = $d5;
+        $last7days['d6'] = $d6;
+        $last7days['d7'] = $d7;
+
+
+        U::W("###########$$$$$$$$$$$$$$$$$$$$$$$\n");
+        U::W($last7days);
+        return array_values($last7days);
+        return empty($last7days) ? 0 : $last7days;
+    }
+
 
 
 }

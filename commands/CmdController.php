@@ -165,7 +165,7 @@ class CmdController extends Controller
         $arr = Yii::$app->wx->WxGroupUpdate(['group'=>['id'=>100, 'name'=>'vip']]);
         U::W($arr);
 */
-        $arr = Yii::$app->wx->WxGroupMoveMember(Wechat::OPENID_TESTER1, 103);
+        $arr = Yii::$app->wx->WxGroupMoveMember(MGh::GH_XIANGYANGUNICOM_OPENID_HBHE, 103);
         U::W($arr);
         
         $arr = Yii::$app->wx->WxGroupListGet();
@@ -197,13 +197,13 @@ class CmdController extends Controller
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/message-custom-send
     public function actionMessageCustomSend()
     {    
-        //$msg = ['touser'=>Wechat::OPENID_TESTER1, 'msgtype'=>'text', 'text'=>['content'=>'您好, 何华斌']];
-        //$msg = ['touser'=>Wechat::OPENID_TESTER1, 'msgtype'=>'image', 'image'=>['media_id'=>'id123456']];
-        //$msg = ['touser'=>Wechat::OPENID_TESTER1, 'msgtype'=>'voice', 'voice'=>['media_id'=>'id123456']];        
-        //$msg = ['touser'=>Wechat::OPENID_TESTER1, 'msgtype'=>'video', 'video'=>['media_id'=>'id123456','title'=>'a', 'description'=>'b']];                
+        //$msg = ['touser'=>MGh::GH_XIANGYANGUNICOM_OPENID_HBHE, 'msgtype'=>'text', 'text'=>['content'=>'您好, 何华斌']];
+        //$msg = ['touser'=>MGh::GH_XIANGYANGUNICOM_OPENID_HBHE, 'msgtype'=>'image', 'image'=>['media_id'=>'id123456']];
+        //$msg = ['touser'=>MGh::GH_XIANGYANGUNICOM_OPENID_HBHE, 'msgtype'=>'voice', 'voice'=>['media_id'=>'id123456']];        
+        //$msg = ['touser'=>MGh::GH_XIANGYANGUNICOM_OPENID_HBHE, 'msgtype'=>'video', 'video'=>['media_id'=>'id123456','title'=>'a', 'description'=>'b']];                
         //$msg = ['touser'=>'oySODt2YXO_JMcFWpFO5wyuEYX-0', 'msgtype'=>'music', 'music'=>['musicurl '=>'http://baidu.com', 'hqmusicurl'=>'', 'thumb_media_id'=>'123', 'title'=>'a', 'description'=>'123']];
         $msg = [
-            'touser'=>Wechat::OPENID_TESTER1, 
+            'touser'=>MGh::GH_XIANGYANGUNICOM_OPENID_HBHE, 
             'msgtype'=>'news', 
             'news'=> [
                 'articles'=>[
@@ -212,7 +212,7 @@ class CmdController extends Controller
                 ]                
             ]
         ];
-        $msg = ['touser'=>Wechat::OPENID_TESTER1, 'msgtype'=>'text', 'text'=>['content'=>'how are you, huabin']];
+        $msg = ['touser'=>MGh::GH_XIANGYANGUNICOM_OPENID_HBHE, 'msgtype'=>'text', 'text'=>['content'=>'how are you, huabin']];
         $arr = Yii::$app->wx->WxMessageCustomSend($msg);
         U::W($arr);        
         return;    
@@ -238,7 +238,7 @@ class CmdController extends Controller
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/user-info
     public function actionUserInfo()
     {    
-        $arr = Yii::$app->wx->WxGetUserInfo(Wechat::OPENID_TESTER1);    
+        $arr = Yii::$app->wx->WxGetUserInfo(MGh::GH_XIANGYANGUNICOM_OPENID_HBHE);    
         U::W($arr);
         return;        
     }

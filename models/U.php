@@ -393,51 +393,63 @@ class U
         return false;
     }
 
-
-/*
-    public static function getDataForWeixin($appId, $MsgImg, $url, $title, $desc)
+    public static function callSimsimi($keyword)
     {
-        $arr = [
-            'appId'=>$appId,
-            'MsgImg'=>$MsgImg,
-            'TLImg'=>$MsgImg,            
-            'url'=>$url,
-            'title'=>$title,            
-            'desc'=>$desc,
-            'fakeid'=>'',
-            'prepare' => function ($argv){},
-            'callback' => function($res) {},
-        ];
-        return json_encode($arr);
-    }
-*/
-
-/*
-    public static function getMobileLuck($pn)
-    {
-        $result = '';
-
-        //$loca = U::curl("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$pn."&output=json");
-        //$loca = json_decode($loca, true);    
-        //U::W($loca);
-
-        $loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$pn."&output=json&callback=querycallback");
-        $loca = substr($loca, 14, -2);  
-        $loca = json_decode($loca, true);    
-        U::W($loca);
-
+        $params['key'] = "d4677d44-aec1-4045-96c7-d8c521268ace";
+        $params['lc'] = "ch";
+        $params['ft'] = "1.0";
+        $params['text'] = $keyword;
         
+        $url = "http://sandbox.api.simsimi.com/request.p?".http_build_query($params);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($ch);
+        curl_close($ch);
 
-        $lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$pn."&output=json&callback=querycallback");
-        $lucy_msg = substr($lucy_msg, 14, -2);  
-        $lucy_msg = json_decode($lucy_msg, true);    
-        U::W($lucy_msg);
-        $result .= "<b>vendor</b><br/>";
-
+        $message = json_decode($output, true);
+        $result = "";
+        if ($message['result'] == 100){
+            $result = $message['response'];
+        }else{
+            $result = $message['result']."-".$message['msg'];
+        }
         return $result;
-        
     }
-*/
+
+    public static function getTraceMsg($trace_level)
+    {
+    	if ($trace_level <= 0)
+    		return '';	
+    	$msg = "\n";		
+    	$traces=debug_backtrace();
+    	if(count($traces) >2)
+    		$traces=array_slice($traces, 2);
+    	if(count($traces) > $trace_level)
+    		$traces=array_slice($traces, 0, $trace_level);
+    	
+    	foreach($traces as $i=>$t)
+    	{
+    		if(!isset($t['file']))
+    			$t['file']='unknown';
+    		if(!isset($t['line']))
+    			$t['line']=0;
+    		if(!isset($t['function']))
+    			$t['function']='unknown';
+    		$msg.="#$i {$t['file']}({$t['line']}): ";
+    		if(isset($t['object']) && is_object($t['object']))
+    			$msg.=get_class($t['object']).'->';
+    		$msg.="{$t['function']}()\n";
+    	}
+    	return $msg;
+    }
+
+    //10 -> 0.001%
+    public static function haveProbability($probability=10)
+    {
+        return mt_rand(0,1000000) < $probability;
+    }
+    
 
 
 }
@@ -469,5 +481,46 @@ class U
                 ['name'=>'item 10','value'=>10, 'start'=>300, 'end'=>330, 'probability'=>0],
                 ['name'=>'item 11','value'=>11, 'start'=>330, 'end'=>360, 'probability'=>0],
             ];
-*/            
+
+    public static function getDataForWeixin($appId, $MsgImg, $url, $title, $desc)
+    {
+        $arr = [
+            'appId'=>$appId,
+            'MsgImg'=>$MsgImg,
+            'TLImg'=>$MsgImg,            
+            'url'=>$url,
+            'title'=>$title,            
+            'desc'=>$desc,
+            'fakeid'=>'',
+            'prepare' => function ($argv){},
+            'callback' => function($res) {},
+        ];
+        return json_encode($arr);
+    }
+
+    public static function getMobileLuck($pn)
+    {
+        $result = '';
+
+        //$loca = U::curl("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$pn."&output=json");
+        //$loca = json_decode($loca, true);    
+        //U::W($loca);
+
+        $loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$pn."&output=json&callback=querycallback");
+        $loca = substr($loca, 14, -2);  
+        $loca = json_decode($loca, true);    
+        U::W($loca);
+
+        
+
+        $lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$pn."&output=json&callback=querycallback");
+        $lucy_msg = substr($lucy_msg, 14, -2);  
+        $lucy_msg = json_decode($lucy_msg, true);    
+        U::W($lucy_msg);
+        $result .= "<b>vendor</b><br/>";
+
+        return $result;
+        
+    }
+*/
 

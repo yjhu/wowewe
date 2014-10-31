@@ -11,6 +11,7 @@ namespace app\commands;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\console\Controller;
+use yii\db\Query;
 
 use app\models\U;
 use app\models\MGh;
@@ -18,6 +19,7 @@ use app\models\MUser;
 use app\models\MOrder;
 use app\models\MMobnum;
 use app\models\MDisk;
+use app\models\MSceneDetail;
 
 class NightController extends Controller
 {
@@ -29,7 +31,9 @@ class NightController extends Controller
 		$time=microtime(true);	
 
 		U::W("###########".__CLASS__." BEGIN");		
-		
+
+		self::confirmSceneDetail();
+
 		self::closeExpiredOrders();
 
 		//MDisk::updateAll(['cnt' => 3]);
@@ -67,18 +71,49 @@ class NightController extends Controller
 		// auto close the orders exceed 2 days
 		$n = Yii::$app->db->createCommand()->update($tableName, ['status' => MOrder::STATUS_CLOSED_AUTO], 'status=:status AND create_time < DATE_SUB(NOW(), INTERVAL 2 day)', [':status'=>MOrder::STATUS_AUTION])->execute();
 		U::W("UPDATE $tableName, $n");		
+
+/*		
 		//move the unsuccessful orders exceed 90 days to bak table
 		$n = Yii::$app->db->createCommand("INSERT INTO {$tableName}_arc SELECT * FROM $tableName WHERE status!=:status AND create_time < DATE_SUB(NOW(), INTERVAL 90 day)", [':status'=>MOrder::STATUS_OK])->execute();
 		U::W("INSERT $tableName, $n");		
+		
 		$n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE status!=:status AND create_time < DATE_SUB(NOW(), INTERVAL 90 day)", [':status'=>MOrder::STATUS_OK])->execute();
 		U::W("DELETE $tableName, $n");		
-
+*/
 		//release mobile number
 		$tableName = MMobnum::tableName();
 		$n = Yii::$app->db->createCommand()->update($tableName, ['status' => MMobnum::STATUS_UNUSED, 'locktime' => 0], 'status=:status AND locktime < :locktime', [':status'=>MMobnum::STATUS_LOCKED, ':locktime'=>time()-2*24*3600])->execute();
 		U::W("UPDATE $tableName, $n");	
+		
 		$n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE status=:status", [':status'=>MMobnum::STATUS_USED])->execute();
 		U::W("DELETE $tableName, $n");
+	}
+
+	public static function confirmSceneDetail() 
+	{
+            $tableName = MSceneDetail::tableName();	
+            $query = (new Query()) ->from($tableName)->where("cat=:cat AND status=:status AND openid_fan != '' AND scene_amt>0", [':cat'=>MSceneDetail::CAT_FAN, ':status'=>MSceneDetail::STATUS_INIT]);
+            foreach ($query->each() as $row)
+            {                
+                $user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid_fan']]);
+                if ($user === null)
+                {
+                    continue;
+                }
+                
+                if ($user->isActivedFan())
+                {
+                    U::W('ACTIVE id='.$row['id']);
+                    $model = MSceneDetail::findOne($row['id']);
+                    $model->status = MSceneDetail::STATUS_CONFIRMED;
+                    $model->save(false);
+                }
+                else
+                {
+                    U::W('NO ACTIVE id='.$row['id']);                
+                }
+            }	
+
 	}
 	
 }
@@ -119,5 +154,17 @@ class NightController extends Controller
 		U::W("UPDATE $tableName, $n");		
 
 		
-*/		
+            $models = MSceneDetail::findAll("cat=:cat AND status=:status AND openid_fan != '' AND scene_amt>0", [':cat'=>MSceneDetail::CAT_FAN, ':status'=>MSceneDetail::STATUS_INIT]);
+            foreach ($models as $model)
+            {
+                $user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid_fan']]);
+                if ($user === null)
+                    continue;
+                if ($user->isActivedFan())
+                {
+                    
+                }
+                
+            }	
+*/            
 
