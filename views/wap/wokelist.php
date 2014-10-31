@@ -128,7 +128,7 @@
                 -->
           
                 <p class="f13">我的沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeYqwd() + $user->getWokeKtwd(); ?></span> 点</p>
-                <p class="f13">可提现沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeKtwd(); ?></span> 点</p>
+                <p class="f13">可提现沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeKtwd() - $user->getWokeYtwd(); ?></span> 点</p>
             </dd>
         </dl>
  
@@ -157,6 +157,18 @@
         use miloschuman\highcharts\Highcharts;
         use yii\web\JsExpression;
 
+        $d =  $user->getWokeYqwdLast7Days();
+        U::W("@@@@@@@@@@@@@@@@@@@@@@");
+        U::W($d);
+        U::W("@@@@@@@@@@@@@@@@@@@@@@---");
+        U::W($d[0]."---");
+        U::W($d[1]."---");
+        U::W($d[2]."---");
+        U::W($d[3]."---");
+        U::W($d[4]."---");
+        U::W($d[5]."---");
+        U::W($d[6]."---");
+
         echo Highcharts::widget([
 
             'scripts' => [
@@ -177,7 +189,9 @@
                         'type' => 'column',
                         'name' => '预期沃点',
                         //'data' => $user->getWokeYqwdLast7Days(),
-                        'data' => [10,500,100,200,150,50,30],
+                        //'data' => [$d[0], $d[1],  $d[2], $d[3], $d[4], $d[5], $d[6]],
+                        'data' => [0, 200, 0, 0, 0, 0, 0],
+                        //'data' => [10,400,100,200,150,50,30],
                     ],
 
                     /*
@@ -315,7 +329,7 @@
     <div id="ktxwd_span" class="ui-bar ui-bar-a" style="height:60px">
         可提现沃点
         <br>
-        <span style="font-size:18pt;"><?=  $user->getWokeKtwd(); ?></span> 
+        <span style="font-size:18pt;"><?=  $user->getWokeKtwd()-$user->getWokeYtwd(); ?></span> 
     </div>
     </div>
 
@@ -349,7 +363,7 @@
 
 <ol data-role="listview" data-inset="true" id="my_list1">
     <!--<li>每日计算预期沃点</li>-->
-    <li>1沃点=人民币1分</li>
+    <li>100沃点=人民币1元</li>
     <li>每月20日结算沃点</li>
     <li>我的沃点 = 可提现沃点＋预期沃点</li>
     <li>预期沃点即未结算订单带来预估值</li>
@@ -394,9 +408,9 @@
     <br>
 
     <form> 
-    <label for="ktwd-max">最多可提沃点: <?=  $user->getWokeKtwd(); ?> 沃点</label>
+    <label for="ktwd-max">最多可提沃点: <?=  $user->getWokeKtwd()-$user->getWokeYtwd(); ?> 沃点</label>
     <label for="ljtxSlider">现在提现沃点</label>
-    <input type="range" name="ljtxSlider" id="ljtxSlider" data-highlight="true" data-theme=a data-mini="true" min="100" max="<?=  $user->getWokeKtwd(); ?>" step="100" value="100">
+    <input type="range" name="ljtxSlider" id="ljtxSlider" data-highlight="true" data-theme=a data-mini="true" min="100" max="<?=  $user->getWokeKtwd()-$user->getWokeYtwd(); ?>" step="100" value="100">
     <input type="button" id="ljtxBtn" value="立即提现">
     </form>
    <br>
@@ -467,7 +481,7 @@
         <br>
 
         <span style="font-size:28pt;font-weight:bolder;">
-        <?=  $user->getWokeKtwd(); ?>
+        <?=  $user->getWokeKtwd()-$user->getWokeYtwd(); ?>
         </span> 
         </div>
         </div>
@@ -550,8 +564,6 @@
         </div>
     </div>
     <br>
-    <a  href="#YqwdLast7daysPage" id="viewYqwdLast7days" class="ui-btn" style="background-color: #f7b2" data-ajax="false">浏览预期沃点最近7天统计</a>
-
     <br>
 
     <ul data-role="listview" data-inset="true" id="my_list2">
@@ -622,30 +634,8 @@
 </div>
 
 
-
-
-<!-- 预期沃点图表展示7天数据 页面-->
-<div data-role="page" id="YqwdLast7daysPage" data-theme="c">
-<?php echo $this->render('header2', ['menuId'=>'menu6','title' => '预期沃点最近7天统计' ]); ?>
-
-<div data-role="content">
-
-
-  
-
-</div>
-
-<div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2014</h4>
-</div>
- <?php echo $this->render('menu', ['menuId'=>'menu6','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
-</div>
-
-
-
 <script>
-var ktwd = "<?=  $user->getWokeKtwd(); ?>";
-
+var ktwd = "<?=  $user->getWokeKtwd()-$user->getWokeYtwd(); ?>";
 
 $(document).on("pageinit", "#wdcf", function(){
 

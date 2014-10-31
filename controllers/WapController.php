@@ -1243,16 +1243,16 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $openid = U::getSessionParam('openid');
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
         U::W("---------22222222222--------------\n");        
-        $scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt<0',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        $scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt<0 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
         
         //可提现沃点
-        $ktxwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=1',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        $ktxwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=1 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
         
         //预期沃点
         $yqwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=0',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
 
         //预期沃点 包含粉丝取消关注
-        $yqwd_fans_qx_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status<>1',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        $yqwd_fans_qx_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status<>1 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
         
 
         U::W("------------------333333-------\n");

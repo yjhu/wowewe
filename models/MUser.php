@@ -310,18 +310,11 @@ class MUser extends ActiveRecord implements IdentityInterface
         $d7 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=6',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
         if($d7==null) $d7=0;
 
-        $last7days['d1'] = $d1;
-        $last7days['d2'] = $d2;
-        $last7days['d3'] = $d3;
-        $last7days['d4'] = $d4;
-        $last7days['d5'] = $d5;
-        $last7days['d6'] = $d6;
-        $last7days['d7'] = $d7;
-
+        $last7days = array($d1, $d2, $d3, $d4, $d5, $d6, $d7);
 
         U::W("###########$$$$$$$$$$$$$$$$$$$$$$$\n");
         U::W($last7days);
-        return array_values($last7days);
+        //return array_values($last7days);
         return empty($last7days) ? 0 : $last7days;
     }
 
