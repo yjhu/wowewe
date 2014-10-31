@@ -5,6 +5,8 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\web\NotFoundHttpException;
+
 use app\models\MUser;
 
 class MUserSearch extends Model

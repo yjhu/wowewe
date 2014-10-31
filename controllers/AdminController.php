@@ -3,12 +3,13 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\U;
-use app\models\MUser;
-use app\models\MUserSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\View;
+
+use app\models\U;
+use app\models\MUser;
+use app\models\MUserSearch;
 
 use app\models\MGh;
 use app\models\MGhSearch;
@@ -46,7 +47,7 @@ class AdminController extends Controller
     {
         $searchModel = new MUserSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->get());
-
+        //U::W(MItem::getTableSchema());
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
