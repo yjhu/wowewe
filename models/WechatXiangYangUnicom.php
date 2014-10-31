@@ -126,6 +126,7 @@ class WechatXiangYangUnicom extends Wechat
         $user->subscribe = 0;
         //$user->scene_pid = 0;
         $user->gid = 0;
+        $user->msg_cnt = 0;
         $user->save(false);
 
         // cancel MSceneDetail
