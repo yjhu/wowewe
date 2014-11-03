@@ -119,7 +119,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				'filter'=> MOrder::getOrderPayKindOption(),
 				'headerOptions' => array('style'=>'width:60px;'),			
 			],
-
+			[
+				'label' => '开通',
+				'attribute' => 'kaitong',	
+			],
             [
 				'class' => 'yii\grid\ActionColumn',
 				'template' => '{view} {update}',
