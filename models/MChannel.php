@@ -69,15 +69,19 @@ class MChannel extends ActiveRecord
 
     public function getFans()
     {
-        return $this->hasMany(MUser::className(), ['gh_id' => 'gh_id', 'scene_pid' => 'scene_id'])->where(['subscribe' => 1]);
+     // method #!
+     //return $this->hasMany(MUser::className(), ['gh_id' => 'gh_id', 'scene_pid' => 'scene_id'])->where(['subscribe' => 1]);
+
+     // method #2
+        return $this->hasMany(MUser::className(), ['gh_id' => 'gh_id', 'scene_pid' => 'scene_id']);
     }
-    
-/*
-    public function getFansCnt()
+
+    // method #3
+    public function getFansCount()
     {
         return $this->hasMany(MUser::className(), ['gh_id' => 'gh_id', 'scene_pid' => 'scene_id'])->count('*');
     }
-*/    
+
     public function getQrImageUrl()
     {
         $gh_id = $this->gh_id;

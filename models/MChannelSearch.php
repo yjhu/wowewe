@@ -18,37 +18,45 @@ class MChannelSearch extends Model
 
     public $mobile;
 
-    public $fansCnt;
- 
+    public $fansCount;    
+    
     public function rules()
     {
         return [
             [['id', 'gh_id', 'title','mobile'], 'safe'],
-            [['fansCnt'], 'safe'],            
+            [['fansCount'], 'safe'],            
         ];
     }
 
     public function search($params)
     {
         $query = MChannel::find();
-
-        $query->with('fans');
-//        $query->with('fansCnt');
         
-//        $subQuery = MUser::find()->select('gh_id as gh_id_x, scene_pid as scene_pid_x, count(*) as fans_cnt')->groupBy(['gh_id', 'scene_pid']);
-//        $query->leftJoin(['fansCnt' => $subQuery], 'gh_id=gh_id_x AND scene_id = scene_pid_x');
-         
+// method #1        
+//        $query->with('fans');
+
+// method #2
+        $query->with(['fans'=>function($query) { $query->andWhere('subscribe=1'); }]);
+
+// method #3            
+//       $subQuery = MUser::find()->select('gh_id as gh_id_x, scene_pid as scene_pid_x, count(*) as fans_cnt')->where('scene_pid!=0')->groupBy(['gh_id', 'scene_pid']);
+//       $query->leftJoin(['wx_user' => $subQuery], 'gh_id=gh_id_x AND scene_id = scene_pid_x');
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
-                    'id' => SORT_DESC,
+//                    'id' => SORT_DESC,
                 ],
-                //'attributes' => [
-                //    'score','id',
-                //]
+                'attributes' => [
+                    'title',
+                    'mobile',
+                    'fansCount' => [
+                        'asc' => ['wx_user.fans_cnt' => SORT_ASC],
+                        'desc' => ['wx_user.fans_cnt' => SORT_DESC],
+                    ]
+                ]
             ],
-
             'pagination' => [
                 'pageSize' => 20,
             ],            
@@ -69,6 +77,7 @@ class MChannelSearch extends Model
         $this->addCondition($query, 'id');
         $this->addCondition($query, 'title', true);
         $this->addCondition($query, 'mobile', true);
+        $query->andFilterWhere(['wx_user.fans_cnt' => $this->fansCount]);        
 
         return $dataProvider;
     }
