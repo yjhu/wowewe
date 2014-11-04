@@ -403,8 +403,22 @@ class OrderController extends Controller
 
     public function actionChannellist()
     {
+        $gh_id = Yii::$app->user->getGhid();
         $searchModel = new MChannelSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->get());
+        
+        if (isset($_GET['channelscoretopsumdownload']))
+        {
+            $sql = "select t1.c, t2.title, t2.mobile, t2.scene_id from (select scene_pid, count(*) as c from wx_user where gh_id='{$gh_id}' and scene_pid != 0 AND subscribe=1 group by scene_pid) t1 inner join wx_channel t2 on t1.scene_pid = t2.scene_id and t2.scene_id != 0 order by c desc";            
+            $data = Yii::$app->db->createCommand($sql)->queryAll();                        
+            $date = date('Y-m-d-His');
+            $filename = Yii::$app->getRuntimePath()."/channelscoretopsumdownload-{$date}.csv";
+            $csv = new \app\models\ECSVExport($data);
+            $csv->toCSV($filename); 
+            Yii::$app->response->sendFile($filename);
+            return;        
+        }
+        
         return $this->render('channellist', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,

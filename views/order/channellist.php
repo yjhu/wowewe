@@ -23,6 +23,9 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?php echo Html::a('新增渠道', ['channelcreate'], ['class' => 'btn btn-success']) ?>
     	<?php $currentMonth = date("n"); ?>
 		<?php echo Html::a("渠道每月成绩排行", ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
+
+		<?php echo Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', Url::to().'&channelscoretopsumdownload=1', ['class' => 'btn btn-success']) ?>
+
     </p>
 
 	<?php \yii\widgets\Pjax::begin([
@@ -59,8 +62,8 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'score',
                 'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
-//					if ($model->score == 0)						
-//						return $model->score; 
+					//if ($model->score == 0)						
+					//	return $model->score; 
 					return $model->score.' '.Html::a('<span>明细</span>', ['channelscoredetail', 'gh_id'=>$model->gh_id, 'scene_pid'=>$model->scene_id], [
 						'title' => '推广成绩',
 						'target' => '_blank',
@@ -74,8 +77,6 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'score',
                 'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
-//					if ($model->score == 0)						
-//						return $model->score; 
 					return count($model->fans).' '.Html::a('<span>明细</span>', ['channelscoredetail', 'gh_id'=>$model->gh_id, 'scene_pid'=>$model->scene_id], [
 						'title' => '推广成绩',
 						'target' => '_blank',
@@ -83,27 +84,14 @@ $this->params['breadcrumbs'][] = $this->title;
 				},
 				'filter'=> false,
 			],
-//			'fansCnt.fans_cnt',
+
 /*
 			[
-				'label' => '累计推广成绩xxx',
-				'attribute' => 'score',
-                'format'=>'html',
-				'value'=>function ($model, $key, $index, $column) {
-					return $fansCnt.fans_cnt;
-				},
-				'filter'=> false,
-			],
-*/
-/*
-			[
-				'label' => '累计推广成绩x',
-				'attribute' => 'score',
+				'label' => '累计推广成绩',
+				'attribute' => 'fansCount',
                 'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
-//					if ($model->score == 0)						
-//						return $model->score; 
-					return count($model->fansCnt).' '.Html::a('<span>明细</span>', ['channelscoredetail', 'gh_id'=>$model->gh_id, 'scene_pid'=>$model->scene_id], [
+					return $model->fansCount.' '.Html::a('<span>明细</span>', ['channelscoredetail', 'gh_id'=>$model->gh_id, 'scene_pid'=>$model->scene_id], [
 						'title' => '推广成绩',
 						'target' => '_blank',
 					]);
