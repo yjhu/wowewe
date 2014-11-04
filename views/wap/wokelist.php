@@ -56,7 +56,11 @@
     #my_list1>li, #my_list2>li
     {
          background-color: #ffffff !important;
-    } 
+    }
+
+    .bankSelected{
+        background-color: #FCEB9F;
+    }
 
 
 </style>
@@ -122,7 +126,7 @@
                 </div>
                 <br>
                 <span class="f13">您还差895成长值升级为钻石会员</span>
-                ->
+                -->
                 <!--
                 <em class="seeM_btn"><img src="/wolm/images/seeM_btn.png" width="7"></em>
                 -->
@@ -140,8 +144,10 @@
         
         
         <li><a href="#tqjl"><img src="../web/images/woke/tqjl.gif" alt="提现记录" class="ui-li-icon ui-corner-none">提现记录<span class="ui-li-count"><?=  $user->getWokeYtwd(); ?></span></a></li>
+        
+        <li><a href="#wdyhk"><img src="../web/images/woke/wdyhk.gif" alt="我的银行卡" class="ui-li-icon ui-corner-none">我的银行卡<span class="ui-li-count">1</span></a></li>
+        
         <!--
-        <li><a href="#"><img src="../web/images/woke/wdyhk.gif" alt="我的银行卡" class="ui-li-icon ui-corner-none">我的银行卡<span class="ui-li-count">0</span></a></li>
         <li><a href="#"><img src="../web/images/woke/aqsz.gif" alt="安全设置" class="ui-li-icon ui-corner-none">安全设置</a></li>
         <li><a href="#"><img src="../web/images/woke/wdhb.gif" alt="我的海报" class="ui-li-icon ui-corner-none">我的海报</a></li>
         <li><a href="#"><img src="../web/images/woke/lqjl.gif" alt="领取记录" class="ui-li-icon ui-corner-none">领取记录<span class="ui-li-count">0</span></a></li>
@@ -623,6 +629,192 @@
 </div>
 
 
+
+<!-- 我的银行卡 列表 页面-->
+<div data-role="page" id="wdyhk" data-theme="c">
+<?php echo $this->render('header2', ['menuId'=>'menu6','title' => '我的银行卡' ]); ?>
+
+<div data-role="content">
+
+    <div class="ui-grid-solo">
+        <div class="ui-block-a">
+            <div class="ui-bar ui-bar-a" style="height:50px">
+            <span>
+
+                <span>
+                    <img src="../web/images/bank/CMBCHINA.png" align=center>
+                    <span>
+                    招商银行
+                    </span>
+            
+                    <span style="font-size:12pt;color:#cccccc">尾号8888 储蓄卡</span>
+                </span>
+            </span>
+                  
+            </div>
+
+            </div>
+    </div>
+    <br><br>
+    <a href="#tjwdyhk" id="submitBtn" class="ui-btn" style="background-color: #44B549">添加我的银行卡</a>
+</div>
+
+<div data-role="footer" data-position="fixed">
+    <h4>&copy; 襄阳联通 2014</h4>
+</div>
+ <?php echo $this->render('menu', ['menuId'=>'menu6','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
+
+
+<!-- 添加我的银行卡 页面-->
+<div data-role="page" id="tjwdyhk" data-theme="c">
+<?php echo $this->render('header2', ['menuId'=>'menu7','title' => '添加我的银行卡' ]); ?>
+
+<div data-role="content">
+
+    <div class="ui-grid-b">
+        <div class="ui-block-a">
+        <div class="ui-bar ui-bar-a" id="ICBC" style="height:60px" align=center>
+        <span style="font-size:14px;font-weight:normal;color:#aaa">
+        <img src="../web/images/bank/ICBC.png" >
+        <br>
+        工商银行
+        </span>
+        </div>
+        </div>
+
+        <div class="ui-block-b">
+        <div class="ui-bar ui-bar-a" id="ABC" style="height:60px" align=center>
+        <span style="font-size:14px;font-weight:normal;color:#aaa">
+        <img src="../web/images/bank/ABC.png" >
+        <br>
+        农业银行
+        </span>
+        </div>
+        </div>
+
+        <div class="ui-block-c">
+        <div class="ui-bar ui-bar-a" id="BOC" style="height:60px" align=center>
+        <span style="font-size:14px;font-weight:normal;color:#aaa">
+        <img src="../web/images/bank/BOC.png" >
+        <br>
+        中国银行
+        </span>
+        </div>
+        </div>
+
+        <div class="ui-block-a">
+        <div class="ui-bar ui-bar-a" id="CCB" style="height:60px" align=center>
+        <span style="font-size:14px;font-weight:normal;color:#aaa">
+        <img src="../web/images/bank/CCB.png" >
+        <br>
+        建设银行
+        </span>
+        </div>
+        </div>
+
+        <div class="ui-block-b">
+        <div class="ui-bar ui-bar-a" id="BOCO" style="height:60px" align=center>
+        <span style="font-size:14px;font-weight:normal;color:#aaa">
+        <img src="../web/images/bank/BOCO.png" >
+        <br>
+        交通银行
+        </span>
+        </div>
+        </div>
+
+        <div class="ui-block-c">
+        <div class="ui-bar ui-bar-a" id="ECITIC" style="height:60px" align=center>
+        <span style="font-size:14px;font-weight:normal;color:#aaa">
+        <img src="../web/images/bank/ECITIC.png" >
+        <br>
+        中信银行
+        </span>
+        </div>
+        </div>
+
+        <div class="ui-block-a">
+        <div class="ui-bar ui-bar-a" id="CEB" style="height:60px" align=center>
+        <span style="font-size:14px;font-weight:normal;color:#aaa">
+        <img src="../web/images/bank/CEB.png" >
+        <br>
+        光大银行
+        </span>
+        </div>
+        </div>
+
+        <div class="ui-block-b">
+        <div class="ui-bar ui-bar-a" id="CMBC" style="height:60px" align=center>
+        <span style="font-size:14px;font-weight:normal;color:#aaa">
+        <img src="../web/images/bank/CMBC.png" >
+        <br>
+        民生银行
+        </span>
+        </div>
+        </div>
+
+        <div class="ui-block-c">
+        <div class="ui-bar ui-bar-a" id="CGB" style="height:60px" align=center>
+        <span style="font-size:14px;font-weight:normal;color:#aaa">
+        <img src="../web/images/bank/CGB.png" >
+        <br>
+        广发银行
+        </span>
+        </div>
+        </div>
+
+        <div class="ui-block-a">
+        <div class="ui-bar ui-bar-a" id="CMBCHINA" style="height:60px" align=center>
+        <span style="font-size:14px;font-weight:normal;color:#aaa">
+        <img src="../web/images/bank/CMBCHINA.png" >
+        <br>
+        招商银行
+        </span>
+        </div>
+        </div>
+
+        <div class="ui-block-b">
+        <div class="ui-bar ui-bar-a" id="POST" style="height:60px" align=center>
+        <span style="font-size:14px;font-weight:normal;color:#aaa">
+        <img src="../web/images/bank/POST.png" >
+        <br>
+        邮政储蓄
+        </span>
+        </div>
+        </div>
+
+        <div class="ui-block-c">
+        <div class="ui-bar ui-bar-a" id="NSYH" style="height:60px" align=center>
+        <span style="font-size:14px;font-weight:normal;color:#aaa">
+        <img src="../web/images/bank/NSYH.png" >
+        <br>
+        农商银行
+        </span>
+        </div>
+        </div>
+    </div><!-- /grid-c -->
+    <br>
+    <input type=text placeholder="开户人姓名" name="buser" id="buser">
+
+    <input type=text placeholder="银行卡号" name="bcn" id="bcn">
+
+    <br>
+    <a href="#tjwdyhk" id="tjwdyhkBtn" class="ui-btn" style="background-color: #44B549">确定</a>
+</div>
+
+<div data-role="footer" data-position="fixed">
+    <h4>&copy; 襄阳联通 2014</h4>
+</div>
+ <?php echo $this->render('menu', ['menuId'=>'menu7','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
+
+
+
+
+
+
+
+
 <script>
 var ktwd = "<?=  $user->getWokeKtwd()-$user->getWokeYtwd(); ?>";
 
@@ -649,6 +841,94 @@ $(document).on("pageinit", "#ktxwd", function(){
 
 $(document).on("pageshow", "#yqwd", function(){
     //alert("yqwd");
+});
+
+
+function cleanAllBankSelected()
+{
+    $("#ICBC").removeClass('bankSelected');
+    $("#ABC").removeClass('bankSelected');
+    $("#BOC").removeClass('bankSelected');
+    $("#CCB").removeClass('bankSelected');
+    $("#BOCO").removeClass('bankSelected');
+    $("#ECITIC").removeClass('bankSelected');
+    $("#CEB").removeClass('bankSelected');
+    $("#CMBC").removeClass('bankSelected');
+    $("#CGB").removeClass('bankSelected');
+    $("#CMBCHINA").removeClass('bankSelected');
+    $("#POST").removeClass('bankSelected');
+    $("#NSYH").removeClass('bankSelected');
+}
+
+$(document).on("pageshow", "#tjwdyhk", function(){
+
+    $(document).on("tap","#ICBC",function(){
+        cleanAllBankSelected();
+        $("#ICBC").addClass('bankSelected');
+        localStorage.setItem('bankname','ICBC');
+    });
+    $(document).on("tap","#ABC",function(){
+        cleanAllBankSelected();
+        $("#ABC").addClass('bankSelected');
+        localStorage.setItem('bankname','ABC');
+    });
+    $(document).on("tap","#BOC",function(){
+        cleanAllBankSelected();
+        $("#BOC").addClass('bankSelected');
+        localStorage.setItem('bankname','BOC');
+    });
+    $(document).on("tap","#CCB",function(){
+        cleanAllBankSelected();
+        $("#CCB").addClass('bankSelected');
+        localStorage.setItem('bankname','CCB');
+    });
+    $(document).on("tap","#BOCO",function(){
+        cleanAllBankSelected();
+        $("#BOCO").addClass('bankSelected');
+        localStorage.setItem('bankname','BOCO');
+    });
+    $(document).on("tap","#ECITIC",function(){
+        cleanAllBankSelected();
+        $("#ECITIC").addClass('bankSelected');
+        localStorage.setItem('bankname','ECITIC');
+    });
+    $(document).on("tap","#CEB",function(){
+        cleanAllBankSelected();
+        $("#CEB").addClass('bankSelected');
+        localStorage.setItem('bankname','CEB');
+    });
+    $(document).on("tap","#CMBC",function(){
+        cleanAllBankSelected();
+        $("#CMBC").addClass('bankSelected');
+        localStorage.setItem('bankname','CMBC');
+    });
+    $(document).on("tap","#CGB",function(){
+        cleanAllBankSelected();
+        $("#CGB").addClass('bankSelected');
+        localStorage.setItem('bankname','CGB');
+    });
+    $(document).on("tap","#CMBCHINA",function(){
+         cleanAllBankSelected();
+        $("#CMBCHINA").addClass('bankSelected');
+        localStorage.setItem('bankname','CMBCHINA');
+    });
+    $(document).on("tap","#POST",function(){
+        cleanAllBankSelected();
+        $("#POST").addClass('bankSelected');
+        localStorage.setItem('bankname','POST');
+    });
+    $(document).on("tap","#NSYH",function(){
+         cleanAllBankSelected();
+        $("#NSYH").addClass('bankSelected');
+        localStorage.setItem('bankname','NSYH');
+    });
+
+
+    $(document).on("tap","#tjwdyhkBtn",function(){
+        //todo ...
+        alert("tjwdyhkBtn");
+    });
+
 });
 
 $(document).on("pageinit", "#tqjl", function(){
