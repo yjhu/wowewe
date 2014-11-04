@@ -22,45 +22,23 @@ CREATE TABLE wx_item (
 	quantity int(10) unsigned NOT NULL DEFAULT '0',
 	old_price int(10) unsigned NOT NULL DEFAULT '0',
 	old_price_hint VARCHAR(128) NOT NULL DEFAULT '',
-
+	kind tinyint(3) NOT NULL DEFAULT 0,
+	ctrl_mobnumber tinyint(3) NOT NULL DEFAULT 0,
+	ctrl_userinfo tinyint(3) NOT NULL DEFAULT 0,
+	ctrl_office tinyint(3) NOT NULL DEFAULT 0,
+	ctrl_package tinyint(3) NOT NULL DEFAULT 0,
+	ctrl_supportpay VARCHAR(128) NOT NULL DEFAULT '',
+	ctrl_address tinyint(3) NOT NULL DEFAULT 0,
+	ctrl_detail tinyint(3) NOT NULL DEFAULT 0,
+	scene_percent int(10) unsigned NOT NULL DEFAULT '0',
+	ctrl_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '',
+	ctrl_pkg_period VARCHAR(32) NOT NULL DEFAULT '',
+	ctrl_pkg_monthprice VARCHAR(64) NOT NULL DEFAULT '',
+	ctrl_pkg_plan VARCHAR(8) NOT NULL DEFAULT '',
 	ctrl_soldout tinyint(3) unsigned NOT NULL DEFAULT '0',
 
 	KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
-ALTER TABLE wx_item ADD quantity int(10) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_item ADD old_price int(10) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_item ADD	old_price_hint VARCHAR(128) NOT NULL DEFAULT '';
-ALTER TABLE wx_item ADD	kind tinyint(3) unsigned NOT NULL DEFAULT '0';
-
-ALTER TABLE wx_item ADD	ctrl_mobnumber tinyint(3) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_item ADD	ctrl_userinfo tinyint(3) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_item ADD	ctrl_office tinyint(3) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_item ADD	ctrl_package tinyint(3) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_item ADD	ctrl_supportpay VARCHAR(128) NOT NULL DEFAULT '';
-ALTER TABLE wx_item ADD	ctrl_address tinyint(3) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_item ADD	ctrl_detail tinyint(3) unsigned NOT NULL DEFAULT '1';
-ALTER TABLE wx_item ADD	scene_percent int(10) unsigned NOT NULL DEFAULT '0';
-
-ALTER TABLE wx_item ADD	ctrl_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '';
-ALTER TABLE wx_item ADD	ctrl_pkg_period VARCHAR(32) NOT NULL DEFAULT '';
-ALTER TABLE wx_item ADD	ctrl_pkg_monthprice VARCHAR(64) NOT NULL DEFAULT '';
-ALTER TABLE wx_item ADD	ctrl_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
-
-
-ALTER TABLE wx_item ADD	ctrl_soldout tinyint(3) unsigned NOT NULL DEFAULT '0';
-
-
-
-INSERT INTO `wx_item` (`gh_id`, `price`, `price_hint`, `title`, `title_hint`, `pkg_name`, `pkg_name_hint`, `detail`, `pic_url`, `cid`, `status`) VALUES
-('gh_03a74ac96138', 5000, '含预存款50元', '微信沃卡', '微信沃卡 <span class="title_hint"> 尊享微信6大特权, 50元入网得530元话费, 500M省内流量+500M微信定向流量, 仅需31元/月</span>', '微信沃卡', '500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wxwk001.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk002.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk003.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk004.jpg" alt="" />', '../web/images/item/wxwk000.jpg', 10, 0);
-('gh_03a74ac96138', 5000, '含预存款50元', '沃派校园卡', '沃派校园套餐 <span class="title_hint"> 500M省内流量, 100分钟通话+100条短信, 存50得530元话费, 每月仅付26元</span>', '沃派校园套餐', '500M微信定向流量100分钟本地长市话100条短信500M省内流量自动升级至50元包1G/100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wpxytc_002.jpg" alt="" />', '../web/images/item/wpxytc_001.jpg', 11, 0),
-('gh_1ad98f5481f3', 5000, '含预存款50元', '微信沃卡', '微信沃卡 <span class="title_hint"> 尊享微信6大特权, 50元入网得530元话费, 500M省内流量+500M微信定向流量, 仅需31元/月</span>', '微信沃卡', '500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wxwk001.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk002.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk003.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk004.jpg" alt="" />', '../web/images/item/wxwk000.jpg', 10, 0),
-('gh_1ad98f5481f3', 5000, '含预存款50元', '沃派校园套餐', '沃派校园套餐 <span class="title_hint"> 500M省内流量, 100分钟通话+100条短信, 存50得530元话费, 每月仅付26元</span>', '沃派校园套餐', '500M微信定向流量, 100分钟本地长市话, 100条短信, 500M省内流量自动升级至50元包1G, 100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wpxytc_002.jpg" alt="" />', '../web/images/item/wpxytc_001.jpg', 11, 0),
-
-
-
 
 */
 
@@ -322,4 +300,30 @@ $("#richtextDesc").html("<img width=\"100%\" style=\"display:block\"  src=\"http
                                                 <a href=\"http://www.10010.com/pushpage/59800000134189.71.html\" target=\"_blank\"><img width=\"100%\" style=\"display:block\" src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201407201133341283576080.jpg\" alt=\"\" /> </a>\
                                                 <a href=\"http://www.10010.com/static/homepage/subjectpage/57100000121535.html\" target=\"_blank\"><img width=\"100%\" style=\"display:block\" src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/201404091216411015373808.jpg\" alt=\"\" /></a>\
                                                 <img width=\"100%\" style=\"display:block\" src=\"http://res.mall.10010.com/mall/res/uploader/gdesc/20140317125516342466672.jpg\" alt=\"\" />");
+
+
+ALTER TABLE wx_item ADD quantity int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD old_price int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD	old_price_hint VARCHAR(128) NOT NULL DEFAULT '';
+ALTER TABLE wx_item ADD	kind tinyint(3) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD	ctrl_mobnumber tinyint(3) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD	ctrl_userinfo tinyint(3) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD	ctrl_office tinyint(3) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD	ctrl_package tinyint(3) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD	ctrl_supportpay VARCHAR(128) NOT NULL DEFAULT '';
+ALTER TABLE wx_item ADD	ctrl_address tinyint(3) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD	ctrl_detail tinyint(3) unsigned NOT NULL DEFAULT '1';
+ALTER TABLE wx_item ADD	scene_percent int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_item ADD	ctrl_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '';
+ALTER TABLE wx_item ADD	ctrl_pkg_period VARCHAR(32) NOT NULL DEFAULT '';
+ALTER TABLE wx_item ADD	ctrl_pkg_monthprice VARCHAR(64) NOT NULL DEFAULT '';
+ALTER TABLE wx_item ADD	ctrl_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
+ALTER TABLE wx_item ADD	ctrl_soldout tinyint(3) unsigned NOT NULL DEFAULT '0';
+
+INSERT INTO `wx_item` (`gh_id`, `price`, `price_hint`, `title`, `title_hint`, `pkg_name`, `pkg_name_hint`, `detail`, `pic_url`, `cid`, `status`) VALUES
+('gh_03a74ac96138', 5000, '含预存款50元', '微信沃卡', '微信沃卡 <span class="title_hint"> 尊享微信6大特权, 50元入网得530元话费, 500M省内流量+500M微信定向流量, 仅需31元/月</span>', '微信沃卡', '500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wxwk001.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk002.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk003.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk004.jpg" alt="" />', '../web/images/item/wxwk000.jpg', 10, 0);
+('gh_03a74ac96138', 5000, '含预存款50元', '沃派校园卡', '沃派校园套餐 <span class="title_hint"> 500M省内流量, 100分钟通话+100条短信, 存50得530元话费, 每月仅付26元</span>', '沃派校园套餐', '500M微信定向流量100分钟本地长市话100条短信500M省内流量自动升级至50元包1G/100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wpxytc_002.jpg" alt="" />', '../web/images/item/wpxytc_001.jpg', 11, 0),
+('gh_1ad98f5481f3', 5000, '含预存款50元', '微信沃卡', '微信沃卡 <span class="title_hint"> 尊享微信6大特权, 50元入网得530元话费, 500M省内流量+500M微信定向流量, 仅需31元/月</span>', '微信沃卡', '500M微信定向流量；100分钟本地长市话&100条短信;500M省内流量,自动升级至50元包1G/100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wxwk001.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk002.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk003.jpg" alt="" />\r\n<img width="100%" style="display:block"  src="../web/images/item/wxwk004.jpg" alt="" />', '../web/images/item/wxwk000.jpg', 10, 0),
+('gh_1ad98f5481f3', 5000, '含预存款50元', '沃派校园套餐', '沃派校园套餐 <span class="title_hint"> 500M省内流量, 100分钟通话+100条短信, 存50得530元话费, 每月仅付26元</span>', '沃派校园套餐', '500M微信定向流量, 100分钟本地长市话, 100条短信, 500M省内流量自动升级至50元包1G, 100元包2.5G', '<img width="100%" style="display:block"  src="../web/images/item/wpxytc_002.jpg" alt="" />', '../web/images/item/wpxytc_001.jpg', 11, 0),
+
 */

@@ -214,7 +214,7 @@
         <!-- 20141103 add end -->
 
 
-        <?php foreach($models as $model) { if($model->cid==317 || $model->cid==331 || $model->cid==310 || $model->cid==311) continue; else { ?>
+        <?php foreach($models as $model) { if($model->cid==331 || $model->cid==310 || $model->cid==311) continue; else { ?>
             <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
                     <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                     <h2><?= $model->title ?></h2>
