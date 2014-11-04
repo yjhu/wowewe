@@ -13,6 +13,26 @@ class MItemSearch extends Model
 
     public $cid;
 
+    public $quantity;
+
+    public $old_price;
+
+    public $old_price_hint;
+
+    public $price;
+
+    public $price_hint;
+
+    public $title_hint;
+
+    public $pkg_name;
+
+    public $pkg_name_hint;
+
+    public $pic_url;
+
+    public $detail;
+    
     public function rules()
     {
         return [
