@@ -73,6 +73,13 @@ class MStaff extends ActiveRecord
         return $model->getScore();
     }
 
+/*
+select t1.c, t3.name, t3.office_id, t4.title, t2.scene_id  from (select scene_pid, count(*) as c from wx_user
+where gh_id='gh_03a74ac96138' and scene_pid != 0 group by scene_pid order by c desc) t1
+left join wx_user t2 on t1.scene_pid = t2.scene_id and t2.scene_id != 0
+left join wx_staff t3 on t2.openid = t3.openid
+left join wx_office t4 on t3.office_id = t4.office_id;
+*/
     public static function getStaffScoreTop($gh_id, $n=0)
     {
         $key = __METHOD__."{$gh_id}_{$n}";

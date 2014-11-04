@@ -34,33 +34,6 @@ use app\models\MAccessLog;
 
 class MChannel extends ActiveRecord
 {
-//    const CAT_LIANTONG_DEALER = 0;
-//    const CAT_SOCIAL = 1;
-
-//    const STATUS_WAIT = 1;
-//    const STATUS_OK = 0;
-
-
-/*
-    static function getCatOptionName($key=null)
-    {
-        $arr = array(
-            self::CAT_LIANTONG_DEALER => '联通经销商',
-            self::CAT_SOCIAL => '社会化渠道',
-        );        
-        return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
-    }
-
-    static function getStatusOptionName($key=null)
-    {
-        $arr = array(
-            self::STATUS_WAIT => '等待审核',
-            self::STATUS_OK => '正常',
-        );        
-        return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
-    }
-*/
-
     public static function tableName()
     {
         return 'wx_channel';
@@ -74,7 +47,6 @@ class MChannel extends ActiveRecord
             [['title'], 'string', 'min' => 2, 'max' => 255],
             [['mobile'], 'string', 'length'=>11],
             [['id'], 'integer', 'integerOnly' =>true, 'min'=>1],
-//            [['status','cat'], 'integer', 'integerOnly' =>true],
             [['gh_id', 'openid'], 'safe'],
             ['title', 'unique', 'message' => 'This title has already been taken.'],            
         ];
@@ -86,9 +58,6 @@ class MChannel extends ActiveRecord
             'id' => '渠道编号',
             'title' => '名称',
             'mobile' => '手机号',
-//            'cat' => '渠道类别',
-//            'level' => '等级',
-//            'status' => '状态',
             'scene_id' => '推广Id',
         ];
     }
@@ -98,6 +67,17 @@ class MChannel extends ActiveRecord
         return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
     }
 
+    public function getFans()
+    {
+        return $this->hasMany(MUser::className(), ['gh_id' => 'gh_id', 'scene_pid' => 'scene_id'])->where(['subscribe' => 1]);
+    }
+    
+/*
+    public function getFansCnt()
+    {
+        return $this->hasMany(MUser::className(), ['gh_id' => 'gh_id', 'scene_pid' => 'scene_id'])->count('*');
+    }
+*/    
     public function getQrImageUrl()
     {
         $gh_id = $this->gh_id;
@@ -171,6 +151,16 @@ class MChannel extends ActiveRecord
         return $count;
     }
 
+/*
+select t1.c, t2.title, t2.mobile, t2.scene_id  
+from (select scene_pid, count(*) as c from wx_user where gh_id='gh_03a74ac96138' and scene_pid != 0 AND subscribe=1 group by scene_pid) t1
+inner join wx_channel t2 on t1.scene_pid = t2.scene_id and t2.scene_id != 0
+order by c desc
+INTO OUTFILE '/tmp/top.csv'
+CHARACTER SET gbk
+FIELDS ENCLOSED BY '"' TERMINATED BY ',' ESCAPED BY '"'
+LINES TERMINATED BY '\r\n';
+*/
     public static function getChannelScoreTop($gh_id, $month)
     {
         $key = md5(serialize([__METHOD__, $gh_id, $month]));

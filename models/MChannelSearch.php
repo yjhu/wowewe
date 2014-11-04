@@ -18,24 +18,26 @@ class MChannelSearch extends Model
 
     public $mobile;
 
-//    public $cat;
-
-//    public $status;
-
-//    public $level;
-    
+    public $fansCnt;
+ 
     public function rules()
     {
         return [
-//            [['id', 'gh_id', 'title','mobile', 'cat', 'status', 'level'], 'safe'],
-//            [['id', 'gh_id', 'title','mobile', 'status', 'level'], 'safe'],
             [['id', 'gh_id', 'title','mobile'], 'safe'],
+            [['fansCnt'], 'safe'],            
         ];
     }
 
     public function search($params)
     {
         $query = MChannel::find();
+
+        $query->with('fans');
+//        $query->with('fansCnt');
+        
+//        $subQuery = MUser::find()->select('gh_id as gh_id_x, scene_pid as scene_pid_x, count(*) as fans_cnt')->groupBy(['gh_id', 'scene_pid']);
+//        $query->leftJoin(['fansCnt' => $subQuery], 'gh_id=gh_id_x AND scene_id = scene_pid_x');
+         
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
@@ -67,9 +69,7 @@ class MChannelSearch extends Model
         $this->addCondition($query, 'id');
         $this->addCondition($query, 'title', true);
         $this->addCondition($query, 'mobile', true);
-//        $this->addCondition($query, 'cat');
-//        $this->addCondition($query, 'status');
-        
+
         return $dataProvider;
     }
 

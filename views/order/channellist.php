@@ -53,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { return empty($model->user->nickname) ? '[微信未绑定]' : $model->user->nickname; },
 				'filter'=> false,
 			],
+/*
 			[
 				'label' => '累计推广成绩',
 				'attribute' => 'score',
@@ -67,6 +68,49 @@ $this->params['breadcrumbs'][] = $this->title;
 				},
 				'filter'=> false,
 			],
+*/
+			[
+				'label' => '累计推广成绩',
+				'attribute' => 'score',
+                'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+//					if ($model->score == 0)						
+//						return $model->score; 
+					return count($model->fans).' '.Html::a('<span>明细</span>', ['channelscoredetail', 'gh_id'=>$model->gh_id, 'scene_pid'=>$model->scene_id], [
+						'title' => '推广成绩',
+						'target' => '_blank',
+					]);
+				},
+				'filter'=> false,
+			],
+//			'fansCnt.fans_cnt',
+/*
+			[
+				'label' => '累计推广成绩xxx',
+				'attribute' => 'score',
+                'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) {
+					return $fansCnt.fans_cnt;
+				},
+				'filter'=> false,
+			],
+*/
+/*
+			[
+				'label' => '累计推广成绩x',
+				'attribute' => 'score',
+                'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+//					if ($model->score == 0)						
+//						return $model->score; 
+					return count($model->fansCnt).' '.Html::a('<span>明细</span>', ['channelscoredetail', 'gh_id'=>$model->gh_id, 'scene_pid'=>$model->scene_id], [
+						'title' => '推广成绩',
+						'target' => '_blank',
+					]);
+				},
+				'filter'=> false,
+			],
+*/
 			[
 				'label' => '推广二维码',
                 'format'=>'html',
