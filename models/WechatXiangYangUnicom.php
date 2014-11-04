@@ -195,11 +195,29 @@ class WechatXiangYangUnicom extends Wechat
         {
 
             $arr = $this->WxGetOnlineKfList();
+
+            /*
             if (count($arr) > 0)
                 return $this->responseTransfer();
+            */
+            
+            $auto_accept = 0;
+            $accepted_case = 0;
 
-            $txt = U::callSimsimi($msg);
-            return $this->responseText($txt);
+            foreach ($arr as $a1) {
+                U::W($a1);
+                $auto_accept = $auto_accept + (int)$a1["auto_accept"];
+                $accepted_case = $accepted_case + (int)$a1["accepted_case"];
+            }
+
+            U::W($auto_accept."-----------\n");
+            U::W($accepted_case."-----------\n");
+
+            if(($auto_accept-$accepted_case)>0)
+                return $this->responseTransfer();
+
+            //$txt = U::callSimsimi($msg);
+            //return $this->responseText($txt);
             
             $kfStr = "客服人员暂时不在线。";
 

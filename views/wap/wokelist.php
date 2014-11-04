@@ -158,16 +158,6 @@
         use yii\web\JsExpression;
 
         $d =  $user->getWokeYqwdLast7Days();
-        U::W("@@@@@@@@@@@@@@@@@@@@@@");
-        U::W($d);
-        U::W("@@@@@@@@@@@@@@@@@@@@@@---");
-        U::W($d[0]."---");
-        U::W($d[1]."---");
-        U::W($d[2]."---");
-        U::W($d[3]."---");
-        U::W($d[4]."---");
-        U::W($d[5]."---");
-        U::W($d[6]."---");
 
         echo Highcharts::widget([
 
@@ -189,7 +179,7 @@
                         'type' => 'column',
                         'name' => '预期沃点',
                         //'data' => $user->getWokeYqwdLast7Days(),
-                        'data' => [$d[0], $d[1],  $d[2], $d[3], $d[4], $d[5], $d[6]],
+                        'data' => [(int)$d[6], (int)$d[5],  (int)$d[4], (int)$d[3], (int)$d[2], (int)$d[1], (int)$d[0]],
                         //'data' => [0, 200, 0, 0, 0, 0, 0],
                     ],
 
