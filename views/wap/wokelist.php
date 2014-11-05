@@ -647,7 +647,7 @@
                     招商银行
                     </span>
             
-                    <span style="font-size:12pt;color:#cccccc">尾号8888 储蓄卡</span>
+                    <span style="font-size:12pt; color:#cccccc">尾号8888 储蓄卡</span>
                 </span>
             </span>
                   
