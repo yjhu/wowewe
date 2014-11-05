@@ -184,6 +184,55 @@ LINES TERMINATED BY '\r\n';
         Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 12*3600);
         return $rows;
     }
+
+/*
+select t1.c, t2.title, t2.mobile, t2.scene_id  
+from (select ToUserName, scene_pid, count(*) as c from wx_access_log where ToUserName='gh_03a74ac96138' and scene_pid != 0 AND Event='subscribe' AND month(create_time)>='10' AND month(create_time)<='11' group by scene_pid) t1
+RIGHT JOIN wx_channel t2 on t1.ToUserName=t2.gh_id AND t1.scene_pid = t2.scene_id and t2.scene_id != 0
+order by c desc
+
+
+select t1.c, t2.title, t2.mobile, t2.scene_id  
+from (select ToUserName, scene_pid, count(*) as c from wx_access_log where ToUserName='gh_03a74ac96138' and scene_pid != 0 AND Event='subscribe' AND date(create_time)='2014-11-03' group by scene_pid) t1
+RIGHT JOIN wx_channel t2 on t1.ToUserName=t2.gh_id AND t1.scene_pid = t2.scene_id and t2.scene_id != 0
+order by c desc
+
+select t1.c, t2.title, t2.mobile, t2.scene_id  
+from (select ToUserName, scene_pid, count(*) as c from wx_access_log where ToUserName='gh_03a74ac96138' and scene_pid != 0 AND Event='subscribe' AND date(create_time)='2014-11-01' group by scene_pid) t1
+INNER JOIN wx_channel t2 on t1.ToUserName=t2.gh_id AND t1.scene_pid = t2.scene_id and t2.scene_id != 0
+order by c desc
+*/
+    public static function getChannelScoreTopx($gh_id, $date_start, $date_end)
+    {
+        $key = md5(serialize([__METHOD__, $gh_id]));
+        $value = Yii::$app->cache->get($key);
+        if ($value !== false)
+            return $value;
+        $channels = MChannel::findAll(['gh_id' => $gh_id]);
+        $rows = [];
+        foreach($channels as $channel)
+        {
+            $row = [];
+            $row['id'] = $channel->id;            
+            $row['title'] = $channel->title;         
+            $row['cnt_sum'] = $channel->getScoreFromLogRange($date_start, $date_end);
+            $rows[] = $row;
+        }
+        Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 12*3600);
+        return $rows;
+    }
+
+    public function getScoreFromLogRange($date_start, $date_end)
+    {
+   return 0;    
+        if ($this->scene_id == 0)
+            return 0;
+//    $count_plus = MAccessLog::find()->where(['ToUserName'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'Event'=>'subscribe', 'date(create_time)'=>$date])->count();
+//    $count_minus = MAccessLog::find()->where(['ToUserName'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'Event'=>'unsubscribe', 'date(create_time)'=>$date])->count();
+        $count_plus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'subscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->count();
+        $count_minus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'unsubscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->count();
+        return $count_plus - $count_minus;
+    }
     
 }
 

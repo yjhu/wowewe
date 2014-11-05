@@ -36,11 +36,11 @@ class MChannelSearch extends Model
 //        $query->with('fans');
 
 // method #2
-        $query->with(['fans'=>function($query) { $query->andWhere('subscribe=1'); }]);
+//        $query->with(['fans'=>function($query) { $query->andWhere('subscribe=1'); }]);
 
 // method #3            
-//       $subQuery = MUser::find()->select('gh_id as gh_id_x, scene_pid as scene_pid_x, count(*) as fans_cnt')->where('scene_pid!=0')->groupBy(['gh_id', 'scene_pid']);
-//       $query->leftJoin(['wx_user' => $subQuery], 'gh_id=gh_id_x AND scene_id = scene_pid_x');
+       $subQuery = MUser::find()->select('gh_id as gh_id_x, scene_pid as scene_pid_x, count(*) as fans_cnt')->where('scene_pid!=0')->groupBy(['gh_id', 'scene_pid']);
+       $query->leftJoin(['wx_user' => $subQuery], 'gh_id=gh_id_x AND scene_id = scene_pid_x');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

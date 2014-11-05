@@ -20,12 +20,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-		<?php echo Html::a('新增渠道', ['channelcreate'], ['class' => 'btn btn-success']) ?>
     	<?php $currentMonth = date("n"); ?>
+		<?php echo Html::a('新增渠道', ['channelcreate'], ['class' => 'btn btn-success']) ?>
+		<?php echo Html::a('累计推广成绩下载 <i class="glyphicon glyphicon-arrow-down"></i>', Url::to().'&channelscoretopsumdownload=1', ['class' => 'btn btn-success']) ?>
 		<?php echo Html::a("渠道每月成绩排行", ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
-
-		<?php echo Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', Url::to().'&channelscoretopsumdownload=1', ['class' => 'btn btn-success']) ?>
-
     </p>
 
 	<?php \yii\widgets\Pjax::begin([
@@ -71,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				},
 				'filter'=> false,
 			],
-*/
+			// method #1, #2
 			[
 				'label' => '累计推广成绩',
 				'attribute' => 'score',
@@ -85,7 +83,8 @@ $this->params['breadcrumbs'][] = $this->title;
 				'filter'=> false,
 			],
 
-/*
+*/
+			// method #3
 			[
 				'label' => '累计推广成绩',
 				'attribute' => 'fansCount',
@@ -96,9 +95,8 @@ $this->params['breadcrumbs'][] = $this->title;
 						'target' => '_blank',
 					]);
 				},
-				'filter'=> false,
 			],
-*/
+
 			[
 				'label' => '推广二维码',
                 'format'=>'html',

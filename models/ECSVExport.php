@@ -3,6 +3,7 @@ namespace app\models;
 
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\base\Exception;
 use yii\db\Connection;
 
 use Yii\data\ActiveDataProvider;

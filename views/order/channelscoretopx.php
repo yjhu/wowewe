@@ -27,22 +27,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
 <ul class="nav nav-tabs">
-	<li>
+	<li class="active">
 	<?php echo Html::a("按时间范围成绩排行", ['channelscoretopx'], []) ?>
 	</li>
 
 	<?php $currentMonth = date("n"); ?>
-	<li <?php echo $month == $currentMonth ? 'class="active"' : ''; ?> >
+	<li>
 	<?php echo Html::a("{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], []) ?>
 	</li>
 
 	<?php $currentMonth = date("n", strtotime('-1 month', time())); ?>
-	<li <?php echo $month == $currentMonth ? 'class="active"' : ''; ?> >
+	<li>
 	<?php echo Html::a("{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], []) ?>
 	</li>
 
 	<?php $currentMonth = date("n", strtotime('-2 month', time())); ?>
-	<li <?php echo $month == $currentMonth ? 'class="active"' : ''; ?> >
+	<li>
 	<?php echo Html::a("{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], []) ?>
 	</li>
 
@@ -50,10 +50,28 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
 		<?php //echo Html::a('渠道列表', ['channellist'], ['class' => 'btn btn-success']) ?>
-    </p>
+
+		<?php
+		use kartik\daterange\DateRangePicker;
+		echo DateRangePicker::widget([
+		//    'model'=>$model,
+		//    'attribute'=>'datetime_range',
+				'name'=>'date_range',
+				'id'=>'id_date_range',
+				'convertFormat'=>true,
+				'pluginOptions'=>[
+				'timePicker'=>false,
+				//        'timePickerIncrement'=>30,
+				//        'format'=>'Y-m-d h:i A'
+				'format'=>'Y-m-d'
+			]
+		]);
+		?>
+	</p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+		'filterSelector'=>'#id_date_range',
 		'filterModel' => $filter,	
 		'options' => ['class' => 'table-responsive'],
 		'tableOptions' => ['class' => 'table table-striped'],        
@@ -84,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			//'heading'=>"<h3 class=\"panel-title\">渠道{$month}月成绩排行</h3>",
 			'heading'=>"<h3 class=\"panel-title\">&nbsp;</h3>",
 			'type'=>'default',			
-			'before'=>Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', Url::to().'&channelscoretopdownload=1', ['class' => 'btn btn-success']),
+			'before'=>Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', Url::to().'&channelscoretopxdownload=1', ['class' => 'btn btn-success']),
 			//'after'=>Html::a('<i class="glyphicon glyphicon-repeat"></i> Reset Grid', ['index'], ['class' => 'btn btn-info']),
 			'showFooter'=>false
 		],
