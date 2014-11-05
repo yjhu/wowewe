@@ -46,7 +46,7 @@ class OrderController extends Controller
     public function init()
     {
         //U::W(['init....', $_GET,$_POST, $GLOBALS]);
-        //U::W(['init....', $_GET,$_POST]);
+        U::W(['init....', $_GET,$_POST]);
     }
 
     public function beforeAction($action)
@@ -414,6 +414,8 @@ class OrderController extends Controller
             $date = date('Y-m-d-His');
             $filename = Yii::$app->getRuntimePath()."/channelscoretopsumdownload-{$date}.csv";
             $csv = new \app\models\ECSVExport($data);
+            $csv->setExclude(['scene_id']);
+            $csv->setHeaders(['c'=>'推广成绩', 'title'=>'营业厅', 'mobile'=>'负责人电话']);
             $csv->toCSV($filename); 
             Yii::$app->response->sendFile($filename);
             return;        
@@ -538,6 +540,57 @@ class OrderController extends Controller
 
     }
 
+    public function actionChannelscoretopx()
+    {
+        $time = time();
+        $date_start = date("Y-m-d", $time-1*24*3600);
+        $date_end = date("Y-m-d", $time-1*24*3600);        
+        
+//        $rows = MChannel::getChannelScoreTopx(Yii::$app->user->getGhid(), $date_start, $date_end);
+        $rows = MChannel::getChannelScoreTopx(Yii::$app->user->getGhid(), '2014-11-01', '2014-11-01');
+        $filter = new \app\models\FiltersForm;
+        $filter->unsetAttributes();
+        if(isset($_GET['FiltersForm'])) {		
+            $filter->setAttributes($_GET['FiltersForm'], false);
+        }
+        $rows = $filter->filterArrayData($rows);		
+        
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $rows,
+            'sort' => [
+                'attributes' => ['id', 'title', 'cnt_sum'],
+                'defaultOrder'=>[
+                    'cnt_sum' => SORT_DESC
+                ]
+            ],
+            'pagination' => [
+                'pageSize' => 50,
+            ],
+        ]);
+
+        if (isset($_GET['channelscoretopxdownload']))
+        {
+            $data = $rows;
+            \yii\helpers\ArrayHelper::multisort($data, 'cnt_sum', SORT_DESC);            
+            $date = date('Y-m-d-His');
+            $filename = Yii::$app->getRuntimePath()."/channelscoretopx-{$date}.csv";
+            $csv = new \app\models\ECSVExport($data);            
+            $attributes = ['id', 'title', 'cnt_sum'];        
+            $csv->setInclude($attributes);
+            $csv->setHeaders(['id'=>'渠道编号', 'title'=>'渠道名称', 'cnt_sum'=>'渠道推广数量']);
+            $csv->toCSV($filename); 
+            Yii::$app->response->sendFile($filename);
+            return;        
+        }
+
+        return $this->render('channelscoretopx', [
+            'dataProvider' => $dataProvider,
+            'date_start' => $date_start,
+            'date_end' => $date_end,            
+            'filter'=>$filter,            
+        ]);  
+
+    }
 
 
 }
