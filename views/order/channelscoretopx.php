@@ -17,7 +17,7 @@ use app\models\MChannel;
 
 $this->params['breadcrumbs'][] = ['label' => '渠道列表', 'url' => ['channellist']];
 //$this->params['breadcrumbs'][] = ['label' => $model->staff_id, 'url' => ['staffview', 'id' => $model->staff_id]];
-$this->title = '月成绩排行';
+$this->title = '按时间范围成绩排行';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="muser-index">
@@ -49,29 +49,52 @@ $this->params['breadcrumbs'][] = $this->title;
 </ul>
 
     <p>
+		<br />
+
 		<?php //echo Html::a('渠道列表', ['channellist'], ['class' => 'btn btn-success']) ?>
 
 		<?php
+/*
 		use kartik\daterange\DateRangePicker;
 		echo DateRangePicker::widget([
 		//    'model'=>$model,
 		//    'attribute'=>'datetime_range',
 				'name'=>'date_range',
 				'id'=>'id_date_range',
+				'language'=>'zh',
 				'convertFormat'=>true,
 				'pluginOptions'=>[
 				'timePicker'=>false,
 				//        'timePickerIncrement'=>30,
 				//        'format'=>'Y-m-d h:i A'
-				'format'=>'Y-m-d'
+				'format'=>'Y-m-d',
+				'separator'=>'_'
 			]
 		]);
+*/			
+		use kartik\widgets\DatePicker;
+		echo '<label class="control-label">请输入时间范围</label>';
+		echo DatePicker::widget([
+			'name' => 'date_start',
+			'value' => $date_start,
+			'options'=>['id'=>'id_date_start'],
+			'type' => DatePicker::TYPE_RANGE,
+			'name2' => 'date_end',
+			'value2' => $date_end,
+			'options2'=>['id'=>'id_date_end'],
+			'pluginOptions' => [
+				'autoclose'=>true,
+				'format'=>'yyyy-mm-dd',
+				'language'=>'zh-CN',
+			]
+		]);
+
 		?>
 	</p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-		'filterSelector'=>'#id_date_range',
+		'filterSelector'=>'#id_date_start, #id_date_end',
 		'filterModel' => $filter,	
 		'options' => ['class' => 'table-responsive'],
 		'tableOptions' => ['class' => 'table table-striped'],        

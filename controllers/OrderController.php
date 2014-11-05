@@ -46,7 +46,7 @@ class OrderController extends Controller
     public function init()
     {
         //U::W(['init....', $_GET,$_POST, $GLOBALS]);
-        U::W(['init....', $_GET,$_POST]);
+        //U::W(['init....', $_GET,$_POST]);
     }
 
     public function beforeAction($action)
@@ -542,12 +542,9 @@ class OrderController extends Controller
 
     public function actionChannelscoretopx()
     {
-        $time = time();
-        $date_start = date("Y-m-d", $time-1*24*3600);
-        $date_end = date("Y-m-d", $time-1*24*3600);        
-        
-//        $rows = MChannel::getChannelScoreTopx(Yii::$app->user->getGhid(), $date_start, $date_end);
-        $rows = MChannel::getChannelScoreTopx(Yii::$app->user->getGhid(), '2014-11-01', '2014-11-01');
+        $date_start = Yii::$app->request->get('date_start', date("Y-m-d"));
+        $date_end = Yii::$app->request->get('date_end', date("Y-m-d"));        
+        $rows = MChannel::getChannelScoreTopx(Yii::$app->user->getGhid(), $date_start, $date_end);
         $filter = new \app\models\FiltersForm;
         $filter->unsetAttributes();
         if(isset($_GET['FiltersForm'])) {		
