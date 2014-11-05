@@ -204,7 +204,7 @@ order by c desc
 */
     public static function getChannelScoreTopx($gh_id, $date_start, $date_end)
     {
-        $key = md5(serialize([__METHOD__, $gh_id]));
+        $key = md5(serialize([__METHOD__, $gh_id, $date_start, $date_end]));
         $value = Yii::$app->cache->get($key);
         if ($value !== false)
             return $value;

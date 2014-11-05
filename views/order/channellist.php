@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
     	<?php $currentMonth = date("n"); ?>
 		<?php echo Html::a('新增渠道', ['channelcreate'], ['class' => 'btn btn-success']) ?>
 		<?php echo Html::a('累计推广成绩下载 <i class="glyphicon glyphicon-arrow-down"></i>', Url::to().'&channelscoretopsumdownload=1', ['class' => 'btn btn-success']) ?>
-		<?php echo Html::a("渠道每月成绩排行", ['channelscoretop', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
+		<?php echo Html::a("渠道按时间范围成绩排行", ['channelscoretopx'], ['class' => 'btn btn-info']) ?>
     </p>
 
 	<?php \yii\widgets\Pjax::begin([

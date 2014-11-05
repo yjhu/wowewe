@@ -17,7 +17,7 @@ use app\models\MChannel;
 
 $this->params['breadcrumbs'][] = ['label' => '渠道列表', 'url' => ['channellist']];
 //$this->params['breadcrumbs'][] = ['label' => $model->staff_id, 'url' => ['staffview', 'id' => $model->staff_id]];
-$this->title = '月成绩排行';
+$this->title = '按时间范围成绩排行';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="muser-index">
