@@ -12,7 +12,7 @@ use app\models\MOffice;
 
 use app\models\U;
 use app\models\MChannel;
-
+use kartik\widgets\DatePicker;
 
 
 $this->params['breadcrumbs'][] = ['label' => '渠道列表', 'url' => ['channellist']];
@@ -27,23 +27,20 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
 <ul class="nav nav-tabs">
-	<li class="active">
-	<?php echo Html::a("按时间范围成绩排行", ['channelscoretopx'], []) ?>
-	</li>
 
 	<?php $currentDate = date("Y-m-d"); ?>
-	<li>
-	<?php echo Html::a("今天", ['channelscoretop', 'month'=>$currentDate], []) ?>
+	<li <?php echo $cur_date == $currentDate ? 'class="active"' : ''; ?> >
+	<?php echo Html::a("今天", ['channelscoretopx', 'cur_date'=>$currentDate], []) ?>
 	</li>
  
 	<?php $currentDate = date("Y-m-d",strtotime("-1 day")); ?>
-	<li>
-	<?php echo Html::a("昨天", ['channelscoretop', 'month'=>$currentDate], []) ?>
+	<li <?php echo $cur_date == $currentDate ? 'class="active"' : ''; ?>>
+	<?php echo Html::a("昨天", ['channelscoretopx', 'cur_date'=>$currentDate], []) ?>
 	</li>
 
 	<?php $currentDate = date("Y-m-d",strtotime("-2 day")); ?>
-	<li>
-	<?php echo Html::a("前天", ['channelscoretop', 'month'=>$currentDate], []) ?>
+	<li <?php echo $cur_date == $currentDate ? 'class="active"' : ''; ?>>
+	<?php echo Html::a("前天", ['channelscoretopx', 'cur_date'=>$currentDate], []) ?>
 	</li>
 
 	<?php $currentMonth = date("n"); ?>
@@ -59,6 +56,11 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php $currentMonth = date("n", strtotime('-2 month', time())); ?>
 	<li>
 	<?php echo Html::a("{$currentMonth}月", ['channelscoretop', 'month'=>$currentMonth], []) ?>
+	</li>
+
+
+	<li <?php echo $cur_date == null ? 'class="active"' : ''; ?>>
+	<?php echo Html::a("按时间范围成绩排行", ['channelscoretopx'], []) ?>
 	</li>
 
 </ul>
@@ -87,23 +89,24 @@ $this->params['breadcrumbs'][] = $this->title;
 			]
 		]);
 */			
-		use kartik\widgets\DatePicker;
-		echo '<label class="control-label">请输入时间范围</label>';
-		echo DatePicker::widget([
-			'name' => 'date_start',
-			'value' => $date_start,
-			'options'=>['id'=>'id_date_start'],
-			'type' => DatePicker::TYPE_RANGE,
-			'name2' => 'date_end',
-			'value2' => $date_end,
-			'options2'=>['id'=>'id_date_end'],
-			'pluginOptions' => [
-				'autoclose'=>true,
-				'format'=>'yyyy-mm-dd',
-				'language'=>'zh-CN',
-			]
-		]);
-
+			if(empty($cur_date))
+			{
+				echo '<label class="control-label">请输入时间范围</label>';
+				echo DatePicker::widget([
+					'name' => 'date_start',
+					'value' => $date_start,
+					'options'=>['id'=>'id_date_start'],
+					'type' => DatePicker::TYPE_RANGE,
+					'name2' => 'date_end',
+					'value2' => $date_end,
+					'options2'=>['id'=>'id_date_end'],
+					'pluginOptions' => [
+						'autoclose'=>true,
+						'format'=>'yyyy-mm-dd',
+						'language'=>'zh-CN',
+					]
+				]);
+			}
 		?>
 	</p>
 

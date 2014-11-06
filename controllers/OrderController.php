@@ -532,9 +532,11 @@ class OrderController extends Controller
             return;        
         }
 
+        $cur_date = date("Y-m-d");
         return $this->render('channelscoretop', [
             'dataProvider' => $dataProvider,
             'month'=>$month,
+            'cur_date'=>$cur_date,
             'filter'=>$filter,            
         ]);  
 
@@ -542,8 +544,17 @@ class OrderController extends Controller
 
     public function actionChannelscoretopx()
     {
-        $date_start = Yii::$app->request->get('date_start', date("Y-m-d"));
-        $date_end = Yii::$app->request->get('date_end', date("Y-m-d"));        
+        $cur_date = Yii::$app->request->get('cur_date');
+        if(empty($cur_date))
+        {
+            $date_start = Yii::$app->request->get('date_start', date("Y-m-d"));
+            $date_end = Yii::$app->request->get('date_end', date("Y-m-d"));
+        }
+        else
+        {
+            $date_start = $cur_date;
+            $date_end = $cur_date; 
+        }
         $rows = MChannel::getChannelScoreTopx(Yii::$app->user->getGhid(), $date_start, $date_end);
         $filter = new \app\models\FiltersForm;
         $filter->unsetAttributes();
@@ -583,7 +594,8 @@ class OrderController extends Controller
         return $this->render('channelscoretopx', [
             'dataProvider' => $dataProvider,
             'date_start' => $date_start,
-            'date_end' => $date_end,            
+            'date_end' => $date_end,  
+            'cur_date' => $cur_date,          
             'filter'=>$filter,            
         ]);  
 
