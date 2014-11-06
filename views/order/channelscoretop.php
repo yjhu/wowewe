@@ -31,19 +31,34 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php echo Html::a("按时间范围成绩排行", ['channelscoretopx'], []) ?>
 	</li>
 
+	<?php $currentDate = date("Y-m-d"); ?>
+	<li <?php echo $month == $currentDate ? 'class="active"' : ''; ?> >
+	<?php echo Html::a("今天", ['channelscoretop', 'month'=>$currentDate], []) ?>
+	</li>
+
+	<?php $currentDate = date("Y-m-d",strtotime("-1 day")); ?>
+	<li <?php echo $month == $currentDate ? 'class="active"' : ''; ?> >
+	<?php echo Html::a("昨天", ['channelscoretop', 'month'=>$currentDate], []) ?>
+	</li>
+
+	<?php $currentDate = date("Y-m-d",strtotime("-2 day")); ?>
+	<li <?php echo $month == $currentDate ? 'class="active"' : ''; ?> >
+	<?php echo Html::a("前天", ['channelscoretop', 'month'=>$currentDate], []) ?>
+	</li>	
+
 	<?php $currentMonth = date("n"); ?>
 	<li <?php echo $month == $currentMonth ? 'class="active"' : ''; ?> >
-	<?php echo Html::a("{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], []) ?>
+	<?php echo Html::a("{$currentMonth}月", ['channelscoretop', 'month'=>$currentMonth], []) ?>
 	</li>
 
 	<?php $currentMonth = date("n", strtotime('-1 month', time())); ?>
 	<li <?php echo $month == $currentMonth ? 'class="active"' : ''; ?> >
-	<?php echo Html::a("{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], []) ?>
+	<?php echo Html::a("{$currentMonth}月", ['channelscoretop', 'month'=>$currentMonth], []) ?>
 	</li>
 
 	<?php $currentMonth = date("n", strtotime('-2 month', time())); ?>
 	<li <?php echo $month == $currentMonth ? 'class="active"' : ''; ?> >
-	<?php echo Html::a("{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], []) ?>
+	<?php echo Html::a("{$currentMonth}月", ['channelscoretop', 'month'=>$currentMonth], []) ?>
 	</li>
 
 </ul>
