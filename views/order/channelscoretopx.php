@@ -31,6 +31,21 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php echo Html::a("按时间范围成绩排行", ['channelscoretopx'], []) ?>
 	</li>
 
+	<?php $currentDate = date("Y-m-d"); ?>
+	<li>
+	<?php echo Html::a("今天成绩排行", ['channelscoretop', 'month'=>$currentDate], []) ?>
+	</li>
+ 
+	<?php $currentDate = date("Y-m-d",strtotime("-1 day")); ?>
+	<li>
+	<?php echo Html::a("昨天成绩排行", ['channelscoretop', 'month'=>$currentDate], []) ?>
+	</li>
+
+	<?php $currentDate = date("Y-m-d",strtotime("-2 day")); ?>
+	<li>
+	<?php echo Html::a("前天成绩排行", ['channelscoretop', 'month'=>$currentDate], []) ?>
+	</li>
+
 	<?php $currentMonth = date("n"); ?>
 	<li>
 	<?php echo Html::a("{$currentMonth}月成绩排行", ['channelscoretop', 'month'=>$currentMonth], []) ?>
