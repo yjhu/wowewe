@@ -12,6 +12,7 @@ use app\models\U;
 use app\models\Wechat;
 use app\models\WxException;
 use app\models\MAccessLog;
+use app\models\MAccessLogAll;
 use app\models\MUser;
 use app\models\MGh;
 use app\models\MOffice;
@@ -28,6 +29,15 @@ use app\models\RespTransfer;
 
 class WechatXiangYangUnicom extends Wechat
 {
+
+    protected function saveAccessLogAll($params=[]) 
+    {
+        $request = $this->getRequest();
+        $log = new MAccessLogAll;
+        $log->setAttributes($request, false);
+        $log->save(false);
+    }
+
     protected function saveAccessLog($params=[]) 
     {
         $request = $this->getRequest();
@@ -148,7 +158,7 @@ class WechatXiangYangUnicom extends Wechat
 
     protected function onText() 
     { 
-        $this->saveAccessLog();      
+        $this->saveAccessLogAll();
         $openid = $this->getRequest('FromUserName');
         $gh_id = $this->getRequest('ToUserName');    
         $Content = $this->getRequest('Content');
@@ -318,13 +328,13 @@ class WechatXiangYangUnicom extends Wechat
 
     protected function onView() 
     {
-        $this->saveAccessLog();      
+        $this->saveAccessLogAll();
         return parent::onView();    
     }
 
     protected function onClick()
     {
-        $this->saveAccessLog();          
+        $this->saveAccessLogAll();
         return parent::onClick();
     }
 
