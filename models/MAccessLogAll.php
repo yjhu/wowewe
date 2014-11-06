@@ -3,8 +3,8 @@ namespace app\models;
 
 
 /*
-DROP TABLE IF EXISTS wx_access_log;
-CREATE TABLE wx_access_log (
+DROP TABLE IF EXISTS wx_access_log_all;
+CREATE TABLE wx_access_log_all (
     id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     scene_pid int(10) unsigned NOT NULL DEFAULT '0',    
@@ -17,11 +17,9 @@ CREATE TABLE wx_access_log (
     Event VARCHAR(32) NOT NULL DEFAULT '',
     EventKey VARCHAR(1024) NOT NULL DEFAULT '',
     EventKeyCRC bigint(20) unsigned NOT NULL DEFAULT '0',
-    KEY gh_id_idx(ToUserName),
-    KEY EventKeyCRC_idx(EventKeyCRC)
+    KEY EventKeyCRC_idx(ToUserName,EventKeyCRC)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-ALTER TABLE wx_access_log ADD scene_pid int(10) unsigned NOT NULL DEFAULT '0' after create_time;
 
 */
 
@@ -37,12 +35,12 @@ use app\models\MOffice;
 
 // MAccessLog: just log subscribe unscribe info
 // MAccessLogAll: log other info except subscribe and unscribe info
-class MAccessLog extends ActiveRecord
+class MAccessLogAll extends ActiveRecord
 {
     
     public static function tableName()
     {
-        return 'wx_access_log';
+        return 'wx_access_log_all';
     }
 
     public function getUser()
