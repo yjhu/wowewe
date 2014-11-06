@@ -24,15 +24,6 @@ $config = [
 	'cache' => [
 		'class' => 'yii\caching\DummyCache',
 	],		
-*/
-	'request' => [
-		'cookieValidationKey' => 'FHcXXyNQEu4_O_A68pFWXgK8TKYyKc2Z',
-	],
-
-	'cacheFile' => [
-		'class' => 'yii\caching\FileCache',
-	],
-	
 	'cache' => [
 		'class' => 'yii\caching\MemCache',
 		'keyPrefix' => 'ya54dee8',
@@ -43,6 +34,18 @@ $config = [
 				'weight' => 100,
 			],
 		],
+	],			
+*/
+	'request' => [
+		'cookieValidationKey' => 'FHcXXyNQEu4_O_A68pFWXgK8TKYyKc2Z',
+	],
+
+	'cacheFile' => [
+		'class' => 'yii\caching\FileCache',
+	],
+	
+	'cache' => [
+		'class' => 'yii\caching\ApcCache',
 	],		
 
 	'formatter'=> [
