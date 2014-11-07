@@ -93,26 +93,32 @@ class NightController extends Controller
 	{
             $tableName = MSceneDetail::tableName();	
             $query = (new Query()) ->from($tableName)->where("cat=:cat AND status=:status AND openid_fan != '' AND scene_amt>0", [':cat'=>MSceneDetail::CAT_FAN, ':status'=>MSceneDetail::STATUS_INIT]);
+            $amt = 0;
             foreach ($query->each() as $row)
             {                
-                $user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid_fan']]);
-                if ($user === null)
-                {
+                $fan = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid_fan']]);
+                if ($fan === null)
                     continue;
-                }
                 
-                if ($user->isActivedFan())
+                if ($fan->isActivedFan())
                 {
                     U::W('ACTIVE id='.$row['id']);
                     $model = MSceneDetail::findOne($row['id']);
                     $model->status = MSceneDetail::STATUS_CONFIRMED;
-                    $model->save(false);
+                    if ($model->save(false))
+                    {
+                        $user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid']]);
+                        $user->scene_balance += $model->scene_amt;
+                        $user->scene_balance_time = date("Y-m-d H:i:s");
+                        $user->save(false);
+                    }
                 }
                 else
                 {
                     U::W('NO ACTIVE id='.$row['id']);                
                 }
             }	
+
 
 	}
 	
