@@ -281,8 +281,9 @@ class MUser extends ActiveRecord implements IdentityInterface
         //预期沃点
         if(empty($this->scene_id))
             return 0;
-        $n = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND create_time>:create_time',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT, ':create_time'=>$this->scene_balance_time])->sum('scene_amt');
-        
+        //$n = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND create_time>:create_time',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT, ':create_time'=>$this->scene_balance_time])->sum('scene_amt');
+        $n = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+
         return empty($n) ? 0 : $n;
     }
 
