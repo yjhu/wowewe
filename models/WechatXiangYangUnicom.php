@@ -68,8 +68,8 @@ class WechatXiangYangUnicom extends Wechat
         $url_5 = "<a href=\"http://wsq.qq.com/reflow/263163652-1044?_wv=1&source=\">用户吐槽</a>";
         $url_6 = "<a href=\"http://m.wsq.qq.com/263163652\">襄阳沃社区</a>";
         $url_7 = "<a href=\"".Url::to(['wap/g2048', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">游戏2048</a>";
-        $url_8 = "<a href=\"".Url::to(['nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
-        $url_9 = "<a href=\"".Url::to(['order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
+        $url_8 = "<a href=\"".Url::to(['wap/nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
+        $url_9 = "<a href=\"".Url::to(['wap/order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
         $url_10 = "<a href=\"http://lm.10010.com/wolm/ot/guideDetail.html\">沃联盟</a>";
 
         if (!empty($EventKey))
@@ -171,8 +171,8 @@ class WechatXiangYangUnicom extends Wechat
         $url_5 = "<a href=\"http://wsq.qq.com/reflow/263163652-1044?_wv=1&source=\">用户吐槽</a>";
         $url_6 = "<a href=\"http://m.wsq.qq.com/263163652\">襄阳沃社区</a>";
         $url_7 = "<a href=\"".Url::to(['wap/g2048', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">游戏2048</a>";
-        $url_8 = "<a href=\"".Url::to(['nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
-        $url_9 = "<a href=\"".Url::to(['order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
+        $url_8 = "<a href=\"".Url::to(['wap/nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
+        $url_9 = "<a href=\"".Url::to(['wap/order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
         $url_10 = "<a href=\"http://lm.10010.com/wolm/ot/guideDetail.html\">沃联盟</a>";
 
 
