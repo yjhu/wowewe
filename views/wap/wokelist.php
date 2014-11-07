@@ -145,8 +145,10 @@
         
         <li><a href="#tqjl"><img src="../web/images/woke/tqjl.gif" alt="提现记录" class="ui-li-icon ui-corner-none">提现记录<span class="ui-li-count"><?=  $user->getWokeYtwd(); ?></span></a></li>
         
+        <!--
         <li><a href="#wdyhk"><img src="../web/images/woke/wdyhk.gif" alt="我的银行卡" class="ui-li-icon ui-corner-none">我的银行卡<span class="ui-li-count">1</span></a></li>
-        
+        -->
+
         <!--
         <li><a href="#"><img src="../web/images/woke/aqsz.gif" alt="安全设置" class="ui-li-icon ui-corner-none">安全设置</a></li>
         <li><a href="#"><img src="../web/images/woke/wdhb.gif" alt="我的海报" class="ui-li-icon ui-corner-none">我的海报</a></li>
@@ -408,9 +410,12 @@
 
     <form> 
     <label for="ktwd-max">最多可提沃点: <?=  $user->getWokeKtwd()-$user->getWokeYtwd(); ?> 沃点</label>
-    <label for="ljtxSlider">现在提现沃点</label>
+    <label for="ljtxSlider"></label>
     <input type="range" name="ljtxSlider" id="ljtxSlider" data-highlight="true" data-theme=a data-mini="true" min="100" max="<?=  $user->getWokeKtwd()-$user->getWokeYtwd(); ?>" step="100" value="100">
-    <input type="button" id="ljtxBtn" value="立即提现">
+   
+    <input type="tel" name="czhm" id="czhm" placeholder="手机号码" value="">
+    <br>
+    <input type="button" id="ljtxBtn" value="沃点换话费" style="background-color: #44B549">
     </form>
    <br>
     <ul data-role="listview" data-inset="false" >
@@ -460,6 +465,18 @@
 <div data-role="footer" data-position="fixed">
     <h4>&copy; 襄阳联通 2014</h4>
 </div>
+
+<div data-role="popup" id="popupDialog-Page" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
+    <div data-role="header" data-theme="c">
+    <h1>温馨提示</h1>
+    </div>
+    <div role="main" id="popupDialog-Page-txt" class="ui-content">
+        <span class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext'><span>
+        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">确认</a>
+    </div>
+</div>
+
+
  <?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
 
@@ -816,11 +833,13 @@
 
 
 
-
-
-
 <script>
 var ktwd = "<?=  $user->getWokeKtwd()-$user->getWokeYtwd(); ?>";
+
+function fillErrmsg(id,errmsg)
+{
+     $(id).html("<p><a href='#' class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext ui-btn-inline'>Alert</a>"+errmsg+"</p><a href='#' class='ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b' data-rel='back'>确认</a>");
+}
 
 $(document).on("pageinit", "#wdcf", function(){
 
@@ -939,18 +958,32 @@ $(document).on("pageinit", "#tqjl", function(){
 
     $(document).on("click","#ljtxBtn",function(){
        var ljtx = $("#ljtxSlider").val();
-       if(ktwd < 100)
-       {
-            alert("提现最低值为100沃点。");
-            return false; 
-       }
+
+        if(ktwd < 100)
+        {
+            fillErrmsg('#popupDialog-Page-txt','提现最低值为100沃点!');
+            $('#popupDialog-Page').popup('open');
+            //alert("姓名输入不合法");
+            return  false;
+        }
+
+        var czhm = $('#czhm').val();
+        var czhmReg = /(^(1)\d{10}$)/;
+        if(czhmReg.test(czhm) === false)
+        {
+            fillErrmsg('#popupDialog-Page-txt','充值手机号码不正确。请重新填写!');
+            $('#popupDialog-Page').popup('open');
+            //alert("姓名输入不合法");
+            return  false;
+        }
+
 
         $.ajax({
             url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'woketixian'], true) ; ?>",
             type:"GET",
             cache:false,
             dataType:'json',
-            data: "&ljtx="+ljtx+"&memo=提现申请",
+            data: "&ljtx="+ljtx+"&czhm="+czhm+"&memo=提现申请",
             success: function(json_data){
                 if(json_data)
                 {
@@ -959,7 +992,7 @@ $(document).on("pageinit", "#tqjl", function(){
             }
         });
 
-        alert("提现成功:"+$("#ljtxSlider").val()+"沃点。");
+        alert("你已成功提现"+$("#ljtxSlider").val()+"沃点; 价值"+($("#ljtxSlider").val())/100+"元。稍后会充值到你的手机上。" );
 
        // $("#userMsg").html("提现成功:"+$("#ljtxSlider").val()+"沃点。");
        // $("#popupUserMsg").popup("open");

@@ -15,13 +15,19 @@ CREATE TABLE wx_scene_detail (
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     oid VARCHAR(32) NOT NULL DEFAULT '',
     openid_fan VARCHAR(32) NOT NULL DEFAULT '',        
-    memo VARCHAR(256) NOT NULL DEFAULT '',    
+    memo VARCHAR(256) NOT NULL DEFAULT '',   
+    czhm VARCHAR(64) NOT NULL DEFAULT '', 
     status tinyint(1) unsigned NOT NULL DEFAULT '0',    
     KEY idx_gh_id_openid(gh_id, openid),    
     KEY idx_gh_id_scene_id(gh_id, scene_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
+
 ALTER TABLE wx_scene_detail ADD KEY idx_gh_id_openid(gh_id, openid);
+
+// czhm 充值号码
+ALTER TABLE wx_scene_detail ADD czhm VARCHAR(64) NOT NULL DEFAULT '';
 
 */
 
@@ -43,6 +49,11 @@ class MSceneDetail extends ActiveRecord
     const STATUS_INIT = 0;
     const STATUS_CONFIRMED = 1;    
     const STATUS_CANCEL = 2;
+
+    //amt<0 means tixian
+    const STATUS_TIXIAN_APPLY = 0;
+    const STATUS_TIXIAN_OK = 1;    
+    const STATUS_TIXIAN_NOTOK = 2;
 
     const CAT_ITEM = 0;
     const CAT_FAN = 1;    

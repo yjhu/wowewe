@@ -48,6 +48,7 @@ CREATE TABLE wx_order (
     val_pkg_period int(10) unsigned NOT NULL DEFAULT '0',
     val_pkg_monthprice int(10) unsigned NOT NULL DEFAULT '0',
     val_pkg_plan VARCHAR(8) NOT NULL DEFAULT '',
+    czhm VARCHAR(64) NOT NULL DEFAULT '',
     PRIMARY KEY (oid),
     KEY gh_id_oid(gh_id,oid),
     KEY gh_id_office_id(gh_id,office_id),
@@ -58,6 +59,9 @@ CREATE TABLE wx_order (
 DROP TABLE IF EXISTS wx_order_arc;
 CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
 
+
+// czhm 充值号码
+ALTER TABLE wx_order ADD czhm VARCHAR(64) NOT NULL DEFAULT '';
 */
 
 use Yii;

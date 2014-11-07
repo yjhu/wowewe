@@ -25,6 +25,7 @@ CREATE TABLE wx_user (
     msg_cnt int(10) unsigned NOT NULL DEFAULT '0',        
     scene_id int(10) unsigned NOT NULL DEFAULT '0',
     scene_balance int(10) unsigned NOT NULL DEFAULT '0',
+    scene_balance_time TIMESTAMP NOT NULL DEFAULT 0,
     scene_level tinyint(3) unsigned NOT NULL DEFAULT 0,
     scene_pid int(10) unsigned NOT NULL DEFAULT '0',
     lat float(10,6) NOT NULL DEFAULT '0.000000',
@@ -79,6 +80,7 @@ INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_1ad98f54
 
 ALTER TABLE wx_user CHANGE msg_time msg_time TIMESTAMP NOT NULL DEFAULT 0;
 
+ALTER TABLE wx_user ADD scene_balance_time TIMESTAMP NOT NULL DEFAULT 0 after scene_balance;
 */
 
 use Yii;
@@ -284,8 +286,9 @@ class MUser extends ActiveRecord implements IdentityInterface
         //预期沃点
         if(empty($this->scene_id))
             return 0;
-        $n = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
-        return empty($n) ? 0 : $n; 
+        $n = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND create_time>:create_time',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT, ':create_time'=>$this->scene_balance_time])->sum('scene_amt');
+        
+        return empty($n) ? 0 : $n;
     }
 
     public function getWokeKtwd()
@@ -293,8 +296,9 @@ class MUser extends ActiveRecord implements IdentityInterface
         //可提沃点
         if(empty($this->scene_id))
             return 0;
-        $n = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_CONFIRMED])->sum('scene_amt');
-        return empty($n) ? 0 : $n;       
+        //$n = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_CONFIRMED])->sum('scene_amt');
+        //return empty($n) ? 0 : $n;
+        return  $this->scene_balance;   
     }
 
     public function getWokeYtwd()
@@ -302,7 +306,7 @@ class MUser extends ActiveRecord implements IdentityInterface
         //已提沃点
         if(empty($this->scene_id))
             return 0;
-        $n = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt<0',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_CONFIRMED])->sum('scene_amt');
+        $n = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt<0',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_TIXIAN_OK])->sum('scene_amt');
         return empty($n) ? 0 : abs($n); 
     }
 
@@ -314,25 +318,25 @@ class MUser extends ActiveRecord implements IdentityInterface
             return 0;
 
         //今天
-        $d1 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(create_time)=to_days(now())',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        $d1 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(create_time)=to_days(now()) AND create_time>:create_time',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT, ':create_time'=>$this->scene_balance_time])->sum('scene_amt');
         if($d1==null) $d1=0;
         //昨天
-        $d2 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=1',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        $d2 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=1 AND create_time>:create_time',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT, ':create_time'=>$this->scene_balance_time])->sum('scene_amt');
         if($d2==null) $d2=0;
 
-        $d3 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=2',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        $d3 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=2 AND create_time>:create_time',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT, ':create_time'=>$this->scene_balance_time])->sum('scene_amt');
         if($d3==null) $d3=0;
 
-        $d4 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=3',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        $d4 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=3 AND create_time>:create_time',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT, ':create_time'=>$this->scene_balance_time])->sum('scene_amt');
         if($d4==null) $d4=0;
 
-        $d5 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=4',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        $d5 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=4 AND create_time>:create_time',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT, ':create_time'=>$this->scene_balance_time])->sum('scene_amt');
         if($d5==null) $d5=0;
 
-        $d6 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=5',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        $d6 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=5 AND create_time>:create_time',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT, ':create_time'=>$this->scene_balance_time])->sum('scene_amt');
         if($d6==null) $d6=0;
 
-        $d7 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=6',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
+        $d7 = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND to_days(now())-to_days(create_time)=6 AND create_time>:create_time',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT, ':create_time'=>$this->scene_balance_time])->sum('scene_amt');
         if($d7==null) $d7=0;
 
         $last7days = array($d1, $d2, $d3, $d4, $d5, $d6, $d7);

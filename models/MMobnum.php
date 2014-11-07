@@ -232,6 +232,58 @@ INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13207249920',
 INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13207249921', 0, 0, 1, 0);
 
 
+----------
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257103957', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257103975', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257103997', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105005', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105006', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105059', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105137', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105193', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105250', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105297', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105301', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105312', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105557', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105570', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105572', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105612', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105682', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105698', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105716', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105727', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105729', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105735', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105751', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105813', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105827', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105830', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105836', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105882', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105885', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105910', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105931', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105937', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257105998', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106080', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106127', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106152', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106157', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106162', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106165', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106171', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106179', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106190', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106233', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106250', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106255', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106261', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106281', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106282', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106295', 0, 0, 1, 0);
+INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13257106332', 0, 0, 1, 0);
+
 //mobile
 INSERT INTO wx_mobnum (num, ychf, zdxf, num_cat, is_good) VALUES ('13088888888', 820000, 8000, 2, 0);
 */

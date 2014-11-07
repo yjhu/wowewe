@@ -1070,15 +1070,23 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
                 U::W($openid);                   
                 Yii::$app->wx->setGhId($gh_id);
                 $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        
+               
                 $model = new \app\models\MSceneDetail;
                 $model->gh_id = $gh_id;
                 $model->openid = $openid;
                 $model->scene_id = $user->scene_id;
                 $model->scene_amt = (-1)*$_GET['ljtx'];
                 $model->memo = $_GET['memo'];
-                  
+                $model->czhm = $_GET['czhm'];
+                
                 if (!$model->save(false))
+                {
+                    U::W([__METHOD__, $model->getErrors()]);
+                    return json_encode(['code'=>1, 'errmsg'=>'save score to db error']);
+                }        
+              
+                $user->scene_balance = $user->scene_balance - abs($model->scene_amt);
+                if (!$user->save(false))
                 {
                     U::W([__METHOD__, $model->getErrors()]);
                     return json_encode(['code'=>1, 'errmsg'=>'save score to db error']);
