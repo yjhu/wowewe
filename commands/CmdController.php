@@ -325,7 +325,7 @@ class CmdController extends Controller
                     new \app\models\ButtonView('特惠手机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobilelist:{$gh_id}")),
                     new \app\models\ButtonView('8折上网卡', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_INTERNET_CARD)),
                     new \app\models\ButtonView('5折流量包', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD)),
-                    //new \app\models\ButtonView('官网直通车', 'http://m.10010.com/'),
+                    new \app\models\ButtonView('官网直通车', 'http://m.10010.com/'),
                     //new \app\models\ButtonView('iPhone6火热预订', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=204243902&idx=1&sn=37207b6183533131e661c22ec43a083b#rd'),
                     //new \app\models\ButtonView('小米4预订', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=204274384&idx=1&sn=ae4d0925e811da0c652209d42e7ac04e#rd'),
                 ]),
