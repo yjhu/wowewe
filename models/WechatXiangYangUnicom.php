@@ -57,7 +57,7 @@ class WechatXiangYangUnicom extends Wechat
         $MsgType = $this->getRequest('MsgType');
         $Event = $this->getRequest('Event');    
         $EventKey = $this->getRequest('EventKey');
-        
+        $user = $this->getUser();
         if ($isNewFan || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_HBHE)  
             $this->saveAccessLog();
 
@@ -79,7 +79,6 @@ class WechatXiangYangUnicom extends Wechat
             $scene_pid = substr($EventKey, 8);    
             //U::W("EventKey=$EventKey, scene_pid=$scene_pid");
             
-            $model = $this->getUser();
             if ($isNewFan || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_HBHE)  
             {                 
                 //if father is office, move it to the office group
@@ -89,12 +88,12 @@ class WechatXiangYangUnicom extends Wechat
                     $mg = MGroup::findOne(['gh_id'=>$gh_id, 'office_id'=>$office->office_id]);
                     if ($mg === null)
                         U::W([__METHOD__, "group does not exists!, {$office->office_id}"]);                                            
-                    $model->gid = $mg->gid;
+                    $user->gid = $mg->gid;
                     $arr =  $this->WxGroupMoveMember($FromUserName, $mg->gid);
                 }            
 
-                $model->scene_pid = $scene_pid;                            
-                $model->save(false);
+                $user->scene_pid = $scene_pid;                            
+                $user->save(false);
 
                 // insert cash into MSceneDetail
                 $father = MUser::findOne(['gh_id'=>$gh_id, 'scene_id'=>$scene_pid]);
@@ -117,13 +116,12 @@ class WechatXiangYangUnicom extends Wechat
                 U::W("SORRY, $FromUserName IS NOT NEW, can not be considered a fan");
             }
                 
-            $nickname = empty($model->nickname) ? '' : $model->nickname;            
+            $nickname = empty($user->nickname) ? '' : $user->nickname;            
             return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
         }
         else
         {
-            $model = $this->getUser();
-            $nickname = empty($model->nickname) ? '' : $model->nickname;            
+            $nickname = empty($user->nickname) ? '' : $user->nickname;            
             return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
         }
     }
@@ -145,13 +143,13 @@ class WechatXiangYangUnicom extends Wechat
         // cancel MSceneDetail
         if ($scene_pid > 0)
         {
-            $ar = MSceneDetail::findOne(['gh_id'=>$gh_id, 'scene_id'=>$scene_pid, 'openid_fan'=>$FromUserName]);
-            if ($ar !== null) 
-            {
+            $arr = MSceneDetail::findAll(['gh_id'=>$gh_id, 'scene_id'=>$scene_pid, 'openid_fan'=>$FromUserName]);
+            foreach ($arr as $ar) 
+            {            
                 $ar->status = MSceneDetail::STATUS_CANCEL;
                 if (!$ar->save(false))
                     U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
-            }                                    
+            }            
         }            
         return Wechat::NO_RESP;            
     }

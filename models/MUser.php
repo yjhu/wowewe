@@ -259,23 +259,12 @@ class MUser extends ActiveRecord implements IdentityInterface
 
     public function isActivedFan()
     {
-                U::W('MY CNT'. $this->msg_cnt);    
-        $flag = true;
         if ($this->subscribe == 0)
-        {
-        U::W('NO SUB');
             return false;
-        }
         if (time() - strtotime($this->create_time) < 30*24*3600)    
-        {
-                U::W('NO TIME');
             return false;
-         }
-        if ($this->msg_cnt < 2)
-        {
-                U::W('NO CNT'. $this->msg_cnt);
+        if ($this->msg_cnt < 1)
             return false;            
-           }
         return true;            
     }
 
