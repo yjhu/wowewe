@@ -13,9 +13,16 @@ return [
 	'timeZone' => 'Asia/Shanghai',
 	'controllerNamespace' => 'app\commands',
 	'components' => [
+/*	
 		'cacheFile' => [
 			'class' => 'yii\caching\FileCache',
 		],
+*/
+	
+	'cache' => [
+		'class' => 'yii\caching\DummyCache',
+	],	
+
 /*
 		'cache' => [
 			'class' => 'yii\caching\MemCache',
@@ -29,9 +36,12 @@ return [
 			],
 		],		
 */
+
+/*
         	'cache' => [
         		'class' => 'yii\caching\ApcCache',
-        	],		
+        	],	
+*/	
 
 		'log' => [
 			'targets' => [
