@@ -25,6 +25,7 @@ $config = [
 		'class' => 'yii\caching\DummyCache',
 	],	
 	/*	
+*/	
 	'cache' => [
 		'class' => 'yii\caching\MemCache',
 		'keyPrefix' => 'ya54dee8',
@@ -36,7 +37,7 @@ $config = [
 			],
 		],
 	],			
-	*/
+
 	'request' => [
 		'cookieValidationKey' => 'FHcXXyNQEu4_O_A68pFWXgK8TKYyKc2Z',
 	],
@@ -44,13 +45,13 @@ $config = [
 	'cacheFile' => [
 		'class' => 'yii\caching\FileCache',
 	],
-	
+/*	
 	/*
 	'cache' => [
 		'class' => 'yii\caching\ApcCache',
 	],
 	*/
-
+*/
 	'formatter'=> [
 		'datetimeFormat'=>'Y-m-d H:i:s',
 		'dateFormat'=>'Y-m-d',

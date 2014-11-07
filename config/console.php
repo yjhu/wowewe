@@ -17,13 +17,7 @@ return [
 		'cacheFile' => [
 			'class' => 'yii\caching\FileCache',
 		],
-*/
-	
-	'cache' => [
-		'class' => 'yii\caching\DummyCache',
-	],	
 
-/*
 		'cache' => [
 			'class' => 'yii\caching\MemCache',
 			'keyPrefix' => 'ya54dee8',
@@ -35,14 +29,15 @@ return [
 				],
 			],
 		],		
-*/
+
+/*
 
 /*
         	'cache' => [
         		'class' => 'yii\caching\ApcCache',
         	],	
 */	
-
+*/
 		'log' => [
 			'targets' => [
 				[
