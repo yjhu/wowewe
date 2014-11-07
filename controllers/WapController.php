@@ -1129,6 +1129,35 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
     }
 
+    public function actionMobilelistxxx()
+    {
+        $this->layout ='wapy';
+//        $gh_id = U::getSessionParam('gh_id');
+//        $openid = U::getSessionParam('openid');
+
+        $gh_id = MGh::GH_XIANGYANGUNICOM;
+        $openid = MGh::GH_XIANGYANGUNICOM_OPENID_KZENG;
+        
+        Yii::$app->wx->setGhId($gh_id);
+        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_DESC])->all();
+        $query = new \yii\db\Query();
+        $query->select('*')->from(\app\models\MActivity::tableName())->where(['status'=>1])->orderBy(['id' => SORT_DESC])->all();   
+        $rows = $query->createCommand()->queryAll();
+        foreach($models as &$model)
+        {
+            foreach($rows as &$row)
+            {
+                $ids = explode(",", $row['iids']); 
+                if (in_array($model['iid'], $ids)) 
+                {
+                   $model['price']=($model['price']*$row['discount'])/10;
+                   $model['title_hint']="<span class='activity'>限时促销!</span>&nbsp;&nbsp;".$model['title_hint'];
+                }
+            }
+        }
+        return $this->render('mobilelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);
+    }
+
     public function actionMobile()
     {
         $this->layout ='wapy';

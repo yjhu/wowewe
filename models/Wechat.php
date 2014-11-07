@@ -114,6 +114,7 @@ class Wechat extends \yii\base\Object
     {
         $gh_id = $this->getGhId();    
         $FromUserName = $this->getRequest('FromUserName');
+        $MsgType = $this->getRequest('MsgType');        
         $isNewUser = false;
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);
         if ($model === null)
@@ -130,7 +131,14 @@ class Wechat extends \yii\base\Object
             $model->setAttributes($arr, false);
         }
         $model->msg_time = date("Y-m-d H:i:s");
-        $model->msg_cnt += 1;
+        if ($MsgType == Wechat::MSGTYPE_EVENT)
+        {
+            $Event = $this->getRequest('Event');
+            if (!in_array($Event, [Wechat::EVENT_SUBSCRIBE, Wechat::EVENT_UNSUBSCRIBE]))
+                $model->msg_cnt += 1;
+        }
+        else
+            $model->msg_cnt += 1;        
         $this->setUser($model);
         return $isNewUser;
     }    
