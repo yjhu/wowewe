@@ -107,8 +107,10 @@ class NightController extends Controller
                     $model->status = MSceneDetail::STATUS_CONFIRMED;
                     if ($model->save(false))
                     {
+                        U::W("SAVE BALANCE1 ".$user->scene_balance);
                         $user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid']]);
                         $user->scene_balance += $model->scene_amt;
+                        U::W("SAVE BALANCE2 ".$user->scene_balance);                        
                         $user->scene_balance_time = date("Y-m-d H:i:s");
                         $user->save(false);
                     }
