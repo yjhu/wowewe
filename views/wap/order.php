@@ -251,6 +251,19 @@ function load_data2(i, n)
 		imgurl = '../web/images/item/flow2.5g-700x500.jpg-120x120.jpg';
 	else if(n.cid == 707)
 		imgurl = '../web/images/item/flow1gb-02-700x500.jpg-120x120.jpg';
+	//双十一活动
+	else if(n.cid == 708)
+		imgurl = '../web/images/item/200yuan-bendi-5g-1111-700x500.jpg-120x120.jpg';
+	else if(n.cid == 709)
+		imgurl = '../web/images/item/3gliuliang-1111-700x500.jpg-120x120.jpg';
+	else if(n.cid == 710)
+		imgurl = '../web/images/item/6gliuliang-1111-700x500.jpg-120x120.jpg';
+	else if(n.cid == 711)
+		imgurl = '../web/images/item/100yuan-bendi-5g-1111-700x500.jpg-120x120.jpg';
+	else if(n.cid == 712)
+		imgurl = '../web/images/item/45gliuliang-1111-700x500.jpg-120x120.jpg';
+	else if(n.cid == 713)
+		imgurl = '../web/images/item/96gliuliang-1111-700x500.jpg-120x120.jpg';
 
 
 	if(n.val_pkg_3g4g == "3g")

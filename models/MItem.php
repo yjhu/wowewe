@@ -87,6 +87,18 @@ class MItem extends ActiveRecord
 
  	const ITEM_CAT_MOBILE_XIAOMI4 = 331;
 
+ 	//双十一活动手机
+ 	//----------------------------------------------------------
+ 	//ITEM_CAT_MOBILE_IPHONE4S iPhone 4S  8GB GSM  =12
+ 	//ITEM_CAT_MOBILE_HUAWEI_HONOR_6_WHITE 荣耀6 =328
+ 	//ITEM_CAT_MOBILE_XIAOMI4 小米4 =331
+	const ITEM_CAT_APPLE_5S_16G = 332;
+	const ITEM_CAT_APPLE_6_16G = 333;
+	const ITEM_CAT_MOBILE_XIAOMI_HM_NOTE = 334;
+	const ITEM_CAT_MOBILE_SONY_S55U = 335;
+	const ITEM_CAT_MOBILE_XIAOMI_HM_1S = 336;
+
+
  	const ITEM_CAT_CARD_45GLIULIANG = 700;
  	const ITEM_CAT_CARD_96GLIULIANG = 701;
 
@@ -96,6 +108,16 @@ class MItem extends ActiveRecord
  	const ITEM_KIND_INTERNET_CARD_FLOW1GB_1 = 705;
  	const ITEM_KIND_INTERNET_CARD_FLOW2DOT5GB = 706;
  	const ITEM_KIND_INTERNET_CARD_FLOW1GB_2 = 707;
+
+ 	//双十一活动 上网卡
+ 	//----------------------------------------------------------
+	const ITEM_CAT_CARD_1111_200YUAN_BENDI_5GLIULIANG = 708;
+	const ITEM_CAT_CARD_1111_3GLIULIANG = 709;
+	const ITEM_CAT_CARD_1111_6GLIULIANG = 710;
+	const ITEM_CAT_CARD_1111_100YUAN_BENDI_5GLIULIANG = 711;
+	const ITEM_CAT_CARD_1111_45GLIULIANG = 712;
+	const ITEM_CAT_CARD_1111_96GLIULIANG = 713;
+
 
 	const ITEM_KIND_MOBILE = 1;
 	const ITEM_KIND_CARD = 2;
@@ -142,7 +164,20 @@ class MItem extends ActiveRecord
 			self::ITEM_KIND_INTERNET_CARD_FLOW1GB_1 => '50元包1G 3G省内流量包',
 			self::ITEM_KIND_INTERNET_CARD_FLOW2DOT5GB => '100元包2.5G 3G省内流量包',
 			self::ITEM_KIND_INTERNET_CARD_FLOW1GB_2 => '100元包1G 全国流量半年包',
-
+			
+			//双十一活动 
+			self::ITEM_CAT_APPLE_5S_16G => 'APPLE 苹果 iPhone5S 16G',
+			self::ITEM_CAT_APPLE_6_16G => 'APPLE 苹果 iPhone6 16G',
+			self::ITEM_CAT_MOBILE_XIAOMI_HM_NOTE => '小米 红米 NOTE',
+			self::ITEM_CAT_MOBILE_SONY_S55U => '索尼 SONY S55u',
+			self::ITEM_CAT_MOBILE_XIAOMI_HM_1S => '小米 红米 1S',
+			self::ITEM_CAT_MOBILE_HUAWEI_HONOR_6_WHITE => '华为HuaWei 荣耀6',
+			self::ITEM_CAT_CARD_1111_200YUAN_BENDI_5GLIULIANG => '200元本地5G流量卡',
+			self::ITEM_CAT_CARD_1111_3GLIULIANG => '3G半年卡',
+			self::ITEM_CAT_CARD_1111_6GLIULIANG => '6G年卡',
+			self::ITEM_CAT_CARD_1111_100YUAN_BENDI_5GLIULIANG => '100元本地5G流量卡',
+			self::ITEM_CAT_CARD_1111_45GLIULIANG => '45G包年卡',
+			self::ITEM_CAT_CARD_1111_96GLIULIANG => '96G包年卡',
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
 	}
