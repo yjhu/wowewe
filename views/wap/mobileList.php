@@ -237,7 +237,7 @@
             const ITEM_CAT_MOBILE_SONY_S55U = 335;
             const ITEM_CAT_MOBILE_XIAOMI_HM_1S = 336;
         -->
-        <?php foreach($models as $model) { if($model->cid==12 || $model->cid==328 || $model->cid==331|| $model->cid==332|| $model->cid==333|| $model->cid==334|| $model->cid==336) { ?>
+        <?php foreach($models as $model) { if($model->cid==12 || $model->cid==328 || $model->cid==331|| $model->cid==332|| $model->cid==333|| $model->cid==334|| $model->cid==335|| $model->cid==336) { ?>
             <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
                     <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                     <h2><?= $model->title ?></h2>

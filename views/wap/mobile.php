@@ -877,9 +877,10 @@ $(document).on("pageinit", "#page2", function(){
             else
             {
                 username = localStorage.getItem("username");
+                usermobile = localStorage.getItem("usermobile");
                 userid = localStorage.getItem("userid");
             }
-        }       
+        }
  
 
         if(ctrl_address != 0)

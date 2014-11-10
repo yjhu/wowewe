@@ -116,7 +116,7 @@ $basename = basename(__FILE__, '.php');
 		<p><span class="title_comm">姓名:</span>&nbsp;<span id="username"></span></p>
 		<p><span class="title_comm">身份证:&nbsp;</span><span id="userid"></span></p>
 
-		<p><span class="title_comm">收货地址</span></p></li>
+		<p><span class="title_comm">收货联系方式</span></p></li>
 		<p><span class="title_comm">手机号码:</span>&nbsp;<span id="usermobile"></span></p>
 		<p><span class="title_comm">收货地址:&nbsp;</span><span id="address"></span></p>
 		<hr color="#F7C708">
@@ -191,7 +191,7 @@ function load_data2(i, n)
 	if(n.cid == 0)//自由组合套餐
 		imgurl = '../web/images/item/zyzhtc-120x120.jpg';
 	else if(n.cid == 12)//AppleiPhone4s
-		imgurl = '../web/images/item/iphone4s-120x120.jpg';
+		imgurl = '../web/images/item/iphone4s-head.jpg-120x120.jpg';
 	else if(n.cid == 13)//K1
 		imgurl = '../web/images/item/coolpad-k1-120x120.jpg';
 	else if(n.cid == 14)//HTC
@@ -251,7 +251,7 @@ function load_data2(i, n)
 		imgurl = '../web/images/item/flow2.5g-700x500.jpg-120x120.jpg';
 	else if(n.cid == 707)
 		imgurl = '../web/images/item/flow1gb-02-700x500.jpg-120x120.jpg';
-	//双十一活动
+	//双十一活动 上网卡
 	else if(n.cid == 708)
 		imgurl = '../web/images/item/200yuan-bendi-5g-1111-700x500.jpg-120x120.jpg';
 	else if(n.cid == 709)
@@ -265,6 +265,27 @@ function load_data2(i, n)
 	else if(n.cid == 713)
 		imgurl = '../web/images/item/96gliuliang-1111-700x500.jpg-120x120.jpg';
 
+	//双十一活动 手机 begin
+	//----------------------------------------------------------
+	//ITEM_CAT_MOBILE_IPHONE4S iPhone 4S  8GB GSM  =12
+	//ITEM_CAT_MOBILE_HUAWEI_HONOR_6_WHITE 荣耀6 =328
+	//ITEM_CAT_MOBILE_XIAOMI4 小米4 =331
+	//const ITEM_CAT_APPLE_5S_16G = 332;
+	//const ITEM_CAT_APPLE_6_16G = 333;
+	//const ITEM_CAT_MOBILE_XIAOMI_HM_NOTE = 334;
+	//const ITEM_CAT_MOBILE_SONY_S55U = 335;
+	//const ITEM_CAT_MOBILE_XIAOMI_HM_1S = 336;
+	else if(n.cid == 328)
+		imgurl = '../web/images/item/huawei-honor-6-white-700x500.jpg-120x120.jpg';
+	else if(n.cid == 332)
+		imgurl = '../web/images/item/iphone5s-silver-700x500.jpg-120x120.jpg';
+	else if(n.cid == 333)
+		imgurl = '../web/images/item/iphone6-white-700x500.jpg-120x120.jpg';
+	else if(n.cid == 334)
+		imgurl = '../web/images/item/xiaomi-note-700x500.jpg-120x120.jpg';
+	else if(n.cid == 336)
+		imgurl = '../web/images/item/xiaomi-hm-1s-700x500.jpg-120x120.jpg';
+	// 双十一活动 手机 end
 
 	if(n.val_pkg_3g4g == "3g")
 		val_pkg_3g4g_name="3G普通套餐";

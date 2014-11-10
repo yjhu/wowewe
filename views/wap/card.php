@@ -267,7 +267,7 @@
 
 			<input type="text" name="username" id="username" placeholder="姓名" data-mini=false value="">
 			<?php //为虚拟物品 如流量包时，不需收货地址，但是需要用户填写充值的手机号码
-				if($item->kind == 4) {
+				if($item->kind == 4 || $item->kind == 3) {
 			?>
 				<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
 			<?php } ?>

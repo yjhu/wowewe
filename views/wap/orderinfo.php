@@ -77,6 +77,7 @@
 	        <hr color="#F7C708">
 			<p id="contact">
 				用户信息<br>姓名: <?= $model->username; ?> <br>
+				手机: <?= $model->usermobile; ?><br>
 				身份证: <?= $model->userid; ?>
 			</p>
 
