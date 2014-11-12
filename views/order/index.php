@@ -123,6 +123,17 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => '开通',
 				'attribute' => 'kaitong',	
 			],
+			[
+				'attribute' => 'wlgs',
+				'value'=>function ($model, $key, $index, $column) { return MOrder::getOrderWuliugongsiName($model->wlgs); },
+				//'filter'=> MOrder::getOrderWuliugongsiOption(),
+				'headerOptions' => array('style'=>'width:60px;'),			
+			],			
+			[
+				'label' => '物流单号',
+				'attribute' => 'wldh',	
+			],
+
             [
 				'class' => 'yii\grid\ActionColumn',
 				'template' => '{view} {update}',
