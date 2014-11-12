@@ -1145,8 +1145,21 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
                 //    $row['statusName'] = MOrder::getOrderStatusName($row['status']);
                 //}    
                 //unset($row);
-                break;                
+                break;      
 
+            case 'wlinfo':
+                U::W("++++++++++++++++++++++++++++++++++++++");
+                $wl_url_1 = isset($_GET["wl_url_1"]) ? $_GET["wl_url_1"] : '';
+                $wl_url_2 = isset($_GET["wl_url_2"]) ? $_GET["wl_url_2"] : '';
+
+                $wl_url = "http://www.kuaidi100.com/query?type=".$wl_url_1."&postid=".$wl_url_2;
+                //U::W($wl_url);
+                $data = file_get_contents($wl_url);
+                //$data = substr($lucy_msg, 14, -2);  
+                $data = json_decode($data, true);  
+                //U::W($data);
+                break;
+                          
             case 'woketixian':
                 $gh_id = U::getSessionParam('gh_id');
                 $openid = U::getSessionParam('openid'); 

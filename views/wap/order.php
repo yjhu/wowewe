@@ -156,6 +156,15 @@ var wldh_span = "";
 office_name = <?php echo \app\models\MOffice::getOfficeNameOption($user->gh_id); ?>;
 
 
+function load_wl_data(n)
+{
+	var wl_info = "";
+	for(var i=0;i<n.data.length;i++)
+	{
+		wl_info = wl_info + n.data[i].time +"\n"+ n.data[i].context+"\n\n";
+	}
+	alert(wl_info);
+}
 
 function load_data1(i, n)
 {
@@ -299,15 +308,21 @@ function load_data2(i, n)
 
 	if(n.wldh!="" && n.wlgs!=0)
 	{
-		if(n.wlgs==1)//tiantian for test
+		if(n.wlgs==1)
 		{
 			wlgsId='shunfeng';
 			wlgsName="顺丰速递";
 		}
+		else if(n.wlgs==2)//tiantian for test
+		{
+			wlgsId='tiantian';
+			wlgsName="天天快递";
+		}
+
 		//wl_url="http://www.kuaidi100.com/query?type=tiantian&postid=580112936827"
 		wl_url="http://www.kuaidi100.com/query?type="+wlgsId+"&postid="+n.wldh;
 		//alert(wl_url);
-		wldh_span = "<p><span class='title_comm'>物流信息:</span>&nbsp;"+wlgsName+"&nbsp;&nbsp;"+n.wldh+"</p>";
+		wldh_span = "<p><span class='title_comm'>物流信息:</span>&nbsp;"+wlgsName+"&nbsp;&nbsp;<span style='color:blue' class='viewWlInfo' wl_url_1="+wlgsId+" wl_url_2="+n.wldh+">"+n.wldh+"</span></p>";
 	}
 	else
 	{
@@ -319,12 +334,13 @@ function load_data2(i, n)
 	<p><span class='title_comm'>订单编号:</span>&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
 	<p><span class='title_comm'>下单时间:</span>&nbsp;"+n.create_time+"</p>\
 	<p><span class='title_comm'>商品名称:</span>&nbsp;"+n.title+ '&nbsp;&nbsp;' +val_pkg_3g4g_name+"</p>\
-	<p><span class='title_comm'>价格:</span>&nbsp;￥"+(n.feesum)/100+"&nbsp;&nbsp;"+(n.kaitong)+"</p>"+wldh_span;
+	<p><span class='title_comm'>价格:</span>&nbsp;￥"+(n.feesum)/100+"&nbsp;&nbsp;"+(n.kaitong)+"</p>"+wldh_span+"<p><span id='wl_result'></p>";
 
-	if(n.status == 0) //wait to pay 
-		txt_mos ="<p><span class='title_comm'>订单状态:</span>&nbsp;"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
-	else
-		txt_mos ="<p><span class='title_comm'>订单状态:</span>&nbsp;"+n.statusName+"</p>";
+	txt_mos="";
+	//if(n.status == 0) //wait to pay 
+	//	txt_mos ="<p><span class='title_comm'>订单状态:</span>&nbsp;"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
+	//else
+	//	txt_mos ="<p><span class='title_comm'>订单状态:</span>&nbsp;"+n.statusName+"</p>";
 
 
 	txt_mod = "</a></li>";
@@ -433,6 +449,36 @@ $(document).on("pageinit", "#myorder", function(){
        return false;
 	});
 
+	/*查看物流信息*/
+	$(document).on("tap",".viewWlInfo",function(e){
+
+		//取消冒泡
+ 		e.stopPropagation();
+		wl_url_1 = $(this).attr('wl_url_1');
+		wl_url_2 = $(this).attr('wl_url_2');
+
+ 		//alert(wl_url_2);
+
+ 		//location.href = wl_url;
+        $.ajax({
+		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'wlinfo'], true) ; ?>",
+		    type:"GET",
+		    cache:false,
+		    dataType:'json',
+		    data: "&wl_url_1="+wl_url_1+"&wl_url_2="+wl_url_2,
+		    success: function(json_data){
+		        if(json_data)
+		        {
+					load_wl_data(json_data); 
+		        }
+
+		        //getMyOrderListDetail(oid);
+		    }
+		});
+
+		//$("#wl_result").load(wl_url)
+		//return false;
+	});
 
 	/*订单详情*/
 

@@ -89,6 +89,7 @@ class MOrder extends ActiveRecord
 
     const WLGS_NULL = 0;
     const WLGS_SFSD = 1;
+    const WLGS_TTKD = 2;
 
 
     const NO_CHOICE = 'null';
@@ -179,6 +180,7 @@ class MOrder extends ActiveRecord
         $arr = array(
             self::WLGS_NULL => '',
             self::WLGS_SFSD => '顺丰速递',
+            self::WLGS_TTKD => '天天快递',
         );        
         return $arr;
     }    
@@ -188,6 +190,7 @@ class MOrder extends ActiveRecord
         $arr = array(
             self::WLGS_NULL => '',
             self::WLGS_SFSD => '顺丰速递',
+            self::WLGS_TTKD => '天天快递',
         );        
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
