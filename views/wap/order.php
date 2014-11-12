@@ -151,7 +151,10 @@ var openid = '<?php echo $user->openid; ?>';
 
 var imgurl = '<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/share-icon.jpg'; ?>';
 
+var wldh_span = "";
+
 office_name = <?php echo \app\models\MOffice::getOfficeNameOption($user->gh_id); ?>;
+
 
 
 function load_data1(i, n)
@@ -294,12 +297,29 @@ function load_data2(i, n)
 	else
 		val_pkg_3g4g_name ="";
 
+	if(n.wldh!="" && n.wlgs!=0)
+	{
+		if(n.wlgs==1)//tiantian for test
+		{
+			wlgsId='shunfeng';
+			wlgsName="顺丰速递";
+		}
+		//wl_url="http://www.kuaidi100.com/query?type=tiantian&postid=580112936827"
+		wl_url="http://www.kuaidi100.com/query?type="+wlgsId+"&postid="+n.wldh;
+		//alert(wl_url);
+		wldh_span = "<p><span class='title_comm'>物流信息:</span>&nbsp;"+wlgsName+"&nbsp;&nbsp;"+n.wldh+"</p>";
+	}
+	else
+	{
+		wldh_span="";
+	}
+
 	text ="<li><a href='#' class='ddxq' myOid='"+n.oid+"'>\
 	<img style='padding-top:20px' myOid="+n.oid+" src='"+imgurl+"'>\
 	<p><span class='title_comm'>订单编号:</span>&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
 	<p><span class='title_comm'>下单时间:</span>&nbsp;"+n.create_time+"</p>\
 	<p><span class='title_comm'>商品名称:</span>&nbsp;"+n.title+ '&nbsp;&nbsp;' +val_pkg_3g4g_name+"</p>\
-	<p><span class='title_comm'>价格:</span>&nbsp;￥"+(n.feesum)/100+"&nbsp;&nbsp;"+(n.kaitong)+"</p>";
+	<p><span class='title_comm'>价格:</span>&nbsp;￥"+(n.feesum)/100+"&nbsp;&nbsp;"+(n.kaitong)+"</p>"+wldh_span;
 
 	if(n.status == 0) //wait to pay 
 		txt_mos ="<p><span class='title_comm'>订单状态:</span>&nbsp;"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
