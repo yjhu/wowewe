@@ -49,6 +49,8 @@ CREATE TABLE wx_order (
     val_pkg_monthprice int(10) unsigned NOT NULL DEFAULT '0',
     val_pkg_plan VARCHAR(8) NOT NULL DEFAULT '',
     czhm VARCHAR(64) NOT NULL DEFAULT '',
+    wlgs int(10) unsigned NOT NULL DEFAULT '0',
+    wldh VARCHAR(64) NOT NULL DEFAULT '',
     PRIMARY KEY (oid),
     KEY gh_id_oid(gh_id,oid),
     KEY gh_id_office_id(gh_id,office_id),
@@ -60,8 +62,6 @@ DROP TABLE IF EXISTS wx_order_arc;
 CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
 
 
-// czhm 充值号码
-ALTER TABLE wx_order ADD czhm VARCHAR(64) NOT NULL DEFAULT '';
 */
 
 use Yii;
@@ -86,6 +86,12 @@ class MOrder extends ActiveRecord
     const PAY_KIND_ALIWAP = 1;
     const PAY_KIND_WECHAT = 2;
 
+
+    const WLGS_NULL = 0;
+    const WLGS_SFSD = 1;
+    const WLGS_TTKD = 2;
+
+
     const NO_CHOICE = 'null';
     
     public function attributeLabels()
@@ -109,18 +115,21 @@ class MOrder extends ActiveRecord
             'pay_kind' => '付款方式',
             'memo' => '留言',
             'memo_reply' => '备注',
+            'wlgs' => '物流公司',
+            'wldh' => '物流单号',
         ];
     }
 
     public function rules()
     {
         return [
-            [['status', 'pay_kind'], 'integer'],                    
+            [['status', 'pay_kind','wlgs'], 'integer'],                 
             [['select_mobnum'],  'string', 'min' => 11, 'max' => 11],
             [['select_mobnum'],  'number'],  
             [['address'],  'string', 'min' => 5, 'max' => 256], 
             [['kaitong'],  'string', 'min' => 1, 'max' => 16],      
-            [['memo_reply'],  'string', 'min' => 1, 'max' => 100],                  
+            [['memo_reply'],  'string', 'min' => 1, 'max' => 100],
+            [['wldh'],  'string', 'min' => 1, 'max' => 64],          
         ];
     }
 
@@ -164,6 +173,26 @@ class MOrder extends ActiveRecord
             return true;
         }
         return false;
+    }
+
+    static function getOrderWuliugongsiOption()
+    {
+        $arr = array(
+            self::WLGS_NULL => '',
+            self::WLGS_SFSD => '顺丰速递',
+            self::WLGS_TTKD => '天天快递',
+        );        
+        return $arr;
+    }    
+
+    static function getOrderWuliugongsiName($key=null)
+    {
+        $arr = array(
+            self::WLGS_NULL => '',
+            self::WLGS_SFSD => '顺丰速递',
+            self::WLGS_TTKD => '天天快递',
+        );        
+        return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
 
     static function getOrderStatusName($key=null)
@@ -781,7 +810,16 @@ ALTER TABLE wx_order ADD scene_auto_id int(10) unsigned NOT NULL DEFAULT '0' aft
 ALTER TABLE wx_order ADD scene_amt int(10) NOT NULL DEFAULT '0' after openid;
 ALTER TABLE wx_order ADD scene_src_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
 ALTER TABLE wx_order ADD scene_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
-    
+  
+// czhm 充值号码
+ALTER TABLE wx_order ADD czhm VARCHAR(64) NOT NULL DEFAULT '';
+
+
+//wlgs 物流公司
+ALTER TABLE wx_order ADD wlgs int(10) unsigned NOT NULL DEFAULT '0';
+
+//wldh 物流单号
+ALTER TABLE wx_order ADD wldh VARCHAR(64) NOT NULL DEFAULT '';  
 */
 
 

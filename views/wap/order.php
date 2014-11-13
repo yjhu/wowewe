@@ -116,7 +116,7 @@ $basename = basename(__FILE__, '.php');
 		<p><span class="title_comm">姓名:</span>&nbsp;<span id="username"></span></p>
 		<p><span class="title_comm">身份证:&nbsp;</span><span id="userid"></span></p>
 
-		<p><span class="title_comm">收货地址</span></p></li>
+		<p><span class="title_comm">收货联系方式</span></p></li>
 		<p><span class="title_comm">手机号码:</span>&nbsp;<span id="usermobile"></span></p>
 		<p><span class="title_comm">收货地址:&nbsp;</span><span id="address"></span></p>
 		<hr color="#F7C708">
@@ -151,8 +151,20 @@ var openid = '<?php echo $user->openid; ?>';
 
 var imgurl = '<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/share-icon.jpg'; ?>';
 
+var wldh_span = "";
+
 office_name = <?php echo \app\models\MOffice::getOfficeNameOption($user->gh_id); ?>;
 
+
+function load_wl_data(n)
+{
+	var wl_info = "";
+	for(var i=0;i<n.data.length;i++)
+	{
+		wl_info = wl_info + n.data[i].time +"\n"+ n.data[i].context+"\n\n";
+	}
+	alert(wl_info);
+}
 
 function load_data1(i, n)
 {
@@ -191,7 +203,7 @@ function load_data2(i, n)
 	if(n.cid == 0)//自由组合套餐
 		imgurl = '../web/images/item/zyzhtc-120x120.jpg';
 	else if(n.cid == 12)//AppleiPhone4s
-		imgurl = '../web/images/item/iphone4s-120x120.jpg';
+		imgurl = '../web/images/item/iphone4s-head.jpg-120x120.jpg';
 	else if(n.cid == 13)//K1
 		imgurl = '../web/images/item/coolpad-k1-120x120.jpg';
 	else if(n.cid == 14)//HTC
@@ -251,7 +263,41 @@ function load_data2(i, n)
 		imgurl = '../web/images/item/flow2.5g-700x500.jpg-120x120.jpg';
 	else if(n.cid == 707)
 		imgurl = '../web/images/item/flow1gb-02-700x500.jpg-120x120.jpg';
+	//双十一活动 上网卡
+	else if(n.cid == 708)
+		imgurl = '../web/images/item/200yuan-bendi-5g-1111-700x500.jpg-120x120.jpg';
+	else if(n.cid == 709)
+		imgurl = '../web/images/item/3gliuliang-1111-700x500.jpg-120x120.jpg';
+	else if(n.cid == 710)
+		imgurl = '../web/images/item/6gliuliang-1111-700x500.jpg-120x120.jpg';
+	else if(n.cid == 711)
+		imgurl = '../web/images/item/100yuan-bendi-5g-1111-700x500.jpg-120x120.jpg';
+	else if(n.cid == 712)
+		imgurl = '../web/images/item/45gliuliang-1111-700x500.jpg-120x120.jpg';
+	else if(n.cid == 713)
+		imgurl = '../web/images/item/96gliuliang-1111-700x500.jpg-120x120.jpg';
 
+	//双十一活动 手机 begin
+	//----------------------------------------------------------
+	//ITEM_CAT_MOBILE_IPHONE4S iPhone 4S  8GB GSM  =12
+	//ITEM_CAT_MOBILE_HUAWEI_HONOR_6_WHITE 荣耀6 =328
+	//ITEM_CAT_MOBILE_XIAOMI4 小米4 =331
+	//const ITEM_CAT_APPLE_5S_16G = 332;
+	//const ITEM_CAT_APPLE_6_16G = 333;
+	//const ITEM_CAT_MOBILE_XIAOMI_HM_NOTE = 334;
+	//const ITEM_CAT_MOBILE_SONY_S55U = 335;
+	//const ITEM_CAT_MOBILE_XIAOMI_HM_1S = 336;
+	else if(n.cid == 328)
+		imgurl = '../web/images/item/huawei-honor-6-white-700x500.jpg-120x120.jpg';
+	else if(n.cid == 332)
+		imgurl = '../web/images/item/iphone5s-silver-700x500.jpg-120x120.jpg';
+	else if(n.cid == 333)
+		imgurl = '../web/images/item/iphone6-white-700x500.jpg-120x120.jpg';
+	else if(n.cid == 334)
+		imgurl = '../web/images/item/xiaomi-note-700x500.jpg-120x120.jpg';
+	else if(n.cid == 336)
+		imgurl = '../web/images/item/xiaomi-hm-1s-700x500.jpg-120x120.jpg';
+	// 双十一活动 手机 end
 
 	if(n.val_pkg_3g4g == "3g")
 		val_pkg_3g4g_name="3G普通套餐";
@@ -260,17 +306,41 @@ function load_data2(i, n)
 	else
 		val_pkg_3g4g_name ="";
 
+	if(n.wldh!="" && n.wlgs!=0)
+	{
+		if(n.wlgs==1)
+		{
+			wlgsId='shunfeng';
+			wlgsName="顺丰速递";
+		}
+		else if(n.wlgs==2)//tiantian for test
+		{
+			wlgsId='tiantian';
+			wlgsName="天天快递";
+		}
+
+		//wl_url="http://www.kuaidi100.com/query?type=tiantian&postid=580112936827"
+		wl_url="http://www.kuaidi100.com/query?type="+wlgsId+"&postid="+n.wldh;
+		//alert(wl_url);
+		wldh_span = "<p><span class='title_comm'>物流信息:</span>&nbsp;"+wlgsName+"&nbsp;&nbsp;<span style='color:blue' class='viewWlInfo' wl_url_1="+wlgsId+" wl_url_2="+n.wldh+">"+n.wldh+"</span></p>";
+	}
+	else
+	{
+		wldh_span="";
+	}
+
 	text ="<li><a href='#' class='ddxq' myOid='"+n.oid+"'>\
 	<img style='padding-top:20px' myOid="+n.oid+" src='"+imgurl+"'>\
 	<p><span class='title_comm'>订单编号:</span>&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
 	<p><span class='title_comm'>下单时间:</span>&nbsp;"+n.create_time+"</p>\
 	<p><span class='title_comm'>商品名称:</span>&nbsp;"+n.title+ '&nbsp;&nbsp;' +val_pkg_3g4g_name+"</p>\
-	<p><span class='title_comm'>价格:</span>&nbsp;￥"+(n.feesum)/100+"&nbsp;&nbsp;"+(n.kaitong)+"</p>";
+	<p><span class='title_comm'>价格:</span>&nbsp;￥"+(n.feesum)/100+"&nbsp;&nbsp;"+(n.kaitong)+"</p>"+wldh_span+"<p><span id='wl_result'></p>";
 
-	if(n.status == 0) //wait to pay 
-		txt_mos ="<p><span class='title_comm'>订单状态:</span>&nbsp;"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
-	else
-		txt_mos ="<p><span class='title_comm'>订单状态:</span>&nbsp;"+n.statusName+"</p>";
+	txt_mos="";
+	//if(n.status == 0) //wait to pay 
+	//	txt_mos ="<p><span class='title_comm'>订单状态:</span>&nbsp;"+n.statusName+"<span style='color:blue' class='qxdd' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span></p>";
+	//else
+	//	txt_mos ="<p><span class='title_comm'>订单状态:</span>&nbsp;"+n.statusName+"</p>";
 
 
 	txt_mod = "</a></li>";
@@ -379,6 +449,36 @@ $(document).on("pageinit", "#myorder", function(){
        return false;
 	});
 
+	/*查看物流信息*/
+	$(document).on("tap",".viewWlInfo",function(e){
+
+		//取消冒泡
+ 		e.stopPropagation();
+		wl_url_1 = $(this).attr('wl_url_1');
+		wl_url_2 = $(this).attr('wl_url_2');
+
+ 		//alert(wl_url_2);
+
+ 		//location.href = wl_url;
+        $.ajax({
+		    url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'wlinfo'], true) ; ?>",
+		    type:"GET",
+		    cache:false,
+		    dataType:'json',
+		    data: "&wl_url_1="+wl_url_1+"&wl_url_2="+wl_url_2,
+		    success: function(json_data){
+		        if(json_data)
+		        {
+					load_wl_data(json_data); 
+		        }
+
+		        //getMyOrderListDetail(oid);
+		    }
+		});
+
+		//$("#wl_result").load(wl_url)
+		//return false;
+	});
 
 	/*订单详情*/
 

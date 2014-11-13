@@ -23,14 +23,20 @@ $basename = basename(__FILE__, '.php');
     -->
 
      <li>
-         <a data-ajax=false href="<?php echo Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD]) ?>">
-            单卡产品
+         <a data-ajax=false href="<?php echo Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD]) ?>">
+            双11上网卡
          </a>
      </li>
 
      <li>
-         <a data-ajax=false href="<?php echo Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD]) ?>">
-            8折上网卡
+         <a data-ajax=false href="<?php echo Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">
+            双11合约机
+         </a>
+     </li>
+
+     <li>
+         <a data-ajax=false href="<?php echo Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD]) ?>">
+            单卡产品
          </a>
      </li>
 
@@ -39,13 +45,6 @@ $basename = basename(__FILE__, '.php');
             5折流量包
          </a>
      </li>
-
-     <li>
-         <a data-ajax=false href="<?php echo Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">
-            特惠手机
-         </a>
-     </li>
-
 
     <li data-role="list-divider">沃服务</li>
     <li><a data-ajax=false href="http://wsq.qq.com/reflow/263163652-1044?_wv=1&source=">用户吐槽</a></li>

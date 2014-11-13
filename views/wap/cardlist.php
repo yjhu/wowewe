@@ -27,7 +27,8 @@
         <?php if ($kind == 4): ?>
             <h1>5折流量包</h1>
         <?php elseif ($kind == 3): ?>
-            <h1>8折上网卡</h1>
+            <!-- 双十一活动 -->
+            <h1>5折上网卡</h1>
         <?php else: ?>
             <h1>单卡产品</h1>
         <?php endif; ?>
@@ -36,6 +37,8 @@
     <div data-role="content">
         <!--<ul data-role="listview" data-inset="true">-->
         <ul data-role="listview" data-inset="false" class="ui-nodisc-icon ui-alt-icon">
+        
+        <!-- 双十一活动 -->
 
         <?php if($kind == MItem::ITEM_KIND_CARD) {?>
             <li><a data-ajax="false" href="http://m.10010.com/mobilegoodsdetail/711403121719.html?src=wolm&channel=cps&cid=8a94a89148bf746b0148bfe4ee5600ef&adid=8a94a8914879788001487d40ab930009">
@@ -56,20 +59,35 @@
         <?php } ?>
 
 
-        <?php foreach($models as $model) { ?>
-
-
-            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/card', 'cid'=>$model->cid],true) ?>">
-                    <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
-                    <h2><?= $model->title ?></h2>
-                    <p><?= $model->title_hint ?></p>
-      
-                    <p class='line'>原价: ￥<?= $model->old_price/100 ?></p>
-              
-                    <p>惊爆价: ￥<?= $model->price/100 ?></p>
-                </a>
-            </li>
+        <?php if($kind == MItem::ITEM_KIND_INTERNET_CARD) {?>
+            <?php foreach($models as $model) { if($model->cid==708 || $model->cid==709 || $model->cid==710|| $model->cid==711|| $model->cid==712|| $model->cid==713) {?>
+                <li><a data-ajax="false" href="<?php echo  Url::to(['wap/card', 'cid'=>$model->cid],true) ?>">
+                        <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
+                        <h2><?= $model->title ?></h2>
+                        <p><?= $model->title_hint ?></p>
+          
+                        <p class='line'>原价: ￥<?= $model->old_price/100 ?></p>
+                  
+                        <p>双11活动价: ￥<?= $model->price/100 ?></p>
+                    </a>
+                </li>
+            <?php } } ?>
+        <?php } else {?>
+            <?php foreach($models as $model) { ?>
+                <li><a data-ajax="false" href="<?php echo  Url::to(['wap/card', 'cid'=>$model->cid],true) ?>">
+                        <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
+                        <h2><?= $model->title ?></h2>
+                        <p><?= $model->title_hint ?></p>
+          
+                        <p class='line'>原价: ￥<?= $model->old_price/100 ?></p>
+                  
+                        <p>惊爆价: ￥<?= $model->price/100 ?></p>
+                    </a>
+                </li>
+            <?php } ?>
         <?php } ?>
+
+
         </ul>
     </div>
 

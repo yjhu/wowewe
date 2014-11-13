@@ -754,6 +754,48 @@ EOD;
                 $order->attr = "{$_GET['prom']}";
                 break;
 
+            //双十一活动 手机 begin
+            //----------------------------------------------------------
+            //ITEM_CAT_MOBILE_IPHONE4S iPhone 4S  8GB GSM  =12
+            //ITEM_CAT_MOBILE_HUAWEI_HONOR_6_WHITE 荣耀6 =328
+            //ITEM_CAT_MOBILE_XIAOMI4 小米4 =331
+            //const ITEM_CAT_APPLE_5S_16G = 332;
+            //const ITEM_CAT_APPLE_6_16G = 333;
+            //const ITEM_CAT_MOBILE_XIAOMI_HM_NOTE = 334;
+            //const ITEM_CAT_MOBILE_SONY_S55U = 335;
+            //const ITEM_CAT_MOBILE_XIAOMI_HM_1S = 336;
+
+          case MItem::ITEM_CAT_APPLE_5S_16G:
+                $order->title = 'APPLE 苹果 iPhone5S';                    
+                $order->attr = "{$_GET['prom']}";
+                break;
+
+            case MItem::ITEM_CAT_APPLE_6_16G:
+                $order->title = 'APPLE 苹果 iPhone6';                    
+                $order->attr = "{$_GET['prom']}";
+                break;     
+
+            case MItem::ITEM_CAT_MOBILE_HUAWEI_HONOR_6_WHITE:
+                $order->title = '华为HuaWei 荣耀6';                    
+                $order->attr = "{$_GET['prom']}";
+                break;
+  
+            case MItem::ITEM_CAT_MOBILE_XIAOMI_HM_NOTE:
+                $order->title = '红米Note';                    
+                $order->attr = "{$_GET['prom']}";
+                break;
+
+            case MItem::ITEM_CAT_MOBILE_SONY_S55U:
+                $order->title = 'SONY 索尼 S55u';                    
+                $order->attr = "{$_GET['prom']}";
+                break;
+
+            case MItem::ITEM_CAT_MOBILE_XIAOMI_HM_1S:
+                $order->title = '红米1S';                    
+                $order->attr = "{$_GET['prom']}";
+                break;
+            // 双十一活动 手机 end
+
             case MItem::ITEM_CAT_CARD_45GLIULIANG:
                 $order->title = '45G包年流量套餐';                    
                 $order->attr = "{$_GET['cardType']}";
@@ -763,6 +805,45 @@ EOD;
                 $order->title = '96G包年流量套餐';                    
                 $order->attr = "{$_GET['cardType']}";
                 break;
+
+            //双十一活动 上网卡 begin
+            //----------------------------------------------------------
+            //const ITEM_CAT_CARD_1111_200YUAN_BENDI_5GLIULIANG = 708;
+            //const ITEM_CAT_CARD_1111_3GLIULIANG = 709;
+            //const ITEM_CAT_CARD_1111_6GLIULIANG = 710;
+            //const ITEM_CAT_CARD_1111_100YUAN_BENDI_5GLIULIANG = 711;
+            //const ITEM_CAT_CARD_1111_45GLIULIANG = 712;
+            //const ITEM_CAT_CARD_1111_96GLIULIANG = 713;
+            case MItem::ITEM_CAT_CARD_1111_200YUAN_BENDI_5GLIULIANG:
+                $order->title = '200元本地流量卡5G';                    
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_CARD_1111_3GLIULIANG:
+                $order->title = '3G半年卡';                    
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_CARD_1111_6GLIULIANG:
+                $order->title = '6G年卡';                    
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_CARD_1111_100YUAN_BENDI_5GLIULIANG:
+                $order->title = '100元本地流量卡5G';                    
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_CARD_1111_45GLIULIANG:
+                $order->title = '45G包年卡';                    
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_CARD_1111_96GLIULIANG:
+                $order->title = '96G包年卡';                    
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            //双十一活动 上网卡 end                
 
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW100MB:
                 $order->title = '10元包100MB 3G省内流量包';                    
@@ -799,7 +880,10 @@ EOD;
         $order->val_pkg_monthprice = isset($_GET['pkgMonthprice']) ? $_GET['pkgMonthprice'] : 0;
         $order->val_pkg_plan = isset($_GET['pkgPlan']) ? $_GET['pkgPlan'] : '';
         $order->feesum = $_GET['feeSum'] * 100;
-        $order->office_id = (isset($_GET['office']) && $_GET['office'] !=  MOrder::NO_CHOICE) ? $_GET['office'] : 0;
+        
+        //$order->office_id = (isset($_GET['office']) && $_GET['office'] !=  MOrder::NO_CHOICE) ? $_GET['office'] : 0;
+        $order->office_id = 16;
+
         $order->userid = (isset($_GET['userid']) && $_GET['userid'] !=  MOrder::NO_CHOICE) ? $_GET['userid'] : '';
         $order->username = (isset($_GET['username']) && $_GET['username'] !=  MOrder::NO_CHOICE) ? $_GET['username'] : '';
         $order->usermobile = (isset($_GET['usermobile']) && $_GET['usermobile'] !=  MOrder::NO_CHOICE) ? $_GET['usermobile'] : '';
@@ -1061,8 +1145,21 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
                 //    $row['statusName'] = MOrder::getOrderStatusName($row['status']);
                 //}    
                 //unset($row);
-                break;                
+                break;      
 
+            case 'wlinfo':
+                U::W("++++++++++++++++++++++++++++++++++++++");
+                $wl_url_1 = isset($_GET["wl_url_1"]) ? $_GET["wl_url_1"] : '';
+                $wl_url_2 = isset($_GET["wl_url_2"]) ? $_GET["wl_url_2"] : '';
+
+                $wl_url = "http://www.kuaidi100.com/query?type=".$wl_url_1."&postid=".$wl_url_2;
+                //U::W($wl_url);
+                $data = file_get_contents($wl_url);
+                //$data = substr($lucy_msg, 14, -2);  
+                $data = json_decode($data, true);  
+                //U::W($data);
+                break;
+                          
             case 'woketixian':
                 $gh_id = U::getSessionParam('gh_id');
                 $openid = U::getSessionParam('openid'); 

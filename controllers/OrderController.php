@@ -124,7 +124,7 @@ class OrderController extends Controller
         if (\Yii::$app->request->isPost) 
         {
             $model->load(\Yii::$app->request->post());
-            if ($model->save(true, ['status', 'select_mobnum', 'memo_reply'])) 
+            if ($model->save(true, ['status', 'select_mobnum', 'memo_reply', 'wlgs', 'wldh'])) 
             {                
                 $mobnum = MMobnum::findOne($model->select_mobnum);
                 if ($mobnum !== null)
@@ -596,7 +596,7 @@ class OrderController extends Controller
             'dataProvider' => $dataProvider,
             'date_start' => $date_start,
             'date_end' => $date_end,  
-            'cur_date' => $cur_date,          
+            //'cur_date' => $cur_date,          
             'filter'=>$filter,            
         ]);  
 

@@ -29,7 +29,7 @@
 <div data-role="page" id="page1" data-theme="c">
 
 	<div data-role="header">
-    	<h1>特惠手机</h1>
+    	<h1>双11合约机</h1>
     </div>
 
     <div data-role="content">
@@ -39,11 +39,11 @@
 
         <!-- 20141103 add start -->
 
+        <!--
         <li><a data-ajax="false" href="http://m.10010.com/mobilegoodsdetail/711409287410.html?src=wolm&channel=cps&cid=8a94a89148bf746b0148bfe4ee5600ef&adid=8a94a89249193eee01495071e2020052&recommendName=&recommendCode=&exp=">
                 <img style='padding-top:20px' src="../web/images/item/samsung-N9106W-750x750jpg-120x120.jpg">
                 <h2>三星Note4 SM-N9106W</h2>
                 <p>三星(Samsung) GALAXY Note4 SM-N9106W 4G全国合约套餐合约机 5.7英寸2k分辨率 支持联通双4G网络 1600万光学防抖摄像头</p>
-                <!--<p class='line'>原价: ￥<?//= $model->old_price/100 ?></p>-->
                 <p>合约价: ￥5399</p>
                 <p>&nbsp;</p>
             </a>
@@ -53,7 +53,6 @@
                 <img style='padding-top:20px' src="../web/images/item/xiaomi-4-white-700x500.jpg-120x120.jpg">
                 <h2>小米4</h2>
                 <p>小米 小米4 4G全国合约套餐合约机 5英寸高饱和度屏幕 骁龙801四核2.5GHz处理器</p>
-                <!--<p class='line'>原价: ￥<?//= $model->old_price/100 ?></p>-->
                 <p>合约价: ￥2199</p>
                 <p>&nbsp;</p>
             </a>
@@ -63,7 +62,6 @@
                 <img style='padding-top:20px' src="../web/images/item/xiaomi-note-700x500.jpg-120x120.jpg">
                 <h2>小米 红米Note</h2>
                 <p>小米 红米Note 联通4G增强版 4G全国套餐合约机 5.5英寸全贴合IPS大屏 高通骁龙400系列 四核1.6GHz</p>
-                <!--<p class='line'>原价: ￥<?//= $model->old_price/100 ?></p>-->
                 <p>合约价: ￥1199</p>
                 <p>&nbsp;</p>
             </a>
@@ -84,7 +82,6 @@
                 <img style='padding-top:20px' src="../web/images/item/lenevo-A916-700x500.jpg-120x120.jpg">
                 <h2>联想(Lenovo) A916 4G</h2>
                 <p>联想(Lenovo) A916 4G 全国套餐合约机 5.5英寸大屏 八核LTE多模手机 极速畅游 呼啸而至</p>
-                <!--<p class='line'>原价: ￥<?//= $model->old_price/100 ?></p>-->
                 <p>合约价: ￥1199</p>
                 <p>&nbsp;</p>
             </a>
@@ -98,6 +95,10 @@
                 <p>&nbsp;</p>
             </a>
         </li>
+        -->
+
+
+
 
 
         <!-- -->
@@ -213,17 +214,40 @@
 
         <!-- 20141103 add end -->
 
+        <!--
+        <//?//php foreach($models as $model) { if($model->cid==331 || $model->cid==310 || $model->cid==311) continue; else { ?>
+            <li><a data-ajax="false" href="<//?//php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
+                    <img style='padding-top:20px' src="<//?//php echo $model->pic_url.'-120x120.jpg' ?>">
+                    <h2><//?//= $model->title ?></h2>
+                    <p><//?//= $model->title_hint ?></p>
+                    <p class='line'>原价: ￥<//?//= round($model->old_price/100) ?></p>
+                    <p>惊爆价: ￥<//?//= round($model->price/100) ?></p>
+                </a>
+            </li>
+        <//?//php } } ?>
+        -->
 
-        <?php foreach($models as $model) { if($model->cid==331 || $model->cid==310 || $model->cid==311) continue; else { ?>
+        <!--
+            //iPhone 4S  8GB GSM  =12
+            //荣耀6 =328
+            //小米4 =331
+            const ITEM_CAT_APPLE_5S_16G = 332;
+            const ITEM_CAT_APPLE_6_16G = 333;
+            const ITEM_CAT_MOBILE_XIAOMI_HM_NOTE = 334;
+            const ITEM_CAT_MOBILE_SONY_S55U = 335;
+            const ITEM_CAT_MOBILE_XIAOMI_HM_1S = 336;
+        -->
+        <?php foreach($models as $model) { if($model->cid==12 || $model->cid==328 || $model->cid==331|| $model->cid==332|| $model->cid==333|| $model->cid==334|| $model->cid==335|| $model->cid==336) { ?>
             <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
                     <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                     <h2><?= $model->title ?></h2>
                     <p><?= $model->title_hint ?></p>
                     <p class='line'>原价: ￥<?= round($model->old_price/100) ?></p>
-                    <p>惊爆价: ￥<?= round($model->price/100) ?></p>
+                    <p>双11活动价: ￥<?= round($model->price/100) ?></p>
                 </a>
             </li>
         <?php } } ?>
+
         </ul>
     </div>
 
