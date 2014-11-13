@@ -633,7 +633,13 @@ class OrderController extends Controller
         foreach($rows as $row)
         {            
             //$data[] = [$row['EventKey'], (int)$row['c']];
-            $data[] = ['View'.rand(), (int)$row['c']];
+            $pos = strpos($row['EventKey'],"&state=");
+            $s = $pos === false ? 0 : $pos;
+            $pos = strpos($row['EventKey'],":gh_");
+            $e = $pos === false ? 100 : $pos;            
+            $title = substr($row['EventKey'], $s, $e-$s);
+//            $data[] = ['View'.rand(), (int)$row['c']];
+            $data[] = [$title, (int)$row['c']];
         }
         
 /*
