@@ -322,7 +322,7 @@ function load_data2(i, n)
 		//wl_url="http://www.kuaidi100.com/query?type=tiantian&postid=580112936827"
 		wl_url="http://www.kuaidi100.com/query?type="+wlgsId+"&postid="+n.wldh;
 		//alert(wl_url);
-		wldh_span = "<p><span class='title_comm'>物流信息:</span>&nbsp;"+wlgsName+"&nbsp;&nbsp;<span style='color:blue' class='viewWlInfo' wl_url_1="+wlgsId+" wl_url_2="+n.wldh+">"+n.wldh+"</span></p>";
+		wldh_span = "<p><span class='title_comm'>物流信息:</span>&nbsp;<span style='color:blue' class='viewWlInfo' wl_url_1="+wlgsId+" wl_url_2="+n.wldh+">"+wlgsName+"&nbsp;&nbsp;"+n.wldh+"</span></p>";
 	}
 	else
 	{
