@@ -605,11 +605,25 @@ class OrderController extends Controller
 
     public function actionStatvisit()
     {
-        $date_start = Yii::$app->request->get('date_start', date("Y-m-d"));
-        $date_end = Yii::$app->request->get('date_end', date("Y-m-d", time()+24*3600));
-
-        $date_start = Yii::$app->request->get('date_start', date("Y-m-d", time() - 6*24*3600));
-        $date_end = Yii::$app->request->get('date_end', date("Y-m-d", time() - 5*24*3600));
+ 
+        //$date_start = Yii::$app->request->get('date_start', date("Y-m-d")-24*3600);
+        //$date_end = Yii::$app->request->get('date_end', date("Y-m-d", time()));
+   
+       
+        $cur_date = Yii::$app->request->get('cur_date');
+        if(empty($cur_date))
+        {
+            $date_start = Yii::$app->request->get('date_start', date("Y-m-d"));
+            $date_end = Yii::$app->request->get('date_end', date("Y-m-d"));
+        }
+        else
+        {
+            $date_start = $cur_date;
+            $date_end = $cur_date; 
+        }
+   
+        //$date_start = Yii::$app->request->get('date_start', date("Y-m-d", time() - 6*24*3600));
+        //$date_end = Yii::$app->request->get('date_end', date("Y-m-d", time() - 5*24*3600));
         
         U::W([$date_start, $date_end]);        
         $rows = MAccessLogAll::find()->select('*, count(*) as c')->where('ToUserName=:gh_id AND create_time>=:date_start AND create_time<:date_end', [':gh_id'=>Yii::$app->user->getGhid(), ':date_start'=>$date_start, ':date_end'=>$date_end])->groupBy(['ToUserName', 'EventKeyCRC'])->orderBy('c DESC')->asArray()->all();   
@@ -629,6 +643,7 @@ class OrderController extends Controller
             ],
         ]);
 
+        $data = null;
 
         foreach($rows as $row)
         {            
@@ -639,6 +654,45 @@ class OrderController extends Controller
             $e = $pos === false ? 100 : $pos;            
             $title = substr($row['EventKey'], $s, $e-$s);
 //            $data[] = ['View'.rand(), (int)$row['c']];
+
+            if (preg_match("/wap\/mobilelist/i", $title)) 
+            {
+                $title = "手机列表";
+            }
+            else if(preg_match("/wap\/cardlist/i", $title))
+            {
+                $title = "上网卡";
+            }
+            else if(preg_match("/wap\/g2048/i", $title))
+            {
+                $title = "游戏2048";
+            }
+            else if(preg_match("/wap\/order/i", $title))
+            {
+                $title = "我的订单";
+            }
+            else if(preg_match("/http:\/\/m.10010.com/i", $title))
+            {
+                $title = "联通官网";
+            }
+            else if(preg_match("/m.wsq.qq.com\/263163652/i", $title))
+            {
+                $title = "微社区";
+            }
+            else if(preg_match("/http:\/\/lm.10010.com\/wolm\/ot\/index.html/i", $title))
+            {
+                $title = "沃联盟";
+            }
+            else if(preg_match("/http:\/\/lm.10010.com\/wolm\/ot\/guideDetail.html/i", $title))
+            {
+                $title = "沃联盟向导页";
+            }
+            else if(preg_match("/http:\/\/wsq.qq.com\/reflow\/263163652-1044/i", $title))
+            {
+                $title = "我要吐槽";
+            }
+
+
             $data[] = [$title, (int)$row['c']];
         }
         
@@ -652,8 +706,10 @@ class OrderController extends Controller
         ];        
         $data = $rows;
 */        
+
+        U::W(Yii::$app->user->getGhid());
         U::W($data);
-        return $this->render('statvisit', ['dataProvider'=>$dataProvider, 'data'=>$data]);  
+        return $this->render('statvisit', ['dataProvider'=>$dataProvider,'date_start' => $date_start, 'date_end' => $date_end, 'cur_date' => $cur_date, 'data'=>$data]);  
     }
 
 

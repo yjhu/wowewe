@@ -8,6 +8,8 @@ use app\models\U;
 use app\models\MStaff;
 use app\models\MOffice;
 
+use kartik\widgets\DatePicker;
+
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
@@ -17,6 +19,75 @@ use app\models\MOffice;
 $this->title = '点击分布';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
+
+<ul class="nav nav-tabs">
+
+    <?php $currentDate = date("Y-m-d"); ?>
+    <li <?php echo $cur_date == $currentDate ? 'class="active"' : ''; ?>>
+    <?php echo Html::a("今天", ['statvisit', 'cur_date'=>$currentDate], []) ?>
+    </li>
+
+    <?php $currentDate = date("Y-m-d",strtotime("-1 day")); ?>
+    <li <?php echo $cur_date == $currentDate ? 'class="active"' : ''; ?>>
+    <?php echo Html::a("昨天", ['statvisit', 'cur_date'=>$currentDate], []) ?>
+    </li>
+
+    <?php $currentDate = date("Y-m-d",strtotime("-2 day")); ?>
+    <li <?php echo $cur_date == $currentDate ? 'class="active"' : ''; ?>>
+    <?php echo Html::a("前天", ['statvisit', 'cur_date'=>$currentDate], []) ?>
+    </li>
+
+    <!--
+    <//?//php $currentMonth = date("n"); ?>
+    <li>
+    <//?//php echo Html::a("{$currentMonth}月", ['statvisit', 'month'=>$currentMonth], []) ?>
+    </li>
+
+    <//?//php $currentMonth = date("n", strtotime('-1 month', time())); ?>
+    <li>
+    <//?//php echo Html::a("{$currentMonth}月", ['statvisit', 'month'=>$currentMonth], []) ?>
+    </li>
+
+    <//?//php $currentMonth = date("n", strtotime('-2 month', time())); ?>
+    <li>
+    <//?//php echo Html::a("{$currentMonth}月", ['statvisit', 'month'=>$currentMonth], []) ?>
+    </li>
+    -->
+
+    <li <?php echo $cur_date == null ? 'class="active"' : ''; ?>>
+    <?php echo Html::a("按时间范围成绩排行", ['statvisit'], []) ?>
+    </li>
+</ul>
+
+    <p>
+        <br />
+
+        <?php //echo Html::a('渠道列表', ['channellist'], ['class' => 'btn btn-success']) ?>
+
+        <?php
+        
+            if(empty($cur_date))
+            {
+                echo '<label class="control-label">请输入时间范围</label>';
+                echo DatePicker::widget([
+                    'name' => 'date_start',
+                    'value' => $date_start,
+                    'options'=>['id'=>'id_date_start'],
+                    'type' => DatePicker::TYPE_RANGE,
+                    'name2' => 'date_end',
+                    'value2' => $date_end,
+                    'options2'=>['id'=>'id_date_end'],
+                    'pluginOptions' => [
+                        'autoclose'=>true,
+                        'format'=>'yyyy-mm-dd',
+                        'language'=>'zh-CN',
+                    ]
+                ]);
+            }
+        ?>
+    </p>
+
 <div class="muser-index">
 
 	<h1><?php //echo Html::encode($this->title) ?></h1>
@@ -27,11 +98,10 @@ $this->params['breadcrumbs'][] = $this->title;
 		<?php //echo Html::a('新增员工', ['staffcreate'], ['class' => 'btn btn-success']) ?>
     </p>
 
-	<?php \yii\widgets\Pjax::begin([
-		'timeout' => 10000,
-	]); ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'filterSelector'=>'#id_date_start, #id_date_end',
 //        'filterModel' => $searchModel,
 		'options' => ['class' => 'table-responsive'],
 		'tableOptions' => ['class' => 'table table-striped'],        
@@ -54,7 +124,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-	<?php \yii\widgets\Pjax::end(); ?>
 </div>
 
 
