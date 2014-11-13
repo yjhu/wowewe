@@ -24,6 +24,7 @@ use app\models\MChannel;
 use app\models\MChannelSearch;
 use app\models\MAccessLog;
 use app\models\MAccessLogSearch;
+use app\models\MAccessLogAll;
 
 class OrderController extends Controller
 {
@@ -599,6 +600,35 @@ class OrderController extends Controller
             'filter'=>$filter,            
         ]);  
 
+    }
+
+    public function actionStatvisit()
+    {
+        $date_start = Yii::$app->request->get('date_start', date("Y-m-d"));
+        $date_end = Yii::$app->request->get('date_end', date("Y-m-d", time()+24*3600));
+
+        $date_start = Yii::$app->request->get('date_start', date("Y-m-d", time() - 6*24*3600));
+        $date_end = Yii::$app->request->get('date_end', date("Y-m-d", time() - 5*24*3600));
+        
+        U::W([$date_start, $date_end]);        
+        $rows = MAccessLogAll::find()->select('*, count(*) as c')->where('ToUserName=:gh_id AND create_time>=:date_start AND create_time<:date_end', [':gh_id'=>Yii::$app->user->getGhid(), ':date_start'=>$date_start, ':date_end'=>$date_end])->groupBy(['ToUserName', 'EventKeyCRC'])->orderBy('c DESC')->asArray()->all();   
+        U::W($rows);        
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $rows,
+/*            
+            'sort' => [
+                'attributes' => ['MsgType', 'Event', 'EventKey'],
+                'defaultOrder'=>[
+                    'c' => SORT_DESC
+                ]
+            ],
+*/            
+            'pagination' => [
+                'pageSize' => 50,
+            ],
+        ]);
+        
+        return $this->render('statvisit', ['dataProvider'=>$dataProvider]);  
     }
 
 
