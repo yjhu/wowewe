@@ -7,6 +7,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\View;
 use yii\data\ArrayDataProvider;
+use yii\helpers\ArrayHelper;
 
 use app\models\U;
 use app\models\MOrder;
@@ -612,7 +613,7 @@ class OrderController extends Controller
         
         U::W([$date_start, $date_end]);        
         $rows = MAccessLogAll::find()->select('*, count(*) as c')->where('ToUserName=:gh_id AND create_time>=:date_start AND create_time<:date_end', [':gh_id'=>Yii::$app->user->getGhid(), ':date_start'=>$date_start, ':date_end'=>$date_end])->groupBy(['ToUserName', 'EventKeyCRC'])->orderBy('c DESC')->asArray()->all();   
-        U::W($rows);        
+//        U::W($rows);        
         $dataProvider = new ArrayDataProvider([
             'allModels' => $rows,
 /*            
@@ -627,8 +628,26 @@ class OrderController extends Controller
                 'pageSize' => 50,
             ],
         ]);
+
+
+        foreach($rows as $row)
+        {            
+            //$data[] = [$row['EventKey'], (int)$row['c']];
+            $data[] = ['View'.rand(), (int)$row['c']];
+        }
         
-        return $this->render('statvisit', ['dataProvider'=>$dataProvider]);  
+/*
+        $rows = [
+            ['Firefox',   45.0],
+            ['IE',       26.8],
+            ['Safari',    8.5],
+            ['Opera',     6.2],
+            ['Others',   0.7]
+        ];        
+        $data = $rows;
+*/        
+        U::W($data);
+        return $this->render('statvisit', ['dataProvider'=>$dataProvider, 'data'=>$data]);  
     }
 
 
