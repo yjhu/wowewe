@@ -77,14 +77,14 @@
 	        <hr color="#F7C708">
 			<p id="contact">
 				用户信息<br>姓名: <?= $model->username; ?> <br>
-				手机: <?= $model->usermobile; ?><br>
+				<?= $model->usermobile=="undefined"?"":"手机:".$model->usermobile."<br>" ; ?>
 				身份证: <?= $model->userid; ?>
 			</p>
 
 			<?php if($model->address != null) { ?>
 			<p id="address">
 				联系方式<br>
-				手机: <?= $model->usermobile; ?><br>
+				<?= $model->usermobile=="undefined"?"":"手机:".$model->usermobile."<br>" ; ?>
 				收货地址: <?= $model->address; ?>
 			</p>
 			<?php } ?>

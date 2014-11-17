@@ -27,8 +27,7 @@
         <?php if ($kind == 4): ?>
             <h1>5折流量包</h1>
         <?php elseif ($kind == 3): ?>
-            <!-- 双十一活动 -->
-            <h1>5折上网卡</h1>
+            <h1>8折上网卡</h1>
         <?php else: ?>
             <h1>单卡产品</h1>
         <?php endif; ?>
@@ -60,15 +59,20 @@
 
 
         <?php if($kind == MItem::ITEM_KIND_INTERNET_CARD) {?>
-            <?php foreach($models as $model) { if($model->cid==708 || $model->cid==709 || $model->cid==710|| $model->cid==711|| $model->cid==712|| $model->cid==713) {?>
+            <!--
+            <//?//php foreach($models as $model) { if($model->cid==708 || $model->cid==709 || $model->cid==710|| $model->cid==711|| $model->cid==712|| $model->cid==713) {?>
+            -->
+             <?php foreach($models as $model) { if($model->cid==700 || $model->cid==701) {?>
                 <li><a data-ajax="false" href="<?php echo  Url::to(['wap/card', 'cid'=>$model->cid],true) ?>">
                         <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                         <h2><?= $model->title ?></h2>
                         <p><?= $model->title_hint ?></p>
           
                         <p class='line'>原价: ￥<?= $model->old_price/100 ?></p>
-                  
-                        <p>双11活动价: ￥<?= $model->price/100 ?></p>
+                        <!--
+                        <p>双11活动价: ￥<//?= $model->price/100 ?></p>
+                        -->
+                        <p>惊爆价: ￥<?= $model->price/100 ?></p>
                     </a>
                 </li>
             <?php } } ?>

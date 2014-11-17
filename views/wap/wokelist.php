@@ -140,6 +140,7 @@
         <!--
         <li><a href="#wddd"><img src="../web/images/woke/wddd.gif" alt="我的订单" class="ui-li-icon ui-corner-none">我的订单<span class="ui-li-count">0</span></a></li>
         -->
+        <li><a href="#qdyl"><img src="../web/images/woke/wdrw.gif" alt="签到有礼" class="ui-li-icon ui-corner-none">签到有礼</a></li>
         <li><a href="#wdcf"><img src="../web/images/woke/wdcf.gif" alt="我的财富" class="ui-li-icon ui-corner-none">我的财富<span class="ui-li-count"><?=  $user->getWokeYqwd() + $user->getWokeKtwd(); ?></span></a></li>
         
         
@@ -155,12 +156,15 @@
         <li><a href="#"><img src="../web/images/woke/lqjl.gif" alt="领取记录" class="ui-li-icon ui-corner-none">领取记录<span class="ui-li-count">0</span></a></li>
         <li><a href="#"><img src="../web/images/woke/wdsc.gif" alt="我的收藏" class="ui-li-icon ui-corner-none">我的收藏<span class="ui-li-count">10</span></a></li>
         <li><a href="#"><img src="../web/images/woke/wdmy.gif" alt="我的盟友" class="ui-li-icon ui-corner-none">我的盟友<span class="ui-li-count">20</span></a></li>
-        <li><a href="#"><img src="../web/images/woke/wdrw.gif" alt="我的任务" class="ui-li-icon ui-corner-none">我的任务<span class="ui-li-count">2</span></a></li>
+       
         -->
 
         </ul>
+
 <br><br>
-      <?php
+    <!--
+
+      <//?//php
 
         use miloschuman\highcharts\Highcharts;
         use yii\web\JsExpression;
@@ -195,36 +199,37 @@
                         //'data' => [0, 200, 0, 0, 0, 0, 0],
                     ],
 
-                    /*
-                    [
-                        'type' => 'column',
-                        'name' => 'John',
-                        'data' => [2, 3, 5, 7, 6],
-                    ],
-                    [
-                        'type' => 'column',
-                        'name' => 'Joe',
-                        'data' => [4, 3, 3, 9, 0],
-                    ],
-                    */
+             
+                    // [
+                    //     'type' => 'column',
+                    //     'name' => 'John',
+                    //     'data' => [2, 3, 5, 7, 6],
+                    // ],
+                    // [
+                    //     'type' => 'column',
+                    //     'name' => 'Joe',
+                    //     'data' => [4, 3, 3, 9, 0],
+                    // ],
+              
 
-                    /*
-                    [
-                        'type' => 'spline',
-                        'name' => 'Average',
-                        'data' => [3, 2.67, 3, 6.33, 3.33],
-                        'marker' => [
-                            'lineWidth' => 2,
-                            'lineColor' => new JsExpression('Highcharts.getOptions().colors[3]'),
-                            'fillColor' => 'white',
-                        ],
-                    ],
-                    */
+             
+                    // [
+                    //     'type' => 'spline',
+                    //     'name' => 'Average',
+                    //     'data' => [3, 2.67, 3, 6.33, 3.33],
+                    //     'marker' => [
+                    //         'lineWidth' => 2,
+                    //         'lineColor' => new JsExpression('Highcharts.getOptions().colors[3]'),
+                    //         'fillColor' => 'white',
+                    //     ],
+                    // ],
+               
 
                 ],
             ]
         ]);
         ?>
+    -->
 
     </div>
 

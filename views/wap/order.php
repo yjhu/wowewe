@@ -182,7 +182,16 @@ function load_data1(i, n)
 	$("#val_pkg_3g4g").html(val_pkg_3g4g_name);
 	$("#feesum").html(n.feesum/100);
 	$("#username").html(n.username);
-	$("#usermobile").html(n.usermobile);
+
+	if (n.usermobile == "undefined")
+	{
+	    //alert("undefined");
+	    $("#usermobile").html("");
+	}
+	else
+		$("#usermobile").html(n.usermobile);
+
+	
 	$("#userid").html(n.userid);
 	$("#address").html(n.address);
 	$("#office_id").html(office_name[n.office_id]);

@@ -23,26 +23,28 @@ $basename = basename(__FILE__, '.php');
     -->
 
      <li>
-         <a data-ajax=false href="<?php echo Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD]) ?>">
-            双11上网卡
-         </a>
-     </li>
-
-     <li>
          <a data-ajax=false href="<?php echo Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>">
-            双11合约机
+            <!--双11合约机-->
+            特惠合约机
          </a>
      </li>
 
-     <li>
+    <li>
          <a data-ajax=false href="<?php echo Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD]) ?>">
             单卡产品
          </a>
-     </li>
+     </li>    
 
      <li>
          <a data-ajax=false href="<?php echo Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD]) ?>">
             5折流量包
+         </a>
+     </li>
+
+     <li>
+         <a data-ajax=false href="<?php echo Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD]) ?>">
+            <!--双11上网卡-->
+            8折上网卡
          </a>
      </li>
 

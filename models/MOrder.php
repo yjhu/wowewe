@@ -386,13 +386,16 @@ class MOrder extends ActiveRecord
         $feesum = sprintf("%0.2f",$this->feesum/100);
         $office = MOffice::findOne($this->office_id);
         $office_info = ($office !== null) ? "至{$office->title}({$office->address}, {$office->manager}, {$office->mobile})" : '';
-        $select_mobnum_info = ($this->select_mobnum !== null) ? ", 手机号码为{$this->select_mobnum}" : '';
+        $select_mobnum_info = ($this->select_mobnum !== null) ? ", 所选手机号码为{$this->select_mobnum}" : '';
+        $usermobile_info = ($this->usermobile=="undefined")?"":", 联系电话{$this->usermobile}";
+        $kaitong_info = ($this->kaitong == null) ?"":", {$this->kaitong}";
+
 //        $str = <<<EOD
 //{$model->nickname}, 您已订购【{$detail}】{$select_mobnum_info}。 订单编号为【{$this->oid}】, 订单金额为{$feesum}元, 用户信息为【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 请您在24小时内携身份证或相关证件{$office_info}办理, 逾期将自动关闭。 【{$gh->nickname}】
 //EOD;
 
         $str = <<<EOD
-{$model->nickname}, 您已订购【{$detail}】。 订单编号【{$this->oid}】, {$this->kaitong},订单金额{$feesum}元,  用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 【{$gh->nickname}】
+{$model->nickname}, 您已订购【{$detail}】{$select_mobnum_info}。 订单编号【{$this->oid}】{$kaitong_info},订单金额{$feesum}元,  用户信息【{$this->username}, 身份证{$this->userid}{$usermobile_info}】。 【{$gh->nickname}】
 EOD;
 
         return $str;
