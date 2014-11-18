@@ -57,7 +57,7 @@ class MSceneDetail extends ActiveRecord
 
     const CAT_ITEM = 0;
     const CAT_FAN = 1;    
-    const CAT_REWARD = 2;
+    const CAT_SIGN = 2;
     
     public static function tableName()
     {
