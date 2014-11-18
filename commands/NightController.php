@@ -130,12 +130,15 @@ class NightController extends Controller
 	{
             $tableName = MSceneDetail::tableName();	
             //$query = (new Query()) ->from($tableName)->where("cat=:cat AND status=:status AND openid_fan != '' AND scene_amt>0", [':cat'=>MSceneDetail::CAT_FAN, ':status'=>MSceneDetail::STATUS_INIT]);
-            $query = (new Query()) ->from($tableName)->where("status=:status AND openid_fan != '' AND scene_amt>0", [':status'=>MSceneDetail::STATUS_INIT]);
+            $query = (new Query()) ->from($tableName)->where("status=:status AND scene_amt>0", [':status'=>MSceneDetail::STATUS_INIT]);
             $amt = 0;
             foreach ($query->each() as $row)
             {                
                 if ($row['cat'] == MSceneDetail::CAT_FAN)
                 {
+                    if (empty($row['openid_fan']))
+                        continue;
+                        
                     $fan = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid_fan']]);
                     if ($fan === null)
                         continue;
