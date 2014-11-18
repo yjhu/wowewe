@@ -37,7 +37,7 @@ class MUserSearch extends Model
     {
         return [
             [['id', 'role', 'status'], 'integer'],
-            [['nickname', 'create_time', 'create_time_2', 'update_time', 'scene_id', 'scene_pid', 'is_liantongstaff'], 'safe'],
+            [['nickname', 'create_time', 'create_time_2', 'update_time', 'scene_id', 'scene_pid', 'is_liantongstaff','sign_time','sign_money'], 'safe'],
         ];
     }
 

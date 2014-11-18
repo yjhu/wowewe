@@ -70,7 +70,7 @@
     <?php echo $this->render('header1', ['menuId'=>'menu1','title' => '我的沃客' ]); ?>
     <div data-role="content">
         
-        <ul data-role="listview" data-inset="false">
+        <ul data-role="listview" data-inset="false" id="woke-ul">
 
         <li>
         <!--
@@ -114,9 +114,9 @@
                 <!--<img src="../web/images/woke/qr.png">-->
 
                 <?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
-
+    
                 </div>
-
+                
                 </p>
                     
                 <!--
@@ -130,9 +130,10 @@
                 <!--
                 <em class="seeM_btn"><img src="/wolm/images/seeM_btn.png" width="7"></em>
                 -->
-          
+                <p class="f13">手机号码：<?=  $user->mobile ?></p>
+
                 <p class="f13">我的沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeYqwd() + $user->getWokeKtwd(); ?></span> 点</p>
-                <p class="f13">可提现沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeKtwd() - $user->getWokeYtwd(); ?></span> 点</p>
+                <p class="f13">可提沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeKtwd() - $user->getWokeYtwd(); ?></span> 点</p>
             </dd>
         </dl>
  
@@ -140,12 +141,20 @@
         <!--
         <li><a href="#wddd"><img src="../web/images/woke/wddd.gif" alt="我的订单" class="ui-li-icon ui-corner-none">我的订单<span class="ui-li-count">0</span></a></li>
         -->
-        <li><a href="#qdyl"><img src="../web/images/woke/wdrw.gif" alt="签到有礼" class="ui-li-icon ui-corner-none">签到有礼</a></li>
+        <li><a ajax-data="false" href="#qdyl"><img src="../web/images/woke/wdrw.gif" alt="签到有礼" class="ui-li-icon ui-corner-none">签到有礼</a></li>
+        
+        <!--
         <li><a href="#wdcf"><img src="../web/images/woke/wdcf.gif" alt="我的财富" class="ui-li-icon ui-corner-none">我的财富<span class="ui-li-count"><?=  $user->getWokeYqwd() + $user->getWokeKtwd(); ?></span></a></li>
+        -->
+        <li><a href="#wdcf"><img src="../web/images/woke/wdcf.gif" alt="我的财富" class="ui-li-icon ui-corner-none">我的财富</a></li>
+                
         
-        
+        <!--
         <li><a href="#tqjl"><img src="../web/images/woke/tqjl.gif" alt="提现记录" class="ui-li-icon ui-corner-none">提现记录<span class="ui-li-count"><?=  $user->getWokeYtwd(); ?></span></a></li>
-        
+        -->
+
+        <li><a href="#tqjl"><img src="../web/images/woke/tqjl.gif" alt="提现记录" class="ui-li-icon ui-corner-none">提现记录</a></li>
+          
         <!--
         <li><a href="#wdyhk"><img src="../web/images/woke/wdyhk.gif" alt="我的银行卡" class="ui-li-icon ui-corner-none">我的银行卡<span class="ui-li-count">1</span></a></li>
         -->
@@ -398,7 +407,7 @@
         <div class="ui-bar ui-bar-a" style="height:60px">
            累计提现(点)
             <br>
-            <span style="font-size:18pt; color:#028724"><?=  $user->getWokeYtwd(); ?></span> 
+            <span style="font-size:18pt;"><?=  $user->getWokeYtwd(); ?></span> 
         </div>
         </div>
 
@@ -406,7 +415,7 @@
         <div class="ui-bar ui-bar-b" style="height:60px">
             折合人民币(元)
             <br>
-            <span style="font-size:18pt; color:#028724"><?=  $user->getWokeYtwd()/100; ?></span> 
+            <span style="font-size:18pt;"><?=  $user->getWokeYtwd()/100; ?></span> 
         </div>
         </div>
 
@@ -645,7 +654,7 @@
         <img src="../web/images/woke/womei_sad.png" width="96px" height="96px">
         <p>没有找到任何记录哦！</p>
         </span>
-    </enter>
+    </center>
     <?php } ?>
 
 </div>
@@ -839,6 +848,33 @@
 
 
 
+<!-- 签到有礼 页面-->
+<div data-role="page" id="qdyl" data-theme="c">
+<?php echo $this->render('header1', ['menuId'=>'menu8','title' => '签到有礼' ]); ?>
+
+<div data-role="content">
+
+<center>
+    <span>
+    <span id="qdyl_info"></span>
+    </span>
+
+    <br>
+
+    <a href="javascript:reloadWokeList();" class="ui-btn">返回</a>
+</center>
+
+
+
+</div>
+
+<div data-role="footer" data-position="fixed">
+    <h4>&copy; 襄阳联通 2014</h4>
+</div>
+ <?php echo $this->render('menu', ['menuId'=>'menu8','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
+
+
 
 <script>
 var ktwd = "<?=  $user->getWokeKtwd()-$user->getWokeYtwd(); ?>";
@@ -847,6 +883,63 @@ function fillErrmsg(id,errmsg)
 {
      $(id).html("<p><a href='#' class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext ui-btn-inline'>Alert</a>"+errmsg+"</p><a href='#' class='ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b' data-rel='back'>确认</a>");
 }
+
+/*
+function showGold()
+{
+    //alert("show gold !!");
+    $.ajax({
+        url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'wokeqdyl'], true) ; ?>",
+        type:"GET",
+        cache:false,
+        dataType:'json',
+        data: "&memo=签到有礼",
+        success: function(json_data){
+            if(json_data)
+            {
+
+            }
+        }
+    });
+
+    $.mobile.changePage("#qdyl",{transition:"slide"});
+}
+*/
+
+function reloadWokeList()
+{
+    var url = "<?php echo Url::to(['wap/wokelist'], true); ?>";
+    location.href = url;
+}
+
+$(document).on("pageshow", "#qdyl", function(){
+
+    //alert('qdyl');
+    $.ajax({
+        url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'wokeqdyl'], true) ; ?>",
+        type:"GET",
+        cache:false,
+        dataType:'json',
+        data: "&memo=签到",
+        success: function(json_data){
+            if(json_data)
+            {
+
+            }
+            //alert(json_data.sign_money);
+            if(json_data.sign_money != "marked")
+            {
+                $("#qdyl_info").html("<img src='../web/images/woke/glod2.png'><h3>恭喜，你今天已经领取<span style='font-size:28pt;font-weight:bolder;color:red'> "+json_data.sign_money+" </span>个沃点。</h3>");
+            }
+            else
+            {
+                $("#qdyl_info").html("<img src='../web/images/woke/glod1.png'><h3>今天的沃点已领，明天再来吧 :-)</h3>");
+            }
+        }
+    });
+
+});
+
 
 $(document).on("pageinit", "#wdcf", function(){
 

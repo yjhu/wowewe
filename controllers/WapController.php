@@ -1189,6 +1189,68 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
                     return json_encode(['code'=>1, 'errmsg'=>'save score to db error']);
                 }        
               
+                $data['ljtx'] = abs($model->scene_amt);
+                break;
+
+            case 'wokeqdyl':
+                $gh_id = U::getSessionParam('gh_id');
+                $openid = U::getSessionParam('openid'); 
+                U::W("----------wokeqdyl-----------");
+                U::W($openid);                   
+                Yii::$app->wx->setGhId($gh_id);
+                $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+                U::W("$$$$$$$$$$$$$$$$$$$$$$$$$");
+                U::W($user);
+               
+                $model = new \app\models\MSceneDetail;
+                $model->gh_id = $gh_id;
+                $model->openid = $openid;
+                $model->scene_id = $user->scene_id;
+
+                $money_max = 8; //每日签到有礼，8个沃点封顶；
+                if($user->sign_money == 0)   //第1次签到;
+                {
+                    $user->sign_time = date("Y-m-d");
+                    $user->sign_money = 1;
+                }
+                else if(strtotime(date("Y-m-d"))-strtotime($user->sign_time)<1)//签到只能一天一次
+                {
+                    //$user->sign_time = date("Y-m-d");
+                    //$user->sign_money = 1;
+                    $data['sign_money'] = 'marked';
+                    break;
+                }
+                else if((strtotime(date("Y-m-d"))-strtotime($user->sign_time))/86400 > 1)//超过一天未签到，
+                {
+                    $user->sign_time = date("Y-m-d");
+                    $user->sign_money = 1;
+                }
+                else
+                {
+                    $user->sign_time = date("Y-m-d");
+                    $user->sign_money = (2*$user->sign_money>$money_max)?$money_max:2*$user->sign_money;
+
+                }
+
+                $model->scene_amt = $user->sign_money;
+
+                $model->memo = $_GET['memo'];
+                
+                if (!$model->save(false))
+                {
+                    U::W([__METHOD__, $model->getErrors()]);
+                    return json_encode(['code'=>1, 'errmsg'=>'save score to db error']);
+                }        
+              
+                //$user->scene_balance = $user->scene_balance + abs($model->scene_amt);
+
+                if (!$user->save(false))
+                {
+                    U::W([__METHOD__, $model->getErrors()]);
+                    return json_encode(['code'=>1, 'errmsg'=>'save score to db error']);
+                }        
+             
+                $data['sign_money'] = $user->sign_money;
                 break;
 
             default:
@@ -1370,13 +1432,12 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wokelist:gh_03a74ac96138:openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
     public function actionWokelist()
-    {        
-        U::W("-----------11111111--------------\n");        
+    {           
         $this->layout = 'wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        U::W("---------22222222222--------------\n");        
+       
         $scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt<0 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
         
         //可提现沃点
@@ -1389,7 +1450,6 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $yqwd_fans_qx_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status<>1 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
         
 
-        U::W("------------------333333-------\n");
         U::W(count($yqwd_fans_qx_scenes));
         return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes]);
     }

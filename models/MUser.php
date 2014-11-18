@@ -33,6 +33,8 @@ CREATE TABLE wx_user (
     prec float(10,6) NOT NULL DEFAULT '0.000000',
     gid int(10) unsigned NOT NULL DEFAULT '0',
     is_liantongstaff tinyint(3) unsigned NOT NULL DEFAULT 0,
+    sign_time TIMESTAMP NOT NULL DEFAULT 0,
+    sign_money int(10) unsigned NOT NULL DEFAULT '0',
     KEY idx_gh_id_scene_pid(gh_id,scene_pid),
     UNIQUE KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -81,6 +83,9 @@ INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_1ad98f54
 ALTER TABLE wx_user CHANGE msg_time msg_time TIMESTAMP NOT NULL DEFAULT 0;
 
 ALTER TABLE wx_user ADD scene_balance_time TIMESTAMP NOT NULL DEFAULT 0 after scene_balance;
+
+ALTER TABLE wx_user ADD sign_time TIMESTAMP NOT NULL DEFAULT 0;
+ALTER TABLE wx_user ADD sign_money int(10) unsigned NOT NULL DEFAULT '0';
 */
 
 use Yii;
@@ -283,7 +288,7 @@ class MUser extends ActiveRecord implements IdentityInterface
             return 0;
         //$n = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0 AND create_time>:create_time',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT, ':create_time'=>$this->scene_balance_time])->sum('scene_amt');
         $n = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND status=:status AND scene_amt>0',[':gh_id'=>$this->gh_id, ':scene_id'=>$this->scene_id, ':status'=>MSceneDetail::STATUS_INIT])->sum('scene_amt');
-
+        
         return empty($n) ? 0 : $n;
     }
 
