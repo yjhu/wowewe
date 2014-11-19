@@ -763,6 +763,20 @@ class OrderController extends Controller
             $model->load(\Yii::$app->request->post());
             if ($model->save())
             {               
+                if($model->status == MSceneDetail::STATUS_TIXIAN_OK)
+                {
+                    $msg = "充值成功";
+                }
+                else
+                {
+                    $msg = "充值失败";
+                }
+
+                if (!$model->user->sendWxm($msg))                  
+                {    
+                    U::W("wx send failed");
+                }
+
                 return $this->redirect(['memberlist']);            
             }
             else
