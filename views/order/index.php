@@ -133,10 +133,25 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => '物流单号',
 				'attribute' => 'wldh',	
 			],
-
+/*
             [
 				'class' => 'yii\grid\ActionColumn',
-				'template' => '{view} {update}',
+				'template' => '{view} {update} {chat}',
+			],
+*/
+            [
+				'class' => 'yii\grid\ActionColumn',
+				'template' => '{view} {update} {chat}',
+				'buttons' => [
+					'chat' => function ($url, $model) {
+						return Html::a('<span class="glyphicon glyphicon-send"></span>', $url, [
+							'title' => Yii::t('yii', 'Chat'),
+							'data-method' => 'post',
+							'data-pjax' => '0',
+							//'data-pjax' => '1',
+						]);
+					}
+				],
 			],
 
 	/*

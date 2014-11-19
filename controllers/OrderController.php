@@ -153,6 +153,31 @@ class OrderController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionChat($id)
+    {
+        $model = MOrder::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException('no this order');
+        }
+        if (\Yii::$app->request->isPost) 
+        {
+            if ($model->load(\Yii::$app->request->post()))
+            {
+                if ($model->user->sendWxm($model->memo_reply))
+                    Yii::$app->session->setFlash('success','微信发送成功！');                   
+                else
+                    Yii::$app->session->setFlash('success','微信发送失败！');                   
+                return $this->refresh();                
+            }
+            else
+            {
+                U::W($model->getErrors());
+            }
+            //return $this->redirect(['index']);            
+        }
+        return $this->render('chat', ['model' => $model]);        
+    }
+
     protected function findModel($id)
     {
         if (($model = MOrder::findOne($id)) !== null) {

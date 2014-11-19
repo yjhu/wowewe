@@ -128,7 +128,7 @@ class MOrder extends ActiveRecord
             [['select_mobnum'],  'number'],  
             [['address'],  'string', 'min' => 5, 'max' => 256], 
             [['kaitong'],  'string', 'min' => 1, 'max' => 16],      
-            [['memo_reply'],  'string', 'min' => 1, 'max' => 100],
+            [['memo_reply'],  'string', 'min' => 1, 'max' => 128],
             [['wldh'],  'string', 'min' => 1, 'max' => 64],          
         ];
     }

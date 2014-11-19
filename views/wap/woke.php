@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 use yii\widgets\ActiveForm;
+//use yii\bootstrap\ActiveForm;
 
 use app\models\U;
 use app\models\MStaff;
@@ -45,6 +46,9 @@ $basename = basename(__FILE__, '.php');
 
 		<?= $form->field($model, 'mobile')->input('tel', ['maxlength' => 11, 'data' => ['clear-btn'=>'true'], 'placeholder'=>'输入手机号'])->label('手机号:') ?>
 
+		<?php echo $form->field($model, 'verifyCode')->input('tel', ['maxlength' => 11, 'data' => ['clear-btn'=>'true'], 'placeholder'=>'手机短信验证码'])->label('手机短信验证码:') ?>
+
+		<?php //$this->widget('ext.SmCaptcha.ESmCaptcha', array('model'=>$model,'buttonLabel'=>'免费获取验证码','buttonType'=>'button','buttonOptions'=>array('style'=>'margin-left:5px;'))); ?>
 
 		<div class="ui-field-contain">
 			<button type="submit" class="ui-shadow ui-btn ui-corner-all">立即绑定</button>
