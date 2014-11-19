@@ -59,6 +59,36 @@ class MSceneDetail extends ActiveRecord
     const CAT_FAN = 1;    
     const CAT_SIGN = 2;
     
+
+    public function rules()
+    {
+        return [
+            [['status'], 'safe'],
+        ];
+    }
+
+    public static function getSceneDetailStatusOption()
+    {
+        $arr = array(
+            self::STATUS_TIXIAN_APPLY => '申请提现',
+            self::STATUS_TIXIAN_OK => '提现成功',
+            self::STATUS_TIXIAN_NOTOK => '提现失败',
+        );        
+        return $arr;
+    }    
+
+
+    public static function getSceneDetailStatusName($key=null)
+    {
+        $arr = array(
+            self::STATUS_TIXIAN_APPLY => '申请提现',
+            self::STATUS_TIXIAN_OK => '提现成功',
+            self::STATUS_TIXIAN_NOTOK => '提现失败',
+        );        
+        return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+    }
+
+
     public static function tableName()
     {
         return 'wx_scene_detail';

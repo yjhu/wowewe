@@ -881,8 +881,16 @@ EOD;
         $order->val_pkg_plan = isset($_GET['pkgPlan']) ? $_GET['pkgPlan'] : '';
         $order->feesum = $_GET['feeSum'] * 100;
         
-        $order->office_id = (isset($_GET['office']) && $_GET['office'] !=  MOrder::NO_CHOICE) ? $_GET['office'] : 0;
-        //$order->office_id = 16;
+        //订购流量包时，不需用户选择营业厅， 直接指定新华路营业厅
+        if($_GET["cid"]== 702 || $_GET["cid"]== 703 || $_GET["cid"]== 704)
+        {
+            $order->office_id = 16;
+        }
+        else
+        {
+            $order->office_id = (isset($_GET['office']) && $_GET['office'] !=  MOrder::NO_CHOICE) ? $_GET['office'] : 0;
+        }
+        
 
         $order->userid = (isset($_GET['userid']) && $_GET['userid'] !=  MOrder::NO_CHOICE) ? $_GET['userid'] : '';
         $order->username = (isset($_GET['username']) && $_GET['username'] !=  MOrder::NO_CHOICE) ? $_GET['username'] : '';

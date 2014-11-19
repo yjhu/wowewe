@@ -716,8 +716,7 @@ class OrderController extends Controller
     }
 
 
-    ////////////////////////////////////////////////
-     public function actionMemberlist()
+    public function actionMemberlist()
     {
         $searchModel = new MSceneDetailSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->get());
@@ -730,18 +729,15 @@ class OrderController extends Controller
 
     public function actionMemberupdate($id)
     {
-        U::W("1111111111111111");
         $model = MSceneDetail::findOne($id);
         if (!$model) {
             throw new NotFoundHttpException('no this gh');
         }
         if (\Yii::$app->request->isPost) 
         {
-             U::W("2222222222222222222222222");
             $model->load(\Yii::$app->request->post());
             if ($model->save())
             {               
-                U::W("33333333333333333333"); 
                 return $this->redirect(['memberlist']);            
             }
             else

@@ -7,6 +7,7 @@ use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\MSceneDetail;
 
+
 class MSceneDetailSearch extends Model
 {
     public $gh_id;
@@ -25,7 +26,7 @@ class MSceneDetailSearch extends Model
 
     public $czhm;
     
-    
+    public $id;
     
     public function rules()
     {
@@ -70,6 +71,8 @@ class MSceneDetailSearch extends Model
             $query->andWhere('date(create_time)<=:create_time_2', [':create_time_2' => $this->create_time_2]);
         }
         
+        $this->addCondition($query, 'status');        
+
         return $dataProvider;
     }
 
