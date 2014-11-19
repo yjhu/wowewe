@@ -199,10 +199,9 @@ class Wechat extends \yii\base\Object
             die('no access_token......');
         }
         $this->_accessToken = $arr['access_token'];
-        //Yii::$app->cache->set($key, $this->_accessToken, YII_DEBUG ? 10 : 3600);
-        Yii::$app->cache->set($key, $this->_accessToken, YII_DEBUG ? 3600 : 3600);
-        U::W("getAccessToken from weixin====, $key, {$arr['access_token']}");
-        
+        Yii::$app->cache->set($key, $this->_accessToken, YII_DEBUG ? 10 : 3600);
+        //Yii::$app->cache->set($key, $this->_accessToken, YII_DEBUG ? 3600 : 3600);
+        U::W("getAccessToken from weixin====, $key, {$arr['access_token']}");        
         return $this->_accessToken;        
     }
 
@@ -798,6 +797,8 @@ EOD;
     {
         //U::W(self::json_encode($msg));
         $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/custom/send", ['access_token'=>$this->accessToken], self::json_encode($msg));
+       //$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/custom/send", ['access_token'=>$this->getAccessToken(true)], self::json_encode($msg));
+       //$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/custom/send", ['access_token'=>$this->getAccessToken()], self::json_encode($msg));
         $this->checkWxApiResp($arr, [__METHOD__, $msg]);
         return $arr;                        
     }

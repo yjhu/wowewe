@@ -89,47 +89,9 @@ class NightController extends Controller
 		U::W("DELETE $tableName, $n");
 	}
 
-/*
 	public static function confirmSceneDetail() 
 	{
             $tableName = MSceneDetail::tableName();	
-            $query = (new Query()) ->from($tableName)->where("cat=:cat AND status=:status AND openid_fan != '' AND scene_amt>0", [':cat'=>MSceneDetail::CAT_FAN, ':status'=>MSceneDetail::STATUS_INIT]);
-            $amt = 0;
-            foreach ($query->each() as $row)
-            {                
-                $fan = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid_fan']]);
-                if ($fan === null)
-                    continue;
-                
-                if ($fan->isActivedFan())
-                {
-                    U::W('ACTIVE id='.$row['id']);
-                    $model = MSceneDetail::findOne($row['id']);
-                    $model->status = MSceneDetail::STATUS_CONFIRMED;
-                    if ($model->save(false))
-                    {
-                        $user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid']]);
-                        U::W("SAVE BALANCE1 ".$user->scene_balance);
-                        
-                        $user->scene_balance += $model->scene_amt;
-                        U::W("SAVE BALANCE2 ".$user->scene_balance);                        
-                        $user->scene_balance_time = date("Y-m-d H:i:s");
-                        $user->save(false);
-                    }
-                }
-                else
-                {
-                    U::W('NO ACTIVE id='.$row['id']);                
-                }
-            }	
-
-
-	}
-*/	
-	public static function confirmSceneDetail() 
-	{
-            $tableName = MSceneDetail::tableName();	
-            //$query = (new Query()) ->from($tableName)->where("cat=:cat AND status=:status AND openid_fan != '' AND scene_amt>0", [':cat'=>MSceneDetail::CAT_FAN, ':status'=>MSceneDetail::STATUS_INIT]);
             $query = (new Query()) ->from($tableName)->where("status=:status AND scene_amt>0", [':status'=>MSceneDetail::STATUS_INIT]);
             $amt = 0;
             foreach ($query->each() as $row)
@@ -234,5 +196,43 @@ class NightController extends Controller
                 }
                 
             }	
-*/            
+
+            //$query = (new Query()) ->from($tableName)->where("cat=:cat AND status=:status AND openid_fan != '' AND scene_amt>0", [':cat'=>MSceneDetail::CAT_FAN, ':status'=>MSceneDetail::STATUS_INIT]);
+
+	public static function confirmSceneDetail() 
+	{
+            $tableName = MSceneDetail::tableName();	
+            $query = (new Query()) ->from($tableName)->where("cat=:cat AND status=:status AND openid_fan != '' AND scene_amt>0", [':cat'=>MSceneDetail::CAT_FAN, ':status'=>MSceneDetail::STATUS_INIT]);
+            $amt = 0;
+            foreach ($query->each() as $row)
+            {                
+                $fan = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid_fan']]);
+                if ($fan === null)
+                    continue;
+                
+                if ($fan->isActivedFan())
+                {
+                    U::W('ACTIVE id='.$row['id']);
+                    $model = MSceneDetail::findOne($row['id']);
+                    $model->status = MSceneDetail::STATUS_CONFIRMED;
+                    if ($model->save(false))
+                    {
+                        $user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid']]);
+                        U::W("SAVE BALANCE1 ".$user->scene_balance);
+                        
+                        $user->scene_balance += $model->scene_amt;
+                        U::W("SAVE BALANCE2 ".$user->scene_balance);                        
+                        $user->scene_balance_time = date("Y-m-d H:i:s");
+                        $user->save(false);
+                    }
+                }
+                else
+                {
+                    U::W('NO ACTIVE id='.$row['id']);                
+                }
+            }	
+
+
+	}
+*/	
 

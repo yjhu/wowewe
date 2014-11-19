@@ -108,6 +108,8 @@ class MUser extends ActiveRecord implements IdentityInterface
     const ROLE_ADMIN = 2;    
     const ROLE_ROOT = 9;    
 
+    public $verifyCode;
+    
     public function behaviors()
     {
         return [
@@ -351,6 +353,25 @@ class MUser extends ActiveRecord implements IdentityInterface
         return empty($last7days) ? 0 : $last7days;
     }
 
+    public function sendWxm($content)
+    {
+        if (empty($this->gh_id) || empty($this->openid))
+        {
+            U::W(["gh_id or openid is empty", $this->getAttributes(), __METHOD__]);
+            return false;
+        }
+        try
+        {
+            Yii::$app->wx->setGhId($this->gh_id);
+            $arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$this->openid,'msgtype'=>'text', 'text'=>['content'=>$content]]);
+        }
+        catch (\Exception $e)
+        {
+            U::W($e->getCode().':'.$e->getMessage());
+            return false;
+        }
+        return true;
+    }
 
 
 }

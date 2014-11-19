@@ -1421,7 +1421,8 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         if ($model === null)
             throw new NotFoundHttpException('user does not exists');
             
-            
+//        return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid, 'model'=>$model]);
+        
         if ((!empty($model->scene_id)) && (!empty($model->mobile)))
             return $this->redirect(['wokelist']);    
             
