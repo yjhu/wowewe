@@ -185,6 +185,7 @@ class MOrder extends ActiveRecord
         return $arr;
     }    
 
+
     static function getOrderWuliugongsiName($key=null)
     {
         $arr = array(
@@ -194,6 +195,7 @@ class MOrder extends ActiveRecord
         );        
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
+
 
     static function getOrderStatusName($key=null)
     {

@@ -1235,6 +1235,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
                 $model->scene_amt = $user->sign_money;
 
                 $model->memo = $_GET['memo'];
+                $model->cat = MSceneDetail::CAT_SIGN;
                 
                 if (!$model->save(false))
                 {
@@ -1412,12 +1413,14 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         if ($model === null)
             throw new NotFoundHttpException('user does not exists');
             
-        if (!empty($model->scene_id))
+            
+        if ((!empty($model->scene_id)) && (!empty($model->mobile)))
             return $this->redirect(['wokelist']);    
             
         if (Yii::$app->request->isPost) 
         {
-            if ($model->save())
+            $model->load(Yii::$app->request->post());
+            if ($model->save(true,['mobile']))
             {
                 $qr = $model->getQrImageUrl();
                 return $this->redirect(['wokelist']);            
@@ -1427,7 +1430,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
                 U::W($model->getErrors());
             }
         }        
-        return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model]);
+        return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid, 'model'=>$model]);
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wokelist:gh_03a74ac96138:openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
