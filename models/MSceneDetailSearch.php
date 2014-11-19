@@ -20,16 +20,23 @@ class MSceneDetailSearch extends Model
     public $scene_amt;
     
     public $memo;
+
+    public $status;
+
+    public $czhm;
+    
+    
     
     public function rules()
     {
         return [
-            [['gh_id', 'scene_id','create_time', 'create_time_2', 'scene_amt', 'memo'], 'safe'],
+            [['gh_id', 'scene_id','create_time', 'create_time_2', 'scene_amt', 'memo', 'status', 'czhm'], 'safe'],
         ];
     }
 
     public function search($params)
     {
+        //$query = MSceneDetail::find()->where('scene_amt<0');
         $query = MSceneDetail::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

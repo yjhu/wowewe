@@ -276,6 +276,7 @@ class AdminController extends Controller
         Yii::$app->user->login($user);
         return $this->redirect(['ghlist']);
     }
+
     
 }
 

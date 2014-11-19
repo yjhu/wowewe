@@ -27,6 +27,9 @@ use app\models\MAccessLog;
 use app\models\MAccessLogSearch;
 use app\models\MAccessLogAll;
 
+use app\models\MSceneDetail;
+use app\models\MSceneDetailSearch;
+
 class OrderController extends Controller
 {
     public $layout = 'main';
@@ -710,6 +713,43 @@ class OrderController extends Controller
         U::W(Yii::$app->user->getGhid());
         U::W($data);
         return $this->render('statvisit', ['dataProvider'=>$dataProvider,'date_start' => $date_start, 'date_end' => $date_end, 'cur_date' => $cur_date, 'data'=>$data]);  
+    }
+
+
+    ////////////////////////////////////////////////
+     public function actionMemberlist()
+    {
+        $searchModel = new MSceneDetailSearch;
+        $dataProvider = $searchModel->search(Yii::$app->request->get());
+
+        return $this->render('memberlist', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+        ]);
+    }
+
+    public function actionMemberupdate($id)
+    {
+        U::W("1111111111111111");
+        $model = MSceneDetail::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException('no this gh');
+        }
+        if (\Yii::$app->request->isPost) 
+        {
+             U::W("2222222222222222222222222");
+            $model->load(\Yii::$app->request->post());
+            if ($model->save())
+            {               
+                U::W("33333333333333333333"); 
+                return $this->redirect(['memberlist']);            
+            }
+            else
+            {
+                U::W($model->getErrors());
+            }       
+        }
+        return $this->render('memberupdate', ['model' => $model]);        
     }
 
 

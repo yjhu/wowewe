@@ -67,7 +67,7 @@
 
 <div data-role="page" id="wokelist" data-theme="c">
 
-    <?php echo $this->render('header1', ['menuId'=>'menu1','title' => '我的沃客' ]); ?>
+    <?php echo $this->render('header1', ['menuId'=>'menu1','title' => '会员俱乐部' ]); ?>
     <div data-role="content">
         
         <ul data-role="listview" data-inset="false" id="woke-ul">
@@ -132,8 +132,8 @@
                 -->
                 <p class="f13">手机号码：<?=  $user->mobile ?></p>
 
-                <p class="f13">我的沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeYqwd() + $user->getWokeKtwd(); ?></span> 点</p>
-                <p class="f13">可提沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeKtwd() - $user->getWokeYtwd(); ?></span> 点</p>
+                <p class="f13">我的沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeYqwd() + $user->getWokeKtwd(); ?></span> </p>
+                <p class="f13">可提沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeKtwd() - $user->getWokeYtwd(); ?></span> </p>
             </dd>
         </dl>
  
@@ -143,6 +143,9 @@
         -->
         <li><a ajax-data="false" href="#qdyl"><img src="../web/images/woke/wdrw.gif" alt="签到有礼" class="ui-li-icon ui-corner-none">签到有礼</a></li>
         
+        <li><a ajax-data="false" href="#wytg"><img src="../web/images/woke/wdmy.gif" alt="我要推广" class="ui-li-icon ui-corner-none">我要推广</a></li>
+        
+
         <!--
         <li><a href="#wdcf"><img src="../web/images/woke/wdcf.gif" alt="我的财富" class="ui-li-icon ui-corner-none">我的财富<span class="ui-li-count"><?=  $user->getWokeYqwd() + $user->getWokeKtwd(); ?></span></a></li>
         -->
@@ -429,7 +432,12 @@
    
     <input type="tel" name="czhm" id="czhm" placeholder="手机号码" value="">
     <br>
+
+    <!--
     <input type="button" id="ljtxBtn" value="沃点换话费" style="background-color: #44B549">
+    -->
+
+     <a href="#" id="ljtxBtn" class="ui-btn">沃点换话费</a>
     
 
     </form>
@@ -540,7 +548,7 @@
                 }
                 else//reward
                 {
-                    $memo = "签到任务";
+                    $memo = "签到";
                 }
             ?>
 
@@ -619,7 +627,7 @@
                 }
                 else//reward
                 {
-                    $memo = "签到任务";
+                    $memo = "签到";
                 }
             ?>
             
@@ -864,8 +872,6 @@
     <a href="javascript:reloadWokeList();" class="ui-btn">返回</a>
 </center>
 
-
-
 </div>
 
 <div data-role="footer" data-position="fixed">
@@ -874,6 +880,34 @@
  <?php echo $this->render('menu', ['menuId'=>'menu8','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
 
+
+
+<!-- 我要推广 页面-->
+<div data-role="page" id="wytg" data-theme="c">
+<?php echo $this->render('header1', ['menuId'=>'menu9','title' => '我要推广' ]); ?>
+
+<div data-role="content">
+
+<?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
+
+<center>
+    <span>快叫小伙伴拿起手机微信扫一扫加关注。<br>
+    你即可获得<b><font color=red>100</font></b>沃点！<br>
+    还等什么？<br>
+    快~
+    </span>
+
+    <a href="javascript:reloadWokeList();" class="ui-btn">返回</a>
+
+</center>
+
+</div>
+
+<div data-role="footer" data-position="fixed">
+    <h4>&copy; 襄阳联通 2014</h4>
+</div>
+ <?php echo $this->render('menu', ['menuId'=>'menu8','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
 
 
 <script>
