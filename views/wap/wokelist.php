@@ -946,6 +946,8 @@ function reloadWokeList()
     location.href = url;
 }
 
+
+
 $(document).on("pageshow", "#qdyl", function(){
 
     //alert('qdyl');

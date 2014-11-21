@@ -27,6 +27,7 @@ use app\models\MDisk;
 use app\models\MG2048;
 use app\models\MPkg;
 use app\models\MSceneDetail;
+use app\models\MWinMobileFee;
 
 use app\models\Alipay;
 use app\models\AlipaySubmit;
@@ -1549,7 +1550,60 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
     }
 
 
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/winmobilefee:gh_03a74ac96138:openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/winmobilefee:gh_03a74ac96138   
+    public function actionWinmobilefee()
+    {           
+        $this->layout = 'wap';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        //$winmobilefee = MWinMobileFee::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+         $winmobilefee = new \app\models\MWinMobileFee;
 
+        if ($user === null)
+        {
+            $user = new MUser;        
+            $subscribed = false;            
+        }
+        else if ($user->subscribe)
+            $subscribed = true;
+        else
+            $subscribed = false;
+
+        if (!Yii::$app->user->isGuest)
+            $username = Yii::$app->user->identity->username;
+        else
+            $username = '';
+        
+        $winmobilefee->gh_id = $gh_id;
+        $winmobilefee->openid = $openid;
+        $winmobilefee->openid_fan = 'openid_fan';
+        $winmobilefee->create_time = date('Y-m-d H:i:s');
+
+        //我要助力
+        if (Yii::$app->request->isPost) 
+        {
+            U::W("111111111111111111111111111111111111111111111111");
+            $winmobilefee->load(Yii::$app->request->post());
+            if ($winmobilefee->save())
+            {
+                //Yii::$app->session->setFlash('success','助力成功');
+                 U::W("助力成功");         
+            }
+            else
+            {
+                W([$_GET, $_POST, $winmobilefee->getErrors()]);
+                //Yii::$app->session->setFlash('success','助力失败！');  
+            }
+        }   
+
+        U::W("22222222222222222222222222222222221");
+        $count = \app\models\MWinMobileFee::find()->where(['openid'=>$openid])->count();  
+
+        return $this->render('winmobilefee', ['user' => $user, 'subscribed'=>$subscribed, 'username'=>$username, 'count'=>$count]);    
+    }
 
 
 }
