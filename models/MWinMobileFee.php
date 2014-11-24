@@ -19,6 +19,8 @@ use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 
+use app\models\MUser;
+
 class MWinMobileFee extends ActiveRecord
 {
 	//const MDISK_CNT_PER_DAY = 3000;
@@ -34,9 +36,18 @@ class MWinMobileFee extends ActiveRecord
 		];
     }
 
+    public function getUser()
+    {
+        return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
+    }
+
+    public function getUserFan()
+    {
+        return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid_fan']);
+    }
 
 
-
+    
 }
 
 /*

@@ -28,6 +28,7 @@ use app\models\MG2048;
 use app\models\MPkg;
 use app\models\MSceneDetail;
 use app\models\MWinMobileFee;
+use app\models\MWinMobileNum;
 
 use app\models\Alipay;
 use app\models\AlipaySubmit;
@@ -60,7 +61,7 @@ class WapController extends Controller
     public function init()
     {
         //U::W(['init....', $_GET,$_POST, $GLOBALS]);
-        //U::W(['init....', $_GET,$_POST]);
+        U::W(['init....', $_GET,$_POST]);
     }
 
     public function beforeAction($action)
@@ -1550,59 +1551,110 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
     }
 
 
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/winmobilefee:gh_03a74ac96138:openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/winmobilefee:gh_03a74ac96138:pid=oKgUduNHzUQlGRIDAghiY7ywSeWk
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/winmobilefee:gh_03a74ac96138   
     public function actionWinmobilefee()
     {           
         $this->layout = 'wap';
         $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
+        $openid_fan = U::getSessionParam('openid');
+        $openid = $_GET['pid'];
+
+
         Yii::$app->wx->setGhId($gh_id);
         $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        //$winmobilefee = MWinMobileFee::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-         $winmobilefee = new \app\models\MWinMobileFee;
 
+        $user_fan = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid_fan]);
+
+        //$user_fans = MWinMobileFee::findAll(['gh_id'=>$gh_id, 'openid'=>$openid_fan])->limit(12);
+        $user_fans = MWinMobileFee::find()->where("gh_id = :gh_id AND openid = :openid", [':gh_id'=>$gh_id,':openid'=>$openid])->orderBy(['id' => SORT_DESC])->limit(12)->all();
+
+        $winmobilefee = new \app\models\MWinMobileFee;
+        //$user_founder = new \app\models\MWinMobileNum;
+        $user_founder = MWinMobileNum::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        
         if ($user === null)
         {
-            $user = new MUser;        
+            $user = new MUser;         
             $subscribed = false;            
         }
         else if ($user->subscribe)
             $subscribed = true;
         else
             $subscribed = false;
-
-        if (!Yii::$app->user->isGuest)
-            $username = Yii::$app->user->identity->username;
-        else
-            $username = '';
         
         $winmobilefee->gh_id = $gh_id;
         $winmobilefee->openid = $openid;
-        $winmobilefee->openid_fan = 'openid_fan';
+
+        $winmobilefee->openid_fan = $openid_fan;
         $winmobilefee->create_time = date('Y-m-d H:i:s');
+
+
+        if ($user_founder === null)
+        {
+            $user_founder = new MWinMobileNum;   
+            $canJoin = true;            
+        }
+        else if ($user_founder->finished == 0)
+            $canJoin = false;
+        else
+            $canJoin = true;
 
         //我要助力
         if (Yii::$app->request->isPost) 
         {
-            U::W("111111111111111111111111111111111111111111111111");
-            $winmobilefee->load(Yii::$app->request->post());
-            if ($winmobilefee->save())
+            if(isset($_POST['help']))
             {
-                //Yii::$app->session->setFlash('success','助力成功');
-                 U::W("助力成功");         
+                U::W("111111111111111111111111111111111111111111111111");
+                $winmobilefee->load(Yii::$app->request->post());
+                if ($winmobilefee->save())
+                {
+                    //Yii::$app->session->setFlash('success','助力成功');
+                     U::W("助力成功");  
+                     if(count($user_fans)>=12)
+                     {
+                        // insert order
+                        //
+                        //$this->redirect([]);
+
+                        //$finished = 1;
+
+                     }       
+                }
+                else
+                {
+                    U::W([$_GET, $_POST, $winmobilefee->getErrors()]);
+                    //Yii::$app->session->setFlash('success','助力失败！');  
+                }
+
+                return $this->redirect(["wap/winmobilefee", 'gh_id'=>$gh_id, 'pid'=>$openid]); 
             }
-            else
+            else if(isset($_POST['join']))
             {
-                W([$_GET, $_POST, $winmobilefee->getErrors()]);
-                //Yii::$app->session->setFlash('success','助力失败！');  
+                Yii::$app->wx->setGhId($gh_id);
+                $pid = $openid_fan;
+                $user_founder->setScenario('join');
+
+                $user_founder->load(Yii::$app->request->post());
+                $user_founder->gh_id = $gh_id;
+                $user_founder->openid = $openid;
+                $user_founder->create_time = date('Y-m-d H:i:s');
+                if ($user_founder->save())
+                {
+                     U::W("jion ok");  
+                     return $this->redirect(["wap/winmobilefee", 'gh_id'=>$gh_id, 'pid'=>$pid]);                
+                }
+                else
+                {
+                    U::W([$_GET, $_POST, $winmobilefee->getErrors()]);
+                }
+
             }
-        }   
+        }
 
         U::W("22222222222222222222222222222222221");
-        $count = \app\models\MWinMobileFee::find()->where(['openid'=>$openid])->count();  
 
-        return $this->render('winmobilefee', ['user' => $user, 'subscribed'=>$subscribed, 'username'=>$username, 'count'=>$count]);    
+        return $this->render('winmobilefee', ['user' => $user, 'user_founder' => $user_founder, 'user_fan' => $user_fan, 'user_fans' => $user_fans, 'subscribed'=>$subscribed, 'canJoin'=>$canJoin]);    
     }
 
 

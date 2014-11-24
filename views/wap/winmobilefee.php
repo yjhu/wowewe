@@ -5,7 +5,7 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 
 $this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js?v0.1');
-$this->title = '拼人品抢流量';
+$this->title = '拼人品 抢流量';
 ?>
 
 <style type="text/css" media="screen">
@@ -16,10 +16,11 @@ $this->title = '拼人品抢流量';
 
 	.myHeadIcon
 	{
-		border-radius: 50%; 
+		/* border-radius: 50%; */
 	}
 
 	.we{
+		line-height:280%;
 		color:#aaa;
 		font-size:12pt;
 	}
@@ -30,46 +31,57 @@ $this->title = '拼人品抢流量';
 
 		<?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
 
-			<!--
-			<//?//= $form->field($model, 'mobile')->textInput(['maxlength' => 11, 'placeholder'=>'请输入手机号码', 'class'=>'form-control input-lg'])->label(false); ?>
-			-->
 			<?php echo Html::img(Url::to('images/winmobilefee.jpg'), ['class'=>'img-responsive']); ?>
 
-			<br>
 			<center>
 			<span class="we">
 			<!--<//?php echo $user->nickname ?>-->
-			我和我的小伙伴们
+
+			<?php if ($user->openid == $user_fan->openid): ?>
+				我和我的小伙伴们
+			<?php else: ?>
+				Ta和Ta的小伙伴们
+			<?php endif; ?>		
 			<br>
-			<?php echo Html::img(Url::to('images/woke/0.jpg'), ['width'=>'48',"class"=>"myHeadIcon"]); ?>
+  			<img class="myHeadIcon" src="<?php echo $user->headimgurl; ?>" width="48">
 			<br>
 
-			<?php echo Html::img(Url::to('images/woke/0.jpg'), ['width'=>'36',"class"=>"myHeadIcon"]); ?>&nbsp;
-			<?php echo Html::img(Url::to('images/woke/0.jpg'), ['width'=>'36',"class"=>"myHeadIcon"]); ?>&nbsp;
-			<?php echo Html::img(Url::to('images/woke/0.jpg'), ['width'=>'36',"class"=>"myHeadIcon"]); ?>&nbsp;
-			<?php echo Html::img(Url::to('images/woke/0.jpg'), ['width'=>'36',"class"=>"myHeadIcon"]); ?>&nbsp;
-			<?php echo Html::img(Url::to('images/woke/0.jpg'), ['width'=>'36',"class"=>"myHeadIcon"]); ?>&nbsp;
-			<?php echo Html::img(Url::to('images/woke/0.jpg'), ['width'=>'36',"class"=>"myHeadIcon"]); ?>&nbsp;
-			<br>
-			<?php echo Html::img(Url::to('images/woke/0.jpg'), ['width'=>'36',"class"=>"myHeadIcon"]); ?>&nbsp;
-			<?php echo Html::img(Url::to('images/woke/0.jpg'), ['width'=>'36',"class"=>"myHeadIcon"]); ?>&nbsp;
-			<?php echo Html::img(Url::to('images/woke/0.jpg'), ['width'=>'36',"class"=>"myHeadIcon"]); ?>&nbsp;
-			<?php echo Html::img(Url::to('images/woke/0.jpg'), ['width'=>'36',"class"=>"myHeadIcon"]); ?>&nbsp;
-			<?php echo Html::img(Url::to('images/woke/0.jpg'), ['width'=>'36',"class"=>"myHeadIcon"]); ?>&nbsp;
-			<?php echo Html::img(Url::to('images/woke/0.jpg'), ['width'=>'36',"class"=>"myHeadIcon"]); ?>&nbsp;
+			<?php foreach ($user_fans as $key => $user_fan) {?>
+		
+				&nbsp;<img class="myHeadIcon" src="<?php echo $user_fan->userFan->headimgurl; ?>" width="36">
+				<?php if($key==5) echo "<br>"; ?>
+			<?php } ?>
 			</span>
 			</center>
 
 			<br><br>
 			<div class="form-group">
 
-				<?= Html::button('立即分享，让小伙们为我助力 !', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'share']) ?>
-				<?= Html::button('我要参加', ['class' => 'btn btn-danger btn-block btn-lg', 'name' => 'join']) ?>
-				<?= Html::submitButton('助 ta 一臂之力', ['class' => 'btn btn-info btn-block btn-lg', 'name' => 'help']) ?>
+				<?= Html::button('立即分享，让小伙们为我助力 !', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'share', 'id' => 'shareBtn']) ?>
+		
+				<?php if (count($user_fans) >= 12): ?>
+					<center>
+					<h1><font color=red>恭喜你！</font><h1>
+					<h4>你已经攒足人品，可领一份流量大奖 。</h4>
+					<br>
+					</center>
+
+				<?php else: ?>
+
+					<?php if($canJoin) {?>
+					<br>
+						<?= $form->field($user_founder, 'mobile')->textInput(['maxlength' => 11, 'placeholder'=>'仅限襄阳联通3G号码', 'class'=>'form-control input-lg'])->label(false); ?>
+						<?= Html::submitButton('填写手机号，马上参加！', ['class' => 'btn btn-danger btn-block btn-lg', 'name' => 'join']) ?>
+					<?php } ?>
+
+					<?= Html::submitButton('助 Ta 一臂之力', ['class' => 'btn btn-info btn-block btn-lg', 'name' => 'help']) ?>
+					
+				<?php endif; ?>
+
 				<br>
 				<center>
 				<span class="foot">
-				资源有限，先到先得！<a href="#">活动规则详情>>></a>
+				资源有限，先到先得！<a href="#" id="actInfo">活动规则详情>>></a>
 				<br>
 				@襄阳联通
 				</span>
@@ -80,15 +92,17 @@ $this->title = '拼人品抢流量';
 </div>
 
 <?php 
-	$show = empty($lucy_msg) ? false : true;
+	$show = false;
 	yii\bootstrap\Modal::begin([
+		
 		//'header' => '<h2>拼人品抢流量</h2>',
 		'options' => [
+			'id' => 'sharePop',
 			//'style' => 'opacity:0.9;color:#ffffff;bgcolor:#000000;width:90%;',
-           'style' => 'opacity:0.9;',
+           'style' => 'opacity:0.8;',
 		],
         'header' => Html::img(Url::to('images/share.png'), ['class'=>'img-responsive']),   
-		'footer' => "&copy; <span style='color:#d71920'>襄阳联通</span> ".date('Y'),
+		//'footer' => "&copy; <span style='color:#d71920'>襄阳联通</span> ".date('Y'),
 		//'size' => 'modal-lg',
 		'size' => 'modal-sm',
 		//'toggleButton' => ['label' => 'click me'],
@@ -101,25 +115,66 @@ $this->title = '拼人品抢流量';
 		]
 	]);
 ?>
-<div id="result">
-<!--
-<//?php echo $result; ?>
--->
-</div>
 
 <?php yii\bootstrap\Modal::end(); ?>
 
 
+
+<?php 
+	$show = false;
+	yii\bootstrap\Modal::begin([
+		
+		'header' => '<h2>活动规则详情</h2>',
+		'options' => [
+			'id' => 'sharePop2',
+			//'style' => 'opacity:0.9;color:#ffffff;bgcolor:#000000;width:90%;',
+           'style' => 'opacity:0.9;',
+		], 
+		'footer' => "&copy; <span style='color:#d71920'>襄阳联通</span> ".date('Y'),
+		//'size' => 'modal-lg',
+		'size' => 'modal-sm',
+		'clientOptions' => [
+			'show' => false
+		],
+		'closeButton' => [
+			'label' => '&times;',
+            //'label' => '',
+		]
+	]);
+?>
+<div id="result">
+活动规则详情活动规则详情活动规则详情活动规则详情活动规则详情活动规则详情
+</div>
+<?php yii\bootstrap\Modal::end(); ?>
+
+
+
+
 <?php 
 	$appid = Yii::$app->wx->gh['appid'];
-	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/luck:'.Yii::$app->wx->getGhid());
+	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/winmobilefee:'.Yii::$app->wx->getGhid());
 
-	$myImg = Url::to('images/magic_blue.jpg');
-	$title = '拼人品抢流量';
-	$desc = '拼人品抢流量';
+	$myImg = Url::to('images/icon_res_download_collect.png');
+	$title = '拼人品, 抢流量';
+	$desc = '拼人品, 抢流量';
 ?>
 
 <script>
+
+jQuery(document).ready(function() {
+	
+	$("#shareBtn").click(function() {
+		$('#sharePop').modal('show');
+	});
+
+	$("#actInfo").click(function() {
+		$('#sharePop2').modal('show');
+	});
+
+
+});
+
+
 var dataForWeixin={
 	appId:"<?php echo $appid; ?>",
 	MsgImg:"<?php echo $myImg; ?>",
