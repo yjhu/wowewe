@@ -202,7 +202,7 @@ class Wechat extends \yii\base\Object
         Yii::$app->cache->set($key, $this->_accessToken, YII_DEBUG ? 10 : 3600);
         //Yii::$app->cache->set($key, $this->_accessToken, YII_DEBUG ? 3600 : 3600);
         U::W("getAccessToken from weixin====, $key, {$arr['access_token']}");        
-        return $this->_accessToken;        
+        return $this->_accessToken;
     }
 
     public function valid()
