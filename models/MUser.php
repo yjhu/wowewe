@@ -86,6 +86,9 @@ ALTER TABLE wx_user ADD scene_balance_time TIMESTAMP NOT NULL DEFAULT 0 after sc
 
 ALTER TABLE wx_user ADD sign_time TIMESTAMP NOT NULL DEFAULT 0;
 ALTER TABLE wx_user ADD sign_money int(10) unsigned NOT NULL DEFAULT '0';
+
+//ALTER TABLE wx_user ADD sign_is_member int(10) unsigned NOT NULL DEFAULT '0' after scene_pid;
+
 */
 
 use Yii;
