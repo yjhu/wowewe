@@ -6,6 +6,8 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
+
 use app\models\LoginForm;
 use app\models\ContactForm;
 
@@ -18,151 +20,162 @@ use app\models\MOffice;
 
 class SiteController extends Controller
 {
-//	public $enableCsrfValidation = false;
-	
-	public function behaviors()
-	{
-		return [
-			'access' => [
-				'class' => AccessControl::className(),
-				'only' => ['logout'],
-				'rules' => [
-					[
-						'actions' => ['logout'],
-						'allow' => true,
-						'roles' => ['@'],
-					],
-				],
-			],
-			'verbs' => [
-				'class' => VerbFilter::className(),
-				'actions' => [
-					'logout' => ['get', 'post'],
-				],
-			],
-		];
-	}
+//    public $enableCsrfValidation = false;
+    
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['logout'],
+                'rules' => [
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['get', 'post'],
+                ],
+            ],
+        ];
+    }
 
-	public function actions()
-	{
-		return [
-			'error' => [
-				'class' => '\app\models\MyErrorAction',
-			],
-			'captcha' => [
-				'class' => 'yii\captcha\CaptchaAction',
-				'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-			],
-		];
-	}
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => '\app\models\MyErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+            ],
+            
+            'smcaptcha' => [
+                'class' => 'app\models\SmCaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? '12345' : null,
+            ],    
+            
+        ];
+    }
 
-	public function actionIndex()
-	{		
-		$office = null;
-		if (!\Yii::$app->user->isGuest) 
-		{
-			if (is_numeric(Yii::$app->user->identity->openid))
-			{
-				$office = MOffice::findOne(Yii::$app->user->identity->openid);
-				$username = $office->title;
-			}
-			else
-				$username = Yii::$app->user->identity->username;
-		}
-		else
-		{
-			$username = '';
-		}
-		return $this->render('index', ['username'=>$username, 'office'=>$office]);
-	}
-	
-	public function actionLogin()
-	{
-		if (!\Yii::$app->user->isGuest) 
-		{
-			return $this->goHome();
-		}
+    public function init()
+    {
+        //U::W(['init....', $_GET,$_POST]);
+    }
 
-		$model = new LoginForm();
-		if ($model->load(Yii::$app->request->post()) && $model->login()) 
-		{
-			return $this->goBack();
-		} 
-		else 
-		{
-			return $this->render('login', [
-				'model' => $model,
-			]);
-		}
-	}
+    public function actionIndex()
+    {        
+        $office = null;
+        if (!\Yii::$app->user->isGuest) 
+        {
+            if (is_numeric(Yii::$app->user->identity->openid))
+            {
+                $office = MOffice::findOne(Yii::$app->user->identity->openid);
+                $username = $office->title;
+            }
+            else
+                $username = Yii::$app->user->identity->username;
+        }
+        else
+        {
+            $username = '';
+        }
+        return $this->render('index', ['username'=>$username, 'office'=>$office]);
+    }
+    
+    public function actionLogin()
+    {
+        if (!\Yii::$app->user->isGuest) 
+        {
+            return $this->goHome();
+        }
 
-	public function actionLogout()
-	{
-		Yii::$app->user->logout();
-		return $this->goHome();
-	}
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) 
+        {
+            return $this->goBack();
+        } 
+        else 
+        {
+            return $this->render('login', [
+                'model' => $model,
+            ]);
+        }
+    }
 
-	public function actionContact()
-	{
-		$model = new MContact();
-		if ($model->load(Yii::$app->request->post())) 
-		{
-			if ($model->save())
-			{
-				Yii::$app->session->setFlash('success','感谢您的反馈，我们会尽快回复您！');				
-				return $this->refresh();
-			}
-		} 
-		else 
-		{
-			return $this->render('contact', [
-				'model' => $model,
-			]);
-		}
-	}
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+        return $this->goHome();
+    }
 
-	public function actionContactOld()
-	{
-		$model = new ContactForm();
-		if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) 
-		{
-			Yii::$app->session->setFlash('contactFormSubmitted');
-			return $this->refresh();
-		} 
-		else 
-		{
-			return $this->render('contact', [
-				'model' => $model,
-			]);
-		}
-	}
+    public function actionContact()
+    {
+        $model = new MContact();
+        if ($model->load(Yii::$app->request->post())) 
+        {
+            if ($model->save())
+            {
+                Yii::$app->session->setFlash('success','感谢您的反馈，我们会尽快回复您！');                
+                return $this->refresh();
+            }
+        } 
+        else 
+        {
+            return $this->render('contact', [
+                'model' => $model,
+            ]);
+        }
+    }
 
-	public function actionAbout()
-	{
-		return $this->render('about');
-	}
+    public function actionContactOld()
+    {
+        $model = new ContactForm();
+        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) 
+        {
+            Yii::$app->session->setFlash('contactFormSubmitted');
+            return $this->refresh();
+        } 
+        else 
+        {
+            return $this->render('contact', [
+                'model' => $model,
+            ]);
+        }
+    }
 
-	public function actionProfile()
-	{
-		$user = MUser::findOne(Yii::$app->user->id);
-		if (is_numeric(Yii::$app->user->identity->openid))
-			$office = MOffice::findOne(Yii::$app->user->identity->openid);
-		
-		if ($user->load(Yii::$app->request->post())) 
-		{
-			if ($user->save(false, ['password']))
-			{
-				Yii::$app->session->setFlash('success','设置成功！');				
-				return $this->refresh();
-			}
-			else
-			U::W($user->getErrors());
-		} 
-		return $this->render('profile', [
-			'model' => $user,
-		]);
-	}
-	
+    public function actionAbout()
+    {
+        return $this->render('about');
+    }
+
+    public function actionProfile()
+    {
+        $user = MUser::findOne(Yii::$app->user->id);
+        if (is_numeric(Yii::$app->user->identity->openid))
+            $office = MOffice::findOne(Yii::$app->user->identity->openid);
+        
+        if ($user->load(Yii::$app->request->post())) 
+        {
+            if ($user->save(false, ['password']))
+            {
+                Yii::$app->session->setFlash('success','设置成功！');                
+                return $this->refresh();
+            }
+            else
+            U::W($user->getErrors());
+        } 
+        return $this->render('profile', [
+            'model' => $user,
+        ]);
+    }
+    
 }
 
 /*

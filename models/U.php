@@ -445,6 +445,7 @@ class U
     }
 
     //10 -> 0.001%
+    //10000 -> 1%
     public static function haveProbability($probability=10)
     {
         return mt_rand(0,1000000) < $probability;

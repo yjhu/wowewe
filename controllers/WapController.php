@@ -59,7 +59,7 @@ class WapController extends Controller
     public function init()
     {
         //U::W(['init....', $_GET,$_POST, $GLOBALS]);
-        //U::W(['init....', $_GET,$_POST]);
+        U::W(['init....', $_GET,$_POST]);
     }
 
     public function beforeAction($action)
@@ -1413,15 +1413,14 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         if ($model === null)
             throw new NotFoundHttpException('user does not exists');
             
-//        return $this->render('woke', ['gh_id'=>$gh_id, 'openid'=>$openid, 'model'=>$model]);
-        
         if ((!empty($model->scene_id)) && (!empty($model->mobile)))
             return $this->redirect(['wokelist']);    
             
         if (Yii::$app->request->isPost) 
         {
+            $model->setScenario('bind_mobile');        
             $model->load(Yii::$app->request->post());
-            if ($model->save(true,['mobile']))
+            if ($model->save(true,['mobile', 'verifyCode']))
             {
                 $qr = $model->getQrImageUrl();
                 return $this->redirect(['wokelist']);            

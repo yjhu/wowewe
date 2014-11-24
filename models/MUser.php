@@ -188,7 +188,9 @@ class MUser extends ActiveRecord implements IdentityInterface
             ['mobile', 'filter', 'filter' => 'trim'],
             ['mobile', 'required'], 
             ['mobile', 'match', 'pattern' => '/((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/' ],
-                                                           
+
+//            ['verifyCode', 'required', 'on'=>'bind_mobile'],                        
+            ['verifyCode', 'captcha', 'captchaAction'=>'site/smcaptcha', 'on'=>'bind_mobile'],
         ];
     }
 
