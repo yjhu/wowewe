@@ -204,7 +204,7 @@ class WechatXiangYangUnicom extends Wechat
         }
         else if ($msg == '.prpqhf')
         {
-            $url1 = Url::to(['wap/winmobilefee', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+            $url1 = Url::to(['wap/winmobilefee', 'gh_id'=>$gh_id, 'pid'=>$openid ], true);
             $urlStr1 = "<a href=\"{$url1}\">Test winmobilefee page</a>\n\n ";
 
             $urlStr = $urlStr1;
