@@ -871,7 +871,10 @@ EOD;
                 $order->title = '100元包1G 全国流量半年包';                   
                 $order->attr = "{$_GET['cardType']}";
                 break;
-
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW_FREE:
+                $order->title = '拼人品 抢流量包';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;
             default:
                 U::W(['invalid data cat', $_GET["cid"], __METHOD__,$_GET]);
                 return;
@@ -1567,6 +1570,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
 
         //$user_fans = MWinMobileFee::findAll(['gh_id'=>$gh_id, 'openid'=>$openid_fan])->limit(12);
         $user_fans = MWinMobileFee::find()->where("gh_id = :gh_id AND openid = :openid", [':gh_id'=>$gh_id,':openid'=>$openid])->orderBy(['id' => SORT_DESC])->limit(12)->all();
+        //U::W($user_fans);
 
         $winmobilefee = new \app\models\MWinMobileFee;
         //$user_founder = new \app\models\MWinMobileNum;
@@ -1605,6 +1609,15 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
             if(isset($_POST['help']))
             {
                 U::W("111111111111111111111111111111111111111111111111");
+
+                foreach ($user_fans as $key => $user_fan) {
+
+                    if($user_fan->openid_fan == $user->openid)
+                    {
+                       // return $this->redirect(["wap/winmobilefee", 'gh_id'=>$gh_id, 'pid'=>$openid]);
+                    }
+                } 
+
                 $winmobilefee->load(Yii::$app->request->post());
                 if ($winmobilefee->save())
                 {
@@ -1616,8 +1629,8 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
                         //
                         //$this->redirect([]);
 
-                        //$finished = 1;
-
+                        $user_founder->finished = 1;
+                        $user_founder->save();
                      }       
                 }
                 else
@@ -1637,6 +1650,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
                 $user_founder->load(Yii::$app->request->post());
                 $user_founder->gh_id = $gh_id;
                 $user_founder->openid = $openid;
+                $user_founder->finished = 0;
                 $user_founder->create_time = date('Y-m-d H:i:s');
                 if ($user_founder->save())
                 {

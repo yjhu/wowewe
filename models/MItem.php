@@ -118,6 +118,7 @@ class MItem extends ActiveRecord
 	const ITEM_CAT_CARD_1111_45GLIULIANG = 712;
 	const ITEM_CAT_CARD_1111_96GLIULIANG = 713;
 
+	const ITEM_KIND_INTERNET_CARD_FLOW_FREE = 714;
 
 	const ITEM_KIND_MOBILE = 1;
 	const ITEM_KIND_CARD = 2;
@@ -164,6 +165,8 @@ class MItem extends ActiveRecord
 			self::ITEM_KIND_INTERNET_CARD_FLOW1GB_1 => '50元包1G 3G省内流量包',
 			self::ITEM_KIND_INTERNET_CARD_FLOW2DOT5GB => '100元包2.5G 3G省内流量包',
 			self::ITEM_KIND_INTERNET_CARD_FLOW1GB_2 => '100元包1G 全国流量半年包',
+
+			self::ITEM_KIND_INTERNET_CARD_FLOW_FREE=> '拼人品抢流量包',
 			
 			//双十一活动 
 			self::ITEM_CAT_APPLE_5S_16G => 'APPLE 苹果 iPhone5S 16G',

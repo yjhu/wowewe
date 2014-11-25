@@ -148,8 +148,6 @@ $this->title = '拼人品 抢流量';
 <?php yii\bootstrap\Modal::end(); ?>
 
 
-
-
 <?php 
 	$appid = Yii::$app->wx->gh['appid'];
 	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/winmobilefee:'.Yii::$app->wx->getGhid());
@@ -160,6 +158,7 @@ $this->title = '拼人品 抢流量';
 ?>
 
 <script>
+var user_fans="<?= count($user_fans); ?>";
 
 jQuery(document).ready(function() {
 	
@@ -171,6 +170,21 @@ jQuery(document).ready(function() {
 		$('#sharePop2').modal('show');
 	});
 
+	if(user_fans == 12) /*max fans*/
+	{
+		$.ajax({
+			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
+			type:"GET",
+			cache:false,
+			dataType:'json',
+			//data: $("form#productForm").serialize()+"&cid="+cid+"&pkg3g4g="+pkg3g4g+"&pkgPeriod="+pkgPeriod+"&pkgMonthprice="+pkgMonthprice+"&pkgPlan="+pkgPlan+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address+"&wid="+wid,
+			data: "&cardType="+null+"&cid="+714+"&pkg3g4g="+null+"&pkgPeriod="+null+"&pkgMonthprice="+null+"&pkgPlan="+null+"&feeSum="+null+"&office="+null+"&selectNum="+null+"&username="+null+"&usermobile="+null+"&userid="+null+"&address="+null+"&wid=1_1",
+			success:function(json_data){
+
+				}
+		});
+		/*end of ajax*/
+	}
 
 });
 
