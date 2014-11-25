@@ -23,7 +23,7 @@ use yii\db\Expression;
 
 use app\models\MUser;
 
-class Mwinmobilenum extends ActiveRecord
+class MWinMobileNum extends ActiveRecord
 {
     public static function tableName()
     {
