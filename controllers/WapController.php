@@ -1557,11 +1557,10 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/winmobilefee:gh_03a74ac96138   
     public function actionWinmobilefee()
     {           
-        $this->layout = 'wap';
+        $this->layout = 'wapz';
         $gh_id = U::getSessionParam('gh_id');
         $openid_fan = U::getSessionParam('openid');
         $openid = $_GET['pid'];
-
 
         Yii::$app->wx->setGhId($gh_id);
         $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
@@ -1569,7 +1568,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $user_fan = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid_fan]);
 
         //$user_fans = MWinMobileFee::findAll(['gh_id'=>$gh_id, 'openid'=>$openid_fan])->limit(12);
-        $user_fans = MWinMobileFee::find()->where("gh_id = :gh_id AND openid = :openid", [':gh_id'=>$gh_id,':openid'=>$openid])->orderBy(['id' => SORT_DESC])->limit(12)->all();
+        $user_fans = MWinMobileFee::find()->where("gh_id = :gh_id AND openid = :openid", [':gh_id'=>$gh_id,':openid'=>$openid])->orderBy(['id' => SORT_ASC])->limit(12)->all();
         //U::W($user_fans);
 
         $winmobilefee = new \app\models\MWinMobileFee;
@@ -1606,9 +1605,13 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         //我要助力
         if (Yii::$app->request->isPost) 
         {
+            if ((!$user->subscribe) || (!$user_fan->subscribe))
+            {
+                 return $this->render('need_subscribe');    
+            }
+
             if(isset($_POST['help']))
             {
-                U::W("111111111111111111111111111111111111111111111111");
 
                 foreach ($user_fans as $key => $user_fan) {
 
