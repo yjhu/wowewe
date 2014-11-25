@@ -150,9 +150,9 @@ $this->title = '拼人品 抢流量';
 
 <?php 
 	$appid = Yii::$app->wx->gh['appid'];
-	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/winmobilefee:'.Yii::$app->wx->getGhid());
+	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/winmobilefee:'.Yii::$app->wx->getGhid().':pid='.$user->openid);
 
-	$myImg = Url::to('images/icon_res_download_collect.png');
+	$myImg = Url::to('images/magic_yellow.jpg');
 	$title = '拼人品, 抢流量';
 	$desc = '拼人品, 抢流量';
 ?>

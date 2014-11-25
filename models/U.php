@@ -183,8 +183,8 @@ class U
     {
         if (isset($_GET[$key]))
             return $_GET[$key];            
-        //else if (isset(Yii::$app->session[$key]))
-         //   return Yii::$app->session[$key];
+        else if (isset(Yii::$app->session[$key]))
+            return Yii::$app->session[$key];
         else if (Yii::$app->params['isWin'] && $key == 'gh_id' && Yii::$app->wx->localTest)
         {
             return \app\models\MGh::GH_XIANGYANGUNICOM;
