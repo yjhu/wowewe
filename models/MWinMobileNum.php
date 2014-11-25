@@ -4,13 +4,13 @@ namespace app\models;
 /*
 DROP TABLE IF EXISTS wx_act_winmobilenum;
 CREATE TABLE wx_act_winmobilenum (
-	id int(10) unsigned NOT NULL AUTO_INCREMENT  PRIMARY KEY,
-	gh_id VARCHAR(32) NOT NULL DEFAULT '',
-	openid VARCHAR(32) NOT NULL DEFAULT '',
+    id int(10) unsigned NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+    gh_id VARCHAR(32) NOT NULL DEFAULT '',
+    openid VARCHAR(32) NOT NULL DEFAULT '',
     mobile VARCHAR(64) NOT NULL DEFAULT '',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    finished tinyint(3) unsigned NOT NULL DEFAULT 0
-
+    finished tinyint(3) unsigned NOT NULL DEFAULT 0,
+    KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 */
 
@@ -23,12 +23,12 @@ use yii\db\Expression;
 
 use app\models\MUser;
 
-class Mwinmobilenum extends ActiveRecord
+class MWinMobileNum extends ActiveRecord
 {
-	public static function tableName()
-	{
-		return 'wx_act_winmobilenum';
-	}
+    public static function tableName()
+    {
+        return 'wx_act_winmobilenum';
+    }
 
     public function rules()
     {
