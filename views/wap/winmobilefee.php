@@ -25,6 +25,11 @@ $this->title = '拼人品 抢流量';
 		font-size:12pt;
 	}
 
+	div#sharePop .modal-header
+	{
+		padding: 0 !important;
+	}
+
 /* Sticky Footer */
 
 </style>
@@ -34,7 +39,7 @@ $this->title = '拼人品 抢流量';
 
 		<?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
 
-			<?php echo Html::img(Url::to('images/winmobilefee.jpg'), ['class'=>'img-responsive']); ?>
+			<?php echo Html::img(Url::to('images/winmobilefee-v5.jpg'), ['class'=>'img-responsive']); ?>
 
 			<div class="table-responsive">
 			<table width="100%" class="table" border="0">
@@ -61,6 +66,12 @@ $this->title = '拼人品 抢流量';
 			</table>
 			</div>
 
+			<div class="progress">
+			  <div class="progress-bar progress-bar-sm progress-bar-striped active" role="progressbar" aria-valuenow="<?= (count($user_fans)/12)*100 ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= (count($user_fans)/12)*100 ?>%">
+			    <span class="sr-only"><?= (count($user_fans)/12)*100 ?>% Complete</span>
+			  </div>
+			</div>
+
 			<span class="we">
 			<?php if ($user->openid == $user_fan->openid): ?>
 				我的<a href="#" id="actFriends">小伙伴们</a>
@@ -75,8 +86,8 @@ $this->title = '拼人品 抢流量';
 					<tr>
 						<td width=100%>
 						
-							<?php $key=0; foreach ($user_fans as $key => $user_fan) {?>
-								<img class="myHeadIcon" src="<?php echo $user_fan->userFan->headimgurl; ?>" width="36">&nbsp;&nbsp;
+							<?php $key=0; foreach ($user_fans as $key => $v) {?>
+								<img class="myHeadIcon" src="<?php echo $v->userFan->headimgurl; ?>" width="36">&nbsp;&nbsp;
 								<?php if($key==5) echo "<br><br>"; ?>
 							<?php } ?>
 
@@ -139,28 +150,29 @@ $this->title = '拼人品 抢流量';
 </div>
 <br>
 <br>
-
+<br>
+<br>
+<center>
 <nav class="navbar navbar-inverse navbar-fixed-bottom" role="navigation">
 
     <div class="row">
-    	<div class="col-md-4"><a class="navbar-brand" href="#" id="actJoin">我要参加</a></div>
-		<div class="col-md-4"><a class="navbar-brand" href="#">@襄阳联通</a></div>
-		<div class="col-md-4"><a class="navbar-brand" href="#" id="actInfo">活动规则</a></div>
+    	<div class="col-md-3"><a class="navbar-brand" href="#" id=""></a></div>
+    	<div class="col-md-3"><a class="navbar-brand" href="#" id="actJoin">我要参加</a></div>
+		<div class="col-md-3"><a class="navbar-brand" href="#">襄阳联通</a></div>
+		<div class="col-md-3"><a class="navbar-brand" href="#" id="actInfo">活动规则</a></div>
 	</div>
 
 </nav>
-
+</center>
 <?php 
 	$show = false;
 	yii\bootstrap\Modal::begin([
-		
-		//'header' => '<h2>拼人品抢流量</h2>',
 		'options' => [
 			'id' => 'sharePop',
 			//'style' => 'opacity:0.9;color:#ffffff;bgcolor:#000000;width:90%;',
-           'style' => 'opacity:0.8;',
+           'style' => 'opacity:0.8; margin:0; padding:0',
 		],
-        'header' => Html::img(Url::to('images/share.png'), ['class'=>'img-responsive']),   
+        'header' => Html::img(Url::to('images/share-v3.jpg'), ['class'=>'img-responsive']),   
 		//'footer' => "&copy; <span style='color:#d71920'>襄阳联通</span> ".date('Y'),
 		//'size' => 'modal-lg',
 		'size' => 'modal-sm',
@@ -174,7 +186,6 @@ $this->title = '拼人品 抢流量';
 		]
 	]);
 ?>
-
 <?php yii\bootstrap\Modal::end(); ?>
 
 
@@ -202,7 +213,17 @@ $this->title = '拼人品 抢流量';
 	]);
 ?>
 <div id="result">
-活动规则详情活动规则详情活动规则详情活动规则详情活动规则详情活动规则详情
+	<h4>
+	1. 关注襄阳联通并且参加“拼人品 抢流量”活动。
+	</h4>
+
+	<h4>
+	2. 发送或者分享到朋友圈，让朋友助你一臂之力吧。
+	</h4>
+
+	<h4>
+	3. 每个朋友只能帮助你获得一次300M流量，不要太贪心哦。
+	</h4>
 </div>
 <?php yii\bootstrap\Modal::end(); ?>
 
@@ -212,7 +233,7 @@ $this->title = '拼人品 抢流量';
 	$show = false;
 	yii\bootstrap\Modal::begin([
 		
-		'header' => '<h2>给我助力的小伙伴</h2>',
+		'header' => '<h2>助力的小伙伴</h2>',
 		'options' => [
 			'id' => 'sharePop3',
 			//'style' => 'opacity:0.9;color:#ffffff;bgcolor:#000000;width:90%;',
@@ -241,12 +262,12 @@ $this->title = '拼人品 抢流量';
           </tr>
         </thead>
         <tbody>
-		<?php foreach ($user_fans as $key => $user_fan) {?>
+		<?php foreach ($user_fans as $key => $v) {?>
 			<tr>
 			<td><?= $key+1 ?></td>
-			<td><img class="myHeadIcon" src="<?php echo $user_fan->userFan->headimgurl; ?>" width="32"></td>
-			<td><?= $user_fan->userFan->nickname ?></td>
-			<td><?= $user_fan->create_time ?></td>
+			<td><img class="myHeadIcon" src="<?php echo $v->userFan->headimgurl; ?>" width="32"></td>
+			<td><?= $v->userFan->nickname ?></td>
+			<td><?= $v->create_time ?></td>
 			</tr>
 		<?php } ?>
         </tbody>
@@ -260,7 +281,7 @@ $this->title = '拼人品 抢流量';
 	$show = false;
 	yii\bootstrap\Modal::begin([
 		
-		'header' => '<h2>我要参加</h2>',
+		//'header' => '<h2>我要参加</h2>',
 		'options' => [
 			'id' => 'sharePop4',
            'style' => 'opacity:0.95;',
@@ -288,9 +309,16 @@ $this->title = '拼人品 抢流量';
 	</center>
 <?php else: ?>
 	<?php if($canJoin) {?>
-	<br>
-	<?= $form->field($user_founder, 'mobile')->textInput(['maxlength' => 11, 'placeholder'=>'仅限襄阳联通3G号码', 'class'=>'form-control input-lg'])->label(false); ?>
-	<?= Html::submitButton('填写手机号，马上参加！', ['class' => 'btn btn-danger btn-block btn-lg', 'name' => 'join']) ?>
+		<h2><font>我要参加</font><h2>
+		<?= $form->field($user_founder, 'mobile')->textInput(['maxlength' => 11, 'placeholder'=>'仅限襄阳联通3G号码', 'class'=>'form-control input-lg'])->label(false); ?>
+		<?= Html::submitButton('填写手机号，马上参加！', ['class' => 'btn btn-danger btn-block btn-lg', 'name' => 'join']) ?>
+	<?php } else { ?>
+		<center>
+		<h2><font color=red>你已参加活动</font><h2>
+		<h4>快呼唤你的小伙伴们为你助力吧！</h4>
+		<br>
+		<?= Html::button('查看我的活动 !', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'viewMyAct', 'id' => 'viewMyActBtn']) ?>
+		</center>
 	<?php } ?>
 <?php endif; ?>
 
@@ -304,14 +332,15 @@ $this->title = '拼人品 抢流量';
 <?php 
 	$appid = Yii::$app->wx->gh['appid'];
 	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/winmobilefee:'.Yii::$app->wx->getGhid().':pid='.$user->openid);
-
-	$myImg = Url::to('images/magic_yellow.jpg', true);
+	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
+	$myImg = Url::to("$assetsPath/prpqhfShare2.jpg", true);
 	$title = '拼人品, 抢流量';
 	$desc = '拼人品, 抢流量';
 
 	$title = "{$user->nickname}正在拼人品抢流量";
 	$title = "拼人品抢流量，3600兆流量免费抢！";
 	$desc = "亲，{$user->nickname} 正在襄阳联通拼人品抢流量，请帮ta一把，拼起ta的人品";
+
 ?>
 
 <script>
@@ -335,20 +364,33 @@ jQuery(document).ready(function() {
 		$('#sharePop4').modal('show');
 	});
 
-	if(user_fans == 12) /*max fans*/
-	{
-		$.ajax({
-			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
-			type:"GET",
-			cache:false,
-			dataType:'json',
-			//data: $("form#productForm").serialize()+"&cid="+cid+"&pkg3g4g="+pkg3g4g+"&pkgPeriod="+pkgPeriod+"&pkgMonthprice="+pkgMonthprice+"&pkgPlan="+pkgPlan+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address+"&wid="+wid,
-			data: "&cardType="+null+"&cid="+714+"&pkg3g4g="+null+"&pkgPeriod="+null+"&pkgMonthprice="+null+"&pkgPlan="+null+"&feeSum="+null+"&office="+null+"&selectNum="+null+"&username="+null+"&usermobile="+null+"&userid="+null+"&address="+null+"&wid=1_1",
-			success:function(json_data){
 
+	$("#viewMyActBtn").click(function() {
+		myUrl = "<?= Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/winmobilefee:'.Yii::$app->wx->getGhid().':pid='.$user_fan->openid); ?>";
+		location.href = myUrl;
+	});
+	
+
+	if(user_fans >= 12) /*max fans*/
+	{
+		var mobile="<?= $user_founder->mobile; ?>";
+		var finished="<?= $user_founder->finished; ?>";
+
+		if(finished != 1)
+		{
+			$.ajax({
+				url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
+				type:"GET",
+				cache:false,
+				dataType:'json',
+				//data: $("form#productForm").serialize()+"&cid="+cid+"&pkg3g4g="+pkg3g4g+"&pkgPeriod="+pkgPeriod+"&pkgMonthprice="+pkgMonthprice+"&pkgPlan="+pkgPlan+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address+"&wid="+wid,
+				data: "&cardType="+null+"&cid="+714+"&pkg3g4g="+null+"&pkgPeriod="+null+"&pkgMonthprice="+null+"&pkgPlan="+null+"&feeSum="+null+"&office="+null+"&selectNum="+null+"&username="+null+"&usermobile="+mobile+"&userid="+null+"&address="+null+"&wid=1_1",
+				success:function(json_data){
 				}
-		});
-		/*end of ajax*/
+			});
+			/*end of ajax*/
+		}
+
 	}
 
 });

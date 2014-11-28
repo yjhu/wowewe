@@ -1567,7 +1567,6 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
 
         $user_fan = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid_fan]);
 
-        //$user_fans = MWinMobileFee::findAll(['gh_id'=>$gh_id, 'openid'=>$openid_fan])->limit(12);
         $user_fans = MWinMobileFee::find()->where("gh_id = :gh_id AND openid = :openid", [':gh_id'=>$gh_id,':openid'=>$openid])->orderBy(['id' => SORT_ASC])->limit(12)->all();
         //U::W($user_fans);
 
@@ -1613,11 +1612,15 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
             if(isset($_POST['help']))
             {
 
-                foreach ($user_fans as $key => $user_fan) {
+                foreach ($user_fans as $key => $v) 
+                {
+                    //U::W($user_fans);
+                    U::W("$v->openid_fan == $user->openid");
 
-                    if($user_fan->openid_fan == $user->openid)
+                    if($v->openid_fan == $user_fan->openid)
                     {
-                       // return $this->redirect(["wap/winmobilefee", 'gh_id'=>$gh_id, 'pid'=>$openid]);
+                        U::W("xxxxxxxxxxxxxxxxxxx");
+                        return $this->redirect(["wap/winmobilefee", 'gh_id'=>$gh_id, 'pid'=>$openid]);
                     }
                 } 
 
@@ -1657,7 +1660,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
                 $user_founder->create_time = date('Y-m-d H:i:s');
                 if ($user_founder->save())
                 {
-                     U::W("jion ok");  
+                     U::W("join ok");  
                      return $this->redirect(["wap/winmobilefee", 'gh_id'=>$gh_id, 'pid'=>$pid]);                
                 }
                 else
@@ -1668,11 +1671,8 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
             }
         }
 
-        U::W("22222222222222222222222222222222221");
-
         return $this->render('winmobilefee', ['user' => $user, 'user_founder' => $user_founder, 'user_fan' => $user_fan, 'user_fans' => $user_fans, 'subscribed'=>$subscribed, 'canJoin'=>$canJoin]);    
     }
-
 
 }
 
