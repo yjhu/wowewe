@@ -388,7 +388,8 @@ class MOrder extends ActiveRecord
         $feesum = sprintf("%0.2f",$this->feesum/100);
         $office = MOffice::findOne($this->office_id);
         $office_info = ($office !== null) ? "至{$office->title}({$office->address}, {$office->manager}, {$office->mobile})" : '';
-        $select_mobnum_info = ($this->select_mobnum !== null) ? ", 所选手机号码为{$this->select_mobnum}" : '';
+        $select_mobnum_info = ($this->select_mobnum == '') ?"": ", 所选手机号码为{$this->select_mobnum}";
+        
         $usermobile_info = ($this->usermobile=="undefined")?"":", 联系电话{$this->usermobile}";
         $kaitong_info = ($this->kaitong == null) ?"":", {$this->kaitong}";
 

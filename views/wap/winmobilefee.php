@@ -34,6 +34,9 @@ $this->title = '拼人品 抢流量';
 
 </style>
 
+
+
+
 <div class="row">
 	<div class="col-lg-12 col-md-12 col-sm-12">
 
@@ -105,34 +108,53 @@ $this->title = '拼人品 抢流量';
 			</table>
 			</div>
 
+
+			<?php
+				$this->registerJs(
+				   '$(".flash-danger").animate({opacity: 1.0}, 3000).fadeOut("slow");',
+				   yii\web\View::POS_READY
+				);
+			?>
+
+			<?php if (Yii::$app->session->hasFlash('success')): ?>
+				<div class="alert alert-danger flash-danger">
+					<?php echo Yii::$app->session->getFlash('success'); ?>
+				</div>
+			<?php else: ?>
+			<?php endif; ?>
+
+
 			<div class="form-group">
 
-				<?php if ($user->openid == $user_fan->openid): ?>
-					<?= Html::button('立即分享，让小伙们为我助力 !', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'share', 'id' => 'shareBtn']) ?>
-				<?php else: ?>
-					<?= Html::button('立即分享，让小伙们为Ta助力 !', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'share', 'id' => 'shareBtn']) ?>
-				<?php endif; ?>		
+	
 
 				<?php if (count($user_fans) >= 12): ?>
 					<center>
 					<h1><font color=red>恭喜你！</font><h1>
-					<h4>你已经攒足人品，可领一份流量大奖 。</h4>
+					<h4>已达最高人品，已向你发了一份流量大奖。</h4>
 					<br>
 					</center>
 
 				<?php else: ?>
 
-					<?php if($canJoin) {?>
+					<!--
+					<//?php if($canJoin) {?>
 					<br>
-						<?= $form->field($user_founder, 'mobile')->textInput(['maxlength' => 11, 'placeholder'=>'仅限襄阳联通3G号码', 'class'=>'form-control input-lg'])->label(false); ?>
-						<?= Html::submitButton('填写手机号，马上参加！', ['class' => 'btn btn-danger btn-block btn-lg', 'name' => 'join']) ?>
-					<?php } ?>
+						<//?= $form->field($user_founder, 'mobile')->textInput(['maxlength' => 11, 'placeholder'=>'仅限襄阳联通3G号码', 'class'=>'form-control input-lg'])->label(false); ?>
+						<//?= Html::submitButton('填写手机号，马上参加！', ['class' => 'btn btn-danger btn-block btn-lg', 'name' => 'join']) ?>
+					<//?php } ?>
 
-					
+					-->
+			
 					<?= Html::submitButton('助 Ta 一臂之力', ['class' => 'btn btn-info btn-block btn-lg', 'name' => 'help']) ?>
-					
 				<?php endif; ?>
 				
+				<?php if ($user->openid == $user_fan->openid): ?>
+					<?= Html::button('立即分享，让小伙们为我助力 !', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'share', 'id' => 'shareBtn']) ?>
+				<?php else: ?>
+					<?= Html::button('立即分享，让小伙们为Ta助力 !', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'share', 'id' => 'shareBtn']) ?>
+				<?php endif; ?>	
+
 				<!--
 				<br>
 				<center>
@@ -158,7 +180,7 @@ $this->title = '拼人品 抢流量';
     <div class="row">
     	<div class="col-md-3"><a class="navbar-brand" href="#" id=""></a></div>
     	<div class="col-md-3"><a class="navbar-brand" href="#" id="actJoin">我要参加</a></div>
-		<div class="col-md-3"><a class="navbar-brand" href="#">襄阳联通</a></div>
+		<div class="col-md-3"><a class="navbar-brand" href="#" id="actAward">我要领奖</a></div>
 		<div class="col-md-3"><a class="navbar-brand" href="#" id="actInfo">活动规则</a></div>
 	</div>
 
@@ -301,37 +323,86 @@ $this->title = '拼人品 抢流量';
 <?php $form = ActiveForm::begin(['id' => 'contact-form1']); ?>
 <div class="form-group1">
 
-<?php if (count($user_fans) >= 12): ?>
+<?php if($canJoin) {?>
+	<h2><font>我要参加</font><h2>
+	<?= $form->field($user_founder, 'mobile')->textInput(['maxlength' => 11, 'placeholder'=>'仅限襄阳联通3G号码', 'class'=>'form-control input-lg', 'value'=>''])->label(false); ?>
+	<?= Html::submitButton('填写手机号，马上参加！', ['class' => 'btn btn-danger btn-block btn-lg', 'name' => 'join']) ?>
+<?php } else { ?>
 	<center>
-	<h1><font color=red>恭喜你！</font><h1>
-	<h4>你已经攒足人品，可领一份流量大奖 。</h4>
+	<h2><font color=red>你已参加活动</font><h2>
+	<h4>快呼唤你的小伙伴们为你助力吧！</h4>
 	<br>
+	<?= Html::button('查看我的活动 !', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'viewMyAct', 'id' => 'viewMyActBtn']) ?>
 	</center>
-<?php else: ?>
-	<?php if($canJoin) {?>
-		<h2><font>我要参加</font><h2>
-		<?= $form->field($user_founder, 'mobile')->textInput(['maxlength' => 11, 'placeholder'=>'仅限襄阳联通3G号码', 'class'=>'form-control input-lg'])->label(false); ?>
-		<?= Html::submitButton('填写手机号，马上参加！', ['class' => 'btn btn-danger btn-block btn-lg', 'name' => 'join']) ?>
-	<?php } else { ?>
-		<center>
-		<h2><font color=red>你已参加活动</font><h2>
-		<h4>快呼唤你的小伙伴们为你助力吧！</h4>
-		<br>
-		<?= Html::button('查看我的活动 !', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'viewMyAct', 'id' => 'viewMyActBtn']) ?>
-		</center>
-	<?php } ?>
-<?php endif; ?>
+<?php } ?>
 
 </div>
 <?php ActiveForm::end(); ?>
-
 <?php yii\bootstrap\Modal::end(); ?>
 
 
 
 <?php 
+	$show = false;
+	yii\bootstrap\Modal::begin([
+		
+		//'header' => '<h2>我要参加</h2>',
+		'options' => [
+			'id' => 'sharePop5',
+           'style' => 'opacity:0.95;',
+		], 
+		//'footer' => "&copy; <span style='color:#d71920'>襄阳联通</span> ".date('Y'),
+		'size' => 'modal-sm',
+		'clientOptions' => [
+			'show' => false
+		],
+		'closeButton' => [
+			'label' => '&times;',
+            //'label' => '',
+		]
+	]);
+?>
+
+<?php $form = ActiveForm::begin(['id' => 'contact-form2']); ?>
+<div class="form-group2">
+
+	<?php if($user_founder->finished == 1) {?>
+		<center>
+		<h2><font color=red>恭喜你！</font><h2>
+		<h4>已达最高人品，已向你发了一份流量大奖。</h4>
+		<br>
+		</center>
+	<?php } else { ?>
+		<?php if(count($user_fans) < 3) {?>
+			<center>
+			<h1><font>加油！</font><h1>
+			<h4>亲, 只有助力小伙伴达到三个或以上才能领奖哟 !</h4>
+			<br>
+			</center>
+		<?php } else if(count($user_fans)>=3 && count($user_fans)<=11) {?>
+			<center>
+			<h2><font color=red>恭喜你！</font><h2>
+			<h4>已超过3个人品，可领小奖了。</h4>
+			<br>
+			<?= Html::button('马上领取奖品！', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'awardBtn', 'id' => 'awardBtn']) ?>
+			</center>
+		<?php } else { ?>
+			<center>
+			<h2><font color=red>恭喜你！</font><h2>
+			<h4>已达最高人品，已向你发了一份流量大奖。</h4>
+			<br>
+			</center>
+		<?php } ?>
+	<?php } ?>
+
+</div>
+<?php ActiveForm::end(); ?>
+<?php yii\bootstrap\Modal::end(); ?>
+
+
+<?php 
 	$appid = Yii::$app->wx->gh['appid'];
-	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/winmobilefee:'.Yii::$app->wx->getGhid().':pid='.$user->openid);
+	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/winmobilefee:'.Yii::$app->wx->getGhid().':pid='.$user->openid.':mobile='.$user_founder->mobile);
 	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
 	$myImg = Url::to("$assetsPath/prpqhfShare2.jpg", true);
 	$title = '拼人品, 抢流量';
@@ -364,11 +435,41 @@ jQuery(document).ready(function() {
 		$('#sharePop4').modal('show');
 	});
 
+	$("#actAward").click(function() {
+		$('#sharePop5').modal('show');
+	});
+
 
 	$("#viewMyActBtn").click(function() {
-		myUrl = "<?= Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/winmobilefee:'.Yii::$app->wx->getGhid().':pid='.$user_fan->openid); ?>";
+		myUrl = "<?= Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/winmobilefee:'.Yii::$app->wx->getGhid().':pid='.$user_fan->openid.':mobile='.$user_fan->mobile); ?>";
 		location.href = myUrl;
 	});
+	
+
+
+	$("#awardBtn").click(function() {
+
+		var mobile="<?= $user_founder->mobile; ?>";
+		var finished="<?= $user_founder->finished; ?>";
+		alert("finished"+finished+"mobile"+mobile);
+
+		//if(finished != 0)
+		//{
+			$.ajax({
+				url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
+				type:"GET",
+				cache:false,
+				dataType:'json',
+				//data: $("form#productForm").serialize()+"&cid="+cid+"&pkg3g4g="+pkg3g4g+"&pkgPeriod="+pkgPeriod+"&pkgMonthprice="+pkgMonthprice+"&pkgPlan="+pkgPlan+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address+"&wid="+wid,
+				data: "&cardType="+null+"&cid="+714+"&pkg3g4g="+null+"&pkgPeriod="+null+"&pkgMonthprice="+null+"&pkgPlan="+null+"&feeSum="+null+"&office="+null+"&selectNum="+null+"&username="+null+"&usermobile="+mobile+"&userid="+null+"&address="+null+"&wid=1_1",
+				success:function(json_data){
+				}
+			});
+			/*end of ajax*/
+		//}
+		location.reload();
+	});
+	
 	
 
 	if(user_fans >= 12) /*max fans*/
@@ -376,7 +477,7 @@ jQuery(document).ready(function() {
 		var mobile="<?= $user_founder->mobile; ?>";
 		var finished="<?= $user_founder->finished; ?>";
 
-		if(finished != 1)
+		if(finished != 0)
 		{
 			$.ajax({
 				url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
