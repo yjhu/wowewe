@@ -12,6 +12,8 @@ CREATE TABLE wx_act_winmobilenum (
     finished tinyint(3) unsigned NOT NULL DEFAULT 0,
     KEY gh_id_idx(gh_id,openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
 */
 
 use Yii;
@@ -36,7 +38,7 @@ class MWinMobileNum extends ActiveRecord
 			['mobile', 'filter', 'filter' => 'trim', 'on'=>'join'],
 			['mobile', 'required', 'on'=>'join'], 
 			['mobile', 'match', 'pattern' => '/((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/' , 'on'=>'join'],        
-			[['openid', 'create_time'], 'safe'],
+			[['openid', 'create_time','finished'], 'safe'],
 		];
     }
 

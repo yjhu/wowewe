@@ -7,10 +7,14 @@ CREATE TABLE wx_act_winmobilefee (
     id int(10) unsigned NOT NULL AUTO_INCREMENT  PRIMARY KEY,
     gh_id VARCHAR(32) NOT NULL DEFAULT '',
     openid VARCHAR(32) NOT NULL DEFAULT '',
+    mobile VARCHAR(64) NOT NULL DEFAULT '',
     openid_fan VARCHAR(32) NOT NULL DEFAULT '',
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     KEY gh_id_idx(gh_id,openid)    
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE wx_act_winmobilefee ADD mobile VARCHAR(64) NOT NULL DEFAULT '';
 */
 
 use Yii;
