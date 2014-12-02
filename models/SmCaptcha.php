@@ -114,7 +114,6 @@ class SmCaptcha extends InputWidget
 var wait = 3;  
 get_code_time = function (btn) 
 {  
-    //alert(btn.value);
     if (wait == 0) 
     {  
         btn.removeAttribute('disabled');
@@ -132,7 +131,6 @@ get_code_time = function (btn)
     }  
 };  
 
-//jQuery(document).on('click', '$selector', function(){
 jQuery('#{$id}').on('click', function () {
     var btn = this;
     jQuery.ajax({
@@ -147,10 +145,9 @@ jQuery('#{$id}').on('click', function () {
 //            alert(data['code']);
             jQuery('#{$verifyCodeId}').val('');
             //alert(data['hash2']);
-            //if (data['code'] == 0)
-            //    alert('验证码已发送');            
+            if (data['code'] == 0)
+                alert('验证码已发送');            
             get_code_time(btn);
-            //jQuery('body').data('{$this->captchaAction}.hash', [data['hash1'], data['hash2']]);
         }
     });
     return false;

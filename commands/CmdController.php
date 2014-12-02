@@ -26,6 +26,9 @@ use app\models\MStaff;
 use app\models\MGroup;
 use app\models\MChannel;
 
+use app\models\sm\ESms;
+use app\models\sm\ESmsGuodu;
+
 class CmdController extends Controller
 {
     public function init()
@@ -239,7 +242,9 @@ class CmdController extends Controller
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/user-info
     public function actionUserInfo()
     {    
-        $arr = Yii::$app->wx->WxGetUserInfo(MGh::GH_XIANGYANGUNICOM_OPENID_HBHE);    
+//        $arr = Yii::$app->wx->WxGetUserInfo(MGh::GH_XIANGYANGUNICOM_OPENID_HBHE);    
+        Yii::$app->wx->setGhId(MGh::GH_WOSO);
+        $arr = Yii::$app->wx->WxGetUserInfo(MGh::GH_WOSO_OPENID_HBHE);    
         U::W($arr);
         return;        
     }
@@ -442,6 +447,13 @@ class CmdController extends Controller
             }
         }
     }
+
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/sm-balance
+    public function actionSmBalance()
+    {        
+	 echo "guodu:".ESmsGuodu::B(true);
+    }
+    
 }
 
 /*        
