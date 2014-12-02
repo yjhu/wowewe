@@ -408,7 +408,6 @@ $this->title = '拼人品 抢流量';
 	$title = '拼人品, 抢流量';
 	$desc = '拼人品, 抢流量';
 
-	$title = "{$user->nickname}正在拼人品抢流量";
 	$title = "拼人品抢流量，3600兆流量免费抢！";
 	$desc = "亲，{$user->nickname} 正在襄阳联通拼人品抢流量，请帮ta一把，拼起ta的人品";
 

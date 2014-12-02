@@ -317,6 +317,9 @@ class CmdController extends Controller
             ]);
         }
         */
+
+
+        /*
         else if ($gh_id == MGh::GH_XIANGYANGUNICOM)
         {
             $menu = new \app\models\WxMenu([
@@ -354,6 +357,31 @@ class CmdController extends Controller
                     new \app\models\ButtonView('财富手册', 'http://lm.10010.com/wolm/ot/earnStep.html'),
                     new \app\models\ButtonView('收益说明', 'http://lm.10010.com/wolm/ot/incomeDeclr.html'),
 
+                ]),
+            ]);
+        }
+        */
+        else if ($gh_id == MGh::GH_XIANGYANGUNICOM)
+        {
+            $menu = new \app\models\WxMenu([
+
+                new \app\models\ButtonComplex('沃资讯', [
+                    new \app\models\ButtonView('4G资费', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/show4ginfo:{$gh_id}")),
+                    new \app\models\ButtonView('短信订购流量包', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
+                    new \app\models\ButtonView('数信业务资费', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showpage:{$gh_id}")),
+                ]),
+
+                new \app\models\ButtonComplex('沃商城', [
+                    new \app\models\ButtonView('沃联盟店铺', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/wlmshop:{$gh_id}")),
+                    //new \app\models\ButtonView('特惠合约机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobilelist:{$gh_id}")),
+                    //new \app\models\ButtonView('单卡产品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_CARD)),      
+                    ////new \app\models\ButtonView('8折上网卡', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_INTERNET_CARD)),
+                ]),
+
+                new \app\models\ButtonComplex('沃点点', [
+                    new \app\models\ButtonView('流量包订购', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD)),
+                    new \app\models\ButtonView('用户吐槽', 'http://wsq.qq.com/reflow/263163652-1044?_wv=1&source='),
+                    new \app\models\ButtonView('加入我们', 'http://lm.10010.com/wolm/ot/newComer.html'),
                 ]),
             ]);
         }

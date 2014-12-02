@@ -209,7 +209,18 @@ class WechatXiangYangUnicom extends Wechat
 
             $urlStr = $urlStr1;
             return $this->responseText($urlStr);
-        }        
+        }    
+        else if ($msg == '.4g')
+        {
+            $url1 = Url::to(['wap/showpage', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+            $urlStr1 = "<a href=\"{$url1}\">Test data-info show page</a>\n\n ";
+
+            $url2 = Url::to(['wap/show4ginfo', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+            $urlStr2 = "<a href=\"{$url2}\">Test 4g page</a>\n\n ";
+
+             $urlStr = $urlStr1.$urlStr2;
+            return $this->responseText($urlStr);
+        }              
         else
         {
 

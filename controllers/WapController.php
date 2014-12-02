@@ -1570,6 +1570,38 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         return $this->render('orderinfo',['gh_id'=>$gh_id, 'openid'=>$openid, 'model' => $model, 'item' => $item]);
     }
 
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/showpage:gh_03a74ac96138   
+    public function actionShowpage()
+    {      
+        $this->layout = false;    
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);     
+        return $this->render('showpage', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }    
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/show4ginfo:gh_03a74ac96138   
+    public function actionShow4ginfo()
+    {      
+        $this->layout = false;  
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);    
+        U::W("+++++++++++++".$gh_id);
+        return $this->render('show4ginfo', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }    
+
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wlmshop:gh_03a74ac96138
+    public function actionWlmshop()
+    {
+        $this->layout ='wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('wlmshop', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/winmobilefee:gh_03a74ac96138:pid=oKgUduNHzUQlGRIDAghiY7ywSeWk:mobile=12345678900
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/winmobilefee:gh_03a74ac96138   
