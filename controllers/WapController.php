@@ -161,7 +161,7 @@ class WapController extends Controller
         }
         Yii::$app->session['gh_id'] = $gh_id;
         Yii::$app->session['openid'] = $openid;
-              return $this->redirect($r);
+        return $this->redirect($r);
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/nativepackage
