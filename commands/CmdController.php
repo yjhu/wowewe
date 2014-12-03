@@ -366,9 +366,9 @@ class CmdController extends Controller
             $menu = new \app\models\WxMenu([
 
                 new \app\models\ButtonComplex('沃资讯', [
-                    new \app\models\ButtonView('4G资费', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/show4ginfo:{$gh_id}")),
+                    new \app\models\ButtonView('4G业务', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/show4ginfo:{$gh_id}")),
                     new \app\models\ButtonView('短信订购流量包', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
-                    new \app\models\ButtonView('数信业务资费', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showpage:{$gh_id}")),
+                    new \app\models\ButtonView('数信业务', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showpage:{$gh_id}")),
                 ]),
 
                 new \app\models\ButtonComplex('沃商城', [

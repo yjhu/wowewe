@@ -156,8 +156,9 @@ playbox.init("playbox");
 </script>
 -->
 <script type="text/javascript" src="./show_res/jquery.jplayer.min.js"></script> 
-<script src="./show_res/main.js" type="text/javascript"></script>
+<script src="./show_res/main.js?v11" type="text/javascript"></script>
 
+<script src="./js/wechat.js" type="text/javascript"></script>
 <!--
 <div id="ikea-audio" class="ikea-audio abs" style="height: 54.44964px; width: 54.4357px;"><div class="music"><p class="music_audio"><span class="abs audio_open" style="background-position: -54.4357px 50%;"></span><span class="abs audio_close"></span></p><audio id="music_audio" loop="loop" preload="preload"><source src="images/music2.mp3" type="audio/mpeg">您的浏览器不支持HTML5音频格式</audio></div></div>
 -->
@@ -167,8 +168,9 @@ playbox.init("playbox");
 <?php 
   $appid = Yii::$app->wx->gh['appid'];
   $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/showpage:'.Yii::$app->wx->getGhid());
-  $assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
-  $myImg = Url::to("$assetsPath/share-icon.jpg", true);
+  //$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
+  $assetsPath = Yii::$app->getRequest()->baseUrl.'/show_res';
+  $myImg = Url::to("$assetsPath/index.jpg", true);
   $title = '数信业务资费';
   $desc = '数信业务资费';
 ?>
