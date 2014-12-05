@@ -172,7 +172,7 @@ playbox.init("playbox");
   $assetsPath = Yii::$app->getRequest()->baseUrl.'/show_res';
   $myImg = Url::to("$assetsPath/index.jpg", true);
   $title = '数信业务资费';
-  $desc = '数信业务资费';
+  $desc = '沃看湖北可看在线卫视及各种栏目10元包6G；爱奇艺内容丰富，10元包2.5G，15元包6G。PPTV无广告流畅收看，内容丰富；15元包6G。适用于3G、融合用户及4G用户。';
 ?>
 
 <script>

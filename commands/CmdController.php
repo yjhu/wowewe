@@ -374,19 +374,25 @@ class CmdController extends Controller
                     new \app\models\ButtonView('4G业务', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/show4ginfo:{$gh_id}")),
                     new \app\models\ButtonView('短信订购流量包', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
                     new \app\models\ButtonView('数信业务', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showpage:{$gh_id}")),
+                    new \app\models\ButtonView('用户吐槽', 'http://wsq.qq.com/reflow/263163652-1044?_wv=1&source='),
+                    new \app\models\ButtonView('加入我们', 'http://lm.10010.com/wolm/ot/newComer.html'),
                 ]),
 
                 new \app\models\ButtonComplex('沃商城', [
+                    new \app\models\ButtonView('老友季焕新机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showk1info:{$gh_id}")),
                     new \app\models\ButtonView('沃联盟店铺', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/wlmshop:{$gh_id}")),
                     //new \app\models\ButtonView('特惠合约机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobilelist:{$gh_id}")),
                     //new \app\models\ButtonView('单卡产品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_CARD)),      
                     ////new \app\models\ButtonView('8折上网卡', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_INTERNET_CARD)),
                 ]),
 
-                new \app\models\ButtonComplex('沃点点', [
+                new \app\models\ButtonComplex('沃业务', [
+                    new \app\models\ButtonView('话费充值', 'http://upay.10010.com/npfwap/npfMobWap/bankcharge/index.html?version=null&desmobile=8E2104B024B5116C9EA24F8EE55A29A8#/bankcharge'),
                     new \app\models\ButtonView('流量包订购', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD)),
-                    new \app\models\ButtonView('用户吐槽', 'http://wsq.qq.com/reflow/263163652-1044?_wv=1&source='),
-                    new \app\models\ButtonView('加入我们', 'http://lm.10010.com/wolm/ot/newComer.html'),
+                    new \app\models\ButtonView('手机营业厅', 'http://wap.10010.com/t/home.htm'),
+                    new \app\models\ButtonView('手机商城', 'http://m.10010.com/'),
+                    //new \app\models\ButtonView('话费查询', 'http://wap.10010.com/t/operationservice/queryOcsPackageFlowLeft.htm?menuId=000200020004'),
+                    //new \app\models\ButtonView('流量查询', 'https://uac.10010.com/oauth2/new_auth?display=wap&page_type=05&app_code=ECS-YH-WAP&redirect_uri=http://wap.10010.com/t/loginCallBack.htm&state=http://wap.10010.com/t/home.htm&channel_code=113000001&real_ip=119.98.143.119'),
                 ]),
             ]);
         }

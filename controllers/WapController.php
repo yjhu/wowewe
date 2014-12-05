@@ -1582,14 +1582,23 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/show4ginfo:gh_03a74ac96138   
     public function actionShow4ginfo()
-    {      
+    {
         $this->layout = false;  
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
-        Yii::$app->wx->setGhId($gh_id);    
-        U::W("+++++++++++++".$gh_id);
+        Yii::$app->wx->setGhId($gh_id);
         return $this->render('show4ginfo', ['gh_id'=>$gh_id, 'openid'=>$openid]);
-    }    
+    }
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/showk1info:gh_03a74ac96138
+    public function actionShowk1info()
+    {
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('showk1info', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
 
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wlmshop:gh_03a74ac96138
