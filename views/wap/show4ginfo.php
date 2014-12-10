@@ -9,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>4G产品</title> 
+<title>玩转4G</title> 
 <meta name="description" content=""> 
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
@@ -50,7 +50,7 @@
       <div class="swiper-wrapper">
             <div class="swiper-slide rel swiper-slide-visible swiper-slide-active">
             <div class="main">
-            <img src="./show_res/index_4ginfo.jpg" >
+            <img src="./show_res/index_4ginfo.jpg?v1" >
             </div>
             <!--
             <div class="bg rel" >
@@ -65,7 +65,7 @@
              <div class="swiper-slide rel" >
             	<div class="main" >
 				<a href="http://m.10010.com/mobilegoodsdetail/711403121719.html?src=wolm&channel=cps&cid=8a94a89148bf746b0148bfe4ee5600ef&adid=8a94a8914879788001487d40ab930009">
-				<img class="lazy" data-original="./show_res/4gqgtc.jpg" src="./show_res/4gqgtc.jpg" >
+				<img class="lazy" data-original="./show_res/4gqgtc.jpg?v1" src="./show_res/4gqgtc.jpg?v1" >
 				</a>
 				</div>
 				<!--
@@ -76,7 +76,7 @@
             <div class="swiper-slide rel" >
             	<div class="main" >
 				<a href="http://www.10010.com/goodsdetail/711405149472.html?src=wolm&channel=cps&cid=8a94a89148bf746b0148bfe4ee5600ef&adid=8a94a8914879788001487d3a26690005&menuId=000300010001">
-				<img class="lazy" data-original="./show_res/4gzhtc.jpg" src="./show_res/4gzhtc.jpg" >
+				<img class="lazy" data-original="./show_res/4gzhtc.jpg?v1" src="./show_res/4gzhtc.jpg?v1" >
 				</a>
 				</div>
 				<!--
@@ -87,7 +87,7 @@
             <div class="swiper-slide rel" >
             	<div class="main" >
 				<a href="http://m.10010.com/mobilegoodsdetail/711409116812.html">
-				<img class="lazy" data-original="./show_res/4gwp16yk.jpg" src="./show_res/4gwp16yk.jpg" >
+				<img class="lazy" data-original="./show_res/4gwp16yk.jpg?v1" src="./show_res/4gwp16yk.jpg?v1" >
 				</a>
 				</div>
 				<!--
@@ -104,7 +104,7 @@
 				<a href="sms:13545296480?body=hello">
         -->
 				<a href="http://m.10010.com/mobilegoodsdetail/711409116811.html">
-				<img class="lazy" data-original="./show_res/4gwp26yk.jpg" src="./show_res/4gwp26yk.jpg" >
+				<img class="lazy" data-original="./show_res/4gwp26yk.jpg?v1" src="./show_res/4gwp26yk.jpg?v1" >
 				</a>
 				<!--
         </a>
@@ -129,7 +129,7 @@
   $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/show4ginfo:'.Yii::$app->wx->getGhid());
   //$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
   $assetsPath = Yii::$app->getRequest()->baseUrl.'/show_res';
-  $myImg = Url::to("$assetsPath/index_4ginfo.jpg", true);
+  $myImg = Url::to("$assetsPath/index_4ginfo.jpg?v1", true);
   $title = '4G业务';
   $desc = '双4G，双百兆，4G就选沃4G！';
 ?>

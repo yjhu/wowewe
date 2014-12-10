@@ -61,6 +61,7 @@ class WechatXiangYangUnicom extends Wechat
         if ($isNewFan || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_HBHE)  
             $this->saveAccessLog();
 
+        /*
         $url_1 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD], true)."\">单卡产品</a>";
         $url_2 = "<a href=\"".Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">特惠手机</a>";
         $url_3 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD], true)."\">8折包年上网卡</a>"; 
@@ -71,6 +72,28 @@ class WechatXiangYangUnicom extends Wechat
         $url_8 = "<a href=\"".Url::to(['wap/nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
         $url_9 = "<a href=\"".Url::to(['wap/order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
         $url_10 = "<a href=\"http://lm.10010.com/wolm/ot/guideDetail.html\">沃联盟</a>";
+        */
+
+        $url_ltsjyyt = "<a href=\"http://wap.10010.com/t/query/queryRealTimeFeeInfo.htm?menuId=000200010001\">话费查询</a>";//手机营业厅
+        $url_hfcz = "<a href=\"http://upay.10010.com/npfwap/npfMobWap/bankcharge/index.html?version=null&desmobile=8E2104B024B5116C9EA24F8EE55A29A8#/bankcharge\">话费充值</a>";
+        $url_ltsjsc = "<a href=\"http://m.10010.com/\">手机商城</a>";
+        $url_wxdp = "<a href=\"".Url::to(['wap/wlmshop', 'gh_id'=>$gh_id], true)."\">微信店铺</a>";
+        $url_4gyw = "<a href=\"".Url::to(['wap/show4ginfo', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
+        $url_sxyw = "<a href=\"".Url::to(['wap/showpage', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
+        $url_dzl = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
+
+        $url_1 = "查话费,查流量，请访问沃服务->{$url_ltsjyyt}；\n";
+        $url_2 = "充话费，请访问沃服务->{$url_hfcz}，全网最低9.85折；\n";
+        //$url_3 = "挑号码，选手机，请访问沃业务->{$url_ltsjsc}，或沃业务->{$url_wxdp}；\n";
+        $url_3 = "挑号码，选手机，请访问沃业务->{$url_wxdp}；\n";
+
+        //$url_4 = "了解并订购联通的{$url_4gyw}，{$url_sxyw}，或其他业务，请访问下面的菜单“沃业务”；\n";
+        //$url_5 = "了解联通的服务内容，请访问下面的菜单“沃服务”；\n";
+        $url_6 = "了解更多联通业务、资讯和服务内容，请访问下面的菜单系统；\n\n";
+        $url_7 = "另，如果您是联通3G用户，现在微信平台订购3G省内流量包，可专享3个月5折话费返还，{$url_dzl}办理！\n";
+        $url_8 = "您如果还有其他问题，请微信平台留言，或直接致电10010，我们会有客服帮助您！\n";
+        //$url_all = $url_1.$url_2.$url_3.$url_4.$url_5.$url_6.$url_7.$url_8;
+        $url_all = $url_1.$url_2.$url_3.$url_6.$url_7.$url_8;
 
         if (!empty($EventKey))
         {        
@@ -118,13 +141,13 @@ class WechatXiangYangUnicom extends Wechat
                 
             $nickname = empty($user->nickname) ? '' : $user->nickname;            
             //return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
-            return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~");
+            return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~\n\n{$url_all}");
         }
         else
         {
             $nickname = empty($user->nickname) ? '' : $user->nickname;            
             //return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
-            return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~");
+            return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~\n\n{$url_all}");
         }
     }
 
@@ -164,6 +187,7 @@ class WechatXiangYangUnicom extends Wechat
         $Content = $this->getRequest('Content');
         $msg = trim($Content);   
 
+        /*
         $url_1 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD], true)."\">单卡产品</a>";
         $url_2 = "<a href=\"".Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">特惠手机</a>";
         $url_3 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD], true)."\">8折包年上网卡</a>"; 
@@ -174,7 +198,40 @@ class WechatXiangYangUnicom extends Wechat
         $url_8 = "<a href=\"".Url::to(['wap/nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
         $url_9 = "<a href=\"".Url::to(['wap/order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
         $url_10 = "<a href=\"http://lm.10010.com/wolm/ot/guideDetail.html\">沃联盟</a>";
+        */
 
+        /*
+        您要查话费,查流量，请访问【联通手机营业厅】；
+        您要充话费，请访问【话费充值】，全网最低9.85折；
+        您要挑号码，选手机，请访问【联通手机商城】，或我们的【微信店铺】；
+        您要了解并订购联通的【4G业务】，【数信业务】，或其他业务，请访问下面的菜单“沃业务”；
+        您要了解联通的服务内容，请访问下面的菜单“沃服务”；
+        或更多联通资讯，请访问下面菜单“沃资讯”；
+        另，如果您是联通3G用户，现在微信平台订购3G省内流量包，可专享3个月5折话费返还，【点这里】办理！
+        您如果还有其他问题，请微信平台留言，或直接致电10010，我们会有客服帮助您！
+        */        
+
+        $url_ltsjyyt = "<a href=\"http://wap.10010.com/t/query/queryRealTimeFeeInfo.htm?menuId=000200010001\">话费查询</a>";//手机营业厅
+        $url_hfcz = "<a href=\"http://upay.10010.com/npfwap/npfMobWap/bankcharge/index.html?version=null&desmobile=8E2104B024B5116C9EA24F8EE55A29A8#/bankcharge\">话费充值</a>";
+        $url_ltsjsc = "<a href=\"http://m.10010.com/\">手机商城</a>";
+        $url_wxdp = "<a href=\"".Url::to(['wap/wlmshop', 'gh_id'=>$gh_id], true)."\">微信店铺</a>";
+        $url_4gyw = "<a href=\"".Url::to(['wap/show4ginfo', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
+        $url_sxyw = "<a href=\"".Url::to(['wap/showpage', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
+        $url_dzl = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
+
+        $url_1 = "查话费,查流量，请访问沃服务->{$url_ltsjyyt}；\n";
+        $url_2 = "充话费，请访问沃服务->{$url_hfcz}，全网最低9.85折；\n";
+        //$url_3 = "挑号码，选手机，请访问沃业务->{$url_ltsjsc}，或沃业务->{$url_wxdp}；\n";
+        $url_3 = "挑号码，选手机，请访问沃业务->{$url_wxdp}；\n";
+
+        //$url_4 = "了解并订购联通的{$url_4gyw}，{$url_sxyw}，或其他业务，请访问下面的菜单“沃业务”；\n";
+        //$url_5 = "了解联通的服务内容，请访问下面的菜单“沃服务”；\n";
+        $url_6 = "了解更多联通业务、资讯和服务内容，请访问下面的菜单系统；\n\n";
+        $url_7 = "另，如果您是联通3G用户，现在微信平台订购3G省内流量包，可专享3个月5折话费返还，{$url_dzl}办理！\n";
+        $url_8 = "您如果还有其他问题，请微信平台留言，或直接致电10010，我们会有客服帮助您！\n";
+
+        //$url_all = $url_1.$url_2.$url_3.$url_4.$url_5.$url_6.$url_7.$url_8;
+        $url_all = $url_1.$url_2.$url_3.$url_6.$url_7.$url_8;
 
         if ($msg == '我是襄阳联通员工')
         {
@@ -225,7 +282,28 @@ class WechatXiangYangUnicom extends Wechat
 
             $urlStr = $urlStr1.$urlStr2.$urlStr3;
             return $this->responseText($urlStr);
-        }              
+        }  
+        else if ($msg == 'help'||$msg == 'HELP'||$msg == 'Help'||$msg == 'h'||$msg == 'H'||$msg == '帮助')
+        {
+            //return $this->responseText($url_all);
+            return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~ \n\n{$url_all}");
+        }
+        else if(strstr($msg,"话费")!==false)
+        {
+            return $this->responseText($url_1);
+        }
+        else if(strstr($msg,"流量")!==false)
+        {
+            return $this->responseText($url_dzl);
+        }
+        else if((strstr($msg,"资费")!==false) || (strstr($msg,"业务")!==false))
+        {
+            return $this->responseText($url_3);
+        }
+        else if(strstr($msg,"宽带")!==false)
+        {
+            return $this->responseText("请拨打联通热线10010 向客服咨询，谢谢!");
+        }        
         else
         {
 
@@ -259,7 +337,7 @@ class WechatXiangYangUnicom extends Wechat
             $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
             $nickname = empty($model->nickname) ? '' : $model->nickname;            
             //return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! {$kfStr}\n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
-            return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~  {$kfStr}");
+            return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~  {$kfStr}\n\n{$url_all}");
         }
         
     }

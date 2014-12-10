@@ -9,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>老友季焕新机</title>
+<title>双12万能盛典</title> 
 <meta name="description" content=""> 
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
@@ -39,60 +39,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 
-
 <body>
-<!--
-<div id="loading" class="loading" style="display: none;"><img src="./show_res/load.gif">加载中...</div>
--->
 
 <div class="device rel" id="device" >
     <div class="swiper-container" id="swiper-container">
       <div class="swiper-wrapper">
             <div class="swiper-slide rel swiper-slide-visible swiper-slide-active">
-            <div class="main">
-            <img src="./show_res/k1info-01.jpg" >
-            </div>
-            <!--
-            <div class="bg rel" >
-            <div id="light" >
-            <img src="./show_res/light.png">
-            </div>
-            </div>
-            -->
+              <div class="main">
+              <img src="./show_res/index_double12info.jpg?v1" >
+              </div>
             </div>
            
-             <!-- corner -->
-             <div class="swiper-slide rel" >
-            <div class="main" >
-              <a href="javascript:jump2order('lyjhxj')">
-              <img class="lazy" data-original="./show_res/k1info-02.jpg" src="./show_res/k1info-02.jpg" >
+            <div class="swiper-slide rel" >
+              <div class="main" >
+              <a href="javascript:jump2order('iphone6')">
+                <img class="lazy" data-original="./show_res/iphone6.jpg?v1" src="./show_res/iphone6.jpg?v1" >
               </a>
+              </div>
             </div>
-				<!--
-            	<div class="bg rel" style="height: 1097.775px; width: 697px;"><div class="draw" style="height: 1097.775px; width: 697px;"><img class="lazy" data-original="images/corner_mark_1.png" src="./show_res/corner_mark_1.png" style="height: 1097.775px; width: 697px; display: block;"></div><div class="info" style="height: 1097.775px; width: 697px;"><img class="lazy" data-original="images/corner_title_1.png" src="./show_res/corner_title_1.png" style="height: 1097.775px; width: 697px; display: block;"></div></div>
-				-->
-             </div>
+
+            <div class="swiper-slide rel" >
+              <div class="main" >
+              <a href="javascript:jump2order('hongminote')">
+                <img class="lazy" data-original="./show_res/hongminote.jpg?v1" src="./show_res/hongminote.jpg?v1" >
+              </a>
+              </div>
+            </div>
+
+            <div class="swiper-slide rel" >
+              <div class="main" >
+              <a href="javascript:jump2order('huaweimate7')">
+                <img class="lazy" data-original="./show_res/huaweimate7.jpg?v1" src="./show_res/huaweimate7.jpg?v1" >
+              </a>
+              </div>
+            </div>
+
+            <div class="swiper-slide rel" >
+              <div class="main" >
+              <a href="javascript:jump2order('45gshangwangka')">
+                <img class="lazy" data-original="./show_res/45gshangwangka.jpg?v1" src="./show_res/45gshangwangka.jpg?v1" >
+              </a>
+              </div>
+            </div>                        
 
 
-             <!-- light -->
-
-             <!-- city -->   
-            <div class="swiper-slide rel">
+          <div class="swiper-slide rel">
             <div class="main" >
-        <!--
-				<a href="sms:13545296480?body=hello">
-        -->
-				<a href="javascript:jump2order('lyjhxj')">
-				<img class="lazy" data-original="./show_res/k1info-03.jpg" src="./show_res/k1info-03.jpg" >
-				</a>
-				<!--
-        </a>
-        -->
-			</div>
-				<!--
-            	<div class="bg rel" style="height: 1097.775px; width: 697px;"><div class="draw" style="height: 1097.775px; width: 697px;"><a href="tel:02786337717"><img class="lazy" data-original="images/ikea_city_0.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" style="height: 1097.775px; width: 697px;"></a></div><div class="info" style="height: 1097.775px; width: 697px;"><a href="tel:02786337717"><img class="lazy" data-original="images/outdoor_title_3.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" style="height: 1097.775px; width: 697px;"></a></div></div>
-				-->
-        </div> 
+            <a href="javascript:jump2order('96gshangwangka')">
+            <img class="lazy" data-original="./show_res/96gshangwangka.jpg?v1" src="./show_res/96gshangwangka.jpg?v1" >
+            </a>
+            </div>
+          </div> 
 
       </div>
     </div>
@@ -105,16 +102,16 @@
 
 <?php 
   $appid = Yii::$app->wx->gh['appid'];
-  $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/show4ginfo:'.Yii::$app->wx->getGhid());
+  $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/showdouble12info:'.Yii::$app->wx->getGhid());
   //$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
   $assetsPath = Yii::$app->getRequest()->baseUrl.'/show_res';
-  $myImg = Url::to("$assetsPath/k1info-01.jpg", true);
-  $title = '老友季焕新机';
-  $desc = '老友季焕新机，老用户专享，4G手机99元带回家！';
+  $myImg = Url::to("$assetsPath/index_double12info.jpg?v1", true);
+  $title = '双12万能盛典';
+  $desc = '2014年最后一波特大优惠已经来袭，亲们做好准备了吗？';
 ?>
 
 <script>
-var url_base="<?php echo  Url::to(['wap/lyjhxj'],true) ?>";
+var url_base="<?php echo  Url::to(['wap/double12'],true) ?>";
 
 var dataForWeixin={
   appId:"<?php echo $appid; ?>",
@@ -153,13 +150,27 @@ var dataForWeixin={
   }
 };
 
-
 function jump2order(cat)
 {
-  if(cat=="lyjhxj")
+  if(cat=="iphone6")
   {
-    //alert(url_base+"&cid=804");
-    location.href=url_base+"&cid=804&realFee=0&office=16";
+    location.href=url_base+"&cid=805&realFee=0&office=16";
+  }
+  else if(cat=="hongminote")
+  {
+    location.href=url_base+"&cid=806&realFee=0&office=16";
+  }
+  else if(cat=="huaweimate7")
+  {
+    location.href=url_base+"&cid=807&realFee=0&office=16";
+  }
+  else if(cat=="45gshangwangka")
+  {
+    location.href=url_base+"&cid=808&realFee=0&office=16";
+  }
+  else//96gshangwangka
+  {
+    location.href=url_base+"&cid=809&realFee=0&office=16";
   }
 }
 </script>
