@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -306,6 +306,11 @@ function load_data2(i, n)
 
 	else if((n.cid == 805)||(n.cid == 806)||(n.cid == 807)||(n.cid == 808)||(n.cid == 809))
 		imgurl = '../web/show_res/index_double12info.jpg';		
+
+	else if((n.cid == 810)||(n.cid == 811)||(n.cid == 812)||(n.cid == 808)||(n.cid == 809)
+		||(n.cid == 813)||(n.cid == 814)||(n.cid == 805)||(n.cid == 815)
+		||(n.cid == 816)||(n.cid == 817)||(n.cid == 818)||(n.cid == 819))
+		imgurl = '../web/show_res/index_doubledaninfo.jpg';
 
 	//双十一活动 手机 begin
 	//----------------------------------------------------------

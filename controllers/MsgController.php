@@ -37,7 +37,11 @@ class MsgController extends Controller
             case MGh::GH_XIANGYANGUNICOM:
                 $wxConfig['class'] = 'app\models\WechatXiangYangUnicom';
                 break;
-                
+
+            case MGh::GH_HOYA:
+                $wxConfig['class'] = 'app\models\WechatHoya';
+                break;                
+
             default:
                 $wxConfig['class'] = 'app\models\WechatWoso';
                 break;

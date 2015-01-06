@@ -46,7 +46,7 @@
       <div class="swiper-wrapper">
             <div class="swiper-slide rel swiper-slide-visible swiper-slide-active">
               <div class="main">
-              <img src="./show_res/index_double12info.jpg?v1" >
+              <img src="./show_res/index_double12info.jpg?v3" >
               </div>
             </div>
            
@@ -66,6 +66,7 @@
               </div>
             </div>
 
+            <!--
             <div class="swiper-slide rel" >
               <div class="main" >
               <a href="javascript:jump2order('huaweimate7')">
@@ -73,6 +74,7 @@
               </a>
               </div>
             </div>
+            -->
 
             <div class="swiper-slide rel" >
               <div class="main" >

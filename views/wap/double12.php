@@ -51,11 +51,11 @@
 		<?php } elseif($cid==808) { ?>
 			<img src="../web/show_res/double12-head.jpg" width="100%">
 			<p>45G 上网卡</p>
-			<p>45G包年流量卡 40G省内流量+5G全国流量 6.5折入网</p>
+			<p>40G省内流量+5G全国流量 6.5折入网</p>
 		<?php } else { ?>
 			<img src="../web/show_res/double12-head.jpg" width="100%">
 				<p>96G 上网卡</p>
-				<p>96G包年流量卡 90G省内流量+6G全国流量 6.5折入网</p>
+				<p>90G省内流量+6G全国流量 6.5折入网</p>
 		<?php } ?>
 
 		<div class="ui-field-contain">

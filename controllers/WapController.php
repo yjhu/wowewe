@@ -934,6 +934,52 @@ EOD;
                 $order->attr = "{$_GET['cardType']}";
                 break; 
 
+
+            //doubledan
+            case MItem::ITEM_CAT_CARD_DD_100YUAN5G_SHANGWANGKA:
+                $order->title = '100元本地流量卡5G';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_CARD_DD_3GBANNIAN_SHANGWANGKA:
+                $order->title = '3G半年卡';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_CARD_DD_6GNIANKA_SHANGWANGKA:
+                $order->title = '6G年卡';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_DD_IPHONE4S:
+                $order->title = '苹果 iPhone4S';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_DD_IPHONE5S:
+                $order->title = '苹果 iPhone5S 16GB';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_DD_HONOR6:
+                $order->title = '华为荣耀6';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+
+            case MItem::ITEM_CAT_DD_XIAOMI4:
+                $order->title = '小米4';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+
+            case MItem::ITEM_CAT_DD_SAMSUNGG5108Q:
+                $order->title = '三星G5108Q';              
+                $order->attr = "{$_GET['cardType']}";
+                break;     
+
+            case MItem::ITEM_CAT_DD_SAMSUNGNOTE3:
+                $order->title = '三星Note3';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;  
+
+
             default:
                 U::W(['invalid data cat', $_GET["cid"], __METHOD__,$_GET]);
                 return;
@@ -1681,7 +1727,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/showdouble12info:gh_03a74ac96138  
     public function actionShowdouble12info()
     {      
-        $this->layout = 'wapy';
+        $this->layout = false;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);     
@@ -1697,6 +1743,44 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         return $this->render('double12', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }  
 
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/showdoubledaninfo:gh_03a74ac96138  
+    public function actionShowdoubledaninfo()
+    {      
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);     
+        return $this->render('showdoubledaninfo', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }   
+
+    public function actionDoubledan()
+    {      
+        $this->layout = 'wapy';  
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);     
+        return $this->render('doubledan', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }  
+
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/showdoubledanmiaoshaninfo:gh_03a74ac96138  
+    public function actionShowdoubledanmiaoshainfo()
+    {      
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);     
+        return $this->render('showdoubledanmiaoshainfo', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }   
+
+    public function actionDoubledanmiaosha()
+    {      
+        $this->layout = 'wapy';  
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);     
+        return $this->render('doubledanmiaosha', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }  
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/winmobilefee:gh_03a74ac96138:pid=oKgUduNHzUQlGRIDAghiY7ywSeWk:mobile=12345678900
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/winmobilefee:gh_03a74ac96138   

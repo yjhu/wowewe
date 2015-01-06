@@ -38,6 +38,7 @@ class CmdController extends Controller
         Yii::$app->getUrlManager()->setScriptUrl('/wx/web/index.php');
         //Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
         //Yii::$app->wx->setGhId(MGh::GH_HOYA);
+        
         //Yii::$app->wx->setGhId(MGh::GH_WOSO);
         Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
     }
@@ -114,7 +115,12 @@ class CmdController extends Controller
     {        
         $gh_id = Yii::$app->wx->getGhid();     
         //$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobile:{$gh_id}:cid=324");
-        $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobilelist:{$gh_id}");
+        //$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobilelist:{$gh_id}");
+
+        //new \app\models\ButtonView('5折流量包订购', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD)),
+        //$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD);
+
+        $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdoubledanmiaoshainfo:{$gh_id}");
         U::W($url);
         echo $url;
     }
@@ -435,7 +441,9 @@ class CmdController extends Controller
                     //new \app\models\ButtonView('短信订购流量包', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
                 ]),
                 new \app\models\ButtonComplex('沃业务', [
-                    new \app\models\ButtonView('1212万能盛典', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdouble12info:{$gh_id}")),
+                    //new \app\models\ButtonView('1212万能盛典', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdouble12info:{$gh_id}")),
+                    new \app\models\ButtonView('双旦狂欢季', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdoubledaninfo:{$gh_id}")),
+                    new \app\models\ButtonView('双旦秒杀', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdoubledanmiaoshainfo:{$gh_id}")),
                     new \app\models\ButtonView('老友季焕新机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showk1info:{$gh_id}")),
                     new \app\models\ButtonView('微信店铺', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/wlmshop:{$gh_id}")),
                     /////////////////////////////////////////////////
@@ -447,6 +455,31 @@ class CmdController extends Controller
                     new \app\models\ButtonView('流量查询', 'http://wap.10010.com/t/operationservice/queryRunoff.htm?menuId=000200020001'),
                     new \app\models\ButtonView('流量抽奖', 'http://hb.kk3g.net/active/online/0521/pre.html?tag=weixin'),
                     new \app\models\ButtonView('用户吐槽', 'http://wsq.qq.com/reflow/263163652-1044?_wv=1&source='),
+                ]),
+            ]);
+        }
+        else if ($gh_id == MGh::GH_HOYA)
+        {
+            $menu = new \app\models\WxMenu([
+                new \app\models\ButtonComplex('走进爱迪', [
+                    new \app\models\ButtonView('关于爱迪', 'http://wosotech.com/wx/web/index.php?r=yss/adabout'),
+                    new \app\models\ButtonView('校区查询', 'http://baidu.com'),
+                    new \app\models\ButtonView('教师风采', 'http://wosotech.com/wx/web/index.php?r=yss/teacher'),
+                    new \app\models\ButtonView('爱迪宝贝秀', 'http://baidu.com'),
+                    new \app\models\ButtonView('走进爱迪', 'http://baidu.com'),
+                ]),
+                new \app\models\ButtonComplex('预约优惠', [
+                    new \app\models\ButtonView('我要预约', 'http://baidu.com'),
+                    new \app\models\ButtonView('课程介绍', 'http://baidu.com'),
+                    new \app\models\ButtonView('近期活动', 'http://baidu.com'),
+                    new \app\models\ButtonView('教师风采x', 'http://wosotech.com/wx/web/index.php?r=yss/teacherx'),
+                    new \app\models\ButtonView('教师风采y', 'http://wosotech.com/wx/web/index.php?r=yss/teachery'),
+                ]),
+                new \app\models\ButtonComplex('宝贝查询', [
+                    new \app\models\ButtonView('签到记录', 'http://baidu.com'),
+                    new \app\models\ButtonView('宝贝相册', 'http://baidu.com'),
+                    new \app\models\ButtonView('宝贝课表', 'http://baidu.com'),
+                    new \app\models\ButtonView('推荐有礼', 'http://baidu.com'),
                 ]),
             ]);
         }

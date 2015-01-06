@@ -283,6 +283,17 @@ class WechatXiangYangUnicom extends Wechat
             $urlStr = $urlStr1.$urlStr2.$urlStr3;
             return $this->responseText($urlStr);
         }  
+        else if ($msg == '.sd')//双旦活动
+        {
+            $url1 = Url::to(['wap/showdoubledaninfo', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+            $urlStr1 = "<a href=\"{$url1}\">double-dan</a>\n\n ";
+
+            $url2 = Url::to(['wap/showdoubledanmiaoshainfo', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+            $urlStr2 = "<a href=\"{$url2}\">double-dan miaosha</a>\n\n ";
+
+            $urlStr = $urlStr1.$urlStr2;
+            return $this->responseText($urlStr);
+        }        
         else if ($msg == 'help'||$msg == 'HELP'||$msg == 'Help'||$msg == 'h'||$msg == 'H'||$msg == '帮助')
         {
             //return $this->responseText($url_all);

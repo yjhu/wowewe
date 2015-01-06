@@ -134,6 +134,21 @@ class MItem extends ActiveRecord
 	const ITEM_CAT_D12_45G_SHANGWANGKA = 808;
 	const ITEM_CAT_D12_96G_SHANGWANGKA = 809;
 
+	//双旦活动
+	const ITEM_CAT_CARD_DD_100YUAN5G_SHANGWANGKA = 810;
+	const ITEM_CAT_CARD_DD_3GBANNIAN_SHANGWANGKA = 811;
+	const ITEM_CAT_CARD_DD_6GNIANKA_SHANGWANGKA = 812;
+	//const ITEM_CAT_D12_45G_SHANGWANGKA = 808;
+	//const ITEM_CAT_D12_96G_SHANGWANGKA = 809;
+	const ITEM_CAT_DD_IPHONE4S = 813;
+	const ITEM_CAT_DD_IPHONE5S = 814;
+	//const ITEM_CAT_D12_IPHONE6 = 805;
+	const ITEM_CAT_DD_HONOR6 = 815;
+	const ITEM_CAT_DD_XIAOMI4 = 816;
+	const ITEM_CAT_DD_SAMSUNGG5108Q = 817;
+	const ITEM_CAT_DD_SAMSUNGNOTE3 = 818;
+
+
 	const ITEM_KIND_MOBILE = 1;
 	const ITEM_KIND_CARD = 2;
 	const ITEM_KIND_INTERNET_CARD = 3;
@@ -194,6 +209,20 @@ class MItem extends ActiveRecord
 			self::ITEM_CAT_D12_HUAWEI_MATE7=> '华为Mate7',
 			self::ITEM_CAT_D12_45G_SHANGWANGKA=> '45G上网卡',
 			self::ITEM_CAT_D12_96G_SHANGWANGKA=> '96G上网卡',
+
+			//双旦活动
+			self::ITEM_CAT_CARD_DD_100YUAN5G_SHANGWANGKA => '100元本地流量卡5G',
+			self::ITEM_CAT_CARD_DD_3GBANNIAN_SHANGWANGKA => '3G半年卡',
+			self::ITEM_CAT_CARD_DD_6GNIANKA_SHANGWANGKA => '6G年卡',
+			//self::ITEM_CAT_D12_45G_SHANGWANGKA => 808;
+			//self::ITEM_CAT_D12_96G_SHANGWANGKA => 809;
+			self::ITEM_CAT_DD_IPHONE4S => '苹果 iPhone4S',
+			self::ITEM_CAT_DD_IPHONE5S => '苹果 iPhone5S 16GB',
+			//self::ITEM_CAT_D12_IPHONE6 => '805';
+			self::ITEM_CAT_DD_HONOR6 => '华为荣耀6',
+			self::ITEM_CAT_DD_XIAOMI4 => '小米4',
+			self::ITEM_CAT_DD_SAMSUNGG5108Q => '三星G5108Q',
+			self::ITEM_CAT_DD_SAMSUNGNOTE3 => '三星Note3',
 			
 			//双十一活动 
 			self::ITEM_CAT_APPLE_5S_16G => 'APPLE 苹果 iPhone5S 16G',
@@ -208,6 +237,9 @@ class MItem extends ActiveRecord
 			self::ITEM_CAT_CARD_1111_100YUAN_BENDI_5GLIULIANG => '100元本地5G流量卡',
 			self::ITEM_CAT_CARD_1111_45GLIULIANG => '45G包年卡',
 			self::ITEM_CAT_CARD_1111_96GLIULIANG => '96G包年卡',
+
+
+
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
 	}

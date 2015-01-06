@@ -257,19 +257,19 @@ function jump2order(cat)
   if(cat=="wohb")
   {
     //alert(url_base+"&cid=800");
-    location.href=url_base+"&cid=800&realFee=10";
+    location.href=url_base+"&cid=800&realFee=0";
   }
   else if(cat=="aiqiyi10")
   {
-    location.href=url_base+"&cid=801&realFee=10";
+    location.href=url_base+"&cid=801&realFee=0";
   }
   else if(cat=="aiqiyi15")
   {
-    location.href=url_base+"&cid=802&realFee=15";
+    location.href=url_base+"&cid=802&realFee=0";
   }
   else//pptv
   {
-    location.href=url_base+"&cid=803&realFee=15";
+    location.href=url_base+"&cid=803&realFee=0";
   }
 }
 </script>
