@@ -1172,6 +1172,7 @@ Swiper.prototype = {
             void 0 != $("#music_audio") && (audio_switch_ikea ? ($("#music_audio")[0].pause(), audio_switch_ikea = !1, $("#music_audio")[0].currentTime = 0, ikea_au.find("span").eq(0).css("display", "none"), ikea_au.find("span").eq(1).css("display", "inline-block")) : (audio_switch_ikea = !0, $("#music_audio")[0].play(), ikea_au.find("span").eq(1).css("display", "none"), ikea_au.find("span").eq(0).css("display", "inline-block")))
         }
 
+        /*
         function shareFriend() {
             WeixinJSBridge.invoke("sendAppMessage", {
                 appid: appid,
@@ -1201,6 +1202,8 @@ Swiper.prototype = {
                 url: lineLink
             }, function() {})
         }
+        */
+
 		/*
         var lineLink = window.location.href;
         $("#loading").hide(), $("body").append('<div id="ikea-audio" class="ikea-audio abs"><div class="music"><p class="music_audio"><span class="abs audio_open"></span><span class="abs audio_close"></span></p><audio id="music_audio" loop="loop" preload="preload"><source src="" type="audio/mpeg">\u60a8\u7684\u6d4f\u89c8\u5668\u4e0d\u652f\u6301HTML5\u97f3\u9891\u683c\u5f0f</audio></div></div>');
@@ -1283,10 +1286,10 @@ Swiper.prototype = {
         });
         lineLink = lineLink.indexOf("?") > 0 ? lineLink.split("?")[0] : lineLink;
         tmpLineLink = lineLink.substring(0, lineLink.lastIndexOf('/') + 1);
-        var imgUrl = tmpLineLink + "/images/xxx.jpg",
-            descContent = "4G资费",
-            shareTitle = "4G资费",
-            appid = "";
+        //var imgUrl = tmpLineLink + "/images/xxx.jpg",
+        //    descContent = "",
+        //    shareTitle = "",
+        //    appid = "";
 			
 		/*
         document.addEventListener("WeixinJSBridgeReady", function() {

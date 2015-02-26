@@ -21,6 +21,9 @@ CREATE TABLE wx_gh (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+
+INSERT INTO `wx`.`wx_gh` (`gh_id`, `appid`, `appsecret`, `token`, `partnerid`, `partnerkey`, `paysignkey`, `wxname`, `nickname`, `menu`, `create_time`, `update_time`, `scene_ids`) VALUES ('gh_78539d18fdcc', 'wx4190748b840f102d', 'a5c3d42268d8b1a470fad26f9808198e', 'Cy0Etqot00wFz50y5l5fffO7yQ05YZ0X', '', '', '', '厚亚科技', '厚亚科技', NULL, '2014-07-31 18:58:44', '0000-00-00 00:00:00', '');
+
 */
 
 use Yii;

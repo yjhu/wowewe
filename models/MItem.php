@@ -98,7 +98,6 @@ class MItem extends ActiveRecord
 	const ITEM_CAT_MOBILE_SONY_S55U = 335;
 	const ITEM_CAT_MOBILE_XIAOMI_HM_1S = 336;
 
-
  	const ITEM_CAT_CARD_45GLIULIANG = 700;
  	const ITEM_CAT_CARD_96GLIULIANG = 701;
 
@@ -119,6 +118,36 @@ class MItem extends ActiveRecord
 	const ITEM_CAT_CARD_1111_96GLIULIANG = 713;
 
 	const ITEM_KIND_INTERNET_CARD_FLOW_FREE = 714;
+
+	//数信业务
+	const ITEM_CAT_SXYW_WKHB = 800;
+	const ITEM_CAT_SXYW_AIQIYI10 = 801;
+	const ITEM_CAT_SXYW_AIQIYI15 = 802;
+	const ITEM_CAT_SXYW_PPTV = 803;
+	//老友季焕新机
+	const ITEM_CAT_LYJHXJ = 804;
+	
+	//双12活动
+	const ITEM_CAT_D12_IPHONE6 = 805;
+	const ITEM_CAT_D12_HONGMI_NOTE = 806;
+	const ITEM_CAT_D12_HUAWEI_MATE7 = 807;
+	const ITEM_CAT_D12_45G_SHANGWANGKA = 808;
+	const ITEM_CAT_D12_96G_SHANGWANGKA = 809;
+
+	//双旦活动
+	const ITEM_CAT_CARD_DD_100YUAN5G_SHANGWANGKA = 810;
+	const ITEM_CAT_CARD_DD_3GBANNIAN_SHANGWANGKA = 811;
+	const ITEM_CAT_CARD_DD_6GNIANKA_SHANGWANGKA = 812;
+	//const ITEM_CAT_D12_45G_SHANGWANGKA = 808;
+	//const ITEM_CAT_D12_96G_SHANGWANGKA = 809;
+	const ITEM_CAT_DD_IPHONE4S = 813;
+	const ITEM_CAT_DD_IPHONE5S = 814;
+	//const ITEM_CAT_D12_IPHONE6 = 805;
+	const ITEM_CAT_DD_HONOR6 = 815;
+	const ITEM_CAT_DD_XIAOMI4 = 816;
+	const ITEM_CAT_DD_SAMSUNGG5108Q = 817;
+	const ITEM_CAT_DD_SAMSUNGNOTE3 = 818;
+
 
 	const ITEM_KIND_MOBILE = 1;
 	const ITEM_KIND_CARD = 2;
@@ -157,6 +186,7 @@ class MItem extends ActiveRecord
 			self::ITEM_CAT_MOBILE_HISENSE_U939 => '海信 U939',
 			self::ITEM_CAT_MOBILE_COOLPAD_7295C_BLACK => '酷派 7295C 黑色',
 			self::ITEM_CAT_MOBILE_XIAOMI4 => '小米4',
+		
 			self::ITEM_CAT_CARD_45GLIULIANG => '45G包年流量套餐',
 			self::ITEM_CAT_CARD_96GLIULIANG => '96G包年流量套餐',
 			self::ITEM_KIND_INTERNET_CARD_FLOW100MB => '10元包100MB 3G省内流量包',
@@ -167,6 +197,32 @@ class MItem extends ActiveRecord
 			self::ITEM_KIND_INTERNET_CARD_FLOW1GB_2 => '100元包1G 全国流量半年包',
 
 			self::ITEM_KIND_INTERNET_CARD_FLOW_FREE=> '拼人品抢流量包',
+
+			self::ITEM_CAT_SXYW_WKHB=> '沃看湖北可看在线卫视及各种栏目10元包6G',
+			self::ITEM_CAT_SXYW_AIQIYI10=> '爱奇艺内容丰富10元包2.5G',
+			self::ITEM_CAT_SXYW_AIQIYI15=> '爱奇艺内容丰富15元包6G',
+			self::ITEM_CAT_SXYW_PPTV=> 'PPTV无广告流畅收看内容丰富15元包6G',
+			self::ITEM_CAT_LYJHXJ=> '老友季焕新机',
+
+			self::ITEM_CAT_D12_IPHONE6=> '苹果iPhone6',
+			self::ITEM_CAT_D12_HONGMI_NOTE=> '红米Note',
+			self::ITEM_CAT_D12_HUAWEI_MATE7=> '华为Mate7',
+			self::ITEM_CAT_D12_45G_SHANGWANGKA=> '45G上网卡',
+			self::ITEM_CAT_D12_96G_SHANGWANGKA=> '96G上网卡',
+
+			//双旦活动
+			self::ITEM_CAT_CARD_DD_100YUAN5G_SHANGWANGKA => '100元本地流量卡5G',
+			self::ITEM_CAT_CARD_DD_3GBANNIAN_SHANGWANGKA => '3G半年卡',
+			self::ITEM_CAT_CARD_DD_6GNIANKA_SHANGWANGKA => '6G年卡',
+			//self::ITEM_CAT_D12_45G_SHANGWANGKA => 808;
+			//self::ITEM_CAT_D12_96G_SHANGWANGKA => 809;
+			self::ITEM_CAT_DD_IPHONE4S => '苹果 iPhone4S',
+			self::ITEM_CAT_DD_IPHONE5S => '苹果 iPhone5S 16GB',
+			//self::ITEM_CAT_D12_IPHONE6 => '805';
+			self::ITEM_CAT_DD_HONOR6 => '华为荣耀6',
+			self::ITEM_CAT_DD_XIAOMI4 => '小米4',
+			self::ITEM_CAT_DD_SAMSUNGG5108Q => '三星G5108Q',
+			self::ITEM_CAT_DD_SAMSUNGNOTE3 => '三星Note3',
 			
 			//双十一活动 
 			self::ITEM_CAT_APPLE_5S_16G => 'APPLE 苹果 iPhone5S 16G',
@@ -181,6 +237,9 @@ class MItem extends ActiveRecord
 			self::ITEM_CAT_CARD_1111_100YUAN_BENDI_5GLIULIANG => '100元本地5G流量卡',
 			self::ITEM_CAT_CARD_1111_45GLIULIANG => '45G包年卡',
 			self::ITEM_CAT_CARD_1111_96GLIULIANG => '96G包年卡',
+
+
+
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
 	}

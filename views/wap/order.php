@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -194,7 +194,13 @@ function load_data1(i, n)
 	
 	$("#userid").html(n.userid);
 	$("#address").html(n.address);
-	$("#office_id").html(office_name[n.office_id]);
+	//$("#office_id").html(office_name[n.office_id]);
+
+	if(n.office_id == 0)
+		$("#office_id").html("");
+	else
+		$("#office_id").html(office_name[n.office_id]);
+
 	if(n.status == 0)
 		$("#status").html(n.statusName +"<span style='color:blue' class='qxdd_orderdetail' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span>");
 	else
@@ -285,6 +291,26 @@ function load_data2(i, n)
 		imgurl = '../web/images/item/45gliuliang-1111-700x500.jpg-120x120.jpg';
 	else if(n.cid == 713)
 		imgurl = '../web/images/item/96gliuliang-1111-700x500.jpg-120x120.jpg';
+
+	else if(n.cid == 800)
+		imgurl = '../web/show_res/index.jpg';
+	else if(n.cid == 801)
+		imgurl = '../web/show_res/index.jpg';
+	else if(n.cid == 802)
+		imgurl = '../web/show_res/index.jpg';
+	else if(n.cid == 803)
+		imgurl = '../web/show_res/index.jpg';	
+
+	else if(n.cid == 804)
+		imgurl = '../web/show_res/lyjhxj-head.jpg';						
+
+	else if((n.cid == 805)||(n.cid == 806)||(n.cid == 807)||(n.cid == 808)||(n.cid == 809))
+		imgurl = '../web/show_res/index_double12info.jpg';		
+
+	else if((n.cid == 810)||(n.cid == 811)||(n.cid == 812)||(n.cid == 808)||(n.cid == 809)
+		||(n.cid == 813)||(n.cid == 814)||(n.cid == 805)||(n.cid == 815)
+		||(n.cid == 816)||(n.cid == 817)||(n.cid == 818)||(n.cid == 819))
+		imgurl = '../web/show_res/index_doubledaninfo.jpg';
 
 	//双十一活动 手机 begin
 	//----------------------------------------------------------

@@ -3,20 +3,22 @@
     use yii\helpers\Url;
 
     use app\models\U;
+
 ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>数信业务</title> 
+<title>玩转流量</title> 
 <meta name="description" content=""> 
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
 <meta name="format-detection" content="telephone=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
- <link href="./show_res/css.css" tppabs="css.css" rel="stylesheet" type="text/css">
+<link href="./show_res/css.css" tppabs="css.css" rel="stylesheet" type="text/css">
+
 <style type="text/css">
 *{margin:0;padding:0}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.5;}
@@ -82,7 +84,7 @@ if (/Android (\d+\.\d+)/.test(ua)){
       <div class="swiper-wrapper">
             <div class="swiper-slide rel swiper-slide-visible swiper-slide-active">
             <div class="main">
-            <img src="./show_res/index.jpg" >
+            <img src="./show_res/index.jpg?v2" >
             </div>
             <!--
             <div class="bg rel" >
@@ -95,18 +97,39 @@ if (/Android (\d+\.\d+)/.test(ua)){
            
              <!-- corner -->
              <div class="swiper-slide rel" >
-            	<div class="main" ><img class="lazy" data-original="./show_res/wohb.jpg" src="./show_res/wohb.jpg" ></div>
+            	<div class="main" >
+              <a href="javascript:jump2order('wohb')">
+              <img class="lazy" data-original="./show_res/wohb.jpg?v2" src="./show_res/wohb.jpg?v2" >
+              </a>
+              </div>
 				<!--
             	<div class="bg rel" style="height: 1097.775px; width: 697px;"><div class="draw" style="height: 1097.775px; width: 697px;"><img class="lazy" data-original="images/corner_mark_1.png" src="./show_res/corner_mark_1.png" style="height: 1097.775px; width: 697px; display: block;"></div><div class="info" style="height: 1097.775px; width: 697px;"><img class="lazy" data-original="images/corner_title_1.png" src="./show_res/corner_title_1.png" style="height: 1097.775px; width: 697px; display: block;"></div></div>
 				-->
              </div>
+
               <div class="swiper-slide rel" >
-            	<div class="main" ><img class="lazy" data-original="./show_res/aiqiyi.jpg" src="./show_res/aiqiyi.jpg" ></div>
+            	<div class="main" >
+              <a href="javascript:jump2order('aiqiyi10')">
+              <img class="lazy" data-original="./show_res/aiqiyi10.jpg?v2" src="./show_res/aiqiyi10.jpg?v2" >
+              </a>
+              </div>
+
 				<!--
             	<div class="bg rel" style="height: 1097.775px; width: 697px;"><div class="draw" style="height: 1097.775px; width: 697px;"><img class="lazy" data-original="images/corner_mark_2.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" style="height: 1097.775px; width: 697px;"></div><div class="info" style="height: 1097.775px; width: 697px;"><img class="lazy" data-original="images/corner_title_2.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" style="height: 1097.775px; width: 697px;"></div></div>
 				-->
              </div>
 			 
+              <div class="swiper-slide rel" >
+              <div class="main" >
+              <a href="javascript:jump2order('aiqiyi15')">
+              <img class="lazy" data-original="./show_res/aiqiyi15.jpg?v2" src="./show_res/aiqiyi15.jpg?v2" >
+              </a>
+              </div>
+
+        <!--
+              <div class="bg rel" style="height: 1097.775px; width: 697px;"><div class="draw" style="height: 1097.775px; width: 697px;"><img class="lazy" data-original="images/corner_mark_2.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" style="height: 1097.775px; width: 697px;"></div><div class="info" style="height: 1097.775px; width: 697px;"><img class="lazy" data-original="images/corner_title_2.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" style="height: 1097.775px; width: 697px;"></div></div>
+        -->
+             </div>       
 	
              <!-- light -->
          
@@ -114,19 +137,30 @@ if (/Android (\d+\.\d+)/.test(ua)){
              <!-- city -->   
         <div class="swiper-slide rel">
         <div class="main" >
-        <!--
-				<a href="sms:13545296480?body=hello">
-        -->
-				<img class="lazy" data-original="./show_res/pptv.jpg" src="./show_res/pptv.jpg" >
-				<!--
+
+				<a href="javascript:jump2order('pptv')">
+				<img class="lazy" data-original="./show_res/pptv.jpg?v2" src="./show_res/pptv.jpg?v2" >
         </a>
-        -->
+    
 				</div>
 				<!--
             	<div class="bg rel" style="height: 1097.775px; width: 697px;"><div class="draw" style="height: 1097.775px; width: 697px;"><a href="tel:02786337717"><img class="lazy" data-original="images/ikea_city_0.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" style="height: 1097.775px; width: 697px;"></a></div><div class="info" style="height: 1097.775px; width: 697px;"><a href="tel:02786337717"><img class="lazy" data-original="images/outdoor_title_3.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" style="height: 1097.775px; width: 697px;"></a></div></div>
 				-->
         </div> 
       
+        <div class="swiper-slide rel">
+        <div class="main" >
+
+        <a href="sms:10010?body=">
+        <img class="lazy" data-original="./show_res/dxdgllb.jpg?v2" src="./show_res/dxdgllb.jpg?v2" >
+        </a>
+    
+        </div>
+        <!--
+              <div class="bg rel" style="height: 1097.775px; width: 697px;"><div class="draw" style="height: 1097.775px; width: 697px;"><a href="tel:02786337717"><img class="lazy" data-original="images/ikea_city_0.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" style="height: 1097.775px; width: 697px;"></a></div><div class="info" style="height: 1097.775px; width: 697px;"><a href="tel:02786337717"><img class="lazy" data-original="images/outdoor_title_3.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" style="height: 1097.775px; width: 697px;"></a></div></div>
+        -->
+        </div> 
+
       </div>
     </div>
 </div>
@@ -156,8 +190,9 @@ playbox.init("playbox");
 </script>
 -->
 <script type="text/javascript" src="./show_res/jquery.jplayer.min.js"></script> 
-<script src="./show_res/main.js" type="text/javascript"></script>
+<script src="./show_res/main.js?v21" type="text/javascript"></script>
 
+<script src="./js/wechat.js" type="text/javascript"></script>
 <!--
 <div id="ikea-audio" class="ikea-audio abs" style="height: 54.44964px; width: 54.4357px;"><div class="music"><p class="music_audio"><span class="abs audio_open" style="background-position: -54.4357px 50%;"></span><span class="abs audio_close"></span></p><audio id="music_audio" loop="loop" preload="preload"><source src="images/music2.mp3" type="audio/mpeg">您的浏览器不支持HTML5音频格式</audio></div></div>
 -->
@@ -167,13 +202,19 @@ playbox.init("playbox");
 <?php 
   $appid = Yii::$app->wx->gh['appid'];
   $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/showpage:'.Yii::$app->wx->getGhid());
-  $assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
-  $myImg = Url::to("$assetsPath/share-icon.jpg", true);
+  //$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
+  $assetsPath = Yii::$app->getRequest()->baseUrl.'/show_res';
+  $myImg = Url::to("$assetsPath/index.jpg?v2", true);
   $title = '数信业务资费';
-  $desc = '数信业务资费';
+  $desc = '沃看湖北可看在线卫视及各种栏目10元包6G；爱奇艺内容丰富，10元包2.5G，15元包6G。PPTV无广告流畅收看，内容丰富；15元包6G。适用于3G、融合用户及4G用户。';
 ?>
 
+
+
+
 <script>
+var url_base="<?php echo  Url::to(['wap/shuxinyw'],true) ?>";
+
 var dataForWeixin={
   appId:"<?php echo $appid; ?>",
   MsgImg:"<?php echo $myImg; ?>",
@@ -210,6 +251,27 @@ var dataForWeixin={
     }     
   }
 };
+
+function jump2order(cat)
+{
+  if(cat=="wohb")
+  {
+    //alert(url_base+"&cid=800");
+    location.href=url_base+"&cid=800&realFee=0";
+  }
+  else if(cat=="aiqiyi10")
+  {
+    location.href=url_base+"&cid=801&realFee=0";
+  }
+  else if(cat=="aiqiyi15")
+  {
+    location.href=url_base+"&cid=802&realFee=0";
+  }
+  else//pptv
+  {
+    location.href=url_base+"&cid=803&realFee=0";
+  }
+}
 </script>
 </body>
 </html>

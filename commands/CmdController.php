@@ -38,6 +38,7 @@ class CmdController extends Controller
         Yii::$app->getUrlManager()->setScriptUrl('/wx/web/index.php');
         //Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
         //Yii::$app->wx->setGhId(MGh::GH_HOYA);
+        
         //Yii::$app->wx->setGhId(MGh::GH_WOSO);
         Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
     }
@@ -114,7 +115,12 @@ class CmdController extends Controller
     {        
         $gh_id = Yii::$app->wx->getGhid();     
         //$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobile:{$gh_id}:cid=324");
-        $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobilelist:{$gh_id}");
+        //$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobilelist:{$gh_id}");
+
+        //new \app\models\ButtonView('5折流量包订购', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD)),
+        //$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD);
+
+        $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdoubledanmiaoshainfo:{$gh_id}");
         U::W($url);
         echo $url;
     }
@@ -366,27 +372,114 @@ class CmdController extends Controller
             ]);
         }
         */
+        /*
         else if ($gh_id == MGh::GH_XIANGYANGUNICOM)
         {
             $menu = new \app\models\WxMenu([
 
                 new \app\models\ButtonComplex('沃资讯', [
-                    new \app\models\ButtonView('4G资费', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/show4ginfo:{$gh_id}")),
+                    new \app\models\ButtonView('4G业务', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/show4ginfo:{$gh_id}")),
                     new \app\models\ButtonView('短信订购流量包', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
-                    new \app\models\ButtonView('数信业务资费', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showpage:{$gh_id}")),
+                    new \app\models\ButtonView('数信业务', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showpage:{$gh_id}")),
+                    new \app\models\ButtonView('用户吐槽', 'http://wsq.qq.com/reflow/263163652-1044?_wv=1&source='),
+                    new \app\models\ButtonView('加入我们', 'http://lm.10010.com/wolm/ot/newComer.html'),
                 ]),
 
                 new \app\models\ButtonComplex('沃商城', [
+                    new \app\models\ButtonView('老友季焕新机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showk1info:{$gh_id}")),
                     new \app\models\ButtonView('沃联盟店铺', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/wlmshop:{$gh_id}")),
                     //new \app\models\ButtonView('特惠合约机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/mobilelist:{$gh_id}")),
                     //new \app\models\ButtonView('单卡产品', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_CARD)),      
                     ////new \app\models\ButtonView('8折上网卡', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_INTERNET_CARD)),
                 ]),
 
-                new \app\models\ButtonComplex('沃点点', [
+                new \app\models\ButtonComplex('沃业务', [
+                    new \app\models\ButtonView('话费充值', 'http://upay.10010.com/npfwap/npfMobWap/bankcharge/index.html?version=null&desmobile=8E2104B024B5116C9EA24F8EE55A29A8#/bankcharge'),
                     new \app\models\ButtonView('流量包订购', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD)),
+                    new \app\models\ButtonView('手机营业厅', 'http://wap.10010.com/t/home.htm'),
+                    new \app\models\ButtonView('手机商城', 'http://m.10010.com/'),
+                    //new \app\models\ButtonView('话费查询', 'http://wap.10010.com/t/operationservice/queryOcsPackageFlowLeft.htm?menuId=000200020004'),
+                    //new \app\models\ButtonView('流量查询', 'https://uac.10010.com/oauth2/new_auth?display=wap&page_type=05&app_code=ECS-YH-WAP&redirect_uri=http://wap.10010.com/t/loginCallBack.htm&state=http://wap.10010.com/t/home.htm&channel_code=113000001&real_ip=119.98.143.119'),
+                ]),
+            ]);
+        }
+        */
+        /*
+       else if ($gh_id == MGh::GH_XIANGYANGUNICOM)
+        {
+            $menu = new \app\models\WxMenu([
+                new \app\models\ButtonComplex('沃资讯', [
+                    new \app\models\ButtonView('加入沃联盟', 'http://lm.10010.com/wolm/ot/newComer.html'),
+                    new \app\models\ButtonView('短信订购流量包', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
+                    new \app\models\ButtonView('老友季焕新机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showk1info:{$gh_id}")),
+                ]),
+                new \app\models\ButtonComplex('沃业务', [
+                    new \app\models\ButtonView('手机商城', 'http://m.10010.com/'),
+                    new \app\models\ButtonView('微信店铺', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/wlmshop:{$gh_id}")),
+                    new \app\models\ButtonView('数信业务', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showpage:{$gh_id}")),
+                    new \app\models\ButtonView('4G业务', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/show4ginfo:{$gh_id}")),
+                ]),
+                new \app\models\ButtonComplex('沃服务', [
+                    new \app\models\ButtonView('手机营业厅', 'http://wap.10010.com/t/home.htm'),
+                    new \app\models\ButtonView('5折流量包订购', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD)),
+                    new \app\models\ButtonView('话费充值', 'http://upay.10010.com/npfwap/npfMobWap/bankcharge/index.html?version=null&desmobile=8E2104B024B5116C9EA24F8EE55A29A8#/bankcharge'),
+                    new \app\models\ButtonView('流量抽奖', 'http://hb.kk3g.net/active/online/0521/pre.html?tag=weixin'),
                     new \app\models\ButtonView('用户吐槽', 'http://wsq.qq.com/reflow/263163652-1044?_wv=1&source='),
-                    new \app\models\ButtonView('加入我们', 'http://lm.10010.com/wolm/ot/newComer.html'),
+                ]),
+            ]);
+        }   
+        */
+       else if ($gh_id == MGh::GH_XIANGYANGUNICOM)
+        {
+            $menu = new \app\models\WxMenu([
+                new \app\models\ButtonComplex('沃资讯', [
+                    new \app\models\ButtonView('快速赚钱只需4步', 'http://lm.10010.com/wolm/topicHtml/71d971438b5e4a2bb2b45768b59a9805.html'),
+                    new \app\models\ButtonView('玩转流量', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showpage:{$gh_id}")),
+                    new \app\models\ButtonView('玩转4G', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/show4ginfo:{$gh_id}")),
+                    new \app\models\ButtonView('5折流量包订购', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD)),
+                    /////////////////////////////////////////////////
+                    //new \app\models\ButtonView('短信订购流量包', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
+                ]),
+                new \app\models\ButtonComplex('沃业务', [
+                    //new \app\models\ButtonView('1212万能盛典', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdouble12info:{$gh_id}")),
+                    new \app\models\ButtonView('双旦狂欢季', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdoubledaninfo:{$gh_id}")),
+                    new \app\models\ButtonView('双旦秒杀', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdoubledanmiaoshainfo:{$gh_id}")),
+                    new \app\models\ButtonView('老友季焕新机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showk1info:{$gh_id}")),
+                    new \app\models\ButtonView('微信店铺', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/wlmshop:{$gh_id}")),
+                    /////////////////////////////////////////////////
+                    //new \app\models\ButtonView('手机商城', 'http://m.10010.com/'),
+                ]),
+                new \app\models\ButtonComplex('沃服务', [
+                    new \app\models\ButtonView('话费查询', 'http://wap.10010.com/t/query/queryRealTimeFeeInfo.htm?menuId=000200010001'),
+                    new \app\models\ButtonView('话费充值', 'http://upay.10010.com/npfwap/npfMobWap/bankcharge/index.html?version=null&desmobile=8E2104B024B5116C9EA24F8EE55A29A8#/bankcharge'),
+                    new \app\models\ButtonView('流量查询', 'http://wap.10010.com/t/operationservice/queryRunoff.htm?menuId=000200020001'),
+                    new \app\models\ButtonView('流量抽奖', 'http://hb.kk3g.net/active/online/0521/pre.html?tag=weixin'),
+                    new \app\models\ButtonView('用户吐槽', 'http://wsq.qq.com/reflow/263163652-1044?_wv=1&source='),
+                ]),
+            ]);
+        }
+        else if ($gh_id == MGh::GH_HOYA)
+        {
+            $menu = new \app\models\WxMenu([
+                new \app\models\ButtonComplex('走进爱迪', [
+                    new \app\models\ButtonView('关于爱迪', 'http://wosotech.com/wx/web/index.php?r=yss/adabout'),
+                    new \app\models\ButtonView('校区查询', 'http://baidu.com'),
+                    new \app\models\ButtonView('教师风采', 'http://wosotech.com/wx/web/index.php?r=yss/teacher'),
+                    new \app\models\ButtonView('爱迪宝贝秀', 'http://baidu.com'),
+                    new \app\models\ButtonView('走进爱迪', 'http://baidu.com'),
+                ]),
+                new \app\models\ButtonComplex('预约优惠', [
+                    new \app\models\ButtonView('我要预约', 'http://baidu.com'),
+                    new \app\models\ButtonView('课程介绍', 'http://baidu.com'),
+                    new \app\models\ButtonView('近期活动', 'http://baidu.com'),
+                    new \app\models\ButtonView('教师风采x', 'http://wosotech.com/wx/web/index.php?r=yss/teacherx'),
+                    new \app\models\ButtonView('教师风采y', 'http://wosotech.com/wx/web/index.php?r=yss/teachery'),
+                ]),
+                new \app\models\ButtonComplex('宝贝查询', [
+                    new \app\models\ButtonView('签到记录', 'http://baidu.com'),
+                    new \app\models\ButtonView('宝贝相册', 'http://baidu.com'),
+                    new \app\models\ButtonView('宝贝课表', 'http://baidu.com'),
+                    new \app\models\ButtonView('推荐有礼', 'http://baidu.com'),
                 ]),
             ]);
         }
