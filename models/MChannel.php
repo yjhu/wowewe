@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS wx_channel;
 CREATE TABLE wx_channel (
     id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     gh_id VARCHAR(32) NOT NULL DEFAULT '',
-    openid VARCHAR(32) NOT NULL DEFAULT '',
+	openid varchar(32) NOT NULL DEFAULT '' COMMENT '渠道所绑定的微信id',
     scene_id int(10) unsigned NOT NULL DEFAULT '0',
     title VARCHAR(128) NOT NULL DEFAULT '',
     mobile VARCHAR(16) NOT NULL DEFAULT '',
@@ -69,14 +69,10 @@ class MChannel extends ActiveRecord
 
     public function getFans()
     {
-     // method #!
-     //return $this->hasMany(MUser::className(), ['gh_id' => 'gh_id', 'scene_pid' => 'scene_id'])->where(['subscribe' => 1]);
-
-     // method #2
+		//return $this->hasMany(MUser::className(), ['gh_id' => 'gh_id', 'scene_pid' => 'scene_id'])->where(['subscribe' => 1]);
         return $this->hasMany(MUser::className(), ['gh_id' => 'gh_id', 'scene_pid' => 'scene_id']);
     }
 
-    // method #3
     public function getFansCount()
     {
         return $this->hasMany(MUser::className(), ['gh_id' => 'gh_id', 'scene_pid' => 'scene_id'])->count('*');
