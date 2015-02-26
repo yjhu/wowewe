@@ -24,7 +24,14 @@ $config = [
 	'cache' => [
 		'class' => 'yii\caching\DummyCache',
 	],		
-*/
+
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            //'showScriptName'=> false,
+            'suffix'=>'.html',
+            'rules' => [
+            ],
+        ],
 
 	'cache' => [
 		'class' => 'yii\caching\MemCache',
@@ -37,7 +44,7 @@ $config = [
 			],
 		],
 	],			
-
+*/
 	'request' => [
 		'cookieValidationKey' => 'FHcXXyNQEu4_O_A68pFWXgK8TKYyKc2Z',
 	],
@@ -46,11 +53,10 @@ $config = [
 		'class' => 'yii\caching\FileCache',
 	],
 	
-	/*
+	
 	'cache' => [
 		'class' => 'yii\caching\ApcCache',
-	],	
-	*/
+	],		
 	
 	'formatter'=> [
 		'datetimeFormat'=>'Y-m-d H:i:s',
