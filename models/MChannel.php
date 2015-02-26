@@ -2,6 +2,8 @@
 namespace app\models;
 
 /*
+#经销商渠道放在wx_channel中, 自营业厅渠道放在wx_office中
+#全部挪到wx_office中
 DROP TABLE IF EXISTS wx_channel;
 CREATE TABLE wx_channel (
     id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,

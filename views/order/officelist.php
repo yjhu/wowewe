@@ -43,6 +43,17 @@ $this->params['breadcrumbs'][] = $this->title;
 				'filter'=> false,				
 //				'visible'=>false,
 			],
+
+			[
+				'label' => '类别',
+				'attribute' => 'is_jingxiaoshang',
+				'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+						return empty($model->is_jingxiaoshang) ? '自营厅' : '经销商';
+					},
+				'filter'=> ['0'=>'自营厅', '1'=>'经销商'],
+			],
+
 			[
 				'label' => '部门名称',
 				'attribute' => 'title',

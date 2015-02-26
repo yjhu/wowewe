@@ -23,10 +23,12 @@ class MOfficeSearch extends Model
 
 	public $visable;	
 
+	public $is_jingxiaoshang;
+
 	public function rules()
 	{
 		return [
-			[['gh_id', 'title','address', 'office_id', 'mobile', 'manager', 'visable'], 'safe'],
+			[['gh_id', 'title','address', 'office_id', 'mobile', 'manager', 'visable', 'is_jingxiaoshang'], 'safe'],
 		];
 	}
 
@@ -63,6 +65,7 @@ class MOfficeSearch extends Model
 		$this->addCondition($query, 'address', true);
 		$this->addCondition($query, 'manager', true);
 		$this->addCondition($query, 'visable');		
+		$this->addCondition($query, 'is_jingxiaoshang');				
 		
 		return $dataProvider;
 	}

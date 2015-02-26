@@ -20,9 +20,16 @@ CREATE TABLE wx_office (
     lat_bd09 float(10,6) NOT NULL DEFAULT '0.000000',
     lon_bd09 float(10,6) NOT NULL DEFAULT '0.000000',
     visable tinyint(3) NOT NULL DEFAULT 0,
+    is_jingxiaoshang tinyint(3) unsigned NOT NULL DEFAULT 0 COMMENT '是否是经销商',
     KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
+ALTER TABLE wx_office ADD is_jingxiaoshang tinyint(3) unsigned NOT NULL DEFAULT 0 COMMENT '是否是经销商';
+ALTER IGNORE TABLE wx_office ADD UNIQUE KEY idx_gh_id_title(gh_id, title);
+ALTER TABLE wx_channel ADD is_jingxiaoshang tinyint(3) unsigned NOT NULL DEFAULT 1;
+INSERT IGNORE INTO wx_office (gh_id, scene_id, title, mobile, is_jingxiaoshang) SELECT gh_id, scene_id, title, mobile, is_jingxiaoshang FROM wx_channel WHERE gh_id='gh_03a74ac96138' LIMIT 1;
+ALTER TABLE wx_channel DROP is_jingxiaoshang;
 
 ALTER TABLE wx_office ADD visable tinyint(3) NOT NULL DEFAULT 0;
 UPDATE wx_office SET visable=1 WHERE gh_id = 'gh_03a74ac96138' AND office_id<='24';
@@ -146,6 +153,7 @@ class MOffice extends ActiveRecord
             [['title','address','manager','mobile'], 'string', 'max' => 128],
             [['title','address','manager','mobile'], 'filter', 'filter' => 'trim'],
             [['lat','lon', 'visable'], 'number'],
+            [['is_jingxiaoshang'], 'number'],
         ];
     }
 
@@ -160,12 +168,30 @@ class MOffice extends ActiveRecord
             'lat' => '纬度',
             'lon' => '经度',
             'visable' => '是否显示',
+            'is_jingxiaoshang' => '是否是经销商',
         ];
     }
 
+	public static function getIsChannelOptionName($key=null)
+	{
+		$arr = array(
+			0 => '否',
+			1 => '是',
+            self::PHOTO_OWNER_TEACHER => Yii::t('backend', 'Teacher'),
+            self::PHOTO_OWNER_SCHOOL => Yii::t('backend', 'School'),
+            self::PHOTO_OWNER_SCHOOLBRANCH => Yii::t('backend', 'SchoolBranch'),
+            self::PHOTO_OWNER_COURSE => Yii::t('backend', 'Course'),
+            self::PHOTO_OWNER_COURSEUNIT => Yii::t('backend', 'CourseUnit'),
+            self::PHOTO_OWNER_SIGNON => Yii::t('backend', 'CourseScheduleSignon'),
+            self::PHOTO_OWNER_ROOM => Yii::t('backend', 'Room'),
+            self::PHOTO_OWNER_GROUP => Yii::t('backend', 'Group'),
+            self::PHOTO_OWNER_OTHER => Yii::t('backend', 'Other'),
+		);		  
+		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+	}
+
     public static function getOfficeNameOption($gh_id, $json=true, $need_prompt=true)
     {
-        //$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
         $offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();
         $listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
         foreach($offices as $office)
@@ -178,7 +204,6 @@ class MOffice extends ActiveRecord
 
     public static function getOfficeNameOptionSimple($gh_id, $json=true, $need_prompt=true)
     {
-        //$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
         $offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();        
         $listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
         foreach($offices as $office)
@@ -192,7 +217,6 @@ class MOffice extends ActiveRecord
 
     public static function getOfficeNameOptionSimple1($gh_id, $json=true, $need_prompt=true)
     {
-        //$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(25)->asArray()->all();
         $offices = MOffice::find()->where("gh_id = :gh_id AND visable >= :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();                
         $listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
         foreach($offices as $office)
@@ -226,7 +250,6 @@ class MOffice extends ActiveRecord
             $gh = MGh::findOne($gh_id);
             $scene_id = $gh->newSceneId();
             $this->scene_id = $scene_id;
-            //U::W("scene_id=$scene_id");                                
         }
         else
         {
@@ -234,7 +257,6 @@ class MOffice extends ActiveRecord
             $scene_id = $this->scene_id;
         }
         $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
-        //U::W($log_file_path);                            
         if (!file_exists($log_file_path))
         {
             Yii::$app->wx->setGhId($gh_id);    
@@ -248,7 +270,6 @@ class MOffice extends ActiveRecord
                $gh->save(false);
         }        
         $url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
-        //U::W($url);
         return $url;
     }
 
@@ -304,7 +325,6 @@ class MOffice extends ActiveRecord
             $row['cnt_sum'] = $row['cnt_office'] + $row['cnt_staffs'];                        
             $rows[] = $row;
         }
-        //U::W($rows);        
         Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 12*3600);
         return $rows;
     }
@@ -327,9 +347,7 @@ class MOffice extends ActiveRecord
             $row['distance'] = $map->getDistance($lon, $lat, $row['lon'], $row['lat']);
         }        
         unset($row);
-        //U::W($rows);    
         \yii\helpers\ArrayHelper::multisort($rows, 'distance');
-        //U::W($rows);    
         Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 5*60);
         return $rows;
     }

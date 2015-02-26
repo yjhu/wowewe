@@ -11,6 +11,14 @@ class MPkgSearch extends Model
 {
 	public $cid;
 	public $pkg3g4g;
+	public $monthprice;
+	public $period;
+	public $plan;
+	public $pkg_price;
+	public $prom_price;
+	public $yck;
+	public $income_return;
+	public $month_return;
 
 	public function rules()
 	{
