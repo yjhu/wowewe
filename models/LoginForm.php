@@ -7,6 +7,7 @@ use yii\base\Model;
 
 use app\models\MGh;
 use app\models\MUser;
+use app\models\MOffice;
 
 class LoginForm extends Model
 {
@@ -62,6 +63,7 @@ class LoginForm extends Model
 	{
 		if ($this->_user === false) 
 		{
+/*		
 			//$this->_user = MUser::findByUsername($this->username);
 			if ($this->username == 'root')
 				$this->_user = MUser::findOne(['gh_id'=>$this->username, 'openid' => $this->username]);			
@@ -69,21 +71,12 @@ class LoginForm extends Model
 				$this->_user = MUser::findOne(['gh_id'=>$this->gh_id, 'openid' => $this->username]);						
 			else
 				$this->_user = MUser::findOne(['gh_id'=>$this->gh_id, 'nickname' => $this->username]);
+*/				
+			$this->_user = MOffice::findByUsername($this->username);
 		}
 		return $this->_user;
 	}
      
     
 }
-
-/*     
-    public function getUser()
-    {
-        if ($this->_user === false) 
-        {
-            $this->_user = MUser::findByUsername($this->username);
-        }
-        return $this->_user;
-    }
-*/
 

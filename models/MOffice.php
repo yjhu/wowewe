@@ -21,15 +21,21 @@ CREATE TABLE wx_office (
     lon_bd09 float(10,6) NOT NULL DEFAULT '0.000000',
     visable tinyint(3) NOT NULL DEFAULT 0,
     is_jingxiaoshang tinyint(3) unsigned NOT NULL DEFAULT 0 COMMENT '是否是经销商',
+    role tinyint(3) unsigned NOT NULL DEFAULT 1,
+    status tinyint(3) unsigned NOT NULL DEFAULT 0,
     KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 ALTER TABLE wx_office ADD is_jingxiaoshang tinyint(3) unsigned NOT NULL DEFAULT 0 COMMENT '是否是经销商';
+ALTER TABLE wx_office ADD role tinyint(3) unsigned NOT NULL DEFAULT 1;
+ALTER TABLE wx_office ADD status tinyint(3) unsigned NOT NULL DEFAULT 0;
 ALTER IGNORE TABLE wx_office ADD UNIQUE KEY idx_gh_id_title(gh_id, title);
 ALTER TABLE wx_channel ADD is_jingxiaoshang tinyint(3) unsigned NOT NULL DEFAULT 1;
-INSERT IGNORE INTO wx_office (gh_id, scene_id, title, mobile, is_jingxiaoshang) SELECT gh_id, scene_id, title, mobile, is_jingxiaoshang FROM wx_channel WHERE gh_id='gh_03a74ac96138' LIMIT 1;
+INSERT IGNORE INTO wx_office (gh_id, scene_id, title, mobile, is_jingxiaoshang) SELECT gh_id, scene_id, title, mobile, is_jingxiaoshang FROM wx_channel WHERE gh_id='gh_03a74ac96138';
 ALTER TABLE wx_channel DROP is_jingxiaoshang;
+INSERT INTO wx_office (gh_id, title, role) VALUES ('gh_03a74ac96138', 'root', 9);
+INSERT INTO wx_office (gh_id, title, role) VALUES ('gh_03a74ac96138', 'admin', 2);
 
 ALTER TABLE wx_office ADD visable tinyint(3) NOT NULL DEFAULT 0;
 UPDATE wx_office SET visable=1 WHERE gh_id = 'gh_03a74ac96138' AND office_id<='24';
@@ -140,7 +146,7 @@ use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 
 //implements IdentityInterface
-class MOffice extends ActiveRecord 
+class MOffice extends ActiveRecord implements IdentityInterface
 {
     public static function tableName()
     {
@@ -153,7 +159,7 @@ class MOffice extends ActiveRecord
             [['title','address','manager','mobile'], 'string', 'max' => 128],
             [['title','address','manager','mobile'], 'filter', 'filter' => 'trim'],
             [['lat','lon', 'visable'], 'number'],
-            [['is_jingxiaoshang'], 'number'],
+            [['is_jingxiaoshang', 'role'], 'number'],
         ];
     }
 
@@ -172,23 +178,57 @@ class MOffice extends ActiveRecord
         ];
     }
 
-	public static function getIsChannelOptionName($key=null)
-	{
-		$arr = array(
-			0 => '否',
-			1 => '是',
-            self::PHOTO_OWNER_TEACHER => Yii::t('backend', 'Teacher'),
-            self::PHOTO_OWNER_SCHOOL => Yii::t('backend', 'School'),
-            self::PHOTO_OWNER_SCHOOLBRANCH => Yii::t('backend', 'SchoolBranch'),
-            self::PHOTO_OWNER_COURSE => Yii::t('backend', 'Course'),
-            self::PHOTO_OWNER_COURSEUNIT => Yii::t('backend', 'CourseUnit'),
-            self::PHOTO_OWNER_SIGNON => Yii::t('backend', 'CourseScheduleSignon'),
-            self::PHOTO_OWNER_ROOM => Yii::t('backend', 'Room'),
-            self::PHOTO_OWNER_GROUP => Yii::t('backend', 'Group'),
-            self::PHOTO_OWNER_OTHER => Yii::t('backend', 'Other'),
-		);		  
-		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
-	}
+
+//
+    const STATUS_DELETED = 10;
+    const STATUS_ACTIVE = 0;
+
+    const ROLE_NONE = 0;
+    const ROLE_OFFICE = 1;    
+    const ROLE_ADMIN = 2;    
+    const ROLE_ROOT = 9;    
+
+    public static function findIdentity($id)
+    {
+        return static::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return null;
+    }
+
+    public function getId()
+    {
+        return $this->office_id;
+    }
+
+    public function getAuthKey()
+    {
+        return $this->office_id;
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    public function validatePassword($password)
+    {
+        return $password === $this->pswd;
+    }
+
+    public function getUsername()
+    {
+        return $this->title;
+    }
+
+    public static function findByUsername($nickname)
+    {
+        return static::findOne(['title' => $nickname, 'status' => static::STATUS_ACTIVE]);
+    }
+    
+//
 
     public static function getOfficeNameOption($gh_id, $json=true, $need_prompt=true)
     {
@@ -380,46 +420,6 @@ INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobi
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_1ad98f5481f3','襄阳','保康','保康营业厅','保康县城关镇迎宾路63号','王亚男','4','18507271778');
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_1ad98f5481f3','襄阳','保康','保康新街营业厅','保康新建街','王亚男','3','18507271778');
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_1ad98f5481f3','襄阳','','其它','','','167','');
-
-    public static function findIdentity($id)
-    {
-        return static::findOne($id);
-    }
-
-    public static function findByUsername($title)
-    {
-        return static::findOne(['title' => $title]);
-    }
-
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        return null;
-    }
-
-    public function getUsername()
-    {
-        return $this->title;
-    }
-
-    public function getId()
-    {
-        return $this->office_id;
-    }
-
-    public function getAuthKey()
-    {
-        return $this->office_id;
-    }
-
-    public function validateAuthKey($authKey)
-    {
-        return $this->getAuthKey() === $authKey;
-    }
-
-    public function validatePassword($password)
-    {
-        return $password === $this->pswd;
-    }
 
 SELECT t1.gh_id, t1.office_id, t1.title, t1.scene_id, COUNT(*) as cnt_office FROM wx_office t1 
 INNER JOIN wx_user t2 ON t1.gh_id = t2.gh_id AND t1.scene_id = t2.scene_pid 

@@ -65,9 +65,11 @@ $config = [
 	],
 	
 	'user' => [
-		'class' => 'app\models\WebUser',
-		//'identityClass' => 'app\models\User',
-		'identityClass' => 'app\models\MUser',
+		//'class' => 'app\models\WebUser',
+		//'identityClass' => 'app\models\MUser',
+		'class' => 'app\models\WebUserOffice',
+		'identityClass' => 'app\models\MOffice',
+		
 		'enableAutoLogin' => true,
 	],
 	

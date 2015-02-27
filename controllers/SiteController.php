@@ -74,13 +74,16 @@ class SiteController extends Controller
         $office = null;
         if (!\Yii::$app->user->isGuest) 
         {
+/*        
             if (is_numeric(Yii::$app->user->identity->openid))
             {
                 $office = MOffice::findOne(Yii::$app->user->identity->openid);
                 $username = $office->title;
             }
             else
-                $username = Yii::$app->user->identity->username;
+*/            
+                $office = Yii::$app->user->identity;
+                $username = $office->username;
         }
         else
         {
@@ -157,13 +160,13 @@ class SiteController extends Controller
 
     public function actionProfile()
     {
-        $user = MUser::findOne(Yii::$app->user->id);
-        if (is_numeric(Yii::$app->user->identity->openid))
-            $office = MOffice::findOne(Yii::$app->user->identity->openid);
+        $user = MOffice::findOne(Yii::$app->user->id);
+//        if (is_numeric(Yii::$app->user->identity->openid))
+//            $office = MOffice::findOne(Yii::$app->user->identity->openid);
         
         if ($user->load(Yii::$app->request->post())) 
         {
-            if ($user->save(false, ['password']))
+            if ($user->save(false, ['pswd']))
             {
                 Yii::$app->session->setFlash('success','设置成功！');                
                 return $this->refresh();
