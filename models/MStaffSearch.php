@@ -43,7 +43,8 @@ class MStaffSearch extends Model
                 'pageSize' => 20,
             ],            
         ]);
-        
+
+/*        
         if (Yii::$app->user->identity->gh_id == 'root')
              throw new NotFoundHttpException("Please selected one gh_id for the root first!");            
         else if (Yii::$app->user->identity->openid == 'admin')
@@ -55,6 +56,19 @@ class MStaffSearch extends Model
         {
             $this->gh_id = Yii::$app->user->identity->gh_id;
             $this->office_id = Yii::$app->user->identity->openid;
+            $this->addCondition($query, 'gh_id');        
+            $this->addCondition($query, 'office_id');                    
+        }
+*/
+        if (Yii::$app->user->getIsAdmin())
+        {
+            $this->gh_id = Yii::$app->user->getGhid();
+            $this->addCondition($query, 'gh_id');        
+        }
+        else
+        {
+            $this->gh_id = Yii::$app->user->getGhid();
+            $this->office_id = Yii::$app->user->identity->office_id;
             $this->addCondition($query, 'gh_id');        
             $this->addCondition($query, 'office_id');                    
         }

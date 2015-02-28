@@ -70,6 +70,7 @@ class MOrderSearch extends Model
             ],            
         ]);
 
+/*
         if (Yii::$app->user->identity->gh_id == 'root')
         {
              throw new NotFoundHttpException("Please selected one gh_id for the root first!");
@@ -86,7 +87,20 @@ class MOrderSearch extends Model
             $this->addCondition($query, 'gh_id');        
             $this->addCondition($query, 'office_id');                    
         }
-        
+*/    
+        if (Yii::$app->user->getIsAdmin())
+        {
+            $this->gh_id = Yii::$app->user->getGhid();
+            $this->addCondition($query, 'gh_id');        
+        }
+        else
+        {
+            $this->gh_id = Yii::$app->user->getGhid();
+            $this->office_id = Yii::$app->user->identity->office_id;
+            $this->addCondition($query, 'gh_id');        
+            $this->addCondition($query, 'office_id');                    
+        }
+
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
