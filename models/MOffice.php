@@ -28,7 +28,7 @@ CREATE TABLE wx_office (
 ALTER TABLE wx_office ADD is_jingxiaoshang tinyint(3) unsigned NOT NULL DEFAULT 0 COMMENT '是否是经销商';
 ALTER IGNORE TABLE wx_office ADD UNIQUE KEY idx_gh_id_title(gh_id, title);
 ALTER TABLE wx_channel ADD is_jingxiaoshang tinyint(3) unsigned NOT NULL DEFAULT 1;
-INSERT IGNORE INTO wx_office (gh_id, scene_id, title, mobile, is_jingxiaoshang) SELECT gh_id, scene_id, title, mobile, is_jingxiaoshang FROM wx_channel WHERE gh_id='gh_03a74ac96138' LIMIT 1;
+INSERT IGNORE INTO wx_office (gh_id, scene_id, title, mobile, is_jingxiaoshang) SELECT gh_id, scene_id, title, mobile, is_jingxiaoshang FROM wx_channel WHERE gh_id='gh_03a74ac96138';
 ALTER TABLE wx_channel DROP is_jingxiaoshang;
 
 ALTER TABLE wx_office ADD visable tinyint(3) NOT NULL DEFAULT 0;
