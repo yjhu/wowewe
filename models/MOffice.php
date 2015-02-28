@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS wx_office;
 CREATE TABLE wx_office (
     office_id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     gh_id VARCHAR(32) NOT NULL DEFAULT '',
-    scene_id int(10) unsigned NOT NULL DEFAULT '0',
+    scene_id int(10) unsigned NOT NULL DEFAULT '0' COMMENT '部门的推广id',
     title VARCHAR(128) NOT NULL DEFAULT '',
     branch VARCHAR(128) NOT NULL DEFAULT '',
     region VARCHAR(128) NOT NULL DEFAULT '',
@@ -36,6 +36,18 @@ INSERT IGNORE INTO wx_office (gh_id, scene_id, title, mobile, is_jingxiaoshang) 
 ALTER TABLE wx_channel DROP is_jingxiaoshang;
 INSERT INTO wx_office (gh_id, title, role) VALUES ('gh_03a74ac96138', 'root', 9);
 INSERT INTO wx_office (gh_id, title, role) VALUES ('gh_03a74ac96138', 'admin', 2);
+
+ALTER TABLE wx_staff ADD scene_id int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_staff ADD cat tinyint(3) NOT NULL DEFAULT 0 COMMENT '推广者身份类型, 0:员工, 1:外部推广者';
+ALTER TABLE wx_staff ADD KEY office_id_idx(office_id);
+UPDATE wx_staff t1, wx_user t2 SET t1.scene_id = t2.scene_id WHERE t1.gh_id=t2.gh_id AND t1.openid=t2.openid AND t1.gh_id='gh_03a74ac96138' AND t1.openid!='' AND t2.scene_id!=0;
+//SELECT  t1.gh_id, t1.openid, t1.name, t1.scene_id, t2.gh_id,t2.openid,t2.nickname, t2.scene_id FROM wx_staff t1 INNER JOIN wx_user t2 ON t1.gh_id=t2.gh_id AND t1.openid=t2.openid AND t1.gh_id='gh_03a74ac96138' AND t1.openid!='';
+
+
+
+
+
+
 
 ALTER TABLE wx_office ADD visable tinyint(3) NOT NULL DEFAULT 0;
 UPDATE wx_office SET visable=1 WHERE gh_id = 'gh_03a74ac96138' AND office_id<='24';
@@ -145,7 +157,8 @@ use yii\helpers\Security;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 
-//implements IdentityInterface
+use app\models\MGh;
+
 class MOffice extends ActiveRecord implements IdentityInterface
 {
     public static function tableName()
@@ -178,8 +191,6 @@ class MOffice extends ActiveRecord implements IdentityInterface
         ];
     }
 
-
-//
     const STATUS_DELETED = 10;
     const STATUS_ACTIVE = 0;
 
@@ -228,7 +239,31 @@ class MOffice extends ActiveRecord implements IdentityInterface
         return static::findOne(['title' => $nickname, 'status' => static::STATUS_ACTIVE]);
     }
     
-//
+    public function getGh()
+    {
+        return $this->hasOne(MGh::className(), ['gh_id' => 'gh_id']);
+    }
+
+    public function getStaffs()
+    {
+         return $this->hasMany(MStaff::className(), ['office_id'=>'office_id']);
+    }
+    
+    public function getStaffSceneids()
+    {
+        $staffs = $this->staffs;
+        $scene_ids = \yii\helpers\ArrayHelper::getColumn($staffs, 'scene_id');
+        return $scene_ids;
+    }
+
+    public function getSceneids()
+    {        
+        $scene_ids = $this->getStaffSceneids();
+        //U::W($scene_ids);        
+        if (!empty($this->scene_id))
+            $scene_ids[] = $this->scene_id;
+        return $scene_ids;
+    }
 
     public static function getOfficeNameOption($gh_id, $json=true, $need_prompt=true)
     {
@@ -330,10 +365,14 @@ class MOffice extends ActiveRecord implements IdentityInterface
 
     public function getScoreOfAllStaffs()
     {
-        $staffs = MStaff::find()->where(['gh_id'=>$this->gh_id, 'office_id'=>$this->office_id])->all();
+        $staffs = $this->staffs;
         $staff_count = 0;
         foreach($staffs as $staff)
             $staff_count += $staff->getScore();
+
+        if ($this->office_id == 21)        
+            U::W('getScoreOfAllStaffs='.$staff_count);
+        
         return $staff_count;        
     }
 
@@ -343,6 +382,8 @@ class MOffice extends ActiveRecord implements IdentityInterface
             $count = 0;
         else
             $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])->count();
+if ($this->office_id == 21)        
+    U::W('getScore='.$count);
         return $count;        
     }
 

@@ -90,7 +90,8 @@ class MGh extends ActiveRecord
         return false;
     }
 
-    // scene_id is distributed in MChannel, MOffice, MUser
+    // scene_id is distributed in MChannel(deleted), MOffice, MUser
+    // but scene_id is just distributed in MOffice, MStaff
     public function newSceneId()
     {
         if (empty($this->scene_ids))

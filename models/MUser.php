@@ -39,6 +39,8 @@ CREATE TABLE wx_user (
     UNIQUE KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+// role has no use now.
+
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('root', 'root', 'root', '1', 9);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', 'admin', 'admin','1', 2);
 INSERT INTO wx_user (gh_id, openid,nickname,password, role) VALUES ('gh_03a74ac96138', '1', 'office#1','1', 1);
@@ -103,10 +105,10 @@ class MUser extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 10;
     const STATUS_ACTIVE = 0;
 
-    const ROLE_NONE = 0;
-    const ROLE_OFFICE = 1;    
-    const ROLE_ADMIN = 2;    
-    const ROLE_ROOT = 9;    
+//    const ROLE_NONE = 0;
+//    const ROLE_OFFICE = 1;    
+//    const ROLE_ADMIN = 2;    
+//    const ROLE_ROOT = 9;    
 
     public $verifyCode;
     
@@ -209,6 +211,7 @@ class MUser extends ActiveRecord implements IdentityInterface
         ];
     }
 
+/*
     public function getScore()
     {
         if ($this->scene_id == 0)
@@ -265,7 +268,8 @@ class MUser extends ActiveRecord implements IdentityInterface
             return false;
         }
     }
-
+*/
+	
     public function getChannel()
     {
         return $this->hasOne(MChannel::className(),  ['gh_id' => 'gh_id', 'openid' => 'openid']);

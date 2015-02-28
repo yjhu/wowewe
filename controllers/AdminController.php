@@ -47,7 +47,6 @@ class AdminController extends Controller
     {
         $searchModel = new MUserSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->get());
-        //U::W(MItem::getTableSchema());
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
