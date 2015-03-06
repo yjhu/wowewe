@@ -19,6 +19,7 @@ use app\models\MOffice;
 use app\models\MStaff;
 use app\models\MGroup;
 use app\models\MSceneDetail;
+use app\models\MWxAction;
 
 use app\models\RespText;
 use app\models\RespImage;
@@ -41,11 +42,9 @@ class WechatXiangYangUnicom extends Wechat
     protected function saveAccessLog($params=[]) 
     {
         $request = $this->getRequest();
-        //U::W($request);            
         $log = new MAccessLog;
         $log->setAttributes($request, false);
         $log->setAttributes($params, false);
-        //U::W($log->getAttributes()); 
         $log->save(false);
     }
     
@@ -60,96 +59,25 @@ class WechatXiangYangUnicom extends Wechat
         $user = $this->getUser();
         if ($isNewFan || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_HBHE)  
             $this->saveAccessLog();
-
-        /*
-        $url_1 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD], true)."\">单卡产品</a>";
-        $url_2 = "<a href=\"".Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">特惠手机</a>";
-        $url_3 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD], true)."\">8折包年上网卡</a>"; 
-        $url_4 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
-        $url_5 = "<a href=\"http://wsq.qq.com/reflow/263163652-1044?_wv=1&source=\">用户吐槽</a>";
-        $url_6 = "<a href=\"http://m.wsq.qq.com/263163652\">襄阳沃社区</a>";
-        $url_7 = "<a href=\"".Url::to(['wap/g2048', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">游戏2048</a>";
-        $url_8 = "<a href=\"".Url::to(['wap/nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
-        $url_9 = "<a href=\"".Url::to(['wap/order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
-        $url_10 = "<a href=\"http://lm.10010.com/wolm/ot/guideDetail.html\">沃联盟</a>";
-        */
-
-        $url_ltsjyyt = "<a href=\"http://wap.10010.com/t/query/queryRealTimeFeeInfo.htm?menuId=000200010001\">话费查询</a>";//手机营业厅
-        $url_hfcz = "<a href=\"http://upay.10010.com/npfwap/npfMobWap/bankcharge/index.html?version=null&desmobile=8E2104B024B5116C9EA24F8EE55A29A8#/bankcharge\">话费充值</a>";
-        $url_ltsjsc = "<a href=\"http://m.10010.com/\">手机商城</a>";
-        $url_wxdp = "<a href=\"".Url::to(['wap/wlmshop', 'gh_id'=>$gh_id], true)."\">微信店铺</a>";
-        $url_4gyw = "<a href=\"".Url::to(['wap/show4ginfo', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
-        $url_sxyw = "<a href=\"".Url::to(['wap/showpage', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
-        //$url_dzl = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
-
-        $url_1 = "查话费,查流量，请访问沃服务->{$url_ltsjyyt}；\n";
-        $url_2 = "充话费，请访问沃服务->{$url_hfcz}，全网最低9.85折；\n";
-        //$url_3 = "挑号码，选手机，请访问沃业务->{$url_ltsjsc}，或沃业务->{$url_wxdp}；\n";
-        $url_3 = "挑号码，选手机，请访问沃业务->{$url_wxdp}；\n";
-
-        //$url_4 = "了解并订购联通的{$url_4gyw}，{$url_sxyw}，或其他业务，请访问下面的菜单“沃业务”；\n";
-        //$url_5 = "了解联通的服务内容，请访问下面的菜单“沃服务”；\n";
-        $url_6 = "了解更多联通业务、资讯和服务内容，请访问下面的菜单系统；\n\n";
-        //$url_7 = "另，如果您是联通3G用户，现在微信平台订购3G省内流量包，可专享3个月5折话费返还，{$url_dzl}办理！\n";
-        $url_8 = "您如果还有其他问题，请微信平台留言，或直接致电10010，我们会有客服帮助您！\n";
-        //$url_all = $url_1.$url_2.$url_3.$url_4.$url_5.$url_6.$url_7.$url_8;
-        //$url_all = $url_1.$url_2.$url_3.$url_6.$url_7.$url_8;
-        $url_all = $url_1.$url_2.$url_3.$url_6.$url_8;
-
         if (!empty($EventKey))
         {        
             //a new fan subscribe with qr parameter, EventKey:qrscene_3
             $Ticket = $this->getRequest('Ticket');    
             $scene_pid = substr($EventKey, 8);    
-            //U::W("EventKey=$EventKey, scene_pid=$scene_pid");
+            U::W("EventKey=$EventKey, scene_pid=$scene_pid");
             
-            if ($isNewFan || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_HBHE)  
-            {                 
-                //if father is office, move it to the office group
-                $office = MOffice::find()->where("gh_id = :gh_id AND scene_id = :scene_id", [':gh_id'=>$gh_id, ':scene_id'=>$scene_pid])->one();
-                if ($office !== null)
-                {
-                    $mg = MGroup::findOne(['gh_id'=>$gh_id, 'office_id'=>$office->office_id]);
-                    if ($mg === null)
-                        U::W([__METHOD__, "group does not exists!, {$office->office_id}"]);                                            
-                    $user->gid = $mg->gid;
-                    $arr =  $this->WxGroupMoveMember($FromUserName, $mg->gid);
-                }            
-
+            if ($isNewFan || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_HBHE) {                 
                 $user->scene_pid = $scene_pid;                            
                 $user->save(false);
-
-                // insert cash into MSceneDetail
-                $father = MUser::findOne(['gh_id'=>$gh_id, 'scene_id'=>$scene_pid]);
-                if ($father !== null)
-                {
-                    $ar = new MSceneDetail;
-                    $ar->gh_id = $father->gh_id;
-                    $ar->openid = $father->openid;
-                    $ar->scene_id = $father->scene_id;
-                    $ar->cat = MSceneDetail::CAT_FAN;
-                    $ar->scene_amt = 100;
-                    $ar->memo = '推荐粉丝';
-                    $ar->openid_fan = $openid;
-                    if (!$ar->save(false))
-                        U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
-                }
-            }    
-            else
-            {
+            } else {
                 U::W("SORRY, $FromUserName IS NOT NEW, can not be considered a fan");
-            }
-                
-            $nickname = empty($user->nickname) ? '' : $user->nickname;            
-            //return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
-            return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~\n\n{$url_all}");
+            }                
         }
-        else
-        {
-            $nickname = empty($user->nickname) ? '' : $user->nickname;            
-            //return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
-            return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~\n\n{$url_all}");
+        if (($resp = $this->handleKeyword(MWxAction::WX_INPUT_EVENT_TYPE_SUBSCRIBE)) !== false) {
+            return $resp;
         }
+        
+        return Wechat::NO_RESP;                    
     }
 
     protected function onUnsubscribe() 
@@ -165,7 +93,7 @@ class WechatXiangYangUnicom extends Wechat
         $user->save(false);
 
         $this->saveAccessLog(['scene_pid'=>$user->scene_pid]);
-
+/*
         // cancel MSceneDetail
         if ($scene_pid > 0)
         {
@@ -177,8 +105,19 @@ class WechatXiangYangUnicom extends Wechat
                     U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
             }            
         }            
+*/        
         return Wechat::NO_RESP;            
     }
+
+	protected function handleKeyword($keyword)
+	{
+		$gh_id = $this->getRequest('ToUserName');
+		$model = MWxAction::findOne(['gh_id'=>$gh_id, 'keyword'=>$keyword]);
+		if ($model === null) {
+			return false;
+		}
+		return $model->getResp($this);
+	}
 
     protected function onText() 
     { 
@@ -186,32 +125,12 @@ class WechatXiangYangUnicom extends Wechat
         $openid = $this->getRequest('FromUserName');
         $gh_id = $this->getRequest('ToUserName');    
         $Content = $this->getRequest('Content');
-        $msg = trim($Content);   
-
-        /*
-        $url_1 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD], true)."\">单卡产品</a>";
-        $url_2 = "<a href=\"".Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">特惠手机</a>";
-        $url_3 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD], true)."\">8折包年上网卡</a>"; 
-        $url_4 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
-        $url_5 = "<a href=\"http://wsq.qq.com/reflow/263163652-1044?_wv=1&source=\">用户吐槽</a>";
-        $url_6 = "<a href=\"http://m.wsq.qq.com/263163652\">襄阳沃社区</a>";
-        $url_7 = "<a href=\"".Url::to(['wap/g2048', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">游戏2048</a>";
-        $url_8 = "<a href=\"".Url::to(['wap/nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
-        $url_9 = "<a href=\"".Url::to(['wap/order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
-        $url_10 = "<a href=\"http://lm.10010.com/wolm/ot/guideDetail.html\">沃联盟</a>";
-        */
-
-        /*
-        您要查话费,查流量，请访问【联通手机营业厅】；
-        您要充话费，请访问【话费充值】，全网最低9.85折；
-        您要挑号码，选手机，请访问【联通手机商城】，或我们的【微信店铺】；
-        您要了解并订购联通的【4G业务】，【数信业务】，或其他业务，请访问下面的菜单“沃业务”；
-        您要了解联通的服务内容，请访问下面的菜单“沃服务”；
-        或更多联通资讯，请访问下面菜单“沃资讯”；
-        另，如果您是联通3G用户，现在微信平台订购3G省内流量包，可专享3个月5折话费返还，【点这里】办理！
-        您如果还有其他问题，请微信平台留言，或直接致电10010，我们会有客服帮助您！
-        */        
-
+		if (($resp = $this->handleKeyword($Content)) !== false) {
+			return $resp;
+		}
+        $msg = trim($Content); 
+        return Wechat::NO_RESP;                            
+/*
         $url_ltsjyyt = "<a href=\"http://wap.10010.com/t/query/queryRealTimeFeeInfo.htm?menuId=000200010001\">话费查询</a>";//手机营业厅
         $url_hfcz = "<a href=\"http://upay.10010.com/npfwap/npfMobWap/bankcharge/index.html?version=null&desmobile=8E2104B024B5116C9EA24F8EE55A29A8#/bankcharge\">话费充值</a>";
         $url_ltsjsc = "<a href=\"http://m.10010.com/\">手机商城</a>";
@@ -366,10 +285,10 @@ class WechatXiangYangUnicom extends Wechat
 
             $arr = $this->WxGetOnlineKfList();
 
-            /*
-            if (count($arr) > 0)
-                return $this->responseTransfer();
-            */
+            
+            //if (count($arr) > 0)
+            //    return $this->responseTransfer();
+            
             
             $auto_accept = 0;
             $accepted_case = 0;
@@ -396,7 +315,7 @@ class WechatXiangYangUnicom extends Wechat
             //return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! {$kfStr}\n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
             return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~  {$kfStr}\n\n{$url_all}");
         }
-        
+*/        
     }
     
     public function FuncNearestOffice() 
@@ -478,7 +397,6 @@ class WechatXiangYangUnicom extends Wechat
             $model->lon = $this->getRequest('Longitude');
             $model->prec = $this->getRequest('Precision');
             $model->save(false);
-            U::W("{$model->lat}, {$model->lon}");            
         }    
         return Wechat::NO_RESP;
     }
@@ -492,6 +410,10 @@ class WechatXiangYangUnicom extends Wechat
     protected function onClick()
     {
         $this->saveAccessLogAll();
+		$Content = $this->getRequest('EventKey');
+		if (($resp = $this->handleKeyword($Content)) !== false) {
+			return $resp;
+		}
         return parent::onClick();
     }
 
@@ -952,5 +874,457 @@ EOD;
             );
             return $this->responseNews($items);
 
-*/
+        $url_1 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD], true)."\">单卡产品</a>";
+        $url_2 = "<a href=\"".Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">特惠手机</a>";
+        $url_3 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD], true)."\">8折包年上网卡</a>"; 
+        $url_4 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
+        $url_5 = "<a href=\"http://wsq.qq.com/reflow/263163652-1044?_wv=1&source=\">用户吐槽</a>";
+        $url_6 = "<a href=\"http://m.wsq.qq.com/263163652\">襄阳沃社区</a>";
+        $url_7 = "<a href=\"".Url::to(['wap/g2048', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">游戏2048</a>";
+        $url_8 = "<a href=\"".Url::to(['wap/nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
+        $url_9 = "<a href=\"".Url::to(['wap/order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
+        $url_10 = "<a href=\"http://lm.10010.com/wolm/ot/guideDetail.html\">沃联盟</a>";
+
+        $url_1 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_CARD], true)."\">单卡产品</a>";
+        $url_2 = "<a href=\"".Url::to(['wap/mobilelist', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">特惠手机</a>";
+        $url_3 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_INTERNET_CARD], true)."\">8折包年上网卡</a>"; 
+        $url_4 = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
+        $url_5 = "<a href=\"http://wsq.qq.com/reflow/263163652-1044?_wv=1&source=\">用户吐槽</a>";
+        $url_6 = "<a href=\"http://m.wsq.qq.com/263163652\">襄阳沃社区</a>";
+        $url_7 = "<a href=\"".Url::to(['wap/g2048', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">游戏2048</a>";
+        $url_8 = "<a href=\"".Url::to(['wap/nearestoffice', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">最近营业厅</a>";
+        $url_9 = "<a href=\"".Url::to(['wap/order', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">您的订单</a>";
+        $url_10 = "<a href=\"http://lm.10010.com/wolm/ot/guideDetail.html\">沃联盟</a>";
+
+        您要查话费,查流量，请访问【联通手机营业厅】；
+        您要充话费，请访问【话费充值】，全网最低9.85折；
+        您要挑号码，选手机，请访问【联通手机商城】，或我们的【微信店铺】；
+        您要了解并订购联通的【4G业务】，【数信业务】，或其他业务，请访问下面的菜单“沃业务”；
+        您要了解联通的服务内容，请访问下面的菜单“沃服务”；
+        或更多联通资讯，请访问下面菜单“沃资讯”；
+        另，如果您是联通3G用户，现在微信平台订购3G省内流量包，可专享3个月5折话费返还，【点这里】办理！
+        您如果还有其他问题，请微信平台留言，或直接致电10010，我们会有客服帮助您！
+
+
+    protected function onSubscribe($isNewFan) 
+    {            
+        $FromUserName = $this->getRequest('FromUserName');    
+        $openid = $this->getRequest('FromUserName');        
+        $gh_id = $this->getRequest('ToUserName');                
+        $MsgType = $this->getRequest('MsgType');
+        $Event = $this->getRequest('Event');    
+        $EventKey = $this->getRequest('EventKey');
+        $user = $this->getUser();
+        if ($isNewFan || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_HBHE)  
+            $this->saveAccessLog();
+
+        $url_ltsjyyt = "<a href=\"http://wap.10010.com/t/query/queryRealTimeFeeInfo.htm?menuId=000200010001\">话费查询</a>";//手机营业厅
+        $url_hfcz = "<a href=\"http://upay.10010.com/npfwap/npfMobWap/bankcharge/index.html?version=null&desmobile=8E2104B024B5116C9EA24F8EE55A29A8#/bankcharge\">话费充值</a>";
+        $url_ltsjsc = "<a href=\"http://m.10010.com/\">手机商城</a>";
+        $url_wxdp = "<a href=\"".Url::to(['wap/wlmshop', 'gh_id'=>$gh_id], true)."\">微信店铺</a>";
+        $url_4gyw = "<a href=\"".Url::to(['wap/show4ginfo', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
+        $url_sxyw = "<a href=\"".Url::to(['wap/showpage', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
+        $url_dzl = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
+
+        $url_1 = "查话费,查流量，请访问沃服务->{$url_ltsjyyt}；\n";
+        $url_2 = "充话费，请访问沃服务->{$url_hfcz}，全网最低9.85折；\n";
+        //$url_3 = "挑号码，选手机，请访问沃业务->{$url_ltsjsc}，或沃业务->{$url_wxdp}；\n";
+        $url_3 = "挑号码，选手机，请访问沃业务->{$url_wxdp}；\n";
+
+        //$url_4 = "了解并订购联通的{$url_4gyw}，{$url_sxyw}，或其他业务，请访问下面的菜单“沃业务”；\n";
+        //$url_5 = "了解联通的服务内容，请访问下面的菜单“沃服务”；\n";
+        $url_6 = "了解更多联通业务、资讯和服务内容，请访问下面的菜单系统；\n\n";
+        $url_7 = "另，如果您是联通3G用户，现在微信平台订购3G省内流量包，可专享3个月5折话费返还，{$url_dzl}办理！\n";
+        $url_8 = "您如果还有其他问题，请微信平台留言，或直接致电10010，我们会有客服帮助您！\n";
+        //$url_all = $url_1.$url_2.$url_3.$url_4.$url_5.$url_6.$url_7.$url_8;
+        $url_all = $url_1.$url_2.$url_3.$url_6.$url_7.$url_8;
+
+        if (!empty($EventKey))
+        {        
+            //a new fan subscribe with qr parameter, EventKey:qrscene_3
+            $Ticket = $this->getRequest('Ticket');    
+            $scene_pid = substr($EventKey, 8);    
+            //U::W("EventKey=$EventKey, scene_pid=$scene_pid");
+            
+            if ($isNewFan || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_HBHE)  
+            {                 
+                //if father is office, move it to the office group
+                $office = MOffice::find()->where("gh_id = :gh_id AND scene_id = :scene_id", [':gh_id'=>$gh_id, ':scene_id'=>$scene_pid])->one();
+                if ($office !== null)
+                {
+                    $mg = MGroup::findOne(['gh_id'=>$gh_id, 'office_id'=>$office->office_id]);
+                    if ($mg === null)
+                        U::W([__METHOD__, "group does not exists!, {$office->office_id}"]);                                            
+                    $user->gid = $mg->gid;
+                    $arr =  $this->WxGroupMoveMember($FromUserName, $mg->gid);
+                }            
+
+                $user->scene_pid = $scene_pid;                            
+                $user->save(false);
+
+                // insert cash into MSceneDetail
+                $father = MUser::findOne(['gh_id'=>$gh_id, 'scene_id'=>$scene_pid]);
+                if ($father !== null)
+                {
+                    $ar = new MSceneDetail;
+                    $ar->gh_id = $father->gh_id;
+                    $ar->openid = $father->openid;
+                    $ar->scene_id = $father->scene_id;
+                    $ar->cat = MSceneDetail::CAT_FAN;
+                    $ar->scene_amt = 100;
+                    $ar->memo = '推荐粉丝';
+                    $ar->openid_fan = $openid;
+                    if (!$ar->save(false))
+                        U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
+                }
+            }    
+            else
+            {
+                U::W("SORRY, $FromUserName IS NOT NEW, can not be considered a fan");
+            }
+                
+            $nickname = empty($user->nickname) ? '' : $user->nickname;            
+            //return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
+            return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~\n\n{$url_all}");
+        }
+        else
+        {
+            $nickname = empty($user->nickname) ? '' : $user->nickname;            
+            //return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! \n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
+            return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~\n\n{$url_all}");
+        }
+    }
+
+    protected function onUnsubscribe() 
+    { 
+        $FromUserName = $this->getRequest('FromUserName');
+        $gh_id = $this->getRequest('ToUserName');
+        $user = $this->getUser();
+        $scene_pid = $user->scene_pid; 
+        $user->subscribe = 0;
+        //$user->scene_pid = 0;
+        $user->gid = 0;
+        $user->msg_cnt = 0;
+        $user->save(false);
+
+        $this->saveAccessLog(['scene_pid'=>$user->scene_pid]);
+
+        // cancel MSceneDetail
+        if ($scene_pid > 0)
+        {
+            $arr = MSceneDetail::findAll(['gh_id'=>$gh_id, 'scene_id'=>$scene_pid, 'openid_fan'=>$FromUserName]);
+            foreach ($arr as $ar) 
+            {            
+                $ar->status = MSceneDetail::STATUS_CANCEL;
+                if (!$ar->save(false))
+                    U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
+            }            
+        }            
+        return Wechat::NO_RESP;            
+    }
+
+        protected function onText() 
+        { 
+            $this->saveAccessLogAll();
+            $openid = $this->getRequest('FromUserName');
+            $gh_id = $this->getRequest('ToUserName');    
+            $Content = $this->getRequest('Content');
+            if (($resp = $this->handleKeyword($Content)) !== false) {
+                return $resp;
+            }
+            $msg = trim($Content);   
+        
+            $url_ltsjyyt = "<a href=\"http://wap.10010.com/t/query/queryRealTimeFeeInfo.htm?menuId=000200010001\">话费查询</a>";//手机营业厅
+            $url_hfcz = "<a href=\"http://upay.10010.com/npfwap/npfMobWap/bankcharge/index.html?version=null&desmobile=8E2104B024B5116C9EA24F8EE55A29A8#/bankcharge\">话费充值</a>";
+            $url_ltsjsc = "<a href=\"http://m.10010.com/\">手机商城</a>";
+            $url_wxdp = "<a href=\"".Url::to(['wap/wlmshop', 'gh_id'=>$gh_id], true)."\">微信店铺</a>";
+            $url_4gyw = "<a href=\"".Url::to(['wap/show4ginfo', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
+            $url_sxyw = "<a href=\"".Url::to(['wap/showpage', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
+            $url_dzl = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
+        
+            $url_1 = "查话费,查流量，请访问沃服务->{$url_ltsjyyt}；\n";
+            $url_2 = "充话费，请访问沃服务->{$url_hfcz}，全网最低9.85折；\n";
+            //$url_3 = "挑号码，选手机，请访问沃业务->{$url_ltsjsc}，或沃业务->{$url_wxdp}；\n";
+            $url_3 = "挑号码，选手机，请访问沃业务->{$url_wxdp}；\n";
+        
+            //$url_4 = "了解并订购联通的{$url_4gyw}，{$url_sxyw}，或其他业务，请访问下面的菜单“沃业务”；\n";
+            //$url_5 = "了解联通的服务内容，请访问下面的菜单“沃服务”；\n";
+            $url_6 = "了解更多联通业务、资讯和服务内容，请访问下面的菜单系统；\n\n";
+            $url_7 = "另，如果您是联通3G用户，现在微信平台订购3G省内流量包，可专享3个月5折话费返还，{$url_dzl}办理！\n";
+            $url_8 = "您如果还有其他问题，请微信平台留言，或直接致电10010，我们会有客服帮助您！\n";
+        
+            //$url_all = $url_1.$url_2.$url_3.$url_4.$url_5.$url_6.$url_7.$url_8;
+            $url_all = $url_1.$url_2.$url_3.$url_6.$url_7.$url_8;
+        
+            if ($msg == '我是襄阳联通员工')
+            {
+                $url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
+                $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+                if ($user !== null && $user->is_liantongstaff == 0)
+                {
+                    $user->is_liantongstaff = 1;
+                    $user->save(false);
+                }
+                return $this->responseText("襄阳联通内部员工通道, 参与推广, 查看成绩, <a href=\"{$url}\">请点击这里进入...</a>");
+            }
+            else if ($msg == '.debug')
+            {
+                //$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
+                $url = Url::to(['wap/testpay', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
+                return $this->responseText("Test only <a href=\"{$url}\">clickme</a>\n----------\n <a href=\"http://m.wsq.qq.com/263163652\">wsq</a>    \n----------\n  <a href=\"http://www.baidu.com/?surf_token=a40aeb590b4674cad5c74246ba41bd9f\">active wifi</a>");
+            }
+            else if ($msg == '.woke')
+            {
+                $url1 = Url::to(['wap/woke', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr1 = "<a href=\"{$url1}\">Test woke page</a>\n\n ";
+        
+                $url2 = Url::to(['wap/wokelist', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr2 = "<a href=\"{$url2}\">Test wokelist page</a>\n\n ";
+        
+                $urlStr = $urlStr1.$urlStr2;
+                return $this->responseText($urlStr);
+            }
+            else if ($msg == '.prpqhf')
+            {
+                $url1 = Url::to(['wap/winmobilefee', 'gh_id'=>$gh_id, 'pid'=>$openid ], true);
+                $urlStr1 = "<a href=\"{$url1}\">Test winmobilefee page</a>\n\n ";
+        
+                $urlStr = $urlStr1;
+                return $this->responseText($urlStr);
+            }    
+            else if ($msg == '.4g')
+            {
+                $url1 = Url::to(['wap/showpage', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr1 = "<a href=\"{$url1}\">Test data-info show page</a>\n\n ";
+        
+                $url2 = Url::to(['wap/show4ginfo', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr2 = "<a href=\"{$url2}\">Test 4g page</a>\n\n ";
+        
+                $url3 = Url::to(['wap/showk1info', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr3 = "<a href=\"{$url3}\">Test k1 page</a>\n\n ";
+        
+                $urlStr = $urlStr1.$urlStr2.$urlStr3;
+                return $this->responseText($urlStr);
+            }  
+            else if ($msg == '.sd')//双旦活动
+            {
+                $url1 = Url::to(['wap/showdoubledaninfo', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr1 = "<a href=\"{$url1}\">double-dan</a>\n\n ";
+        
+                $url2 = Url::to(['wap/showdoubledanmiaoshainfo', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr2 = "<a href=\"{$url2}\">double-dan miaosha</a>\n\n ";
+        
+                $urlStr = $urlStr1.$urlStr2;
+                return $this->responseText($urlStr);
+            }        
+            else if ($msg == 'help'||$msg == 'HELP'||$msg == 'Help'||$msg == 'h'||$msg == 'H'||$msg == '帮助')
+            {
+                //return $this->responseText($url_all);
+                return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~ \n\n{$url_all}");
+            }
+            else if(strstr($msg,"话费")!==false)
+            {
+                return $this->responseText($url_1);
+            }
+            else if(strstr($msg,"流量")!==false)
+            {
+                return $this->responseText($url_dzl);
+            }
+            else if((strstr($msg,"资费")!==false) || (strstr($msg,"业务")!==false))
+            {
+                return $this->responseText($url_3);
+            }
+            else if(strstr($msg,"宽带")!==false)
+            {
+                return $this->responseText("请拨打联通热线10010 向客服咨询，谢谢!");
+            }        
+            else
+            {
+        
+                $arr = $this->WxGetOnlineKfList();
+        
+                
+                $auto_accept = 0;
+                $accepted_case = 0;
+        
+                foreach ($arr as $a1) {
+                    U::W($a1);
+                    $auto_accept = $auto_accept + (int)$a1["auto_accept"];
+                    $accepted_case = $accepted_case + (int)$a1["accepted_case"];
+                }
+        
+                U::W($auto_accept."-----------\n");
+                U::W($accepted_case."-----------\n");
+        
+                if(($auto_accept-$accepted_case)>0)
+                    return $this->responseTransfer();
+        
+                //$txt = U::callSimsimi($msg);
+                //return $this->responseText($txt);
+                
+                $kfStr = "客服人员暂时不在线。";
+        
+                $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+                $nickname = empty($model->nickname) ? '' : $model->nickname;            
+                //return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! {$kfStr}\n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
+                return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~  {$kfStr}\n\n{$url_all}");
+            }
+            
+        }
+
+
+        protected function onText() 
+        { 
+            $this->saveAccessLogAll();
+            $openid = $this->getRequest('FromUserName');
+            $gh_id = $this->getRequest('ToUserName');    
+            $Content = $this->getRequest('Content');
+            if (($resp = $this->handleKeyword($Content)) !== false) {
+                return $resp;
+            }
+            $msg = trim($Content);   
+        
+            $url_ltsjyyt = "<a href=\"http://wap.10010.com/t/query/queryRealTimeFeeInfo.htm?menuId=000200010001\">话费查询</a>";//手机营业厅
+            $url_hfcz = "<a href=\"http://upay.10010.com/npfwap/npfMobWap/bankcharge/index.html?version=null&desmobile=8E2104B024B5116C9EA24F8EE55A29A8#/bankcharge\">话费充值</a>";
+            $url_ltsjsc = "<a href=\"http://m.10010.com/\">手机商城</a>";
+            $url_wxdp = "<a href=\"".Url::to(['wap/wlmshop', 'gh_id'=>$gh_id], true)."\">微信店铺</a>";
+            $url_4gyw = "<a href=\"".Url::to(['wap/show4ginfo', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
+            $url_sxyw = "<a href=\"".Url::to(['wap/showpage', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
+            $url_dzl = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
+        
+            $url_1 = "查话费,查流量，请访问沃服务->{$url_ltsjyyt}；\n";
+            $url_2 = "充话费，请访问沃服务->{$url_hfcz}，全网最低9.85折；\n";
+            //$url_3 = "挑号码，选手机，请访问沃业务->{$url_ltsjsc}，或沃业务->{$url_wxdp}；\n";
+            $url_3 = "挑号码，选手机，请访问沃业务->{$url_wxdp}；\n";
+        
+            //$url_4 = "了解并订购联通的{$url_4gyw}，{$url_sxyw}，或其他业务，请访问下面的菜单“沃业务”；\n";
+            //$url_5 = "了解联通的服务内容，请访问下面的菜单“沃服务”；\n";
+            $url_6 = "了解更多联通业务、资讯和服务内容，请访问下面的菜单系统；\n\n";
+            $url_7 = "另，如果您是联通3G用户，现在微信平台订购3G省内流量包，可专享3个月5折话费返还，{$url_dzl}办理！\n";
+            $url_8 = "您如果还有其他问题，请微信平台留言，或直接致电10010，我们会有客服帮助您！\n";
+        
+            //$url_all = $url_1.$url_2.$url_3.$url_4.$url_5.$url_6.$url_7.$url_8;
+            $url_all = $url_1.$url_2.$url_3.$url_6.$url_7.$url_8;
+        
+            if ($msg == '我是襄阳联通员工')
+            {
+                $url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
+                $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+                if ($user !== null && $user->is_liantongstaff == 0)
+                {
+                    $user->is_liantongstaff = 1;
+                    $user->save(false);
+                }
+                return $this->responseText("襄阳联通内部员工通道, 参与推广, 查看成绩, <a href=\"{$url}\">请点击这里进入...</a>");
+            }
+            else if ($msg == '.debug')
+            {
+                //$url = Url::to(['wapx/staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
+                $url = Url::to(['wap/testpay', 'gh_id'=>$gh_id, 'openid'=>$openid, 'owner'=>1], true);
+                return $this->responseText("Test only <a href=\"{$url}\">clickme</a>\n----------\n <a href=\"http://m.wsq.qq.com/263163652\">wsq</a>    \n----------\n  <a href=\"http://www.baidu.com/?surf_token=a40aeb590b4674cad5c74246ba41bd9f\">active wifi</a>");
+            }
+            else if ($msg == '.woke')
+            {
+                $url1 = Url::to(['wap/woke', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr1 = "<a href=\"{$url1}\">Test woke page</a>\n\n ";
+        
+                $url2 = Url::to(['wap/wokelist', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr2 = "<a href=\"{$url2}\">Test wokelist page</a>\n\n ";
+        
+                $urlStr = $urlStr1.$urlStr2;
+                return $this->responseText($urlStr);
+            }
+            else if ($msg == '.prpqhf')
+            {
+                $url1 = Url::to(['wap/winmobilefee', 'gh_id'=>$gh_id, 'pid'=>$openid ], true);
+                $urlStr1 = "<a href=\"{$url1}\">Test winmobilefee page</a>\n\n ";
+        
+                $urlStr = $urlStr1;
+                return $this->responseText($urlStr);
+            }    
+            else if ($msg == '.4g')
+            {
+                $url1 = Url::to(['wap/showpage', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr1 = "<a href=\"{$url1}\">Test data-info show page</a>\n\n ";
+        
+                $url2 = Url::to(['wap/show4ginfo', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr2 = "<a href=\"{$url2}\">Test 4g page</a>\n\n ";
+        
+                $url3 = Url::to(['wap/showk1info', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr3 = "<a href=\"{$url3}\">Test k1 page</a>\n\n ";
+        
+                $urlStr = $urlStr1.$urlStr2.$urlStr3;
+                return $this->responseText($urlStr);
+            }  
+            else if ($msg == '.sd')//双旦活动
+            {
+                $url1 = Url::to(['wap/showdoubledaninfo', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr1 = "<a href=\"{$url1}\">double-dan</a>\n\n ";
+        
+                $url2 = Url::to(['wap/showdoubledanmiaoshainfo', 'gh_id'=>$gh_id, 'openid'=>$openid ], true);
+                $urlStr2 = "<a href=\"{$url2}\">double-dan miaosha</a>\n\n ";
+        
+                $urlStr = $urlStr1.$urlStr2;
+                return $this->responseText($urlStr);
+            }        
+            else if ($msg == 'help'||$msg == 'HELP'||$msg == 'Help'||$msg == 'h'||$msg == 'H'||$msg == '帮助')
+            {
+                //return $this->responseText($url_all);
+                return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~ \n\n{$url_all}");
+            }
+            else if(strstr($msg,"话费")!==false)
+            {
+                return $this->responseText($url_1);
+            }
+            else if(strstr($msg,"流量")!==false)
+            {
+                return $this->responseText($url_dzl);
+            }
+            else if((strstr($msg,"资费")!==false) || (strstr($msg,"业务")!==false))
+            {
+                return $this->responseText($url_3);
+            }
+            else if(strstr($msg,"宽带")!==false)
+            {
+                return $this->responseText("请拨打联通热线10010 向客服咨询，谢谢!");
+            }        
+            else
+            {
+        
+                $arr = $this->WxGetOnlineKfList();
+        
+                
+                //if (count($arr) > 0)
+                //    return $this->responseTransfer();
+                
+                
+                $auto_accept = 0;
+                $accepted_case = 0;
+        
+                foreach ($arr as $a1) {
+                    U::W($a1);
+                    $auto_accept = $auto_accept + (int)$a1["auto_accept"];
+                    $accepted_case = $accepted_case + (int)$a1["accepted_case"];
+                }
+        
+                U::W($auto_accept."-----------\n");
+                U::W($accepted_case."-----------\n");
+        
+                if(($auto_accept-$accepted_case)>0)
+                    return $this->responseTransfer();
+        
+                //$txt = U::callSimsimi($msg);
+                //return $this->responseText($txt);
+                
+                $kfStr = "客服人员暂时不在线。";
+        
+                $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+                $nickname = empty($model->nickname) ? '' : $model->nickname;            
+                //return $this->responseText("{$nickname}, 您好, 欢迎进入襄阳联通官方微信服务号! {$kfStr}\n\n您可以逛逛沃商城, 看看【{$url_1}】,【{$url_2}】, 还有【{$url_3}】和【{$url_4}】; \n\n沃服务:来【{$url_5}】和【{$url_6}】与数十万联通用户一起聊聊襄阳的那些事儿, 玩玩【{$url_7}】, 查询【{$url_8}】, 管理【{$url_9}】; \n\n您还可以参与【{$url_10}】, \"成功面前你不孤单，致富路上有沃相伴\", \"快速赚钱, 只需4步\"!");
+                return $this->responseText("{$nickname}, 您好, /:rose 欢迎进入襄阳联通官方微信服务号!/:showlove么么哒~  {$kfStr}\n\n{$url_all}");
+            }
+            
+        }
+
+        */        
 

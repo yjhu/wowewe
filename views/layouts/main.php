@@ -45,6 +45,7 @@ AppAsset::register($this);
 						'items' => [
 							['label' => '订单管理','url' => ['/order/index'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '员工管理','url' => ['/order/stafflist'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '粉丝管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post']],
 						]
 					],					
 					[
@@ -59,7 +60,7 @@ AppAsset::register($this);
 							['label' => '营业厅管理','url' => ['/order/officelist'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '营业厅推广成绩排行','url' => ['/order/officetop'],'linkOptions' => ['data-method' => 'post']],
 							'<li class="divider"></li>',
-							['label' => '渠道管理','url' => ['/order/channellist'],'linkOptions' => ['data-method' => 'post']],
+							//['label' => '渠道管理','url' => ['/order/channellist'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '促销活动管理','url' => ['/activity/index'],'linkOptions' => ['data-method' => 'post']],
 							'<li class="divider"></li>',
 							['label' => '商品管理','url' => ['/admin/itemlist'],'linkOptions' => ['data-method' => 'post']],
@@ -67,6 +68,9 @@ AppAsset::register($this);
 							'<li class="divider"></li>',
 							['label' => '粉丝管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post']],
 							//['label' => '粉丝管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isRoot],
+							'<li class="divider"></li>',
+							['label' => '微信菜单配置','url' => ['/wxmenu/index'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '菜单动作设置','url' => ['/wxaction/index'],'linkOptions' => ['data-method' => 'post']],
 							//['label' => '消息管理','url' => ['/admin/msg'],'linkOptions' => ['data-method' => 'post']],
 							//['label' => '素材管理','url' => ['/admin/media'],'linkOptions' => ['data-method' => 'post']],
 						]

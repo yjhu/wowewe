@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+delete
+    
 use Yii;
 use yii\web\NotFoundHttpException;
 

@@ -33,11 +33,15 @@ class MUserSearch extends Model
 
     public $is_liantongstaff;
     
+    public $sign_time;
+    
+    public $sign_money;
+        
     public function rules()
     {
         return [
             [['id', 'role', 'status'], 'integer'],
-            [['nickname', 'create_time', 'create_time_2', 'update_time', 'scene_id', 'scene_pid', 'is_liantongstaff','sign_time','sign_money'], 'safe'],
+            [['gh_id', 'nickname', 'create_time', 'create_time_2', 'update_time', 'scene_id', 'scene_pid', 'is_liantongstaff','sign_time','sign_money'], 'safe'],
         ];
     }
 
@@ -62,19 +66,22 @@ class MUserSearch extends Model
             'query' => $query,
         ]);
 
-        if (Yii::$app->user->identity->gh_id == 'root')
-             throw new NotFoundHttpException("Please selected one gh_id for the root first!");
-        else if (Yii::$app->user->identity->openid == 'admin')
+        $this->gh_id = Yii::$app->user->getGhid();
+        $this->addCondition($query, 'gh_id');        
+        
+        if (!Yii::$app->user->getIsAdmin())
         {
-            $this->gh_id = Yii::$app->user->identity->gh_id;
-            $this->addCondition($query, 'gh_id');        
+            $office = Yii::$app->user->identity;
+            $scene_ids = $office->getSceneids();
+            $query->andWhere(['scene_pid' => $scene_ids]);
         }
 
-        $query->andWhere(['role' => MUser::ROLE_NONE]);
+        $query->andWhere(['subscribe' => 1]);                
+        
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
-        
+
         $this->addCondition($query, 'id');
         $this->addCondition($query, 'nickname', true);
         $this->addCondition($query, 'status');
@@ -91,7 +98,7 @@ class MUserSearch extends Model
         {
             $query->andWhere('date(create_time)<=:create_time_2', [':create_time_2' => $this->create_time_2]);
         }
-        
+
         return $dataProvider;
     }
 

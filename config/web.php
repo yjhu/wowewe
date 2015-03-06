@@ -24,7 +24,14 @@ $config = [
 	'cache' => [
 		'class' => 'yii\caching\DummyCache',
 	],		
-*/
+
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            //'showScriptName'=> false,
+            'suffix'=>'.html',
+            'rules' => [
+            ],
+        ],
 
 	'cache' => [
 		'class' => 'yii\caching\MemCache',
@@ -37,7 +44,7 @@ $config = [
 			],
 		],
 	],			
-
+*/
 	'request' => [
 		'cookieValidationKey' => 'FHcXXyNQEu4_O_A68pFWXgK8TKYyKc2Z',
 	],
@@ -46,11 +53,10 @@ $config = [
 		'class' => 'yii\caching\FileCache',
 	],
 	
-	/*
+	
 	'cache' => [
 		'class' => 'yii\caching\ApcCache',
-	],	
-	*/
+	],		
 	
 	'formatter'=> [
 		'datetimeFormat'=>'Y-m-d H:i:s',
@@ -59,9 +65,11 @@ $config = [
 	],
 	
 	'user' => [
-		'class' => 'app\models\WebUser',
-		//'identityClass' => 'app\models\User',
-		'identityClass' => 'app\models\MUser',
+		//'class' => 'app\models\WebUser',
+		//'identityClass' => 'app\models\MUser',
+		'class' => 'app\models\WebUserOffice',
+		'identityClass' => 'app\models\MOffice',
+		
 		'enableAutoLogin' => true,
 	],
 	
@@ -100,7 +108,30 @@ $config = [
 	        ],
 	    ],
 	],
-	
+
+    'i18n' => [
+        'translations' => [
+            'app'=>[
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath'=>'@app/messages',
+            ],
+            '*'=> [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath'=>'@app/messages',
+            ],
+            /*
+             '*'=> [
+                'class' => 'yii\i18n\DbMessageSource',
+                'sourceMessageTable'=>'{{%i18n_source_message}}',
+                'messageTable'=>'{{%i18n_message}}',
+                'enableCaching' => true,
+                'cachingDuration' => 3600
+            ],
+            */
+    
+        ],
+    ],
+
 	'db' => require(__DIR__ . '/db.php'),
 	
 	'wx' => require(__DIR__ . '/wx.php'),	

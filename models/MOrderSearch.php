@@ -20,7 +20,6 @@ class MOrderSearch extends Model
     public $status;
 
     public $create_time;
-
     
     public $create_time_2;    
 
@@ -70,23 +69,13 @@ class MOrderSearch extends Model
             ],            
         ]);
 
-        if (Yii::$app->user->identity->gh_id == 'root')
-        {
-             throw new NotFoundHttpException("Please selected one gh_id for the root first!");
-        }
-        else if (Yii::$app->user->identity->openid == 'admin')
-        {
-            $this->gh_id = Yii::$app->user->identity->gh_id;
-            $this->addCondition($query, 'gh_id');        
-        }
-        else if (is_numeric(Yii::$app->user->identity->openid))
-        {
-            $this->gh_id = Yii::$app->user->identity->gh_id;
-            $this->office_id = Yii::$app->user->identity->openid;
-            $this->addCondition($query, 'gh_id');        
+        $this->gh_id = Yii::$app->user->getGhid();
+        $this->addCondition($query, 'gh_id');        
+        if (!Yii::$app->user->getIsAdmin()) {
+            $this->office_id = Yii::$app->user->identity->office_id;
             $this->addCondition($query, 'office_id');                    
         }
-        
+
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }

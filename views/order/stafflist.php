@@ -53,11 +53,30 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
 				'filter'=> MOffice::getOfficeNameOptionAll($searchModel->gh_id,false,false),
 				'headerOptions' => array('style'=>'width:200px;'),		
-				'visible'=>Yii::$app->user->identity->openid == 'admin',
+				//'visible'=>Yii::$app->user->identity->openid == 'admin',
+				'visible'=>Yii::$app->user->getIsAdmin(),
 			],
 			[
 				'attribute' => 'mobile',
 			],
+			[
+				'attribute' => 'scene_id',
+			],
+			[
+				'attribute' => 'cat',
+                'value'=>function ($model, $key, $index, $column) { return MStaff::getStaffCatOptionName($model->cat); },
+                'filter'=> MStaff::getStaffCatOptionName(),
+			],
+
+			[
+				'label' => '推广二维码',
+                'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+						return Html::img($model->getQrImageUrl(), ['width'=>'64']);
+				},
+				'filter'=> false,
+			],
+
 			[
 				'label' => '推广成绩',
 				'value'=>function ($model, $key, $index, $column) { return $model->score.(empty($model->openid)?' [微信未绑定]':''); },
@@ -77,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						]);
 					},
 				'filter'=> ['0'=>'否', '1'=>'是'],
-				'visible'=>Yii::$app->user->identity->openid == 'admin',
+//				'visible'=>Yii::$app->user->getIsAdmin(),
 			],
             [
 				'class' => 'yii\grid\ActionColumn',

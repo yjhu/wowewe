@@ -20,7 +20,7 @@ $this->title = '襄阳联通';
 		    <p class="lead">您已成功登录襄阳联通官方微信管理后台！</p>	
 		<?php endif; ?>
 
-		<?php if (!empty($office)): ?>
+		<?php if ((!empty($office))&& $office->getQrImageUrl() ): ?>
 	        <p><a class="btn btn-lg btn-success" href="#">了解更多详细，请扫下方营业厅二维码</a></p>
 			<?php echo Html::img($office->getQrImageUrl(), ['class'=>'img-responsive center-block']); ?>
 		<?php endif; ?>

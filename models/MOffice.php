@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS wx_office;
 CREATE TABLE wx_office (
     office_id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     gh_id VARCHAR(32) NOT NULL DEFAULT '',
-    scene_id int(10) unsigned NOT NULL DEFAULT '0',
+    scene_id int(10) unsigned NOT NULL DEFAULT '0' COMMENT '部门的推广id',
     title VARCHAR(128) NOT NULL DEFAULT '',
     branch VARCHAR(128) NOT NULL DEFAULT '',
     region VARCHAR(128) NOT NULL DEFAULT '',
@@ -20,8 +20,44 @@ CREATE TABLE wx_office (
     lat_bd09 float(10,6) NOT NULL DEFAULT '0.000000',
     lon_bd09 float(10,6) NOT NULL DEFAULT '0.000000',
     visable tinyint(3) NOT NULL DEFAULT 0,
+    is_jingxiaoshang tinyint(3) unsigned NOT NULL DEFAULT 0 COMMENT '是否是经销商',
+    role tinyint(3) unsigned NOT NULL DEFAULT 1,
+    status tinyint(3) unsigned NOT NULL DEFAULT 0,
     KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE wx_office ADD is_jingxiaoshang tinyint(3) unsigned NOT NULL DEFAULT 0 COMMENT '是否是经销商';
+ALTER TABLE wx_office ADD role tinyint(3) unsigned NOT NULL DEFAULT 1;
+ALTER TABLE wx_office ADD status tinyint(3) unsigned NOT NULL DEFAULT 0;
+ALTER IGNORE TABLE wx_office ADD UNIQUE KEY idx_gh_id_title(gh_id, title);
+ALTER TABLE wx_channel ADD is_jingxiaoshang tinyint(3) unsigned NOT NULL DEFAULT 1;
+INSERT IGNORE INTO wx_office (gh_id, scene_id, title, mobile, is_jingxiaoshang) SELECT gh_id, scene_id, title, mobile, is_jingxiaoshang FROM wx_channel WHERE gh_id='gh_03a74ac96138';
+ALTER TABLE wx_channel DROP is_jingxiaoshang;
+INSERT INTO wx_office (gh_id, title, role) VALUES ('gh_03a74ac96138', 'root', 9);
+INSERT INTO wx_office (gh_id, title, role) VALUES ('gh_03a74ac96138', 'admin', 2);
+
+ALTER TABLE wx_staff ADD scene_id int(10) unsigned NOT NULL DEFAULT '0';
+ALTER TABLE wx_staff ADD cat tinyint(3) NOT NULL DEFAULT 0 COMMENT '推广者身份类型, 0:员工, 1:外部推广者';
+ALTER TABLE wx_staff ADD KEY office_id_idx(office_id);
+UPDATE wx_staff t1, wx_user t2 SET t1.scene_id = t2.scene_id WHERE t1.gh_id=t2.gh_id AND t1.openid=t2.openid AND t1.gh_id='gh_03a74ac96138' AND t1.openid!='' AND t2.scene_id!=0;
+//SELECT  t1.gh_id, t1.openid, t1.name, t1.scene_id, t2.gh_id,t2.openid,t2.nickname, t2.scene_id FROM wx_staff t1 INNER JOIN wx_user t2 ON t1.gh_id=t2.gh_id AND t1.openid=t2.openid AND t1.gh_id='gh_03a74ac96138' AND t1.openid!='';
+
+
+DELETE FROM wx_staff WHERE gh_id!='gh_03a74ac96138';
+//ALTER TABLE wx_staff CHANGE scene_id scene_id VARCHAR(64) NOT NULL DEFAULT '';
+//UPDATE wx_staff SET scene_id='' WHERE scene_id='0';
+INSERT INTO wx_staff (gh_id, office_id, scene_id, name, cat) SELECT gh_id, office_id, scene_id, title, 2 FROM wx_office WHERE gh_id='gh_03a74ac96138' AND scene_id!='0'
+
+//ALTER TABLE wx_user CHANGE scene_pid scene_pid VARCHAR(64) NOT NULL DEFAULT '';
+//UPDATE wx_user SET scene_pid='' WHERE scene_pid='0';
+//ALTER TABLE wx_office DROP scene_id;
+//ALTER TABLE wx_user DROP scene_id;
+
+
+
+
+
 
 
 ALTER TABLE wx_office ADD visable tinyint(3) NOT NULL DEFAULT 0;
@@ -132,9 +168,12 @@ use yii\helpers\Security;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 
-//implements IdentityInterface
-class MOffice extends ActiveRecord 
+use app\models\MGh;
+
+class MOffice extends ActiveRecord implements IdentityInterface
 {
+    public $need_scene_id;
+    
     public static function tableName()
     {
         return 'wx_office';
@@ -146,6 +185,10 @@ class MOffice extends ActiveRecord
             [['title','address','manager','mobile'], 'string', 'max' => 128],
             [['title','address','manager','mobile'], 'filter', 'filter' => 'trim'],
             [['lat','lon', 'visable'], 'number'],
+            [['is_jingxiaoshang', 'role'], 'number'],
+            [['pswd'], 'string', 'max' => 24, 'min' => 1],
+            [['pswd'], 'required'],
+            [['need_scene_id'], 'integer', 'integerOnly' =>true, 'min'=>0, 'max' => 1],                   
         ];
     }
 
@@ -160,12 +203,89 @@ class MOffice extends ActiveRecord
             'lat' => '纬度',
             'lon' => '经度',
             'visable' => '是否显示',
+            'is_jingxiaoshang' => '是否是经销商',
+            'scene_id' => '推广ID',
+            'pswd' => '登录密码',
         ];
     }
 
+    const STATUS_DELETED = 10;
+    const STATUS_ACTIVE = 0;
+
+    const ROLE_NONE = 0;
+    const ROLE_OFFICE = 1;    
+    const ROLE_ADMIN = 2;    
+    const ROLE_ROOT = 9;    
+
+    public static function findIdentity($id)
+    {
+        return static::findOne($id);
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        return null;
+    }
+
+    public function getId()
+    {
+        return $this->office_id;
+    }
+
+    public function getAuthKey()
+    {
+        return $this->office_id;
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        return $this->getAuthKey() === $authKey;
+    }
+
+    public function validatePassword($password)
+    {
+        return $password === $this->pswd;
+    }
+
+    public function getUsername()
+    {
+        return $this->title;
+    }
+
+    public static function findByUsername($nickname)
+    {
+        return static::findOne(['title' => $nickname, 'status' => static::STATUS_ACTIVE]);
+    }
+    
+    public function getGh()
+    {
+        return $this->hasOne(MGh::className(), ['gh_id' => 'gh_id']);
+    }
+    
+    public function getStaffs()
+    {
+         return $this->hasMany(MStaff::className(), ['office_id'=>'office_id']);
+    }
+
+    public function getSceneids()
+    {        
+        $staffs = $this->staffs;
+        $scene_ids = \yii\helpers\ArrayHelper::getColumn($staffs, 'scene_id');
+        return $scene_ids;
+    }
+
+    public function getOfficeStaff()
+    {
+        return MStaff::findOne(['office_id' => $this->office_id, 'cat' => MStaff::SCENE_CAT_OFFICE]);
+    }
+
+    public function getNormalStaffs()
+    {
+        return MStaff::find()->where("office_id = :office_id AND cat != :cat", [':office_id' => $this->office_id, ':cat' => MStaff::SCENE_CAT_OFFICE])->all();
+    }
+    
     public static function getOfficeNameOption($gh_id, $json=true, $need_prompt=true)
     {
-        //$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
         $offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();
         $listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
         foreach($offices as $office)
@@ -178,7 +298,6 @@ class MOffice extends ActiveRecord
 
     public static function getOfficeNameOptionSimple($gh_id, $json=true, $need_prompt=true)
     {
-        //$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(24)->asArray()->all();
         $offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();        
         $listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
         foreach($offices as $office)
@@ -192,7 +311,6 @@ class MOffice extends ActiveRecord
 
     public static function getOfficeNameOptionSimple1($gh_id, $json=true, $need_prompt=true)
     {
-        //$offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->limit(25)->asArray()->all();
         $offices = MOffice::find()->where("gh_id = :gh_id AND visable >= :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();                
         $listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
         foreach($offices as $office)
@@ -217,49 +335,39 @@ class MOffice extends ActiveRecord
         return $json? json_encode($listData) : $listData;
     }
 
-    public function getQrImageUrl()
+    public function afterSave($insert, $changedAttributes)
     {
-        $gh_id = $this->gh_id;
-        if (empty($this->scene_id))
-        {
-            $newFlag = true;
-            $gh = MGh::findOne($gh_id);
-            $scene_id = $gh->newSceneId();
-            $this->scene_id = $scene_id;
-            //U::W("scene_id=$scene_id");                                
+        if ($insert) {
+            if ($this->need_scene_id) {
+                $staff = new MStaff;
+                $staff->gh_id = $this->gh_id;
+                $staff->office_id = $this->office_id;
+                $staff->scene_id = MStaff::newSceneId($this->gh_id);
+                $staff->name = $this->title;
+                $staff->cat = MStaff::SCENE_CAT_OFFICE;                
+                if (!$staff->save(false)) {
+                    U::W(['error', __METHOD__, $staff]);
+                }                    
+            }
         }
-        else
-        {
-            $newFlag = false;        
-            $scene_id = $this->scene_id;
-        }
-        $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
-        //U::W($log_file_path);                            
-        if (!file_exists($log_file_path))
-        {
-            Yii::$app->wx->setGhId($gh_id);    
-            $arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
-            $url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
-            Wechat::downloadFile($url, $log_file_path);
-        }
-        if ($newFlag)
-        {
-            if ($this->save(false))
-               $gh->save(false);
-        }        
-        $url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
-        //U::W($url);
-        return $url;
     }
+    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                $this->lat = $this->lon = 0;
+            }
+            return true;
+        }
+        return false;
+    } 
 
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
-            if (!empty($this->scene_id))
-            {
-                $gh = MGh::findOne($this->gh_id);        
-                $gh->freeSceneId($this->scene_id);
-                return $gh->save(false);
+            foreach ($this->staffs as $staff){
+                $staff->delete();
             }
             return true;            
         } else {
@@ -267,9 +375,23 @@ class MOffice extends ActiveRecord
         }
     }
 
+    public function getQrImageUrl()
+    {
+        $officeStaff = $this->officeStaff;
+        if (empty($officeStaff)) {
+            return false;
+        }
+        return $officeStaff->getQrImageUrl();
+    }
+
+    public function hasOfficeStaff()
+    {
+        return !empty($this->officeStaff);
+    }
+
     public function getScoreOfAllStaffs()
     {
-        $staffs = MStaff::find()->where(['gh_id'=>$this->gh_id, 'office_id'=>$this->office_id])->all();
+        $staffs = $this->getNormalStaffs();
         $staff_count = 0;
         foreach($staffs as $staff)
             $staff_count += $staff->getScore();
@@ -278,10 +400,10 @@ class MOffice extends ActiveRecord
 
     public function getScore()
     {
-        if ($this->scene_id == 0)
-            $count = 0;
-        else
-            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])->count();
+        $officeStaff = $this->getOfficeStaff();   
+        if (empty($officeStaff))
+            return 0;
+        $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $officeStaff->scene_id, 'subscribe' => 1])->count();
         return $count;        
     }
 
@@ -304,7 +426,6 @@ class MOffice extends ActiveRecord
             $row['cnt_sum'] = $row['cnt_office'] + $row['cnt_staffs'];                        
             $rows[] = $row;
         }
-        //U::W($rows);        
         Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 12*3600);
         return $rows;
     }
@@ -327,9 +448,7 @@ class MOffice extends ActiveRecord
             $row['distance'] = $map->getDistance($lon, $lat, $row['lon'], $row['lat']);
         }        
         unset($row);
-        //U::W($rows);    
         \yii\helpers\ArrayHelper::multisort($rows, 'distance');
-        //U::W($rows);    
         Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 5*60);
         return $rows;
     }
@@ -362,46 +481,6 @@ INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobi
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_1ad98f5481f3','襄阳','保康','保康营业厅','保康县城关镇迎宾路63号','王亚男','4','18507271778');
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_1ad98f5481f3','襄阳','保康','保康新街营业厅','保康新建街','王亚男','3','18507271778');
 INSERT INTO wx_office (gh_id,branch,region,title,address,manager,member_cnt,mobile) VALUES ('gh_1ad98f5481f3','襄阳','','其它','','','167','');
-
-    public static function findIdentity($id)
-    {
-        return static::findOne($id);
-    }
-
-    public static function findByUsername($title)
-    {
-        return static::findOne(['title' => $title]);
-    }
-
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        return null;
-    }
-
-    public function getUsername()
-    {
-        return $this->title;
-    }
-
-    public function getId()
-    {
-        return $this->office_id;
-    }
-
-    public function getAuthKey()
-    {
-        return $this->office_id;
-    }
-
-    public function validateAuthKey($authKey)
-    {
-        return $this->getAuthKey() === $authKey;
-    }
-
-    public function validatePassword($password)
-    {
-        return $password === $this->pswd;
-    }
 
 SELECT t1.gh_id, t1.office_id, t1.title, t1.scene_id, COUNT(*) as cnt_office FROM wx_office t1 
 INNER JOIN wx_user t2 ON t1.gh_id = t2.gh_id AND t1.scene_id = t2.scene_pid 
@@ -452,5 +531,13 @@ EOD;
         }
         return $staff_count;        
     }
+
+public function afterFind()
+{
+    $officeStaff = $this->officeStaff;
+    $this->need_scene_id = empty($officeStaff) ? 0 : 1;
+}
+
+    
 */
 

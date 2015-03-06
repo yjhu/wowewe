@@ -9,6 +9,10 @@
     http://127.0.0.1/wx/web/index.php?r=msg&gh_id=gh_78539d18fdcc            //hoya
     http://127.0.0.1/wx/web/index.php?r=msg&gh_id=gh_03a74ac96138            //xiangyangunicom
     
+    http://wosotech.com/wx/web/index.php?r=msg&gh_id=gh_78539d18fdcc
+	127.0.0.1/yss/backend/web/wx/msg?gh_id=gh_78539d18fdcc
+	127.0.0.1/yss/backend/web/index.php?r=wx/msg&gh_id=gh_78539d18fdcc
+	http://backend.hoyatech.net/wx/msg?gh_id=gh_78539d18fdcc
 */
 
 namespace app\controllers;
@@ -67,7 +71,7 @@ class MsgController extends Controller
             $_GET['timestamp'] = '1402529705';
             $_GET['nonce'] = '1023195716';
         }
-        if (Wechat::checkSignature($token))
+        if (!Wechat::checkSignature($token))
         {
             U::W(['Invalid Signature in actionValid()', $_GET]);
         }

@@ -2,23 +2,35 @@
 namespace app\models;
 
 /*
+#wx_staff就是推广者表，原来wx_user中的scene_id, 全部移到wx_staff中, 原来的wx_channel已弃用，因此所有scene_id仅存在于wx_office和wx_staff中
+#如果一个粉丝的pid=0，表示是总部的推广成绩
+
+#当总部(gh_id)增加一个部门(office)时，颁发一个scene_id，并在wx_office中插入一条记录(内含此office的推广id)
+#当某个office增加一个staff(即推广者时)，颁发一个scene_id，并在wx_staff表中插入一条记录
+#一个总部下面可设N个office,一个office可以增加N个推广者(员工也是一种推广者，只不是推广者的身份标志为员工而已)
+#同一个gh_id，scene_id不能重复
+#每个部门可以设一个部门本身的推广id
+#------------------------Newest ---------------------------------------
+#所有scene_id全部移到wx_staff中, 新建部门时如果勾选部门本身也要推广id, 那么就插入一条特殊的员工记录到wx_staff中，表示部门自己
+#
 DROP TABLE IF EXISTS wx_staff;
 CREATE TABLE wx_staff (
     staff_id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     office_id int(10) unsigned NOT NULL DEFAULT '0',
     gh_id VARCHAR(32) NOT NULL DEFAULT '',
-    openid VARCHAR(32) NOT NULL DEFAULT '',
+    openid VARCHAR(32) NOT NULL DEFAULT '' COMMENT '此推广者绑定的微信号',
     name VARCHAR(16) NOT NULL DEFAULT '',
     mobile VARCHAR(16) NOT NULL DEFAULT '',
     is_manager tinyint(3) NOT NULL DEFAULT 0,
+    scene_id int(10) unsigned NOT NULL DEFAULT '0' COMMENT '推广者的推广id',    
+    cat tinyint(3) NOT NULL DEFAULT 0 COMMENT '推广者身份类型, 0:内部员工, 1:外部推广者, 2:部门本身',    
+    KEY office_id_idx(office_id),
     KEY gh_id_idx(gh_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-ALTER TABLE wx_staff ADD is_manager tinyint(3) NOT NULL DEFAULT 0;
-
 */
 
-        
+
 use Yii;
 use yii\db\ActiveRecord;
 use yii\helpers\Security;
@@ -30,6 +42,20 @@ use app\models\MOffice;
 
 class MStaff extends ActiveRecord
 {
+    const SCENE_CAT_IN = 0;
+    const SCENE_CAT_OUT = 1;
+    const SCENE_CAT_OFFICE = 2;
+
+    static function getStaffCatOptionName( $key = null )
+    {
+        $arr = array(
+            static::SCENE_CAT_IN => '内部员工',
+            static::SCENE_CAT_OUT => '外部推广者',
+            static::SCENE_CAT_OFFICE => '部门本身',
+        );      
+        return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+    }
+
     public static function tableName()
     {
         return 'wx_staff';
@@ -40,10 +66,11 @@ class MStaff extends ActiveRecord
         return [
             [['name', 'mobile'], 'filter', 'filter' => 'trim'],
             [['name', 'mobile', 'office_id'], 'required'],
-            [['name', 'mobile'], 'string', 'min' => 2, 'max' => 255],
+            [['name', 'mobile'], 'string', 'min' => 1, 'max' => 255],
             [['office_id'], 'integer', 'integerOnly' =>true, 'min'=>1],       
-            [['gh_id', 'openid'], 'safe'],            
+            [['gh_id', 'openid', 'scene_id'], 'safe'],            
             [['is_manager'], 'boolean'],            
+            [['cat'], 'integer', 'integerOnly' =>true, 'min'=>static::SCENE_CAT_IN, 'max' =>static::SCENE_CAT_OFFICE ],       
         ];
     }
 
@@ -55,7 +82,14 @@ class MStaff extends ActiveRecord
             'name' => '姓名',
             'mobile' => '手机号',
             'is_manager' => '是否主管',
+            'scene_id' => '推广ID',
+            'cat' => '类型',
         ];
+    }
+
+    public function getGh()
+    {
+        return $this->hasOne(MGh::className(), ['gh_id' => 'gh_id']);
     }
     
     public function getOffice()
@@ -65,13 +99,67 @@ class MStaff extends ActiveRecord
 
     public function getScore()
     {
-        if (empty($this->openid))
-            return 0;
-        $model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
-        if ($model === null)
-            return 0;
-        return $model->getScore();
+        if (empty($this->scene_id))
+            $count = 0;
+        else
+            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])->count();                        
+        return $count;    
     }
+
+    public function getQrImageUrl()
+    {
+        $gh_id = $this->gh_id;
+        if (empty($this->scene_id)) {
+            $this->scene_id = MStaff::newSceneId($this->gh_id);
+            $this->save(false);
+        }        
+        $scene_id = $this->scene_id;
+        $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
+        if (!file_exists($log_file_path))
+        {
+            Yii::$app->wx->setGhId($gh_id);    
+            $arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
+            $url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
+            Wechat::downloadFile($url, $log_file_path);
+        }
+        $url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
+        return $url;
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                $this->scene_id = MStaff::newSceneId($this->gh_id);
+            }
+            if ($this->cat == static::SCENE_CAT_OFFICE && $this->office->hasOfficeStaff()) {
+                throw new \yii\web\HttpException(500, 'this office has already owned one scene_id!');    
+            }                
+            return true;
+        }
+        return false;
+    } 
+
+    public static function newSceneId($gh_id)
+    {
+        $staffs = MStaff::find()->where("gh_id = :gh_id AND scene_id != 0", [':gh_id' => $gh_id])->asArray()->all();
+        if (empty($staffs))
+            return 1;        
+        $scene_ids = \yii\helpers\ArrayHelper::getColumn($staffs, 'scene_id');
+        $i = 1;
+        while(true)
+        {
+            if (!in_array($i, $scene_ids)) {
+                return $i;
+            }
+            $i++;
+            if ($i > 100000)
+                break;
+        }
+        U::W([__METHOD__, 'not find avail scene_id']);                    
+        return false;
+    }
+
 
 /*
 select t1.c, t3.name, t3.office_id, t4.title, t2.scene_id  from (select scene_pid, count(*) as c from wx_user
@@ -91,7 +179,7 @@ left join wx_office t4 on t3.office_id = t4.office_id;
 SELECT t1.score, t3.name, t3.office_id, t3.mobile, t4.title, t2.scene_id, t2.headimgurl,t2.gh_id,t2.openid  FROM (SELECT scene_pid, count(*) as score FROM wx_user 
 WHERE gh_id='$gh_id' and scene_pid != 0 GROUP BY scene_pid ORDER BY score desc) t1 
 LEFT JOIN wx_user t2 ON t1.scene_pid = t2.scene_id AND t2.scene_id != 0 
-LEFT JOIN wx_staff t3 ON t2.openid = t3.openid 
+LEFT JOIN wx_staff t3 ON t2.openid = t3.openid
 LEFT JOIN wx_office t4 ON t3.office_id = t4.office_id
 EOD;
         if ($n)
@@ -175,15 +263,69 @@ EOD;
     }    
 }
 
+
 /*
-        $rows = Yii::$app->db->cache(function (\yii\db\Connection $db) {
-            return $db->createCommand($sql)->queryAll();
-        }, YII_DEBUG ? 100 : 3600);
+scene_id VARCHAR(64) NOT NULL DEFAULT '' COMMENT '推广者的推广id',
 
+*/
 
-            [['name', 'mobile'], 'filter', 'filter' => 'trim'],
-            [['name', 'mobile'], 'required'],
-            [['name', 'mobile'], 'string', 'min' => 2, 'max' => 255],
-            [['office_id'], 'integer'],     
-*/            
+/*        
+    public function getQrImageUrl()
+    {
+        $gh_id = $this->gh_id;
+        if (empty($this->scene_id))
+        {
+            $newFlag = true;
+            $gh = MGh::findOne($gh_id);
+            $scene_id = $gh->newSceneId();
+            $this->scene_id = $scene_id;
+        }
+        else
+        {
+            $newFlag = false;        
+            $scene_id = $this->scene_id;
+        }
+        $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
+        if (!file_exists($log_file_path))
+        {
+            Yii::$app->wx->setGhId($gh_id);    
+            $arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
+            $url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
+            Wechat::downloadFile($url, $log_file_path);
+        }
+        if ($newFlag)
+        {
+            if ($this->save(false))
+               $gh->save(false);                    
+        }        
+        $url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
+        return $url;
+    }
+    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                $this->scene_id = $this->gh->newSceneId();
+                return $this->gh->save(false);
+            }
+            return true;
+        }
+        return false;
+    } 
+
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            if (!empty($this->scene_id))
+            {
+                $this->gh->freeSceneId($this->scene_id);
+                return $this->gh->save(false);
+            }
+            return true;            
+        } else {
+            return false;
+        }
+    }
+*/
 

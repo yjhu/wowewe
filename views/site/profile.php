@@ -32,7 +32,7 @@ $this->title = Yii::$app->params['title'];
     <div class="row">
         <div class="col-lg-5">
             <?php $form = ActiveForm::begin(['id' => 'contact-form']); ?>
-				<?= $form->field($model, 'password')->textInput(); ?>
+				<?= $form->field($model, 'pswd')->textInput(); ?>
                 <div class="form-group">
                     <?= Html::submitButton('提交', ['class' => 'btn btn-primary', 'name' => 'contact-button']) ?>
                 </div>

@@ -1421,7 +1421,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $openid = MGh::GH_XIANGYANGUNICOM_OPENID_KZENG;
         
         Yii::$app->wx->setGhId($gh_id);
-        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_DESC])->all();
+        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_ASC])->all();
         $query = new \yii\db\Query();
         $query->select('*')->from(\app\models\MActivity::tableName())->where(['status'=>1])->orderBy(['id' => SORT_DESC])->all();   
         $rows = $query->createCommand()->queryAll();
