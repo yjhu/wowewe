@@ -80,7 +80,7 @@ class WechatXiangYangUnicom extends Wechat
         $url_wxdp = "<a href=\"".Url::to(['wap/wlmshop', 'gh_id'=>$gh_id], true)."\">微信店铺</a>";
         $url_4gyw = "<a href=\"".Url::to(['wap/show4ginfo', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
         $url_sxyw = "<a href=\"".Url::to(['wap/showpage', 'gh_id'=>$gh_id], true)."\">数信业务</a>";
-        $url_dzl = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
+        //$url_dzl = "<a href=\"".Url::to(['wap/cardlist', 'gh_id'=>$gh_id, 'openid'=>$openid, 'kind'=>MItem::ITEM_KIND_FLOW_CARD], true)."\">5折专享流量包</a>";
 
         $url_1 = "查话费,查流量，请访问沃服务->{$url_ltsjyyt}；\n";
         $url_2 = "充话费，请访问沃服务->{$url_hfcz}，全网最低9.85折；\n";
@@ -90,10 +90,11 @@ class WechatXiangYangUnicom extends Wechat
         //$url_4 = "了解并订购联通的{$url_4gyw}，{$url_sxyw}，或其他业务，请访问下面的菜单“沃业务”；\n";
         //$url_5 = "了解联通的服务内容，请访问下面的菜单“沃服务”；\n";
         $url_6 = "了解更多联通业务、资讯和服务内容，请访问下面的菜单系统；\n\n";
-        $url_7 = "另，如果您是联通3G用户，现在微信平台订购3G省内流量包，可专享3个月5折话费返还，{$url_dzl}办理！\n";
+        //$url_7 = "另，如果您是联通3G用户，现在微信平台订购3G省内流量包，可专享3个月5折话费返还，{$url_dzl}办理！\n";
         $url_8 = "您如果还有其他问题，请微信平台留言，或直接致电10010，我们会有客服帮助您！\n";
         //$url_all = $url_1.$url_2.$url_3.$url_4.$url_5.$url_6.$url_7.$url_8;
-        $url_all = $url_1.$url_2.$url_3.$url_6.$url_7.$url_8;
+        //$url_all = $url_1.$url_2.$url_3.$url_6.$url_7.$url_8;
+        $url_all = $url_1.$url_2.$url_3.$url_6.$url_8;
 
         if (!empty($EventKey))
         {        
@@ -314,7 +315,52 @@ class WechatXiangYangUnicom extends Wechat
         else if(strstr($msg,"宽带")!==false)
         {
             return $this->responseText("请拨打联通热线10010 向客服咨询，谢谢!");
-        }        
+        }  
+        else if ($msg == '抢年会红包')/*抢年会红包*/
+        {
+
+            $Date_1=date("Y-m-d H:i:s");
+            $Date_2="2015-2-28 16:00:00";
+            $d1=strtotime($Date_1);
+            $d2=strtotime($Date_2);
+            //$d=round(($d2-$d1)/3600/24);
+            $d=($d2-$d1);
+
+
+            //echo "今天与2008年10月11日相差".$Days."天";
+
+            //$url_qhb = "<a href=\"".Url::to(['wap/qhb', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">如何抢红包?</a>";
+            $url_qhb = "<a href=\"http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=207415891&idx=1&sn=13c30e5dd03775b83508cc7bd0002060#rd\">如何抢红包?</a>";
+            
+            //$url_qhb = "如何抢红包?";
+
+            if($d < 0)
+            {
+                return $this->responseText("立即进入微信面对面群开抢红包！群密码：2015\n\n {$url_qhb}");
+            }
+            else if($d > 0 && $d <= 1*60 )
+            {
+                $t = $d;
+                return $this->responseText("{$Date_2}\n红包准时开抢! \n\n距2015年襄阳联通经销商年会抢红包活动还有{$t}秒！\n\n敬请关注!");
+            }
+
+            else if($d > 1*60 && $d <= 1*60*60 )
+            {
+                $t =round(($d)/60);
+                return $this->responseText("{$Date_2}\n红包准时开抢! \n\n距2015年襄阳联通经销商年会抢红包活动还有{$t}分钟！\n\n敬请关注!");
+            }
+            else if($d > 1*60*60 && $d <= 1*60*60*24 )
+            {
+                $t = round(($d)/3600);
+                return $this->responseText("{$Date_2}\n红包准时开抢! \n\n距2015年襄阳联通经销商年会抢红包活动还有{$t}小时！\n\n敬请关注!");
+            }
+            else
+            {
+                $t = round(($d)/3600/24);
+                return $this->responseText("{$Date_2}\n红包准时开抢! \n\n距2015年襄阳联通经销商年会抢红包活动还有{$t}天。\n\n敬请关注!");
+            }
+
+        }
         else
         {
 
