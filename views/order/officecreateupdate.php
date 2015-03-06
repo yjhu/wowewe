@@ -30,6 +30,11 @@ $this->params['breadcrumbs'][] = $model->isNewRecord ? '新增' : '修改';
 
 		<?= $form->field($model, 'visable')->dropDownList(['1'=>'显示', '0'=>'隐藏']) ?>
 
+		<?= $form->field($model, 'pswd')->textInput(['maxlength' => 24]) ?>
+
+        <?php if ($model->isNewRecord): ?>
+		    <?= $form->field($model, 'need_scene_id')->dropDownList(['0'=>'否', '1'=>'是'])->label('部门自已是否也需要推广码') ?>
+        <?php endif; ?>
 
 		<div class="form-group">
 			<?= Html::submitButton($model->isNewRecord ? '增加' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

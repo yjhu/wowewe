@@ -207,16 +207,13 @@ class OrderController extends Controller
     public function actionStaffcreate()
     {
         $model = new MStaff;
-        if (Yii::$app->request->isPost) 
-        {
+        if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
             $model->gh_id = Yii::$app->user->getGhid();
-            if ($model->save()) 
-            {
+            if ($model->save()) {
                 return $this->redirect(['stafflist']);            
             }
-            else
-            {
+            else {
                 U::W($model->getErrors());
             }
         }
@@ -229,15 +226,11 @@ class OrderController extends Controller
         if (!$model) {
             throw new NotFoundHttpException('no this staff');
         }
-        if (\Yii::$app->request->isPost) 
-        {
+        if (\Yii::$app->request->isPost) {
             $model->load(\Yii::$app->request->post());
-            if ($model->save()) 
-            {                
+            if ($model->save()) {                
                 return $this->redirect(['stafflist']);            
-            }
-            else
-            {
+            } else {
                 U::W($model->getErrors());
             }            
         }
@@ -380,14 +373,6 @@ class OrderController extends Controller
             $model->gh_id = Yii::$app->user->getGhid();
             if ($model->save()) 
             {            
-                $officeId = Yii::$app->db->getLastInsertID();
-                $user = new MUser;
-                $user->gh_id = $model->gh_id;
-                $user->openid = $officeId;
-                $user->nickname = "office#{$officeId}";
-                $user->password = '1';
-                $user->role = MUser::ROLE_OFFICE;
-                $user->save(false);
                 return $this->redirect(['officelist']);            
             }
             else

@@ -60,6 +60,24 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'mobile',
 			],
 			[
+				'attribute' => 'scene_id',
+			],
+			[
+				'attribute' => 'cat',
+                'value'=>function ($model, $key, $index, $column) { return MStaff::getStaffCatOptionName($model->cat); },
+                'filter'=> MStaff::getStaffCatOptionName(),
+			],
+
+			[
+				'label' => '推广二维码',
+                'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+						return Html::img($model->getQrImageUrl(), ['width'=>'64']);
+				},
+				'filter'=> false,
+			],
+
+			[
 				'label' => '推广成绩',
 				'value'=>function ($model, $key, $index, $column) { return $model->score.(empty($model->openid)?' [微信未绑定]':''); },
 				'filter'=> false,
@@ -78,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
 						]);
 					},
 				'filter'=> ['0'=>'否', '1'=>'是'],
-				'visible'=>Yii::$app->user->getIsAdmin(),
+//				'visible'=>Yii::$app->user->getIsAdmin(),
 			],
             [
 				'class' => 'yii\grid\ActionColumn',

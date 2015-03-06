@@ -18,6 +18,7 @@
 		"yiisoft/yii2": "*",
 		"yiisoft/yii2-bootstrap": "*",
 		"yiisoft/yii2-swiftmailer": "*",
+	        "vova07/yii2-fileapi-widget": "*",
 		"callmez/yii2-wechat": "dev-master"
 	},
 	"require-dev": {

@@ -61,11 +61,42 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'attribute' => 'address',
 			],
+/*
 			[
 				'attribute' => 'manager',
 			],
 			[
 				'attribute' => 'mobile',
+			],
+*/
+/*
+			[
+				'attribute' => 'scene_id',
+			],
+			[
+				'label' => '推广二维码',
+                'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+						return Html::img($model->getQrImageUrl(), ['width'=>'64']);
+				},
+				'filter'=> false,
+			],
+*/
+			[
+                'label' => '推广Id',
+				'value'=>function ($model, $key, $index, $column) { 
+                    $officeStaff = $model->getOfficeStaff();
+                    return empty($officeStaff) ? '-' : $officeStaff->scene_id;
+				},
+			],
+			[
+				'label' => '推广二维码',
+                'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+                    $officeStaff = $model->getOfficeStaff();
+                    return empty($officeStaff) ? '-' : Html::img($officeStaff->getQrImageUrl(), ['width'=>'64']);
+				},
+				'filter'=> false,
 			],
 
             [

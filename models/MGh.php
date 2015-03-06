@@ -90,6 +90,16 @@ class MGh extends ActiveRecord
         return false;
     }
 
+    public function getOffices()
+    {
+        return $this->hasMany(MOffice::className(), ['gh_id'=>'gh_id']);
+    }
+
+    public function getStaffs()
+    {
+        return $this->hasMany(MStaff::className(), ['gh_id'=>'gh_id']);
+    }
+/*
     // scene_id is distributed in MChannel(deleted), MOffice, MUser
     // but scene_id is just distributed in MOffice, MStaff
     public function newSceneId()
@@ -132,6 +142,7 @@ class MGh extends ActiveRecord
         else
             $this->scene_ids = implode(',', $scene_ids);
     }
+*/
     
 }
 

@@ -44,6 +44,17 @@ UPDATE wx_staff t1, wx_user t2 SET t1.scene_id = t2.scene_id WHERE t1.gh_id=t2.g
 //SELECT  t1.gh_id, t1.openid, t1.name, t1.scene_id, t2.gh_id,t2.openid,t2.nickname, t2.scene_id FROM wx_staff t1 INNER JOIN wx_user t2 ON t1.gh_id=t2.gh_id AND t1.openid=t2.openid AND t1.gh_id='gh_03a74ac96138' AND t1.openid!='';
 
 
+DELETE FROM wx_staff WHERE gh_id!='gh_03a74ac96138';
+//ALTER TABLE wx_staff CHANGE scene_id scene_id VARCHAR(64) NOT NULL DEFAULT '';
+//UPDATE wx_staff SET scene_id='' WHERE scene_id='0';
+INSERT INTO wx_staff (gh_id, office_id, scene_id, name, cat) SELECT gh_id, office_id, scene_id, title, 2 FROM wx_office WHERE gh_id='gh_03a74ac96138' AND scene_id!='0'
+
+//ALTER TABLE wx_user CHANGE scene_pid scene_pid VARCHAR(64) NOT NULL DEFAULT '';
+//UPDATE wx_user SET scene_pid='' WHERE scene_pid='0';
+//ALTER TABLE wx_office DROP scene_id;
+//ALTER TABLE wx_user DROP scene_id;
+
+
 
 
 
@@ -161,6 +172,8 @@ use app\models\MGh;
 
 class MOffice extends ActiveRecord implements IdentityInterface
 {
+    public $need_scene_id;
+    
     public static function tableName()
     {
         return 'wx_office';
@@ -173,6 +186,9 @@ class MOffice extends ActiveRecord implements IdentityInterface
             [['title','address','manager','mobile'], 'filter', 'filter' => 'trim'],
             [['lat','lon', 'visable'], 'number'],
             [['is_jingxiaoshang', 'role'], 'number'],
+            [['pswd'], 'string', 'max' => 24, 'min' => 1],
+            [['pswd'], 'required'],
+            [['need_scene_id'], 'integer', 'integerOnly' =>true, 'min'=>0, 'max' => 1],                   
         ];
     }
 
@@ -188,6 +204,8 @@ class MOffice extends ActiveRecord implements IdentityInterface
             'lon' => '经度',
             'visable' => '是否显示',
             'is_jingxiaoshang' => '是否是经销商',
+            'scene_id' => '推广ID',
+            'pswd' => '登录密码',
         ];
     }
 
@@ -243,28 +261,29 @@ class MOffice extends ActiveRecord implements IdentityInterface
     {
         return $this->hasOne(MGh::className(), ['gh_id' => 'gh_id']);
     }
-
+    
     public function getStaffs()
     {
          return $this->hasMany(MStaff::className(), ['office_id'=>'office_id']);
     }
-    
-    public function getStaffSceneids()
-    {
+
+    public function getSceneids()
+    {        
         $staffs = $this->staffs;
         $scene_ids = \yii\helpers\ArrayHelper::getColumn($staffs, 'scene_id');
         return $scene_ids;
     }
 
-    public function getSceneids()
-    {        
-        $scene_ids = $this->getStaffSceneids();
-        //U::W($scene_ids);        
-        if (!empty($this->scene_id))
-            $scene_ids[] = $this->scene_id;
-        return $scene_ids;
+    public function getOfficeStaff()
+    {
+        return MStaff::findOne(['office_id' => $this->office_id, 'cat' => MStaff::SCENE_CAT_OFFICE]);
     }
 
+    public function getNormalStaffs()
+    {
+        return MStaff::find()->where("office_id = :office_id AND cat != :cat", [':office_id' => $this->office_id, ':cat' => MStaff::SCENE_CAT_OFFICE])->all();
+    }
+    
     public static function getOfficeNameOption($gh_id, $json=true, $need_prompt=true)
     {
         $offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id'=>$gh_id, ':visable'=>1])->asArray()->all();
@@ -316,46 +335,39 @@ class MOffice extends ActiveRecord implements IdentityInterface
         return $json? json_encode($listData) : $listData;
     }
 
-    public function getQrImageUrl()
+    public function afterSave($insert, $changedAttributes)
     {
-        $gh_id = $this->gh_id;
-        if (empty($this->scene_id))
-        {
-            $newFlag = true;
-            $gh = MGh::findOne($gh_id);
-            $scene_id = $gh->newSceneId();
-            $this->scene_id = $scene_id;
+        if ($insert) {
+            if ($this->need_scene_id) {
+                $staff = new MStaff;
+                $staff->gh_id = $this->gh_id;
+                $staff->office_id = $this->office_id;
+                $staff->scene_id = MStaff::newSceneId($this->gh_id);
+                $staff->name = $this->title;
+                $staff->cat = MStaff::SCENE_CAT_OFFICE;                
+                if (!$staff->save(false)) {
+                    U::W(['error', __METHOD__, $staff]);
+                }                    
+            }
         }
-        else
-        {
-            $newFlag = false;        
-            $scene_id = $this->scene_id;
-        }
-        $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
-        if (!file_exists($log_file_path))
-        {
-            Yii::$app->wx->setGhId($gh_id);    
-            $arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
-            $url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
-            Wechat::downloadFile($url, $log_file_path);
-        }
-        if ($newFlag)
-        {
-            if ($this->save(false))
-               $gh->save(false);
-        }        
-        $url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
-        return $url;
     }
+    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($insert) {
+                $this->lat = $this->lon = 0;
+            }
+            return true;
+        }
+        return false;
+    } 
 
     public function beforeDelete()
     {
         if (parent::beforeDelete()) {
-            if (!empty($this->scene_id))
-            {
-                $gh = MGh::findOne($this->gh_id);        
-                $gh->freeSceneId($this->scene_id);
-                return $gh->save(false);
+            foreach ($this->staffs as $staff){
+                $staff->delete();
             }
             return true;            
         } else {
@@ -363,27 +375,35 @@ class MOffice extends ActiveRecord implements IdentityInterface
         }
     }
 
+    public function getQrImageUrl()
+    {
+        $officeStaff = $this->officeStaff;
+        if (empty($officeStaff)) {
+            return false;
+        }
+        return $officeStaff->getQrImageUrl();
+    }
+
+    public function hasOfficeStaff()
+    {
+        return !empty($this->officeStaff);
+    }
+
     public function getScoreOfAllStaffs()
     {
-        $staffs = $this->staffs;
+        $staffs = $this->getNormalStaffs();
         $staff_count = 0;
         foreach($staffs as $staff)
             $staff_count += $staff->getScore();
-
-        if ($this->office_id == 21)        
-            U::W('getScoreOfAllStaffs='.$staff_count);
-        
         return $staff_count;        
     }
 
     public function getScore()
     {
-        if ($this->scene_id == 0)
-            $count = 0;
-        else
-            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])->count();
-if ($this->office_id == 21)        
-    U::W('getScore='.$count);
+        $officeStaff = $this->getOfficeStaff();   
+        if (empty($officeStaff))
+            return 0;
+        $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $officeStaff->scene_id, 'subscribe' => 1])->count();
         return $count;        
     }
 
@@ -511,5 +531,13 @@ EOD;
         }
         return $staff_count;        
     }
+
+public function afterFind()
+{
+    $officeStaff = $this->officeStaff;
+    $this->need_scene_id = empty($officeStaff) ? 0 : 1;
+}
+
+    
 */
 

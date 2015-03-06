@@ -18,7 +18,8 @@ use app\models\RespNewsItem;
 use app\models\RespMusic;
 use app\models\RespTransfer;
 
-class Wechat extends \yii\base\Object
+//class Wechat extends \yii\base\Object
+class Wechat extends \yii\base\Component
 {
     const MSGTYPE_TEXT = 'text';
     const MSGTYPE_IMAGE = 'image';
@@ -63,11 +64,24 @@ class Wechat extends \yii\base\Object
     // wxpay package parameters
     public $_parameters;    
     
+    const EVENT_AFTER_SUBSCRIBE = 'afterSubscribe';
+    
     public function init()
     {
         //U::W('Wap init...');
+		//$this->attachBehavior('StatBehavior', ['class' => \backend\modules\wx\behaviors\StatBehavior::className()]);
+        //$this->trigger(self::EVENT_AFTER_SUBSCRIBE);        
     }
-
+/*
+	public function behaviors()
+	{
+		return [			
+			'StatBehavior' => [
+				'class' => \backend\modules\wx\behaviors\StatBehavior::className(),
+			],
+		];
+	}
+*/
     private function log($log)
     {
         if ($this->debug) 
@@ -249,12 +263,12 @@ class Wechat extends \yii\base\Object
     {
         if ($this->localTest)        
         {
-                //return $this->getDemoRequestXml(Wechat::MSGTYPE_TEXT);
+                return $this->getDemoRequestXml(Wechat::MSGTYPE_TEXT);
                 //return $this->getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_CLICK, 'FuncQueryAccount');    // FuncQueryFee
                 //return $this->getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_SUBSCRIBE);
                 //return $this->getDemoRequestXml(Wechat::MSGTYPE_EVENT, Wechat::EVENT_UNSUBSCRIBE);                
                 //return $this->getDemoRequestXml(Wechat::MSGTYPE_IMAGE);
-                return $this->getDemoRequestXml(Wechat::MSGTYPE_LOCATION);
+                //return $this->getDemoRequestXml(Wechat::MSGTYPE_LOCATION);
                 //return $this->getDemoRequestXml(Wechat::MSGTYPE_LINK);
                 //return $this->getDemoRequestXml(Wechat::MSGTYPE_VOICE);
                 //return $this->getDemoRequestXml(Wechat::MSGTYPE_VIDEO);                
@@ -269,7 +283,7 @@ class Wechat extends \yii\base\Object
         }
     }
     
-    protected function getRequest($key=false) 
+    public function getRequest($key=false) 
     {
         if ($this->_request === null)
         {
@@ -436,32 +450,32 @@ class Wechat extends \yii\base\Object
         }
     }
 
-    protected function responseTransfer($KfAccount=null)
+    public function responseTransfer($KfAccount=null)
     {
         return new RespTransfer($this->getRequest('FromUserName'), $this->getRequest('ToUserName'), $KfAccount);
     }
 
-    protected function responseText($content, $funcFlag = 0)
+    public function responseText($content, $funcFlag = 0)
     {
         return new RespText($this->getRequest('FromUserName'), $this->getRequest('ToUserName'), $content, $funcFlag);
     }
 
-    protected function responseImage($MediaId, $funcFlag = 0)
+    public function responseImage($MediaId, $funcFlag = 0)
     {
         return new RespImage($this->getRequest('FromUserName'), $this->getRequest('ToUserName'), $MediaId, $funcFlag);
     }
 
-    protected function responseMusic($title, $description, $musicUrl, $hqMusicUrl, $ThumbMediaId, $funcFlag = 0) 
+    public function responseMusic($title, $description, $musicUrl, $hqMusicUrl, $ThumbMediaId, $funcFlag = 0)
     {
         return new RespMusic($this->getRequest('FromUserName'), $this->getRequest('ToUserName'), $title, $description, $musicUrl, $hqMusicUrl, $ThumbMediaId, $funcFlag);
     }
 
-    protected function responseNews($items, $funcFlag = 0) 
+    public function responseNews($items, $funcFlag = 0)
     {
         return new RespNews($this->getRequest('FromUserName'), $this->getRequest('ToUserName'), $items, $funcFlag);
     }
 
-    protected function responseLocalImage($type, $localFile, $funcFlag = 0)
+    public function responseLocalImage($type, $localFile, $funcFlag = 0)
     {
         $arr = $this->WxMediaUpload($type, $localFile);
         $MediaId = $arr['media_id'];
@@ -481,7 +495,7 @@ class Wechat extends \yii\base\Object
 <FromUserName><![CDATA[$openid]]></FromUserName>
 <CreateTime>1402545118</CreateTime>
 <MsgType><![CDATA[text]]></MsgType>
-<Content><![CDATA[Xy]]></Content>
+<Content><![CDATA[.debug]]></Content>
 <MsgId>6023885413174756692</MsgId>
 </xml>
 EOD;
@@ -826,19 +840,17 @@ EOD;
 
     public function WxMediaDownload($media_id, $localFileName)
     {
-        //$arr = self::WxApi("http://file.api.weixin.qq.com/cgi-bin/media/get", ['access_token'=>$this->accessToken, 'media_id'=>$media_id]);
-        //$this->checkWxApiResp($arr, [__METHOD__, $media_id]);
-        //U::W($arr);
-        //return $arr;    
         self::downloadFile($this->WxMediaGetUrl($media_id), $localFileName);
     }
 
     public function WxgetQRCode($scene_id, $forever=0)
-    {
-        if ($forever)
+    {    
+        if ($forever) {
             $post = ['action_name'=>'QR_LIMIT_SCENE', 'action_info'=>['scene'=>['scene_id'=>$scene_id]]];
-        else
+        }
+        else {
             $post = ['expire_seconds'=>1800, 'action_name'=>'QR_SCENE', 'action_info'=>['scene'=>['scene_id'=>$scene_id]]];
+        }
         $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/qrcode/create", ['access_token'=>$this->accessToken], self::json_encode($post));
         $this->checkWxApiResp($arr, [__METHOD__, $scene_id, $forever]);
         return $arr;                                
@@ -1250,7 +1262,7 @@ errcode errmsg
 40009     不合法的图片文件大小
 40010     不合法的语音文件大小
 40011     不合法的视频文件大小
-40012     不合法的缩略图文件大小
+40012     不合法的缩略图文件大�?
 40013     不合法的APPID
 40014     不合法的access_token
 40015     不合法的菜单类型
@@ -1259,31 +1271,31 @@ errcode errmsg
 40018     不合法的按钮名字长度
 40019     不合法的按钮KEY长度
 40020     不合法的按钮URL长度
-40021     不合法的菜单版本号
-40022     不合法的子菜单级数
-40023     不合法的子菜单按钮个数
-40024     不合法的子菜单按钮类型
-40025     不合法的子菜单按钮名字长度
+40021     不合法的菜单版本�?
+40022     不合法的子菜单级�?
+40023     不合法的子菜单按钮个�?
+40024     不合法的子菜单按钮类�?
+40025     不合法的子菜单按钮名字长�?
 40026     不合法的子菜单按钮KEY长度
 40027     不合法的子菜单按钮URL长度
-40028     不合法的自定义菜单使用用户
+40028     不合法的自定义菜单使用用�?
 40029     不合法的oauth_code
 40030     不合法的refresh_token
 40031     不合法的openid列表
 40032     不合法的openid列表长度
-40033     不合法的请求字符，不能包含\uxxxx格式的字符
+40033     不合法的请求字符，不能包含\uxxxx格式的字�?
 40035     不合法的参数
 40038     不合法的请求格式
 40039     不合法的URL长度
 40050     不合法的分组id
-40051     分组名字不合法
+40051     分组名字不合�?
 41001     缺少access_token参数
 41002     缺少appid参数
 41003     缺少refresh_token参数
 41004     缺少secret参数
-41005     缺少多媒体文件数据
+41005     缺少多媒体文件数�?
 41006     缺少media_id参数
-41007     缺少子菜单数据
+41007     缺少子菜单数�?
 41008     缺少oauth code
 41009     缺少openid
 42001     access_token超时
@@ -1292,13 +1304,13 @@ errcode errmsg
 43001     需要GET请求
 43002     需要POST请求
 43003     需要HTTPS请求
-43004     需要接收者关注
-43005     需要好友关系
-44001     多媒体文件为空
+43004     需要接收者关�?
+43005     需要好友关�?
+44001     多媒体文件为�?
 44002     POST的数据包为空
 44003     图文消息内容为空
 44004     文本消息内容为空
-45001     多媒体文件大小超过限制
+45001     多媒体文件大小超过限�?
 45002     消息内容超过限制
 45003     标题字段超过限制
 45004     描述字段超过限制
@@ -1312,12 +1324,12 @@ errcode errmsg
 45016     系统分组，不允许修改
 45017     分组名字过长
 45018     分组数量超过上限
-46001     不存在媒体数据
+46001     不存在媒体数�?
 46002     不存在的菜单版本
 46003     不存在的菜单数据
 46004     不存在的用户
 47001     解析JSON/XML内容错误
-48001     api功能未授权
+48001     api功能未授�?
 50001     用户未授权该api 
 
 

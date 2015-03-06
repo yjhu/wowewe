@@ -33,4 +33,9 @@ class WebUserOffice extends \yii\web\User
 		return Yii::$app->user->identity->gh_id;
     }
 
+    public function getGh()
+    {
+		return Yii::$app->user->identity->gh;
+    }
+
 }

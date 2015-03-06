@@ -25,10 +25,12 @@ class MOfficeSearch extends Model
 
 	public $is_jingxiaoshang;
 
+	public $scene_id;
+
 	public function rules()
 	{
 		return [
-			[['gh_id', 'title','address', 'office_id', 'mobile', 'manager', 'visable', 'is_jingxiaoshang'], 'safe'],
+			[['gh_id', 'title','address', 'office_id', 'mobile', 'manager', 'visable', 'is_jingxiaoshang', 'scene_id'], 'safe'],
 		];
 	}
 
@@ -68,7 +70,6 @@ class MOfficeSearch extends Model
 			return $dataProvider;
 		}
 
-		$this->addCondition($query, 'office_id');					
 		$this->addCondition($query, 'title', true);
 		$this->addCondition($query, 'mobile', true);
 		$this->addCondition($query, 'address', true);

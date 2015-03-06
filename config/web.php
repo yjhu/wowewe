@@ -108,7 +108,30 @@ $config = [
 	        ],
 	    ],
 	],
-	
+
+    'i18n' => [
+        'translations' => [
+            'app'=>[
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath'=>'@app/messages',
+            ],
+            '*'=> [
+                'class' => 'yii\i18n\PhpMessageSource',
+                'basePath'=>'@app/messages',
+            ],
+            /*
+             '*'=> [
+                'class' => 'yii\i18n\DbMessageSource',
+                'sourceMessageTable'=>'{{%i18n_source_message}}',
+                'messageTable'=>'{{%i18n_message}}',
+                'enableCaching' => true,
+                'cachingDuration' => 3600
+            ],
+            */
+    
+        ],
+    ],
+
 	'db' => require(__DIR__ . '/db.php'),
 	
 	'wx' => require(__DIR__ . '/wx.php'),	
