@@ -101,7 +101,10 @@ $this->registerJs($js_code, yii\web\View::POS_END);
 <div data-role="page" id="dialog_staff_qr" data-dialog="true">
 	<div data-role="header"><h1>我的推广二维码</h1></div>
 	<div role="main" class="ui-content">
-	<?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
+	<?php 
+//    echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); 
+    echo Html::img($model->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); 
+    ?>
 	</div>
 </div>
 

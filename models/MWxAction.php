@@ -57,6 +57,7 @@ class MWxAction extends \yii\db\ActiveRecord
 			[['keyword'], 'string', 'max' => 128],
 			[['content', 'title', 'description', 'picUrl', 'url'], 'string'],
 			[['forward_url', 'token'], 'string'],
+			[['inputEventType'], 'string'],						
 		];
     }
 
@@ -177,7 +178,7 @@ class MWxAction extends \yii\db\ActiveRecord
 
 	public function beforeSave($insert)
 	{
-		if (parent::beforeSave($insert)) {     
+		if (parent::beforeSave($insert)) {  
             if ($this->inputEventType == static::WX_INPUT_EVENT_TYPE_SUBSCRIBE) {
                 $this->keyword = $this->inputEventType;
             }                
