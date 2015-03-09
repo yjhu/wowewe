@@ -9,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>双旦狂欢季</title> 
+<title>上网卡</title> 
 <meta name="description" content=""> 
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
@@ -44,16 +44,18 @@
 <div class="device rel" id="device" >
     <div class="swiper-container" id="swiper-container">
       <div class="swiper-wrapper">
+	  
+	  <!--
             <div class="swiper-slide rel swiper-slide-visible swiper-slide-active">
               <div class="main">
-              <img src="./show_res/index_doubledaninfo.jpg?v5" >
+              <img src="./show_res/index_doubledaninfo.jpg?v7" >
               </div>
             </div>
            
             <div class="swiper-slide rel" >
               <div class="main" >
               <a href="javascript:jump2order('iphone4s')">
-                <img class="lazy" data-original="./show_res/iphone4s.jpg?v5" src="./show_res/iphone4s.jpg?v5" >
+                <img class="lazy" data-original="./show_res/iphone4s.jpg?v7" src="./show_res/iphone4s.jpg?v7" >
               </a>
               </div>
             </div>
@@ -61,7 +63,7 @@
             <div class="swiper-slide rel" >
               <div class="main" >
               <a href="javascript:jump2order('iphone5s')">
-                <img class="lazy" data-original="./show_res/iphone5s.jpg?v5" src="./show_res/iphone5s.jpg?v5" >
+                <img class="lazy" data-original="./show_res/iphone5s.jpg?v7" src="./show_res/iphone5s.jpg?v7" >
               </a>
               </div>
             </div>
@@ -69,7 +71,7 @@
             <div class="swiper-slide rel" >
               <div class="main" >
               <a href="javascript:jump2order('iphone6')">
-                <img class="lazy" data-original="./show_res/iphone6dd.jpg?v5" src="./show_res/iphone6dd.jpg?v5" >
+                <img class="lazy" data-original="./show_res/iphone6dd.jpg?v7" src="./show_res/iphone6dd.jpg?v7" >
               </a>
               </div>
             </div>
@@ -77,7 +79,7 @@
             <div class="swiper-slide rel" >
               <div class="main" >
               <a href="javascript:jump2order('honor6')">
-                <img class="lazy" data-original="./show_res/honor6.jpg?v5" src="./show_res/honor6.jpg?v5" >
+                <img class="lazy" data-original="./show_res/honor6.jpg?v7" src="./show_res/honor6.jpg?v7" >
               </a>
               </div>
             </div>
@@ -85,7 +87,7 @@
             <div class="swiper-slide rel" >
               <div class="main" >
               <a href="javascript:jump2order('xiaomi4')">
-                <img class="lazy" data-original="./show_res/xiaomi4.jpg?v5" src="./show_res/xiaomi4.jpg?v5" >
+                <img class="lazy" data-original="./show_res/xiaomi4.jpg?v7" src="./show_res/xiaomi4.jpg?v7" >
               </a>
               </div>
             </div>
@@ -93,15 +95,16 @@
             <div class="swiper-slide rel" >
               <div class="main" >
               <a href="javascript:jump2order('samsungg5108q')">
-                <img class="lazy" data-original="./show_res/samsungg5108q.jpg?v5" src="./show_res/samsungg5108q.jpg?v5" >
+                <img class="lazy" data-original="./show_res/samsungg5108q.jpg?v7" src="./show_res/samsungg5108q.jpg?v7" >
               </a>
               </div>
             </div>
-
-            <div class="swiper-slide rel" >
+			-->
+			
+            <div class="swiper-slide rel swiper-slide-visible swiper-slide-active" >
               <div class="main" >
               <a href="javascript:jump2order('100yuan5gshangwangka')">
-                <img class="lazy" data-original="./show_res/100yuan5gshangwangka.jpg?v5" src="./show_res/100yuan5gshangwangka.jpg?v5" >
+                <img class="lazy" data-original="./show_res/100yuan5gshangwangka.jpg?v7" src="./show_res/100yuan5gshangwangka.jpg?v7" >
               </a>
               </div>
             </div>  
@@ -109,7 +112,7 @@
             <div class="swiper-slide rel" >
               <div class="main" >
               <a href="javascript:jump2order('3gbannianshangwangka')">
-                <img class="lazy" data-original="./show_res/3gbannianshangwangka.jpg?v5" src="./show_res/3gbannianshangwangka.jpg?v5" >
+                <img class="lazy" data-original="./show_res/3gbannianshangwangka.jpg?v7" src="./show_res/3gbannianshangwangka.jpg?v7" >
               </a>
               </div>
             </div>     
@@ -117,7 +120,7 @@
             <div class="swiper-slide rel" >
               <div class="main" >
               <a href="javascript:jump2order('6gniankashangwangka')">
-                <img class="lazy" data-original="./show_res/6gniankashangwangka.jpg?v5" src="./show_res/6gniankashangwangka.jpg?v5" >
+                <img class="lazy" data-original="./show_res/6gniankashangwangka.jpg?v7" src="./show_res/6gniankashangwangka.jpg?v7" >
               </a>
               </div>
             </div>     
@@ -125,7 +128,7 @@
             <div class="swiper-slide rel" >
               <div class="main" >
               <a href="javascript:jump2order('45gshangwangka')">
-                <img class="lazy" data-original="./show_res/45gshangwangkadd.jpg?v5" src="./show_res/45gshangwangkadd.jpg?v5" >
+                <img class="lazy" data-original="./show_res/45gshangwangkadd.jpg?v7" src="./show_res/45gshangwangkadd.jpg?v7" >
               </a>
               </div>
             </div>                        
@@ -133,7 +136,7 @@
           <div class="swiper-slide rel">
             <div class="main" >
             <a href="javascript:jump2order('96gshangwangka')">
-            <img class="lazy" data-original="./show_res/96gshangwangkadd.jpg?v5" src="./show_res/96gshangwangkadd.jpg?v5" >
+            <img class="lazy" data-original="./show_res/96gshangwangkadd.jpg?v7" src="./show_res/96gshangwangkadd.jpg?v7" >
             </a>
             </div>
           </div> 
@@ -144,7 +147,7 @@
 
 <script type="text/javascript" src="./show_res/stylee.js"></script>
 <script type="text/javascript" src="./show_res/jquery.jplayer.min.js"></script> 
-<script src="./show_res/main.js?v51" type="text/javascript"></script>
+<script src="./show_res/main.js?v71" type="text/javascript"></script>
 <script src="./js/wechat.js" type="text/javascript"></script>
 
 <?php 
@@ -152,9 +155,9 @@
   $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/showdoubledaninfo:'.Yii::$app->wx->getGhid());
   //$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
   $assetsPath = Yii::$app->getRequest()->baseUrl.'/show_res';
-  $myImg = Url::to("$assetsPath/index_doubledaninfo.jpg?v5", true);
-  $title = '双旦狂欢季';
-  $desc = '2014年最后一波特大优惠已经来袭，亲们做好准备了吗？';
+  $myImg = Url::to("$assetsPath/index_doubledaninfo.jpg?v7", true);
+  $title = '上网卡';
+  $desc = '2015年特大优惠已经来袭，亲们做好准备了吗？';
 ?>
 
 <script>

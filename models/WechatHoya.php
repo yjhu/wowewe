@@ -90,10 +90,11 @@ class WechatHoya extends Wechat
         //$url_4 = "了解并订购联通的{$url_4gyw}，{$url_sxyw}，或其他业务，请访问下面的菜单“沃业务”；\n";
         //$url_5 = "了解联通的服务内容，请访问下面的菜单“沃服务”；\n";
         $url_6 = "了解更多联通业务、资讯和服务内容，请访问下面的菜单系统；\n\n";
-        $url_7 = "另，如果您是联通3G用户，现在微信平台订购3G省内流量包，可专享3个月5折话费返还，{$url_dzl}办理！\n";
+        //$url_7 = "另，如果您是联通3G用户，现在微信平台订购3G省内流量包，可专享3个月5折话费返还，{$url_dzl}办理！\n";
         $url_8 = "您如果还有其他问题，请微信平台留言，或直接致电10010，我们会有客服帮助您！\n";
         //$url_all = $url_1.$url_2.$url_3.$url_4.$url_5.$url_6.$url_7.$url_8;
-        $url_all = $url_1.$url_2.$url_3.$url_6.$url_7.$url_8;
+        //$url_all = $url_1.$url_2.$url_3.$url_6.$url_7.$url_8;
+        $url_all = $url_1.$url_2.$url_3.$url_6.$url_8;
 
         if (!empty($EventKey))
         {        

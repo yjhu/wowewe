@@ -234,7 +234,52 @@ class WechatXiangYangUnicom extends Wechat
         else if(strstr($msg,"宽带")!==false)
         {
             return $this->responseText("请拨打联通热线10010 向客服咨询，谢谢!");
-        }        
+        }  
+        else if ($msg == '抢年会红包')/*抢年会红包*/
+        {
+
+            $Date_1=date("Y-m-d H:i:s");
+            $Date_2="2015-2-28 16:00:00";
+            $d1=strtotime($Date_1);
+            $d2=strtotime($Date_2);
+            //$d=round(($d2-$d1)/3600/24);
+            $d=($d2-$d1);
+
+
+            //echo "今天与2008年10月11日相差".$Days."天";
+
+            //$url_qhb = "<a href=\"".Url::to(['wap/qhb', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">如何抢红包?</a>";
+            $url_qhb = "<a href=\"http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=207415891&idx=1&sn=13c30e5dd03775b83508cc7bd0002060#rd\">如何抢红包?</a>";
+            
+            //$url_qhb = "如何抢红包?";
+
+            if($d < 0)
+            {
+                return $this->responseText("立即进入微信面对面群开抢红包！群密码：2015\n\n {$url_qhb}");
+            }
+            else if($d > 0 && $d <= 1*60 )
+            {
+                $t = $d;
+                return $this->responseText("{$Date_2}\n红包准时开抢! \n\n距2015年襄阳联通经销商年会抢红包活动还有{$t}秒！\n\n敬请关注!");
+            }
+
+            else if($d > 1*60 && $d <= 1*60*60 )
+            {
+                $t =round(($d)/60);
+                return $this->responseText("{$Date_2}\n红包准时开抢! \n\n距2015年襄阳联通经销商年会抢红包活动还有{$t}分钟！\n\n敬请关注!");
+            }
+            else if($d > 1*60*60 && $d <= 1*60*60*24 )
+            {
+                $t = round(($d)/3600);
+                return $this->responseText("{$Date_2}\n红包准时开抢! \n\n距2015年襄阳联通经销商年会抢红包活动还有{$t}小时！\n\n敬请关注!");
+            }
+            else
+            {
+                $t = round(($d)/3600/24);
+                return $this->responseText("{$Date_2}\n红包准时开抢! \n\n距2015年襄阳联通经销商年会抢红包活动还有{$t}天。\n\n敬请关注!");
+            }
+
+        }
         else
         {
 

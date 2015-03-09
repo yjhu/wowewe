@@ -120,7 +120,8 @@ class CmdController extends Controller
         //new \app\models\ButtonView('5折流量包订购', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD)),
         //$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD);
 
-        $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdoubledanmiaoshainfo:{$gh_id}");
+        //$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showpage:{$gh_id}");
+        $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdoubledaninfo:{$gh_id}");
         U::W($url);
         echo $url;
     }
@@ -433,17 +434,23 @@ class CmdController extends Controller
         {
             $menu = new \app\models\WxMenu([
                 new \app\models\ButtonComplex('沃资讯', [
-                    new \app\models\ButtonView('快速赚钱只需4步', 'http://lm.10010.com/wolm/topicHtml/71d971438b5e4a2bb2b45768b59a9805.html'),
+                    //new \app\models\ButtonView('快速赚钱只需4步', 'http://lm.10010.com/wolm/topicHtml/71d971438b5e4a2bb2b45768b59a9805.html'),
+                    
+                    new \app\models\ButtonView('新年喜乐惠', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=207197445&idx=1&sn=aee84b19e349c436bd30fe9ac6f488d7#rd'),
+                    new \app\models\ButtonView('1折流量包抢购', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=207197175&idx=1&sn=7fc569fb57c99db9be6abc973374aed3#rd'),
+
                     new \app\models\ButtonView('玩转流量', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showpage:{$gh_id}")),
                     new \app\models\ButtonView('玩转4G', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/show4ginfo:{$gh_id}")),
-                    new \app\models\ButtonView('5折流量包订购', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD)),
+                    ////new \app\models\ButtonView('5折流量包订购', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/cardlist:{$gh_id}:kind=".MItem::ITEM_KIND_FLOW_CARD)),
                     /////////////////////////////////////////////////
                     //new \app\models\ButtonView('短信订购流量包', 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=203609285&idx=1&sn=06c623779131934da8368482a55e5ba1#rd'),
                 ]),
                 new \app\models\ButtonComplex('沃业务', [
                     //new \app\models\ButtonView('1212万能盛典', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdouble12info:{$gh_id}")),
-                    new \app\models\ButtonView('双旦狂欢季', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdoubledaninfo:{$gh_id}")),
-                    new \app\models\ButtonView('双旦秒杀', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdoubledanmiaoshainfo:{$gh_id}")),
+                    //new \app\models\ButtonView('双旦狂欢季', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdoubledaninfo:{$gh_id}")),
+                    new \app\models\ButtonView('你好,2015', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdoubledaninfo:{$gh_id}")),
+                    
+                    //new \app\models\ButtonView('双旦秒杀', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showdoubledanmiaoshainfo:{$gh_id}")),
                     new \app\models\ButtonView('老友季焕新机', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/showk1info:{$gh_id}")),
                     new \app\models\ButtonView('微信店铺', Yii::$app->wx->WxGetOauth2Url('snsapi_base', "wap/wlmshop:{$gh_id}")),
                     /////////////////////////////////////////////////
@@ -453,7 +460,7 @@ class CmdController extends Controller
                     new \app\models\ButtonView('话费查询', 'http://wap.10010.com/t/query/queryRealTimeFeeInfo.htm?menuId=000200010001'),
                     new \app\models\ButtonView('话费充值', 'http://upay.10010.com/npfwap/npfMobWap/bankcharge/index.html?version=null&desmobile=8E2104B024B5116C9EA24F8EE55A29A8#/bankcharge'),
                     new \app\models\ButtonView('流量查询', 'http://wap.10010.com/t/operationservice/queryRunoff.htm?menuId=000200020001'),
-                    new \app\models\ButtonView('流量抽奖', 'http://hb.kk3g.net/active/online/0521/pre.html?tag=weixin'),
+                    new \app\models\ButtonView('流量抽奖第3季', 'http://wap.hb165.com/llphb3/#rd'),
                     new \app\models\ButtonView('用户吐槽', 'http://wsq.qq.com/reflow/263163652-1044?_wv=1&source='),
                 ]),
             ]);
