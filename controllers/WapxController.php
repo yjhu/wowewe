@@ -80,6 +80,13 @@ class WapxController extends Controller
         }
         $this->layout = 'wapx';
         //Yii::$app->wx->setGhId($gh_id);
+
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($user !== null && $user->is_liantongstaff == 0) {
+            $user->is_liantongstaff = 1;
+            $user->save(false);
+        }
+        
         $model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
         if ($model === null)
         {
@@ -87,6 +94,7 @@ class WapxController extends Controller
             $model->gh_id = $gh_id;
             $model->openid = $openid;            
         }        
+        
         else if (empty($model->office_id) || empty($model->mobile) || empty($model->name))
         {
             U::W('need fill more information');

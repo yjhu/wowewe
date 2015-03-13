@@ -99,7 +99,6 @@ class WxactionController extends Controller
         $model = $this->findModel($id);
         $gh = Yii::$app->user->gh;        
         $model->gh_id = $gh->gh_id;
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 			return $this->redirect(['index']);
         } else {
