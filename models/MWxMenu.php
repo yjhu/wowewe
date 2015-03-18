@@ -7,9 +7,12 @@ use yii\web\NotFoundHttpException;
 
 use app\models\U;
 use app\models\MGh;
+
 use app\models\ButtonClick;
 use app\models\ButtonView;
+use app\models\ButtonLocationSelect;
 use app\models\ButtonComplex;
+
 use app\models\WxMenu;
 use app\models\Wechat;
 
@@ -33,6 +36,7 @@ class MWxMenu extends \yii\db\ActiveRecord
 {
 	const WX_MENU_TYPE_CLICK = 'click';
 	const WX_MENU_TYPE_VIEW = 'view';
+	const WX_MENU_TYPE_LOCATION_SELECT = 'location_select';
 
     const WX_MENU_SORT_ORDER_FROM = 10;
 	const WX_MENU_SORT_ORDER_STEP = 10;
@@ -73,6 +77,7 @@ class MWxMenu extends \yii\db\ActiveRecord
 		$arr = array(
 			self::WX_MENU_TYPE_CLICK => '点击事件',
 			self::WX_MENU_TYPE_VIEW => '直接跳转',
+			self::WX_MENU_TYPE_LOCATION_SELECT => '发送位置',						
 		);		  
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
 	}
@@ -92,6 +97,8 @@ class MWxMenu extends \yii\db\ActiveRecord
 			throw new NotFoundHttpException('Just sub model has button.');			
 	    } elseif ($this->type == self::WX_MENU_TYPE_VIEW) {
 			return new ButtonView($this->name, $this->url);
+        } elseif ($this->type == self::WX_MENU_TYPE_LOCATION_SELECT) {
+            return new ButtonLocationSelect($this->name, $this->keyword);            
 		} else {
 			return new ButtonClick($this->name, $this->keyword);
 		}    

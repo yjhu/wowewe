@@ -369,7 +369,8 @@ class MUser extends ActiveRecord implements IdentityInterface
         try
         {
             Yii::$app->wx->setGhId($this->gh_id);
-            $arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$this->openid,'msgtype'=>'text', 'text'=>['content'=>$content]]);
+            //$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$this->openid,'msgtype'=>'text', 'text'=>['content'=>$content]]);
+            $arr = Yii::$app->wx->WxMessageCustomSendText($this->openid, $content);
         }
         catch (\Exception $e)
         {

@@ -20,7 +20,7 @@ $js=<<<EOD
 	{
 		$(".click, .view").hide();
 		var type = $("#$type").val();
-		if (type == 'click')
+		if (type == 'click' || type == 'location_select')
 		{
 		   $(".click").show();
 		}

@@ -41,7 +41,8 @@ class MWxAction extends \yii\db\ActiveRecord
 	public $forward_url;
 	public $token;
 
-	const WX_ACTION_RESP_IMAGE_PATH = 'photo';
+//	const WX_ACTION_RESP_IMAGE_PATH = 'photo';
+	const WX_ACTION_RESP_IMAGE_PATH = 'avatar';
 
     public static function tableName()
     {
@@ -215,7 +216,6 @@ class MWxAction extends \yii\db\ActiveRecord
 		} elseif ($this->type == self::WX_ACTION_TYPE_NEWS) {
 			$title = strtr($this->title, $dict);
 			$description = strtr($this->description, $dict);
-			//$picUrl = Yii::getAlias('@storageUrl') . '/' . self::WX_ACTION_RESP_IMAGE_PATH . '/' . strtr($this->picUrl, $dict);
 			$picUrl = Yii::$app->request->getHostInfo() . Yii::$app->request->getBaseUrl() . '/'. self::WX_ACTION_RESP_IMAGE_PATH . '/' . strtr($this->picUrl, $dict);            
 			$url = strtr($this->url, $dict);
 			$items = [

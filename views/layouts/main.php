@@ -71,8 +71,10 @@ AppAsset::register($this);
 							'<li class="divider"></li>',
 							['label' => '微信菜单配置','url' => ['/wxmenu/index'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '菜单动作设置','url' => ['/wxaction/index'],'linkOptions' => ['data-method' => 'post']],
-							//['label' => '消息管理','url' => ['/admin/msg'],'linkOptions' => ['data-method' => 'post']],
-							//['label' => '素材管理','url' => ['/admin/media'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '图片管理','url' => ['/photo/index'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '单图文','url' => ['/article/index'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '多图文','url' => ['/articlemult/index'],'linkOptions' => ['data-method' => 'post']],
+
 						]
 					],					
                     Yii::$app->user->isGuest ?

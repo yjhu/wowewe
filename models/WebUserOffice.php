@@ -38,4 +38,10 @@ class WebUserOffice extends \yii\web\User
 		return Yii::$app->user->identity->gh;
     }
 
+    public function getWechat()
+    {
+        Yii::$app->wx->setGhId($this->getGhid());
+        return Yii::$app->wx;
+    }
+
 }

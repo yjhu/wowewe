@@ -807,20 +807,114 @@ EOD;
         return $arr;                        
     }
 
+    //Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid,'msgtype'=>'image', 'image'=>['media_id'=>$media_id]]);
+    //Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid,'msgtype'=>'voice', 'voice'=>['media_id'=>$media_id]]);
+    //Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid,'msgtype'=>'video', 'video'=>['media_id'=>$media_id, 'thumb_media_id'=>$thumb_media_id, 'title'=>$title, 'description'=>$description]]);
+    //Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid,'msgtype'=>'music', 'music'=>['thumb_media_id'=>$thumb_media_id, 'title'=>$title, 'description'=>$description, 'musicurl'=>$musicurl, 'hqmusicurl'=>$hqmusicurl]]);
     public function WxMessageCustomSend($msg)
     {
-        //U::W(self::json_encode($msg));
         $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/custom/send", ['access_token'=>$this->accessToken], self::json_encode($msg));
-       //$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/custom/send", ['access_token'=>$this->getAccessToken(true)], self::json_encode($msg));
-       //$arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/custom/send", ['access_token'=>$this->getAccessToken()], self::json_encode($msg));
         $this->checkWxApiResp($arr, [__METHOD__, $msg]);
         return $arr;                        
+    }
+
+    public function WxMessageCustomSendText($openid, $content)
+    {
+
+        return $this->WxMessageCustomSend(['touser'=>$openid,'msgtype'=>'text', 'text'=>['content'=>$content]]);
+    }
+
+    //$articles = [ ['title'=>$title, 'description'=>$description, 'url'=>$url, 'picurl'=>$picurl], ['title'=>$title1, 'description'=>$description1, 'url'=>$url1, 'picurl'=>$picurl1] ];
+    public function WxMessageCustomSendNews($openid, $articles)
+    {
+
+        return $this->WxMessageCustomSend(['touser'=>$openid,'msgtype'=>'news', 'news'=>['articles'=>$articles]]);
+    }
+
+    public function WxMessageCustomSendImage($openid, $media_id)
+    {
+
+        return $this->WxMessageCustomSend(['touser'=>$openid,'msgtype'=>'image', 'image'=>['media_id'=>$media_id]]);
+    }
+
+    public function WxMessageCustomSendVoice($openid, $media_id)
+    {
+
+        return $this->WxMessageCustomSend(['touser'=>$openid,'msgtype'=>'voice', 'voice'=>['media_id'=>$media_id]]);
+    }
+
+    public function WxMessageCustomSendVideo($openid, $media_id, $thumb_media_id, $title, $description)
+    {
+
+        return $this->WxMessageCustomSend(['touser'=>$openid,'msgtype'=>'video', 'video'=>['media_id'=>$media_id, 'thumb_media_id'=>$thumb_media_id, 'title'=>$title, 'description'=>$description]]);
+    }
+
+    public function WxMessageCustomSendMusic($openid, $thumb_media_id, $title, $description, $musicurl, $hqmusicurl)
+    {
+
+        return $this->WxMessageCustomSend(['touser'=>$openid,'msgtype'=>'music', 'music'=>['thumb_media_id'=>$thumb_media_id, 'title'=>$title, 'description'=>$description, 'musicurl'=>$musicurl, 'hqmusicurl'=>$hqmusicurl]]);
+    }
+
+    public function WxMessageMassSend($msg)
+    {
+        $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/mass/send", ['access_token'=>$this->accessToken], self::json_encode($msg));
+        $this->checkWxApiResp($arr, [__METHOD__, $msg]);
+        //U::W([$arr, $msg, self::json_encode($msg)]);
+        return $arr;                        
+    }
+
+    public function WxMessageMassSendAll($msg)
+    {
+        $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/mass/sendall", ['access_token'=>$this->accessToken], self::json_encode($msg));
+        $this->checkWxApiResp($arr, [__METHOD__, $msg]);
+        //U::W([$arr, $msg, self::json_encode($msg)]);
+        return $arr;                        
+    }
+
+    public function WxMessageMassSendText($openids, $content)
+    {
+        return $this->WxMessageMassSend(['touser'=>$openids,'msgtype'=>'text', 'text'=>['content'=>$content]]);
+    }
+
+    public function WxMessageMassSendNews($openids, $media_id)
+    {
+        return $this->WxMessageMassSend(['touser'=>$openids,'msgtype'=>'mpnews', 'mpnews'=>['media_id'=>$media_id]]);
+    }
+
+    public function WxMessageMassSendTextByGroupid($group_id, $content)
+    {
+        return $this->WxMessageMassSendAll(['filter'=>['is_to_all'=>false, 'group_id'=>$group_id], 'msgtype'=>'text', 'text'=>['content'=>$content]]);
+    }
+
+    public function WxMessageMassSendNewsByGroupid($group_id, $media_id)
+    {
+        return $this->WxMessageMassSendAll(['filter'=>['is_to_all'=>false, 'group_id'=>$group_id], 'msgtype'=>'mpnews', 'mpnews'=>['media_id'=>$media_id]]);
+    }
+
+    public function WxMessageMassPreview($msg)
+    {
+        $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/mass/preview", ['access_token'=>$this->accessToken], self::json_encode($msg));
+        $this->checkWxApiResp($arr, [__METHOD__, $msg]);
+        U::W([$arr, $msg]);
+        return $arr;                        
+    }
+
+    public function WxMessageMassPreviewText($openid, $content)
+    {
+
+        return $this->WxMessageMassPreview(['touser'=>$openid,'msgtype'=>'text', 'text'=>['content'=>$content]]);
+    }
+
+    public function WxMessageMassPreviewNews($openid, $media_id)
+    {
+
+        return $this->WxMessageMassPreview(['touser'=>$openid,'msgtype'=>'mpnews', 'mpnews'=>['media_id'=>$media_id]]);
     }
 
     //$type: image,voice,video,thumb
     public function WxMediaUpload($type, $filename)
     {
-        $key = $type.$filename;
+        $key = __METHOD__ . $this->getGhId() . "{$type} {$filename}";
         $arr = Yii::$app->cache->get($key);
         if ($arr === false)
         {
@@ -828,6 +922,21 @@ EOD;
             $this->checkWxApiResp($arr, [__METHOD__, $type, $filename]);
             Yii::$app->cache->set($key, $arr, YII_DEBUG ? 100 : 2*24*3600);
         }
+        //U::W(['mediaupload ==============', $arr]);
+        return $arr;
+    }
+
+    public function WxMediaUploadNews($articles)
+    {
+        $key = __METHOD__ . $this->getGhId(). json_encode(articles);
+        $arr = Yii::$app->cache->get($key);
+        if ($arr === false)
+        {
+            $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/media/uploadnews", ['access_token'=>$this->accessToken], self::json_encode(['articles'=>$articles]));
+            $this->checkWxApiResp($arr, [__METHOD__, $articles]);
+            Yii::$app->cache->set($key, $arr, YII_DEBUG ? 100 : 2*24*3600);
+        }
+        //U::W(['WxMediaUploadNews ============', $arr]);
         return $arr;
     }
 
@@ -922,7 +1031,6 @@ EOD;
         $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/customservice/getonlinekflist", ['access_token'=>$this->accessToken]);
         $this->checkWxApiResp($arr, [__METHOD__]);
         $arr = empty($arr['kf_online_list']) ? [] : $arr['kf_online_list']; 
-        //U::W($arr);      
         return $arr; 
                 
      /*
@@ -1262,7 +1370,7 @@ errcode errmsg
 40009     不合法的图片文件大小
 40010     不合法的语音文件大小
 40011     不合法的视频文件大小
-40012     不合法的缩略图文件大�?
+40012     不合法的缩略图文件大�?
 40013     不合法的APPID
 40014     不合法的access_token
 40015     不合法的菜单类型
@@ -1271,31 +1379,31 @@ errcode errmsg
 40018     不合法的按钮名字长度
 40019     不合法的按钮KEY长度
 40020     不合法的按钮URL长度
-40021     不合法的菜单版本�?
-40022     不合法的子菜单级�?
-40023     不合法的子菜单按钮个�?
-40024     不合法的子菜单按钮类�?
-40025     不合法的子菜单按钮名字长�?
+40021     不合法的菜单版本�?
+40022     不合法的子菜单级�?
+40023     不合法的子菜单按钮个�?
+40024     不合法的子菜单按钮类�?
+40025     不合法的子菜单按钮名字长�?
 40026     不合法的子菜单按钮KEY长度
 40027     不合法的子菜单按钮URL长度
-40028     不合法的自定义菜单使用用�?
+40028     不合法的自定义菜单使用用�?
 40029     不合法的oauth_code
 40030     不合法的refresh_token
 40031     不合法的openid列表
 40032     不合法的openid列表长度
-40033     不合法的请求字符，不能包含\uxxxx格式的字�?
+40033     不合法的请求字符，不能包含\uxxxx格式的字�?
 40035     不合法的参数
 40038     不合法的请求格式
 40039     不合法的URL长度
 40050     不合法的分组id
-40051     分组名字不合�?
+40051     分组名字不合�?
 41001     缺少access_token参数
 41002     缺少appid参数
 41003     缺少refresh_token参数
 41004     缺少secret参数
-41005     缺少多媒体文件数�?
+41005     缺少多媒体文件数�?
 41006     缺少media_id参数
-41007     缺少子菜单数�?
+41007     缺少子菜单数�?
 41008     缺少oauth code
 41009     缺少openid
 42001     access_token超时
@@ -1304,13 +1412,13 @@ errcode errmsg
 43001     需要GET请求
 43002     需要POST请求
 43003     需要HTTPS请求
-43004     需要接收者关�?
-43005     需要好友关�?
-44001     多媒体文件为�?
+43004     需要接收者关�?
+43005     需要好友关�?
+44001     多媒体文件为�?
 44002     POST的数据包为空
 44003     图文消息内容为空
 44004     文本消息内容为空
-45001     多媒体文件大小超过限�?
+45001     多媒体文件大小超过限�?
 45002     消息内容超过限制
 45003     标题字段超过限制
 45004     描述字段超过限制
@@ -1324,12 +1432,12 @@ errcode errmsg
 45016     系统分组，不允许修改
 45017     分组名字过长
 45018     分组数量超过上限
-46001     不存在媒体数�?
+46001     不存在媒体数�?
 46002     不存在的菜单版本
 46003     不存在的菜单数据
 46004     不存在的用户
 47001     解析JSON/XML内容错误
-48001     api功能未授�?
+48001     api功能未授�?
 50001     用户未授权该api 
 
 

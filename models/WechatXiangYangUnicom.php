@@ -235,7 +235,7 @@ class WechatXiangYangUnicom extends Wechat
         {
             return $this->responseText("请拨打联通热线10010 向客服咨询，谢谢!");
         }  
-        else if ($msg == '抢年会红包')/*抢年会红包*/
+        else if ($msg == '抢年会红包')
         {
 
             $Date_1=date("Y-m-d H:i:s");
@@ -399,6 +399,16 @@ class WechatXiangYangUnicom extends Wechat
             $model->save(false);
         }    
         return Wechat::NO_RESP;
+    }
+
+    protected function onLocationSelect()
+    { 
+        return Wechat::NO_RESP;
+        $Content = $this->getRequest('EventKey');
+        if (($resp = $this->handleKeyword($Content)) !== false) {
+            return $resp;
+        }
+        return parent::onLocationSelect();
     }
 
     protected function onView() 

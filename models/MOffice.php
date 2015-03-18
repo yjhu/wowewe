@@ -27,6 +27,13 @@ CREATE TABLE wx_office (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+
+ALTER TABLE wx_gh DROP menu;
+
+
+
+
+
 ALTER TABLE wx_office ADD is_jingxiaoshang tinyint(3) unsigned NOT NULL DEFAULT 0 COMMENT '是否是经销商';
 ALTER TABLE wx_office ADD role tinyint(3) unsigned NOT NULL DEFAULT 1;
 ALTER TABLE wx_office ADD status tinyint(3) unsigned NOT NULL DEFAULT 0;

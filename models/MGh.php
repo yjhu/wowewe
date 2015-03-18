@@ -46,9 +46,7 @@ class MGh extends ActiveRecord
 
     const GH_WOSO_OPENID_HBHE = 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o';
     const GH_WOSO_OPENID_KZENG = 'oSHFKs9_gq4Ve6sHdQ86mJh1U3ZQ';
-    
-
-    
+        
     public function behaviors()
     {
         return [
@@ -99,50 +97,61 @@ class MGh extends ActiveRecord
     {
         return $this->hasMany(MStaff::className(), ['gh_id'=>'gh_id']);
     }
-/*
-    // scene_id is distributed in MChannel(deleted), MOffice, MUser
-    // but scene_id is just distributed in MOffice, MStaff
-    public function newSceneId()
+
+
+    static function getNoYesOptionName()
     {
-        if (empty($this->scene_ids))
-        {
-            $this->scene_ids = '1';
-            return 1;
-        }
-        $scene_ids = explode(',', $this->scene_ids);
-        $i=1;
-        while(1)
-        {
-            if (!in_array($i, $scene_ids))
-            {
-                $scene_ids[] = $i;    
-                $this->scene_ids = implode(',',$scene_ids);
-                return $i;
-            }
-            $i++;
-            if ($i>100000)
-                break;
-        }
-        U::W([__METHOD__, 'not find avail scene_id']);            
-        return false;
+        $arr = array(
+            0 => '否',
+            1 => '是',
+        );
+        return $arr;
     }
 
-    public function freeSceneId($scene_id)
-    {
-        if (empty($scene_id))
-            return;
-        $scene_ids = explode(',', $this->scene_ids);
-        foreach($scene_ids as $key=>$val)
+    /*
+        // scene_id is distributed in MChannel(deleted), MOffice, MUser
+        // but scene_id is just distributed in MOffice, MStaff
+        public function newSceneId()
         {
-            if ($scene_id == $val)
-                unset($scene_ids[$key]);
+            if (empty($this->scene_ids))
+            {
+                $this->scene_ids = '1';
+                return 1;
+            }
+            $scene_ids = explode(',', $this->scene_ids);
+            $i=1;
+            while(1)
+            {
+                if (!in_array($i, $scene_ids))
+                {
+                    $scene_ids[] = $i;
+                    $this->scene_ids = implode(',',$scene_ids);
+                    return $i;
+                }
+                $i++;
+                if ($i>100000)
+                    break;
+            }
+            U::W([__METHOD__, 'not find avail scene_id']);
+            return false;
         }
-        if (empty($scene_ids))
-            $this->scene_ids = '';
-        else
-            $this->scene_ids = implode(',', $scene_ids);
-    }
-*/
+
+        public function freeSceneId($scene_id)
+        {
+            if (empty($scene_id))
+                return;
+            $scene_ids = explode(',', $this->scene_ids);
+            foreach($scene_ids as $key=>$val)
+            {
+                if ($scene_id == $val)
+                    unset($scene_ids[$key]);
+            }
+            if (empty($scene_ids))
+                $this->scene_ids = '';
+            else
+                $this->scene_ids = implode(',', $scene_ids);
+        }
+    */
     
 }
 
