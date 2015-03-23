@@ -111,7 +111,7 @@ class SmCaptcha extends InputWidget
         $url = Url::to($route);
 
         $js = <<< JS
-var wait = 3;  
+var wait = 120;  
 get_code_time = function (btn) 
 {  
     if (wait == 0) 

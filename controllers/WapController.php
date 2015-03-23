@@ -29,6 +29,7 @@ use app\models\MPkg;
 use app\models\MSceneDetail;
 use app\models\MWinMobileFee;
 use app\models\MWinMobileNum;
+use app\models\OpenidBindMobile;
 
 use app\models\Alipay;
 use app\models\AlipaySubmit;
@@ -61,14 +62,13 @@ class WapController extends Controller
     public function init()
     {
         //U::W(['init....', $_GET,$_POST, $GLOBALS]);
-        U::W(['init....', $_GET,$_POST]);
+        U::W(['init....', $_GET,$_POST, Yii::$app->request->getUrl()]);
     }
 
     public function beforeAction($action)
     {
         return true;
     }
-
 
     public function afterAction($action, $result)
     {
@@ -162,6 +162,69 @@ class WapController extends Controller
         Yii::$app->session['gh_id'] = $gh_id;
         Yii::$app->session['openid'] = $openid;
         return $this->redirect($r);
+    }
+
+    public function getOauth2UserInfo()
+    {
+        if (Yii::$app->wx->localTest)
+        {
+            $openid = MGh::GH_XIANGYANGUNICOM_OPENID_HBHE;
+            //list($route, $gh_id) = explode(':', $_GET['state']);
+            $arr = explode(':', $_GET['state']);
+            $route = $arr[0];
+            $gh_id = $arr[1];
+            unset($arr[0], $arr[1]);
+            $r[] = $route;
+            foreach($arr as $str)
+            {
+                list($key, $val) = explode('=', $str);
+                $r[$key] = $val;
+            }
+            Yii::$app->session['gh_id'] = $gh_id;
+            Yii::$app->session['openid'] = $openid;            
+            $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+            //if ($user !== null)
+            //    Yii::$app->user->login($user);
+            //return $this->redirect([$route, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+            //return $this->redirect([$route]);
+            return $this->redirect($r);
+        }
+    
+        if (empty($_GET['code'])) {
+            U::W([__METHOD__, $_GET, 'no code']);
+            return;
+        }        
+        $code = $_GET['code'];
+        if ($code == 'authdeny') {
+            return 'Sorry, we can not do anything for you without your authrization!';
+        }
+        
+        $arr = explode(':', $_GET['state']);
+        $route = $arr[0];
+        $gh_id = $arr[1];
+        unset($arr[0], $arr[1]);
+        $r[] = $route;
+        foreach($arr as $str)
+        {
+            list($key, $val) = explode('=', $str);
+            $r[$key] = $val;
+        }
+
+        Yii::$app->wx->setGhId($gh_id);
+        $token = Yii::$app->wx->WxGetOauth2AccessToken($code);
+        if (!isset($token['access_token'])) {
+            U::W([__METHOD__, $token]);
+            return null;
+        }
+        $openid = $token['openid'];
+        if (isset($token['scope']) && $token['scope'] == 'snsapi_userinfo') {
+            $oauth2UserInfo = Yii::$app->wx->WxGetOauth2UserInfo($token['access_token'], $token['openid']);
+            $token['oauth2UserInfo'] = $oauth2UserInfo;
+        }
+        //$token['gh_id'],$token['openid'],$token['oauth2UserInfo']
+        Yii::$app->session['gh_id'] = $token['gh_id'];
+        Yii::$app->session['openid'] = $token['openid'];        
+        return $token;
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/nativepackage
@@ -427,6 +490,7 @@ EOD;
         $this->layout = 'wap';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
+        
         Yii::$app->wx->setGhId($gh_id);
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
         if ($model === null)
@@ -443,7 +507,11 @@ EOD;
             $username = Yii::$app->user->identity->username;
         else
             $username = '';
-        
+
+        if (empty($model->openidBindMobiles)) {
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+
         $result = '';
         $lucy_msg = [];
         if ($model->load(Yii::$app->request->post())) 
@@ -1560,8 +1628,11 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
     {           
         $this->layout = 'wapy';
         $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
+        $openid = U::getSessionParam('openid');        
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($model->openidBindMobiles)) {
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
        
         $scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt<0 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
         
@@ -1933,6 +2004,27 @@ U::W('aaaaa......'.$user_founder->mobile);
 
         return $this->render('winmobilefee', ['user' => $user, 'user_founder' => $user_founder, 'user_fan' => $user_fan, 'user_fans' => $user_fans, 'subscribed'=>$subscribed, 'canJoin'=>$canJoin]);    
     }
+
+    public function actionAddbindmobile($gh_id, $openid, $dst=null)
+    {
+        $this->layout = 'wap';    
+        $model = new OpenidBindMobile();        
+        $model->gh_id = $gh_id;
+        $model->openid = $openid;
+        $model->setScenario('bind_mobile');                
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if (empty($dst)) {
+                Yii::$app->session->setFlash('success','bind ok');
+                return $this->refresh();
+            } else {
+                return $this->redirect($dst);
+            }
+        }
+        return $this->render('addbindmobile', [
+            'model' => $model,
+        ]);
+    }
+
 
 }
 
@@ -2506,5 +2598,10 @@ return $xmlStr;
         Yii::$app->wx->setParameter("out_trade_no", Wechat::generateOutTradeNo());
         Yii::$app->wx->setParameter("total_fee", "1");
         Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");
+
+//        $s = Yii::$app->sm->S('15527210477', 'hello, world', '', null, true);
+//        U::W($s->resp);        
+    
+        
 */
 
