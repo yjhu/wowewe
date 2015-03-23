@@ -309,7 +309,7 @@ function load_data2(i, n)
 
 	else if((n.cid == 810)||(n.cid == 811)||(n.cid == 812)||(n.cid == 808)||(n.cid == 809)
 		||(n.cid == 813)||(n.cid == 814)||(n.cid == 805)||(n.cid == 815)
-		||(n.cid == 816)||(n.cid == 817)||(n.cid == 818)||(n.cid == 819))
+		||(n.cid == 816)||(n.cid == 817)||(n.cid == 818))
 		imgurl = '../web/show_res/index_doubledaninfo.jpg';
 
 	//双十一活动 手机 begin
@@ -333,6 +333,29 @@ function load_data2(i, n)
 	else if(n.cid == 336)
 		imgurl = '../web/images/item/xiaomi-hm-1s-700x500.jpg-120x120.jpg';
 	// 双十一活动 手机 end
+
+	//双4G双百兆手机
+	else if(n.cid == 850)
+		imgurl = '../web/images/item/meilan-note-700x500.jpg-120x120.jpg';
+	else if(n.cid == 851)
+		imgurl = '../web/images/item/meizu-x4-700x500.jpg-120x120.jpg';
+	else if(n.cid == 852)
+		imgurl = '../web/images/item/iphone6-700x500.jpg-120x120.jpg';
+	else if(n.cid == 853)
+		imgurl = '../web/images/item/iphone6-700x500.jpg-120x120.jpg';
+	else if(n.cid == 854)
+		imgurl = '../web/images/item/iphone6-700x500.jpg-120x120.jpg';
+	else if(n.cid == 855)
+		imgurl = '../web/images/item/iphone6-700x500.jpg-120x120.jpg';
+	else if(n.cid == 856)
+		imgurl = '../web/images/item/iphone6-700x500.jpg-120x120.jpg';
+	else if(n.cid == 857)
+		imgurl = '../web/images/item/zhongxing-v5-700x500.jpg-120x120.jpg';
+	else if(n.cid == 858)
+		imgurl = '../web/images/item/huawei-mate7-700x500.jpg-120x120.jpg';
+
+	//双4G双百兆手机 end
+
 
 	if(n.val_pkg_3g4g == "3g")
 		val_pkg_3g4g_name="3G普通套餐";

@@ -29,6 +29,9 @@ use vova07\imperavi\Widget;
 
     <?= $form->field($model, 'digest')->textInput(['maxlength' => 256]) ?>
 
+    <iframe align=middle marginwidth=0 marginheight=0 src="./wxedit/index.html" frameborder=no scrolling=yes width=640 height=600></iframe>
+
+
     <?php echo $form->field($model, 'content')->widget(Widget::className(), [
         'settings' => [
             'lang' => 'zh_cn',

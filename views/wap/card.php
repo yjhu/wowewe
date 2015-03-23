@@ -172,6 +172,9 @@
 			<input type="hidden" name="cardType" vaule="0">
 		<?php } else { ?>
 		<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+
+		 <input type="hidden" name="cardType" id="cardType" value="0" />
+		<!--
 		  <legend class="title_comm">卡类型</legend>
 
 		  <input type="radio" name="cardType" id="radio1_0" value="0" checked />
@@ -185,6 +188,9 @@
 		<div data-role="popup" id="popupInfo" class="ui-content" data-theme="a" style="max-width:350px;">
 		<img width="100%" style="display:block" src="../web/images/item/card.jpg" alt=""/>
 		</div>
+		-->
+
+
 		</fieldset>
 		<?php } ?>
 
@@ -233,7 +239,7 @@
 	<?php if($item->kind == 4) {?>
 		<a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">确认</a>
 	<?php } else { ?>
-		<a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">一键购买</a>
+		<a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">一键订购</a>
 	<?php } ?>
 
 	<br>

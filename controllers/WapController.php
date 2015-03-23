@@ -891,6 +891,19 @@ EOD;
 
                 break;
 
+            case MItem::ITEM_KIND_INTERNET_CARD_300YUANSHICHANGBANNIANKA:
+                $order->title = '300元时长半年卡';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_KIND_INTERNET_CARD_600YUANSHICHANGNIANKA:
+                $order->title = '600元时长年卡';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_KIND_INTERNET_CARD_1200YUANSHICHANGNIANKA:
+                $order->title = '1200元时长年卡';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
             case MItem::ITEM_CAT_SXYW_WKHB:
                 $order->title = '沃看湖北可看在线卫视及各种栏目10元包6G';                   
                 $order->attr = "{$_GET['cardType']}";
@@ -934,6 +947,10 @@ EOD;
                 $order->attr = "{$_GET['cardType']}";
                 break; 
 
+            case MItem::ITEM_CAT_4GTAOCAN:
+                $order->title = '4G套餐';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
 
             //doubledan
             case MItem::ITEM_CAT_CARD_DD_100YUAN5G_SHANGWANGKA:
@@ -978,6 +995,66 @@ EOD;
                 $order->title = '三星Note3';                   
                 $order->attr = "{$_GET['cardType']}";
                 break;  
+         
+            //购机有优惠 2015-3-20
+            case MItem::ITEM_CAT_MOBILE_OPPOR830S:
+                $order->title = 'OPPO R830S';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;  
+                    
+            case MItem::ITEM_CAT_MOBILE_LIANGXIANGA399:
+                $order->title = '联想 A399';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;  
+
+            case MItem::ITEM_CAT_MOBILE_ZHONGXINGV5:
+                $order->title = '中兴 V5';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;  
+
+            case MItem::ITEM_CAT_MOBILE_HONGMI2:
+                $order->title = '红米2';                   
+                $order->attr = "{$_GET['cardType']}";
+                break;  
+  
+              //双4G双百兆手机
+            case MItem::ITEM_CAT_MOBILE_MEILANNOTE_16G:
+                $order->title = '魅蓝note 16G';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_MEIZUMX4_16G:
+                $order->title = '魅族 MX4';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_IPHONE6_16G:
+                $order->title = 'iPhone6 16G';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_IPHONE6PLUS_16G:
+                $order->title = 'iPhone6 Plus 16G';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_IPHONE6_64G:
+                $order->title = 'iPhone6 64G';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_IPHONE6_128G:
+                $order->title = 'iPhone6 128G';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_IPHONE6PLUS_64G:
+                $order->title = 'iPhone6 Plus 64G';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_ZHONGXINGV5S:
+                $order->title = '中兴V5S';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_HUAWEI_MT7:
+                $order->title = '华为 Mate7';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+
 
 
             default:
@@ -1070,7 +1147,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
             }
 
             // send wx message to user
-            $arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);                    
+            //$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);                    
         }
         else
         {
@@ -1690,6 +1767,55 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         Yii::$app->wx->setGhId($gh_id);
         return $this->render('showk1info', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
+
+    //
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/4gtaocan:gh_03a74ac96138   
+    public function action4gtaocan()
+    {
+        $this->layout = false;  
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('4gtaocan', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+    public function actionOrder4gtaocan()
+    {      
+        $this->layout = 'wapy';  
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);     
+        return $this->render('order4gtaocan', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }  
+
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/4gzuhetaocan:gh_03a74ac96138   
+    public function action4gzuhetaocan()
+    {
+        $this->layout = false;  
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('4gzuhetaocan', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/shuang4gshuangbaizhao:gh_03a74ac96138  
+    /* 
+    public function actionShuang4gshuangbaizhao()
+    {
+        $this->layout ='wapy';
+
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('shuang4gshuangbaizhao', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+    */
+
+
+
+
+
 
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wlmshop:gh_03a74ac96138
