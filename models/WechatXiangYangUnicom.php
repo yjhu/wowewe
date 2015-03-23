@@ -69,6 +69,23 @@ class WechatXiangYangUnicom extends Wechat
             if ($isNewFan || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_HBHE) {                 
                 $user->scene_pid = $scene_pid;                            
                 $user->save(false);
+
+                // insert cash into MSceneDetail
+                $father = MUser::findOne(['gh_id'=>$gh_id, 'scene_id'=>$scene_pid]);
+                if ($father !== null)
+                {
+                    $ar = new MSceneDetail;
+                    $ar->gh_id = $father->gh_id;
+                    $ar->openid = $father->openid;
+                    $ar->scene_id = $father->scene_id;
+                    $ar->cat = MSceneDetail::CAT_FAN;
+                    $ar->scene_amt = 100;
+                    $ar->memo = '推荐粉丝';
+                    $ar->openid_fan = $openid;
+                    if (!$ar->save(false))
+                        U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
+                }
+
             } else {
                 U::W("SORRY, $FromUserName IS NOT NEW, can not be considered a fan");
             }                
@@ -93,7 +110,7 @@ class WechatXiangYangUnicom extends Wechat
         $user->save(false);
 
         $this->saveAccessLog(['scene_pid'=>$user->scene_pid]);
-/*
+
         // cancel MSceneDetail
         if ($scene_pid > 0)
         {
@@ -105,7 +122,7 @@ class WechatXiangYangUnicom extends Wechat
                     U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
             }            
         }            
-*/        
+        
         return Wechat::NO_RESP;            
     }
 

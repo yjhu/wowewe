@@ -45,6 +45,7 @@ class MStaff extends ActiveRecord
     const SCENE_CAT_IN = 0;
     const SCENE_CAT_OUT = 1;
     const SCENE_CAT_OFFICE = 2;
+    const SCENE_CAT_FAN = 3;    
 
     static function getStaffCatOptionName( $key = null )
     {

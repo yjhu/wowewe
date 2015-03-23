@@ -380,6 +380,35 @@ class MUser extends ActiveRecord implements IdentityInterface
         return true;
     }
 
+    public function getOpenidBindMobiles()
+    {
+        return $this->hasMany(OpenidBindMobile::className(), ['gh_id'=>'gh_id', 'openid'=>'openid']);
+    }
+
+    public function newSceneIdForOpenid()
+    {
+        $staff = new MStaff;
+        $staff->gh_id = $this->gh_id;
+        $staff->openid = $this->openid;        
+//        $staff->office_id = $this->office_id;
+        $staff->scene_id = MStaff::newSceneId($this->gh_id);
+        $staff->name = $this->nickname;
+        $staff->cat = MStaff::SCENE_CAT_FAN;                
+        if (!$staff->save(false)) {
+            U::W(['error', __METHOD__, $staff]);
+        }                    
+        return $staff;        
+    }
+
+    public function getQrImageUrl()
+    {
+        $staff = MStaff::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
+        if (empty($staff)) {
+            $staff = $this->newSceneIdForOpenid();
+        }
+        return $staff->getQrImageUrl();
+    }
+
 
 }
 
