@@ -174,6 +174,14 @@ class MItem extends ActiveRecord
 	const ITEM_CAT_MOBILE_ZHONGXINGV5S = 857;
 	const ITEM_CAT_MOBILE_HUAWEI_MT7 = 858;
 
+	//老用户户专享 参与机型及优惠合约
+	const ITEM_CAT_MOBILE_SANXIN_SM_G9006V = 870;
+	const ITEM_CAT_MOBILE_HTC_ONE= 871;
+	const ITEM_CAT_MOBILE_ZHONGXING_Q801U = 872;
+	const ITEM_CAT_MOBILE_LIANXIANG_A606 = 873;
+	const ITEM_CAT_MOBILE_ZHONGXINGV5S_1 = 874;
+
+
 
 	const ITEM_KIND_MOBILE = 1;
 	const ITEM_KIND_CARD = 2;
@@ -287,7 +295,13 @@ class MItem extends ActiveRecord
 			self::ITEM_CAT_MOBILE_ZHONGXINGV5S => '中兴V5S',
 			self::ITEM_CAT_MOBILE_HUAWEI_MT7 => '华为 Mate7',			
 
-
+			//老用户户专享 参与机型及优惠合约
+			self::ITEM_CAT_MOBILE_SANXIN_SM_G9006VW => '三星SM-G9006V/W',
+			self::ITEM_CAT_MOBILE_HTC_ONE => 'HTC One',
+			self::ITEM_CAT_MOBILE_ZHONGXING_Q801U => '中兴 Q801U',
+			self::ITEM_CAT_MOBILE_LIANXIANG_A606 => '联想A606',
+			self::ITEM_CAT_MOBILE_ZHONGXINGV5S_1 => '中兴V5S',
+			
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
 	}

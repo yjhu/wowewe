@@ -1123,7 +1123,27 @@ EOD;
                 $order->attr = "{$_GET['cardType']}";
                 break; 
 
-
+            //老用户户专享 参与机型及优惠合约
+            case MItem::ITEM_CAT_MOBILE_SANXIN_SM_G9006VW:
+                $order->title = '三星SM-G9006V/W';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_HTC_ONE:
+                $order->title = 'HTC One';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_ZHONGXING_Q801U:
+                $order->title = '中兴 Q801U';   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_LIANXIANG_A606:
+                $order->title = '联想A606';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_ZHONGXINGV5S_1:
+                $order->title = '中兴V5S';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
 
             default:
                 U::W(['invalid data cat', $_GET["cid"], __METHOD__,$_GET]);
