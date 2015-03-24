@@ -117,13 +117,13 @@ get_code_time = function (btn)
     if (wait == 0) 
     {  
         btn.removeAttribute('disabled');
-        btn.value = 'get';
-        wait = 3;
+        btn.value = '等待';
+        wait = 120;
     } 
     else 
     {  
         btn.setAttribute('disabled', true);
-        btn.value = 'get (' + wait + ')...';
+        btn.value = '等待 (' + wait + ')...';
         wait--;
         setTimeout(function() {  
             get_code_time(btn);

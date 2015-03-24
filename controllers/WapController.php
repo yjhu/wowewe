@@ -7,6 +7,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\filters\VerbFilter;
 use yii\data\ArrayDataProvider;
 use yii\base\Model;
@@ -1727,7 +1728,9 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');        
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        if (empty($model->openidBindMobiles)) {
+        if (empty($model->openidBindMobiles)) {        
+            $url = Url::to();
+            Yii::$app->getSession()->set('RETURN_URL', $url);
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }
        
@@ -2159,7 +2162,7 @@ U::W('aaaaa......'.$user_founder->mobile);
         return $this->render('winmobilefee', ['user' => $user, 'user_founder' => $user_founder, 'user_fan' => $user_fan, 'user_fans' => $user_fans, 'subscribed'=>$subscribed, 'canJoin'=>$canJoin]);    
     }
 
-    public function actionAddbindmobile($gh_id, $openid, $dst=null)
+    public function actionAddbindmobile($gh_id, $openid)
     {
         $this->layout = 'wap';    
         $model = new OpenidBindMobile();        
@@ -2167,11 +2170,12 @@ U::W('aaaaa......'.$user_founder->mobile);
         $model->openid = $openid;
         $model->setScenario('bind_mobile');                
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if (empty($dst)) {
+            $url = Yii::$app->getSession()->get('RETURN_URL');
+            if (!empty($url)) {
+                return $this->redirect($url);                
+            } else {
                 Yii::$app->session->setFlash('success','bind ok');
                 return $this->refresh();
-            } else {
-                return $this->redirect($dst);
             }
         }
         return $this->render('addbindmobile', [

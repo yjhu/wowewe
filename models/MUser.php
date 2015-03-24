@@ -409,7 +409,21 @@ class MUser extends ActiveRecord implements IdentityInterface
         return $staff->getQrImageUrl();
     }
 
-
+    public function bindMobileIsInside($tableName='wx_t1')
+    {
+        foreach($this->openidBindMobiles as $openidBindMobile) {
+            if (empty($openidBindMobile->mobile)) {
+                continue;
+            }
+            $command = Yii::$app->db->createCommand("SELECT * FROM $tableName WHERE mobile=:mobile", [':mobile'=>$openidBindMobile->mobile]);
+            $row = $command->queryOne();
+            if (!empty($row)) {
+                return true;
+            }                
+        }
+        return true;
+    }
+    
 }
 
 /*

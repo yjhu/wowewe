@@ -581,7 +581,34 @@ class CmdController extends Controller
     {        
 	 echo "guodu:".ESmsGuodu::B(true);
     }
-    
+
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/t1
+    public function actionT2()
+    {
+        //$file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'t1.txt';
+        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'t2.txt';        
+        $fh = fopen($file, "r");
+        $i = 0;
+        $sm_valid_cids = array();
+        while (!feof($fh)) 
+        {
+            $line = fgets($fh);
+            if (empty($line))
+                continue;
+            $arr = explode("\t", $line);
+            $cat = iconv('GBK','UTF-8//IGNORE', $arr[0]);
+            $mobile = iconv('GBK','UTF-8//IGNORE', $arr[1]);
+            $product_name = iconv('GBK','UTF-8//IGNORE', $arr[2]);
+            $in_date = iconv('GBK','UTF-8//IGNORE', $arr[3]);
+            U::W([$cat, $mobile, $product_name, $in_date]);            
+            //$tableName = 'wx_t1';            
+            $tableName = 'wx_t2';                        
+            $n = Yii::$app->db->createCommand("INSERT INTO $tableName (cat, mobile, product_name, in_date) VALUES (:cat, :mobile, :product_name, :in_date)", [':cat' => $cat,':mobile' => $mobile, ':product_name' => $product_name, ':in_date' => $in_date])->execute();
+
+            $i++;
+        }
+        fclose($fh);    
+    }
 }
 
 /*        

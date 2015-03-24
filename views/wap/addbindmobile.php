@@ -31,7 +31,7 @@ use app\models\SmCaptcha;
     <?php //$form = ActiveForm::begin(); ?>
 
 		<?php $form = ActiveForm::begin([
-			'id' => "{$basename}_form",
+			'id' => "form_id",
 			'enableClientScript'=>false,
 			//'method' => 'get',
 			//'options'=>['class'=>'ui-corner-all'],

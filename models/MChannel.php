@@ -1,7 +1,7 @@
 <?php
 namespace app\models;
 
-delete
+//delete
 /*
 #经销商渠道放在wx_channel中, 自营业厅渠道放在wx_office中
 #全部挪到wx_office中
