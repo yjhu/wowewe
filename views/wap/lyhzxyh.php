@@ -73,7 +73,7 @@
 	$assetsPath = Yii::$app->getRequest()->baseUrl.'/images';
 	$appid = Yii::$app->wx->gh['appid'];
 	//$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid());
-	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid().":wid={$wid}");
+	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/lyhzxyh:'.Yii::$app->wx->getGhid().":wid={$wid}");
 	$myImg = Url::to("$assetsPath/share-icon.jpg", true);
 	$title = '老用户专享优惠';
 	$desc = '多款热销机型，优惠大放送，快来瞄瞄吧~~ 心动不如行动！';

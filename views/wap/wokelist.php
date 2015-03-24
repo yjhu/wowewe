@@ -308,7 +308,7 @@
     <img src="../web/images/woke/womei_sad.png" width="96px" height="96px">
     <p>没有订单？快去催小伙伴购买吧~</p>
    </span>
-   <c/enter>
+   <center>
 </div>
 
 <div data-role="footer" data-position="fixed">

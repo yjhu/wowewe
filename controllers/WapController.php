@@ -1928,7 +1928,14 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         } elseif ($model->bindMobileIsInside('wx_t2')) {
             return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid]);        
         }
-        return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid]);        
+        return $this->render('lyhzxyhhint', ['gh_id'=>$gh_id, 'openid'=>$openid]);        
+    }  
+
+    public function actionLyhzxyhhint()
+    {      
+        $this->layout = 'wapy';  
+       
+        return $this->render('lyhzxyhhint');        
     }  
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/4gzuhetaocan:gh_03a74ac96138   
