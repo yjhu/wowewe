@@ -1938,6 +1938,18 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         return $this->render('lyhzxyhhint');        
     }  
 
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/thsj:gh_03a74ac96138   
+    public function actionThsj()
+    {
+        $this->layout = false;  
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('thsj', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/4gzuhetaocan:gh_03a74ac96138   
     public function action4gzuhetaocan()
     {
