@@ -2154,7 +2154,7 @@ U::W('aaaaa......'.$user_founder->mobile);
         return $this->render('winmobilefee', ['user' => $user, 'user_founder' => $user_founder, 'user_fan' => $user_fan, 'user_fans' => $user_fans, 'subscribed'=>$subscribed, 'canJoin'=>$canJoin]);    
     }
 
-    public function actionAddbindmobile($gh_id, $openid, $dst=null)
+    public function actionAddbindmobile($gh_id, $openid)
     {
         $this->layout = 'wap';    
         $model = new OpenidBindMobile();        
@@ -2162,12 +2162,12 @@ U::W('aaaaa......'.$user_founder->mobile);
         $model->openid = $openid;
         $model->setScenario('bind_mobile');                
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            if (empty($dst)) {
+            $url = Yii::$app->getSession()->get('RETURN_URL');
+            if (!empty($url)) {
+                return $this->redirect($url);                
+            } else {
                 Yii::$app->session->setFlash('success','bind ok');
                 return $this->refresh();
-            } else {
-                $url = Yii::$app->getSession()->get($this->returnUrlParam);
-                return $this->redirect($dst);
             }
         }
         return $this->render('addbindmobile', [
