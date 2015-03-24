@@ -61,7 +61,7 @@ class MChannelSearch extends Model
                 'pageSize' => 20,
             ],            
         ]);
-        
+/*        
         if (Yii::$app->user->identity->gh_id == 'root')
              throw new NotFoundHttpException("Please selected one gh_id for the root first!");
         else if (Yii::$app->user->identity->openid == 'admin')
@@ -69,7 +69,7 @@ class MChannelSearch extends Model
             $this->gh_id = Yii::$app->user->identity->gh_id;
             $this->addCondition($query, 'gh_id');        
         }
-
+*/
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }

@@ -7,6 +7,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\filters\VerbFilter;
 use yii\data\ArrayDataProvider;
 use yii\base\Model;
@@ -1630,7 +1631,9 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');        
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        if (empty($model->openidBindMobiles)) {
+        if (empty($model->openidBindMobiles)) {        
+            $url = Url::to();
+            Yii::$app->getSession()->set('RETURN_URL', $url);
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }
        
@@ -2017,6 +2020,7 @@ U::W('aaaaa......'.$user_founder->mobile);
                 Yii::$app->session->setFlash('success','bind ok');
                 return $this->refresh();
             } else {
+                $url = Yii::$app->getSession()->get($this->returnUrlParam);
                 return $this->redirect($dst);
             }
         }

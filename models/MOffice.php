@@ -437,6 +437,86 @@ class MOffice extends ActiveRecord implements IdentityInterface
         return $rows;
     }
 
+    public function getScoreOfAllStaffsByRange($date_start, $date_end)
+    {
+        $staffs = $this->getNormalStaffs();
+        $staff_count = 0;
+        foreach($staffs as $staff)
+            $staff_count += $staff->getScoreByRange($date_start, $date_end);
+        return $staff_count;        
+    }
+
+    public function getScoreByRange($date_start, $date_end)
+    {
+        $officeStaff = $this->getOfficeStaff();   
+        if (empty($officeStaff))
+            return 0;
+        return $officeStaff->getScoreByRange($date_start, $date_end);
+    }
+
+    public static function getOfficeScoreTopByRange($gh_id, $date_start, $date_end)
+    {
+        $key = __METHOD__."{$gh_id}-{$date_start}-{$date_end}";
+        $value = Yii::$app->cache->get($key);
+        if ($value !== false)
+            return $value;
+        $offices = MOffice::findAll(['gh_id' => $gh_id]);
+        $rows = [];
+        foreach($offices as $office)
+        {
+            $row = [];
+            $row['office_id'] = $office->office_id;
+            $row['scene_id'] = $office->scene_id;            
+            $row['title'] = $office->title;            
+            $row['cnt_office'] = $office->getScoreByRange($date_start, $date_end);                        
+            $row['cnt_staffs'] = $office->getScoreOfAllStaffsByRange($date_start, $date_end);
+            $row['cnt_sum'] = $row['cnt_office'] + $row['cnt_staffs'];                        
+            $rows[] = $row;
+        }
+        Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 12*3600);
+        return $rows;
+    }
+
+    public function getScoreOfAllStaffsByMonth($month)
+    {
+        $staffs = $this->getNormalStaffs();
+        $staff_count = 0;
+        foreach($staffs as $staff)
+            $staff_count += $staff->getScoreByMonth($month);
+        return $staff_count;        
+    }
+
+    public function getScoreByMonth($month)
+    {
+        $officeStaff = $this->getOfficeStaff();   
+        if (empty($officeStaff))
+            return 0;
+        return $officeStaff->getScoreByMonth($month);
+    }
+
+    public static function getOfficeScoreTopByMonth($gh_id, $month)
+    {
+        $key = __METHOD__."{$gh_id}-{$month}";
+        $value = Yii::$app->cache->get($key);
+        if ($value !== false)
+            return $value;
+        $offices = MOffice::findAll(['gh_id' => $gh_id]);
+        $rows = [];
+        foreach($offices as $office)
+        {
+            $row = [];
+            $row['office_id'] = $office->office_id;
+            $row['scene_id'] = $office->scene_id;            
+            $row['title'] = $office->title;            
+            $row['cnt_office'] = $office->getScoreByMonth($month);                        
+            $row['cnt_staffs'] = $office->getScoreOfAllStaffsByMonth($month);
+            $row['cnt_sum'] = $row['cnt_office'] + $row['cnt_staffs'];                        
+            $rows[] = $row;
+        }
+        Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 12*3600);
+        return $rows;
+    }
+
     public static function getNearestOffices($gh_id, $lon, $lat)
     {
         $key = __METHOD__."{$gh_id}_{$lon}_{$lat}";
@@ -459,6 +539,7 @@ class MOffice extends ActiveRecord implements IdentityInterface
         Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 5*60);
         return $rows;
     }
+
     
 }
 

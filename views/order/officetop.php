@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use yii\helpers\Url;
 
 use app\models\MStaff;
 use app\models\MOffice;
@@ -15,9 +16,21 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
+    <p>
+    	<?php $currentMonth = date("n"); ?>
+		<?php //echo Html::a('新增渠道', ['channelcreate'], ['class' => 'btn btn-success']) ?>
+		<?php echo Html::a('累计推广成绩下载 <i class="glyphicon glyphicon-arrow-down"></i>', Url::to().'&download=1', ['class' => 'btn btn-success']) ?>
+		<?php echo Html::a("按时间范围成绩排行", ['officetopbyrange','cur_date'=>date("Y-m-d")], ['class' => 'btn btn-info']) ?>
+    </p>
+
+	<?php \yii\widgets\Pjax::begin([
+		'timeout' => 10000,
+	]); ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
 //        'filterModel' => $searchModel,
+        'filterModel' => $filter,
 		'options' => ['class' => 'table-responsive'],
 		'tableOptions' => ['class' => 'table table-striped'],        
         'columns' => [
@@ -51,6 +64,8 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
 
 </div>
+
+	<?php \yii\widgets\Pjax::end(); ?>
 
 <?php
 /*

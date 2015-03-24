@@ -294,6 +294,7 @@ class OrderController extends Controller
         ]);
     }
 
+/*
     public function actionOfficetop()
     {
         $rows = MOffice::getOfficeScoreTop(MGh::GH_XIANGYANGUNICOM);
@@ -311,8 +312,166 @@ class OrderController extends Controller
         ]);
         return $this->render('officetop', [
             'dataProvider' => $dataProvider,
-        ]);        
+        ]);     
     }
+*/
+    
+    public function actionOfficetop()
+    {
+        $rows = MOffice::getOfficeScoreTop(Yii::$app->user->getGhid());
+
+        $filter = new \app\models\FiltersForm;
+        $filter->unsetAttributes();
+        if(isset($_GET['FiltersForm'])) {		
+            $filter->setAttributes($_GET['FiltersForm'], false);
+        }
+        $rows = $filter->filterArrayData($rows);		
+        
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $rows,
+            'sort' => [
+                'attributes' => ['cnt_office', 'cnt_staffs', 'cnt_sum'],
+                'defaultOrder'=>[
+                    'cnt_sum' => SORT_DESC
+                ]
+            ],
+            'pagination' => [
+                'pageSize' => 50,
+            ],
+        ]);
+
+        if (isset($_GET['download'])) {
+            //U::W("+++++++++++++channelscoretopdownload++++++++++++");
+            //$dataProvider->query->select(['*']);
+            //$dataProvider->setPagination(false);
+            //$data = $dataProvider->getModels();
+            $data = $rows;
+            \yii\helpers\ArrayHelper::multisort($data, 'cnt_sum', SORT_DESC);                                    
+            $date = date('Y-m-d-His');
+            $filename = Yii::$app->getRuntimePath()."/Officetop-{$date}.csv";
+            $csv = new \app\models\ECSVExport($data);            
+            $attributes = ['office_id', 'title', 'cnt_office', 'cnt_staffs', 'cnt_sum'];        
+            $csv->setInclude($attributes);
+            $csv->setHeaders(['office_id'=>'营业厅ID', 'scene_id'=>'推广码ID', 'title'=>'名称', 'cnt_office'=>'部门推广人数', 'cnt_staffs'=>'部门员工推广人数', 'cnt_sum'=>'合计推广人数']);
+            $csv->toCSV($filename); 
+            Yii::$app->response->sendFile($filename);
+            return;        
+        }
+        
+        return $this->render('officetop', [
+            'dataProvider' => $dataProvider,
+            'filter'=>$filter,            
+        ]);  
+        
+    }
+
+    public function actionOfficetopbyrange()
+    {
+        $cur_date = Yii::$app->request->get('cur_date');
+        if(empty($cur_date))
+        {
+            $date_start = Yii::$app->request->get('date_start', date("Y-m-d"));
+            $date_end = Yii::$app->request->get('date_end', date("Y-m-d"));
+        }
+        else
+        {
+            $date_start = $cur_date;
+            $date_end = $cur_date; 
+        }        
+        $rows = MOffice::getOfficeScoreTopByRange(Yii::$app->user->getGhid(), $date_start, $date_end);
+
+        $filter = new \app\models\FiltersForm;
+        $filter->unsetAttributes();
+        if(isset($_GET['FiltersForm'])) {		
+            $filter->setAttributes($_GET['FiltersForm'], false);
+        }
+        $rows = $filter->filterArrayData($rows);		
+        
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $rows,
+            'sort' => [
+                'attributes' => ['cnt_office', 'cnt_staffs', 'cnt_sum'],
+                'defaultOrder'=>[
+                    'cnt_sum' => SORT_DESC
+                ]
+            ],
+            'pagination' => [
+                'pageSize' => 50,
+            ],
+        ]);
+
+        if (isset($_GET['download']))
+        {
+            $data = $rows;
+            \yii\helpers\ArrayHelper::multisort($data, 'cnt_sum', SORT_DESC);                        
+            $date = date('Y-m-d-His');
+            $filename = Yii::$app->getRuntimePath()."/Officetopbyrange-{$date}.csv";
+            $csv = new \app\models\ECSVExport($data);            
+            $attributes = ['office_id', 'title', 'cnt_office', 'cnt_staffs', 'cnt_sum'];        
+            $csv->setInclude($attributes);
+            $csv->setHeaders(['office_id'=>'营业厅ID', 'scene_id'=>'推广码ID', 'title'=>'名称', 'cnt_office'=>'部门推广人数', 'cnt_staffs'=>'部门员工推广人数', 'cnt_sum'=>'合计推广人数']);
+            $csv->toCSV($filename); 
+            Yii::$app->response->sendFile($filename);
+            return;        
+        }
+        
+//        $cur_date = date("Y-m-d");
+        return $this->render('officetopbyrange', [
+            'dataProvider' => $dataProvider,
+//            'month'=>$month,
+            'cur_date'=>$cur_date,
+            'filter'=>$filter,            
+        ]);  
+        
+    }
+
+        public function actionOfficetopbymonth($month)
+        {
+            $rows = MOffice::getOfficeScoreTopByMonth(Yii::$app->user->getGhid(), $month);
+    
+            $filter = new \app\models\FiltersForm;
+            $filter->unsetAttributes();
+            if(isset($_GET['FiltersForm'])) {       
+                $filter->setAttributes($_GET['FiltersForm'], false);
+            }
+            $rows = $filter->filterArrayData($rows);        
+            
+            $dataProvider = new ArrayDataProvider([
+                'allModels' => $rows,
+                'sort' => [
+                    'attributes' => ['cnt_office', 'cnt_staffs', 'cnt_sum'],
+                    'defaultOrder'=>[
+                        'cnt_sum' => SORT_DESC
+                    ]
+                ],
+                'pagination' => [
+                    'pageSize' => 50,
+                ],
+            ]);
+    
+            if (isset($_GET['download']))
+            {
+                $data = $rows;
+                \yii\helpers\ArrayHelper::multisort($data, 'cnt_sum', SORT_DESC);                            
+                $date = date('Y-m-d-His');
+                $filename = Yii::$app->getRuntimePath()."/Officetopbymonth-{$month}.csv";
+                $csv = new \app\models\ECSVExport($data);            
+                $attributes = ['office_id', 'title', 'cnt_office', 'cnt_staffs', 'cnt_sum'];        
+                $csv->setInclude($attributes);
+                $csv->setHeaders(['office_id'=>'营业厅ID', 'scene_id'=>'推广码ID', 'title'=>'名称', 'cnt_office'=>'部门推广人数', 'cnt_staffs'=>'部门员工推广人数', 'cnt_sum'=>'合计推广人数']);
+                $csv->toCSV($filename); 
+                Yii::$app->response->sendFile($filename);
+                return;        
+            }
+            
+//            $cur_date = date("Y-m-d");
+            return $this->render('officetopbymonth', [
+                'dataProvider' => $dataProvider,
+                'month'=>$month,
+                'filter'=>$filter,            
+            ]);  
+            
+        }
 
     public function actionIphone6sub()
     {

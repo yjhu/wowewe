@@ -62,6 +62,25 @@ DROP TABLE IF EXISTS wx_order_arc;
 CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
 
 
+DROP TABLE IF EXISTS wx_t1;
+CREATE TABLE wx_t1 (
+    cat VARCHAR(32) NOT NULL DEFAULT '',
+    mobile VARCHAR(32) NOT NULL DEFAULT '',
+    product_name VARCHAR(128) NOT NULL DEFAULT '',
+    in_date VARCHAR(32) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS wx_t2;
+CREATE TABLE wx_t2 (
+    cat VARCHAR(32) NOT NULL DEFAULT '',
+    mobile VARCHAR(32) NOT NULL DEFAULT '',
+    product_name VARCHAR(128) NOT NULL DEFAULT '',
+    in_date VARCHAR(32) NOT NULL DEFAULT ''
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+ALTER TABLE wx_t1 ADD KEY idx_mobile(mobile);
+ALTER TABLE wx_t2 ADD KEY idx_mobile(mobile);
+
 */
 
 use Yii;
