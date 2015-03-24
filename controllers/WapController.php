@@ -1750,6 +1750,34 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes]);
     }
 
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wokelist:gh_03a74ac96138:openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
+    public function actionHyzx()
+    {           
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');        
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($model->openidBindMobiles)) {        
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+       
+        $scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt<0 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        
+        //可提现沃点
+        $ktxwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=1 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        
+        //预期沃点
+        $yqwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=0',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+
+        //预期沃点 包含粉丝取消关注
+        $yqwd_fans_qx_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status<>1 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        
+
+        U::W(count($yqwd_fans_qx_scenes));
+        return $this->render('hyzx', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes]);
+    }
+
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/orderinfo:gh_03a74ac96138
     public function actionOrderinfo($oid)
     {
@@ -1882,13 +1910,24 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         return $this->render('order4gtaocan', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }  
 
+    // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/lyhzxyh:gh_03a74ac96138   
     public function actionLyhzxyh()
     {      
         $this->layout = 'wapy';  
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($model->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }        
         Yii::$app->wx->setGhId($gh_id);     
-        return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if ($model->bindMobileIsInside('wx_t1')) {
+            return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid]);            
+        } elseif ($model->bindMobileIsInside('wx_t2')) {
+            return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid]);        
+        }
+        return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid]);        
     }  
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/4gzuhetaocan:gh_03a74ac96138   

@@ -421,7 +421,7 @@ class MUser extends ActiveRecord implements IdentityInterface
                 return true;
             }                
         }
-        return true;
+        return false;
     }
     
 }
