@@ -250,6 +250,5 @@ function jump2order(cat)
 }
 
 </script>
-</script>
 </body>
 </html>

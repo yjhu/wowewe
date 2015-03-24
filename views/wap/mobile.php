@@ -148,11 +148,15 @@ text-decoration: line-through;
         </p>
 
         <p id="price" class="title_comm">
-        价格  <!--<span class="fee">￥<//?php echo  ($item->price)/100; ?></span>-->
+        合约价  <!--<span class="fee">￥<//?php echo  ($item->price)/100; ?></span>-->
         <span class="fee">￥<?php echo round($item->price/100); ?></span>
 
-        <span class="line"><small>原价￥<?php echo  ($item->old_price)/100; ?></small></span>
-        <br><span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
+        <!--
+        <span class="line"><small>原价￥<//?php echo  ($item->old_price)/100; ?></small></span>
+        <br>
+        -->
+
+        <span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
         </p>
 
         <!--
@@ -435,11 +439,13 @@ text-decoration: line-through;
                     <label for="pkgMonthprice_<?= $value ?>"><?= $text ?></label>
                     <?php } ?> 
 
-                    <?php if($pkg3g4gValue=='4g') { ?>
+                    <!--
+                    <?//php if($pkg3g4gValue=='4g') { ?>
                     <a href="#popupInfo1" data-rel="popup" data-transition="pop" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="help">help</a></p>
                     <div data-role="popup" id="popupInfo1" class="ui-content" data-theme="a">
                     <img width="100%" style="display:block" src="../web/images/item/plan4g.jpg" alt=""/>     
-                    <?php } ?>
+                    <?//php } ?>
+                    -->
             </fieldset>
         <?php endif; ?>
 
@@ -933,7 +939,7 @@ $(document).on("pageinit", "#page2", function(){
 			type:"GET",
             cache:false,
             dataType:'json',
-			data: $("form#productForm").serialize()+"&cid="+cid+"&pkg3g4g="+pkg3g4g+"&pkgPeriod="+pkgPeriod+"&pkgMonthprice="+pkgMonthprice+"&pkgPlan="+pkgPlan+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address+"&wid="+wid,
+			data: $("form#productForm").serialize()+"&cid="+cid+"&cardType=0"+"&pkg3g4g="+pkg3g4g+"&pkgPeriod="+pkgPeriod+"&pkgMonthprice="+pkgMonthprice+"&pkgPlan="+pkgPlan+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address+"&wid="+wid,
 			success:function(json_data){
 				//data = eval('('+data+')');
 

@@ -27,7 +27,7 @@
         <?php if ($kind == 4): ?>
             <h1>5折流量包</h1>
         <?php elseif ($kind == 3): ?>
-            <h1>8折上网卡</h1>
+            <h1>上网卡优惠 8折</h1>
         <?php else: ?>
             <h1>单卡产品</h1>
         <?php endif; ?>
@@ -62,7 +62,7 @@
             <!--
             <//?//php foreach($models as $model) { if($model->cid==708 || $model->cid==709 || $model->cid==710|| $model->cid==711|| $model->cid==712|| $model->cid==713) {?>
             -->
-             <?php foreach($models as $model) { if($model->cid==700 || $model->cid==701) {?>
+             <?php foreach($models as $model) { if($model->cid==700 || $model->cid==701 || $model->cid==711 || $model->cid==715 || $model->cid==716 || $model->cid==717) {?>
                 <li><a data-ajax="false" href="<?php echo  Url::to(['wap/card', 'cid'=>$model->cid],true) ?>">
                         <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                         <h2><?= $model->title ?></h2>
