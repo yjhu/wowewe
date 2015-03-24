@@ -47,15 +47,15 @@
 			<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
 			<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
 
-			<select name="tcyf">
-			<option value="">76元套餐</option>
-			<option>106元套餐</option>
-			<option>1元套餐</option>
-			<option>76元套餐</option>
-			<option>76元套餐</option>
-			<option>76元套餐</option>
-			<option>76元套餐</option>
-			<option>76元套餐</option>
+			<select name="tcyf" id="tcyf">
+			<option value="76元套餐">76元套餐</option>
+			<option value="106元套餐">106元套餐</option>
+			<option value="136元套餐">136元套餐</option>
+			<option value="166元套餐">166元套餐</option>
+			<option value="196元套餐">196元套餐</option>
+			<option value="296元套餐">296元套餐</option>
+			<option value="396元套餐">396元套餐</option>
+			<option value="596元套餐">596元套餐</option>
 			</select>
 
 			 <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false),["id"=>"office"]); ?>
@@ -157,6 +157,8 @@ $(document).on("pageinit", "#page1", function(){
 
 		office = $("#office").val();
 
+		memo = $("#tcyf").val();
+
  		realFee = "<?php echo $_GET['realFee'];?>";
  		cardType = null;
 
@@ -175,7 +177,7 @@ $(document).on("pageinit", "#page1", function(){
 			$('#popupDialog-contactPage').popup('open');
 			//alert("姓名输入不合法");
 			return  false;
-		} 
+		}
 
 		var usermobileReg = /(^(1)\d{10}$)/;
 		if(usermobileReg.test(usermobile) === false)
@@ -201,7 +203,7 @@ $(document).on("pageinit", "#page1", function(){
 			type:"GET",
 			cache:false,
 			dataType:'json',
-			data: $("form#productForm").serialize() +"&cid="+cid+"&cardType="+cardType+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address,
+			data: $("form#productForm").serialize() +"&cid="+cid+"&cardType="+cardType+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address+"&memo="+memo,
 			success:function(json_data){
 				//data = eval('('+data+')');
 				if(json_data.status == 0)

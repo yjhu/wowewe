@@ -1175,6 +1175,7 @@ EOD;
         $order->address = (isset($_GET['address']) && $_GET['address'] !=  MOrder::NO_CHOICE) ? $_GET['address'] : '';
         $order->kaitong = (isset($_GET['kaitong']) && $_GET['kaitong'] !=  MOrder::NO_CHOICE) ? $_GET['kaitong'] : '';
         
+        $order->memo = (isset($_GET['memo']) && $_GET['memo'] !=  MOrder::NO_CHOICE) ? $_GET['memo'] : '';
 
         $order->detail = $order->getDetailStr();
         if ($_GET['selectNum'] != MOrder::NO_CHOICE)
