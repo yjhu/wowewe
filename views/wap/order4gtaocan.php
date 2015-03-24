@@ -45,6 +45,19 @@
 		<div class="ui-field-contain">
 			<input type="text" name="username" id="username" placeholder="姓名" data-mini=false value="">
 			<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
+			<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
+
+			<select name="tcyf">
+			<option value="">76元套餐</option>
+			<option>106元套餐</option>
+			<option>1元套餐</option>
+			<option>76元套餐</option>
+			<option>76元套餐</option>
+			<option>76元套餐</option>
+			<option>76元套餐</option>
+			<option>76元套餐</option>
+			</select>
+
 			 <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false),["id"=>"office"]); ?>
 		</div>
 		
@@ -140,6 +153,8 @@ $(document).on("pageinit", "#page1", function(){
 		username = $("#username").val();
 		usermobile = $("#usermobile").val();
 
+		userid = $("#userid").val();
+
 		office = $("#office").val();
 
  		realFee = "<?php echo $_GET['realFee'];?>";
@@ -170,6 +185,15 @@ $(document).on("pageinit", "#page1", function(){
 			//alert("手机号码输入不合法");
 			return  false;
 		}
+
+		var useridReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if(useridReg.test(userid) === false)
+        {
+            fillErrmsg('#popupDialog-contactPage-txt','身份证输入不合法, 请重新输入.');
+            $('#popupDialog-contactPage').popup('open');
+            //alert("身份证输入不合法");
+            return  false;
+        }
 
 		localStorage.setItem("item",$("form#productForm").serialize());
 		$.ajax({

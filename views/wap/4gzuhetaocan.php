@@ -9,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>4G组合套餐</title> 
+<title>4G自由组合低至8元</title> 
 <meta name="description" content=""> 
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
@@ -101,7 +101,7 @@
   //$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
   $assetsPath = Yii::$app->getRequest()->baseUrl.'/show_res';
   $myImg = Url::to("$assetsPath/index_4ginfo.jpg?v1", true);
-  $title = '4G组合套餐';
+  $title = '4G自由组合低至8元';
   $desc = '双4G，双百兆，4G就选沃4G！';
 ?>
 
