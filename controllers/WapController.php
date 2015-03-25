@@ -31,6 +31,7 @@ use app\models\MSceneDetail;
 use app\models\MWinMobileFee;
 use app\models\MWinMobileNum;
 use app\models\OpenidBindMobile;
+use app\models\search\OpenidBindMobileSearch;
 
 use app\models\Alipay;
 use app\models\AlipaySubmit;
@@ -1767,9 +1768,40 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         return $this->render('wokelist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes]);
     }
 
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wokelist:gh_03a74ac96138:openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/tjyl:gh_03a74ac96138:openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
+    public function actionTjyl()
+    {           
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');        
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($model->openidBindMobiles)) {        
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+       
+        $scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt<0 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        
+        //可提现沃点
+        $ktxwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=1 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        
+        //预期沃点
+        $yqwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=0',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+
+        //预期沃点 包含粉丝取消关注
+        $yqwd_fans_qx_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status<>1 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
+        
+
+        U::W(count($yqwd_fans_qx_scenes));
+        return $this->render('tjyl', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes]);
+    }
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/hyzx:gh_03a74ac96138
     public function actionHyzx()
     {           
+//        $s = Yii::$app->sm->S('15527210477', 'hello, jack', '', null, true);
+//        $s = Yii::$app->sm->S('13545296480', 'hello, kzeng', '', null, true);
+//        U::W($s->resp);            
         $this->layout = 'wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');        
@@ -2300,12 +2332,26 @@ U::W('aaaaa......'.$user_founder->mobile);
                 return $this->refresh();
             }
         }
+
+        $searchModel = new OpenidBindMobileSearch();
+        $searchModel->gh_id = $gh_id;        
+        $searchModel->openid = $openid;
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
         return $this->render('addbindmobile', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,            
             'model' => $model,
         ]);
     }
 
-
+    public function actionDeletebindmobile($id)
+    {
+        if (($model = OpenidBindMobile::findOne($id)) !== null) {
+            $model->delete();
+        }
+        return $this->redirect(['addbindmobile', 'gh_id'=>$model->gh_id, 'openid'=>$model->openid]);        
+    }
 }
 
 

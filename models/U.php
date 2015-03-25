@@ -451,6 +451,13 @@ class U
         return mt_rand(0,1000000) < $probability;
     }
     
+    public static function current(array $params = [], $scheme = false)
+    {
+        $currentParams = Yii::$app->getRequest()->getQueryParams();
+        $currentParams[0] = '/' . Yii::$app->controller->getRoute();
+        $route = \yii\helpers\ArrayHelper::merge($currentParams, $params);
+        return \yii\helpers\Url::toRoute($route, $scheme);
+    }
 
 
 }

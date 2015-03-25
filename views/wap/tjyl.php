@@ -67,12 +67,24 @@
 
 <div data-role="page" id="wokelist" data-theme="c">
 
-    <?php echo $this->render('header1', ['menuId'=>'menu1','title' => '会员中心' ]); ?>
+    <?php echo $this->render('header1', ['menuId'=>'menu1','title' => '会员俱乐部' ]); ?>
     <div data-role="content">
         
         <ul data-role="listview" data-inset="false" id="woke-ul">
 
         <li>
+        <!--
+        <a href="#">
+        <span class="perImg">
+        <img src="../web/images/woke/0.jpg">
+        </span>
+        <h2>小沃</h2>
+    
+        <p>我的沃点：0.00 点</p>
+        <p>可提现沃点：0.00 点</P>
+        </a>
+        -->
+
         <dl class="client_dl">
             <dt>
                 <div class="perImg_bg">
@@ -106,38 +118,46 @@
                 </div>
                 
                 </p>
+                    
+                <!--
+                <div class="growth">
+                <div style="width: 10.41%;" class="percent"></div>
+                <span style="font-size:5pt">104/999</span>
+                </div>
+                <br>
+                <span class="f13">您还差895成长值升级为钻石会员</span>
+                -->
+                <!--
+                <em class="seeM_btn"><img src="/wolm/images/seeM_btn.png" width="7"></em>
+                -->
+                <p class="f13">手机号码：<?=  $user->mobile ?></p>
 
-                <p class="f13">手机号码：               
-                <?php foreach($user->openidBindMobiles as $openidBindMobile): ?>
-                    <?=  $openidBindMobile->mobile ?>
-                <?php endforeach; ?>
-                </p>
-
+                <p class="f13">我的沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeYqwd() + $user->getWokeKtwd(); ?></span> </p>
+                <p class="f13">可提沃点：<span style="font-size:12pt;font-weight:bolder"><?=  $user->getWokeKtwd() - $user->getWokeYtwd(); ?></span> </p>
             </dd>
         </dl>
  
         </li>
         <!--
         <li><a href="#wddd"><img src="../web/images/woke/wddd.gif" alt="我的订单" class="ui-li-icon ui-corner-none">我的订单<span class="ui-li-count">0</span></a></li>
+        -->
         <li><a ajax-data="false" href="#qdyl"><img src="../web/images/woke/wdrw.gif" alt="签到有礼" class="ui-li-icon ui-corner-none">签到有礼</a></li>
         
         <li><a ajax-data="false" href="#wytg"><img src="../web/images/woke/wdmy.gif" alt="我要推广" class="ui-li-icon ui-corner-none">我要推广</a></li>
-        -->
-
-        <li><a ajax-data="false" href="#wytg"><img src="../web/images/woke/wdmy.gif" alt="推荐有礼" class="ui-li-icon ui-corner-none">推荐有礼<span class="ui-li-count"><?= $user->getScore() ?></span></a></li>
-        <li><a href="<?php echo Url::to(['order', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-icon="shop" data-ajax="false"><img src="../web/images/woke/wdcf.gif" alt="我的订单" class="ui-li-icon ui-corner-none">我的订单<span class="ui-li-count"><?= count($user->orders) ?></span></a></li>
-        <li><a href="<?php echo Url::to(['addbindmobile', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-icon="shop" data-ajax="false"><img src="../web/images/woke/aqsz.gif" alt="绑定管理" class="ui-li-icon ui-corner-none">绑定管理<span class="ui-li-count"><?= count($user->openidBindMobiles) ?></span></a></li>
+        
 
         <!--
         <li><a href="#wdcf"><img src="../web/images/woke/wdcf.gif" alt="我的财富" class="ui-li-icon ui-corner-none">我的财富<span class="ui-li-count"><?=  $user->getWokeYqwd() + $user->getWokeKtwd(); ?></span></a></li>
-        <li><a href="#wdcf"><img src="../web/images/woke/wdcf.gif" alt="我的财富" class="ui-li-icon ui-corner-none">我的财富</a></li>
         -->
-                        
+        <li><a href="#wdcf"><img src="../web/images/woke/wdcf.gif" alt="我的财富" class="ui-li-icon ui-corner-none">我的财富</a></li>
+                
+        
         <!--
         <li><a href="#tqjl"><img src="../web/images/woke/tqjl.gif" alt="提现记录" class="ui-li-icon ui-corner-none">提现记录<span class="ui-li-count"><?=  $user->getWokeYtwd(); ?></span></a></li>
-        <li><a href="#tqjl"><img src="../web/images/woke/tqjl.gif" alt="提现记录" class="ui-li-icon ui-corner-none">提现记录</a></li>
--->
+        -->
 
+        <li><a href="#tqjl"><img src="../web/images/woke/tqjl.gif" alt="提现记录" class="ui-li-icon ui-corner-none">提现记录</a></li>
+          
         <!--
         <li><a href="#wdyhk"><img src="../web/images/woke/wdyhk.gif" alt="我的银行卡" class="ui-li-icon ui-corner-none">我的银行卡<span class="ui-li-count">1</span></a></li>
         -->
@@ -226,7 +246,7 @@
     </div>
 
     <div data-role="footer" data-position="fixed">
-        <h4>&copy; 襄阳联通 2015</h4>
+        <h4>&copy; 襄阳联通 2014</h4>
     </div>
     <?php echo $this->render('menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div> <!-- page1 end -->
@@ -292,7 +312,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2015</h4>
+    <h4>&copy; 襄阳联通 2014</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu11','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -369,7 +389,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2015</h4>
+    <h4>&copy; 襄阳联通 2014</h4>
 </div>
 <?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -467,7 +487,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2015</h4>
+    <h4>&copy; 襄阳联通 2014</h4>
 </div>
 
 <div data-role="popup" id="popupDialog-Page" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
@@ -557,7 +577,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2015</h4>
+    <h4>&copy; 襄阳联通 2014</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -648,7 +668,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2015</h4>
+    <h4>&copy; 襄阳联通 2014</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -685,7 +705,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2015</h4>
+    <h4>&copy; 襄阳联通 2014</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu6','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -828,7 +848,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2015</h4>
+    <h4>&copy; 襄阳联通 2014</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu7','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -855,7 +875,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2015</h4>
+    <h4>&copy; 襄阳联通 2014</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu8','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -884,7 +904,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2015</h4>
+    <h4>&copy; 襄阳联通 2014</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu8','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>

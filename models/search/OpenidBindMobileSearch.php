@@ -47,17 +47,16 @@ class OpenidBindMobileSearch extends OpenidBindMobile
             'query' => $query,
         ]);
 
+        $query->andFilterWhere([
+            'gh_id' => $this->gh_id,
+            'openid' => $this->openid,
+        ]);
+
+        $query->andFilterWhere(['like', 'mobile', $this->mobile]);
+
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
-
-        $query->andFilterWhere([
-            'openid_bind_mobile_id' => $this->openid_bind_mobile_id,
-        ]);
-
-        $query->andFilterWhere(['like', 'gh_id', $this->gh_id])
-            ->andFilterWhere(['like', 'openid', $this->openid])
-            ->andFilterWhere(['like', 'mobile', $this->mobile]);
 
         return $dataProvider;
     }

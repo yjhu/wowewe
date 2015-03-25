@@ -116,26 +116,6 @@ $this->params['breadcrumbs'][] = $this->title;
 		'options' => ['class' => 'table-responsive'],
 		'tableOptions' => ['class' => 'table table-striped'],        
         'columns' => [
-			//['class' => yii\grid\CheckboxColumn::className()],
-/*
-			[
-				'label' => '渠道编号',
-				'attribute' => 'id',
-				'headerOptions' => array('style'=>'width:15%;'),	
-				'filter'=> true,
-				'visible' => false,
-			],
-			[
-				'label' => '渠道名称',
-				'attribute' => 'title',
-				'headerOptions' => array('style'=>'width:25%;'),	
-			],
-			[
-				'label' => '渠道推广数量',
-				'attribute' => 'cnt_sum',
-				'headerOptions' => array('style'=>'width:20%;'),	
-			],
-*/
 			[
 				'label' => '部门编号',
 				'attribute' => 'office_id',
@@ -146,6 +126,17 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'title',
 				'headerOptions' => array('style'=>'width:25%;'),	
 			],
+			[
+				'label' => '类别',
+				'attribute' => 'is_jingxiaoshang',
+				'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+						return empty($model['is_jingxiaoshang']) ? '自营厅' : '经销商';
+					},
+				'filter'=> ['0'=>'自营厅', '1'=>'经销商'],
+				'headerOptions' => array('style'=>'width:10%;'),	
+			],
+
 			[
 				'label' => '部门推广人数',
 				'attribute' => 'cnt_office',

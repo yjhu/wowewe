@@ -5,6 +5,9 @@ use yii\widgets\ActiveForm;
 use yii\captcha\Captcha;
 use app\models\SmCaptcha;
 
+use yii\grid\GridView;
+use yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\OpenidBindMobile */
 /* @var $form ActiveForm */
@@ -16,6 +19,50 @@ use app\models\SmCaptcha;
              yii\web\View::POS_READY
           );
      ?>
+
+
+<div class="openid-bind-mobile-index">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+//        'filterModel' => false,
+        'layout' => "\n{items}\n",
+        'showOnEmpty' => false,
+        'emptyText'=>'',
+		'tableOptions' => ['class' => 'table table-striped'],        
+        'columns' => [
+            [
+                'attribute'=>'mobile',
+                'label' => '已绑定的手机号',
+            ],
+             [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{deletebindmobile}',
+                    'buttons' => [
+                         'deletebindmobile' => function ($url, $model) {
+                              return Html::a('删除', $url, [
+                                   'title' => Yii::t('yii', 'Delete'),
+                                   'data-confirm' => '确定不再绑定此手机号?',
+                                   'data-method' => 'post',
+                                   'data-pjax' => '0',
+                                   //'data-pjax' => '1',
+                              ]);
+                         }
+                    ],
+               ],
+
+        ],
+    ]); ?>
+
+</div>
+
+
+
+
+
 
 <div class="mp-openidbindmobile-create">
 
@@ -59,7 +106,7 @@ use app\models\SmCaptcha;
 
     
         <div class="form-group">
-            <?= Html::submitButton('绑定手机号', ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton('添加绑定手机号', ['class' => 'btn btn-primary']) ?>
         </div>
     <?php ActiveForm::end(); ?>
 
