@@ -385,6 +385,11 @@ class MUser extends ActiveRecord implements IdentityInterface
         return $this->hasMany(OpenidBindMobile::className(), ['gh_id'=>'gh_id', 'openid'=>'openid']);
     }
 
+    public function getOrders()
+    {
+        return $this->hasMany(MOrder::className(), ['gh_id'=>'gh_id', 'openid'=>'openid']);
+    }
+
     public function newSceneIdForOpenid()
     {
         $staff = new MStaff;
@@ -422,6 +427,15 @@ class MUser extends ActiveRecord implements IdentityInterface
             }                
         }
         return false;
+    }
+
+    public function getScore()
+    {
+        $staff = MStaff::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
+        if (empty($staff)) {
+            return 0;
+        }
+        return $staff->getScore(); 
     }
     
 }

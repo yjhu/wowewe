@@ -6,6 +6,7 @@ use yii\helpers\Url;
 
 use app\models\MStaff;
 use app\models\MOffice;
+use app\models\U;
 
 $this->title = '营业厅推广成绩排行';
 $this->params['breadcrumbs'][] = $this->title;
@@ -16,16 +17,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-    	<?php $currentMonth = date("n"); ?>
-		<?php //echo Html::a('新增渠道', ['channelcreate'], ['class' => 'btn btn-success']) ?>
-		<?php echo Html::a('累计推广成绩下载 <i class="glyphicon glyphicon-arrow-down"></i>', Url::to().'&download=1', ['class' => 'btn btn-success']) ?>
-		<?php echo Html::a("按时间范围成绩排行", ['officetopbyrange','cur_date'=>date("Y-m-d")], ['class' => 'btn btn-info']) ?>
-    </p>
-
 	<?php \yii\widgets\Pjax::begin([
 		'timeout' => 10000,
 	]); ?>
+
+    <p>
+    	<?php $currentMonth = date("n"); ?>
+		<?php //echo Html::a('新增渠道', ['channelcreate'], ['class' => 'btn btn-success']) ?>
+		<?php echo Html::a('累计推广成绩下载 <i class="glyphicon glyphicon-arrow-down"></i>', U::current(['download' => 1]), ['class' => 'btn btn-success', 'data-pjax' => '0',]); ?>
+		<?php echo Html::a("按时间范围成绩排行", ['officetopbyrange','cur_date'=>date("Y-m-d")], ['class' => 'btn btn-info']) ?>
+    </p>
+
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -38,12 +40,22 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'label' => '部门编号',
 				'attribute' => 'office_id',
-				'headerOptions' => array('style'=>'width:15%;'),	
+				'headerOptions' => array('style'=>'width:8%;'),	
 			],
 			[
 				'label' => '部门名称',
 				'attribute' => 'title',
 				'headerOptions' => array('style'=>'width:25%;'),	
+			],
+			[
+				'label' => '类别',
+				'attribute' => 'is_jingxiaoshang',
+				'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+						return empty($model['is_jingxiaoshang']) ? '自营厅' : '经销商';
+					},
+				'filter'=> ['0'=>'自营厅', '1'=>'经销商'],
+				'headerOptions' => array('style'=>'width:10%;'),	
 			],
 			[
 				'label' => '部门推广人数',
@@ -70,5 +82,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 /*
 
+        //echo Html::a('累计推广成绩下载 <i class="glyphicon glyphicon-arrow-down"></i>', Url::to().'&download=1', ['class' => 'btn btn-success']) 
 
 */

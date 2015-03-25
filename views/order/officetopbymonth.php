@@ -129,6 +129,17 @@ $this->params['breadcrumbs'][] = $this->title;
 				'headerOptions' => array('style'=>'width:25%;'),	
 			],
 			[
+				'label' => '类别',
+				'attribute' => 'is_jingxiaoshang',
+				'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+						return empty($model['is_jingxiaoshang']) ? '自营厅' : '经销商';
+					},
+				'filter'=> ['0'=>'自营厅', '1'=>'经销商'],
+				'headerOptions' => array('style'=>'width:10%;'),	
+			],
+
+			[
 				'label' => '部门推广人数',
 				'attribute' => 'cnt_office',
 				'headerOptions' => array('style'=>'width:20%;'),	

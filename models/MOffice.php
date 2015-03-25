@@ -427,7 +427,8 @@ class MOffice extends ActiveRecord implements IdentityInterface
             $row = [];
             $row['office_id'] = $office->office_id;
             $row['scene_id'] = $office->scene_id;            
-            $row['title'] = $office->title;            
+            $row['title'] = $office->title; 
+            $row['is_jingxiaoshang'] = $office->is_jingxiaoshang;                         
             $row['cnt_office'] = $office->getScore();                        
             $row['cnt_staffs'] = $office->getScoreOfAllStaffs();
             $row['cnt_sum'] = $row['cnt_office'] + $row['cnt_staffs'];                        
@@ -467,7 +468,8 @@ class MOffice extends ActiveRecord implements IdentityInterface
             $row = [];
             $row['office_id'] = $office->office_id;
             $row['scene_id'] = $office->scene_id;            
-            $row['title'] = $office->title;            
+            $row['title'] = $office->title;        
+            $row['is_jingxiaoshang'] = $office->is_jingxiaoshang;                                     
             $row['cnt_office'] = $office->getScoreByRange($date_start, $date_end);                        
             $row['cnt_staffs'] = $office->getScoreOfAllStaffsByRange($date_start, $date_end);
             $row['cnt_sum'] = $row['cnt_office'] + $row['cnt_staffs'];                        
@@ -507,7 +509,8 @@ class MOffice extends ActiveRecord implements IdentityInterface
             $row = [];
             $row['office_id'] = $office->office_id;
             $row['scene_id'] = $office->scene_id;            
-            $row['title'] = $office->title;            
+            $row['title'] = $office->title;        
+            $row['is_jingxiaoshang'] = $office->is_jingxiaoshang;                                     
             $row['cnt_office'] = $office->getScoreByMonth($month);                        
             $row['cnt_staffs'] = $office->getScoreOfAllStaffsByMonth($month);
             $row['cnt_sum'] = $row['cnt_office'] + $row['cnt_staffs'];                        

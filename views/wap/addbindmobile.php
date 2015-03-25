@@ -5,6 +5,9 @@ use yii\widgets\ActiveForm;
 use yii\captcha\Captcha;
 use app\models\SmCaptcha;
 
+use yii\grid\GridView;
+use yii\helpers\Url;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\OpenidBindMobile */
 /* @var $form ActiveForm */
@@ -16,6 +19,65 @@ use app\models\SmCaptcha;
              yii\web\View::POS_READY
           );
      ?>
+
+
+<div class="openid-bind-mobile-index">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+//        'filterModel' => false,
+        'layout' => "\n{items}\n",
+        'showOnEmpty' => false,
+		'tableOptions' => ['class' => 'table table-striped'],        
+        'columns' => [
+            [
+                'attribute'=>'mobile',
+                'label' => '已绑定的手机号',
+            ],
+             [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{staffupdate} {staffismanager} {staffdelete}',
+                    'buttons' => [
+                         'staffupdate' => function ($url, $model) {
+                              return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                                   'title' => Yii::t('yii', 'Update'),
+                                   'data-pjax' => '0',
+                              ]);
+                         },
+                         'delete' => function ($url, $model) {
+                              return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(['delete', 'owner_cat'=>$_GET['owner_cat'], 'owner_id'=>$_GET['owner_id'], 'id'=>$model['photo_id']]), [
+                                   'title' => Yii::t('yii', 'Delete'),
+                                        'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                                   'data-method' => 'post',
+                                   'data-pjax' => '0',
+                                   //'data-pjax' => '1',
+                              ]);
+                         }
+                          'staffdelete' => function ($url, $model) {
+                              return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
+                              //return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(), [
+                                   'title' => Yii::t('yii', 'Delete'),
+                                   'data-confirm' => Yii::t('yii', '确认要删除此名员工?'),
+                                   'data-method' => 'post',
+                                   'data-pjax' => '0',
+                                   //'data-pjax' => '1',
+                              ]);
+                         }
+                    ],
+               ],
+
+        ],
+    ]); ?>
+
+</div>
+
+
+
+
+
 
 <div class="mp-openidbindmobile-create">
 
@@ -59,7 +121,7 @@ use app\models\SmCaptcha;
 
     
         <div class="form-group">
-            <?= Html::submitButton('绑定手机号', ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton('添加绑定手机号', ['class' => 'btn btn-primary']) ?>
         </div>
     <?php ActiveForm::end(); ?>
 
