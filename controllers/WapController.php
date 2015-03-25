@@ -1997,8 +1997,29 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         return $this->render('thsj', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
+    public function getLLBCatsByMobiles($mobiles)
+    {        
+        $mobleCats = [
+            '18607271289'=> '904',
+            '18607271213'=> '904',
+            '18607271126'=> '904',
+            '18671091119'=> '904',
+            '18607277170'=> '904',            
+            '13545296480'=> '702', 
+            '13545296480'=> '703',                         
+        ];
+        $cats = [];
+        foreach($mobiles as $mobile) {
+            foreach($mobleCats as $mob => $mobleCat) {      
+                if ($mobile == $mob) {
+                    $cats[] = $mobleCat;
+                } 
+            }
+        }
+        return $cats;
+    }
 
-    // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/llb:gh_03a74ac96138   
+    // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/llb:gh_03a74ac96138:kind=4 
     public function actionLlb()
     {
         $this->layout ='wapy';
@@ -2006,22 +2027,19 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
         $kind=$_GET['kind'];
-        $models = MItem::find()->where(['kind'=>$kind])->orderBy(['price'=>SORT_DESC])->all();
-         /*
-        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        if (empty($model->openidBindMobiles)) {
+
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($user->openidBindMobiles)) {
             Yii::$app->getSession()->set('RETURN_URL', Url::to());
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }
-        */
+        $cats = $this->getLLBCatsByMobiles($user->getBindMobileNumers); 
+        if (empty($cats)) {
+            return $this->render('lyhzxyhhint', ['gh_id'=>$gh_id, 'openid'=>$openid]);    
+        } 
 
-        /*...*/
-
-
-        /**/
-
-        return $this->render('llb', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models, 'kind'=>$kind]);
-
+        $models = MItem::find()->where(['kind'=>$kind, 'cid'=>$cats])->orderBy(['price'=>SORT_DESC])->all();
+        return $this->render('llb', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user, 'models'=>$models, 'kind'=>$kind]);
     }  
 
 
