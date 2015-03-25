@@ -135,11 +135,16 @@
     </p>
 
     <p id="price" class="title_comm">
-		价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
-		
-		<br>
-		<span id="priceHint" class="productPkgHint"><?php echo $item->price_hint; ?></span>
-	
+
+		<?php if($item->kind == 4) {?>
+			价格  <span class="fee">￥<?php echo  ($item->old_price)/100; ?></span>
+			<br>
+		<?php } else { ?>
+			价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
+			<br>
+			<span id="priceHint" class="productPkgHint"><?php echo $item->price_hint; ?></span>
+		<?php } ?>
+
     </p>
 
 

@@ -1146,6 +1146,22 @@ EOD;
                 $order->attr = "{$_GET['cardType']}";
                 break; 
 
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI:
+                $order->title = '10元包100M 3G国内流量包';                   
+               $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW300MB_GUONEI:
+                $order->title = '20元包300M 3G国内流量包';                   
+               $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_KIND_INTERNET_CARD_FLOW500MB_GUONEI:
+                $order->title = '30元包500M 3G国内流量包';                   
+               $order->attr = "{$_GET['cardType']}";
+                break;                                
+
+
             default:
                 U::W(['invalid data cat', $_GET["cid"], __METHOD__,$_GET]);
                 return;
@@ -1948,6 +1964,35 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         Yii::$app->wx->setGhId($gh_id);
         return $this->render('thsj', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
+
+
+    // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/llb:gh_03a74ac96138   
+    public function actionLlb()
+    {
+        $this->layout ='wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        $kind=$_GET['kind'];
+        $models = MItem::find()->where(['kind'=>$kind])->orderBy(['price'=>SORT_DESC])->all();
+         /*
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($model->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+        */
+
+        /*...*/
+
+
+        /**/
+
+        return $this->render('llb', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models, 'kind'=>$kind]);
+
+    }  
+
+
 
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/4gzuhetaocan:gh_03a74ac96138   

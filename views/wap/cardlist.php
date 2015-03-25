@@ -82,7 +82,7 @@
                         <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                         <h2><?= $model->title ?></h2>
                         <p><?= $model->title_hint ?></p>
-          
+                        
                         <p class='line'>原价: ￥<?= $model->old_price/100 ?></p>
                   
                         <p>惊爆价: ￥<?= $model->price/100 ?></p>

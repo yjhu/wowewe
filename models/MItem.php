@@ -108,6 +108,8 @@ class MItem extends ActiveRecord
  	const ITEM_KIND_INTERNET_CARD_FLOW2DOT5GB = 706;
  	const ITEM_KIND_INTERNET_CARD_FLOW1GB_2 = 707;
 
+
+
  	//双十一活动 上网卡
  	//----------------------------------------------------------
 	const ITEM_CAT_CARD_1111_200YUAN_BENDI_5GLIULIANG = 708;
@@ -181,6 +183,10 @@ class MItem extends ActiveRecord
 	const ITEM_CAT_MOBILE_LIANXIANG_A606 = 873;
 	const ITEM_CAT_MOBILE_ZHONGXINGV5S_1 = 874;
 
+	//流量包 国内
+ 	const ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI = 902;
+ 	const ITEM_KIND_INTERNET_CARD_FLOW300MB_GUONEI = 903;
+ 	const ITEM_KIND_INTERNET_CARD_FLOW500MB_GUONEI = 904;
 
 
 	const ITEM_KIND_MOBILE = 1;
@@ -301,6 +307,11 @@ class MItem extends ActiveRecord
 			self::ITEM_CAT_MOBILE_ZHONGXING_Q801U => '中兴 Q801U',
 			self::ITEM_CAT_MOBILE_LIANXIANG_A606 => '联想A606',
 			self::ITEM_CAT_MOBILE_ZHONGXINGV5S_1 => '中兴V5S',
+
+			//流量包 国内
+			self::ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI => '10元包100M 3G国内流量包',
+			self::ITEM_KIND_INTERNET_CARD_FLOW300MB_GUONEI => '20元包300M 3G国内流量包',
+			self::ITEM_KIND_INTERNET_CARD_FLOW500MB_GUONEI => '30元包500M 3G国内流量包',
 			
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
