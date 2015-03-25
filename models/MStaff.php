@@ -107,6 +107,16 @@ class MStaff extends ActiveRecord
         return $count;    
     }
 
+    public function getFans()
+    {
+        $fans = [];
+        if (empty($this->scene_id)) {
+            return $fans;
+        }
+        $fans = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1]);
+        return $fans;    
+    }
+
     public function getQrImageUrl()
     {
         $gh_id = $this->gh_id;
