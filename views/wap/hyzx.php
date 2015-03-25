@@ -62,8 +62,25 @@
         background-color: #FCEB9F;
     }
 
+    .myHeadIcon
+    {
+        /* border-radius: 50%; */
+    }
+
+    .we{
+        line-height:120%;
+        color:#aaa;
+        font-size:12pt;
+    }
+
+    div#sharePop .modal-header
+    {
+        padding: 0 !important;
+    }
 
 </style>
+
+
 
 <div data-role="page" id="wokelist" data-theme="c">
 
@@ -861,21 +878,72 @@
 </div>
 
 
-
 <!-- 我要推广 页面-->
 <div data-role="page" id="wytg" data-theme="c">
-<?php echo $this->render('header1', ['menuId'=>'menu9','title' => '我要推广' ]); ?>
+<?php echo $this->render('header1', ['menuId'=>'menu9','title' => '推荐有礼' ]); ?>
 
 <div data-role="content">
 
-<?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
-
 <center>
-    <span>快叫小伙伴拿起手机微信扫一扫加关注。<br>
-    你即可获得<b><font color=red>100</font></b>沃点！<br>
-    还等什么？<br>
-    快~
-    </span>
+ <span style="font-size:14pt">我的推广二维码</span>&nbsp;
+ <a style="color:#ccc;font-size:9pt;text-decoration:none" href="#rhtg">如何推广？</a>
+<?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:45%;height: auto;']); ?>
+<!--
+<span>快叫小伙伴拿起手机微信扫一扫加关注。<br>
+你即可获得<b><font color=red>100</font></b>沃点！<br>
+还等什么？<br>
+快~
+</span>
+-->
+
+<br>
+<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="显示列..." data-column-popup-theme="a">
+         <thead>
+           <tr class="ui-bar-d">
+             <th data-priority="1">头像</th>
+             <th data-priority="1">昵称</th>
+             <th data-priority="1">绑定手机</th>
+             <th data-priority="4">时间</th>
+             <!--
+             <th data-priority="5">Reviews</th>
+             -->
+           </tr>
+         </thead>
+         <tbody>
+           <tr>
+            <th><img src="http://wx.qlogo.cn/mmopen/caShn7prhux0pKy4zOQYY7E8PEicomN0RHV9CSE9z4GcdkaJUcLic5sn7jKaUPkddcE46M2XG0zv6hk1aQVqmu0leYdcWH8Tye/0" width="36" height="36"></th>
+             <td>kate</td>
+             <td>13545296480</td>
+             <td>2015/3/25</td>
+           </tr>
+                     <tr>
+            <th><img src="http://wx.qlogo.cn/mmopen/caShn7prhux0pKy4zOQYY7E8PEicomN0RHV9CSE9z4GcdkaJUcLic5sn7jKaUPkddcE46M2XG0zv6hk1aQVqmu0leYdcWH8Tye/0" width="36" height="36"></th>
+             <td>kate</td>
+             <td>13545296480</td>
+             <td>2015/3/25</td>
+           </tr>
+         </tbody>
+</table>
+
+<br>
+<div class="ui-grid-a">
+    <div class="ui-block-a">
+    <div id="ktxwd_span" class="ui-bar ui-bar-a" style="height:60px">
+        可提现沃点
+        <br>
+        <span style="font-size:18pt;">10</span> 
+    </div>
+    </div>
+
+    <div class="ui-block-b">
+    <div id="yqwd_span" class="ui-bar ui-bar-b" style="height:60px">
+        预期沃点
+        <br>
+        <span style="font-size:18pt;">2</span> 
+    </div>
+    </div>  
+
+</div>
 
     <a href="javascript:reloadWokeList();" class="ui-btn">返回</a>
 

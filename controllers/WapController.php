@@ -2016,6 +2016,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
                 } 
             }
         }
+        //return ['702', '703'];
         return $cats;
     }
 
@@ -2033,12 +2034,16 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
             Yii::$app->getSession()->set('RETURN_URL', Url::to());
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }
-        $cats = $this->getLLBCatsByMobiles($user->getBindMobileNumers); 
+        $cats = $this->getLLBCatsByMobiles($user->getBindMobileNumbers()); 
         if (empty($cats)) {
             return $this->render('lyhzxyhhint', ['gh_id'=>$gh_id, 'openid'=>$openid]);    
         } 
 
         $models = MItem::find()->where(['kind'=>$kind, 'cid'=>$cats])->orderBy(['price'=>SORT_DESC])->all();
+
+        U::W("$$$$$$$$$$$$$$$$$$$$$$$$$");
+        U::W($models);
+        U::W($cats);
         return $this->render('llb', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user, 'models'=>$models, 'kind'=>$kind]);
     }  
 
