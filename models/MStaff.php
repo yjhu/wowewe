@@ -107,6 +107,16 @@ class MStaff extends ActiveRecord
         return $count;    
     }
 
+    public function getFans()
+    {
+        $fans = [];
+        if (empty($this->scene_id)) {
+            return $fans;
+        }
+        $fans = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1]);
+        return $fans;    
+    }
+
     public function getQrImageUrl()
     {
         $gh_id = $this->gh_id;
@@ -116,16 +126,13 @@ class MStaff extends ActiveRecord
         }        
         $scene_id = $this->scene_id;
         $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
-        if (!file_exists($log_file_path) || filesize($log_file_path) == 0)
+        if ((!file_exists($log_file_path)) || filesize($log_file_path) == 0)
         {
             Yii::$app->wx->setGhId($gh_id);    
             $arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
             $url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
             Wechat::downloadFile($url, $log_file_path);
-        } 
-//        else
-//            U::W('filesize='.filesize($log_file_path));
-        
+        }         
         $url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
         return $url;
     }

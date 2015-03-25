@@ -211,65 +211,6 @@ class MUser extends ActiveRecord implements IdentityInterface
         ];
     }
 
-/*
-    public function getScore()
-    {
-        if ($this->scene_id == 0)
-            $count = 0;
-        else
-            $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])->count();                        
-        return $count;    
-    }
-
-    public function getQrImageUrl()
-    {
-        $gh_id = $this->gh_id;
-        if (empty($this->scene_id))
-        {
-            $newFlag = true;
-            $gh = MGh::findOne($gh_id);
-            $scene_id = $gh->newSceneId();
-            $this->scene_id = $scene_id;
-        }
-        else
-        {
-            $newFlag = false;        
-            $scene_id = $this->scene_id;
-        }
-        $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
-        if (!file_exists($log_file_path))
-        {
-            Yii::$app->wx->setGhId($gh_id);    
-            $arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
-            $url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
-            Wechat::downloadFile($url, $log_file_path);
-        }
-        if ($newFlag)
-        {
-            if ($this->save(false))
-               $gh->save(false);                    
-        }        
-        $url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
-        //U::W($url);
-        return $url;
-    }
-
-    public function beforeDelete()
-    {
-        if (parent::beforeDelete()) {
-            if (!empty($this->scene_id))
-            {
-                $gh = MGh::findOne($this->gh_id);        
-                $gh->freeSceneId($this->scene_id);
-                return $gh->save(false);
-            }
-            return true;            
-        } else {
-            return false;
-        }
-    }
-*/
-	
     public function getChannel()
     {
         return $this->hasOne(MChannel::className(),  ['gh_id' => 'gh_id', 'openid' => 'openid']);
@@ -445,6 +386,15 @@ class MUser extends ActiveRecord implements IdentityInterface
             return 0;
         }
         return $staff->getScore(); 
+    }
+    
+    public function getFans()
+    {
+        $staff = MStaff::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
+        if (empty($staff)) {
+            return [];
+        }
+        return $staff->getFans(); 
     }
     
 }
@@ -656,5 +606,63 @@ ALTER IGNORE TABLE wx_staff DROP KEY gh_id_idx, ADD UNIQUE KEY idx_gh_id_openid 
         }
         return false;
     }
-*/    
+
+        public function getScore()
+        {
+            if ($this->scene_id == 0)
+                $count = 0;
+            else
+                $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])->count();                        
+            return $count;    
+        }
+    
+        public function getQrImageUrl()
+        {
+            $gh_id = $this->gh_id;
+            if (empty($this->scene_id))
+            {
+                $newFlag = true;
+                $gh = MGh::findOne($gh_id);
+                $scene_id = $gh->newSceneId();
+                $this->scene_id = $scene_id;
+            }
+            else
+            {
+                $newFlag = false;        
+                $scene_id = $this->scene_id;
+            }
+            $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
+            if (!file_exists($log_file_path))
+            {
+                Yii::$app->wx->setGhId($gh_id);    
+                $arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
+                $url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
+                Wechat::downloadFile($url, $log_file_path);
+            }
+            if ($newFlag)
+            {
+                if ($this->save(false))
+                   $gh->save(false);                    
+            }        
+            $url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
+            //U::W($url);
+            return $url;
+        }
+    
+        public function beforeDelete()
+        {
+            if (parent::beforeDelete()) {
+                if (!empty($this->scene_id))
+                {
+                    $gh = MGh::findOne($this->gh_id);        
+                    $gh->freeSceneId($this->scene_id);
+                    return $gh->save(false);
+                }
+                return true;            
+            } else {
+                return false;
+            }
+        }
+    */
+        
 

@@ -193,7 +193,6 @@ class CmdController extends Controller
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/qr-image
     public function actionQrImage()
     {    
-
         $scene_id = 't1';
         $arr = Yii::$app->wx->WxgetQRCode($scene_id);
         //$arr = Yii::$app->wx->WxgetQRCode('weixin://wxpay/bizpayurl?appid=wx79c2bf0249ede62a&noncestr=Vs7Roypb122HLZCh&productid=1234&sign=1ae0ca345323847ec8684254535c1157522e8e02&timestamp=1405751645');
