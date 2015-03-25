@@ -895,7 +895,14 @@
 快~
 </span>
 -->
+<?php 
+$fans = $user->getFans(); 
 
+U::W("!1111111111111111111111111111111111");
+//U::W($user);
+//U::W("!1111111111111111111111111111111111");
+U::W($fans);
+?>
 <br>
 <table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="显示列..." data-column-popup-theme="a">
          <thead>
@@ -910,18 +917,21 @@
            </tr>
          </thead>
          <tbody>
+            <?php foreach($fans as $fan) 
+                { 
+            ?>
+
            <tr>
-            <th><img src="http://wx.qlogo.cn/mmopen/caShn7prhux0pKy4zOQYY7E8PEicomN0RHV9CSE9z4GcdkaJUcLic5sn7jKaUPkddcE46M2XG0zv6hk1aQVqmu0leYdcWH8Tye/0" width="36" height="36"></th>
-             <td>kate</td>
-             <td>13545296480</td>
-             <td>2015/3/25</td>
+            <th><img src="<?= $fan->headimgurl; ?>" width="36" height="36"></th>
+             <td><?= $fan->nickname ?></td>
+             <td><?= implode(',', $fan->getBindMobileNumbers()) ?></td>
+             <td><?= substr($fan->create_time,0,10) ?></td>
            </tr>
-                     <tr>
-            <th><img src="http://wx.qlogo.cn/mmopen/caShn7prhux0pKy4zOQYY7E8PEicomN0RHV9CSE9z4GcdkaJUcLic5sn7jKaUPkddcE46M2XG0zv6hk1aQVqmu0leYdcWH8Tye/0" width="36" height="36"></th>
-             <td>kate</td>
-             <td>13545296480</td>
-             <td>2015/3/25</td>
-           </tr>
+
+            <?php
+                }
+            ?>
+
          </tbody>
 </table>
 
