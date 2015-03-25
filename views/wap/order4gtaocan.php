@@ -45,6 +45,19 @@
 		<div class="ui-field-contain">
 			<input type="text" name="username" id="username" placeholder="姓名" data-mini=false value="">
 			<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
+			<input type="text" name="userid" id="userid" placeholder="身份证号码" value="">
+
+			<select name="tcyf" id="tcyf">
+			<option value="76元套餐">76元套餐</option>
+			<option value="106元套餐">106元套餐</option>
+			<option value="136元套餐">136元套餐</option>
+			<option value="166元套餐">166元套餐</option>
+			<option value="196元套餐">196元套餐</option>
+			<option value="296元套餐">296元套餐</option>
+			<option value="396元套餐">396元套餐</option>
+			<option value="596元套餐">596元套餐</option>
+			</select>
+
 			 <?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false),["id"=>"office"]); ?>
 		</div>
 		
@@ -53,7 +66,7 @@
 	</div>
 
 	<div data-role="footer" data-position="fixed">
-		<h4>&copy; 襄阳联通 2014</h4>
+		<h4>&copy; 襄阳联通 2015</h4>
 	</div>
 
 	<div data-role="popup" id="popupDialog-contactPage" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
@@ -140,7 +153,11 @@ $(document).on("pageinit", "#page1", function(){
 		username = $("#username").val();
 		usermobile = $("#usermobile").val();
 
+		userid = $("#userid").val();
+
 		office = $("#office").val();
+
+		memo = $("#tcyf").val();
 
  		realFee = "<?php echo $_GET['realFee'];?>";
  		cardType = null;
@@ -160,7 +177,7 @@ $(document).on("pageinit", "#page1", function(){
 			$('#popupDialog-contactPage').popup('open');
 			//alert("姓名输入不合法");
 			return  false;
-		} 
+		}
 
 		var usermobileReg = /(^(1)\d{10}$)/;
 		if(usermobileReg.test(usermobile) === false)
@@ -171,13 +188,22 @@ $(document).on("pageinit", "#page1", function(){
 			return  false;
 		}
 
+		var useridReg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+        if(useridReg.test(userid) === false)
+        {
+            fillErrmsg('#popupDialog-contactPage-txt','身份证输入不合法, 请重新输入.');
+            $('#popupDialog-contactPage').popup('open');
+            //alert("身份证输入不合法");
+            return  false;
+        }
+
 		localStorage.setItem("item",$("form#productForm").serialize());
 		$.ajax({
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
 			type:"GET",
 			cache:false,
 			dataType:'json',
-			data: $("form#productForm").serialize() +"&cid="+cid+"&cardType="+cardType+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address,
+			data: $("form#productForm").serialize() +"&cid="+cid+"&cardType="+cardType+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address+"&memo="+memo,
 			success:function(json_data){
 				//data = eval('('+data+')');
 				if(json_data.status == 0)

@@ -71,7 +71,7 @@
 	</div>
 
 	<div data-role="footer" data-position="fixed">
-		<h4>&copy; 襄阳联通 2014</h4>
+		<h4>&copy; 襄阳联通 2015</h4>
 	</div>
 
 	<div data-role="popup" id="popupDialog-contactPage" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">

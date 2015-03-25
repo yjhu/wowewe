@@ -240,7 +240,7 @@
 	</div>
 		
 	<div data-role="footer">
-		<h4>&copy; 襄阳联通 2014</h4>
+		<h4>&copy; 襄阳联通 2015</h4>
 	</div>
 	<?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>	
 	</div> <!-- page2 end -->
@@ -348,7 +348,7 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-			<h4>&copy; 襄阳联通 2014</h4>
+			<h4>&copy; 襄阳联通 2015</h4>
 		</div>
 		<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 	</div>	<!-- page3 end -->
@@ -376,7 +376,7 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-			<h4>&copy; 襄阳联通 2014</h4>
+			<h4>&copy; 襄阳联通 2015</h4>
 		</div>
 
 		<div data-role="popup" id="popupDialog-contactPage" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
@@ -417,7 +417,7 @@
 		</div>
 
 		<div data-role="footer" data-position="fixed">
-			<h4>&copy; 襄阳联通 2014</h4>
+			<h4>&copy; 襄阳联通 2015</h4>
 		</div>
 		<?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 	</div>	<!-- page3 end -->	

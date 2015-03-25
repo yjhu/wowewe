@@ -246,7 +246,7 @@
     </div>
 
     <div data-role="footer" data-position="fixed">
-        <h4>&copy; 襄阳联通 2014</h4>
+        <h4>&copy; 襄阳联通 2015</h4>
     </div>
     <?php echo $this->render('menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div> <!-- page1 end -->
@@ -308,11 +308,11 @@
     <img src="../web/images/woke/womei_sad.png" width="96px" height="96px">
     <p>没有订单？快去催小伙伴购买吧~</p>
    </span>
-   <c/enter>
+   <center>
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2014</h4>
+    <h4>&copy; 襄阳联通 2015</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu11','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -389,7 +389,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2014</h4>
+    <h4>&copy; 襄阳联通 2015</h4>
 </div>
 <?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -487,7 +487,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2014</h4>
+    <h4>&copy; 襄阳联通 2015</h4>
 </div>
 
 <div data-role="popup" id="popupDialog-Page" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
@@ -577,7 +577,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2014</h4>
+    <h4>&copy; 襄阳联通 2015</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu4','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -668,7 +668,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2014</h4>
+    <h4>&copy; 襄阳联通 2015</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -705,7 +705,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2014</h4>
+    <h4>&copy; 襄阳联通 2015</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu6','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -848,7 +848,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2014</h4>
+    <h4>&copy; 襄阳联通 2015</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu7','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -875,7 +875,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2014</h4>
+    <h4>&copy; 襄阳联通 2015</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu8','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -904,7 +904,7 @@
 </div>
 
 <div data-role="footer" data-position="fixed">
-    <h4>&copy; 襄阳联通 2014</h4>
+    <h4>&copy; 襄阳联通 2015</h4>
 </div>
  <?php echo $this->render('menu', ['menuId'=>'menu8','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>

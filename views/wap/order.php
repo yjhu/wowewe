@@ -75,7 +75,7 @@ $basename = basename(__FILE__, '.php');
 	</div>
 
 	<div data-role="footer" data-position="fixed">
-		<h4>&copy; 襄阳联通 2014</h4>
+		<h4>&copy; 襄阳联通 2015</h4>
 	</div>
 
 	<div data-role="popup" id="confirm" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
@@ -126,7 +126,7 @@ $basename = basename(__FILE__, '.php');
 	</div>
 
 	<div data-role="footer" data-position="fixed">
-		<h4>&copy; 襄阳联通 2014</h4>
+		<h4>&copy; 襄阳联通 2015</h4>
 	</div>
 
 	<div data-role="popup" id="confirm_orderdetail" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">

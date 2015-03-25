@@ -135,11 +135,16 @@
     </p>
 
     <p id="price" class="title_comm">
-		价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
-		
-		<br>
-		<span id="priceHint" class="productPkgHint"><?php echo $item->price_hint; ?></span>
-	
+
+		<?php if($item->kind == 4) {?>
+			价格  <span class="fee">￥<?php echo  ($item->old_price)/100; ?></span>
+			<br>
+		<?php } else { ?>
+			价格  <span class="fee">￥<?php echo  ($item->price)/100; ?></span>
+			<br>
+			<span id="priceHint" class="productPkgHint"><?php echo $item->price_hint; ?></span>
+		<?php } ?>
+
     </p>
 
 
@@ -248,7 +253,7 @@
 </form>		
 	
 <div data-role="footer">
-	<h4>&copy; 襄阳联通 2014</h4>
+	<h4>&copy; 襄阳联通 2015</h4>
 </div>
 <?php echo $this->render('menu', ['menuId'=>'menu2','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 
@@ -285,7 +290,7 @@
 	</div>
 
 	<div data-role="footer" data-position="fixed">
-		<h4>&copy; 襄阳联通 2014</h4>
+		<h4>&copy; 襄阳联通 2015</h4>
 	</div>
 
 	<div data-role="popup" id="popupDialog-contactPage" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
@@ -327,7 +332,7 @@
 
 
 	<div data-role="footer" data-position="fixed">
-		<h4>&copy; 襄阳联通 2014</h4>
+		<h4>&copy; 襄阳联通 2015</h4>
 	</div>
 	<?php echo $this->render('menu', ['menuId'=>'menu5','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>	<!-- number-select end -->
@@ -342,7 +347,7 @@
 	</div>
 
 	<div data-role="footer">
-		<h4>&copy; 襄阳联通 2014</h4>
+		<h4>&copy; 襄阳联通 2015</h4>
 	</div>
 	<?php echo $this->render('menu', ['menuId'=>'menu6','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -360,7 +365,7 @@
 	</div>
 
 	<div data-role="footer" data-position="fixed">
-		<h4>&copy; 襄阳联通 2014</h4>
+		<h4>&copy; 襄阳联通 2015</h4>
 	</div>
 	<?php echo $this->render('menu', ['menuId'=>'menu7','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
@@ -385,7 +390,7 @@
 	</div>
 
 	<div data-role="footer" data-position="fixed">
-		<h4>&copy; 襄阳联通 2014</h4>
+		<h4>&copy; 襄阳联通 2015</h4>
 	</div>
 
 	<div data-role="popup" id="popupDialog-addressPage" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">

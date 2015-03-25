@@ -82,7 +82,7 @@
                         <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                         <h2><?= $model->title ?></h2>
                         <p><?= $model->title_hint ?></p>
-          
+                        
                         <p class='line'>原价: ￥<?= $model->old_price/100 ?></p>
                   
                         <p>惊爆价: ￥<?= $model->price/100 ?></p>
@@ -96,7 +96,7 @@
     </div>
 
     <div data-role="footer" data-position="fixed">
-        <h4>&copy; 襄阳联通 2014</h4>
+        <h4>&copy; 襄阳联通 2015</h4>
     </div>
     <?php echo $this->render('menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div> <!-- page1 end -->

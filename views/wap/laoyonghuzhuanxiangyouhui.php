@@ -29,44 +29,39 @@
 <div data-role="page" id="page1" data-theme="c">
 
 	<div data-role="header">
-    	<h1>双4G双百兆手机</h1>
+    	<h1>老用户专享优惠</h1>
     </div>
 
     <div data-role="content">
-        
-        <!--<ul data-role="listview" data-inset="true">-->
         <ul data-role="listview" data-inset="false" data-filter="true" data-filter-placeholder="搜索..." class="ui-nodisc-icon ui-alt-icon">
 
         <?php foreach($models as $model) { 
-            if($model->cid==850 || 
-                $model->cid==851 ||
-                $model->cid==852 ||
-                $model->cid==853 ||
-                $model->cid==854 ||
-                $model->cid==855 ||
-                $model->cid==856 ||
-                $model->cid==857 ||
-                $model->cid==858 
-                )  
-        { ?>
+            if($model->cid==870 || 
+                $model->cid==871 ||
+                $model->cid==872 ||
+                $model->cid==873 ||
+                $model->cid==874 )  { 
+        ?>
             <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
                     <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                     <h2><?= $model->title ?></h2>
                     <p><?= $model->title_hint ?></p>
                     <!--
                     <p class='line'>原价: ￥<//?= round($model->old_price/100) ?></p>
-                    <p>惊爆价: ￥<//?= round($model->price/100) ?></p>
                     -->
                     <p>合约价: ￥<?= round($model->price/100) ?></p>
                 </a>
             </li>
-        <?php } } ?>
+        <?php 
+                } 
+            } 
+        ?>
 
         </ul>
     </div>
 
     <div data-role="footer" data-position="fixed">
-        <h4>&copy; 襄阳联通 2015</h4>
+        <h4>&copy; 襄阳联通 2014</h4>
     </div>
     <?php echo $this->render('menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div> <!-- page1 end -->
@@ -80,7 +75,7 @@
 	//$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid());
 	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid().":wid={$wid}");
 	$myImg = Url::to("$assetsPath/share-icon.jpg", true);
-	$title = '双4G双百兆手机';
+	$title = '老用户专享优惠';
 	$desc = '多款热销机型，优惠大放送，快来瞄瞄吧~~ 心动不如行动！';
 ?>
 

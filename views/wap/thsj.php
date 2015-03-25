@@ -9,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>4G自由组合低至8元</title> 
+<title>特惠商家</title> 
 <meta name="description" content=""> 
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="-1">
@@ -39,52 +39,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 
-
 <body>
 
 <div class="device rel" id="device" >
     <div class="swiper-container" id="swiper-container">
       <div class="swiper-wrapper">
             <div class="swiper-slide rel swiper-slide-visible swiper-slide-active">
-            <div class="main">
-            <img src="./show_res/4gzuhetaocan1.jpg?v1" >
-            </div>
-            <!--
-            <div class="bg rel" >
-            <div id="light" >
-            <img src="./show_res/light.png">
-            </div>
-            </div>
-            -->
+              <div class="main">
+              <img src="./show_res/thsj1.jpg?v3" >
+              </div>
             </div>
            
-             <!-- corner -->
-             <div class="swiper-slide rel" >
-            	<div class="main" >
-				<img class="lazy" data-original="./show_res/4gzuhetaocan2.jpg?v1" src="./show_res/4gzuhetaocan2.jpg?v1" >
-				</div>
-				<!--
-            	<div class="bg rel" style="height: 1097.775px; width: 697px;"><div class="draw" style="height: 1097.775px; width: 697px;"><img class="lazy" data-original="images/corner_mark_1.png" src="./show_res/corner_mark_1.png" style="height: 1097.775px; width: 697px; display: block;"></div><div class="info" style="height: 1097.775px; width: 697px;"><img class="lazy" data-original="images/corner_title_1.png" src="./show_res/corner_title_1.png" style="height: 1097.775px; width: 697px; display: block;"></div></div>
-				-->
-             </div>
-  
-             <!-- light -->
+            <div class="swiper-slide rel" >
+              <div class="main" >
+                <img class="lazy" data-original="./show_res/thsj2.jpg?v1" src="./show_res/thsj2.jpg?v1" >
+              </div>
+            </div>
 
-             <!-- city -->   
-            <div class="swiper-slide rel">
+          <div class="swiper-slide rel">
             <div class="main" >
-        <!--
-				<a href="sms:13545296480?body=hello">
-        -->
-				<a href="http://www.10010.com/goodsdetail/981405139289.html">
-				<img class="lazy" data-original="./show_res/4gzuhetaocan3.jpg?v1" src="./show_res/4gzuhetaocan3.jpg?v1" >
-				</a>
-				<!--
-        </a>
-        -->
-			</div>
-
-        </div> 
+            <img class="lazy" data-original="./show_res/thsj3.jpg?v1" src="./show_res/thsj3.jpg?v1" >
+            </div>
+          </div> 
 
       </div>
     </div>
@@ -97,18 +73,15 @@
 
 <?php 
   $appid = Yii::$app->wx->gh['appid'];
-  $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/show4ginfo:'.Yii::$app->wx->getGhid());
+  $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/thsj:'.Yii::$app->wx->getGhid());
   //$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
   $assetsPath = Yii::$app->getRequest()->baseUrl.'/show_res';
-  $myImg = Url::to("$assetsPath/index_4ginfo.jpg?v1", true);
-  $title = '4G自由组合低至8元';
-  $desc = '双4G，双百兆，4G就选沃4G！';
+  $myImg = Url::to("$assetsPath/thsj1.jpg?v1", true);
+  $title = '特惠商家';
+  $desc = '特惠商家展示';
 ?>
 
-
-
 <script>
-
 var dataForWeixin={
   appId:"<?php echo $appid; ?>",
   MsgImg:"<?php echo $myImg; ?>",
@@ -146,8 +119,7 @@ var dataForWeixin={
   }
 };
 
-
-
+</script>
 </script>
 </body>
 </html>
