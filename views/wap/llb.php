@@ -40,6 +40,7 @@
 
              <?php foreach($models as $model) 
              	{ if($model->cid==702 || $model->cid==703 || $model->cid==704 || $model->cid==902 || $model->cid==903 || $model->cid==904) 
+             		
              		{
              ?>
 		                <li><a data-ajax="false" href="<?php echo  Url::to(['wap/card', 'cid'=>$model->cid],true) ?>">
