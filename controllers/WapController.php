@@ -2327,7 +2327,13 @@ U::W('aaaaa......'.$user_founder->mobile);
         ]);
     }
 
-
+    public function actionDeletebindmobile($id)
+    {
+        if (($model = OpenidBindMobile::findOne($id)) !== null) {
+            $model->delete();
+        }
+        return $this->redirect(['addbindmobile', 'gh_id'=>$model->gh_id, 'openid'=>$model->openid]);        
+    }
 }
 
 

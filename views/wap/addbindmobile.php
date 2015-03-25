@@ -31,6 +31,7 @@ use yii\helpers\Url;
 //        'filterModel' => false,
         'layout' => "\n{items}\n",
         'showOnEmpty' => false,
+        'emptyText'=>'',
 		'tableOptions' => ['class' => 'table table-striped'],        
         'columns' => [
             [
@@ -39,28 +40,12 @@ use yii\helpers\Url;
             ],
              [
                     'class' => 'yii\grid\ActionColumn',
-                    'template' => '{staffupdate} {staffismanager} {staffdelete}',
+                    'template' => '{deletebindmobile}',
                     'buttons' => [
-                         'staffupdate' => function ($url, $model) {
-                              return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-                                   'title' => Yii::t('yii', 'Update'),
-                                   'data-pjax' => '0',
-                              ]);
-                         },
-                         'delete' => function ($url, $model) {
-                              return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(['delete', 'owner_cat'=>$_GET['owner_cat'], 'owner_id'=>$_GET['owner_id'], 'id'=>$model['photo_id']]), [
+                         'deletebindmobile' => function ($url, $model) {
+                              return Html::a('删除', $url, [
                                    'title' => Yii::t('yii', 'Delete'),
-                                        'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                                   'data-method' => 'post',
-                                   'data-pjax' => '0',
-                                   //'data-pjax' => '1',
-                              ]);
-                         }
-                          'staffdelete' => function ($url, $model) {
-                              return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-                              //return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(), [
-                                   'title' => Yii::t('yii', 'Delete'),
-                                   'data-confirm' => Yii::t('yii', '确认要删除此名员工?'),
+                                   'data-confirm' => '确定不再绑定此手机号?',
                                    'data-method' => 'post',
                                    'data-pjax' => '0',
                                    //'data-pjax' => '1',
