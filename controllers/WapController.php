@@ -1162,6 +1162,10 @@ EOD;
                $order->attr = "{$_GET['cardType']}";
                 break;                                
 
+            case MItem::ITEM_KIND_ZZYW:
+                $order->title = '增值业务';                   
+               $order->attr = "{$_GET['cardType']}";
+                break;   
 
             default:
                 U::W(['invalid data cat', $_GET["cid"], __METHOD__,$_GET]);
@@ -2047,6 +2051,25 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         return $this->render('llb', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user, 'models'=>$models, 'kind'=>$kind]);
     }  
 
+    //增值业务
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/zzyw:gh_03a74ac96138:kind=5:cid=1000
+    public function actionZzyw()
+    {
+        $this->layout ='wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        $kind=$_GET['kind'];
+
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($user->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+
+
+        return $this->render('zzyw', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid,'kind'=>$kind]);
+    }
 
 
 
@@ -2072,7 +2095,6 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         return $this->render('shuang4gshuangbaizhao', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
     */
-
 
 
 

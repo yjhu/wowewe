@@ -54,7 +54,7 @@ class MWxMenu extends \yii\db\ActiveRecord
 			[['gh_id'], 'string', 'max' => 32],
 			[['name', 'type'], 'string', 'max' => 64],
 			[['keyword'], 'string', 'max' => 128],
-			[['url'], 'string', 'max' => 256]
+			[['url'], 'string', 'max' => 512]
 		];
     }
 

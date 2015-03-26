@@ -968,6 +968,30 @@ U::W($fans);
 </div>
 
 
+
+<!-- 如何推广 页面-->
+<div data-role="page" id="rhtg" data-theme="c">
+<?php echo $this->render('header1', ['menuId'=>'menu9','title' => '推荐有礼' ]); ?>
+
+<div data-role="content">
+
+<center>
+ <span style="font-size:14pt">如何推广？</span>&nbsp;
+
+<br>
+    <a href="javascript:reloadWokeList();" class="ui-btn">返回</a>
+
+</center>
+
+</div>
+
+<div data-role="footer" data-position="fixed">
+    <h4>&copy; 襄阳联通 2015</h4>
+</div>
+ <?php echo $this->render('menu', ['menuId'=>'menu8','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
+
+
 <script>
 var ktwd = "<?=  $user->getWokeKtwd()-$user->getWokeYtwd(); ?>";
 
@@ -1000,7 +1024,7 @@ function showGold()
 
 function reloadWokeList()
 {
-    var url = "<?php echo Url::to(['wap/wokelist'], true); ?>";
+    var url = "<?php echo Url::to(['wap/hyzx'], true); ?>";
     location.href = url;
 }
 
