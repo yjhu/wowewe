@@ -239,12 +239,11 @@
 		<input type="checkbox" name="zzyw5" id="zzyw5" checked="checked">
 		<label for="zzyw5">视频PPTV定向流量</label>
 		</fieldset>
-	    <br>
-
+	
 	    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="ture">
 	        <legend>&nbsp;</legend>
 	        <input type="radio" name="dcb" id="dcb1" value="1" checked="checked">
-	        <label for="dcb1">短彩包10元</label>
+	        <label for="dcb1">10元短彩包</label>
 	        <input type="radio" name="dcb" id="dcb2" value="2">
 	        <label for="dcb2">20元</label>
 	       	<input type="radio" name="dcb" id="dcb3" value="3">
@@ -709,7 +708,10 @@ $(document).on("pageinit", "#page2", function(){
        		zzywStr += "/30元短彩包";
        }
 
+       //alert( $("form#productForm").serialize() +"&cid="+cid+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address+"&memo="+zzywStr);
  		/* realFee = 0.01 */
+
+ 		realFee = 0; 
 		localStorage.setItem("item",$("form#productForm").serialize());
 		$.ajax({
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",
