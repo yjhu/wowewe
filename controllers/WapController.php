@@ -2051,6 +2051,50 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         return $this->render('llb', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user, 'models'=>$models, 'kind'=>$kind]);
     }  
 
+
+    /*
+        1: 漏话提醒
+        2: 开机提醒
+        3: 炫铃
+        4: 联通秘书
+        5: 视频PPTV定向流量
+        6: 10元微信定向流量
+        7: 10元短彩包
+        8. 20元短彩包
+        9. 30元短彩包
+
+        18607271289 炫铃  漏话提醒    WO+视频PPTV定向流量       20元短彩包
+        18607271213 炫铃  漏话提醒        10元微信定向流量   20元短彩包
+        18607271126 炫铃  漏话提醒        10元微信定向流量   20元短彩包
+        18671091119 炫铃  漏话提醒    WO+视频PPTV定向流量   10元微信定向流量   20元短彩包
+        18607277170 炫铃  漏话提醒        10元微信定向流量   20元短彩包
+
+        0-0-0-0-0-0-0-0-0 
+        1-1-1-1-1-1-1-1-1 //全选
+    */
+
+    public function getZZYWCatsByMobiles($mobiles)
+    {        
+        $mobleCats = [
+            '18607271289'=> '1-0-1-0-1-0-0-1-0',
+            '18607271213'=> '1-0-1-0-0-1-0-1-0',
+            '18607271126'=> '1-0-1-0-0-1-0-1-0',
+            '18671091119'=> '1-0-1-0-1-1-0-1-0',
+            '18607277170'=> '1-0-1-0-0-1-0-1-0', 
+            '13545296480'=> '1-1-1-1-0-1-0-1-0',                      
+        ];
+        $cats = [];
+        foreach($mobiles as $mobile) {
+            foreach($mobleCats as $mob => $mobleCat) {      
+                if ($mobile == $mob) {
+                    $cats[] = $mobleCat;
+                } 
+            }
+        }
+        //return ['702', '703'];
+        return $cats;
+    }
+
     //增值业务
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/zzyw:gh_03a74ac96138:kind=5:cid=1000
     public function actionZzyw()
@@ -2067,8 +2111,14 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }
 
+        $cats = $this->getZZYWCatsByMobiles($user->getBindMobileNumbers()); 
+        if (empty($cats)) {
+            return $this->render('lyhzxyhhint', ['gh_id'=>$gh_id, 'openid'=>$openid]);    
+        } 
 
-        return $this->render('zzyw', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid,'kind'=>$kind]);
+        U::W("$$$$##################################");
+        U::W($cats);
+        return $this->render('zzyw', ['cid'=>$_GET['cid'], 'gh_id'=>$gh_id, 'openid'=>$openid,'kind'=>$kind, 'cats'=>$cats]);
     }
 
 

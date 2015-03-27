@@ -123,7 +123,7 @@
 	<p id="errorMsg"></p>
 	</div>
 
-	<form id="productForm">	
+	<form id="productForm" name="productForm">	
 	<div data-role="content" data-theme="c">	
 	<p  align=center id="imgURL">
 	    <img width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
@@ -223,26 +223,29 @@
 	<div class="ui-field-contain">
 
 		<fieldset data-role="controlgroup">
-		<legend>增值业务</legend>
-		<input type="checkbox" name="zzyw1" id="zzyw1" checked="checked">
-		<label for="zzyw1">漏话提醒</label>
+			<legend>增值业务</legend>
+			<input type="checkbox" name="zzyw1" id="zzyw1" class="lhtx">
+			<label for="zzyw1" class="lhtx">漏话提醒</label>
 
-		<input type="checkbox" name="zzyw2" id="zzyw2" checked="checked">
-		<label for="zzyw2">开机提醒</label>
+			<input type="checkbox" name="zzyw2" id="zzyw2" class="kjtx">
+			<label for="zzyw2" class="kjtx">开机提醒</label>
 
-		<input type="checkbox" name="zzyw3" id="zzyw3" checked="checked">
-		<label for="zzyw3">炫铃</label>
+			<input type="checkbox" name="zzyw3" id="zzyw3" class="xl">
+			<label for="zzyw3" class="xl">炫铃</label>
 
-		<input type="checkbox" name="zzyw4" id="zzyw4" checked="checked">
-		<label for="zzyw4">联通秘书</label>
+			<input type="checkbox" name="zzyw4" id="zzyw4" class="ltms">
+			<label for="zzyw4" class="ltms">联通秘书</label>
 
-		<input type="checkbox" name="zzyw5" id="zzyw5" checked="checked">
-		<label for="zzyw5">视频PPTV定向流量</label>
+			<input type="checkbox" name="zzyw5" id="zzyw5" class="pptvll">
+			<label for="zzyw5" class="pptvll">视频PPTV定向流量</label>
+			
+			<input type="checkbox" name="zzyw6" id="zzyw6" class="10ywx">
+			<label for="zzyw6" class="10ywx">10元微信定向流量</label>
 		</fieldset>
 	
-	    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="ture">
+	    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="ture" class="dcb">
 	        <legend>&nbsp;</legend>
-	        <input type="radio" name="dcb" id="dcb1" value="1" checked="checked">
+	        <input type="radio" name="dcb" id="dcb1" value="1">
 	        <label for="dcb1">10元短彩包</label>
 	        <input type="radio" name="dcb" id="dcb2" value="2">
 	        <label for="dcb2">20元</label>
@@ -461,7 +464,7 @@ var count = 0;
 var cid = "<?php echo $cid; ?>";
 var kind = "<?php echo $item->kind; ?>";
 var price = "<?php echo $item->price; ?>";
-
+var cats = "<?php echo $cats[0] ?>";
 
 var ctrl_mobnumber = "<?php echo  $item->ctrl_mobnumber; ?>";
 var ctrl_userinfo = "<?php echo  $item->ctrl_userinfo; ?>";
@@ -469,6 +472,50 @@ var ctrl_office = "<?php echo  $item->ctrl_office; ?>";
 var ctrl_supportpay = "<?php echo  $item->ctrl_supportpay; ?>";
 var ctrl_address = "<?php echo  $item->ctrl_address; ?>";
 var ctrl_detail = "<?php echo  $item->ctrl_detail; ?>";
+
+
+var strs= new Array(); //定义一数组 
+strs=cats.split("-"); //字符分割 
+
+/*
+        1: 漏话提醒
+        2: 开机提醒
+        3: 炫铃
+        4: 联通秘书
+        5: 视频PPTV定向流量
+        6: 10元微信定向流量
+        7: 10元短彩包
+        8. 20元短彩包
+        9. 30元短彩包
+*/
+if(strs[0] == 0) $(".lhtx").hide();
+if(strs[1] == 0) $(".kjtx").hide();
+if(strs[2] == 0) $(".xl").hide();
+if(strs[3] == 0) $(".ltms").hide();
+if(strs[4] == 0) $(".pptvll").hide();
+if(strs[5] == 0) $(".10ywx").hide();
+if((strs[6] == 0) && (strs[7] == 0) && (strs[8] == 0) )
+{
+	$(".dcb").hide();
+}
+
+function checkOne() {
+	var checkFlg = 0;
+	var inputControlID = document.getElementsByTagName('input');
+	///alert(inputControlID.length);
+	for(var i = 0; i < inputControlID.length; i++) {
+		if(inputControlID[i].type == "checkbox") {
+			if(inputControlID[i].checked == true) {
+				checkFlg++;
+			}
+		}
+	}
+	if(checkFlg == 0) {
+		//alert("请选择一项！");
+		return false;
+	}
+	return true;
+}
 
 
 function isWeiXin() {
@@ -568,7 +615,7 @@ $(document).on("pageinit", "#page2", function(){
 	$('#submitBtn').click(function(){
 
         //避免重复提交表单！！！
-        $("#submitBtn").hide();
+        //$("#submitBtn").hide();
         
 		selectNum = null;
 		office = null;
@@ -690,6 +737,12 @@ $(document).on("pageinit", "#page2", function(){
        		zzywStr += "/视频PPTV定向流量";
        }
 
+       if($("#zzyw6").is(":checked") == true)
+       {
+       		//alert("10元微信定向流量");
+       		zzywStr += "/10元微信定向流量";
+       }
+
        if($("#dcb1").is(":checked") == true)
        {
        		//alert("WO+视频PPTV定向流量!");
@@ -710,6 +763,13 @@ $(document).on("pageinit", "#page2", function(){
 
        //alert( $("form#productForm").serialize() +"&cid="+cid+"&feeSum="+realFee+"&office="+office+"&selectNum="+selectNum+"&username="+username+"&usermobile="+usermobile+"&userid="+userid+"&address="+address+"&memo="+zzywStr);
  		/* realFee = 0.01 */
+
+		if(checkOne() == false)
+ 		{
+			$("#errorMsg").html("<span class='title_unset'>请至少选择一项增值业务！</span>");
+			$("#popupErrorMsg").popup("open");
+			return false;
+ 		}
 
  		realFee = 0; 
 		localStorage.setItem("item",$("form#productForm").serialize());
