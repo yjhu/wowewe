@@ -28,11 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <ul class="nav nav-tabs">
 
-	<?php $currentDate = date("Y-m-d"); ?>
-	<li>
-	<?php echo Html::a("今天", ['officetopbyrange', 'cur_date'=>$currentDate], []) ?>
-	</li>
- 
 	<?php $currentDate = date("Y-m-d",strtotime("-1 day")); ?>
 	<li>
 	<?php echo Html::a("昨天", ['officetopbyrange', 'cur_date'=>$currentDate], []) ?>
@@ -232,5 +227,11 @@ echo yii\bootstrap\Tabs::widget([
     	<?php $currentMonth = date("n", strtotime('-2 month', time())); ?>
 		<?php echo Html::a("渠道{$currentMonth}月成绩排行", ['officetopbymonth', 'month'=>$currentMonth], ['class' => 'btn btn-info']) ?>
     </p>
+
+	<?php $currentDate = date("Y-m-d"); ?>
+	<li>
+	<?php echo Html::a("今天", ['officetopbyrange', 'cur_date'=>$currentDate], []) ?>
+	</li>
+ 
 
 */

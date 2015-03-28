@@ -39,6 +39,7 @@ use yii\behaviors\TimestampBehavior;
 
 use app\models\U;
 use app\models\MOffice;
+use app\models\MSceneDay;
 
 class MStaff extends ActiveRecord
 {
@@ -206,6 +207,7 @@ EOD;
         return $rows;
     }
 
+/*
     public function getScoreByRange($date_start, $date_end)
     {
         if ($this->scene_id == 0)
@@ -214,16 +216,35 @@ EOD;
         $count_minus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'unsubscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->count();
         return $count_plus - $count_minus;
     }    
-
     public function getScoreByMonth($month)
     {
         if ($this->scene_id == 0)
-            $count = 0;
-        else
-            $count = MAccessLog::find()->where(['ToUserName'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'month(create_time)'=>$month])->count();
-        return $count;
+            return 0;
+        $count_plus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND month(create_time)=:month', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'subscribe', ':month'=>$month])->count();
+        $count_minus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND month(create_time)=:month', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'unsubscribe', ':month'=>$month])->count();
+        return $count_plus - $count_minus;
+    }    
+*/
+    public function getScoreByRange($date_start, $date_end)
+    {
+        if ($this->scene_id == 0) {
+            $sum_score = 0;
+        } else {
+            $sum_score = MSceneDay::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND create_date>=:date_start AND create_date<=:date_end', [':gh_id'=>$this->gh_id, ':scene_id' => $this->scene_id, ':date_start'=>$date_start, ':date_end'=>$date_end])->sum('score');
+        }
+        return empty($sum_score) ? 0 : $sum_score;
     }    
 
+    public function getScoreByMonth($month)
+    {
+        if ($this->scene_id == 0) {
+            $sum_score = 0;
+        } else {
+            $sum_score = MSceneDay::find()->where(['gh_id'=>$this->gh_id, 'scene_id' => $this->scene_id, 'month(create_date)'=>$month])->sum('score');
+        }
+        return empty($sum_score) ? 0 : $sum_score;
+    }    
+    
     public function sendWxm($content)
     {
         if (empty($this->gh_id) || empty($this->openid))

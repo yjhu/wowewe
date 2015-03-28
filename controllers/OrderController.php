@@ -258,7 +258,6 @@ class OrderController extends Controller
 
     public function actionStafftop()
     {
-        //$rows = MStaff::getStaffScoreTop(MGh::GH_XIANGYANGUNICOM);
         $rows = MStaff::getStaffScoreTop(Yii::$app->user->getGhid());
         $dataProvider = new ArrayDataProvider([
             'allModels' => $rows,
@@ -310,7 +309,6 @@ class OrderController extends Controller
         $dataProvider = new ArrayDataProvider([
             'allModels' => $rows,
             'sort' => [
-               // 'attributes' => ['cnt_office', 'cnt_staffs', 'cnt_sum'],
                 'attributes' => ['office_id', 'title', 'cnt_office', 'cnt_staffs', 'cnt_sum'],        
                 'defaultOrder'=>[
                     'cnt_sum' => SORT_DESC
@@ -322,10 +320,6 @@ class OrderController extends Controller
         ]);
 
         if (isset($_GET['download'])) {
-            //U::W("+++++++++++++channelscoretopdownload++++++++++++");
-            //$dataProvider->query->select(['*']);
-            //$dataProvider->setPagination(false);
-            //$data = $dataProvider->getModels();
             $data = $rows;
             \yii\helpers\ArrayHelper::multisort($data, 'cnt_sum', SORT_DESC);                                    
             $date = date('Y-m-d-His');
@@ -351,8 +345,8 @@ class OrderController extends Controller
         $cur_date = Yii::$app->request->get('cur_date');
         if(empty($cur_date))
         {
-            $date_start = Yii::$app->request->get('date_start', date("Y-m-d"));
-            $date_end = Yii::$app->request->get('date_end', date("Y-m-d"));
+            $date_start = Yii::$app->request->get('date_start', date("Y-m-d",strtotime("-1 day")));
+            $date_end = Yii::$app->request->get('date_end', date("Y-m-d",strtotime("-1 day")));
         }
         else
         {
@@ -396,7 +390,6 @@ class OrderController extends Controller
             return;        
         }
         
-//        $cur_date = date("Y-m-d");
         return $this->render('officetopbyrange', [
             'dataProvider' => $dataProvider,
             'cur_date'=>$cur_date,
