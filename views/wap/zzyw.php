@@ -494,7 +494,7 @@ if(strs[2] == 0) $(".xl").hide();
 if(strs[3] == 0) $(".ltms").hide();
 if(strs[4] == 0) $(".pptvll").hide();
 if(strs[5] == 0) $(".10ywx").hide();
-if((strs[6] == 0) && (strs[7] == 0) && (strs[8] == 0) )
+if((strs[6] == 0) && (strs[7] == 0) && (strs[8] == 0))
 {
 	$(".dcb").hide();
 }
