@@ -28,11 +28,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <ul class="nav nav-tabs">
 
-	<?php $currentDate = date("Y-m-d"); ?>
-	<li <?php echo $cur_date == $currentDate ? 'class="active"' : ''; ?> >
-	<?php echo Html::a("今天", ['officetopbyrange', 'cur_date'=>$currentDate], []) ?>
-	</li>
- 
 	<?php $currentDate = date("Y-m-d",strtotime("-1 day")); ?>
 	<li <?php echo $cur_date == $currentDate ? 'class="active"' : ''; ?>>
 	<?php echo Html::a("昨天", ['officetopbyrange', 'cur_date'=>$currentDate], []) ?>
@@ -172,6 +167,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 /*
+
+	<?php $currentDate = date("Y-m-d"); ?>
+	<li <?php echo $cur_date == $currentDate ? 'class="active"' : ''; ?> >
+	<?php echo Html::a("今天", ['officetopbyrange', 'cur_date'=>$currentDate], []) ?>
+	</li>
+ 
 
 			[
 				'label' => '渠道类别',
