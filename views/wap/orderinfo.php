@@ -123,7 +123,7 @@
 			?>
 
 
- 			<?= $form->field($model, 'memo')->textinput(['maxlength' => '256', 'placeholder'=>'给卖家留言'])->label(false); ?>
+ 			<?= $form->field($model, 'memo')->textinput(['id'=>'memo', 'maxlength' => '256', 'placeholder'=>'给卖家留言'])->label(false); ?>
 			<!--
 			<fieldset id="paykind-field" data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
 				<legend>支付方式</legend>
@@ -146,6 +146,12 @@
 			</div>
 
 			<script>
+
+				if($("#memo").val() != "")
+				{
+					$("#memo").attr("readonly","readonly");
+				}
+			
 				url = localStorage.getItem("url");
 				//alert(url);
 				$("#btn-pay-weixin").attr('href',url);
@@ -201,6 +207,7 @@
 
 <script>
 	$("#btn-pay").html("我知道了");
+
 </script>
 
 <?php

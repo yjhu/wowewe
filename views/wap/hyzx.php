@@ -62,8 +62,25 @@
         background-color: #FCEB9F;
     }
 
+    .myHeadIcon
+    {
+        /* border-radius: 50%; */
+    }
+
+    .we{
+        line-height:120%;
+        color:#aaa;
+        font-size:12pt;
+    }
+
+    div#sharePop .modal-header
+    {
+        padding: 0 !important;
+    }
 
 </style>
+
+
 
 <div data-role="page" id="wokelist" data-theme="c">
 
@@ -861,22 +878,152 @@
 </div>
 
 
-
 <!-- 我要推广 页面-->
 <div data-role="page" id="wytg" data-theme="c">
-<?php echo $this->render('header1', ['menuId'=>'menu9','title' => '我要推广' ]); ?>
+<?php echo $this->render('header1', ['menuId'=>'menu9','title' => '推荐有礼' ]); ?>
 
 <div data-role="content">
 
-<?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
+<center>
+ <span style="font-size:14pt">我的推广二维码</span>&nbsp;
+ <a style="color:#ccc;font-size:9pt;text-decoration:none" href="#rhtg">如何推广？</a>
+<?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:45%;height: auto;']); ?>
+<!--
+<span>快叫小伙伴拿起手机微信扫一扫加关注。<br>
+你即可获得<b><font color=red>100</font></b>沃点！<br>
+还等什么？<br>
+快~
+</span>
+-->
+<?php 
+$fans = $user->getFans(); 
+
+U::W("!1111111111111111111111111111111111");
+//U::W($user);
+//U::W("!1111111111111111111111111111111111");
+U::W($fans);
+?>
+<br>
+<table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="显示列..." data-column-popup-theme="a">
+         <thead>
+           <tr class="ui-bar-d">
+             <th data-priority="1">头像</th>
+             <th data-priority="1">昵称</th>
+             <th data-priority="1">绑定手机</th>
+             <th data-priority="4">时间</th>
+             <!--
+             <th data-priority="5">Reviews</th>
+             -->
+           </tr>
+         </thead>
+         <tbody>
+            <?php foreach($fans as $fan) 
+                { 
+            ?>
+
+           <tr>
+            <th><img src="<?= $fan->headimgurl; ?>" width="36" height="36"></th>
+             <td><?= $fan->nickname ?></td>
+             <td><?= implode(',', $fan->getBindMobileNumbers()) ?></td>
+             <td><?= substr($fan->create_time,0,10) ?></td>
+           </tr>
+
+            <?php
+                }
+            ?>
+
+         </tbody>
+</table>
+
+<br>
+<div class="ui-grid-a">
+    <div class="ui-block-a">
+    <div id="ktxwd_span" class="ui-bar ui-bar-a" style="height:60px">
+        可提现沃点
+        <br>
+        <span style="font-size:18pt;">10</span> 
+    </div>
+    </div>
+
+    <div class="ui-block-b">
+    <div id="yqwd_span" class="ui-bar ui-bar-b" style="height:60px">
+        预期沃点
+        <br>
+        <span style="font-size:18pt;">2</span> 
+    </div>
+    </div>  
+
+</div>
+
+    <a href="javascript:reloadWokeList();" class="ui-btn">返回</a>
+
+</center>
+
+</div>
+
+<div data-role="footer" data-position="fixed">
+    <h4>&copy; 襄阳联通 2015</h4>
+</div>
+ <?php echo $this->render('menu', ['menuId'=>'menu8','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
+
+
+
+<!-- 如何推广 页面-->
+<div data-role="page" id="rhtg" data-theme="c">
+<?php echo $this->render('header1', ['menuId'=>'menu9','title' => '推荐有礼' ]); ?>
+
+<div data-role="content">
 
 <center>
-    <span>快叫小伙伴拿起手机微信扫一扫加关注。<br>
-    你即可获得<b><font color=red>100</font></b>沃点！<br>
-    还等什么？<br>
-    快~
-    </span>
+<!--
+ <span style="font-size:14pt">如何推广？</span>&nbsp;
+-->
 
+
+<img src="../web/images/woke/rhtg-head.jpg" width=100%>
+</center>
+
+<br>
+<fieldset style="margin: 0px; padding: 5px; border: 1px solid rgb(0, 187, 236); color: rgb(68, 68, 68); font-family: 微软雅黑; font-size: 13px; line-height: 24px; white-space: normal; border-radius: 5px; background-color: rgb(239, 239, 239);">
+    <legend style="margin: 0px 10px; padding: 0px; border-width: 0px;">
+        <span class="ue_t" style="margin: 0px; padding: 5px 10px; border: 0px; color: rgb(255, 255, 255); font-weight: bold; font-size: 14px; border-radius: 5px; background-color: rgb(0, 187, 236);">活动时间</span>
+    </legend>
+    <blockquote style="margin: 0px; padding: 10px; border: 0px;">
+        <p class="ue_t" style="margin-top: 0px; margin-bottom: 0px; padding: 0px; border: 0px;">
+<ol>
+<li>活动时间：2015年4月1日 - 2015年6月31日</li>
+<li>活动内容：关注并注册为襄阳联通微信的会员用户，成功推荐三个好友关注即可获得5元话费，若推荐六个好友关注，即可得10元话费，以此类推，已关注过好友再次关注视为无效推荐。</li>
+<li>活动奖品：默认为5元本地网内通话费，用户也可根据需求选择同等价值的业务，如流量包、手机电视软件。</li>
+<li>赠送时长：1月</li>
+</ol>
+        </p>
+    </blockquote>
+</fieldset>
+
+<br>
+
+<fieldset style="margin: 0px; padding: 5px; border: 1px solid rgb(0, 187, 236); color: rgb(68, 68, 68); font-family: 微软雅黑; font-size: 13px; line-height: 24px; white-space: normal; border-radius: 5px; background-color: rgb(239, 239, 239);">
+    <legend style="margin: 0px 10px; padding: 0px; border-width: 0px;">
+        <span class="ue_t" style="margin: 0px; padding: 5px 10px; border: 0px; color: rgb(255, 255, 255); font-weight: bold; font-size: 14px; border-radius: 5px; background-color: rgb(0, 187, 236);">活动要求</span>
+    </legend>
+    <blockquote style="margin: 0px; padding: 10px; border: 0px;">
+        <p class="ue_t" style="margin-top: 0px; margin-bottom: 0px; padding: 0px; border: 0px;">
+        凡参与活动并获奖用户，必须满足以下条件：
+<ol>
+<li>中奖用户仅限襄阳联通正常在网用户，同一微信账户及手机号码活动期间可持续参加此活动，满足核算标准，即可奖励。</li>
+<li>参与活动的用户，活动期间建议不要更改微信账号、不要取消关注，更不要变更手机号码、取消绑定，如取消任一操作将无法获得奖励；</li>
+<li>参与微信活动的用户，未绑定手机号码的，需要登记一个襄阳联通手机号码，以便获得奖励。</li>
+<li>所有流量、话费奖励将在次月20日前为客户添加；实物奖励将在次月通知中奖用户，安排用户到指定营业厅领取奖品。</li>
+<li>若推荐成功奖励未到账用户，可通过沃服务咨询在线客服。</li>
+</ol>
+        </p>
+    </blockquote>
+</fieldset>
+
+<center>
+
+<br>
     <a href="javascript:reloadWokeList();" class="ui-btn">返回</a>
 
 </center>
@@ -922,7 +1069,7 @@ function showGold()
 
 function reloadWokeList()
 {
-    var url = "<?php echo Url::to(['wap/wokelist'], true); ?>";
+    var url = "<?php echo Url::to(['wap/hyzx'], true); ?>";
     location.href = url;
 }
 

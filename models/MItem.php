@@ -188,6 +188,9 @@ class MItem extends ActiveRecord
  	const ITEM_KIND_INTERNET_CARD_FLOW300MB_GUONEI = 903;
  	const ITEM_KIND_INTERNET_CARD_FLOW500MB_GUONEI = 904;
 
+ 	//增值业务
+ 	const ITEM_KIND_ZZYW = 1000;
+
 
 	const ITEM_KIND_MOBILE = 1;
 	const ITEM_KIND_CARD = 2;
@@ -312,6 +315,9 @@ class MItem extends ActiveRecord
 			self::ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI => '10元包100M 3G国内流量包',
 			self::ITEM_KIND_INTERNET_CARD_FLOW300MB_GUONEI => '20元包300M 3G国内流量包',
 			self::ITEM_KIND_INTERNET_CARD_FLOW500MB_GUONEI => '30元包500M 3G国内流量包',
+
+			//增值业务
+			self::ITEM_KIND_ZZYW => '增值业务',
 			
 		);		
 		return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');

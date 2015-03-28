@@ -355,7 +355,7 @@ class MUser extends ActiveRecord implements IdentityInterface
         return $staff->getQrImageUrl();
     }
 
-    public function getBindMobileNumers()
+    public function getBindMobileNumbers()
     {
         $mobiles = [];
         foreach($this->openidBindMobiles as $openidBindMobile) {

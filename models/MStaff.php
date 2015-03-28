@@ -113,7 +113,7 @@ class MStaff extends ActiveRecord
         if (empty($this->scene_id)) {
             return $fans;
         }
-        $fans = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1]);
+        $fans = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])->all();
         return $fans;    
     }
 

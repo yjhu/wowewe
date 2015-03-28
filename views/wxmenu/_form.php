@@ -65,7 +65,7 @@ $this->registerJs($js, yii\web\View::POS_READY);
 		</div>
 
 		<div class="view">
-		<?= $form->field($model, 'url')->textInput(['maxlength' => 256]) ?>
+		<?= $form->field($model, 'url')->textInput(['maxlength' => 512]) ?>
 		</div>
 
     </div>
