@@ -52,6 +52,7 @@ class U
         if(strlen($url) > 5 && strtolower(substr($url,0,5)) == "https" ) {
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);            
         }
 
         //U::W($url);            
@@ -110,8 +111,7 @@ class U
 
     public static function generateRandomString($length = 32)
     {
-        $chars = 'ABCDEFGHIJKLM
-        NOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         return substr(str_shuffle(str_repeat($chars, 5)), 0, $length);
     }
 

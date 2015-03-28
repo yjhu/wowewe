@@ -30,6 +30,8 @@ use app\models\MAccessLogAll;
 use app\models\MSceneDetail;
 use app\models\MSceneDetailSearch;
 
+use app\models\MaterialDataProvider;
+
 class OrderController extends Controller
 {
     public $layout = 'main';
@@ -908,6 +910,24 @@ class OrderController extends Controller
             }       
         }
         return $this->render('memberupdate', ['model' => $model]);        
+    }
+
+    //http://127.0.0.1/wx/web/index.php?r=order/materiallist
+    public function actionMateriallist()
+    {
+        $wechat = Yii::$app->user->getWechat();
+        $dataProvider = new MaterialDataProvider([
+            'wechat' => $wechat,
+            'type'=>'news',        //news, image, vedio, voice
+            'pagination' => [
+                'pageSize' => 20,
+                'validatePage'=>false,
+            ],
+        ]);
+
+        return $this->render('materiallist', [
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
 

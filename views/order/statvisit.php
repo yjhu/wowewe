@@ -136,7 +136,7 @@ echo Highcharts::widget([
         'modules/exporting',
 //        'themes/grid-light',
     ],
-/*
+
     'options' => [
         'title' => [
             'text' => 'Combination chart',
@@ -211,8 +211,8 @@ echo Highcharts::widget([
             ],
         ],
     ]
-*/
 
+/*
     'options' => [
         'chart' => [
             'plotBackgroundColor' => null,
@@ -245,6 +245,7 @@ echo Highcharts::widget([
             'data' => $data
         ]]
     ]
+*/
 ]);
 ?>
 

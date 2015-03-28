@@ -117,7 +117,7 @@ get_code_time = function (btn)
     if (wait == 0) 
     {  
         btn.removeAttribute('disabled');
-        btn.value = '等待';
+        btn.value = '免费获取验证码';
         wait = 120;
     } 
     else 

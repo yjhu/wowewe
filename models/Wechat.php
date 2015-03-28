@@ -947,6 +947,13 @@ EOD;
         return $arr;
     }
 
+    public function WxGetMaterials($type, $offset=0, $count=20)
+    {
+        $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/material/batchget_material", ['access_token'=>$this->accessToken], self::json_encode(['type'=>$type, 'offset'=>$offset, 'count'=>$count]));
+        $this->checkWxApiResp($arr, [__METHOD__, $articles]);
+        return $arr;
+    }
+
     public function WxMediaGetUrl($media_id)
     {
         $access_token = $this->accessToken;

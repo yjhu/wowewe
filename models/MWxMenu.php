@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS wx_menu (
     name VARCHAR(64) NOT NULL DEFAULT '',
     type VARCHAR(64) NOT NULL DEFAULT '',
     keyword VARCHAR(128) NOT NULL DEFAULT '',
-    url VARCHAR(256) NOT NULL DEFAULT '',
+    url VARCHAR(512) NOT NULL DEFAULT '',
     parent_id int(10) unsigned NOT NULL DEFAULT 0,
     is_sub_button tinyint(3) unsigned NOT NULL DEFAULT 0,
     sort_order int(10) unsigned DEFAULT 0,

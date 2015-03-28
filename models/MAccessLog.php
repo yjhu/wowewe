@@ -77,6 +77,13 @@ class MAccessLog extends ActiveRecord
         }
         parent::setAttributes($values, $safeOnly);
     }
+
+    public static function getScoreByRange($gh_id, $scene_id, $date_start, $date_end)
+    {
+        $count_plus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$gh_id, ':scene_pid' => $scene_id, ':Event'=>'subscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->count();
+        $count_minus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$gh_id, ':scene_pid' => $scene_id, ':Event'=>'unsubscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->count();
+        return $count_plus - $count_minus;
+    }    
     
 }
 

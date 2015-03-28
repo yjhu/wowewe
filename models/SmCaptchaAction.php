@@ -130,7 +130,7 @@ class SmCaptchaAction extends Action
 
                 if (!YII_DEBUG)
                 {
-                    $s = Yii::$app->sm->S($mobile,  "【襄阳联通】会员注册验证码:{$session[$name]}", '', null, true);
+                    $s = Yii::$app->sm->S($mobile,  "【沃手科技】短信验证码:{$session[$name]}", '', null, true);
                     if ($s->isSendOk())
                         U::W('Send Sm OK');
                     else

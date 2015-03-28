@@ -2328,7 +2328,7 @@ U::W('aaaaa......'.$user_founder->mobile);
             if (!empty($url)) {
                 return $this->redirect($url);                
             } else {
-                Yii::$app->session->setFlash('success','bind ok');
+                Yii::$app->session->setFlash('success','绑定成功');
                 return $this->refresh();
             }
         }

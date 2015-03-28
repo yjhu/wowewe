@@ -444,8 +444,13 @@ EOD;
         $feesum = sprintf("%0.2f",$this->feesum/100);
         $office = MOffice::findOne($this->office_id);
         $title = ($office !== null) ? mb_substr($office->title, 0, 5, 'utf-8') : '';
+/*
         $str = <<<EOD
 【{$gh->nickname}】{$title}订单【{$this->oid}】,{$detail},{$feesum}元,{$this->username},电话{$this->usermobile}
+EOD;
+*/
+        $str = <<<EOD
+【沃手科技】{$title}订单【{$this->oid}】,{$detail},{$feesum}元,{$this->username},电话{$this->usermobile}
 EOD;
         U::W($str."...".mb_strlen($str, 'utf-8'));
         return $str;

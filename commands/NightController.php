@@ -20,6 +20,9 @@ use app\models\MOrder;
 use app\models\MMobnum;
 use app\models\MDisk;
 use app\models\MSceneDetail;
+use app\models\MSceneDay;
+use app\models\MStaff;
+use app\models\MAccessLog;
 
 class NightController extends Controller
 {
@@ -31,10 +34,26 @@ class NightController extends Controller
 		$time=microtime(true);	
 
 		U::W("###########".__CLASS__." BEGIN");		
+/*
+        $yesterday = date("Y-m-d",strtotime("-1 day"));
+        $yesterday = '2014-11-02';    
+		self::statSceneDay($yesterday);
+*/
+        //$time = strtotime('2014-11-03');
+        $time = time();
+        for($i=180;$i>0;$i--) {
+            $yesterday = date("Y-m-d",strtotime("-{$i} day", $time));
+            self::statSceneDay($yesterday);            
+        }
+        
+        return;
+        
 
 		self::confirmSceneDetail();
 
 		self::closeExpiredOrders();
+
+		self::statSceneDay();
 
 		//MDisk::updateAll(['cnt' => 3]);
 		$tableName = MDisk::tableName();
@@ -146,6 +165,39 @@ class NightController extends Controller
             }	
 	}
 
+    public static function statSceneDay($date) 
+    {    
+        $tableName = MSceneDay::tableName();
+        $ghs = MGh::find()->all();        
+        foreach($ghs as $gh) {
+            foreach($gh->staffs as $staff) {            
+                if ($staff->scene_id !=0 ) {
+                    $score = MAccessLog::getScoreByRange($gh->gh_id, $staff->scene_id, $date, $date);
+                    if ($score != 0) {
+                        Yii::$app->db->createCommand("INSERT INTO $tableName (gh_id,create_date,scene_id,score) VALUES (:gh_id,:create_date,:scene_id,:score)", [':gh_id'=>$gh->gh_id, ':create_date'=>$date, ':scene_id'=>$staff->scene_id,':score'=>$score])->execute();                
+                    }
+                }
+            }
+
+            // for the fan without anyboby's recommend
+            $staff = new MStaff();
+            $staff->scene_id = 0;
+            $score = MAccessLog::getScoreByRange($gh->gh_id, $staff->scene_id, $date, $date);
+            if ($score != 0) {
+                Yii::$app->db->createCommand("INSERT INTO $tableName (gh_id,create_date,scene_id,score) VALUES (:gh_id,:create_date,:scene_id,:score)", [':gh_id'=>$gh->gh_id, ':create_date'=>$date, ':scene_id'=>$staff->scene_id,':score'=>$score])->execute();                
+            }
+        }
+        return;        
+/*
+        $tableName = MAccessLog::tableName();
+        $n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE create_time < DATE_SUB(NOW(), INTERVAL 90 day)")->execute();
+        U::W("DELETE $tableName, $n");      
+
+        $tableName = MAccessLogAll::tableName();
+        $n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE create_time < DATE_SUB(NOW(), INTERVAL 180 day)")->execute();
+        U::W("DELETE $tableName, $n");      
+*/        
+    }
 }
 
 /*
