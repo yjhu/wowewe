@@ -14,11 +14,15 @@ class JqmyAsset extends \yii\web\JqueryAsset
 		'js/jqm/jquery.mobile.icons.min.css',
 		'js/jqm/jquery.mobile.structure-1.4.3.min.css',
 		'js/jqm/SpryTabbedPanels.css',
+
+		'js/jqm/idangerous.swiper.css',
 	];
 	
 	public $js = [
 		'js/jqm/jquery.mobile-1.4.3.min.js',	
 		'js/jqm/SpryTabbedPanels.js',
+
+		'js/jqm/idangerous.swiper.min.js',
 	];
 
 	public $jsOptions = ['position'=>\yii\web\View::POS_HEAD];
