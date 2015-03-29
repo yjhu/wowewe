@@ -23,6 +23,7 @@ use app\models\MSceneDetail;
 use app\models\MSceneDay;
 use app\models\MStaff;
 use app\models\MAccessLog;
+use app\models\MUserAccount;
 
 class NightController extends Controller
 {
@@ -35,7 +36,27 @@ class NightController extends Controller
         $yesterday = date("Y-m-d",strtotime("-1 day"));
         //$yesterday = '2014-11-02';    
 
+        // get last month
+        $year = date('Y');
+        $month = date('m');
+//        $year = 2014;
+//        $month = 12;
+        if ($month == 1) {
+            $year = $year - 1;
+            $last_month = 12;
+        } else {        
+            $last_month = $month - 1;
+        }
+        $theFirstDayOfLastMonth = U::getFirstDate($year, $last_month);
+        $theLastDayOfLastMonth = U::getLastDate($year, $last_month);
+               
 		U::W("###########".__CLASS__." BEGIN");		
+
+
+/*
+        self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
+        return;
+*/            
 /*
 		self::statSceneDay($yesterday);
 		return;
@@ -82,6 +103,11 @@ class NightController extends Controller
 			U::W("End Monthly ...");						
 		}		
 
+        if (date('j') == 15) {
+            U::W("on 15th every month, add recommending fans fee of last month for user ...");
+            self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
+        }       
+
 		U::W("###########".__CLASS__." END, (time: ".sprintf('%.3f', microtime(true)-$time)."s)");			
 	}
 
@@ -111,42 +137,21 @@ class NightController extends Controller
 
 	public static function confirmSceneDetail() 
 	{
-            $tableName = MSceneDetail::tableName();	
-            $query = (new Query()) ->from($tableName)->where("status=:status AND scene_amt>0", [':status'=>MSceneDetail::STATUS_INIT]);
-            $amt = 0;
-            foreach ($query->each() as $row)
-            {                
-                if ($row['cat'] == MSceneDetail::CAT_FAN)
-                {
-                    if (empty($row['openid_fan']))
-                        continue;
-                        
-                    $fan = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid_fan']]);
-                    if ($fan === null)
-                        continue;
+        $tableName = MSceneDetail::tableName();	
+        $query = (new Query()) ->from($tableName)->where("status=:status AND scene_amt>0", [':status'=>MSceneDetail::STATUS_INIT]);
+        $amt = 0;
+        foreach ($query->each() as $row)
+        {                
+            if ($row['cat'] == MSceneDetail::CAT_FAN)
+            {
+                if (empty($row['openid_fan']))
+                    continue;
                     
-                    if ($fan->isActivedFan())
-                    {
-                        U::W('ACTIVE id='.$row['id']);
-                        $model = MSceneDetail::findOne($row['id']);
-                        $model->status = MSceneDetail::STATUS_CONFIRMED;
-                        if ($model->save(false))
-                        {
-                            $user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid']]);
-                            U::W("SAVE BALANCE1 ".$user->scene_balance);
-                            
-                            $user->scene_balance += $model->scene_amt;
-                            U::W("SAVE BALANCE2 ".$user->scene_balance);                        
-                            $user->scene_balance_time = date("Y-m-d H:i:s");
-                            $user->save(false);
-                        }
-                    }
-                    else
-                    {
-                        U::W('NO ACTIVE id='.$row['id']);                
-                    }
-                }
-                else if ($row['cat'] == MSceneDetail::CAT_SIGN)
+                $fan = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid_fan']]);
+                if ($fan === null)
+                    continue;
+                
+                if ($fan->isActivedFan())
                 {
                     U::W('ACTIVE id='.$row['id']);
                     $model = MSceneDetail::findOne($row['id']);
@@ -154,16 +159,36 @@ class NightController extends Controller
                     if ($model->save(false))
                     {
                         $user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid']]);
-                        U::W("SAVE CAT_SIGN BALANCE1 ".$user->scene_balance);
+                        U::W("SAVE BALANCE1 ".$user->scene_balance);
                         
                         $user->scene_balance += $model->scene_amt;
-                        U::W("SAVE CAT_SIGN BALANCE2 ".$user->scene_balance);                        
+                        U::W("SAVE BALANCE2 ".$user->scene_balance);                        
                         $user->scene_balance_time = date("Y-m-d H:i:s");
                         $user->save(false);
-                    }                
+                    }
                 }
-                
-            }	
+                else
+                {
+                    U::W('NO ACTIVE id='.$row['id']);                
+                }
+            }
+            else if ($row['cat'] == MSceneDetail::CAT_SIGN)
+            {
+                U::W('ACTIVE id='.$row['id']);
+                $model = MSceneDetail::findOne($row['id']);
+                $model->status = MSceneDetail::STATUS_CONFIRMED;
+                if ($model->save(false))
+                {
+                    $user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid']]);
+                    U::W("SAVE CAT_SIGN BALANCE1 ".$user->scene_balance);
+                    
+                    $user->scene_balance += $model->scene_amt;
+                    U::W("SAVE CAT_SIGN BALANCE2 ".$user->scene_balance);                        
+                    $user->scene_balance_time = date("Y-m-d H:i:s");
+                    $user->save(false);
+                }                
+            }
+        }	
 	}
 
     public static function statSceneDay($date) 
@@ -202,6 +227,48 @@ class NightController extends Controller
         U::W("DELETE $tableName, $n");      
 */        
     }
+
+    public static function addRecommendFanAmount($date_start, $date_end) 
+    {
+		U::W(__METHOD__." BEGIN from $date_start, $date_end");		    
+        $tableName = MSceneDay::tableName();
+        $ghs = MGh::find()->all();        
+        foreach($ghs as $gh) {
+            if ($gh->gh_id !== MGh::GH_XIANGYANGUNICOM) {
+                continue;
+            }            
+            foreach($gh->staffs as $staff) {            
+                if ($staff->scene_id !=0 && !empty($staff->openid)) {
+                    $real_score = MAccessLog::getRealScoreByRange($gh->gh_id, $staff->scene_id, $date_start, $date_end);
+                    if ($real_score > 0) {
+                        //$amount = intval($real_score) * 100;                        
+                        $amount = intval($real_score/3) * 500;
+                        if ($amount > 0) {
+                            $model = new MUserAccount;
+                            $model->gh_id = $staff->gh_id;
+                            $model->openid = $staff->openid;
+                            $model->scene_id = $staff->scene_id;
+                            $model->cat = MUserAccount::CAT_DEBIT_FAN;
+                            $model->amount = $amount;
+                            $model->memo = '推荐粉丝';
+                            $model->save(false);
+                            U::W("SAVE OK, scene_id={$staff->scene_id}, openid={$staff->openid}, amount={$model->amount}");
+                        }
+                    }
+                    else {
+                        U::W("scene_id={$staff->scene_id}, openid={$staff->openid}, realscore={$real_score}, ");
+                    }
+                }
+                else {
+                    U::W("scene_id={$staff->scene_id}, openid={$staff->openid}");
+                }
+            }
+            
+        }
+		U::W(__METHOD__." END");		            
+        return;          
+    }    
+    
 }
 
 /*

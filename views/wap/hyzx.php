@@ -896,7 +896,26 @@
 </span>
 -->
 <?php 
-$fans = $user->getFans(); 
+//$fans = $user->getFans(); 
+
+        $year = date('Y');
+        $month = date('m');
+//        $year = 2014;
+//        $month = 12;
+        if ($month == 1) {
+            $year = $year - 1;
+            $last_month = 12;
+        } else {        
+            $last_month = $month - 1;
+        }
+        $theFirstDayOfLastMonth = U::getFirstDate($year, $last_month);
+        $theLastDayOfLastMonth = U::getLastDate($year, $last_month);
+
+
+$fans = $user->staff->getFansByRange($theFirstDayOfLastMonth, $theLastDayOfLastMonth); 
+$score =  $user->staff->getScoreByRange($theFirstDayOfLastMonth, $theLastDayOfLastMonth); 
+$expectedMoney = ($score/3)*5;
+$user_acount_balance = $user->getUserAccountBalanceInfo();
 
 U::W("!1111111111111111111111111111111111");
 //U::W($user);
@@ -939,17 +958,17 @@ U::W($fans);
 <div class="ui-grid-a">
     <div class="ui-block-a">
     <div id="ktxwd_span" class="ui-bar ui-bar-a" style="height:60px">
-        可提现沃点
+        可兑现话费
         <br>
-        <span style="font-size:18pt;">10</span> 
+        <span style="font-size:18pt;"><?= $user_acount_balance ?>元</span> 
     </div>
     </div>
 
     <div class="ui-block-b">
     <div id="yqwd_span" class="ui-bar ui-bar-b" style="height:60px">
-        预期沃点
+        预期话费
         <br>
-        <span style="font-size:18pt;">2</span> 
+        <span style="font-size:18pt;"><?= $expectedMoney ?> 元</span> 
     </div>
     </div>  
 

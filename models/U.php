@@ -459,6 +459,15 @@ class U
         return \yii\helpers\Url::toRoute($route, $scheme);
     }
 
+    public function getFirstDate($year, $month)
+    {
+        return date('Y-m-d', mktime(0, 0, 0, $month, 1, $year));
+    }
+
+    public function getLastDate($year, $month)
+    {
+        return date('Y-m-t', mktime(0, 0, 0, $month, 1, $year));
+    }
 
 }
 

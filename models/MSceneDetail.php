@@ -3,6 +3,8 @@ namespace app\models;
 
 
 /*
+no use now
+
 DROP TABLE IF EXISTS wx_scene_detail;
 CREATE TABLE wx_scene_detail (
     id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,

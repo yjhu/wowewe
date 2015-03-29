@@ -84,6 +84,24 @@ class MAccessLog extends ActiveRecord
         $count_minus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$gh_id, ':scene_pid' => $scene_id, ':Event'=>'unsubscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->count();
         return $count_plus - $count_minus;
     }    
+
+    public static function getRealScoreByRange($gh_id, $scene_id, $date_start, $date_end)
+    {    
+        //U::W("scene_id=$scene_id,$date_start, $date_end");    
+        $count_plus = 0;
+        $accessLogs = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$gh_id, ':scene_pid' => $scene_id, ':Event'=>'subscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->all();        
+        foreach ($accessLogs as $accessLog) {
+            $fan = $accessLog->user;
+            if (!empty($fan)) {                
+                // just can get money only if the recommended fan bind a mobile
+                if (!empty($fan->openidBindMobiles)) {
+                    $count_plus++;
+                }
+            }
+        }
+        $count_minus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$gh_id, ':scene_pid' => $scene_id, ':Event'=>'unsubscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->count();
+        return $count_plus - $count_minus;
+    }    
     
 }
 

@@ -29,6 +29,8 @@ use app\models\MGh;
 
 class MSceneDay extends ActiveRecord
 {
+    public $sum_score;
+    
     public static function tableName()
     {
         return 'wx_scene_day';

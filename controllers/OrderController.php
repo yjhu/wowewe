@@ -8,6 +8,7 @@ use yii\web\NotFoundHttpException;
 use yii\web\View;
 use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
+use yii\data\ActiveDataProvider;
 
 use app\models\U;
 use app\models\MOrder;
@@ -30,6 +31,8 @@ use app\models\MAccessLogAll;
 use app\models\MSceneDetail;
 use app\models\MSceneDetailSearch;
 
+
+use app\models\MSceneDay;
 use app\models\MaterialDataProvider;
 
 class OrderController extends Controller
@@ -270,7 +273,88 @@ class OrderController extends Controller
         ]);
         return $this->render('stafftop', [
             'dataProvider' => $dataProvider,
+        ]);        
+    }
+
+    public function actionStafftopbyrange()
+    {
+        $cur_date = Yii::$app->request->get('cur_date');
+//        $cur_date = '2014-10-31';
+        if(empty($cur_date))
+        {
+            $date_start = Yii::$app->request->get('date_start', date("Y-m-d",strtotime("-1 day")));
+            $date_end = Yii::$app->request->get('date_end', date("Y-m-d",strtotime("-1 day")));
+        }
+        else
+        {
+            $date_start = $cur_date;
+            $date_end = $cur_date; 
+        }        
+
+//        $searchModel = new MSceneDetailSearch;
+//        $dataProvider = $searchModel->search(Yii::$app->request->get());
+        $query = MSceneDay::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'sum_score' => SORT_DESC,
+                ]
+            ],
+            'pagination' => [
+                'pageSize' => 20,
+            ],            
         ]);
+
+
+//        $query = MSceneDay::find()->joinWith('staff');
+        $query = MSceneDay::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'sum_score' => SORT_DESC,
+                ]
+            ],
+            'pagination' => [
+                'pageSize' => 20,
+            ],            
+        ]);
+/*
+        $query->select(['sum(score) as sum_score']);
+        $query->andWhere(['wx_scene_day.gh_id' => Yii::$app->user->getGhid()]);
+        $query->andWhere('create_date >= :date_start', [':date_start'=>$date_start]);
+        $query->andWhere('create_date <= :date_end', [':date_end'=>$date_end]);
+        
+        $query->andWhere('wx_scene_day.scene_id > 0');
+        $query->groupBy(['wx_scene_day.scene_id']);
+        $query->orderBy(['sum_score' => SORT_DESC]);        
+*/
+        $query->select(['*', 'sum(score) as sum_score']);
+        $query->andWhere(['gh_id' => Yii::$app->user->getGhid()]);
+        $query->andWhere('create_date >= :date_start', [':date_start'=>$date_start]);
+        $query->andWhere('create_date <= :date_end', [':date_end'=>$date_end]);
+        
+        $query->andWhere('scene_id > 0');
+        $query->groupBy(['scene_id']);
+        $query->orderBy(['sum_score' => SORT_DESC]);        
+        
+        if (!Yii::$app->user->getIsAdmin())
+        {
+            //$query->andWhere(['office_id' => Yii::$app->user->identity->office_id]);
+        }
+//      $query->andWhere(['cat' => 0]);
+
+        
+        return $this->render('stafftopbyrange', [
+            'dataProvider' => $dataProvider,
+//            'searchModel' => $searchModel,
+            'cur_date'=>$cur_date,
+            'date_start'=>$date_start,
+            'date_end'=>$date_end,            
+        ]);
+        
         
     }
 
@@ -400,52 +484,52 @@ class OrderController extends Controller
         
     }
 
-        public function actionOfficetopbymonth($month)
-        {
-            $rows = MOffice::getOfficeScoreTopByMonth(Yii::$app->user->getGhid(), $month);
-    
-            $filter = new \app\models\FiltersForm;
-            $filter->unsetAttributes();
-            if(isset($_GET['FiltersForm'])) {       
-                $filter->setAttributes($_GET['FiltersForm'], false);
-            }
-            $rows = $filter->filterArrayData($rows);        
-            
-            $dataProvider = new ArrayDataProvider([
-                'allModels' => $rows,
-                'sort' => [
-                    'attributes' => ['office_id', 'title', 'cnt_office', 'cnt_staffs', 'cnt_sum'],        
-                    'defaultOrder'=>[
-                        'cnt_sum' => SORT_DESC
-                    ]
-                ],
-                'pagination' => [
-                    'pageSize' => 50,
-                ],
-            ]);
-    
-            if (isset($_GET['download']))
-            {
-                $data = $rows;
-                \yii\helpers\ArrayHelper::multisort($data, 'cnt_sum', SORT_DESC);                            
-                $date = date('Y-m-d-His');
-                $filename = Yii::$app->getRuntimePath()."/Officetopbymonth-{$month}.csv";
-                $csv = new \app\models\ECSVExport($data);            
-                $attributes = ['office_id', 'scene_id', 'title', 'is_jingxiaoshang', 'cnt_office', 'cnt_staffs', 'cnt_sum'];        
-                $csv->setInclude($attributes);
-                $csv->setHeaders(['office_id'=>'营业厅ID', 'scene_id'=>'推广码ID', 'title'=>'名称', 'is_jingxiaoshang'=>'类别', 'cnt_office'=>'部门推广人数', 'cnt_staffs'=>'部门员工推广人数', 'cnt_sum'=>'合计推广人数']);
-                $csv->toCSV($filename); 
-                Yii::$app->response->sendFile($filename);
-                return;        
-            }
-            
-            return $this->render('officetopbymonth', [
-                'dataProvider' => $dataProvider,
-                'month'=>$month,
-                'filter'=>$filter,            
-            ]);  
-            
+    public function actionOfficetopbymonth($month)
+    {
+        $rows = MOffice::getOfficeScoreTopByMonth(Yii::$app->user->getGhid(), $month);
+
+        $filter = new \app\models\FiltersForm;
+        $filter->unsetAttributes();
+        if(isset($_GET['FiltersForm'])) {       
+            $filter->setAttributes($_GET['FiltersForm'], false);
         }
+        $rows = $filter->filterArrayData($rows);        
+        
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $rows,
+            'sort' => [
+                'attributes' => ['office_id', 'title', 'cnt_office', 'cnt_staffs', 'cnt_sum'],        
+                'defaultOrder'=>[
+                    'cnt_sum' => SORT_DESC
+                ]
+            ],
+            'pagination' => [
+                'pageSize' => 50,
+            ],
+        ]);
+
+        if (isset($_GET['download']))
+        {
+            $data = $rows;
+            \yii\helpers\ArrayHelper::multisort($data, 'cnt_sum', SORT_DESC);                            
+            $date = date('Y-m-d-His');
+            $filename = Yii::$app->getRuntimePath()."/Officetopbymonth-{$month}.csv";
+            $csv = new \app\models\ECSVExport($data);            
+            $attributes = ['office_id', 'scene_id', 'title', 'is_jingxiaoshang', 'cnt_office', 'cnt_staffs', 'cnt_sum'];        
+            $csv->setInclude($attributes);
+            $csv->setHeaders(['office_id'=>'营业厅ID', 'scene_id'=>'推广码ID', 'title'=>'名称', 'is_jingxiaoshang'=>'类别', 'cnt_office'=>'部门推广人数', 'cnt_staffs'=>'部门员工推广人数', 'cnt_sum'=>'合计推广人数']);
+            $csv->toCSV($filename); 
+            Yii::$app->response->sendFile($filename);
+            return;        
+        }
+        
+        return $this->render('officetopbymonth', [
+            'dataProvider' => $dataProvider,
+            'month'=>$month,
+            'filter'=>$filter,            
+        ]);  
+        
+    }
 
     public function actionIphone6sub()
     {

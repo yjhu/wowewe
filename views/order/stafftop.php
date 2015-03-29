@@ -21,6 +21,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
+    <p>
+    	<?php $currentMonth = date("n"); ?>
+		<?php //echo Html::a('累计推广成绩下载 <i class="glyphicon glyphicon-arrow-down"></i>', U::current(['download' => 1]), ['class' => 'btn btn-success', 'data-pjax' => '0',]); ?>
+		<?php echo Html::a("按时间范围成绩排行", ['stafftopbyrange','cur_date'=>date("Y-m-d",strtotime("-1 day"))], ['class' => 'btn btn-info']) ?>
+    </p>
+
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

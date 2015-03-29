@@ -40,6 +40,7 @@ use yii\behaviors\TimestampBehavior;
 use app\models\U;
 use app\models\MOffice;
 use app\models\MSceneDay;
+use app\models\MAccessLog;
 
 class MStaff extends ActiveRecord
 {
@@ -207,24 +208,6 @@ EOD;
         return $rows;
     }
 
-/*
-    public function getScoreByRange($date_start, $date_end)
-    {
-        if ($this->scene_id == 0)
-            return 0;
-        $count_plus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'subscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->count();
-        $count_minus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'unsubscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->count();
-        return $count_plus - $count_minus;
-    }    
-    public function getScoreByMonth($month)
-    {
-        if ($this->scene_id == 0)
-            return 0;
-        $count_plus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND month(create_time)=:month', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'subscribe', ':month'=>$month])->count();
-        $count_minus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND month(create_time)=:month', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'unsubscribe', ':month'=>$month])->count();
-        return $count_plus - $count_minus;
-    }    
-*/
     public function getScoreByRange($date_start, $date_end)
     {
         if ($this->scene_id == 0) {
@@ -311,6 +294,24 @@ EOD;
     {
         return $this->is_manager ? true : false;
     }    
+
+    public function getFansByRange($date_start, $date_end)
+    {
+        if ($this->scene_id == 0) {
+            return [];
+        }
+
+        $fans = [];
+        $accessLogs = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'subscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->all();        
+        foreach ($accessLogs as $accessLog) {
+            $fan = $accessLog->user;
+            if (!empty($fan)) {                
+                $fans[] = $fan;
+            }
+        }
+        return $fans;
+    }    
+    
 }
 
 
@@ -377,5 +378,22 @@ scene_id VARCHAR(64) NOT NULL DEFAULT '' COMMENT '推广者的推广id',
             return false;
         }
     }
-*/
+
+        public function getScoreByRange($date_start, $date_end)
+        {
+            if ($this->scene_id == 0)
+                return 0;
+            $count_plus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'subscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->count();
+            $count_minus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'unsubscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->count();
+            return $count_plus - $count_minus;
+        }    
+        public function getScoreByMonth($month)
+        {
+            if ($this->scene_id == 0)
+                return 0;
+            $count_plus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND month(create_time)=:month', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'subscribe', ':month'=>$month])->count();
+            $count_minus = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND month(create_time)=:month', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'unsubscribe', ':month'=>$month])->count();
+            return $count_plus - $count_minus;
+        }    
+    */
 

@@ -35,9 +35,14 @@ CREATE TABLE wx_user (
     is_liantongstaff tinyint(3) unsigned NOT NULL DEFAULT 0,
     sign_time TIMESTAMP NOT NULL DEFAULT 0,
     sign_money int(10) unsigned NOT NULL DEFAULT '0',
+    user_account_balance int(10) NOT NULL DEFAULT '0',
     KEY idx_gh_id_scene_pid(gh_id,scene_pid),
     UNIQUE KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+ALTER TABLE wx_user ADD user_account_balance int(10) NOT NULL DEFAULT '0';
+
 
 // role has no use now.
 
@@ -91,6 +96,8 @@ ALTER TABLE wx_user ADD sign_money int(10) unsigned NOT NULL DEFAULT '0';
 
 //ALTER TABLE wx_user ADD sign_is_member int(10) unsigned NOT NULL DEFAULT '0' after scene_pid;
 
+
+
 */
 
 use Yii;
@@ -99,6 +106,8 @@ use yii\helpers\Security;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+
+use app\models\MUserAccount;
 
 class MUser extends ActiveRecord implements IdentityInterface
 {
@@ -396,7 +405,22 @@ class MUser extends ActiveRecord implements IdentityInterface
         }
         return $staff->getFans(); 
     }
-    
+/*
+    public function getUserAccounts()
+    {
+        return $this->hasMany(MUserAccount::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
+    }
+*/   
+    public function getUserAccountBalanceInfo()
+    {
+        return Yii::$app->formatter->asCurrency($this->user_account_balance/100);    
+    }    
+
+    public function getStaff()
+    {
+        return $this->hasOne(MStaff::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
+    }
+
 }
 
 /*
