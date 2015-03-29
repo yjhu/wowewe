@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = '修改';
 		<?= $form->field($model, 'pkg_name_hint')->textInput(['maxlength' => 128]) ?>
 
 		<?= $form->field($model, 'pic_url')->textInput(['maxlength' => 128]) ?>
+		<?= $form->field($model, 'pic_urls')->textInput(['maxlength' => 512]) ?>
 
 		<?= $form->field($model, 'detail')->textArea() ?>
 
@@ -45,6 +46,8 @@ $this->params['breadcrumbs'][] = '修改';
 		<?= $form->field($model, 'ctrl_pkg_period')->textInput(['maxlength' => 128]) ?>
 		<?= $form->field($model, 'ctrl_pkg_monthprice')->textInput(['maxlength' => 128]) ?>
 		<?= $form->field($model, 'ctrl_pkg_plan')->textInput(['maxlength' => 128]) ?>
+		
+		<?= $form->field($model, 'ctrl_picurls')->textInput(['maxlength' => 128]) ?>
 
 		<?= $form->field($model, 'ctrl_soldout')->textInput(['maxlength' => 128]) ?>
 

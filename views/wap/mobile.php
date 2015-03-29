@@ -128,6 +128,46 @@ text-decoration: line-through;
 </style>
 
 
+<style>
+.swiper-container, .swiper-slide {
+  width: 100%;
+  height: 310px;
+  color: #fff;
+  text-align: center;
+}
+/*
+.swiper-slide .title {
+  font-style: italic;
+  font-size: 42px;
+  margin-top: 80px;
+  margin-bottom: 0;
+  line-height: 45px;
+}
+*/
+.pagination {
+  position: absolute;
+  z-index: 20;
+  left: 10px;
+  bottom: 0px;
+}
+.swiper-pagination-switch {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  background: #ccc;
+  margin-right: 5px;
+  opacity: 0.8;
+  border: 1px solid #fff;
+  cursor: pointer;
+}
+.swiper-visible-switch {
+  background: #fff;
+}
+.swiper-active-switch {
+  background: #ff4c01;
+}
+  </style>
 <div data-role="page" id="page2" data-theme="c">
    
     <?php echo $this->render('header1', ['menuId'=>'menu2','title' => $item->title ]); ?>
@@ -139,9 +179,33 @@ text-decoration: line-through;
 	<div data-role="content">
 	<form id="productForm">	
 	<div data-role="content" data-theme="c">	
-	<p  align=center id="imgURL">
-	    <img id='transparent' width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
-	</p>
+
+        <?php if($item->ctrl_picurls == 0) { ?>
+        	<p  align=center id="imgURL">
+        	    <img id='transparent' width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
+        	</p>
+
+        <?php } else { ?>
+              <div class="swiper-container">
+                <div class="swiper-wrapper">
+                  <?php
+                        $n = 0;
+                        $imgs = $item->pic_urls;
+                        $imgUrls = explode(",",$imgs);
+                        foreach($imgUrls as $imgUrl) {
+                            
+                            if($n == count($imgUrls)) break;
+                            $n++;
+                    ?>
+                        <div class="swiper-slide">
+                        <img id='transparent' width="100%" src="<?php echo  $imgUrl; ?>" alt=""/>
+                        </div>
+                    <?php } ?>
+                 
+                </div>
+                <div class="pagination"></div>
+              </div>
+        <?php } ?>
 
         <p id="desc">
             <?php echo  $item->title_hint; ?>
@@ -523,6 +587,7 @@ text-decoration: line-through;
 </script>
 
 
+
 <script>
     //var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
     //var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
@@ -827,6 +892,14 @@ $(document).on("pageinit", "#page2", function(){
     pkgPeriod = null;
     pkgMonthprice = null;
     pkgPlan = null;
+
+      var mySwiper = new Swiper('.swiper-container',{
+        pagination: '.pagination',
+        paginationClickable: true,
+        slidesPerView: 1,
+        autoplay: 5000,
+        loop: true
+      })
 
 	//submit form
     $(document).on("tap", "#submitBtn", function(){
