@@ -1800,6 +1800,24 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         return $this->render('tjyl', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes]);
     }
 
+
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/rhtg:gh_03a74ac96138
+    public function actionRhtg()
+    {           
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');        
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($model->openidBindMobiles)) {        
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+       
+        return $this->render('rhtg', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model]);
+    }
+
+
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/hyzx:gh_03a74ac96138
     public function actionHyzx()
     {           
@@ -1970,15 +1988,18 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_ASC])->all();
         if (empty($model->openidBindMobiles)) {
             Yii::$app->getSession()->set('RETURN_URL', Url::to());
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }        
         Yii::$app->wx->setGhId($gh_id);     
+
+
         if ($model->bindMobileIsInside('wx_t1')) {
-            return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid]);            
+            return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);            
         } elseif ($model->bindMobileIsInside('wx_t2')) {
-            return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid]);        
+            return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);     
         }
         return $this->render('lyhzxyhhint', ['gh_id'=>$gh_id, 'openid'=>$openid]);        
     }  
