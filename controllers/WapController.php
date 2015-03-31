@@ -1580,7 +1580,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_DESC])->all();
+        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_ASC])->all();
         $query = new \yii\db\Query();
         $query->select('*')->from(\app\models\MActivity::tableName())->where(['status'=>1])->orderBy(['id' => SORT_DESC])->all();   
         $rows = $query->createCommand()->queryAll();
@@ -1647,7 +1647,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
         $kind=$_GET['kind'];
-        $models = MItem::find()->where(['kind'=>$kind])->orderBy(['price'=>SORT_DESC])->all();
+        $models = MItem::find()->where(['kind'=>$kind])->orderBy(['price'=>SORT_ASC])->all();
         return $this->render('cardlist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models,'kind'=>$kind]);
     }
 
@@ -2101,7 +2101,7 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
             return $this->render('lyhzxyhhint', ['gh_id'=>$gh_id, 'openid'=>$openid]);    
         } 
 
-        $models = MItem::find()->where(['kind'=>$kind, 'cid'=>$cats])->orderBy(['price'=>SORT_DESC])->all();
+        $models = MItem::find()->where(['kind'=>$kind, 'cid'=>$cats])->orderBy(['price'=>SORT_ASC])->all();
 
         U::W("$$$$$$$$$$$$$$$$$$$$$$$$$");
         U::W($models);
@@ -2496,7 +2496,7 @@ U::W('aaaaa......'.$user_founder->mobile);
 
 
 
-/*
+/*这
 Oauth2AccessToken Array
 (
     [access_token] => OezXcEiiBSKSxW0eoylIeDkMu7p6jFFOBgWifxvPgGwusvBLu_kuBRqVorsls1teafLUOnksy1z5JFMFSGGZKcWZCTbL1dj9xiNivhs7NhyM2xuvXweMFe-qAhUEIpgOSiiIfUqEFlTdotgdyfXUaQ
