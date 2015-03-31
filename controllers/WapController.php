@@ -1925,8 +1925,9 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
             Yii::$app->getSession()->set('RETURN_URL', Url::to());
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }
-       
-        return $this->render('wdkhjl', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model]);
+        $myManagers = $model->getVipManagers();
+        //U::W($myManagers);
+        return $this->render('wdkhjl', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'myManagers'=>$myManagers]);
     } 
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/orderinfo:gh_03a74ac96138
