@@ -205,7 +205,7 @@ text-decoration: line-through;
 
             <li id="office-li">
                 <a href="#office-select">
-                <p id="officeName" class="title_unset">营业厅</p>
+                <p id="officeName" class="title_unset">取货营业厅</p>
                 </a>
             </li>
 

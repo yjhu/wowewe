@@ -143,7 +143,11 @@
 
         <li><a ajax-data="false" href="#wytg"><img src="../web/images/woke/wdmy.gif" alt="推荐有礼" class="ui-li-icon ui-corner-none">推荐有礼<span class="ui-li-count"><?= $user->getScore() ?></span></a></li>
         <li><a href="<?php echo Url::to(['order', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-icon="shop" data-ajax="false"><img src="../web/images/woke/wdcf.gif" alt="我的订单" class="ui-li-icon ui-corner-none">我的订单<span class="ui-li-count"><?= count($user->orders) ?></span></a></li>
+        <li><a href="#czsjmh"><img src="../web/images/woke/wdcf.gif" class="ui-li-icon ui-corner-none">充值手机号</a></li>
+
         <li><a href="<?php echo Url::to(['addbindmobile', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-icon="shop" data-ajax="false"><img src="../web/images/woke/aqsz.gif" alt="绑定管理" class="ui-li-icon ui-corner-none">绑定管理<span class="ui-li-count"><?= count($user->openidBindMobiles) ?></span></a></li>
+
+
 
         <!--
         <li><a href="#wdcf"><img src="../web/images/woke/wdcf.gif" alt="我的财富" class="ui-li-icon ui-corner-none">我的财富<span class="ui-li-count"><?=  $user->getWokeYqwd() + $user->getWokeKtwd(); ?></span></a></li>
@@ -500,6 +504,44 @@
 
  <?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>
+
+
+<!-- 用户增加在此处添加要充值的手机号码 -->
+<div data-role="page" id="czsjmh" data-theme="c">
+<?php echo $this->render('header2', ['menuId'=>'menu3','title' => '免费手机号码' ]); ?>
+
+<div data-role="popup" id="popupUserMsg" data-theme="c">
+<p id="userMsg"></p>
+</div>
+
+<div data-role="content">
+    <form> 
+    
+    <input type="tel" name="czhm" id="czhm" placeholder="手机号码" value="">
+    <br>
+     <a href="#" id="czsjmhBtn" class="ui-btn">确定</a>
+    </form>
+   
+</div>
+
+<div data-role="footer" data-position="fixed">
+    <h4>&copy; 襄阳联通 2015</h4>
+</div>
+
+<div data-role="popup" id="popupDialog-Page" data-overlay-theme="c" data-theme="c" data-dismissible="false" style="max-width:400px;">
+    <div data-role="header" data-theme="c">
+    <h1>温馨提示</h1>
+    </div>
+    <div role="main" id="popupDialog-Page-txt" class="ui-content">
+        <span class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext'><span>
+        <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b" data-rel="back">确认</a>
+    </div>
+</div>
+
+
+ <?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
+</div>
+
 
 
 
@@ -1218,6 +1260,43 @@ $(document).on("pageinit", "#tqjl", function(){
 
 });
 
+
+
+$(document).on("pageinit", "#czsjmh", function(){
+
+    $(document).on("click","#czsjmhBtn",function(){
+
+        var czhm = $('#czhm').val();
+        var czhmReg = /(^(1)\d{10}$)/;
+        if(czhmReg.test(czhm) === false)
+        {
+            fillErrmsg('#popupDialog-Page-txt','充值手机号码不正确。请重新填写!');
+            $('#popupDialog-Page').popup('open');
+            return  false;
+        }
+
+        $.ajax({
+            url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'woketixian'], true) ; ?>",
+            type:"GET",
+            cache:false,
+            dataType:'json',
+            data: "&ljtx="+ljtx+"&czhm="+czhm+"&memo=提现申请",
+            success: function(json_data){
+                if(json_data)
+                {
+
+                }
+            }
+        });
+
+       // alert("你已成功提现"+$("#ljtxSlider").val()+"沃点; 价值"+($("#ljtxSlider").val())/100+"元。稍后会充值到你的手机上。" );
+
+        window.location.reload();
+        return false;
+
+    });
+
+});
 </script>
 
 <?php
