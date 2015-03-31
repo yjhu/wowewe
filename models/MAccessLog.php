@@ -94,7 +94,7 @@ class MAccessLog extends ActiveRecord
             $fan = $accessLog->user;
             if (!empty($fan)) {                
                 // just can get money only if the recommended fan bind a mobile
-                if (!empty($fan->openidBindMobiles)) {
+                if ($fan->subscribe && !empty($fan->openidBindMobiles)) {
                     $count_plus++;
                 }
             }

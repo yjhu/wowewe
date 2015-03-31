@@ -305,8 +305,10 @@ EOD;
         $accessLogs = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'subscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->all();        
         foreach ($accessLogs as $accessLog) {
             $fan = $accessLog->user;
-            if (!empty($fan)) {                
-                $fans[] = $fan;
+            if (!empty($fan)) {   
+                if ($fan->subscribe) {
+                    $fans[] = $fan;
+                }
             }
         }
         return $fans;
