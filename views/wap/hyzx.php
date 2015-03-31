@@ -885,8 +885,9 @@
 <div data-role="content">
 
 <center>
- <span style="font-size:14pt">我的推广二维码</span>&nbsp;
- <a style="color:blue;font-size:10pt;text-decoration:none;bold" href="<?php echo  Url::to(['wap/rhtg', 'gh_id'=>$gh_id,'openid'=>$openid],true) ?>">如何推广？</a>
+<span style="font-size:14pt">我的推广二维码</span>&nbsp;
+<a style="color:blue;font-size:10pt;text-decoration:none;bold" href="<?php echo  Url::to(['wap/rhtg', 'gh_id'=>$gh_id,'openid'=>$openid],true) ?>">如何推广？</a>
+
 <?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:45%;height: auto;']); ?>
 <!--
 <span>快叫小伙伴拿起手机微信扫一扫加关注。<br>
@@ -896,32 +897,11 @@
 </span>
 -->
 <?php 
-//$fans = $user->getFans(); 
-
-        $year = date('Y');
-        $month = date('m');
-//        $year = 2014;
-//        $month = 12;
-        if ($month == 1) {
-            $year = $year - 1;
-            $last_month = 12;
-        } else {        
-            $last_month = $month - 1;
-        }
-        $theFirstDayOfLastMonth = U::getFirstDate($year, $last_month);
-        $theLastDayOfLastMonth = U::getLastDate($year, $last_month);
-
-
-$fans = $user->staff->getFansByRange($theFirstDayOfLastMonth, $theLastDayOfLastMonth); 
-$score =  $user->staff->getScoreByRange($theFirstDayOfLastMonth, $theLastDayOfLastMonth); 
-$expectedMoney = ($score/3)*5;
-$user_acount_balance = $user->getUserAccountBalanceInfo();
-
-U::W("!1111111111111111111111111111111111");
-//U::W($user);
-//U::W("!1111111111111111111111111111111111");
-U::W($fans);
+$expectedMoney = (count($fans)/1)*5;
+$realMoney = (count($mobiledFans)/1)*5;
 ?>
+
+<?php if (!empty($fans)): ?>
 <br>
 <table data-role="table" id="table-custom-2" data-mode="columntoggle" class="ui-body-d ui-shadow table-stripe ui-responsive" data-column-btn-theme="b" data-column-btn-text="显示列..." data-column-popup-theme="a">
          <thead>
@@ -929,7 +909,7 @@ U::W($fans);
              <th data-priority="1">头像</th>
              <th data-priority="1">昵称</th>
              <th data-priority="1">绑定手机</th>
-             <th data-priority="4">时间</th>
+             <th data-priority="4">关注时间</th>
              <!--
              <th data-priority="5">Reviews</th>
              -->
@@ -941,9 +921,21 @@ U::W($fans);
             ?>
 
            <tr>
-            <th><img src="<?= $fan->headimgurl; ?>" width="36" height="36"></th>
+            <th>
+            <?php if (!empty($fan->headimgurl)): ?>
+            <img src="<?= $fan->headimgurl; ?>" width="36" height="36">
+            <?php endif; ?>
+            </th>
              <td><?= $fan->nickname ?></td>
-             <td><?= implode(',', $fan->getBindMobileNumbers()) ?></td>
+
+             <td>
+            <?php if (!empty($fan->getBindMobileNumbers())): ?>
+            <?= implode(',', $fan->getBindMobileNumbers()) ?>
+            <?php else: ?>
+            非会员(未绑定手机)
+            <?php endif; ?>
+
+             </td>
              <td><?= substr($fan->create_time,0,10) ?></td>
            </tr>
 
@@ -953,14 +945,18 @@ U::W($fans);
 
          </tbody>
 </table>
+<?php endif; ?>
 
 <br>
 <div class="ui-grid-a">
     <div class="ui-block-a">
     <div id="ktxwd_span" class="ui-bar ui-bar-a" style="height:60px">
         可兑现话费
+            <?php if (empty($user->user_account_charge_mobile)): ?>
+            (您尚未填写一个充值手机号码，无法为您充值！)
+            <?php endif; ?>
         <br>
-        <span style="font-size:18pt;"><?= $user_acount_balance ?>元</span> 
+        <span style="font-size:18pt;"><?= $realMoney ?>元</span> 
     </div>
     </div>
 
@@ -1222,7 +1218,30 @@ $(document).on("pageinit", "#tqjl", function(){
 
 <?php
 /*
- *
- *
+ 
+
+//$fans = $user->getFans(); 
+
+        $year = date('Y');
+        $month = date('m');
+//        $year = 2014;
+//        $month = 12;
+        if ($month == 1) {
+            $year = $year - 1;
+            $last_month = 12;
+        } else {        
+            $last_month = $month - 1;
+        }
+        $theFirstDayOfLastMonth = U::getFirstDate($year, $last_month);
+        $theLastDayOfLastMonth = U::getLastDate($year, $last_month);
+
+
+$fans = $user->staff->getFansByRange($theFirstDayOfLastMonth, $theLastDayOfLastMonth); 
+$score =  $user->staff->getScoreByRange($theFirstDayOfLastMonth, $theLastDayOfLastMonth); 
+$expectedMoney = ($score/3)*5;
+$user_acount_balance = $user->getUserAccountBalanceInfo();
+
+
+ 
  */
 ?>

@@ -36,6 +36,7 @@ CREATE TABLE wx_user (
     sign_time TIMESTAMP NOT NULL DEFAULT 0,
     sign_money int(10) unsigned NOT NULL DEFAULT '0',
     user_account_balance int(10) NOT NULL DEFAULT '0',
+    user_account_charge_mobile VARCHAR(32) NOT NULL DEFAULT '',
     KEY idx_gh_id_scene_pid(gh_id,scene_pid),
     UNIQUE KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -420,6 +421,8 @@ class MUser extends ActiveRecord implements IdentityInterface
     {
         return $this->hasOne(MStaff::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
     }
+
+
 
 }
 
