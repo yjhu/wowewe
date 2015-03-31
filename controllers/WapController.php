@@ -1845,16 +1845,7 @@ EOD;
 
     public static function getHyzxDateStart()
     {
-        $year = date('Y');
-        $month = date('m');
-        if ($month == 1) {
-            $year = $year - 1;
-            $last_month = 12;
-        } else {        
-            $last_month = $month - 1;
-        }
-        $theFirstDayOfLastMonth = U::getFirstDate($year, $last_month);
-        return $theFirstDayOfLastMonth;         
+        return U::getFirstDayOfLastMonth();
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/hyzx:gh_03a74ac96138

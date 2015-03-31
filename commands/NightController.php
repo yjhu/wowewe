@@ -33,25 +33,13 @@ class NightController extends Controller
 		if (!ini_set('memory_limit', '-1'))
 			U::W("ini_set(memory_limit) error");    
 		$time=microtime(true);	
-        $yesterday = date("Y-m-d",strtotime("-1 day"));
-        //$yesterday = '2014-11-02';    
+            $yesterday = date("Y-m-d",strtotime("-1 day"));
+            //$yesterday = '2014-11-02';    
 
-        // get last month
-        $year = date('Y');
-        $month = date('m');
-//        $year = 2014;
-//        $month = 12;
-        if ($month == 1) {
-            $year = $year - 1;
-            $last_month = 12;
-        } else {        
-            $last_month = $month - 1;
-        }
-        $theFirstDayOfLastMonth = U::getFirstDate($year, $last_month);
-        $theLastDayOfLastMonth = U::getLastDate($year, $last_month);
-               
-		U::W("###########".__CLASS__." BEGIN");		
-
+            $theFirstDayOfLastMonth = U::getFirstDayOfLastMonth();
+            $theLastDayOfLastMonth = U::getLastDayOfLastMonth();
+            
+            U::W("###########".__CLASS__." BEGIN");		
 
 /*
         self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
@@ -103,10 +91,10 @@ class NightController extends Controller
 			U::W("End Monthly ...");						
 		}		
 
-        if (date('j') == 15) {
-            U::W("on 15th every month, add recommending fans fee of last month for user ...");
-            self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
-        }       
+            if (date('j') == 15) {
+                U::W("on 15th every month, add recommending fans fee of last month for user ...");
+                self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
+            }       
 
 		U::W("###########".__CLASS__." END, (time: ".sprintf('%.3f', microtime(true)-$time)."s)");			
 	}
@@ -242,7 +230,8 @@ class NightController extends Controller
                     $real_score = MAccessLog::getRealScoreByRange($gh->gh_id, $staff->scene_id, $date_start, $date_end);
                     if ($real_score > 0) {
                         //$amount = intval($real_score) * 100;                        
-                        $amount = intval($real_score/3) * 500;
+                        //$amount = intval($real_score/3) * 500;
+                        $amount = intval($real_score) * 500;
                         if ($amount > 0) {
                             $model = new MUserAccount;
                             $model->gh_id = $staff->gh_id;

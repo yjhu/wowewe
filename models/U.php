@@ -469,6 +469,36 @@ class U
         return date('Y-m-t', mktime(0, 0, 0, $month, 1, $year));
     }
 
+    public static function getFirstDayOfLastMonth()
+    {
+        $year = date('Y');
+        $month = date('m');
+        if ($month == 1) {
+            $year = $year - 1;
+            $last_month = 12;
+        } else {        
+            $last_month = $month - 1;
+        }
+        $theFirstDayOfLastMonth = U::getFirstDate($year, $last_month);
+        $theLastDayOfLastMonth = U::getLastDate($year, $last_month);        
+        return $theFirstDayOfLastMonth;         
+    }
+
+    public static function getLastDayOfLastMonth()
+    {
+        $year = date('Y');
+        $month = date('m');
+        if ($month == 1) {
+            $year = $year - 1;
+            $last_month = 12;
+        } else {        
+            $last_month = $month - 1;
+        }
+        $theFirstDayOfLastMonth = U::getFirstDate($year, $last_month);
+        $theLastDayOfLastMonth = U::getLastDate($year, $last_month);
+        return $theLastDayOfLastMonth;
+    }
+
 }
 
 /*
