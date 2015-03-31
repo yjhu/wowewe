@@ -1368,7 +1368,7 @@ EOD;
     {
         $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/template/send", ['access_token'=>$this->accessToken], self::json_encode($msg));
         $this->checkWxApiResp($arr, [__METHOD__, $msg]);
-        U::W([$arr, $msg, self::json_encode($msg)]);
+        //U::W([$arr, $msg, self::json_encode($msg)]);
         return $arr;                        
     }
 
@@ -1404,7 +1404,51 @@ EOD;
         ];
         return $resp;        
     }
-    
+
+    public static function getTemplateOrderStatusNotify($openid, $url, $first, $remark, $oid, $title, $time, $price, $status)
+    {
+        //OPENTM472091377 
+        $template_id = '4Pajh0meMTGywu1A8NpVaR5e4hwe3GdbaELwbAneXWs';
+        $topcolor = '#FF0000';
+        $color = '#173177';
+        $resp = [
+            'touser' => $openid,
+            'template_id' => $template_id,
+            'url' => $url,
+            "topcolor" => $topcolor,
+            'data' => [
+                'first' => [
+                    'value' => $first,
+                    'color' => $color
+                ],
+                'keyword1' => [
+                    'value' => $oid,
+                    'color' => $color
+                ],
+                'keyword2' => [
+                    'value' => $title,
+                    'color' => $color
+                ],
+                'keyword3' => [
+                    'value' => $time,
+                    'color' => $color
+                ],
+                'keyword4' => [
+                    'value' => $price,
+                    'color' => $color
+                ],                
+                'keyword5' => [
+                    'value' => $status,
+                    'color' => $color
+                ],                                
+                'remark' => [
+                    'value' => $remark,
+                    'color' => $color
+                ],                
+            ]
+        ];
+        return $resp;        
+    }
 
 }
 

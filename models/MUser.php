@@ -42,7 +42,7 @@ CREATE TABLE wx_user (
 
 
 ALTER TABLE wx_user ADD user_account_balance int(10) NOT NULL DEFAULT '0';
-
+ALTER TABLE wx_user ADD user_account_charge_mobile VARCHAR(32) NOT NULL DEFAULT '';
 
 // role has no use now.
 
