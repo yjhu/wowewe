@@ -1564,6 +1564,30 @@ EOD;
                 $data['sign_money'] = $user->sign_money;
                 break;
 
+			case 'czsjhm':
+                $gh_id = U::getSessionParam('gh_id');
+                $openid = U::getSessionParam('openid');                    
+                Yii::$app->wx->setGhId($gh_id);
+                $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+                if ($user === null)
+                    $user = new MUser;        
+                
+                if (!empty($user->subscribe))
+                {
+                    $user->gh_id = $gh_id;
+                    $user->openid = $openid;
+
+                    $user->user_account_charge_mobile = $_GET['czhm1'];        
+                    if (!$user->save(false))
+                    {
+                        U::W([__METHOD__, $user->getErrors()]);
+                        return json_encode(['code'=>1, 'errmsg'=>'save score to db error']);
+                    }        
+                }
+				$data['czsjhm'] = $model->user_account_charge_mobile;
+                break;				
+				
+			
             default:
                 U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
                 return;
