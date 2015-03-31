@@ -1800,6 +1800,26 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         return $this->render('tjyl', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes]);
     }
 
+
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/rhtg:gh_03a74ac96138
+    public function actionRhtg()
+    {           
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');        
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        /*
+        if (empty($model->openidBindMobiles)) {        
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+        */
+       
+        return $this->render('rhtg', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model]);
+    }
+
+
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/hyzx:gh_03a74ac96138
     public function actionHyzx()
     {           
@@ -1830,6 +1850,23 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $scenes = $ktxwd_scenes = $yqwd_scenes = $yqwd_fans_qx_scenes = [];
         return $this->render('hyzx', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes]);
     }
+
+
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wdkhjl:gh_03a74ac96138
+    public function actionWdkhjl()
+    {                    
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');        
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($model->openidBindMobiles)) {        
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+       
+        return $this->render('wdkhjl', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model]);
+    } 
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/orderinfo:gh_03a74ac96138
     public function actionOrderinfo($oid)
@@ -1970,15 +2007,18 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_ASC])->all();
         if (empty($model->openidBindMobiles)) {
             Yii::$app->getSession()->set('RETURN_URL', Url::to());
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }        
         Yii::$app->wx->setGhId($gh_id);     
+
+
         if ($model->bindMobileIsInside('wx_t1')) {
-            return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid]);            
+            return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);            
         } elseif ($model->bindMobileIsInside('wx_t2')) {
-            return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid]);        
+            return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);     
         }
         return $this->render('lyhzxyhhint', ['gh_id'=>$gh_id, 'openid'=>$openid]);        
     }  
@@ -1999,6 +2039,24 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
         return $this->render('thsj', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/vipfwzq:gh_03a74ac96138   
+    public function actionVipfwzq()
+    {
+        $this->layout = 'wapy';  
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($model->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }        
+        Yii::$app->wx->setGhId($gh_id);   
+
+        return $this->render('vipfwzq', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
     public function getLLBCatsByMobiles($mobiles)
