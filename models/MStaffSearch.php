@@ -8,6 +8,7 @@ use yii\web\NotFoundHttpException;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\MStaff;
+use app\models\U;
 
 class MStaffSearch extends Model
 {
@@ -50,14 +51,17 @@ class MStaffSearch extends Model
 
         $this->gh_id = Yii::$app->user->getGhid();
         $this->addCondition($query, 'gh_id');        
+
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+        
         if (!Yii::$app->user->getIsAdmin())
         {
             $this->office_id = Yii::$app->user->identity->office_id;
             $this->addCondition($query, 'office_id');                    
-        }
-
-        if (!($this->load($params) && $this->validate())) {
-            return $dataProvider;
+        } else {
+            $this->addCondition($query, 'office_id');                            
         }
 
         $this->addCondition($query, 'cat');                    

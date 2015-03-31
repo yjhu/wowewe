@@ -73,7 +73,7 @@ class MStaff extends ActiveRecord
             [['office_id'], 'integer', 'integerOnly' =>true, 'min'=>1],       
             [['gh_id', 'openid', 'scene_id'], 'safe'],            
             [['is_manager'], 'boolean'],            
-            [['cat'], 'integer', 'integerOnly' =>true, 'min'=>static::SCENE_CAT_IN, 'max' =>static::SCENE_CAT_OFFICE ],       
+            [['cat'], 'integer', 'integerOnly' =>true, 'min'=>0 ],       
         ];
     }
 

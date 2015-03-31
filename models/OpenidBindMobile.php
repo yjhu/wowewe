@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use app\models\MUser;
 
 /*
 DROP TABLE IF EXISTS wx_openid_bind_mobile;
@@ -54,6 +55,11 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
             ['verifyCode', 'captcha', 'captchaAction'=>'site/smcaptcha', 'on'=>'bind_mobile'],
         
         ];
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
     }
 
     /**

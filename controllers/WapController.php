@@ -1256,9 +1256,9 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
                 U::W('sendSm');
                 $manager->sendSm($order->getSmNoticeToManager());
             }
-
             // send wx message to user
-            //$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);                    
+            $arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);                    
+            U::W($arr);
         }
         else
         {
@@ -1803,9 +1803,6 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/hyzx:gh_03a74ac96138
     public function actionHyzx()
     {           
-//        $s = Yii::$app->sm->S('15527210477', 'hello, jack', '', null, true);
-//        $s = Yii::$app->sm->S('13545296480', 'hello, kzeng', '', null, true);
-//        U::W($s->resp);            
         $this->layout = 'wapy';
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');        
@@ -1814,7 +1811,8 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
             Yii::$app->getSession()->set('RETURN_URL', Url::to());
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }
-       
+
+/*       
         $scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt<0 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
         
         //可提现沃点
@@ -1828,6 +1826,8 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
         
 
         U::W(count($yqwd_fans_qx_scenes));
+*/        
+        $scenes = $ktxwd_scenes = $yqwd_scenes = $yqwd_fans_qx_scenes = [];
         return $this->render('hyzx', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes]);
     }
 
@@ -2401,6 +2401,10 @@ U::W('aaaaa......'.$user_founder->mobile);
         $model->openid = $openid;
         $model->setScenario('bind_mobile');                
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->wx->setGhId($gh_id); 
+			$url = Url::to(['hyzx', 'gh_id'=>$gh_id, 'openid'=>$openid], true);
+			U::W($url);
+            Yii::$app->wx->WxTemplateSend(Wechat::getTemplateBindSuccessNotify($openid, $url, "{$model->user->nickname}，您的手机号码已成功绑定襄阳联通官方微信营业厅", "您已成为襄阳联通的会员，可随时查询话费余额，办理业务，参与更多专享优惠！", $model->mobile, date('Y-m-d')));
             $url = Yii::$app->getSession()->get('RETURN_URL');
             if (!empty($url)) {
                 return $this->redirect($url);                

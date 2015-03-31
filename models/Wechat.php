@@ -1364,7 +1364,47 @@ EOD;
         return  self::arrayToXml($nativeObj);
     }
 
+    public function WxTemplateSend($msg)
+    {
+        $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/template/send", ['access_token'=>$this->accessToken], self::json_encode($msg));
+        $this->checkWxApiResp($arr, [__METHOD__, $msg]);
+        U::W([$arr, $msg, self::json_encode($msg)]);
+        return $arr;                        
+    }
 
+    public static function getTemplateBindSuccessNotify($openid, $url, $first, $remark, $mobile, $date)
+    {
+        //OPENTM450824262
+        $template_id = 'mYbdd3PofjNJU636AB8akcnpUifA_YaTNP7uxOkqTMo';
+        $topcolor = '#FF0000';
+        $color = '#173177';
+        $resp = [
+            'touser' => $openid,
+            'template_id' => $template_id,
+            'url' => $url,
+            "topcolor" => $topcolor,
+            'data' => [
+                'first' => [
+                    'value' => $first,
+                    'color' => $color
+                ],
+                'keyword1' => [
+                    'value' => $mobile,
+                    'color' => $color
+                ],
+                'keyword2' => [
+                    'value' => $date,
+                    'color' => $color
+                ],
+                'remark' => [
+                    'value' => $remark,
+                    'color' => $color
+                ],                
+            ]
+        ];
+        return $resp;        
+    }
+    
 
 }
 

@@ -106,7 +106,7 @@ use yii\helpers\Url;
 
     
         <div class="form-group">
-            <?= Html::submitButton('添加绑定手机号', ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton('添加绑定手机号，立即成为会员', ['class' => 'btn btn-success']) ?>
         </div>
     <?php ActiveForm::end(); ?>
 
