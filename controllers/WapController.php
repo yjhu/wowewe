@@ -1843,6 +1843,19 @@ EOD;
         return $this->render('rhtg', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model]);
     }
 
+    public static function getHyzxDateStart()
+    {
+        $year = date('Y');
+        $month = date('m');
+        if ($month == 1) {
+            $year = $year - 1;
+            $last_month = 12;
+        } else {        
+            $last_month = $month - 1;
+        }
+        $theFirstDayOfLastMonth = U::getFirstDate($year, $last_month);
+        return $theFirstDayOfLastMonth;         
+    }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/hyzx:gh_03a74ac96138
     public function actionHyzx()
@@ -1872,10 +1885,34 @@ EOD;
         U::W(count($yqwd_fans_qx_scenes));
 */        
         $scenes = $ktxwd_scenes = $yqwd_scenes = $yqwd_fans_qx_scenes = [];
-        return $this->render('hyzx', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes]);
+
+/*
+        $year = date('Y');
+        $month = date('m');
+//        $year = 2014;
+//        $month = 12;
+        if ($month == 1) {
+            $year = $year - 1;
+            $last_month = 12;
+        } else {        
+            $last_month = $month - 1;
+        }
+        $theFirstDayOfLastMonth = U::getFirstDate($year, $last_month);
+        $theLastDayOfLastMonth = U::getLastDate($year, $last_month);
+
+
+$fans = $user->staff->getFansByRange($theFirstDayOfLastMonth, $theLastDayOfLastMonth); 
+$score =  $user->staff->getScoreByRange($theFirstDayOfLastMonth, $theLastDayOfLastMonth); 
+$expectedMoney = ($score/3)*5;
+$user_acount_balance = $user->getUserAccountBalanceInfo();
+*/
+        $date_start = static::getHyzxDateStart();
+        $date_end = date("Y-m-d");
+        //U::W("$date_start, $date_end");        
+        $fans = $model->staff->getFansByRange($date_start, $date_end); 
+        $mobiledFans = $model->staff->getMobiledFansByRange($date_start, $date_end); 
+        return $this->render('hyzx', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes, 'fans'=>$fans, 'mobiledFans'=>$mobiledFans]);
     }
-
-
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wdkhjl:gh_03a74ac96138
     public function actionWdkhjl()

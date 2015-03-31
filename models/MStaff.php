@@ -301,7 +301,6 @@ EOD;
         if ($this->scene_id == 0) {
             return [];
         }
-
         $fans = [];
         $accessLogs = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$this->gh_id, ':scene_pid' => $this->scene_id, ':Event'=>'subscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->all();        
         foreach ($accessLogs as $accessLog) {
@@ -312,7 +311,18 @@ EOD;
         }
         return $fans;
     }    
-    
+
+    public function getMobiledFansByRange($date_start, $date_end)
+    {
+        $fans = $this->getFansByRange($date_start, $date_end);
+        $mobiledFans = [];
+        foreach ($fans as $fan) {
+            if (!empty($fan->openidBindMobiles)) {
+                $mobiledFans[] = $fan;
+            }         
+        }
+        return $mobiledFans;
+    }        
 }
 
 
