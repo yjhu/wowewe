@@ -1214,17 +1214,13 @@ EOD;
         }
 
         $wid = Yii::$app->request->get('wid', '');
-U::W("HELLO, {$wid}");        
         if (!empty($wid))
         {
              list($scene_id, $scene_src_id) = explode('_', $wid);
-U::W("FINE, {$scene_id}, {$scene_src_id}");                     
              $order->scene_id = $scene_id;             
              $order->scene_src_id = $scene_src_id;
-             U::W($order->cid);
              if(empty($order->item))
                 U::W("@@@@@@@@@@@@@@@@@@@NULL@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-
              $order->scene_amt = $order->feesum * $order->item->scene_percent /100;
         }
         
@@ -1249,16 +1245,20 @@ U::W("FINE, {$scene_id}, {$scene_src_id}");
 
             //send wx message and sm 
             $manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
-            if ($manager !== null)
+            if ($manager !== null && !empty($manager->openid))
             {
-                U::W('sendWxm');
-                $manager->sendWxm($order->getWxNoticeToManager());
-                U::W('sendSm');
-                $manager->sendSm($order->getSmNoticeToManager());
+                //U::W('sendWxm');
+                //$manager->sendWxm($order->getWxNoticeToManager());
+                //U::W('sendSm');
+                //$manager->sendSm($order->getSmNoticeToManager());
+                $arr = $order->sendTemplateNoticeToManager($manager);
+            } else {
+                U::W(['Have no manager or the manager has not binded openid', $order]);
             }
+
             // send wx message to user
-            $arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);                    
-            U::W($arr);
+            //$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);                    
+            $arr = $order->sendTemplateNoticeToCustom();
         }
         else
         {
@@ -2460,8 +2460,7 @@ U::W('aaaaa......'.$user_founder->mobile);
         $model->setScenario('bind_mobile');                
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->wx->setGhId($gh_id); 
-			$url = Url::to(['hyzx', 'gh_id'=>$gh_id, 'openid'=>$openid], true);
-			U::W($url);
+            $url = Url::to(['hyzx', 'gh_id'=>$gh_id, 'openid'=>$openid], true);
             Yii::$app->wx->WxTemplateSend(Wechat::getTemplateBindSuccessNotify($openid, $url, "{$model->user->nickname}，您的手机号码已成功绑定襄阳联通官方微信营业厅", "您已成为襄阳联通的会员，可随时查询话费余额，办理业务，参与更多专享优惠！", $model->mobile, date('Y-m-d')));
             $url = Yii::$app->getSession()->get('RETURN_URL');
             if (!empty($url)) {
