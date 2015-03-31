@@ -1564,6 +1564,30 @@ EOD;
                 $data['sign_money'] = $user->sign_money;
                 break;
 
+			case 'czsjhm':
+                $gh_id = U::getSessionParam('gh_id');
+                $openid = U::getSessionParam('openid');                    
+                Yii::$app->wx->setGhId($gh_id);
+                $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+                if ($user === null)
+                    $user = new MUser;        
+                
+                if (!empty($user->subscribe))
+                {
+                    $user->gh_id = $gh_id;
+                    $user->openid = $openid;
+
+                    $user->user_account_charge_mobile = $_GET['czhm1'];        
+                    if (!$user->save(false))
+                    {
+                        U::W([__METHOD__, $user->getErrors()]);
+                        return json_encode(['code'=>1, 'errmsg'=>'save score to db error']);
+                    }        
+                }
+				$data['czsjhm'] = $model->user_account_charge_mobile;
+                break;				
+				
+			
             default:
                 U::W(['invalid data cat', $cat, __METHOD__,$_GET]);
                 return;
@@ -1580,7 +1604,7 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
-        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_DESC])->all();
+        $models = MItem::find()->where(['kind'=>MItem::ITEM_KIND_MOBILE])->orderBy(['price'=>SORT_ASC])->all();
         $query = new \yii\db\Query();
         $query->select('*')->from(\app\models\MActivity::tableName())->where(['status'=>1])->orderBy(['id' => SORT_DESC])->all();   
         $rows = $query->createCommand()->queryAll();
@@ -1647,7 +1671,7 @@ EOD;
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
         $kind=$_GET['kind'];
-        $models = MItem::find()->where(['kind'=>$kind])->orderBy(['price'=>SORT_DESC])->all();
+        $models = MItem::find()->where(['kind'=>$kind])->orderBy(['price'=>SORT_ASC])->all();
         return $this->render('cardlist', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models,'kind'=>$kind]);
     }
 
@@ -2138,7 +2162,7 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
             return $this->render('lyhzxyhhint', ['gh_id'=>$gh_id, 'openid'=>$openid]);    
         } 
 
-        $models = MItem::find()->where(['kind'=>$kind, 'cid'=>$cats])->orderBy(['price'=>SORT_DESC])->all();
+        $models = MItem::find()->where(['kind'=>$kind, 'cid'=>$cats])->orderBy(['price'=>SORT_ASC])->all();
 
         U::W("$$$$$$$$$$$$$$$$$$$$$$$$$");
         U::W($models);
@@ -2532,7 +2556,7 @@ U::W('aaaaa......'.$user_founder->mobile);
 
 
 
-/*
+/*这
 Oauth2AccessToken Array
 (
     [access_token] => OezXcEiiBSKSxW0eoylIeDkMu7p6jFFOBgWifxvPgGwusvBLu_kuBRqVorsls1teafLUOnksy1z5JFMFSGGZKcWZCTbL1dj9xiNivhs7NhyM2xuvXweMFe-qAhUEIpgOSiiIfUqEFlTdotgdyfXUaQ

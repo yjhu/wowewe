@@ -353,9 +353,21 @@ function load_data2(i, n)
 		imgurl = '../web/images/item/zhongxing-v5-700x500.jpg-120x120.jpg';
 	else if(n.cid == 858)
 		imgurl = '../web/images/item/huawei-mate7-700x500.jpg-120x120.jpg';
-
 	//双4G双百兆手机 end
+	
 
+	//老用户专享
+	else if(n.cid == 870)
+		imgurl = '../web/images/item/sanxing-g9006v-700x500.jpg-120x120.jpg';
+	else if(n.cid == 871)
+		imgurl = '../web/images/item/htc-shishang-700x500.jpg-120x120.jpg';
+	else if(n.cid == 872)
+		imgurl = '../web/images/item/zhongxing-q801u-700x500.jpg-120x120.jpg';
+	else if(n.cid == 873)
+		imgurl = '../web/images/item/lianxiang-a606-700x500.jpg-120x120.jpg';
+	else if(n.cid == 874)
+		imgurl = '../web/images/item/zhongxing-v5-700x500.jpg-120x120.jpg';
+	//老用户专享end
 
 	if(n.val_pkg_3g4g == "3g")
 		val_pkg_3g4g_name="3G普通套餐";
