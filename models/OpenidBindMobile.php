@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 use app\models\MUser;
+use app\models\VipManager;
 
 /*
 DROP TABLE IF EXISTS wx_openid_bind_mobile;
@@ -60,6 +61,11 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
+    }
+
+    public function getVipManager()
+    {
+        return $this->hasOne(VipManager::className(), ['gh_id' => 'gh_id', 'mobile' => 'mobile']);
     }
 
     /**
