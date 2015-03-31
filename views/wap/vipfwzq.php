@@ -90,7 +90,7 @@
         <ul data-role="listview" data-inset="false" id="woke-ul">
         <li></li>
         <li><a href="<?php echo Url::to(['thsj', 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" class="ui-li-icon ui-corner-none">特惠商家</a></li>
-        <li><a href="<?php echo Url::to(['wdkhjl', 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>" data-ajax="false"><img src="../web/images/woke/wdmy.gif" class="ui-li-icon ui-corner-none">我的客户经理</a></li>
+        <li><a href="<?php echo Url::to(['wdkhjl', 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>" data-ajax="false"><img src="../web/images/woke/wdmy.gif" class="ui-li-icon ui-corner-none">我的客服经理</a></li>
 
         </ul>
 

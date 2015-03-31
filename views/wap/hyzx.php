@@ -142,8 +142,14 @@
         -->
 
         <li><a ajax-data="false" href="#wytg"><img src="../web/images/woke/wdmy.gif" alt="推荐有礼" class="ui-li-icon ui-corner-none">推荐有礼<span class="ui-li-count"><?= $user->getScore() ?></span></a></li>
-        <li><a href="<?php echo Url::to(['order', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-icon="shop" data-ajax="false"><img src="../web/images/woke/wdcf.gif" alt="我的订单" class="ui-li-icon ui-corner-none">我的订单<span class="ui-li-count"><?= count($user->orders) ?></span></a></li>
-       <li><a href="#czsjmh"><img src="../web/images/woke/wdcf.gif" class="ui-li-icon ui-corner-none">充值手机号</a></li>
+        <li><a href="<?php echo Url::to(['order', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-icon="shop" data-ajax="false"><img src="../web/images/woke/wddd.gif" alt="我的订单" class="ui-li-icon ui-corner-none">我的订单<span class="ui-li-count"><?= count($user->orders) ?></span></a></li>
+       
+
+		<?php if (empty($user->user_account_charge_mobile)) {?>
+		<li><a href="#czsjmh"><img src="../web/images/woke/wdcf.gif" class="ui-li-icon ui-corner-none">充值手机号<span class="ui-li-count">未填</span></a></li>
+		<?php } else { ?>
+		<li><a href="#czsjmh"><img src="../web/images/woke/wdcf.gif" class="ui-li-icon ui-corner-none">充值手机号<span class="ui-li-count">已填</span></a></li>
+		<?php } ?>
 
        <li><a href="<?php echo Url::to(['addbindmobile', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-icon="shop" data-ajax="false"><img src="../web/images/woke/aqsz.gif" alt="绑定管理" class="ui-li-icon ui-corner-none">绑定管理<span class="ui-li-count"><?= count($user->openidBindMobiles) ?></span></a></li>
 
@@ -950,13 +956,18 @@ $realMoney = (count($mobiledFans)/1)*5;
 <?php endif; ?>
 
 <br>
+
+<?php if (empty($user->user_account_charge_mobile)): ?>
+<p align=left>
+以便为您充值，请<a style="color:blue" href="#czsjmh">填写充值手机号</a>。
+</p>
+<?php endif; ?>
+
 <div class="ui-grid-a">
     <div class="ui-block-a">
     <div id="ktxwd_span" class="ui-bar ui-bar-a" style="height:60px">
         可兑现话费
-            <?php if (empty($user->user_account_charge_mobile)): ?>
-            (您尚未填写一个充值手机号码，无法为您充值！)
-            <?php endif; ?>
+
         <br>
         <span style="font-size:18pt;"><?= $realMoney ?>元</span> 
     </div>
@@ -971,7 +982,7 @@ $realMoney = (count($mobiledFans)/1)*5;
     </div>  
 
 </div>
-
+<br>
     <a href="javascript:reloadWokeList();" class="ui-btn">返回</a>
 
 </center>

@@ -84,7 +84,7 @@
 
 <div data-role="page" id="wokelist" data-theme="c">
 
-    <?php echo $this->render('header1', ['menuId'=>'menu1','title' => '我的客户经理' ]); ?>
+    <?php echo $this->render('header1', ['menuId'=>'menu1','title' => '我的客服经理' ]); ?>
     <div data-role="content">
         
         <ul data-role="listview" data-inset="false" id="woke-ul">
@@ -111,7 +111,7 @@
 
             <dd>
                 <p><span style="font-size:22px;font-weight: border">
-                张三丰
+                杨念念
                 <!--
                 <//?= $user->nickname ?>
                 -->
@@ -149,7 +149,7 @@
                 <//?php endforeach; ?>
                 -->
                 <a style="color:#aaa" href="tel:13545296480">
-                13545296480
+                13117239900
                 </a>
                 </p>
 
