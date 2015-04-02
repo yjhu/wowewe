@@ -25,3 +25,6 @@ composer.phar
 phpunit.phar
 # local phpunit config
 /phpunit.xml
+
+./web/access_token.json
+./web/jsapi_ticket.json
