@@ -35,6 +35,9 @@ use app\models\search\OpenidBindMobileSearch;
 
 use app\models\Alipay;
 use app\models\AlipaySubmit;
+use app\models\JSSDK;
+use app\models\HeatMap;
+
 
 class WapController extends Controller
 {
@@ -2613,6 +2616,35 @@ U::W('aaaaa......'.$user_founder->mobile);
 //      return $this->render('heatmap.php');
 //      return $this->render('sea_point.php');
 
+    }
+
+    // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/submitspeed:gh_03a74ac96138  
+    public function actionSubmitspeed()
+    {
+        $this->layout = 'wap';    
+        //$this->layout = false;    
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);        
+        Yii::$app->wx->setGhId($gh_id);
+        $gh = Yii::$app->wx->getGh();
+        $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
+        $model = new HeatMap;        
+        return $this->render('submitspeed', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user, 'model'=>$model, 'jssdk'=>$jssdk]);
+    }
+
+    // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/jssdksample:gh_03a74ac96138  
+    public function actionJssdksample()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);        
+        Yii::$app->wx->setGhId($gh_id);
+        $gh = Yii::$app->wx->getGh();
+        $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
+        return $this->render('jssdksample', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'jssdk'=>$jssdk]);
     }
     
 }
