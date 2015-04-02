@@ -1,4 +1,10 @@
 <?php
+use yii\helpers\Html;
+use yii\grid\GridView;
+use yii\helpers\Url;
+
+use app\models\U;
+
 //require_once "jssdk.php";
 //$jssdk = new JSSDK("yourAppID", "yourAppSecret");
 $signPackage = $jssdk->GetSignPackage();
@@ -9,7 +15,8 @@ $signPackage = $jssdk->GetSignPackage();
   <meta charset="utf-8">
   <title>微信JS-SDK Demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">  
-  <link href="http://libs.useso.com/js/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://libs.useso.com/js/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">  
+  <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
 </head>
 <body ontouchstart="">
 <div class="container">
@@ -37,7 +44,7 @@ $signPackage = $jssdk->GetSignPackage();
       <span class="desc">获取地理位置接口</span>
       <button class="btn btn_primary" id="getLocation">getLocation</button>
       -->
-<form>
+<form id="productForm">
   <button class="btn btn_primary" id="chooseImage">chooseImage</button>
   <div class="form-group">
     <label for="lon">lon</label>
@@ -304,7 +311,20 @@ document.querySelector('#submit_speed').onclick = function () {
             upload();
           } 
           else {
+            $("#serverId").val(serverId);
             alert('localid=' + images.localId[0] + ', serverId=' + images.serverId[0]);
+            alert($("#productForm").serialize());
+
+                $.ajax({
+                        url: "<?php echo Url::to(['wap/handlespeed'], true) ; ?>",
+                        type:"GET",
+                        cache:false,
+                        cache:false,
+                        dataType:'json',
+                        data: $("#productForm").serialize();
+                        success: function(json_data){
+                        }
+                   });
 
           }
         },

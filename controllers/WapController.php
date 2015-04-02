@@ -2680,7 +2680,11 @@ U::W('aaaaa......'.$user_founder->mobile);
         return $this->render('jssdksample', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'jssdk'=>$jssdk]);
     }
 
-    
+  
+    public function actionHandlespeed()
+    {
+        return json_encode(['code'=>0]);
+    }    
 }
 
 
