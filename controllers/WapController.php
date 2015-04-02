@@ -2618,7 +2618,6 @@ U::W('aaaaa......'.$user_founder->mobile);
 
     }
 
-<<<<<<< HEAD
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/4granking:gh_03a74ac96138  
     public function action4granking()
     {
@@ -2636,12 +2635,33 @@ U::W('aaaaa......'.$user_founder->mobile);
         return $this->render('4granking', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/4gspeedsubmit:gh_03a74ac96138  
+    public function action4gspeedsubmit()
+    {
+        $this->layout = 'wap';    
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');        
+        //$model = HeatMap::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+
+        $model = new \app\models\HeatMap;
+
+        Yii::$app->wx->setGhId($gh_id);
+        $gh = Yii::$app->wx->getGh();
+        $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
+        /*
+        if (empty($model->openidBindMobiles)) {        
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+        */
+        $n =1000;
 
 
+                         
+        return $this->render('4gspeedsubmit', ['model'=>$model, 'gh_id'=>$gh_id, 'openid'=>$openid, 'n'=>$n+999, 'jssdk'=>$jssdk]);
+    }  
 
 
-
-=======
     // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/submitspeed:gh_03a74ac96138  
     public function actionSubmitspeed()
     {
@@ -2670,7 +2690,7 @@ U::W('aaaaa......'.$user_founder->mobile);
         $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
         return $this->render('jssdksample', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'jssdk'=>$jssdk]);
     }
->>>>>>> b045c82d17988cf4fc47cce66be6165ed0990411
+
     
 }
 
