@@ -334,7 +334,7 @@ document.querySelector('#submit_speed').onclick = function () {
             $("#serverId").val(images.serverId[0]);
             //alert('xxx'+$("#productForm").serialize());
             lon = $("#lon").val();
-            lat = $("#lon").val();
+            lat = $("#lat").val();
             speed_up = $("#speed_up").val();
             speed_down = $("#speed_down").val();
             speed_delay = $("#speed_delay").val();
@@ -348,7 +348,7 @@ document.querySelector('#submit_speed').onclick = function () {
                     cache:false,
                     dataType:'json',
                     //data: $("#productForm").serialize();
-                     data: "&lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId,
+                     data: "lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId,
                     success: function(json_data){
                     }
                });
