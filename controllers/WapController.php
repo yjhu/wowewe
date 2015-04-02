@@ -2614,6 +2614,29 @@ U::W('aaaaa......'.$user_founder->mobile);
 //      return $this->render('sea_point.php');
 
     }
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/4granking:gh_03a74ac96138  
+    public function action4granking()
+    {
+        $this->layout = 'wap';    
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');        
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($model->openidBindMobiles)) {        
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+
+
+
+        return $this->render('4granking', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+
+
+
+
+
     
 }
 
