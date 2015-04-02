@@ -56,4 +56,13 @@ class HeatMap extends \yii\db\ActiveRecord
             'openid' => Yii::t('app', 'Openid'),
         ];
     }
+
+    public function getQrImageUrl()
+    {
+        $gh_id = $this->gh_id;
+        $media_id = $this->media_id;
+        $url = Yii::$app->getRequest()->baseUrl."/../runtime/heatmap/{$pic_url}";
+        return $url;
+    }
+    
 }

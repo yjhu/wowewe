@@ -2679,11 +2679,40 @@ U::W('aaaaa......'.$user_founder->mobile);
         $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
         return $this->render('jssdksample', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'jssdk'=>$jssdk]);
     }
-
-  
+ 
     public function actionHandlespeed()
     {
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        $lon = empty($_GET['lon']) ? 0 : $_GET['lon'];
+        $lat = empty($_GET['lat']) ? 0 : $_GET['lat'];
+        $speed_up = empty($_GET['speed_up']) ? 0 : $_GET['speed_up'];
+        $speed_down = empty($_GET['speed_down']) ? 0 : $_GET['speed_down'];
+        $speed_delay = empty($_GET['speed_delay']) ? 0 : $_GET['speed_delay'];
+        $media_id = empty($_GET['serverId']) ? 0 : $_GET['serverId'];        
+        if (empty($media_id)) {
+            U::W([$_GET]);
+            return json_encode(['code'=>1]);            
+        }
+        $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'heatmap'.DIRECTORY_SEPARATOR."{$gh_id}_{$media_id}.jpg";
+        if ((!file_exists($log_file_path)) || filesize($log_file_path) == 0)
+        {
+            Yii::$app->wx->setGhId($gh_id);    
+            Yii::$app->wx->WxMediaDownload($media_id, $log_file_path);
+        }         
+        $model = new HeatMap;
+        $model->gh_id = $gh_id;
+        $model->openid = $openid;        
+        $model->lon = $lon;
+        $model->lat = $lat;
+        $model->speed_up = $speed_up;
+        $model->speed_down = $speed_down;
+        $model->speed_delay = $speed_delay;
+        $model->media_id = $media_id;
+        $model->pic_url = "{$gh_id}_{$media_id}.jpg";
+        $model->save(false);        
         return json_encode(['code'=>0]);
+        
     }    
 }
 
