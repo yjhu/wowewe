@@ -45,8 +45,9 @@ $signPackage = $jssdk->GetSignPackage();
       <button class="btn btn_primary" id="getLocation">getLocation</button>
       -->
 <h1>4G测速</h1>
+<br>
 <form id="productForm">
-  <button class="btn btn_primary" id="chooseImage">选择测速截图</button><br>
+  <button class="btn btn_primary btn-lg" id="chooseImage">选择测速截图</button><br>
   <div class="form-group">
     <input type="hidden" class="form-control" id="lon" placeholder="Enter lon">
   </div>
@@ -54,13 +55,13 @@ $signPackage = $jssdk->GetSignPackage();
     <input type="hidden" class="form-control" id="lat" placeholder="Enter lat">
   </div>
   <div class="form-group">
-    <input type="number" class="form-control input-lg" id="speed_up" placeholder="上传速度">
+    <input type="number" class="form-control input-lg" id="speed_up" placeholder="上传速度 Mbps">
   </div>
   <div class="form-group">
-    <input type="number" class="form-control input-lg" id="speed_down" placeholder="下载速度">
+    <input type="number" class="form-control input-lg" id="speed_down" placeholder="下载速度 Mbps">
   </div>
   <div class="form-group">
-    <input type="number" class="form-control input-lg" id="speed_delay" placeholder="延时">
+    <input type="number" class="form-control input-lg" id="speed_delay" placeholder="延时 ms">
   </div>
   <div class="form-group">
     <input type="hidden" class="form-control" id="serverId">
@@ -130,7 +131,6 @@ $signPackage = $jssdk->GetSignPackage();
         'openCard'
       ]
   });
-
 
   var shareData = {
     title: '4G测速',
@@ -425,7 +425,7 @@ document.querySelector('#submit_speed').onclick = function () {
           } 
           else {
 
-            alert('localid=' + images.localId[0] + ', serverId=' + images.serverId[0]);
+            //alert('localid=' + images.localId[0] + ', serverId=' + images.serverId[0]);
 
             $("#serverId").val(images.serverId[0]);
             //alert('xxx'+$("#productForm").serialize());
@@ -446,12 +446,13 @@ document.querySelector('#submit_speed').onclick = function () {
                     //data: $("#productForm").serialize();
                      data: "lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId,
                     success: function(json_data){
+                      //alert('success');
                     }
                });
           }
         },
         fail: function (res) {
-          alert(JSON.stringify(res));
+          alert("fail::"+JSON.stringify(res));
         }
       });
     }
