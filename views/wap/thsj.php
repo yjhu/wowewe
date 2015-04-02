@@ -52,13 +52,13 @@
            
             <div class="swiper-slide rel" >
               <div class="main" >
-                <img class="lazy" data-original="./show_res/thsj2.jpg?v1" src="./show_res/thsj2.jpg?v1" >
+                <img class="lazy" data-original="./show_res/thsj2.jpg?v2" src="./show_res/thsj2.jpg?v2" >
               </div>
             </div>
 
           <div class="swiper-slide rel">
             <div class="main" >
-            <img class="lazy" data-original="./show_res/thsj3.jpg?v1" src="./show_res/thsj3.jpg?v1" >
+            <img class="lazy" data-original="./show_res/thsj3.jpg?v2" src="./show_res/thsj3.jpg?v2" >
             </div>
           </div> 
 
@@ -68,7 +68,7 @@
 
 <script type="text/javascript" src="./show_res/stylee.js"></script>
 <script type="text/javascript" src="./show_res/jquery.jplayer.min.js"></script> 
-<script src="./show_res/main.js?v11" type="text/javascript"></script>
+<script src="./show_res/main.js?v21" type="text/javascript"></script>
 <script src="./js/wechat.js" type="text/javascript"></script>
 
 <?php 
@@ -76,7 +76,7 @@
   $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/thsj:'.Yii::$app->wx->getGhid());
   //$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
   $assetsPath = Yii::$app->getRequest()->baseUrl.'/show_res';
-  $myImg = Url::to("$assetsPath/thsj1.jpg?v1", true);
+  $myImg = Url::to("$assetsPath/thsj1.jpg?v2", true);
   $title = '特惠商家';
   $desc = '特惠商家展示';
 ?>
