@@ -14,7 +14,7 @@ $signPackage = $jssdk->GetSignPackage();
 <html>
 <head>
   <meta charset="utf-8">
-  <title>微信JS-SDK Demo</title>
+  <title>4G测速</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">  
   <link href="http://libs.useso.com/js/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">  
   <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
@@ -26,7 +26,6 @@ $signPackage = $jssdk->GetSignPackage();
       <h3 id="menu-image">图像接口</h3>
       <span class="desc">拍照或从手机相册中选图接口</span>
       <button class="btn btn_primary" id="chooseImage">chooseImage</button>
-
 
       <span class="desc">预览图片接口</span>
       <button class="btn btn_primary" id="previewImage">previewImage</button>
@@ -45,37 +44,32 @@ $signPackage = $jssdk->GetSignPackage();
       <span class="desc">获取地理位置接口</span>
       <button class="btn btn_primary" id="getLocation">getLocation</button>
       -->
+<h1>4G测速</h1>
 <form id="productForm">
-  <button class="btn btn_primary" id="chooseImage">chooseImage</button>
+  <button class="btn btn_primary" id="chooseImage">选择测速截图</button><br>
   <div class="form-group">
-    <label for="lon">lon</label>
-    <input type="text" class="form-control" id="lon" placeholder="Enter lon">
+    <input type="hidden" class="form-control" id="lon" placeholder="Enter lon">
   </div>
   <div class="form-group">
-    <label for="lat">lat</label>
-    <input type="text" class="form-control" id="lat" placeholder="Enter lat">
+    <input type="hidden" class="form-control" id="lat" placeholder="Enter lat">
   </div>
   <div class="form-group">
-    <label for="speed_up">speed_up</label>
-    <input type="text" class="form-control" id="speed_up" placeholder="上传速度">
+    <input type="number" class="form-control input-lg" id="speed_up" placeholder="上传速度">
   </div>
   <div class="form-group">
-    <label for="speed_up">speed_up</label>
-    <input type="text" class="form-control" id="speed_down" placeholder="下载速度">
+    <input type="number" class="form-control input-lg" id="speed_down" placeholder="下载速度">
   </div>
   <div class="form-group">
-    <label for="speed_up">speed_up</label>
-    <input type="text" class="form-control" id="speed_delay" placeholder="延时">
+    <input type="number" class="form-control input-lg" id="speed_delay" placeholder="延时">
   </div>
   <div class="form-group">
-    <label for="serverId">serverId</label>
-    <input type="text" class="form-control" id="serverId">
+    <input type="hidden" class="form-control" id="serverId">
   </div>
 
 <!--
   <button type="submit" class="btn btn-default">Submit</button>
 -->
-  <button class="btn btn_primary" id="submit_speed">Submit Speed</button>
+  <button class="btn btn-success btn-block btn-lg " id="submit_speed">提交</button>
 
 </form>
 
@@ -151,7 +145,7 @@ function Rad(d){
 }
 
 wx.ready(function () {
-    alert(1);
+ //   alert(1);
 /*
     wx.getLocation({
       success: function (res) {
@@ -206,8 +200,9 @@ wx.ready(function () {
         //alert(images.localId[0]);
 
         if (images.localId.length > 1) {
-          alert('Select one picture every time');
+          alert('一次只能选择一张图片。');
           return;
+          //return false;
         }
       }
     });
@@ -259,7 +254,6 @@ wx.ready(function () {
     }
     upload();
 
-    
   };
 
   // 5.4 下载图片
@@ -300,9 +294,6 @@ wx.ready(function () {
   };
 
 
-
-
-
 });
 
 
@@ -341,20 +332,26 @@ document.querySelector('#submit_speed').onclick = function () {
             alert('localid=' + images.localId[0] + ', serverId=' + images.serverId[0]);
 
             $("#serverId").val(images.serverId[0]);
+            //alert('xxx'+$("#productForm").serialize());
+            lon = $("#lon").val();
+            lat = $("#lon").val();
+            speed_up = $("#speed_up").val();
+            speed_down = $("#speed_down").val();
+            speed_delay = $("#speed_delay").val();
+            serverId = $("#serverId").val();
 
-            alert('xxx'+$("#productForm").serialize());
-/*
+            alert("&lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId);
+
             $.ajax({
                     url: "<?php echo Url::to(['wap/handlespeed'], true) ; ?>",
                     type:"GET",
                     cache:false,
-                    cache:false,
                     dataType:'json',
-                    data: $("#productForm").serialize();
+                    //data: $("#productForm").serialize();
+                     data: "&lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId,
                     success: function(json_data){
                     }
                });
-*/
           }
         },
         fail: function (res) {
