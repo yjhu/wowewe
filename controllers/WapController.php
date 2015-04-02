@@ -2343,6 +2343,20 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
         return $this->render('showdoubledanmiaoshainfo', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }   
 
+ //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/fuwuslideshow:gh_03a74ac96138  
+    public function actionFuwuslideshow()
+    {
+        $this->layout ='wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        //$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        //$item = MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$_GET['cid']]);
+        return $this->render('fuwuslideshow', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+
+
     public function actionDoubledanmiaosha()
     {      
         $this->layout = 'wapy';  
