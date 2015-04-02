@@ -54,13 +54,13 @@ $signPackage = $jssdk->GetSignPackage();
     <input type="hidden" class="form-control" id="lat" placeholder="Enter lat">
   </div>
   <div class="form-group">
-    <input type="number" class="form-control input-lg" id="speed_up" placeholder="上传速度">
+    <input type="number" class="form-control input-lg" id="speed_up" placeholder="上传速度 Mbps">
   </div>
   <div class="form-group">
-    <input type="number" class="form-control input-lg" id="speed_down" placeholder="下载速度">
+    <input type="number" class="form-control input-lg" id="speed_down" placeholder="下载速度 Mbps">
   </div>
   <div class="form-group">
-    <input type="number" class="form-control input-lg" id="speed_delay" placeholder="延时">
+    <input type="number" class="form-control input-lg" id="speed_delay" placeholder="延时 ms">
   </div>
   <div class="form-group">
     <input type="hidden" class="form-control" id="serverId">
