@@ -78,6 +78,8 @@ $signPackage = $jssdk->GetSignPackage();
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
+  //$("#submit_speed").hide();
+  $("#submit_speed").attr("disabled","disabled");
 
   var images = {
     localId: [],
@@ -128,6 +130,15 @@ $signPackage = $jssdk->GetSignPackage();
         'openCard'
       ]
   });
+
+
+  var shareData = {
+    title: '4G测速',
+    desc: '4G测速',
+    link: 'http://wosotech.com/wx/web/index.php?r=wx/jssdksample',
+    imgUrl: '<?php echo Yii::$app->getRequest()->baseUrl.'/images/share-icon.jpg' ?>'
+  };
+
 </script>
 
 <script>
@@ -160,7 +171,7 @@ wx.ready(function () {
 
     wx.getLocation({
       success: function (res) {
-        alert(JSON.stringify(res));
+        //alert(JSON.stringify(res));
 
 //        alert("lon"+res.longitude+"lat"+res.latitude);
         lat = res.latitude;
@@ -180,6 +191,8 @@ wx.ready(function () {
         $("#lat").val(lat);
   //      document.querySelector('#lon').val(lng);
 //        document.querySelector('#lat').val(lng);
+          //$("#submit_speed").show();
+          $("#submit_speed").removeAttr("disabled");
 
       },
       cancel: function (res) {
@@ -189,6 +202,89 @@ wx.ready(function () {
     });
 
 
+    wx.onMenuShareAppMessage({
+      title: 'xxx',
+      desc: 'xxx',
+      link: 'xxx',
+      imgUrl: 'xxx',
+      trigger: function (res) {
+        alert('用户点击发送给朋友');
+      },
+      success: function (res) {
+        alert('已分享');
+      },
+      cancel: function (res) {
+        alert('已取消');
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+
+    wx.onMenuShareTimeline({
+      title: 'xxx',
+      link: 'xxx',
+      imgUrl: 'xxx',
+      trigger: function (res) {
+        alert('用户点击分享到朋友圈');
+      },
+      success: function (res) {
+        alert('已分享');
+      },
+      cancel: function (res) {
+        alert('已取消');
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+
+    wx.onMenuShareQQ({
+      title: 'xxx',
+      desc: 'xxx',
+      link: 'xxx',
+      imgUrl: 'xxx',
+      trigger: function (res) {
+        alert('用户点击分享到QQ');
+      },
+      complete: function (res) {
+        alert(JSON.stringify(res));
+      },
+      success: function (res) {
+        alert('已分享');
+      },
+      cancel: function (res) {
+        alert('已取消');
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+
+    wx.onMenuShareWeibo({
+      title: 'xxx',
+      desc: 'xxx',
+      link: 'xxx',
+      imgUrl: 'xxx',
+      trigger: function (res) {
+        alert('用户点击分享到微博');
+      },
+      complete: function (res) {
+        alert(JSON.stringify(res));
+      },
+      success: function (res) {
+        alert('已分享');
+      },
+      cancel: function (res) {
+        alert('已取消');
+      },
+      fail: function (res) {
+        alert(JSON.stringify(res));
+      }
+    });
+
+  wx.onMenuShareAppMessage(shareData);
+  wx.onMenuShareTimeline(shareData);
 
   // 5 图片接口
   // 5.1 拍照、本地选图
@@ -196,7 +292,7 @@ wx.ready(function () {
     wx.chooseImage({
       success: function (res) {
         images.localId = res.localIds;
-        alert('已选择 ' + res.localIds.length + ' 张图片');
+        //alert('已选择 ' + res.localIds.length + ' 张图片');
         //alert(images.localId[0]);
 
         if (images.localId.length > 1) {
@@ -225,7 +321,7 @@ wx.ready(function () {
   // 5.3 上传图片
   document.querySelector('#uploadImage').onclick = function () {
     if (images.localId.length == 0) {
-      alert('请先使用 chooseImage 接口选择图片');
+      alert('请先选择上传图片');
       return;
     }
     if (images.localId.length > 1) {
@@ -340,7 +436,7 @@ document.querySelector('#submit_speed').onclick = function () {
             speed_delay = $("#speed_delay").val();
             serverId = $("#serverId").val();
 
-            alert("&lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId);
+            //alert("&lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId);
 
             $.ajax({
                     url: "<?php echo Url::to(['wap/handlespeed'], true) ; ?>",
