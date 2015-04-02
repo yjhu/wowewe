@@ -17,6 +17,8 @@ $signPackage = $jssdk->GetSignPackage();
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">  
   <link href="http://libs.useso.com/js/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">  
   <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
+
+  
 </head>
 <body ontouchstart="">
 <div class="container">
@@ -148,11 +150,12 @@ var x_pi = 3.14159265358979324 * 3000.0 / 180.0;
 function Rad(d){
  return d * Math.PI / 180.0;//经纬度转换成三角函数中度分表形式。
 }
-
+alert('111');
 wx.ready(function () {
-
+alert('aaa');
     wx.getLocation({
       success: function (res) {
+        alert('bbb');
         //alert(JSON.stringify(res));
         //alert("lon"+res.longitude+"lat"+res.latitude);
         lat = res.latitude;
@@ -274,9 +277,6 @@ wx.ready(function () {
   };
 
 
-
-
-
 });
 
 
@@ -319,9 +319,8 @@ document.querySelector('#submit_speed').onclick = function () {
                         url: "<?php echo Url::to(['wap/handlespeed'], true) ; ?>",
                         type:"GET",
                         cache:false,
-                        cache:false,
                         dataType:'json',
-                        data: $("#productForm").serialize();
+                        data: $("#productForm").serialize(),
                         success: function(json_data){
                         }
                    });
