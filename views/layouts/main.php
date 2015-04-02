@@ -76,6 +76,7 @@ AppAsset::register($this);
 							['label' => '多图文','url' => ['/articlemult/index'],'linkOptions' => ['data-method' => 'post']],
 							'<li class="divider"></li>',
 							['label' => '用户账户管理','url' => ['/useraccount/index'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '测速图片','url' => ['/heatmap/index'],'linkOptions' => ['data-method' => 'post']],
 						]
 					],					
                     Yii::$app->user->isGuest ?
