@@ -2578,10 +2578,12 @@ U::W('aaaaa......'.$user_founder->mobile);
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');        
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+/*        
         if (empty($model->openidBindMobiles)) {        
             Yii::$app->getSession()->set('RETURN_URL', Url::to());
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }
+*/
 
 /*        
         $model = new OpenidBindMobile();        
@@ -2612,13 +2614,20 @@ U::W('aaaaa......'.$user_founder->mobile);
             'model' => $model,
         ]);
 */        
-        return $this->render('heatmap1.php');
-//      return $this->render('heatmap.php');
+        $rows = HeatMap::find()->where(['gh_id'=>$gh_id])->asArray()->all();
+        $points = [];
+        foreach($rows as $row) {
+            $point = ['lng'=>$row['lon'], 'lat'=>$row['lat'], 'count'=>90];
+            $points[] = $point;
+        }
+        //U::W($points);
+        return $this->render('heatmap1.php', ['points'=>$points]);
+//      return $this->render('heatmap.php', ['points'=>$points]);
 //      return $this->render('sea_point.php');
 
     }
 
-<<<<<<< HEAD
+
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/4granking:gh_03a74ac96138  
     public function action4granking()
     {
@@ -2641,7 +2650,7 @@ U::W('aaaaa......'.$user_founder->mobile);
 
 
 
-=======
+
     // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/submitspeed:gh_03a74ac96138  
     public function actionSubmitspeed()
     {
@@ -2670,7 +2679,7 @@ U::W('aaaaa......'.$user_founder->mobile);
         $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
         return $this->render('jssdksample', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'jssdk'=>$jssdk]);
     }
->>>>>>> b045c82d17988cf4fc47cce66be6165ed0990411
+
     
 }
 
