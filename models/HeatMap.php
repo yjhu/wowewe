@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS wx_heat_map (
     speed_up int(10) unsigned NOT NULL DEFAULT '0',
     speed_down int(10) unsigned NOT NULL DEFAULT '0',
     speed_delay int(10) unsigned NOT NULL DEFAULT '0',
+    media_id VARCHAR(256) NOT NULL DEFAULT '',    
+    pic_url VARCHAR(256) NOT NULL DEFAULT '',             
     status tinyint(3) unsigned NOT NULL DEFAULT 0,
     KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
