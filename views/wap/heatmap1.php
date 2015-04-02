@@ -33,12 +33,15 @@
 
     map.centerAndZoom(point, 15);             // 初始化地图，设置中心点坐标和地图级别
     map.enableScrollWheelZoom(); // 允许滚轮缩放
-  
+/*  
     var points =[
     {"lng":114.277223,"lat":30.594135,"count":150},
     {"lng":114.292745,"lat":30.591649,"count":90},
     {"lng":114.303381,"lat":30.584685,"count":80}];
-   
+
+*/   
+    var points = <?php echo json_encode($points); ?>;
+
     if(!isSupportCanvas()){
     	alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~')
     }

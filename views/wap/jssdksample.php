@@ -8,40 +8,11 @@ $signPackage = $jssdk->GetSignPackage();
 <head>
   <meta charset="utf-8">
   <title>微信JS-SDK Demo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">  
+  <link href="http://libs.useso.com/js/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body ontouchstart="">
-<div class="wxapi_container">
-    <div class="wxapi_index_container">
-      <ul class="label_box lbox_close wxapi_index_list">
-        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-basic">基础接口</a></li>
-        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-share">分享接口</a></li>
-        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-image">图像接口</a></li>
-        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-voice">音频接口</a></li>
-        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-smart">智能接口</a></li>
-        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-device">设备信息接口</a></li>
-        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-location">地理位置接口</a></li>
-        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-webview">界面操作接口</a></li>
-        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-scan">微信扫一扫接口</a></li>
-        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-shopping">微信小店接口</a></li>
-        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-card">微信卡券接口</a></li>
-        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-pay">微信支付接口</a></li>
-      </ul>
-    </div>
-    <div class="lbox_close wxapi_form">
-      <h3 id="menu-basic">基础接口</h3>
-      <span class="desc">判断当前客户端是否支持指定JS接口</span>
-      <button class="btn btn_primary" id="checkJsApi">checkJsApi</button>
-
-      <h3 id="menu-share">分享接口</h3>
-      <span class="desc">获取“分享到朋友圈”按钮点击状态及自定义分享内容接口</span>
-      <button class="btn btn_primary" id="onMenuShareTimeline">onMenuShareTimeline</button>
-      <span class="desc">获取“分享给朋友”按钮点击状态及自定义分享内容接口</span>
-      <button class="btn btn_primary" id="onMenuShareAppMessage">onMenuShareAppMessage</button>
-      <span class="desc">获取“分享到QQ”按钮点击状态及自定义分享内容接口</span>
-      <button class="btn btn_primary" id="onMenuShareQQ">onMenuShareQQ</button>
-      <span class="desc">获取“分享到腾讯微博”按钮点击状态及自定义分享内容接口</span>
-      <button class="btn btn_primary" id="onMenuShareWeibo">onMenuShareWeibo</button>
+<div class="container">
 
       <h3 id="menu-image">图像接口</h3>
       <span class="desc">拍照或从手机相册中选图接口</span>
@@ -53,26 +24,6 @@ $signPackage = $jssdk->GetSignPackage();
       <span class="desc">下载图片接口</span>
       <button class="btn btn_primary" id="downloadImage">downloadImage</button>
 
-      <h3 id="menu-voice">音频接口</h3>
-      <span class="desc">开始录音接口</span>
-      <button class="btn btn_primary" id="startRecord">startRecord</button>
-      <span class="desc">停止录音接口</span>
-      <button class="btn btn_primary" id="stopRecord">stopRecord</button>
-      <span class="desc">播放语音接口</span>
-      <button class="btn btn_primary" id="playVoice">playVoice</button>
-      <span class="desc">暂停播放接口</span>
-      <button class="btn btn_primary" id="pauseVoice">pauseVoice</button>
-      <span class="desc">停止播放接口</span>
-      <button class="btn btn_primary" id="stopVoice">stopVoice</button>
-      <span class="desc">上传语音接口</span>
-      <button class="btn btn_primary" id="uploadVoice">uploadVoice</button>
-      <span class="desc">下载语音接口</span>
-      <button class="btn btn_primary" id="downloadVoice">downloadVoice</button>
-
-      <h3 id="menu-smart">智能接口</h3>
-      <span class="desc">识别音频并返回识别结果接口</span>
-      <button class="btn btn_primary" id="translateVoice">translateVoice</button>
-
       <h3 id="menu-device">设备信息接口</h3>
       <span class="desc">获取网络状态接口</span>
       <button class="btn btn_primary" id="getNetworkType">getNetworkType</button>
@@ -83,44 +34,34 @@ $signPackage = $jssdk->GetSignPackage();
       <span class="desc">获取地理位置接口</span>
       <button class="btn btn_primary" id="getLocation">getLocation</button>
 
-      <h3 id="menu-webview">界面操作接口</h3>
-      <span class="desc">隐藏右上角菜单接口</span>
-      <button class="btn btn_primary" id="hideOptionMenu">hideOptionMenu</button>
-      <span class="desc">显示右上角菜单接口</span>
-      <button class="btn btn_primary" id="showOptionMenu">showOptionMenu</button>
-      <span class="desc">关闭当前网页窗口接口</span>
-      <button class="btn btn_primary" id="closeWindow">closeWindow</button>
-      <span class="desc">批量隐藏功能按钮接口</span>
-      <button class="btn btn_primary" id="hideMenuItems">hideMenuItems</button>
-      <span class="desc">批量显示功能按钮接口</span>
-      <button class="btn btn_primary" id="showMenuItems">showMenuItems</button>
-      <span class="desc">隐藏所有非基础按钮接口</span>
-      <button class="btn btn_primary" id="hideAllNonBaseMenuItem">hideAllNonBaseMenuItem</button>
-      <span class="desc">显示所有功能按钮接口</span>
-      <button class="btn btn_primary" id="showAllNonBaseMenuItem">showAllNonBaseMenuItem</button>
+<form>
 
-      <h3 id="menu-scan">微信扫一扫</h3>
-      <span class="desc">调起微信扫一扫接口</span>
-      <button class="btn btn_primary" id="scanQRCode0">scanQRCode(微信处理结果)</button>
-      <button class="btn btn_primary" id="scanQRCode1">scanQRCode(直接返回结果)</button>
-
-      <h3 id="menu-shopping">微信小店接口</h3>
-      <span class="desc">跳转微信商品页接口</span>
-      <button class="btn btn_primary" id="openProductSpecificView">openProductSpecificView</button>
-
-      <h3 id="menu-card">微信卡券接口</h3>
-      <span class="desc">批量添加卡券接口</span>
-      <button class="btn btn_primary" id="addCard">addCard</button>
-      <span class="desc">调起适用于门店的卡券列表并获取用户选择列表</span>
-      <button class="btn btn_primary" id="chooseCard">chooseCard</button>
-      <span class="desc">查看微信卡包中的卡券接口</span>
-      <button class="btn btn_primary" id="openCard">openCard</button>
-
-      <h3 id="menu-pay">微信支付接口</h3>
-      <span class="desc">发起一个微信支付请求</span>
-      <button class="btn btn_primary" id="chooseWXPay">chooseWXPay</button>
-    </div>
+  <div class="form-group">
+    <label for="lon">lon</label>
+    <input type="text" class="form-control" id="lon" placeholder="Enter lon">
   </div>
+  <div class="form-group">
+    <label for="lat">lat</label>
+    <input type="text" class="form-control" id="lat" placeholder="Enter lat">
+  </div>
+  <div class="form-group">
+    <label for="speed_up">speed_up</label>
+    <input type="text" class="form-control" id="speed_up" placeholder="Enter speed_up">
+  </div>
+  <div class="form-group">
+    <label for="serverId">serverId</label>
+    <input type="text" class="form-control" id="serverId">
+  </div>
+
+<!--
+  <button type="submit" class="btn btn-default">Submit</button>
+-->
+  <button class="btn btn_primary" id="submit_speed">Submit Speed</button>
+
+</form>
+
+  </div>
+
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
@@ -135,14 +76,13 @@ $signPackage = $jssdk->GetSignPackage();
    * 邮件主题：【微信JS-SDK反馈】具体问题
    * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
    */
+  var images = {
+    localId: [],
+    serverId: []
+  };
+
   wx.config({
       debug: false,
-/*
-      appId: 'wxf8b4f85f3a794e77',
-      timestamp: 1427958791,
-      nonceStr: '0vCuuppVAquWN5C0',
-      signature: '07185778be0ca277f7a6d6440e80596b3c5b409c',
-*/
         appId: '<?php echo $signPackage["appId"];?>',
         timestamp: <?php echo $signPackage["timestamp"];?>,
         nonceStr: '<?php echo $signPackage["nonceStr"];?>',
@@ -190,6 +130,7 @@ $signPackage = $jssdk->GetSignPackage();
 <script>
 wx.ready(function () {
 
+/*
   // 1 判断当前版本是否支持指定 JS 接口，支持批量判断
   document.querySelector('#checkJsApi').onclick = function () {
     wx.checkJsApi({
@@ -418,18 +359,16 @@ wx.ready(function () {
       }
     });
   };
+*/
 
   // 5 图片接口
   // 5.1 拍照、本地选图
-  var images = {
-    localId: [],
-    serverId: []
-  };
   document.querySelector('#chooseImage').onclick = function () {
     wx.chooseImage({
       success: function (res) {
         images.localId = res.localIds;
         alert('已选择 ' + res.localIds.length + ' 张图片');
+        //alert(images.localId[0]);
       }
     });
   };
@@ -452,12 +391,18 @@ wx.ready(function () {
       alert('请先使用 chooseImage 接口选择图片');
       return;
     }
+    if (images.localId.length > 1) {
+      alert('Select one picture every time');
+      return;
+    }
+
     var i = 0, length = images.localId.length;
     images.serverId = [];
     function upload() {
       wx.uploadImage({
         localId: images.localId[i],
         success: function (res) {
+          //alert('localid=' + images.localId[i] + 'serverId=' + res.serverId);
           i++;
           alert('已上传：' + i + '/' + length);
           images.serverId.push(res.serverId);
@@ -471,6 +416,8 @@ wx.ready(function () {
       });
     }
     upload();
+
+    
   };
 
   // 5.4 下载图片
@@ -535,6 +482,7 @@ wx.ready(function () {
     });
   };
 
+/*
   // 8 界面操作接口
   // 8.1 隐藏右上角菜单
   document.querySelector('#hideOptionMenu').onclick = function () {
@@ -689,6 +637,8 @@ wx.ready(function () {
   wx.onMenuShareAppMessage(shareData);
   wx.onMenuShareTimeline(shareData);
 
+*/
+
 
 });
 
@@ -696,6 +646,49 @@ wx.ready(function () {
 wx.error(function (res) {
   alert(res.errMsg);
 });
+
+document.querySelector('#submit_speed').onclick = function () {
+//    alert(1);
+//    return false;
+
+    if (images.localId.length == 0) {
+      alert('请先使用 chooseImage 接口选择图片');
+      return false;
+    }
+    if (images.localId.length > 1) {
+      alert('Select one picture every time');
+      return false;
+    }
+
+    var i = 0, length = images.localId.length;
+    images.serverId = [];
+    function upload() {
+      wx.uploadImage({
+        localId: images.localId[i],
+        success: function (res) {
+          //alert('localid=' + images.localId[i] + 'serverId=' + res.serverId);
+          i++;
+          alert('已上传：' + i + '/' + length);
+          images.serverId.push(res.serverId);
+          if (i < length) {
+            upload();
+          } 
+          else {
+            alert('localid=' + images.localId[0] + ', serverId=' + images.serverId[0]);
+
+          }
+        },
+        fail: function (res) {
+          alert(JSON.stringify(res));
+        }
+      });
+    }
+    upload();
+
+
+    return false;    
+
+};
 
 </script>
 </html>
