@@ -2558,11 +2558,27 @@ U::W('aaaaa......'.$user_founder->mobile);
         return $this->redirect(['addbindmobile', 'gh_id'=>$model->gh_id, 'openid'=>$model->openid]);        
     }
 
+    // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/aboutheatmap:gh_03a74ac96138  
+    public function actionAboutheatmap()
+    {
+        $this->layout = 'wap';    
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');        
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        return $this->render('aboutheatmap', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model]);        
+    }
+    
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/heatmap:gh_03a74ac96138  
     public function actionHeatmap()
     {
-//        $this->layout = 'wap';    
-          $this->layout = false;    
+        $this->layout = false;    
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');        
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($model->openidBindMobiles)) {        
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
 
 /*        
         $model = new OpenidBindMobile();        
@@ -2593,10 +2609,9 @@ U::W('aaaaa......'.$user_founder->mobile);
             'model' => $model,
         ]);
 */        
-//        return $this->render('heatmap.php');
-    return $this->render('heatmap1.php');
-//    return $this->render('sea_point.php');
-
+        return $this->render('heatmap1.php');
+//      return $this->render('heatmap.php');
+//      return $this->render('sea_point.php');
 
     }
     
