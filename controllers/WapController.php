@@ -2682,6 +2682,7 @@ U::W('aaaaa......'.$user_founder->mobile);
  
     public function actionHandlespeed()
     {
+        $this->layout = false;        
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         $lon = empty($_GET['lon']) ? 0 : $_GET['lon'];
@@ -2708,7 +2709,6 @@ U::W('aaaaa......'.$user_founder->mobile);
         $model->speed_up = $speed_up;
         $model->speed_down = $speed_down;
         $model->speed_delay = $speed_delay;
-        $model->media_id = $media_id;
         $model->pic_url = "{$gh_id}_{$media_id}.jpg";
         $model->save(false);        
         return json_encode(['code'=>0]);
