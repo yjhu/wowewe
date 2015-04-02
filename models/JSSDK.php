@@ -109,6 +109,9 @@ $data = json_decode(file_get_contents($filename));
     curl_setopt($curl, CURLOPT_TIMEOUT, 500);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+//added by hehb begin
+    curl_setopt($ch, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1);    
+//end
     curl_setopt($curl, CURLOPT_URL, $url);
 
     $res = curl_exec($curl);
