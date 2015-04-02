@@ -8,6 +8,7 @@ use app\models\U;
 //require_once "jssdk.php";
 //$jssdk = new JSSDK("yourAppID", "yourAppSecret");
 $signPackage = $jssdk->GetSignPackage();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -150,13 +151,29 @@ function Rad(d){
 }
 
 wx.ready(function () {
+    alert(1);
+/*
+    wx.getLocation({
+      success: function (res) {
+              alert(2);
+        alert(JSON.stringify(res));
+      },
+      cancel: function (res) {
+        alert('用户拒绝授权获取地理位置');
+      }
+    });
+*/
 
     wx.getLocation({
       success: function (res) {
-        //alert(JSON.stringify(res));
-        //alert("lon"+res.longitude+"lat"+res.latitude);
+        alert(JSON.stringify(res));
+
+//        alert("lon"+res.longitude+"lat"+res.latitude);
         lat = res.latitude;
         lng = res.longitude;
+
+//        alert("lon"+lng+"lat"+lat);
+
 
         /// 中国正常坐标系GCJ02协议的坐标，转到 百度地图对应的 BD09 协议坐标
         var z = Math.sqrt(lng * lng + lat * lat) + 0.00002 * Math.sin(lat * x_pi);
@@ -165,10 +182,11 @@ wx.ready(function () {
         lng = z * Math.cos(theta) + 0.0065;
         lat = z * Math.sin(theta) + 0.006;
 
-        //$("#lon").val(lng);
-       // $("#lat").val(lat);
-        document.querySelector('#lon').val(lng);
-        document.querySelector('#lat').val(lng);
+        $("#lon").val(lng);
+        $("#lat").val(lat);
+  //      document.querySelector('#lon').val(lng);
+//        document.querySelector('#lat').val(lng);
+
       },
       cancel: function (res) {
           alert('用户拒绝授权获取地理位置');
@@ -176,7 +194,8 @@ wx.ready(function () {
       }
     });
 
-/*
+
+
   // 5 图片接口
   // 5.1 拍照、本地选图
   document.querySelector('#chooseImage').onclick = function () {
@@ -185,10 +204,17 @@ wx.ready(function () {
         images.localId = res.localIds;
         alert('已选择 ' + res.localIds.length + ' 张图片');
         //alert(images.localId[0]);
+
+        if (images.localId.length > 1) {
+          alert('Select one picture every time');
+          return;
+        }
       }
     });
+    return false;
   };
 
+/*
   // 5.2 图片预览
   document.querySelector('#previewImage').onclick = function () {
     wx.previewImage({
@@ -311,21 +337,24 @@ document.querySelector('#submit_speed').onclick = function () {
             upload();
           } 
           else {
-            $("#serverId").val(serverId);
+
             alert('localid=' + images.localId[0] + ', serverId=' + images.serverId[0]);
-            alert($("#productForm").serialize());
 
-                $.ajax({
-                        url: "<?php echo Url::to(['wap/handlespeed'], true) ; ?>",
-                        type:"GET",
-                        cache:false,
-                        cache:false,
-                        dataType:'json',
-                        data: $("#productForm").serialize();
-                        success: function(json_data){
-                        }
-                   });
+            $("#serverId").val(images.serverId[0]);
 
+            alert('xxx'+$("#productForm").serialize());
+/*
+            $.ajax({
+                    url: "<?php echo Url::to(['wap/handlespeed'], true) ; ?>",
+                    type:"GET",
+                    cache:false,
+                    cache:false,
+                    dataType:'json',
+                    data: $("#productForm").serialize();
+                    success: function(json_data){
+                    }
+               });
+*/
           }
         },
         fail: function (res) {
