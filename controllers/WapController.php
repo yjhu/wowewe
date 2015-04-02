@@ -2682,6 +2682,7 @@ U::W('aaaaa......'.$user_founder->mobile);
  
     public function actionHandlespeed()
     {
+        $this->layout = false;        
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         $lon = empty($_GET['lon']) ? 0 : $_GET['lon'];
