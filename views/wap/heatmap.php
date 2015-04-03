@@ -61,7 +61,7 @@
      */
 	heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
 	map.addOverlay(heatmapOverlay);
-	heatmapOverlay.setDataSet({data:points,max:100});
+	heatmapOverlay.setDataSet({data:points, max:100});
 	//是否显示热力图
     function openHeatmap(){
         heatmapOverlay.show();

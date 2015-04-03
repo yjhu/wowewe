@@ -2643,11 +2643,9 @@ U::W('aaaaa......'.$user_founder->mobile);
         $rows = HeatMap::find()->where(['gh_id'=>$gh_id, 'status'=>0])->asArray()->all();
         $points = [];
         foreach($rows as $row) {
-//            $point = ['lng'=>$row['lon'], 'lat'=>$row['lat'], 'count'=>90];
-            $point = ['lng'=>$row['lon'], 'lat'=>$row['lat'], 'count'=>rand(10,100)];
-//            $point = ['lng'=>$row['lon'], 'lat'=>$row['lat'], 'count'=>1];
-
-            
+//          $point = ['lng'=>$row['lon'], 'lat'=>$row['lat'], 'count'=>90];
+//          $point = ['lng'=>$row['lon'], 'lat'=>$row['lat'], 'count'=>rand(10,100)];
+            $point = ['lng'=>$row['lon'], 'lat'=>$row['lat'], 'count'=>30 + 2*$row['speed_down']];
             $points[] = $point;
         }
         U::W($points);
@@ -2662,16 +2660,20 @@ U::W('aaaaa......'.$user_founder->mobile);
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');        
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+/*        
         if (empty($model->openidBindMobiles)) {        
             Yii::$app->getSession()->set('RETURN_URL', Url::to());
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }
-
-        $myHeatmap = HeatMap::find()->where(['gh_id'=>$gh_id, 'openid'=>$openid, 'status'=>0])->one();
-        $myRank = $myHeatmap->getMySpeedDownRank();
-        $totalCount = HeatMap::getTotalCount($gh_id);
-
-//        $myHeatmaps = HeatMap::find()->where(['gh_id'=>$gh_id, 'openid'=>$openid, 'status'=>0])->orderBy(['']);
+*/
+        $myPoints = HeatMap::find()->where(['gh_id'=>$gh_id, 'openid'=>$openid, 'status'=>0])->orderBy(['speed_down' => SORT_DESC])->all();        
+        if (!empty($myPoints)) {
+            $myPoint = $myPoints[0];
+            $myRank = $myPoint->getMySpeedDownRank();        
+        } else {
+            $myRank = 0;
+        }
+        $totalCount = HeatMap::find()->where(['gh_id' => $gh_id, 'status'=>0])->count();
 
         return $this->render('4granking', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
