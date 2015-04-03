@@ -212,7 +212,7 @@ text-decoration: line-through;
         </p>
 
         <p id="price" class="title_comm">
-        合约价  <!--<span class="fee">￥<//?php echo  ($item->price)/100; ?></span>-->
+        价格  <!--<span class="fee">￥<//?php echo  ($item->price)/100; ?></span>-->
         <span class="fee">￥<?php echo round($item->price/100); ?></span>
 
         <!--

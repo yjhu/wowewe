@@ -690,6 +690,34 @@ INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, pr
 INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 874, '4g', 396, 24, '', 399, 0, 399, 300, 99);
 INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 874, '4g', 596, 24, '', 399, 0, 399, 300, 99);
 
+//4g手机疯狂直降
+//iphone6 16g
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 76, 12, '', 5499, 4599, 900, 0, 75);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 106, 12, '', 5499, 4499, 1000, 0, 83);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 136, 12, '', 5499, 4399, 1100, 0, 91);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 166, 12, '', 5499, 4199, 1300, 0, 108);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 196, 12, '', 5499, 4099, 1400, 0, 116);
+
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 76, 24, '', 5499, 4299, 1200, 0, 50);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 106, 24, '', 5499, 3999, 1500, 0, 62);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 136, 24, '', 5499, 3699, 1800, 0, 75);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 166, 24, '', 5499, 3399, 2100, 0, 87);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 196, 24, '', 5499, 3099, 2400, 0, 100);
+
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 76, 36, '', 5499, 3899, 1600, 0, 44);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 106, 36, '', 5499, 3499, 2000, 0, 55);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 136, 36, '', 5499, 3099, 2400, 0, 66);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 166, 36, '', 5499, 2599, 2900, 0, 80);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 861, '4g', 196, 36, '', 5499, 2199, 3300, 0, 91);
+
+//sanxing 9006v
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 863, '4g', 136, 24, '', 2399, 1639, 760, 661, 99);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 863, '4g', 166, 24, '', 2399, 1349, 1050, 951, 99);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 863, '4g', 196, 24, '', 2399, 1059, 1340, 1241, 99);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 863, '4g', 296, 24, '', 2399, 0, 2399, 2300, 99);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 863, '4g', 396, 24, '', 2399, 0, 2399, 2300, 99);
+INSERT INTO wx_pkg (gh_id, cid, pkg3g4g, monthprice, period, plan, pkg_price, prom_price, yck, income_return, month_return) VALUES ('gh_03a74ac96138', 863, '4g', 596, 24, '', 2399, 0, 2399, 2300, 99);
+
 
 */
 

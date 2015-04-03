@@ -36,11 +36,34 @@
         
         <!--<ul data-role="listview" data-inset="true">-->
         <ul data-role="listview" data-inset="false" data-filter="true" data-filter-placeholder="搜索..." class="ui-nodisc-icon ui-alt-icon">
+        <!--  /*4g手机疯狂直降*/ -->
+        <?php foreach($models as $model) { 
+            if(
+                $model->cid==859 ||
+                $model->cid==860 ||
+                $model->cid==861 ||
+                $model->cid==862 ||
+                $model->cid==863 
+                )  
+        { ?>
+            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
+                    <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
+                    <h2><?= $model->title ?></h2>
+                    <p><?= $model->title_hint ?></p>
+                    <!--
+                    <p class='line'>原价: ￥<//?= round($model->old_price/100) ?></p>
+                    <p>惊爆价: ￥<//?= round($model->price/100) ?></p>
+                    -->
+                    <p>价格: ￥<?= round($model->price/100) ?></p>
+                </a>
+            </li>
+        <?php } } ?>
+
 
         <?php foreach($models as $model) { 
             if($model->cid==850 || 
                 $model->cid==851 ||
-                $model->cid==852 ||
+                /*$model->cid==852 ||*/
                 $model->cid==853 ||
                 $model->cid==854 ||
                 $model->cid==855 ||
@@ -57,7 +80,7 @@
                     <p class='line'>原价: ￥<//?= round($model->old_price/100) ?></p>
                     <p>惊爆价: ￥<//?= round($model->price/100) ?></p>
                     -->
-                    <p>合约价: ￥<?= round($model->price/100) ?></p>
+                    <p>价格: ￥<?= round($model->price/100) ?></p>
                 </a>
             </li>
         <?php } } ?>
