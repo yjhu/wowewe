@@ -45,6 +45,7 @@ class Wechat extends \yii\base\Component
     const EVENT_PIC_WEIXIN = 'pic_weixin';
     const EVENT_LOCATION_SELECT = 'location_select';
     const EVENT_MASSSENDJOBFINISH = 'MASSSENDJOBFINISH';
+    const EVENT_TEMPLATESENDJOBFINISH = 'TEMPLATESENDJOBFINISH';    
     
     const NO_RESP = '';
     const SIGNTYPE = 'sha1';
@@ -352,6 +353,8 @@ class Wechat extends \yii\base\Component
     protected function onScan() { return $this->responseText($this->getRequestString()); }
 
     protected function onMassSendJobFinish() { return $this->responseText($this->getRequestString()); }
+
+    protected function onTemplateSendJobFinish() { return $this->responseText($this->getRequestString()); }
     
     protected function onUnknown()
     {
@@ -430,6 +433,10 @@ class Wechat extends \yii\base\Component
                         case Wechat::EVENT_MASSSENDJOBFINISH:
                             $resp =$this->onMassSendJobFinish();
                             break;
+
+                        case Wechat::EVENT_TEMPLATESENDJOBFINISH:
+                            $resp =$this->onTemplateSendJobFinish();
+                            break;                            
 
                         default:
                             $resp = $this->onUnknown();

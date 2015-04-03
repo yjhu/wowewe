@@ -2614,17 +2614,18 @@ U::W('aaaaa......'.$user_founder->mobile);
             'model' => $model,
         ]);
 */        
-        $rows = HeatMap::find()->where(['gh_id'=>$gh_id])->asArray()->all();
+        $rows = HeatMap::find()->where(['gh_id'=>$gh_id, 'status'=>0])->asArray()->all();
         $points = [];
         foreach($rows as $row) {
-            $point = ['lng'=>$row['lon'], 'lat'=>$row['lat'], 'count'=>90];
+//            $point = ['lng'=>$row['lon'], 'lat'=>$row['lat'], 'count'=>90];
+            $point = ['lng'=>$row['lon'], 'lat'=>$row['lat'], 'count'=>rand(10,100)];
+//            $point = ['lng'=>$row['lon'], 'lat'=>$row['lat'], 'count'=>1];
+
+            
             $points[] = $point;
         }
-        //U::W($points);
-        return $this->render('heatmap1.php', ['points'=>$points]);
-//      return $this->render('heatmap.php', ['points'=>$points]);
-//      return $this->render('sea_point.php');
-
+        U::W($points);
+        return $this->render('heatmap.php', ['points'=>$points]);
     }
 
 
@@ -2695,13 +2696,6 @@ U::W('aaaaa......'.$user_founder->mobile);
             U::W([$_GET]);
             return json_encode(['code'=>1]);            
         }
-
-        $log_file_path = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . HeatMap::PHOTO_PATH .DIRECTORY_SEPARATOR."{$gh_id}_{$media_id}.jpg";        
-        if ((!file_exists($log_file_path)) || filesize($log_file_path) == 0)
-        {
-            Yii::$app->wx->setGhId($gh_id);    
-            Yii::$app->wx->WxMediaDownload($media_id, $log_file_path);
-        }         
         $model = new HeatMap;
         $model->gh_id = $gh_id;
         $model->openid = $openid;        
@@ -2710,11 +2704,16 @@ U::W('aaaaa......'.$user_founder->mobile);
         $model->speed_up = $speed_up;
         $model->speed_down = $speed_down;
         $model->speed_delay = $speed_delay;
+        $model->media_id = $media_id;        
         $model->pic_url = "{$gh_id}_{$media_id}.jpg";
-        $model->media_id = $media_id;
+        $log_file_path = $model->getPicFile();
+        if ((!file_exists($log_file_path)) || $model->getPicFileSize() == 0|| $model->getPicFileSize() == 47)
+        {
+            Yii::$app->wx->setGhId($gh_id);    
+            Yii::$app->wx->WxMediaDownload($model->media_id, $log_file_path);
+        }                         
         $model->save(false);        
-        return json_encode(['code'=>0]);
-        
+        return json_encode(['code'=>0]);        
     }    
 }
 

@@ -84,16 +84,12 @@ class HeatMap extends \yii\db\ActiveRecord
         $gh_id = $this->gh_id;
         $pic_url = $this->pic_url;
         $log_file_path = $this->getPicFile();
-//        if ((!file_exists($log_file_path)) || filesize($log_file_path) == 0)
         if ((!file_exists($log_file_path)) || $this->getPicFileSize() == 0|| $this->getPicFileSize() == 47)
         {
-            U::W('MAKE ');
             Yii::$app->wx->setGhId($gh_id);    
             Yii::$app->wx->WxMediaDownload($this->media_id, $log_file_path);
         }                 
         $url = Yii::$app->request->getHostInfo() . Yii::$app->request->getBaseUrl() . '/'. self::PHOTO_PATH. '/' ."{$this->pic_url}";
-        U::W($url);        
-        U::W("size=".filesize($log_file_path));                
         return $url;
     }
     
