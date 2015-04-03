@@ -59,6 +59,12 @@ class HeatMap extends \yii\db\ActiveRecord
             'heat_map_id' => Yii::t('app', 'ID'),
             'gh_id' => Yii::t('app', 'Gh ID'),
             'openid' => Yii::t('app', 'Openid'),
+            'status' => '状态',
+            'lon'=>'经度',
+            'lat'=>'纬度',
+            'speed_down'=>'下载速度(M/s)',
+            'speed_up'=>'上传速度(M/s)',
+            'speed_delay'=>'延时',
         ];
     }
 
