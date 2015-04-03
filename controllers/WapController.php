@@ -2717,7 +2717,8 @@ U::W('aaaaa......'.$user_founder->mobile);
             U::W([$_GET]);
             return json_encode(['code'=>1]);            
         }
-        $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'heatmap'.DIRECTORY_SEPARATOR."{$gh_id}_{$media_id}.jpg";
+
+        $log_file_path = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . HeatMap::PHOTO_PATH .DIRECTORY_SEPARATOR."{$gh_id}_{$media_id}.jpg";        
         if ((!file_exists($log_file_path)) || filesize($log_file_path) == 0)
         {
             Yii::$app->wx->setGhId($gh_id);    
@@ -2732,6 +2733,7 @@ U::W('aaaaa......'.$user_founder->mobile);
         $model->speed_down = $speed_down;
         $model->speed_delay = $speed_delay;
         $model->pic_url = "{$gh_id}_{$media_id}.jpg";
+        $model->media_id = $media_id;
         $model->save(false);        
         return json_encode(['code'=>0]);
         

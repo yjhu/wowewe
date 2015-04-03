@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS wx_heat_map (
     speed_up int(10) unsigned NOT NULL DEFAULT '0',
     speed_down int(10) unsigned NOT NULL DEFAULT '0',
     speed_delay int(10) unsigned NOT NULL DEFAULT '0',
+    media_id VARCHAR(256) NOT NULL DEFAULT '',        
     pic_url VARCHAR(256) NOT NULL DEFAULT '',             
     status tinyint(3) unsigned NOT NULL DEFAULT 0,
     KEY idx_gh_id_open_id(gh_id, openid)
@@ -25,7 +26,6 @@ CREATE TABLE IF NOT EXISTS wx_heat_map (
 INSERT INTO wx_heat_map (gh_id, openid,lon,lat, speed_up, speed_down, speed_delay) VALUES ('gh_03a74ac96138', 'oKgUduNHzUQlGRIDAghiY7ywSeWk', '114.277223','30.594135', 1,2,3);
 INSERT INTO wx_heat_map (gh_id, openid,lon,lat, speed_up, speed_down, speed_delay) VALUES ('gh_03a74ac96138', 'oKgUduNHzUQlGRIDAghiY7ywSeWk', '114.292745','30.591649', 10,20,30);
 
-media_id VARCHAR(256) NOT NULL DEFAULT '',    
 
 
 */
@@ -44,6 +44,7 @@ class HeatMap extends \yii\db\ActiveRecord
         return [            
             [['gh_id', 'openid'], 'string', 'max' => 32],  
             [['status'], 'integer', 'integerOnly' =>true, 'min'=>0 ],                   
+            [['media_id', 'pic_url'], 'safe'],              
         ];
     }
 
@@ -73,13 +74,26 @@ class HeatMap extends \yii\db\ActiveRecord
 		return Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . self::PHOTO_PATH . DIRECTORY_SEPARATOR . $this->pic_url;
 	}
 
+	public function getPicFileSize()
+	{
+	    return filesize($this->getPicFile());
+	}
+
     public function getImageUrl()
     {
         $gh_id = $this->gh_id;
         $pic_url = $this->pic_url;
-//        $url = Yii::$app->getRequest()->baseUrl."/../runtime/heatmap/{$pic_url}";
+        $log_file_path = $this->getPicFile();
+//        if ((!file_exists($log_file_path)) || filesize($log_file_path) == 0)
+        if ((!file_exists($log_file_path)) || $this->getPicFileSize() == 0|| $this->getPicFileSize() == 47)
+        {
+            U::W('MAKE ');
+            Yii::$app->wx->setGhId($gh_id);    
+            Yii::$app->wx->WxMediaDownload($this->media_id, $log_file_path);
+        }                 
         $url = Yii::$app->request->getHostInfo() . Yii::$app->request->getBaseUrl() . '/'. self::PHOTO_PATH. '/' ."{$this->pic_url}";
         U::W($url);        
+        U::W("size=".filesize($log_file_path));                
         return $url;
     }
     
