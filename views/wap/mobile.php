@@ -131,7 +131,7 @@ text-decoration: line-through;
 <style>
 .swiper-container, .swiper-slide {
   width: 100%;
-  height: 310px;
+  height: 100%;
   color: #fff;
   text-align: center;
 }
@@ -186,6 +186,7 @@ text-decoration: line-through;
         	</p>
 
         <?php } else { ?>
+        <p  align=center id="imgURL">
               <div class="swiper-container">
                 <div class="swiper-wrapper">
                   <?php
@@ -205,6 +206,7 @@ text-decoration: line-through;
                 </div>
                 <div class="pagination"></div>
               </div>
+        </p>
         <?php } ?>
 
         <p id="desc">
