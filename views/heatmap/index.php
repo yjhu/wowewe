@@ -20,12 +20,30 @@ $this->params['breadcrumbs'][] = $this->title;
         
         'columns' => [
             
-            'heat_map_id',
+//            'heat_map_id',
             
-            'gh_id',
+//            'gh_id',
             
-            'openid',
-            
+//            'openid',
+      
+		   [
+				'label' => '微信昵称',
+				'value'=>function ($model, $key, $index, $column) { 
+                    return empty($model->user) ? '' : $model->user->nickname;
+                 },
+           ],
+
+		   [
+				'label' => '手机号',
+				'value'=>function ($model, $key, $index, $column) { 
+                    if (empty($model->user)) {
+                        return '';
+                    }
+                    $mobiles = $model->user->getBindMobileNumbers();
+                    return empty($mobiles) ? '' : implode(',', $mobiles); 
+                 },
+		   ],
+
             'lon',
             
             'lat',
@@ -34,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             'speed_down',
             
-            'speed_delay',
+//            'speed_delay',
             
 //            'media_id',            
 //            'pic_url:url',
