@@ -88,6 +88,7 @@ $signPackage = $jssdk->GetSignPackage();
   {
     echo "<h4>我的4G测速截图</h4>";
     echo Html::img($myPoint->getImageUrl(), ['width'=>'100%']);
+    //echo $myPoint->user->nickname;
   } 
 ?>
 </form>
@@ -154,9 +155,9 @@ $signPackage = $jssdk->GetSignPackage();
 
   var shareData = {
     title: '4G测速有奖',
-    desc: '4G测速有奖',
-    link: 'http://wosotech.com/wx/web/index.php?r=wx/jssdksample',
-    imgUrl: '<?php echo Yii::$app->getRequest()->baseUrl.'/images/share-icon.jpg' ?>'
+    desc: '<?= $myPoint->user->nickname ?>正在参加襄阳联通4G测速有奖活动,小伙伴们赶快来参加吧～',
+    link: 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=208230085&idx=6&sn=e612bc1802f0594b068e6dd9d3fea0da#rd',
+    imgUrl: '<?php echo Yii::$app->request->getHostInfo() . Yii::$app->request->getBaseUrl() .'/images/4gspeed-icon.jpg' ?>'
   };
 
 </script>
