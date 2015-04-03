@@ -354,7 +354,18 @@ function load_data2(i, n)
 	else if(n.cid == 858)
 		imgurl = '../web/images/item/huawei-mate7-700x500.jpg-120x120.jpg';
 	//双4G双百兆手机 end
-	
+	//4g手机 疯狂直降
+	else if(n.cid == 859)
+		imgurl = '../web/images/item/iphone4s-8g-700x500.jpg-120x120.jpg';
+	else if(n.cid == 860)
+		imgurl = '../web/images/item/iphone5c-8g-700x500.jpg-120x120.jpg';
+	else if(n.cid == 861)
+		imgurl = '../web/images/item/iphone6-16g-700x500.jpg-120x120.jpg';
+	else if(n.cid == 862)
+		imgurl = '../web/images/item/sanxing-g5108q-700x500.jpg-120x120.jpg';
+	else if(n.cid == 863)
+		imgurl = '../web/images/item/sanxing-g9006v-700x500.jpg-120x120.jpg';
+	//4g手机 疯狂直降 end
 
 	//老用户专享
 	else if(n.cid == 870)
