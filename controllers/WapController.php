@@ -2600,6 +2600,7 @@ U::W('aaaaa......'.$user_founder->mobile);
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');        
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        
 /*        
         if (empty($model->openidBindMobiles)) {        
             Yii::$app->getSession()->set('RETURN_URL', Url::to());
@@ -2663,7 +2664,9 @@ U::W('aaaaa......'.$user_founder->mobile);
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }
 
-
+        $myHeatmap = HeatMap::find()->where(['gh_id'=>$gh_id, 'openid'=>$openid, 'status'=>0])->one();
+        $myRank = $myHeatmap->getMySpeedDownRank();
+        $totalCount = HeatMap::getTotalCount($gh_id);
 
         return $this->render('4granking', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }

@@ -93,4 +93,15 @@ class HeatMap extends \yii\db\ActiveRecord
         return $url;
     }
     
+    public function getMySpeedDownRank()
+    {
+        return HeatMap::find()->where('gh_id=:gh_id AND speed_down<:speed_down AND status=:status', [':gh_id' => $this->gh_id, ':speed_down'=>$this->speed_down, ':status'=>0])->count();
+    }
+
+    public static function getTotalCount($gh_id)
+    {
+        return HeatMap::find()->where(['gh_id' => $gh_id, 'status'=>0])->count();
+    }
+
+    
 }
