@@ -1925,6 +1925,9 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
         $date_start = static::getHyzxDateStart();
         $date_end = date("Y-m-d");
         //U::W("$date_start, $date_end");        
+        if (empty($model->staff)) {
+            $model->getQrImageUrl();            
+        }
         $fans = $model->staff->getFansByRange($date_start, $date_end); 
         $mobiledFans = $model->staff->getMobiledFansByRange($date_start, $date_end); 
         return $this->render('hyzx', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes, 'fans'=>$fans, 'mobiledFans'=>$mobiledFans]);
@@ -2667,6 +2670,8 @@ U::W('aaaaa......'.$user_founder->mobile);
         $myHeatmap = HeatMap::find()->where(['gh_id'=>$gh_id, 'openid'=>$openid, 'status'=>0])->one();
         $myRank = $myHeatmap->getMySpeedDownRank();
         $totalCount = HeatMap::getTotalCount($gh_id);
+
+//        $myHeatmaps = HeatMap::find()->where(['gh_id'=>$gh_id, 'openid'=>$openid, 'status'=>0])->orderBy(['']);
 
         return $this->render('4granking', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }

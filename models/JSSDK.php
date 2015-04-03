@@ -53,9 +53,9 @@ class JSSDK
   {
     $filename = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR. "jsapi_ticket_{$this->appId}.json"; 
     if (file_exists($filename)) {
-        $data = json_decode(file_get_contents($filename));
-        if ($data->expire_time > time()) {
-            $ticket = $data->jsapi_ticket;
+        $data = json_decode(file_get_contents($filename), true);
+        if ($data['expire_time'] > time()) {
+            $ticket = $data['jsapi_ticket'];
             return $ticket;
         }
     }
@@ -63,8 +63,8 @@ class JSSDK
     // 如果是企业号用以下 URL 获取 ticket
     // $url = "https://qyapi.weixin.qq.com/cgi-bin/get_jsapi_ticket?access_token=$accessToken";
     $url = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?type=jsapi&access_token=$accessToken";
-    $res = json_decode($this->httpGet($url));
-    $ticket = $res->ticket;
+    $res = json_decode($this->httpGet($url), true);
+    $ticket = $res['ticket'];
     if ($ticket) {
         $data['expire_time'] = time() + 7000;
         $data['jsapi_ticket'] = $ticket;
@@ -79,15 +79,15 @@ private function getAccessToken()
 {
      $filename = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR. "access_token_{$this->appId}.json";
     if (file_exists($filename)) {
-        $data = json_decode(file_get_contents($filename));
-        if ($data->expire_time > time()) {
-            $access_token = $data->access_token;
+        $data = json_decode(file_get_contents($filename), true);
+        if ($data['expire_time'] > time()) {
+            $access_token = $data['access_token'];
             return $access_token;
         }
     }
     $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$this->appId&secret=$this->appSecret";
-    $res = json_decode($this->httpGet($url));
-    $access_token = $res->access_token;
+    $res = json_decode($this->httpGet($url), true);
+    $access_token = $res['access_token'];
     if ($access_token) {
         $data['expire_time'] = time() + 7000;
         $data['access_token'] = $access_token;
