@@ -155,7 +155,7 @@ $signPackage = $jssdk->GetSignPackage();
 
   var shareData = {
     title: '4G测速有奖',
-    desc: '<?= $myPoint->user->nickname ?>正在参加襄阳联通4G测速有奖活动,小伙伴们赶快来参加吧～',
+    desc: '<?= empty($myPoint->user) ? '我' : $myPoint->user->nickname ?>正在参加襄阳联通4G测速有奖活动,小伙伴们赶快来参加吧～',
     link: 'http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=208230085&idx=6&sn=e612bc1802f0594b068e6dd9d3fea0da#rd',
     imgUrl: '<?php echo Yii::$app->request->getHostInfo() . Yii::$app->request->getBaseUrl() .'/images/4gspeed-icon.jpg' ?>'
   };

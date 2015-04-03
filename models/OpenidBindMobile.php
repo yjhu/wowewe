@@ -13,9 +13,13 @@ CREATE TABLE IF NOT EXISTS wx_openid_bind_mobile (
     gh_id VARCHAR(32) NOT NULL DEFAULT '',
     openid VARCHAR(32) NOT NULL DEFAULT '',
     mobile VARCHAR(32) NOT NULL DEFAULT '',
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,    
     UNIQUE KEY idx_mobile(mobile),
     KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+ALTER TABLE wx_openid_bind_mobile ADD create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
 */
 
 /**
