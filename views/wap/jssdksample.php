@@ -154,6 +154,7 @@ var x_pi = 3.14159265358979324 * 3000.0 / 180.0;
 function Rad(d){
  return d * Math.PI / 180.0;//经纬度转换成三角函数中度分表形式。
 }
+$("#chooseImage").hide();
 
 wx.ready(function () {
  //   alert(1);
@@ -168,6 +169,7 @@ wx.ready(function () {
       }
     });
 */
+    $("#chooseImage").show();
 
     wx.getLocation({
       success: function (res) {
@@ -454,6 +456,8 @@ document.querySelector('#submit_speed').onclick = function () {
                      data: "lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId,
                     success: function(json_data){
                       //alert('success');
+                      var url = "<?php echo Url::to(['wap/heatmap'], true); ?>";
+                      location.href = url;
                     }
                });
           }
