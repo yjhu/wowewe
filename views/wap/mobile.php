@@ -305,7 +305,7 @@ text-decoration: line-through;
         <br>
         <br>
 
-        <a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">一键购买</a>
+        <a  href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">一键订购</a>
 
 	</div>
 </div>
