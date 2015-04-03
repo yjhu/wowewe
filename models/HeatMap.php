@@ -20,11 +20,14 @@ CREATE TABLE IF NOT EXISTS wx_heat_map (
     media_id VARCHAR(256) NOT NULL DEFAULT '',        
     pic_url VARCHAR(256) NOT NULL DEFAULT '',             
     status tinyint(3) unsigned NOT NULL DEFAULT 0,
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     KEY idx_gh_id_open_id(gh_id, openid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 INSERT INTO wx_heat_map (gh_id, openid,lon,lat, speed_up, speed_down, speed_delay) VALUES ('gh_03a74ac96138', 'oKgUduNHzUQlGRIDAghiY7ywSeWk', '114.277223','30.594135', 1,2,3);
 INSERT INTO wx_heat_map (gh_id, openid,lon,lat, speed_up, speed_down, speed_delay) VALUES ('gh_03a74ac96138', 'oKgUduNHzUQlGRIDAghiY7ywSeWk', '114.292745','30.591649', 10,20,30);
+
+ALTER TABLE wx_heat_map ADD create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
 
 
