@@ -1128,6 +1128,28 @@ EOD;
                 $order->attr = "{$_GET['cardType']}";
                 break; 
 
+            case MItem::ITEM_CAT_MOBILE_4GSJFKZJ_IPHONE4S_8G:
+                $order->title = 'iPhone4S 8G';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_4GSJFKZJ_IPHONE5C_8G:
+                $order->title = 'iPhone5C 8G';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_4GSJFKZJ_IPHONE6_16G:
+                $order->title = 'iPhone6 16G';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_4GSJFKZJ_SANXING_G5108Q:
+                $order->title = '三星 G5108Q';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_4GSJFKZJ_SANXING_9006V:
+                $order->title = '三星 9006V';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+                                                            
+
             //老用户户专享 参与机型及优惠合约
             case MItem::ITEM_CAT_MOBILE_SANXIN_SM_G9006VW:
                 $order->title = '三星SM-G9006V/W';                   
