@@ -2724,7 +2724,9 @@ U::W('aaaaa......'.$user_founder->mobile);
         $speed_down = empty($_GET['speed_down']) ? 0 : $_GET['speed_down'];
         $speed_delay = empty($_GET['speed_delay']) ? 0 : $_GET['speed_delay'];
         $media_id = empty($_GET['serverId']) ? 0 : $_GET['serverId'];        
-        if (empty($media_id)) {
+        $is_4g = empty($_GET['status']) ? 0 : $_GET['status'];
+        //$is_4g = 1;
+        if (empty($media_id) || $is_4g != 1) {
             U::W([$_GET]);
             return json_encode(['code'=>1]);            
         }
