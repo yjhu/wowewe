@@ -291,15 +291,22 @@ wx.ready(function () {
   document.querySelector('#chooseImage').onclick = function () {
     wx.chooseImage({
       success: function (res) {
+        if (res.localIds.length > 1) {
+          alert('一次只能选择一张图片，请重新选择！');
+          return;
+          //return false;
+        }
+
         images.localId = res.localIds;
         //alert('已选择 ' + res.localIds.length + ' 张图片');
         //alert(images.localId[0]);
-
+/*
         if (images.localId.length > 1) {
           alert('一次只能选择一张图片。');
           return;
           //return false;
         }
+*/
       }
     });
     return false;

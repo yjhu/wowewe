@@ -19,6 +19,9 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'status')->textInput(['maxlength' => 32]) ?>
 
     
+    <?= $form->field($model, 'media_id')->textInput(['maxlength' => 32]) ?>
+    <?= $form->field($model, 'pic_url')->textInput(['maxlength' => 32]) ?>
+
     
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

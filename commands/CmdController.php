@@ -4,6 +4,8 @@
 C:\xampp\php\php.exe C:\htdocs\wx\yii cache/flush
 C:\xampp\php\php.exe C:\htdocs\wx\yii cmd
 C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/create-menu
+/usr/bin/php /mnt/wwwroot/wx/yii cmd/media-download
+
 */
 
 namespace app\commands;
@@ -241,7 +243,7 @@ class CmdController extends Controller
     {    
         //$url = Yii::$app->wx->WxMediaGetUrl('r2zUx5VVXPVclkPSUTNE3P51dAEZOe8U0UwJCCWZZxSr5UW_SqMmeUODxtjeSnZt');
         //U::W($url);        
-        Yii::$app->wx->WxMediaDownload('r2zUx5VVXPVclkPSUTNE3P51dAEZOe8U0UwJCCWZZxSr5UW_SqMmeUODxtjeSnZt', 'abcd.jpg');
+        Yii::$app->wx->WxMediaDownload('ZpP2CgKGMCznB6AXaJEVdv3L53TpUB_IsUAsqDCE5GGTVAG7V6GHKSkyujT8fBsF', 'abcd.jpg');
         return;    
     }
 
