@@ -14,7 +14,7 @@ $signPackage = $jssdk->GetSignPackage();
 <html>
 <head>
   <meta charset="utf-8">
-  <title>4G测速</title>
+  <title>4G测速有奖</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">  
   <link href="http://libs.useso.com/js/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">  
   <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
@@ -44,8 +44,11 @@ $signPackage = $jssdk->GetSignPackage();
       <span class="desc">获取地理位置接口</span>
       <button class="btn btn_primary" id="getLocation">getLocation</button>
       -->
-<h1>4G测速</h1>
-<br>
+
+
+<img src="<?php echo Yii::$app->getRequest()->baseUrl.'/images/4gspeed.jpg' ?>" width="100%" >
+
+<br><br>
 <form id="productForm">
   <button class="btn btn-info btn-lg" id="chooseImage">选择测速截图</button><br>
   <div class="form-group">
@@ -56,11 +59,11 @@ $signPackage = $jssdk->GetSignPackage();
   </div>
 
   <div class="form-group">
-    <input type="number" class="form-control input-lg" id="speed_down" placeholder="下载速度 Mbps">
+    <input type="hidden" class="form-control input-lg" id="speed_down" placeholder="下载速度 Mbps">
   </div>
 
   <div class="form-group">
-    <input type="number" class="form-control input-lg" id="speed_up" placeholder="上传速度 Mbps">
+    <input type="hidden" class="form-control input-lg" id="speed_up" placeholder="上传速度 Mbps">
   </div>
 
   <div class="form-group">
@@ -76,11 +79,22 @@ $signPackage = $jssdk->GetSignPackage();
 <!--
   <button type="submit" class="btn btn-default">Submit</button>
 -->
+<br>
   <button class="btn btn-success btn-block btn-lg " id="submit_speed">提交</button>
 
+<br>
+<?php 
+  if(!empty($myPoint)) 
+  {
+    echo "<h4>我的4G测速截图</h4>";
+    echo Html::img($myPoint->getImageUrl(), ['width'=>'100%']);
+  } 
+?>
 </form>
 
-  </div>
+</div>
+
+
 
 </body>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
@@ -139,8 +153,8 @@ $signPackage = $jssdk->GetSignPackage();
   });
 
   var shareData = {
-    title: '4G测速',
-    desc: '4G测速',
+    title: '4G测速有奖',
+    desc: '4G测速有奖',
     link: 'http://wosotech.com/wx/web/index.php?r=wx/jssdksample',
     imgUrl: '<?php echo Yii::$app->getRequest()->baseUrl.'/images/share-icon.jpg' ?>'
   };
@@ -448,7 +462,7 @@ document.querySelector('#submit_speed').onclick = function () {
           //alert('localid=' + images.localId[i] + 'serverId=' + res.serverId);
           i++;
           //alert('已上传：' + i + '/' + length);
-          alert('已成功上传');
+          alert('恭喜你，已成功上传！');
           images.serverId.push(res.serverId);
           if (i < length) {
             upload();
@@ -461,8 +475,11 @@ document.querySelector('#submit_speed').onclick = function () {
             //alert('xxx'+$("#productForm").serialize());
             lon = $("#lon").val();
             lat = $("#lat").val();
-            speed_up = $("#speed_up").val();
-            speed_down = $("#speed_down").val();
+            //speed_up = $("#speed_up").val();
+            //speed_down = $("#speed_down").val();
+            speed_up = 0;
+            speed_down = 0;
+
             //speed_delay = $("#speed_delay").val();
             speed_delay = 0;
             serverId = $("#serverId").val();
@@ -480,7 +497,7 @@ document.querySelector('#submit_speed').onclick = function () {
                      data: "lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId+"&status="+status,
                     success: function(json_data){
                       //alert('success');
-                      var url = "<?php echo Url::to(['wap/heatmap'], true); ?>";
+                      var url = "<?php echo Url::to(['wap/jssdksample'], true); ?>";
                       location.href = url;
                     }
                });

@@ -143,7 +143,7 @@
 
         <li><a ajax-data="false" href="#wytg"><img src="../web/images/woke/wdmy.gif" alt="推荐有礼" class="ui-li-icon ui-corner-none">推荐有礼<span class="ui-li-count"><?= $user->getScore() ?></span></a></li>
         
-        <li><a ajax-data="false" href="<?php echo Url::to(['jssdksample', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" alt="测速有奖" class="ui-li-icon ui-corner-none">测速有奖</a></li>
+        <li><a ajax-data="false" href="<?php echo Url::to(['jssdksample', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" alt="4G测速有奖" class="ui-li-icon ui-corner-none">4G测速有奖</a></li>
         
         <li><a href="<?php echo Url::to(['order', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-icon="shop" data-ajax="false"><img src="../web/images/woke/wddd.gif" alt="我的订单" class="ui-li-icon ui-corner-none">我的订单<span class="ui-li-count"><?= count($user->orders) ?></span></a></li>
        
