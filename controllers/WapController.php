@@ -2726,7 +2726,7 @@ U::W('aaaaa......'.$user_founder->mobile);
         $media_id = empty($_GET['serverId']) ? 0 : $_GET['serverId'];        
         $is_4g = empty($_GET['status']) ? 0 : $_GET['status'];
         //$is_4g = 1;
-        if (empty($media_id) || $is_4g != 1) {
+        if (empty($media_id)) {
             U::W([$_GET]);
             return json_encode(['code'=>1]);            
         }
