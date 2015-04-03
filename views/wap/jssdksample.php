@@ -47,24 +47,30 @@ $signPackage = $jssdk->GetSignPackage();
 <h1>4G测速</h1>
 <br>
 <form id="productForm">
-  <button class="btn btn_primary btn-lg" id="chooseImage">选择测速截图</button><br>
+  <button class="btn btn-info btn-lg" id="chooseImage">选择测速截图</button><br>
   <div class="form-group">
     <input type="hidden" class="form-control" id="lon" placeholder="Enter lon">
   </div>
   <div class="form-group">
     <input type="hidden" class="form-control" id="lat" placeholder="Enter lat">
   </div>
-  <div class="form-group">
-    <input type="number" class="form-control input-lg" id="speed_up" placeholder="上传速度 Mbps">
-  </div>
+
   <div class="form-group">
     <input type="number" class="form-control input-lg" id="speed_down" placeholder="下载速度 Mbps">
   </div>
+
   <div class="form-group">
-    <input type="number" class="form-control input-lg" id="speed_delay" placeholder="延时 ms">
+    <input type="number" class="form-control input-lg" id="speed_up" placeholder="上传速度 Mbps">
+  </div>
+
+  <div class="form-group">
+    <input type="hidden" class="form-control input-lg" id="speed_delay" placeholder="延时 ms">
   </div>
   <div class="form-group">
     <input type="hidden" class="form-control" id="serverId">
+  </div>
+  <div class="form-group">
+    <input type="hidden" class="form-control" id="status">
   </div>
 
 <!--
@@ -170,6 +176,20 @@ wx.ready(function () {
     });
 */
     $("#chooseImage").show();
+
+    wx.getNetworkType({
+      success: function (res) {
+        //alert(res.networkType);
+        if(res.networkType == "4g")
+          $("#status").val('1');
+        else
+          $("#status").val('0');
+      },
+      fail: function (res) {
+        //alert(JSON.stringify(res));
+          $("#status").val('0');
+      }
+    });
 
     wx.getLocation({
       success: function (res) {
@@ -411,7 +431,7 @@ document.querySelector('#submit_speed').onclick = function () {
 //    return false;
 
     if (images.localId.length == 0) {
-      alert('请先使用 chooseImage 接口选择图片');
+      alert('请先选择上传图片');
       return false;
     }
     if (images.localId.length > 1) {
@@ -427,7 +447,8 @@ document.querySelector('#submit_speed').onclick = function () {
         success: function (res) {
           //alert('localid=' + images.localId[i] + 'serverId=' + res.serverId);
           i++;
-          alert('已上传：' + i + '/' + length);
+          //alert('已上传：' + i + '/' + length);
+          alert('已成功上传');
           images.serverId.push(res.serverId);
           if (i < length) {
             upload();
@@ -442,9 +463,12 @@ document.querySelector('#submit_speed').onclick = function () {
             lat = $("#lat").val();
             speed_up = $("#speed_up").val();
             speed_down = $("#speed_down").val();
-            speed_delay = $("#speed_delay").val();
+            //speed_delay = $("#speed_delay").val();
+            speed_delay = 0;
             serverId = $("#serverId").val();
+            status = $("#status").val();
 
+            //alert('status'+status);
             //alert("&lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId);
 
             $.ajax({
@@ -453,7 +477,7 @@ document.querySelector('#submit_speed').onclick = function () {
                     cache:false,
                     dataType:'json',
                     //data: $("#productForm").serialize();
-                     data: "lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId,
+                     data: "lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId+"&status="+status,
                     success: function(json_data){
                       //alert('success');
                       var url = "<?php echo Url::to(['wap/heatmap'], true); ?>";
