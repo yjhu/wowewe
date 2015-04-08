@@ -103,6 +103,40 @@ class HeatmapController extends Controller
         return $this->redirect(['index']);
     }
 
+
+    public function actionHeatmapsdownload()
+    {
+        $searchModel = new HeatMapSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->setPagination(false);
+        $data = $dataProvider->getModels();
+        $rows = [];
+        foreach($data as $model) {
+            $row['openid'] = $model->openid;
+            $row['nickname'] = $model->user->nickname;
+            $row['user_account_charge_mobile'] = $model->user->user_account_charge_mobile;
+            $row['create_time'] = $model->create_time;
+            $rows[] = $row;
+        }
+        $data = $rows;
+
+        $filename = Yii::$app->getRuntimePath().'/heatmaps.csv';
+        $csv = new \app\models\ECSVExport($data);
+
+        $attributes = ['openid', 'nickname', 'user_account_charge_mobile','create_time'];
+        $csv->setInclude($attributes);                
+        $csv->setHeaders(['openid'=>'openid', 'nickname'=>'昵称', 'user_account_charge_mobile'=>'手机号码']);
+
+        $csv->toCSV($filename); 
+        Yii::$app->response->sendFile($filename);
+
+
+
+
+        return;
+    }
+
+
     /**
      * Finds the HeatMap model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

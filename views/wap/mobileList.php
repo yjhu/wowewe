@@ -47,7 +47,7 @@
                 )  
         { ?>
             <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
-                    <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
+                    <img style='padding-top:10px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                     <h2><?= $model->title ?></h2>
                     <p><?= $model->title_hint ?></p>
                     <!--
@@ -73,7 +73,7 @@
                 )  
         { ?>
             <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
-                    <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
+                    <img style='padding-top:10px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                     <h2><?= $model->title ?></h2>
                     <p><?= $model->title_hint ?></p>
                     <!--

@@ -46,10 +46,10 @@
                     <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
                     <h2><?= $model->title ?></h2>
                     <p><?= $model->title_hint ?></p>
-                    <!--
-                    <p class='line'>原价: ￥<//?= round($model->old_price/100) ?></p>
-                    -->
-                    <p>合约价: ￥<?= round($model->price/100) ?></p>
+              
+                    <p class='line'>原价: ￥<?= round($model->old_price/100) ?></p>
+              
+                    <p>老用户专享价: ￥<?= round($model->price/100) ?></p>
                 </a>
             </li>
         <?php 

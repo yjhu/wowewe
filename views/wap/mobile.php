@@ -131,7 +131,7 @@ text-decoration: line-through;
 <style>
 .swiper-container, .swiper-slide {
   width: 100%;
-  height: 100%;
+  height: 260;
   color: #fff;
   text-align: center;
 }
@@ -213,17 +213,27 @@ text-decoration: line-through;
             <?php echo  $item->title_hint; ?>
         </p>
 
-        <p id="price" class="title_comm">
-        价格  <!--<span class="fee">￥<//?php echo  ($item->price)/100; ?></span>-->
-        <span class="fee">￥<?php echo round($item->price/100); ?></span>
-
-        <!--
-        <span class="line"><small>原价￥<//?php echo  ($item->old_price)/100; ?></small></span>
-        <br>
-        -->
-
-        <span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
-        </p>
+        <?php
+            if($_GET['cid']==870 || 
+                $_GET['cid']==871 ||
+                $_GET['cid']==872 ||
+                $_GET['cid']==873 ||
+                $_GET['cid']==874 ) {
+        ?>
+            <p id="price" class="title_comm">
+                <span class="line"><small>原价￥<?php echo  ($item->old_price)/100; ?></small></span>
+                <br>
+                老用户专享价  <!--<span class="fee">￥<//?php echo  ($item->price)/100; ?></span>-->
+                <span class="fee">￥<?php echo round($item->price/100); ?></span>
+                <span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
+            </p>
+        <?php } else { ?>
+            <p id="price" class="title_comm">
+                价格  <!--<span class="fee">￥<//?php echo  ($item->price)/100; ?></span>-->
+                <span class="fee">￥<?php echo round($item->price/100); ?></span>
+                <span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
+            </p>
+        <?php } ?>
 
         <!--
         <?//php if ($cid == MItem::ITEM_CAT_MOBILE_IPHONE4S): ?>

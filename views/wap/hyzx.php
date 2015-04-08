@@ -1055,6 +1055,18 @@ $realMoney = (count($mobiledFans)/1)*5;
 <script>
 var ktwd = "<?=  $user->getWokeKtwd()-$user->getWokeYtwd(); ?>";
 
+var item = "<?=  $_GET['item']; ?>";
+
+checkPrePage();
+
+function checkPrePage()
+{
+    if(item=='wytg')
+    {
+        location.href='#wytg';
+    }
+}
+
 function fillErrmsg(id,errmsg)
 {
      $(id).html("<p><a href='#' class='ui-btn ui-shadow ui-corner-all ui-icon-alert ui-btn-icon-notext ui-btn-inline'>Alert</a>"+errmsg+"</p><a href='#' class='ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-b' data-rel='back'>确认</a>");
@@ -1085,7 +1097,7 @@ function showGold()
 function reloadWokeList()
 {
     var url = "<?php echo Url::to(['wap/hyzx'], true); ?>";
-    location.href = url;
+    location.href = url+'&item=hyzx';
 }
 
 

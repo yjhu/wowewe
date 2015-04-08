@@ -12,7 +12,9 @@ $this->title = Yii::t('app', 'Heat Maps');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="heat-map-index">
-
+    <p>
+        <?php echo Html::a('下载 <span class="glyphicon glyphicon-arrow-down"></span>', ['heatmapsdownload'], ['class' => 'btn btn-success']) ?>
+    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
