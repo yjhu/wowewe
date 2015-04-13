@@ -3,34 +3,22 @@
 namespace app\models;
 
 use Yii;
-use app\models\MUser;
-
-/*
-DROP TABLE IF EXISTS wx_vip_manager;
-CREATE TABLE IF NOT EXISTS wx_vip_manager (
-    vip_manager_id int(10) unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    gh_id VARCHAR(32) NOT NULL DEFAULT '',
-    mobile VARCHAR(32) NOT NULL DEFAULT '',
-    manager_name VARCHAR(32) NOT NULL DEFAULT '',
-    manager_mobile VARCHAR(32) NOT NULL DEFAULT '',
-    UNIQUE KEY idx_mobile(mobile),
-    KEY idx_gh_id_open_id(gh_id, mobile)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-*/
 
 /**
- * This is the model class for table "wx_vip_manager".
+ * This is the model class for table "wx_vipmanager".
  *
- * @property string $vip_manager_id
- * @property string $gh_id
- * @property string $openid
- * @property string $mobile
+ * @property integer $vipmamnager_id
+ * @property integer $vip_id
+ * @property integer $manager_id
  */
-class VipManager extends \yii\db\ActiveRecord
+class Vipmanager extends \yii\db\ActiveRecord
 {
+    /**
+     * @inheritdoc
+     */
     public static function tableName()
     {
-        return 'wx_vip_manager';
+        return 'wx_vipmanager';
     }
 
     /**
@@ -39,20 +27,32 @@ class VipManager extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            
-            [['gh_id', 'openid', 'mobile'], 'string', 'max' => 32],            
-            [['mobile'], 'unique'],
-            ['mobile', 'filter', 'filter' => 'trim'],
-            ['mobile', 'required'], 
+            [['vip_id', 'manager_id'], 'required'],
+            [['vip_id', 'manager_id'], 'integer']
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
-            'vip_manager_id' => Yii::t('app', 'ID'),
-            'gh_id' => Yii::t('app', 'Gh ID'),
-            'mobile' => Yii::t('app', 'Mobile'),
+            'vipmamnager_id' => 'Vipmamnager ID',
+            'vip_id' => 'Vip ID',
+            'manager_id' => 'Manager ID',
         ];
     }
+
+    public function getVip()
+    {
+        return $this->hasOne(Vip::className(), ['vip_id' => 'vip_id']);
+    }
+
+    public function getManager()
+    {
+        return $this->hasOne(Manager::className(), ['manager_id' => 'manager_id']);
+    }
+
+
 }

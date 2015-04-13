@@ -53,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'speed_up',
             
             'speed_down',
+            'create_time',
             
 //            'speed_delay',
             

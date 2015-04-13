@@ -28,6 +28,11 @@
     background-color: yellow;
 }
 
+.highlight1
+{
+    color: red;
+    /*background-color: yellow;*/
+}
 .productPkgHint
 {
     color: #aaaaaa;
@@ -553,7 +558,18 @@ text-decoration: line-through;
         <p id='prom_price'><span class='title_comm'>优惠购机款:</span> </p>
         <p id='yck'><span class='title_comm'>预存款:</span> </p>
 
-        <p id='month_return'><span class='title_comm'>分月返还金额:</span> </p>
+        <?php if($_GET['cid']== 872 ||
+                $_GET['cid']== 873 ||
+                $_GET['cid']== 874 ||
+                $_GET['cid']== 870 ||
+                $_GET['cid']== 871 ){
+        ?>
+            <p id='first_month_return'><span class='title_comm'>首月一次性到账金额:</span> </p>
+            <p id='end_month_return'><span class='title_comm'>合约期末月返还金额:</span></p>
+        <?php } else { ?>
+            <p id='month_return'><span class='title_comm'>分月返还金额:</span> </p>
+        }
+        <?php } ?>
 
         <p>
             <input type="button" value="确定" id="selePackage">
@@ -766,6 +782,9 @@ function loadData2(i, n)
     $("#yck").html("<span class='title_comm'>预存款:</span>"+n.yck+"元");
     //$("#income_return").html("<span class='title_comm'>income_return:</span>"+n.income_return+"元");
     $("#month_return").html("<span class='title_comm'>分月返还金额:</span>"+n.month_return+"元");
+
+    $("#first_month_return").html("<span class='title_comm'>首月一次性到账金额:</span>"+ (n.yck-n.month_return) +"元");
+    $("#end_month_return").html("<span class='title_comm'>合约期末月返还金额:</span>"+n.month_return+"元");
 }
 
 function PkgItemQuerycheck() 

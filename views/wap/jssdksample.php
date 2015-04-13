@@ -48,7 +48,21 @@ $signPackage = $jssdk->GetSignPackage();
 
 <img src="<?php echo Yii::$app->getRequest()->baseUrl.'/images/4gspeed.jpg' ?>" width="100%" >
 
-<br><br>
+<br>
+
+<h4>活动规则</h4>
+  <ul class="bg-info">
+  <li>必须使用统一的APP，定为“测网速”；</li>
+  <li>必须在4G网络环境中测速；</li>
+  <li>参与方式：将“测网速”的结果界面截屏，并通过本页面提交；</li>
+  <li>符合上述条件的所有襄阳联通用户，给每参与用户5元话费奖励；</li>
+  <li>会员用户可以多次参与提交，但每用户只能获得一次奖励；</li>
+  <li>活动期间，襄阳联通每周审核一次提交成功的用户，给符合规定的用户核发5元话费；</li>
+  <li>对于本次活动，襄阳联通拥有最终解释权。</li>
+  </ul>
+
+<p class="bg-danger">注意: 下载测速App将会产生一定流量，建议在WiFi环境中下载。测速过程中也会产生一定流量，约1兆左右。</p>
+
 <form id="productForm">
   <button class="btn btn-info btn-lg" id="chooseImage">选择测速截图</button><br>
   <div class="form-group">
@@ -79,7 +93,7 @@ $signPackage = $jssdk->GetSignPackage();
 <!--
   <button type="submit" class="btn btn-default">Submit</button>
 -->
-<br>
+
   <button class="btn btn-success btn-block btn-lg " id="submit_speed">提交</button>
 
 <br>

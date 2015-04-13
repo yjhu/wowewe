@@ -35,12 +35,9 @@
     <div data-role="content">
         <ul data-role="listview" data-inset="false" data-filter="true" data-filter-placeholder="搜索..." class="ui-nodisc-icon ui-alt-icon">
 
+
         <?php foreach($models as $model) { 
-            if($model->cid==870 || 
-                $model->cid==871 ||
-                $model->cid==872 ||
-                $model->cid==873 ||
-                $model->cid==874 )  { 
+            if($model->cid==874)  { 
         ?>
             <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
                     <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
@@ -53,7 +50,80 @@
                 </a>
             </li>
         <?php 
-                } 
+                break;} 
+            } 
+        ?>
+
+        <?php foreach($models as $model) { 
+            if($model->cid==873)  { 
+        ?>
+            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
+                    <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
+                    <h2><?= $model->title ?></h2>
+                    <p><?= $model->title_hint ?></p>
+              
+                    <p class='line'>原价: ￥<?= round($model->old_price/100) ?></p>
+              
+                    <p>老用户专享价: ￥<?= round($model->price/100) ?></p>
+                </a>
+            </li>
+        <?php 
+                break;} 
+            } 
+        ?>
+
+
+        <?php foreach($models as $model) { 
+            if($model->cid==870)  { 
+        ?>
+            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
+                    <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
+                    <h2><?= $model->title ?></h2>
+                    <p><?= $model->title_hint ?></p>
+              
+                    <p class='line'>原价: ￥<?= round($model->old_price/100) ?></p>
+              
+                    <p>老用户专享价: ￥<?= round($model->price/100) ?></p>
+                </a>
+            </li>
+        <?php 
+                break;} 
+            } 
+        ?>
+
+        <?php foreach($models as $model) { 
+            if($model->cid==871)  { 
+        ?>
+            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
+                    <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
+                    <h2><?= $model->title ?></h2>
+                    <p><?= $model->title_hint ?></p>
+              
+                    <p class='line'>原价: ￥<?= round($model->old_price/100) ?></p>
+              
+                    <p>老用户专享价: ￥<?= round($model->price/100) ?></p>
+                </a>
+            </li>
+        <?php 
+                break;} 
+            } 
+        ?>
+
+        <?php foreach($models as $model) { 
+            if($model->cid==872)  { 
+        ?>
+            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
+                    <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
+                    <h2><?= $model->title ?></h2>
+                    <p><?= $model->title_hint ?></p>
+              
+                    <p class='line'>原价: ￥<?= round($model->old_price/100) ?></p>
+              
+                    <p>老用户专享价: ￥<?= round($model->price/100) ?></p>
+                </a>
+            </li>
+        <?php 
+                break;} 
             } 
         ?>
 
