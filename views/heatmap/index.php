@@ -3,6 +3,10 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
+use app\models\MStaff;
+use app\models\MOffice;
+use app\models\HeatMap;
+
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\search\HeatMapSearch */
@@ -32,6 +36,26 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => '微信昵称',
 				'value'=>function ($model, $key, $index, $column) { 
                     return empty($model->user) ? '' : $model->user->nickname;
+                 },
+           ],
+
+           [
+                'label' => '粉丝来源',
+                'value'=>function ($model, $key, $index, $column) { 
+                    $staff = MStaff::findOne(['gh_id'=>$model->gh_id, 'scene_id'=>$model->user->scene_pid]);
+
+                    //return empty($model->user) ? '' : $model->user->scene_pid;
+                    //$staff->hasOne(MOffice::className(), ['office_id' => 'office_id']);
+                    if($staff->cat == 0) //内部员工
+                    {
+                        return empty($staff->name) ? '' : $staff->name.'-'.$staff->office->title.'-'.'内部员工';
+                    }
+                    else
+                    {
+                        return empty($staff->name) ? '' : $staff->name;
+                    }
+
+                    //return empty($staff->name) ? '' : $staff->name.'-'.$staff->office_id.'-'.$staff->cat;
                  },
            ],
 
@@ -75,7 +99,14 @@ $this->params['breadcrumbs'][] = $this->title;
 				'filter'=> false,
 			],
             
-            'status',
+            //'status',
+         
+            [
+                'attribute' => 'status',
+                'value'=>function ($model, $key, $index, $column) { return HeatMap::getStatusOptionName($model->status); },
+                'filter'=> HeatMap::getStatusOptionName(),
+            ],
+         
 
             [
 				'class' => 'yii\grid\ActionColumn',

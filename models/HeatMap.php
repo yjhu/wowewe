@@ -35,6 +35,11 @@ ALTER TABLE wx_heat_map ADD create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMES
 
 class HeatMap extends \yii\db\ActiveRecord
 {
+
+    const HEATMAP_VALID = 0;
+    const HEATMAP_INVALID = 1;
+
+
 	const PHOTO_PATH = 'heatmap';
 
     public static function tableName()
@@ -49,6 +54,15 @@ class HeatMap extends \yii\db\ActiveRecord
             [['status'], 'integer', 'integerOnly' =>true, 'min'=>0 ],                   
             [['media_id', 'pic_url'], 'safe'],              
         ];
+    }
+
+    static function getStatusOptionName( $key = null )
+    {
+        $arr = array(
+            static::HEATMAP_VALID => '有效',
+            static::HEATMAP_INVALID => '无效',
+        );      
+        return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
 
     public function getUser()
