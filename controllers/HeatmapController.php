@@ -106,6 +106,24 @@ class HeatmapController extends Controller
     }
 
 
+    public function actionHeatmapstatus($heat_map_id)
+    {
+        $model = $this->findHeatMapModel($heat_map_id);
+
+        $model->status =$model->status ? 0 : 1;
+        $model->save();
+        return $this->redirect(['index']);
+    }
+
+    protected function findHeatMapModel($id)
+    {
+        if (($model = HeatMap::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
     public function actionHeatmapsdownload()
     {
         $searchModel = new HeatMapSearch();
@@ -144,8 +162,13 @@ class HeatmapController extends Controller
                 $row['user_account_charge_mobile'] = empty($mobiles) ? '' : implode(',', $mobiles);  
             }
 
-
             $row['create_time'] = $model->create_time;
+
+            if($model->status == 0)
+                $row['status'] = '有效';
+            else
+                $row['status'] = '无效';
+            
             $rows[] = $row;
         }
         $data = $rows;
@@ -153,9 +176,9 @@ class HeatmapController extends Controller
         $filename = Yii::$app->getRuntimePath().'/heatmaps.csv';
         $csv = new \app\models\ECSVExport($data);
 
-        $attributes = ['openid', 'nickname', 'scene_pid_name', 'scene_pid_office', 'scene_pid_cat', 'user_account_charge_mobile', 'create_time'];
+        $attributes = ['openid', 'nickname', 'scene_pid_name', 'scene_pid_office', 'scene_pid_cat', 'user_account_charge_mobile', 'create_time', 'status'];
         $csv->setInclude($attributes);                
-        $csv->setHeaders(['openid'=>'openid', 'nickname'=>'昵称', 'scene_pid_name'=>'粉丝来源', 'scene_pid_office'=>'粉丝来源所属部门', 'scene_pid_cat'=>'粉丝来源类别', 'user_account_charge_mobile'=>'手机号码']);
+        $csv->setHeaders(['openid'=>'openid', 'nickname'=>'昵称', 'scene_pid_name'=>'粉丝来源', 'scene_pid_office'=>'粉丝来源所属部门', 'scene_pid_cat'=>'粉丝来源类别', 'user_account_charge_mobile'=>'手机号码', 'create_time'=>'创建时间', 'status'=>'是否有效']);
 
         $csv->toCSV($filename); 
         Yii::$app->response->sendFile($filename);

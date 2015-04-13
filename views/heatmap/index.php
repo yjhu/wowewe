@@ -101,12 +101,30 @@ $this->params['breadcrumbs'][] = $this->title;
             
             //'status',
          
+            /*
             [
                 'attribute' => 'status',
                 'value'=>function ($model, $key, $index, $column) { return HeatMap::getStatusOptionName($model->status); },
                 'filter'=> HeatMap::getStatusOptionName(),
             ],
+            */
          
+            [
+                'label' => '是否有效',
+                'attribute' => 'status',
+                'format'=>'html',
+                'value'=>function ($model, $key, $index, $column) { 
+                        $icon = empty($model->status) ? 'ok' : 'remove';
+                        $title = empty($model->status) ? '有效' : '无效';
+                        return Html::a("<span class=\"glyphicon glyphicon-{$icon}\"></span>", ['heatmapstatus', 'heat_map_id' => $model->heat_map_id], [
+                            'title' => $title,
+                            'data-method' => 'post',
+                            'data-pjax' => '0',
+                        ]);
+                    },
+                'filter'=> ['0'=>'有效', '1'=>'无效'],
+//              'visible'=>Yii::$app->user->getIsAdmin(),
+            ],
 
             [
 				'class' => 'yii\grid\ActionColumn',
