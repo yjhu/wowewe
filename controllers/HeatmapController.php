@@ -5,6 +5,8 @@ namespace app\controllers;
 use Yii;
 use app\models\HeatMap;
 use app\models\search\HeatMapSearch;
+use app\models\MStaff;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -114,7 +116,35 @@ class HeatmapController extends Controller
         foreach($data as $model) {
             $row['openid'] = $model->openid;
             $row['nickname'] = $model->user->nickname;
-            $row['user_account_charge_mobile'] = $model->user->user_account_charge_mobile;
+
+            $staff = MStaff::findOne(['gh_id'=>$model->gh_id, 'scene_id'=>$model->user->scene_pid]);
+            if($staff->cat == 0) //内部员工
+            {
+                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
+                $row['scene_pid_office'] = empty($staff->office->title) ? '' : $staff->office->title;
+                $row['scene_pid_cat'] = '内部员工';
+            }
+            else
+            {
+                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
+                $row['scene_pid_office'] = '-';
+                $row['scene_pid_cat'] = '-';
+            }
+
+            //$row['user_account_charge_mobile'] = $model->user->user_account_charge_mobile;
+
+            if (empty($model->user)) {
+                //return '';
+                 $row['user_account_charge_mobile'] = '';  
+            }
+            else
+            {
+                $mobiles = $model->user->getBindMobileNumbers();
+                //return empty($mobiles) ? '' : implode(',', $mobiles); 
+                $row['user_account_charge_mobile'] = empty($mobiles) ? '' : implode(',', $mobiles);  
+            }
+
+
             $row['create_time'] = $model->create_time;
             $rows[] = $row;
         }
@@ -123,9 +153,9 @@ class HeatmapController extends Controller
         $filename = Yii::$app->getRuntimePath().'/heatmaps.csv';
         $csv = new \app\models\ECSVExport($data);
 
-        $attributes = ['openid', 'nickname', 'user_account_charge_mobile','create_time'];
+        $attributes = ['openid', 'nickname', 'scene_pid_name', 'scene_pid_office', 'scene_pid_cat', 'user_account_charge_mobile', 'create_time'];
         $csv->setInclude($attributes);                
-        $csv->setHeaders(['openid'=>'openid', 'nickname'=>'昵称', 'user_account_charge_mobile'=>'手机号码']);
+        $csv->setHeaders(['openid'=>'openid', 'nickname'=>'昵称', 'scene_pid_name'=>'粉丝来源', 'scene_pid_office'=>'粉丝来源所属部门', 'scene_pid_cat'=>'粉丝来源类别', 'user_account_charge_mobile'=>'手机号码']);
 
         $csv->toCSV($filename); 
         Yii::$app->response->sendFile($filename);
