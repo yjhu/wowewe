@@ -42,10 +42,11 @@ class SmCaptchaAction extends Action
 
     public $tableName = 'wx_mobile_verify_code';
 
-    public $maxPerMobile = 3;    
+    public $maxPerMobile = 5;    
 //    public $maxPerMobile = 300;        
-    
-    public $maxPerIp = 5;    
+  
+    public $maxPerIp = 5000;
+//    public $maxPerIp = 5;    
 //    public $maxPerIp = 500;    
     
     public $mobile;

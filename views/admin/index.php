@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 //use yii\grid\GridView;
+use app\models\MStaff;
+
+use app\models\MUser;
 
 $this->title = '粉丝管理';
 $this->params['breadcrumbs'][] = $this->title;
@@ -22,6 +25,20 @@ $this->params['breadcrumbs'][] = $this->title;
 	$columns = [
 		//['class'=>'kartik\grid\SerialColumn', 'order'=>DynaGrid::ORDER_FIX_LEFT],
 		//'id',
+
+			[
+				'attribute' => 'nickname',
+				'label' => '头像',
+				'format'=>'html',
+                'value'=>function ($model, $key, $index, $column) { 
+					$nickname = $model->nickname;
+					$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
+					return "$headimgurl";
+				},
+//				'headerOptions' => array('style'=>'width:30%;'),	
+			],
+
+
 			[
 				'attribute' => 'nickname',
 				'label' => '微信昵称',
@@ -29,10 +46,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>function ($model, $key, $index, $column) { 
 					$nickname = $model->nickname;
 					$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
-					return "$headimgurl $nickname";
+					return "$nickname";
 				},
-//				'headerOptions' => array('style'=>'width:30%;'),	
+				'headerOptions' => array('style'=>'width:20%;'),	
 			],
+
+			[
+				'label' => '绑定手机号',
+				'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+                    if (empty($model->user)) {
+                        return '';
+                    }
+                    $mobiles = $model->user->getBindMobileNumbers();
+                    return empty($mobiles) ? '' : implode(',', $mobiles); 
+                 },
+				'headerOptions' => array('style'=>'width:10%;'),	
+			],
+
+
 
 		[
 			'attribute'=>'create_time',
@@ -49,15 +81,102 @@ $this->params['breadcrumbs'][] = $this->title;
 				]
 			],
 		],
+
 		[
 			'attribute' => 'is_liantongstaff',
-			'value'=>function ($model, $key, $index, $column) { return empty($model->is_staff)?'':'是'; },
+			'value'=>function ($model, $key, $index, $column) { return empty($model->is_liantongstaff)?'否':'是'; },
 			'filter'=> ['0'=>'否', '1'=>'是'],
 		],
+
+
+		[
+			'attribute' => 'nickname',
+			'label' => '粉丝来源',
+			'format'=>'html',
+            'value'=>function ($model, $key, $index, $column) { 
+				$nickname = $model->nickname;
+
+	            $staff = MStaff::findOne(['gh_id'=>$model->gh_id, 'scene_id'=>$model->scene_pid]);
+	            if($staff->cat == 0) //内部员工
+	            {
+	                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
+	                $row['scene_pid_office'] = empty($staff->office->title) ? '' : $staff->office->title;
+	                $row['scene_pid_cat'] = '内部员工';
+	            }
+	            else
+	            {
+	                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
+	                $row['scene_pid_office'] = '-';
+	                $row['scene_pid_cat'] = '-';
+	            }
+
+				//$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
+				return $row['scene_pid_name'];
+			},
+			'headerOptions' => array('style'=>'width:10%;'),	
+		],	
+
+
+		[
+			'attribute' => 'nickname',
+			'label' => '粉丝来源所属部门',
+			'format'=>'html',
+            'value'=>function ($model, $key, $index, $column) { 
+				$nickname = $model->nickname;
+
+	            $staff = MStaff::findOne(['gh_id'=>$model->gh_id, 'scene_id'=>$model->scene_pid]);
+	            if($staff->cat == 0) //内部员工
+	            {
+	                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
+	                $row['scene_pid_office'] = empty($staff->office->title) ? '' : $staff->office->title;
+	                $row['scene_pid_cat'] = '内部员工';
+	            }
+	            else
+	            {
+	                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
+	                $row['scene_pid_office'] = '-';
+	                $row['scene_pid_cat'] = '-';
+	            }
+
+				//$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
+				return $row['scene_pid_office'];
+			},
+			'headerOptions' => array('style'=>'width:15%;'),	
+		],	
+
+		[
+			'attribute' => 'nickname',
+			'label' => '粉丝来源类别',
+			'format'=>'html',
+            'value'=>function ($model, $key, $index, $column) { 
+				$nickname = $model->nickname;
+
+	            $staff = MStaff::findOne(['gh_id'=>$model->gh_id, 'scene_id'=>$model->scene_pid]);
+	            if($staff->cat == 0) //内部员工
+	            {
+	                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
+	                $row['scene_pid_office'] = empty($staff->office->title) ? '' : $staff->office->title;
+	                $row['scene_pid_cat'] = '内部员工';
+	            }
+	            else
+	            {
+	                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
+	                $row['scene_pid_office'] = '-';
+	                $row['scene_pid_cat'] = '-';
+	            }
+
+				//$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
+				return $row['scene_pid_cat'];
+			},
+			'headerOptions' => array('style'=>'width:10%;'),	
+		],	
+
+		/*
 		[
 			'attribute' => 'scene_id',
 			'value'=>function ($model, $key, $index, $column) { return empty($model->scene_id)?'':$model->scene_id; },
 		],
+		*/
 
 /*
 		[
@@ -89,9 +208,14 @@ $this->params['breadcrumbs'][] = $this->title;
 		],
 		['class'=>'kartik\grid\CheckboxColumn',  'order'=>DynaGrid::ORDER_FIX_RIGHT],
 */
+
+		/*
 		[
 			'class' => 'yii\grid\ActionColumn',
 		]
+		*/
+
+
 	];
 		
 	echo DynaGrid::widget([
@@ -104,7 +228,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			'dataProvider'=>$dataProvider,
 			'filterModel'=>$searchModel,
 			'bordered'=>false,
-			'panel'=>['heading'=>'<h3 class="panel-title">用户列表</h3>'],
+			'panel'=>['heading'=>'<h3 class="panel-title">粉丝列表</h3>'],
 			'export'=>['options'=>['class' => 'btn btn-success']],
 		],
 		'options'=>['id'=>'dynagrid-1'] // a unique identifier is important
