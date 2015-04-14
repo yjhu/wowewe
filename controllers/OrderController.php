@@ -35,6 +35,8 @@ use app\models\MSceneDetailSearch;
 use app\models\MSceneDay;
 use app\models\MaterialDataProvider;
 
+use app\models\Custom;
+
 class OrderController extends Controller
 {
     public $layout = 'main';
@@ -530,6 +532,72 @@ class OrderController extends Controller
         ]);  
         
     }
+
+
+    /*office custom statistics*/
+    public function actionOfficecustomstat()
+    {
+
+        $offices = MOffice::findAll(['gh_id' => 'gh_03a74ac96138']);
+        $rows = [];
+        $custom_count = [];
+        foreach($offices as $office)
+        {
+            //$row = [];
+            $row['office_id'] = $office->office_id;
+            $row['office_title'] = $office->title;
+
+            $custom = Custom::findOne(['office_id'=>$office->office_id]);
+            if ($custom !== null)
+            {
+                $custom_counts = Custom::find()->select('*, count(*) as c')->where('office_id=:office_id', [':office_id'=>$office->office_id])->groupBy(['office_id'])->orderBy('office_id')->asArray()->all();   
+                foreach($custom_counts as $custom_count)
+                {
+                    $row['custom_count'] = $custom_count['c'];
+                }
+            }
+            else
+            {
+                continue;
+            }
+
+            $rows[] = $row;
+        }
+
+        //print_r($custom_count);
+        U::W("####################################");
+        U::W($rows);
+        //U::W($custom_count);
+
+        $filter = new \app\models\FiltersForm;
+        $filter->unsetAttributes();
+        if(isset($_GET['FiltersForm'])) {       
+            $filter->setAttributes($_GET['FiltersForm'], false);
+        }
+        $rows = $filter->filterArrayData($rows);        
+        
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $rows,
+            'sort' => [
+                'attributes' => ['office_id', 'office_title', 'custom_count'],        
+                'defaultOrder'=>[
+                    //'office_id' => SORT_DESC
+                    'custom_count' => SORT_DESC
+                ]
+            ],
+            'pagination' => [
+                'pageSize' => 50,
+            ],
+        ]);
+
+           
+        return $this->render('officecustomstat', [
+            'dataProvider' => $dataProvider,
+            'filter'=>$filter,            
+        ]); 
+        
+    }
+
 
     public function actionIphone6sub()
     {
