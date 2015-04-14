@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Manager;
+use app\models\Custommanager;
 
 /**
- * ManagerSearch represents the model behind the search form about `app\models\Manager`.
+ * CustommanagerSearch represents the model behind the search form about `app\models\Custommanager`.
  */
-class ManagerSearch extends Manager
+class CustommanagerSearch extends Custommanager
 {
     /**
      * @inheritdoc
@@ -18,8 +18,7 @@ class ManagerSearch extends Manager
     public function rules()
     {
         return [
-            [['manager_id'], 'integer'],
-            [['mobile', 'name'], 'safe'],
+            [['custom_manager_id', 'custom_id', 'manager_id'], 'integer'],
         ];
     }
 
@@ -41,7 +40,7 @@ class ManagerSearch extends Manager
      */
     public function search($params)
     {
-        $query = Manager::find();
+        $query = Custommanager::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -52,11 +51,10 @@ class ManagerSearch extends Manager
         }
 
         $query->andFilterWhere([
+            'custom_manager_id' => $this->custom_manager_id,
+            'custom_id' => $this->custom_id,
             'manager_id' => $this->manager_id,
         ]);
-
-        $query->andFilterWhere(['like', 'mobile', $this->mobile])
-            ->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

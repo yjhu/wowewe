@@ -4,20 +4,20 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\VipmanagerSearch */
+/* @var $model app\models\CustommanagerSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="vipmanager-search">
+<div class="custommanager-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'vipmamnager_id') ?>
+    <?= $form->field($model, 'custom_manager_id') ?>
 
-    <?= $form->field($model, 'vip_id') ?>
+    <?= $form->field($model, 'custom_id') ?>
 
     <?= $form->field($model, 'manager_id') ?>
 

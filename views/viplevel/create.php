@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Vipmanager */
+/* @var $model app\models\Viplevel */
 
-$this->title = 'Create Vipmanager';
-$this->params['breadcrumbs'][] = ['label' => 'Vipmanagers', 'url' => ['index']];
+$this->title = 'Create Viplevel';
+$this->params['breadcrumbs'][] = ['label' => 'Viplevels', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="vipmanager-create">
+<div class="viplevel-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

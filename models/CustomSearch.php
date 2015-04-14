@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Manager;
+use app\models\Custom;
 
 /**
- * ManagerSearch represents the model behind the search form about `app\models\Manager`.
+ * CustomSearch represents the model behind the search form about `app\models\Custom`.
  */
-class ManagerSearch extends Manager
+class CustomSearch extends Custom
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class ManagerSearch extends Manager
     public function rules()
     {
         return [
-            [['manager_id'], 'integer'],
-            [['mobile', 'name'], 'safe'],
+            [['custom_id', 'is_vip', 'office_id', 'vip_level_id'], 'integer'],
+            [['mobile', 'name', 'vip_join_time', 'vip_start_time', 'vip_end_time'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class ManagerSearch extends Manager
      */
     public function search($params)
     {
-        $query = Manager::find();
+        $query = Custom::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -52,7 +52,13 @@ class ManagerSearch extends Manager
         }
 
         $query->andFilterWhere([
-            'manager_id' => $this->manager_id,
+            'custom_id' => $this->custom_id,
+            'is_vip' => $this->is_vip,
+            'office_id' => $this->office_id,
+            'vip_level_id' => $this->vip_level_id,
+            'vip_join_time' => $this->vip_join_time,
+            'vip_start_time' => $this->vip_start_time,
+            'vip_end_time' => $this->vip_end_time,
         ]);
 
         $query->andFilterWhere(['like', 'mobile', $this->mobile])

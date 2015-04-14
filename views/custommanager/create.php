@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Lookup */
+/* @var $model app\models\Custommanager */
 
-$this->title = 'Create Lookup';
-$this->params['breadcrumbs'][] = ['label' => 'Lookups', 'url' => ['index']];
+$this->title = 'Create Custommanager';
+$this->params['breadcrumbs'][] = ['label' => 'Custommanagers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="lookup-create">
+<div class="custommanager-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

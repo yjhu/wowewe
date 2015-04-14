@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Manager;
-use app\models\ManagerSearch;
+use app\models\Custom;
+use app\models\CustomSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * ManagerController implements the CRUD actions for Manager model.
+ * CustomController implements the CRUD actions for Custom model.
  */
-class ManagerController extends Controller
+class CustomController extends Controller
 {
     public function behaviors()
     {
@@ -27,12 +27,12 @@ class ManagerController extends Controller
     }
 
     /**
-     * Lists all Manager models.
+     * Lists all Custom models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ManagerSearch();
+        $searchModel = new CustomSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -42,7 +42,7 @@ class ManagerController extends Controller
     }
 
     /**
-     * Displays a single Manager model.
+     * Displays a single Custom model.
      * @param string $id
      * @return mixed
      */
@@ -54,16 +54,16 @@ class ManagerController extends Controller
     }
 
     /**
-     * Creates a new Manager model.
+     * Creates a new Custom model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Manager();
+        $model = new Custom();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->manager_id]);
+            return $this->redirect(['view', 'id' => $model->custom_id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -72,7 +72,7 @@ class ManagerController extends Controller
     }
 
     /**
-     * Updates an existing Manager model.
+     * Updates an existing Custom model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -82,7 +82,7 @@ class ManagerController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->manager_id]);
+            return $this->redirect(['view', 'id' => $model->custom_id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -91,7 +91,7 @@ class ManagerController extends Controller
     }
 
     /**
-     * Deletes an existing Manager model.
+     * Deletes an existing Custom model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -104,15 +104,15 @@ class ManagerController extends Controller
     }
 
     /**
-     * Finds the Manager model based on its primary key value.
+     * Finds the Custom model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Manager the loaded model
+     * @return Custom the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Manager::findOne($id)) !== null) {
+        if (($model = Custom::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

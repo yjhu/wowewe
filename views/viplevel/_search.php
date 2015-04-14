@@ -4,24 +4,20 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\LookupSearch */
+/* @var $model app\models\ViplevelSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="lookup-search">
+<div class="viplevel-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'lookup_id') ?>
+    <?= $form->field($model, 'vip_level_id') ?>
 
-    <?= $form->field($model, 'cat') ?>
-
-    <?= $form->field($model, 'name') ?>
-
-    <?= $form->field($model, 'cat_val') ?>
+    <?= $form->field($model, 'title') ?>
 
     <?= $form->field($model, 'sort_order') ?>
 

@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\VipmanagerSearch */
+/* @var $searchModel app\models\ViplevelSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Vipmanagers';
+$this->title = 'Viplevels';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="vipmanager-index">
+<div class="viplevel-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Vipmanager', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Viplevel', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -25,9 +25,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'vipmamnager_id',
-            'vip_id',
-            'manager_id',
+            'vip_level_id',
+            'title',
+            'sort_order',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

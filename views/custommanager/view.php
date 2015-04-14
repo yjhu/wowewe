@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Vipmanager */
+/* @var $model app\models\Custommanager */
 
-$this->title = $model->vipmamnager_id;
-$this->params['breadcrumbs'][] = ['label' => 'Vipmanagers', 'url' => ['index']];
+$this->title = $model->custom_manager_id;
+$this->params['breadcrumbs'][] = ['label' => 'Custommanagers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="vipmanager-view">
+<div class="custommanager-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->vipmamnager_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->vipmamnager_id], [
+        <?= Html::a('Update', ['update', 'id' => $model->custom_manager_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'id' => $model->custom_manager_id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -28,8 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'vipmamnager_id',
-            'vip_id',
+            'custom_manager_id',
+            'custom_id',
             'manager_id',
         ],
     ]) ?>
