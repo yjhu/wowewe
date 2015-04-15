@@ -49,12 +49,6 @@ use app\models\wxpay\WxPayOrderQuery;
 use app\models\wxpay\WxPayConfig;
 
 
-
-
-
-
-
-
 class WapController extends Controller
 {
     public function behaviors()
@@ -557,6 +551,7 @@ EOD;
 //        Log::DEBUG("begin notify!");
         $notify = new NativeNotifyCallBack();
         $respXml = $notify->Handle(true);
+        U::W($respXml);
         return $respXml;
         
     }
@@ -2144,9 +2139,9 @@ EOD;
         Yii::$app->wx->setGhId($gh_id);        
 */        
         U::W('before NativePay');
-        require_once __DIR__."/../models/wxpay/WxPayData.php";
+//        require_once __DIR__."/../models/wxpay/WxPayData.php";
         $notify = new NativePay();
-        $url = $notify->GetPrePayUrl("123456789");
+        $url = $notify->GetPrePayUrl("123456781");
         U::W('after NativePay='.$url);
 
         return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
@@ -3655,15 +3650,25 @@ U::W('aaaaa......'.$user_founder->mobile);
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');                
         Yii::$app->wx->setGhId($gh_id);        
-
-//        require_once __DIR__."/../models/wxpay/WxPayData.php";
         $notify = new NativePay();
-        $url = $notify->GetPrePayUrl("123456789");
-        
-//        $url = Yii::$app->wx->create_native_url_v3('123');
+        $url = $notify->GetPrePayUrl("123456789");        
         U::W($url);
         return $url;
     }    
+
+    // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wxpaytest:gh_03a74ac96138  
+    public function actionWxpaytest()
+    {    
+    
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');                
+        Yii::$app->wx->setGhId($gh_id);        
+        $notify = new NativePay();
+        $url = $notify->GetPrePayUrl("123456789");        
+        return $this->render('wxpaytest', ['url1'=>$url]);   
+    }    
+    
 }
 
 class NativeNotifyCallBack extends WxPayNotify
@@ -3703,6 +3708,7 @@ class NativeNotifyCallBack extends WxPayNotify
                 [sign] => 6D81DBD2229DC244D9E94E6BD24EF5B3
             )
         */
+        
 		if(!array_key_exists("openid", $data) ||
 			!array_key_exists("product_id", $data))
 		{
@@ -3729,6 +3735,7 @@ class NativeNotifyCallBack extends WxPayNotify
 		$this->SetData("result_code", "SUCCESS");
 		$this->SetData("err_code_des", "OK");
 		return true;
+        
 	}
 }
 

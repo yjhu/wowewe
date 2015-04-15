@@ -2,6 +2,8 @@
 
 namespace app\models\wxpay;
 
+//use app\models\wxpay\WxPayApi;
+
 /**
  * 
  * 刷卡支付实现类
@@ -19,7 +21,7 @@ class NativePay
 	{
 		$biz = new WxPayBizPayUrl();
 		$biz->SetProduct_id($productId);
-		$values = WxpayApi::bizpayurl($biz);
+		$values = WxPayApi::bizpayurl($biz);
 		$url = "weixin://wxpay/bizpayurl?" . $this->ToUrlParams($values);
 		return $url;
 	}
