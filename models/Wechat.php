@@ -1198,7 +1198,7 @@ EOD;
         return true;
     }
     
-    // ------------------------ Wxpay ------------------------    
+    // ------------------------ Wxpay V2 ------------------------    
     protected static function sign($content, $key) 
     {
         if (empty($key))
@@ -1371,6 +1371,35 @@ EOD;
         return  self::arrayToXml($nativeObj);
     }
 
+    // ------------------------ Wxpay V3 ------------------------   
+/*    
+    public function create_native_url_v3($productid)
+    {
+//        require_once "../vendor/wxpay/lib/WxPay.Api.php";
+//        require_once "../vendor/wxpay/example/WxPay.NativePay.php";
+//        require_once "../vendor/wxpay/example/log.php";        
+        $notify = new NativePay();
+        $url = $notify->GetPrePayUrl($productid);
+        return $url;
+    }
+
+    public function create_native_package_v3($retcode=0, $reterrmsg="ok")
+    {
+        $appid = $this->gh['appid'];    
+        if($this->check_cft_parameters() == false && $retcode == 0)
+            U::D("invalid cft_parameters ".__METHOD__);
+        $nativeObj["AppId"] = $appid;
+        $nativeObj["Package"] = $this->get_cft_package();
+        $nativeObj["TimeStamp"] = time();
+        $nativeObj["NonceStr"] = self::create_noncestr();
+        $nativeObj["RetCode"] = $retcode;
+        $nativeObj["RetErrMsg"] = $reterrmsg;
+        $nativeObj["AppSignature"] = $this->get_biz_sign($nativeObj);
+        $nativeObj["SignMethod"] = self::SIGNTYPE;
+        return  self::arrayToXml($nativeObj);
+    }
+*/
+    // ------------------------ Wechat template -------------------
     public function WxTemplateSend($msg)
     {
         $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/message/template/send", ['access_token'=>$this->accessToken], self::json_encode($msg));
