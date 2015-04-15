@@ -565,8 +565,8 @@ class OrderController extends Controller
         }
 
         //print_r($custom_count);
-        U::W("####################################");
-        U::W($rows);
+        //U::W("####################################");
+        //U::W($rows);
         //U::W($custom_count);
 
         $filter = new \app\models\FiltersForm;

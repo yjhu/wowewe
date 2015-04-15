@@ -13,6 +13,10 @@ AppAsset::register($this);
 <head>
     <meta charset="<?= Yii::$app->charset ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <LINK href="favicon1.ico" type="image/x-icon" rel=icon>
+	<LINK href="favicon1.ico" type="image/x-icon" rel="shortcut icon">
+
 	<?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>

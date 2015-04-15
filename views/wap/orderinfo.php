@@ -185,10 +185,18 @@
 				        else
 				        {
 				        	$("#btn-pay-weixin").show();
+				        	//alert(url);
 				        	$("#btn-pay").hide();
 				        }
 				    });
 
+				    /*
+				    function jumppay()
+				    {
+				    	alert('pay now!');
+				    	location.href=url;
+				    }
+				    */
 			</script>
 
 	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
