@@ -2956,7 +2956,6 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
 //        $this->layout = false;
 //        $this->layout = 'wap';
         $this->layout = 'wapy';
-
         
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');                

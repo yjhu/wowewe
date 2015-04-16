@@ -157,7 +157,6 @@
 //				alert(url);
 //				$("#btn-pay-weixin").attr('href',url);
 
-
 //                var jsApiParameters = url;
 
                 var jsApiParameters = eval('(' + url + ')');
