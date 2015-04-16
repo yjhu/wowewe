@@ -50,7 +50,6 @@ use app\models\wxpay\WxPayOrderQuery;
 use app\models\wxpay\WxPayException;
 use app\models\wxpay\WxPayConfig;
 
-
 class WapController extends Controller
 {
     public function behaviors()
