@@ -47,12 +47,16 @@ $url2 = $result["code_url"];
 */
 ?>
 
+<!--
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1" /> 
     <title>微信支付样例-Native</title>
 
+</head>
+<body>
+-->
     <script type="text/javascript">
                 function jsApiCall()
                 {
@@ -111,8 +115,7 @@ $url2 = $result["code_url"];
 
 
 	</script>
-</head>
-<body>
+
 	<div style="margin-left: 10px;color:#556B2F;font-size:30px;font-weight: bolder;">扫描支付模式一</div><br/>
     <?php echo $url1; ?><br/>
 <a href="<?php echo $url1; ?>"> click me to pay </a>
@@ -133,6 +136,8 @@ $url2 = $result["code_url"];
 <br/><br/><br/>
 <a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin_x" style="background-color: #44B549" onclick="callpay_x()" >test</a>
 
+<!--
 
 </body>
 </html>
+-->

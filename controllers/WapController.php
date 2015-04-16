@@ -2181,6 +2181,7 @@ EOD;
 		|| !array_key_exists("prepay_id", $UnifiedOrderResult)
 		|| $UnifiedOrderResult['prepay_id'] == "")
 		{
+		    U::W(['appid or prepay_id not exists', $UnifiedOrderResult]);
 			throw new \Exception("para error");
 		}
 		$jsapi = new WxPayJsApiPay();
@@ -2948,10 +2949,15 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
     // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wxpaytest:gh_03a74ac96138  
     public function actionWxpaytest()
     {    
+    
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');                
     
-        $this->layout = false;
+//        $this->layout = false;
+//        $this->layout = 'wap';
+        $this->layout = 'wapy';
+
+        
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');                
         Yii::$app->wx->setGhId($gh_id);        
