@@ -53,16 +53,18 @@ class Custom extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'vip_id' => 'Vip ID',
-            'name' => 'Name',
-            'mobile' => 'Mobile',
-            'join_time' => 'Join Time',
-            'start_time' => 'Start Time',
-            'end_time' => 'End Time',
-            'vip_level_id' => 'vip_level_id',
+            'vip_id' => 'VIP IP',
+            'name' => '姓名',
+            'mobile' => '手机号码',
+            'vip_join_time' => '加入时间',
+            'vip_start_time' => '开始时间',
+            'vip_end_time' => '结束时间',
+            'vip_level_id' => 'VIP级别',
             'office_id' => '营业厅编号',
+            'is_vip' => '是否VIP客户',
         ];
     }
+
 
     public function getOffice()
     {

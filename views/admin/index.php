@@ -231,6 +231,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			'panel'=>['heading'=>'<h3 class="panel-title">粉丝列表</h3>'],
 			'export'=>['options'=>['class' => 'btn btn-success']],
 		],
+
 		'options'=>['id'=>'dynagrid-1'] // a unique identifier is important
 	]);
 /*

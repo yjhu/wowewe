@@ -45,12 +45,12 @@ class Vip extends \yii\db\ActiveRecord
     {
         return [
             'vip_id' => 'Vip ID',
-            'name' => 'Name',
-            'mobile' => 'Mobile',
-            'join_time' => 'Join Time',
-            'start_time' => 'Start Time',
-            'end_time' => 'End Time',
-            'cat_val' => 'Cat Val',
+            'name' => '姓名',
+            'mobile' => '手机号码',
+            'join_time' => '加入时间',
+            'start_time' => '开始时间',
+            'end_time' => '结束时间',
+            'cat_val' => '分类',
         ];
     }
 
