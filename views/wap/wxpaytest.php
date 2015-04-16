@@ -28,7 +28,8 @@ require_once 'log.php';
  * 3、支付完成之后，微信服务器会通知支付成功
  * 4、在支付成功通知中需要查单确认是否真正支付成功（见：notify.php）
  */
- /*
+
+/*
 $input = new WxPayUnifiedOrder();
 $input->SetBody("test");
 $input->SetAttach("test");
@@ -37,7 +38,8 @@ $input->SetTotal_fee("1");
 $input->SetTime_start(date("YmdHis"));
 $input->SetTime_expire(date("YmdHis", time() + 600));
 $input->SetGoods_tag("test");
-$input->SetNotify_url("http://wosotech.com/wx/vendor/wxpay/example/notify.php");
+//$input->SetNotify_url("http://wosotech.com/wx/vendor/wxpay/example/notify.php");
+$input->SetNotify_url("http://wosotech.com/wx/web/wxpaynotify.php");
 $input->SetTrade_type("NATIVE");
 $input->SetProduct_id("123456789");
 $result = $notify->GetPayUrl($input);
@@ -50,11 +52,87 @@ $url2 = $result["code_url"];
     <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1" /> 
     <title>微信支付样例-Native</title>
+
+    <script type="text/javascript">
+                function jsApiCall()
+                {
+                    WeixinJSBridge.invoke(
+                        'getBrandWCPayRequest',
+                        <?php echo $jsApiParameters; ?>,
+                        function(res){
+                            WeixinJSBridge.log(res.err_msg);
+                            alert(res.err_code+res.err_desc+res.err_msg);
+                        }
+                    );
+                }
+
+                function callpay()
+                {
+                    if (typeof WeixinJSBridge == "undefined"){
+                        if( document.addEventListener ){
+                            document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                        }else if (document.attachEvent){
+                            document.attachEvent('WeixinJSBridgeReady', jsApiCall); 
+                            document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                        }
+                    }else{
+                        jsApiCall();
+                    }
+                }
+
+
+
+                function jsApiCall_x()
+                {
+                    WeixinJSBridge.invoke(
+                        'getBrandWCPayRequest',
+                        <?php echo $jsApiParameters; ?>,
+                        function(res){
+                            WeixinJSBridge.log(res.err_msg);
+                            alert(res.err_code+res.err_desc+res.err_msg);
+                        }
+                    );
+                }
+
+                function callpay_x()
+                {
+                    if (typeof WeixinJSBridge == "undefined"){
+                        if( document.addEventListener ){
+                            document.addEventListener('WeixinJSBridgeReady', jsApiCall_x, false);
+                        }else if (document.attachEvent){
+                            document.attachEvent('WeixinJSBridgeReady', jsApiCall_x); 
+                            document.attachEvent('onWeixinJSBridgeReady', jsApiCall_x);
+                        }
+                    }else{
+                        jsApiCall_x();
+                    }
+                }
+
+
+
+	</script>
 </head>
 <body>
 	<div style="margin-left: 10px;color:#556B2F;font-size:30px;font-weight: bolder;">扫描支付模式一</div><br/>
+    <?php echo $url1; ?><br/>
+<a href="<?php echo $url1; ?>"> click me to pay </a>
 	<img alt="模式一扫码支付" src="http://wosotech.com/wx/vendor/wxpay/example/qrcode.php?data=<?php echo urlencode($url1);?>" style="width:150px;height:150px;"/>
 	<br/><br/><br/>
-	
+
+	<div style="margin-left: 10px;color:#556B2F;font-size:30px;font-weight: bolder;">扫描支付模式2</div><br/>
+    <?php echo $url2; ?><br/>
+<a href="<?php echo $url2; ?>"> click me to pay 2 </a>
+	<img alt="模式2扫码支付" src="http://wosotech.com/wx/vendor/wxpay/example/qrcode.php?data=<?php echo urlencode($url2);?>" style="width:150px;height:150px;"/>
+	<br/><br/><br/>
+    
+
+<a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin" style="background-color: #44B549" onclick="callpay()" >立即支付</a>
+
+
+<br/>
+<br/><br/><br/>
+<a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin_x" style="background-color: #44B549" onclick="callpay_x()" >test</a>
+
+
 </body>
 </html>

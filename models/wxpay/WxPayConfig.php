@@ -38,7 +38,7 @@ class WxPayConfig
     // -------------- xiangyangunicom ---------------------------
 	const APPID = 'wx1b122a21f985ea18';
 	const MCHID = '1234585602';
-	const KEY = 'wosotech20140526huyajun197310070';
+	const KEY = 'xiangylt20140526huyajun197310070';
 	const APPSECRET = '35eda7e6cd9b69f5ffb3c8662f62eb25';
 	const SSLCERT_PATH = '../cert/xiangyangunicom/apiclient_cert.pem';
 	const SSLKEY_PATH = '../cert/xiangyangunicom/apiclient_key.pem';

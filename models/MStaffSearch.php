@@ -52,10 +52,6 @@ class MStaffSearch extends Model
         $this->gh_id = Yii::$app->user->getGhid();
         $this->addCondition($query, 'gh_id');        
 
-        if (!($this->load($params) && $this->validate())) {
-            return $dataProvider;
-        }
-        
         if (!Yii::$app->user->getIsAdmin())
         {
             $this->office_id = Yii::$app->user->identity->office_id;
@@ -64,6 +60,10 @@ class MStaffSearch extends Model
             $this->addCondition($query, 'office_id');                            
         }
 
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+        
         $this->addCondition($query, 'cat');                    
         $this->addCondition($query, 'name', true);
         $this->addCondition($query, 'mobile', true);
