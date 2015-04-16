@@ -194,6 +194,10 @@ $this->params['breadcrumbs'][] = $this->title;
 		'columns' => $columns,
 		'bordered'=>false,
 		'export'=>false,
+		'pager'=>[
+			'firstPageLabel'=>true,
+			'lastPageLabel'=>true,
+		],
 		'panel' => [
 			'heading'=>'<h3 class="panel-title">订单列表</h3>',
 			//'type'=>'success',

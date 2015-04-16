@@ -331,7 +331,7 @@ class MOffice extends ActiveRecord implements IdentityInterface
 
     public static function getOfficeNameOptionAll($gh_id, $json=true, $need_prompt=true)
     {
-        $offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->asArray()->all();
+        $offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->asArray()->orderBy(['title'=>SORT_ASC])->all();
         $listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
         foreach($offices as $office)
         {
