@@ -134,6 +134,11 @@ $url2 = $result["code_url"];
 <a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin" style="background-color: #44B549" onclick="callpay()" >立即支付</a>
 
 
+
+
+
+
+
 <br/>
 <br/><br/><br/>
 <a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin_x" style="background-color: #44B549" onclick="callpay_x()" >test</a>
