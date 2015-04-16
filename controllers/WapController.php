@@ -559,7 +559,8 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/paynotify
     public function actionPaynotify()
     {        
-        U::W(['actionPaynotify', $_GET,$_POST]);
+        U::W([__METHOD__, $_GET,$_POST]);
+        return 'test';
 /*        
         // receive the pay notify from wx server and save the order to db
         // POST data
@@ -727,8 +728,8 @@ EOD;
             exit;
         }
         $arr = (array)simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-        if (Yii::$app->wx->debug)
-            U::W($arr);
+//        if (Yii::$app->wx->debug)
+            U::W([__METHOD__, $arr]);
         /*        
         Array
         (            
@@ -2141,7 +2142,7 @@ EOD;
         U::W('before NativePay');
 //        require_once __DIR__."/../models/wxpay/WxPayData.php";
         $notify = new NativePay();
-        $url = $notify->GetPrePayUrl("123456781");
+        $url = $notify->GetPrePayUrl("123456789");
         U::W('after NativePay='.$url);
 
         return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
@@ -3683,7 +3684,12 @@ class NativeNotifyCallBack extends WxPayNotify
 		$input->SetTime_start(date("YmdHis"));
 		$input->SetTime_expire(date("YmdHis", time() + 600));
 		$input->SetGoods_tag("test");
-        $input->SetNotify_url("http://wosotech.com/wx/web/index.php?r=wap/paynotify.php");
+        // donot support ?r=xxx?
+//        $payNotifyUrl = "http://wosotech.com/wx/web/index.php?r=wap/paynotify";
+        $payNotifyUrl = "http://wosotech.com/wx/web/wxpaynotify.php";                
+        $input->SetNotify_url($payNotifyUrl);
+//        $input->SetNotify_url(urlencode($payNotifyUrl));
+//        $input->SetNotify_url("http://wosotech.com/wx/models/wxpay/wxpay_sdk/example/notify.php");
 		$input->SetTrade_type("NATIVE");
 		$input->SetOpenid($openId);
 		$input->SetProduct_id($product_id);
