@@ -124,12 +124,14 @@ $url2 = $result["code_url"];
 	<img alt="模式一扫码支付" src="http://wosotech.com/wx/vendor/wxpay/example/qrcode.php?data=<?php echo urlencode($url1);?>" style="width:150px;height:150px;"/>
 	<br/><br/><br/>
 
+<?php /*
 	<div style="margin-left: 10px;color:#556B2F;font-size:30px;font-weight: bolder;">扫描支付模式2</div><br/>
     <?php echo $url2; ?><br/>
 <a href="<?php echo $url2; ?>"> click me to pay 2 </a>
 	<img alt="模式2扫码支付" src="http://wosotech.com/wx/vendor/wxpay/example/qrcode.php?data=<?php echo urlencode($url2);?>" style="width:150px;height:150px;"/>
 	<br/><br/><br/>
-    
+*/
+?>
 
 <a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin" style="background-color: #44B549" onclick="callpay()" >立即支付</a>
 

@@ -177,7 +177,7 @@ class WapController extends Controller
         }
         Yii::$app->session['gh_id'] = $gh_id;
         Yii::$app->session['openid'] = $openid;
-        if ($route == 'wap/wxpaytest') {
+        if ($route == 'wap/wxpaytest' || $route == 'wap/orderinfotest') {
             U::W('WITH GH_ID');
             $r['gh_id'] = $gh_id;
             $r['openid'] = $openid;            
@@ -2945,6 +2945,37 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
         return $this->render('orderinfo',['gh_id'=>$gh_id, 'openid'=>$openid, 'model' => $model, 'item' => $item, 'jsApiParameters'=>$jsApiParameters]);
     }
 
+        // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/orderinfotest:gh_03a74ac96138  
+        public function actionOrderinfotest()
+        {    
+        
+            $this->layout = 'wapy';
+            $gh_id = U::getSessionParam('gh_id');
+            $openid = U::getSessionParam('openid');                
+            $oid='55306A960191B';
+            $model = MOrder::findOne($oid);      
+            $item = MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$model->cid]);
+            
+        
+            $input = new WxPayUnifiedOrder();
+            $input->SetBody("test");
+            $input->SetAttach("test");
+            $input->SetOut_trade_no(WxPayConfig::MCHID.date("YmdHis"));
+            $input->SetTotal_fee("1");
+            $input->SetTime_start(date("YmdHis"));
+            $input->SetTime_expire(date("YmdHis", time() + 600));
+            $input->SetGoods_tag("test");
+            $input->SetNotify_url("http://wosotech.com/wx/web/wxpaynotify.php");
+            $input->SetTrade_type("JSAPI");
+            $input->SetOpenid($openid);
+            $unifiedOrder = WxPayApi::unifiedOrder($input);
+            U::W($unifiedOrder);        
+            $jsApiParameters = $this->GetJsApiParameters($unifiedOrder);
+            U::W($jsApiParameters);
+    
+            return $this->render('orderinfo', ['gh_id'=>$gh_id, 'openid'=>$openid, 'model' => $model, 'item' => $item, 'jsApiParameters'=>$jsApiParameters]);   
+        }    
+
     // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wxpaytest:gh_03a74ac96138  
     public function actionWxpaytest()
     {    
@@ -2960,8 +2991,9 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
         $openid = U::getSessionParam('openid');                
         Yii::$app->wx->setGhId($gh_id);        
         $notify = new NativePay();
-        $url = $notify->GetPrePayUrl("123456789");     
-
+        $url = $notify->GetPrePayUrl("123456789"); 
+        $url2 = '';
+/*
         $input = new WxPayUnifiedOrder();
         $input->SetBody("test2");
         $input->SetAttach("test2");
@@ -2976,7 +3008,7 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
         $input->SetProduct_id("123456789");
         $result = $notify->GetPayUrl($input);
         $url2 = $result["code_url"];
-
+*/
 
         $input = new WxPayUnifiedOrder();
         $input->SetBody("test");
