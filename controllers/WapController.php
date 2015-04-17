@@ -499,216 +499,12 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/nativenotify
     public function actionNativenotify()
     {        
-/*    
-        U::W([__METHOD__, $GLOBALS]);    
-        if (Yii::$app->wx->localTest)
-        {
-            $postStr = <<<EOD
-            <xml>
-            [appid] => wx79c2bf0249ede62a
-            [is_subscribe] => Y
-            [mch_id] => 1220047701
-            [nonce_str] => bfegWC2eAXolkxj8
-            [openid] => oSHFKs9_gq4Ve6sHdQ86mJh1U3ZQ
-            [product_id] => 123456789
-            [sign] => 6D81DBD2229DC244D9E94E6BD24EF5B3
-            </xml>
-EOD;
-        }
-        else
-            $postStr = Yii::$app->wx->getPostStr();
-        if (empty($postStr)) 
-        {
-            U::W(['No postStr', __METHOD__, $GLOBALS]);
-            exit;
-        }
-        $arr = (array)simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-        if (Yii::$app->wx->debug)
-            U::W($arr);
-        if (empty($arr['AppId']))
-        {
-            U::W(['No AppId', __METHOD__, $postStr]);
-            exit;
-        }
-        
-        //$arr['ProductId'] = '53d89b592bfec'; 
-        Yii::$app->wx->setAppId($arr['AppId']);
-        $productId = $arr['ProductId'];
-        $openid = $arr['OpenId'];
-        $model = MOrder::findOne($productId);
-        if ($model === null)
-        {
-            U::W(['order does not exist!', __METHOD__, $arr]);
-            exit;        
-        }
-        Yii::$app->wx->setParameterComm();
-        $detail = $model->detail;
-        Yii::$app->wx->setParameter("body", $detail);
-        Yii::$app->wx->setParameter("out_trade_no", $model->oid);
-        Yii::$app->wx->setParameter("total_fee",  "{$model->feesum}");
-        //Yii::$app->wx->setParameter("total_fee",  "1");
-        Yii::$app->wx->setParameter("spbill_create_ip", "127.0.0.1");        
-        $xmlStr = Yii::$app->wx->create_native_package();
-        if (Yii::$app->wx->debug)
-            U::W($xmlStr);
-        return $xmlStr;
-*/
-//        require_once __DIR__."/../models/wxpay/WxPayData.php";
-
-//        Log::DEBUG("begin notify!");
         $notify = new NativeNotifyCallBack();
         $respXml = $notify->Handle(true);
         U::W($respXml);
-        return $respXml;
-        
+        return $respXml;        
     }
     
-    //http://127.0.0.1/wx/web/index.php?r=wap/paynotify
-    public function actionPaynotify()
-    {        
-        U::W([__METHOD__, $_GET,$_POST]);
-        return 'test';
-/*        
-        // receive the pay notify from wx server and save the order to db
-        // POST data
-        if (Yii::$app->wx->localTest)        
-        {
-            $postStr = <<<EOD
-            <xml>
-            <appid><![CDATA[wx79c2bf0249ede62a]]></appid>
-            <attach><![CDATA[test]]></attach>
-            <bank_type><![CDATA[CMB_DEBIT]]></bank_type>
-            <cash_fee>1</cash_fee>
-            <fee_type><![CDATA[CNY]]></fee_type>
-            <is_subscribe><![CDATA[Y]]></is_subscribe>
-            <mch_id>1220047701</mch_id>
-            <nonce_str><![CDATA[50k7fko1rh0k8g24yui3ceqan2unoubg]]></nonce_str>
-            <openid><![CDATA[oSHFKs9_gq4Ve6sHdQ86mJh1U3ZQ]]></openid>
-            <out_trade_no>122004770120150409111603</out_trade_no>
-            <result_code><![CDATA[SUCCESS]]></result_code>
-            <return_code><![CDATA[SUCCESS]]></return_code>
-            <sign><![CDATA[2D1AD20EB2C4D6BDB8CA4C8E73B94E83]]></sign>
-            <time_end>20150409111648</time_end>
-            <total_fee>1</total_fee>
-            <trade_type><![CDATA[NATIVE]]></trade_type>
-            <transaction_id>1001230176201504090053430239</transaction_id>
-            </xml>            
-EOD;
-            
-            $_POST => Array
-                (
-                    [appid] => wx79c2bf0249ede62a
-                    [attach] => test
-                    [bank_type] => CMB_DEBIT
-                    [cash_fee] => 1
-                    [fee_type] => CNY
-                    [is_subscribe] => Y
-                    [mch_id] => 1220047701
-                    [nonce_str] => 50k7fko1rh0k8g24yui3ceqan2unoubg
-                    [openid] => oSHFKs9_gq4Ve6sHdQ86mJh1U3ZQ
-                    [out_trade_no] => 122004770120150409111603
-                    [result_code] => SUCCESS
-                    [return_code] => SUCCESS
-                    [sign] => 2D1AD20EB2C4D6BDB8CA4C8E73B94E83
-                    [time_end] => 20150409111648
-                    [total_fee] => 1
-                    [trade_type] => NATIVE
-                    [transaction_id] => 1001230176201504090053430239
-                )                        
-            
-            $_GET['out_trade_no'] = Wechat::generateOutTradeNo();
-            $_GET['sign'] = 'sign';
-            $_GET['trade_mode'] = 1;
-            $_GET['trade_state'] = 0;
-            $_GET['partner'] = '1209999999';
-            $_GET['bank_type'] = 'WX';
-            $_GET['totel_fee'] = 19900;
-            $_GET['fee_type'] = 1;
-            $_GET['notify_id'] = Wechat::generateOutTradeNo();
-            $_GET['transaction_id'] = '1209999999'.date('Ymd').substr(uniqid(), -10);
-            $_GET['time_end'] = date("YmdHis");
-        }
-        else
-            $postStr = Yii::$app->wx->getPostStr();
-        if (empty($postStr)) 
-        {
-            U::W(['No postStr from wx server', __METHOD__, $GLOBALS]);
-            exit;
-        }
-        $arr = (array)simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
-        //we should check $arr signature first
-        if (Yii::$app->wx->debug)
-            U::W([$_GET, $arr]);
-        if (empty($arr['AppId']))
-        {
-            U::W(['No AppId from wx server', __METHOD__, $postStr]);
-            exit;
-        }        
-
-        // GET data  (!isset($_GET['bank_type'])) ||
-        if((!isset($_GET['out_trade_no'])) || (!isset($_GET['sign'])) || (!isset($_GET['trade_mode'])) || 
-            (!isset($_GET['trade_state'])) || (!isset($_GET['partner'])) || 
-            (!isset($_GET['total_fee'])) || (!isset($_GET['fee_type'])) || (!isset($_GET['notify_id'])) ||
-            (!isset($_GET['transaction_id'])) || (!isset($_GET['time_end'])))
-        {
-            U::W(['Invalid GET data from wx server...', __METHOD__, $_GET, $_POST]);
-            exit;
-        }                
-        //$attach = Yii::$app->request->get('attach', '');        
-        $order = MOrder::findOne($_GET["out_trade_no"]);
-        if ($order === null)
-        {
-            U::W(['oid does not exist!', __METHOD__, $_GET, $_POST]);
-            return 'success';
-        }
-        if ($_GET['trade_state'] == 0)
-            $order ->status = MOrder::STATUS_OK;
-        else
-        {
-            U::W(['status error', __METHOD__, $_GET, $_POST]);
-        }
-
-        $order ->notify_id = $_GET['notify_id'];
-        $order ->partner = $_GET['partner'];
-        $order ->time_end = $_GET['time_end'];
-        $order ->total_fee = $_GET['total_fee'];
-        $order ->trade_state = $_GET['trade_state'];
-        $order ->transaction_id = $_GET['transaction_id'];
-        $order ->appid_recv = $arr['AppId'];
-        $order ->openid_recv = $arr['OpenId'];        
-        $order ->issubscribe_recv = $arr['IsSubscribe'];
-        $order->pay_kind = MOrder::PAY_KIND_WECHAT;        
-        $order->save(false);
-        if ($_GET['trade_state'] == 0    )
-        {
-            Yii::$app->wx->clearGh();        
-            Yii::$app->wx->setAppId($arr['AppId']);
-            $arr = Yii::$app->wx->WxPayDeliverNotify($arr['OpenId'], $_GET['transaction_id'], $_GET["out_trade_no"]);
-            //U::W($arr);
-            try
-            {        
-                Yii::$app->wx->clearGh();
-                Yii::$app->wx->setGhId($order->gh_id);
-                $arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$order->openid,'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice(true)]]);                    
-                //U::W($arr);        
-            }
-            catch (\Exception $e)
-            {
-                U::W($e->getCode().':'.$e->getMessage());
-            }            
-        }
-        else
-        {
-            U::W(['trade_state is not 0', __METHOD__, $_GET, $_POST]);        
-        }
-        return 'success'; 
-*/
-        $notify = new PayNotifyCallBack();
-        $respXml = $notify->Handle(false);
-        return $respXml;                
-    }
-    
-
     //http://127.0.0.1/wx/web/index.php?r=wap/warningnotify
     public function actionWarningnotify()
     {        
@@ -2146,20 +1942,22 @@ EOD;
         Yii::$app->wx->clearGh();
         Yii::$app->wx->setGhId($gh_id);        
 */        
+/*
         U::W('before NativePay');
-//        require_once __DIR__."/../models/wxpay/WxPayData.php";
         $notify = new NativePay();
         $url = $notify->GetPrePayUrl("123456789");
         U::W('after NativePay='.$url);
-
+*/
+        $detail = $order->detail;
         $input = new WxPayUnifiedOrder();
-        $input->SetBody("test");
-        $input->SetAttach("test");
-        $input->SetOut_trade_no(WxPayConfig::MCHID.date("YmdHis"));
-        $input->SetTotal_fee("1");
+        $input->SetBody($detail);
+        //$input->SetAttach("test");
+        $input->SetOut_trade_no($order->oid);
+        $input->SetTotal_fee("{$order->feesum}");
+        //$input->SetTotal_fee("1");
         $input->SetTime_start(date("YmdHis"));
-        $input->SetTime_expire(date("YmdHis", time() + 600));
-        $input->SetGoods_tag("test");
+        $input->SetTime_expire(date("YmdHis", time() + 3600));
+        //$input->SetGoods_tag("test");
         $input->SetNotify_url("http://wosotech.com/wx/web/wxpaynotify.php");
         $input->SetTrade_type("JSAPI");
         $input->SetOpenid($openid);
@@ -2168,9 +1966,7 @@ EOD;
         
         $jsApiParameters = $this->GetJsApiParameters($unifiedOrder);
         U::W($jsApiParameters);
-
-//        return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url, 'jsApiParameters'=>$jsApiParameters]);
-           return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$jsApiParameters]);
+        return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$jsApiParameters]);
 
     }
 
@@ -2185,7 +1981,7 @@ EOD;
 		}
 		$jsapi = new WxPayJsApiPay();
 		$jsapi->SetAppid($UnifiedOrderResult["appid"]);
-		$timeStamp = time();
+		$timeStamp = (string)time();
 		$jsapi->SetTimeStamp($timeStamp);
 		$jsapi->SetNonceStr(WxPayApi::getNonceStr());
 		$jsapi->SetPackage("prepay_id=" . $UnifiedOrderResult['prepay_id']);
@@ -3821,17 +3617,16 @@ class NativeNotifyCallBack extends WxPayNotify
 		$input->SetTime_start(date("YmdHis"));
 		$input->SetTime_expire(date("YmdHis", time() + 600));
 		$input->SetGoods_tag("test");
-        // donot support ?r=xxx?
-//        $payNotifyUrl = "http://wosotech.com/wx/web/index.php?r=wap/paynotify";
+        //donot support ?r=xxx?
+        //$payNotifyUrl = "http://wosotech.com/wx/web/index.php?r=wap/paynotify";
         $payNotifyUrl = "http://wosotech.com/wx/web/wxpaynotify.php";                
         $input->SetNotify_url($payNotifyUrl);
-//        $input->SetNotify_url(urlencode($payNotifyUrl));
-//        $input->SetNotify_url("http://wosotech.com/wx/models/wxpay/wxpay_sdk/example/notify.php");
+        //$input->SetNotify_url(urlencode($payNotifyUrl));
+        //$input->SetNotify_url("http://wosotech.com/wx/models/wxpay/wxpay_sdk/example/notify.php");
 		$input->SetTrade_type("NATIVE");
 		$input->SetOpenid($openId);
 		$input->SetProduct_id($product_id);
 		$result = WxPayApi::unifiedOrder($input);
-//		Log::DEBUG("unifiedorder:" . json_encode($result));
 		return $result;
 	}
 	
@@ -3881,44 +3676,6 @@ class NativeNotifyCallBack extends WxPayNotify
         
 	}
 }
-
-class PayNotifyCallBack extends WxPayNotify
-{
-	public function Queryorder($transaction_id)
-	{
-		$input = new WxPayOrderQuery();
-		$input->SetTransaction_id($transaction_id);
-		$result = WxPayApi::orderQuery($input);
-		//Log::DEBUG("query:" . json_encode($result));
-		if(array_key_exists("return_code", $result)
-			&& array_key_exists("result_code", $result)
-			&& $result["return_code"] == "SUCCESS"
-			&& $result["result_code"] == "SUCCESS")
-		{
-			return true;
-		}
-		return false;
-	}
-	
-	public function NotifyProcess($data, &$msg)
-	{
-		//Log::DEBUG("call back:" . json_encode($data));
-		U::W([__METHOD__, $data, $msg]);	
-		$notfiyOutput = array();
-		
-		if(!array_key_exists("transaction_id", $data)){
-			$msg = "输入参数不正确";
-			return false;
-		}
-		if(!$this->Queryorder($data["transaction_id"])){
-			$msg = "订单查询失败";
-			return false;
-		}
-		return true;
-	}
-}
-
-
 
 
 /*这
