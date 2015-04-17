@@ -146,35 +146,30 @@
 			</div>
 
 			<script>
-
-				if($("#memo").val() != "")
-				{
-					$("#memo").attr("readonly","readonly");
-				}
-			
 				url = localStorage.getItem("url");
-				//alert(url);
-				$("#btn-pay-weixin").attr('href',url);
+                var jsApiParameters = JSON.parse(url);
 
-//                var jsApiParameters = url;
-                var jsApiParameters = eval('(' + url + ')');
                 function jsApiCall()
                 {
                     WeixinJSBridge.invoke(
                         'getBrandWCPayRequest',
                         jsApiParameters,
                         function(res){
-                            WeixinJSBridge.log(res.err_msg);
-                            alert(res.err_code+res.err_desc+res.err_msg);
+                            //WeixinJSBridge.log(res.err_msg);
+                            //alert(res.err_code+res.err_desc+res.err_msg);
+                            if (res.err_msg == 'get_brand_wcpay_request:ok')
+                            {
+                            } 
+                            else
+                            {
+                            }
+                            window.location.href = "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/order' ; ?>";
                         }
                     );
                 }
 
                 function callpay()
                 {
-//    				alert(jsApiParameters);
-                    alert(jsApiParameters.appId);
-
                     if (typeof WeixinJSBridge == "undefined"){
                         if( document.addEventListener ){
                             document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
@@ -187,9 +182,15 @@
                     }
                 }
 
+$(function(){
+				if($("#memo").val() != "")
+				{
+					$("#memo").attr("readonly","readonly");
+				}
+
 				var supportpay_count = <?php echo $supportpay_count; ?>;
 					if(supportpay_count == 1)
-					$("#paykind-field").hide();
+    					$("#paykind-field").hide();
 
 					$("#btn-pay-weixin").hide();
 
@@ -221,18 +222,15 @@
 				        }
 				    });
 
-				    /*
-				    function jumppay()
-				    {
-				    	alert('pay now!');
-				    	location.href=url;
-				    }
-				    */
+
+});
+
 			</script>
 
 	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
 
-			<a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin" style="background-color: #44B549" onclick="callpay_x()" >立即支付</a>
+			<a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin" style="background-color: #44B549" onclick="callpay()" >立即支付</a>
+
 
 	    <?php ActiveForm::end(); ?>
 
