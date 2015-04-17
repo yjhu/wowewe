@@ -232,7 +232,7 @@
 
 	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
 
-			<a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin" style="background-color: #44B549">立即支付</a>
+			<a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin" style="background-color: #44B549" onclick="callpay_x()" >立即支付</a>
 
 	    <?php ActiveForm::end(); ?>
 
