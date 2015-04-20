@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Custom */
 
-$this->title = 'Update Custom: ' . ' ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Customs', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->custom_id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = '客户管理: ' . ' ' . $model->mobile;
+$this->params['breadcrumbs'][] = ['label' => '客户管理', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->mobile, 'url' => ['view', 'id' => $model->custom_id]];
+$this->params['breadcrumbs'][] = '修改';
 ?>
 <div class="custom-update">
 
