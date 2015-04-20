@@ -42,7 +42,7 @@ class Custom extends ActiveRecord
     {
         return [
             [['name', 'mobile'], 'filter', 'filter' => 'trim'],
-            [['name', 'mobile', 'office_id'], 'required'],
+            [['mobile', 'office_id'], 'required'],
             [['name', 'mobile'], 'string', 'min' => 1, 'max' => 255],
             [['office_id'], 'integer', 'integerOnly' =>true, 'min'=>0],       
             [['is_vip'], 'boolean'],            
@@ -80,6 +80,7 @@ class Custom extends ActiveRecord
     {
         return $this->is_vip ? true : false;
     }    
+
 
 }
 
