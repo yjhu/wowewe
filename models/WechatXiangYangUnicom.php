@@ -50,6 +50,7 @@ class WechatXiangYangUnicom extends Wechat
     
     protected function onSubscribe($isNewFan) 
     {            
+        $this->saveAccessLogAll();        
         $FromUserName = $this->getRequest('FromUserName');    
         $openid = $this->getRequest('FromUserName');        
         $gh_id = $this->getRequest('ToUserName');                
@@ -99,6 +100,7 @@ class WechatXiangYangUnicom extends Wechat
 
     protected function onUnsubscribe() 
     { 
+        $this->saveAccessLogAll();        
         $FromUserName = $this->getRequest('FromUserName');
         $gh_id = $this->getRequest('ToUserName');
         $user = $this->getUser();
@@ -185,8 +187,8 @@ class WechatXiangYangUnicom extends Wechat
 
     protected function onLocation() 
     { 
+        $this->saveAccessLogAll();        
         //return Wechat::NO_RESP;    
-
         $FromUserName = $this->getRequest('FromUserName');
         $gh_id = $this->getRequest('ToUserName');
         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$FromUserName]);                
@@ -220,6 +222,7 @@ class WechatXiangYangUnicom extends Wechat
 
     protected function onEventLocation()
     { 
+        $this->saveAccessLogAll();        
         return Wechat::NO_RESP;    
         
         $FromUserName = $this->getRequest('FromUserName');
@@ -237,6 +240,7 @@ class WechatXiangYangUnicom extends Wechat
 
     protected function onLocationSelect()
     { 
+        $this->saveAccessLogAll();    
         return Wechat::NO_RESP;
         $Content = $this->getRequest('EventKey');
         if (($resp = $this->handleKeyword($Content)) !== false) {
@@ -263,21 +267,25 @@ class WechatXiangYangUnicom extends Wechat
 
     protected function onImage() 
     { 
+        $this->saveAccessLogAll();    
         return Wechat::NO_RESP;
     }
 
     protected function onScan() 
     {
+        $this->saveAccessLogAll();    
         return Wechat::NO_RESP;        
     }
 
     protected function onVoice() 
     {
+        $this->saveAccessLogAll();    
         return Wechat::NO_RESP;        
     }
 
     protected function onVideo() 
     {
+        $this->saveAccessLogAll();    
         return Wechat::NO_RESP;        
     }
     
