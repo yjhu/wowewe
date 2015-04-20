@@ -177,7 +177,9 @@ class WapController extends Controller
         }
         Yii::$app->session['gh_id'] = $gh_id;
         Yii::$app->session['openid'] = $openid;
-        if ($route == 'wap/wxpaytest' || $route == 'wap/orderinfotest') {
+        //if ($route == 'wap/wxpaytest' || $route == 'wap/orderinfotest') 
+        if (1)
+        {
             U::W('WITH GH_ID');
             $r['gh_id'] = $gh_id;
             $r['openid'] = $openid;            
