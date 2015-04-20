@@ -63,6 +63,8 @@ AppAsset::register($this);
 							['label' => '员工推广成绩排行','url' => ['/order/stafftop'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '营业厅管理','url' => ['/order/officelist'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '营业厅推广成绩排行','url' => ['/order/officetop'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '客户管理','url' => ['/custom/index'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '客户统计','url' => ['/order/officecustomstat'],'linkOptions' => ['data-method' => 'post']],
 							'<li class="divider"></li>',
 							//['label' => '渠道管理','url' => ['/order/channellist'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '促销活动管理','url' => ['/activity/index'],'linkOptions' => ['data-method' => 'post']],
