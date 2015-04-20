@@ -47,6 +47,13 @@ class CustomSearch extends Custom
             'query' => $query,
         ]);
 
+        if (!Yii::$app->user->getIsAdmin()) {
+            $this->office_id = Yii::$app->user->identity->office_id;
+            $query->andFilterWhere([
+                'office_id' => $this->office_id,
+            ]);            
+        }
+
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
@@ -56,9 +63,9 @@ class CustomSearch extends Custom
             'is_vip' => $this->is_vip,
             'office_id' => $this->office_id,
             'vip_level_id' => $this->vip_level_id,
-            'vip_join_time' => $this->vip_join_time,
-            'vip_start_time' => $this->vip_start_time,
-            'vip_end_time' => $this->vip_end_time,
+//            'vip_join_time' => $this->vip_join_time,
+//            'vip_start_time' => $this->vip_start_time,
+//            'vip_end_time' => $this->vip_end_time,
         ]);
 
         $query->andFilterWhere(['like', 'mobile', $this->mobile])

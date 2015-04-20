@@ -50,6 +50,13 @@ class VipLevel extends ActiveRecord
         ];
     }
 
+    public static function items($key = null)
+    {    
+        $models = self::find()->orderBy(['sort_order'=>SORT_DESC])->all();
+        $arr = \yii\helpers\ArrayHelper::map($models, 'vip_level_id', 'title');
+        return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');            
+    }
+
 }
 
 

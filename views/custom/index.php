@@ -14,11 +14,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="custom-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <!--
+    <h1><?= Html::encode($this->title) ?></h1>
+
     <p>
         <//?= Html::a('Create Custom', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
@@ -39,26 +40,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'label' => '',
                 'format'=>'html',
                 'value'=>function ($model, $key, $index, $column) { 
-                    $is_vip = $model->is_vip;
-                    return ($is_vip==1)?"是":"否";
+                    return $model->isVip() ? "是" : "否";
                 },
+    			'filter'=> ['0'=>'否', '1'=>'是'],
                 //'headerOptions' => array('style'=>'width:20%;'),    
             ],
-
-            /*
-            //'office_id',
-            [
-                    'attribute' => 'office_id',
-                    //'label' => '',
-                    'format'=>'html',
-                    'value'=>function ($model, $key, $index, $column) { 
-
-                    return $model->office->title;
-                },
-                //'headerOptions' => array('style'=>'width:20%;'),    
-            ],
-            */
-
 
             [
                 'label' => '部门名称',
@@ -71,10 +57,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 'visible'=>Yii::$app->user->getIsAdmin(),
             ],            
 
-            'vip_level_id',
-            'vip_join_time',
-            'vip_start_time',
-            'vip_end_time',
+            //'vip_level_id',
+            [
+                'attribute' => 'vip_level_id',
+                'value'=>function ($model, $key, $index, $column) { return \app\models\VipLevel::items($model->vip_level_id); },
+                'filter'=> \app\models\VipLevel::items(),
+            ],            
+
+            [
+                'attribute' => 'vip_join_time',
+                'value'=>function ($model, $key, $index, $column) { return $model->isVip() ? $model->vip_join_time : '' ; },
+            ],            
+            [
+                'attribute' => 'vip_start_time',
+                'value'=>function ($model, $key, $index, $column) { return $model->isVip() ? $model->vip_start_time : '' ; },
+            ],            
+            [
+                'attribute' => 'vip_end_time',
+                'value'=>function ($model, $key, $index, $column) { return $model->isVip() ? $model->vip_end_time : '' ; },
+            ],            
+
+//            'vip_join_time',
+  //          'vip_start_time',
+    //        'vip_end_time',
 
             //['class' => 'yii\grid\ActionColumn'],
             [

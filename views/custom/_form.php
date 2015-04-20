@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'office_id')->textInput(['maxlength' => 10]) ?>
 
-    <?= $form->field($model, 'vip_level_id')->textInput(['maxlength' => 10]) ?>
+    <?= $form->field($model, 'vip_level_id')->dropDownList(\app\models\VipLevel::items()) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

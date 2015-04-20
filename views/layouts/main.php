@@ -50,6 +50,7 @@ AppAsset::register($this);
 							['label' => '订单管理','url' => ['/order/index'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '员工管理','url' => ['/order/stafflist'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '粉丝管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '客户管理','url' => ['/custom/index'],'linkOptions' => ['data-method' => 'post']],
 						]
 					],					
 					[

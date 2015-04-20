@@ -73,13 +73,14 @@ class MOrderSearch extends Model
         $this->addCondition($query, 'gh_id');        
         if (!Yii::$app->user->getIsAdmin()) {
             $this->office_id = Yii::$app->user->identity->office_id;
-            $this->addCondition($query, 'office_id');                    
+            $this->addCondition($query, 'office_id');                                
         }
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
+        $this->addCondition($query, 'office_id');                    
         $this->addCondition($query, 'oid', true);
         $this->addCondition($query, 'status');
         $this->addCondition($query, 'detail', true);
