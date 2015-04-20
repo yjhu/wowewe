@@ -2638,8 +2638,9 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
             Yii::$app->getSession()->set('RETURN_URL', Url::to());
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }
-        $myManagers = $model->getVipManagers();
-        //U::W($myManagers);
+        $myManagers = $model->getManagers();
+        U::W("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        U::W($myManagers);
         return $this->render('wdkhjl', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'myManagers'=>$myManagers]);
     } 
 
