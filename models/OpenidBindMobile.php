@@ -66,10 +66,15 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
     {
         return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
     }
-
+/*
     public function getVipManager()
     {
         return $this->hasOne(VipManager::className(), ['gh_id' => 'gh_id', 'mobile' => 'mobile']);
+    }
+*/
+    public function getCustom()
+    {
+        return $this->hasOne(Custom::className(), ['mobile' => 'mobile']);
     }
 
     /**
