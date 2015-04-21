@@ -81,7 +81,21 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'label' => '微信信息',
 				//'attribute' => 'wxinfo',
-				'value'=>function ($model, $key, $index, $column) { return ''; },
+				'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+					//return ''; 
+					if(empty($model->openid))
+					{
+						$wxbind_info = "微信未绑定";
+						return $wxbind_info;
+					}
+					else
+					{
+						$wxbind_info = "";
+						return $model->nickname.$model->headimgurl;
+					}
+
+				},
 				//'headerOptions' => array('style'=>'width:25%;'),
 			],
 
@@ -98,14 +112,12 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 
 
-
-
 			[
 				'label' => '推广二维码',
                 'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
 						//return Html::img($model->getQrImageUrl(), ['width'=>'32'])."<a class='/wx/imges/wxmpres/download_gary.png'>下载</a>";
-						return "<img src='/wx/web/images/wxmpres/download_gary.png' href=''>";
+						return "<a href=".$model->getQrImageUrl()."><img src='/wx/web/images/wxmpres/download_gary.png' href=''></a>";
 				},
 				'filter'=> false,
 			],
