@@ -438,6 +438,7 @@ class MUser extends ActiveRecord implements IdentityInterface
     {
         $managers = [];
         foreach ($this->openidBindMobiles as $openidBindMobile) {
+
             if (!empty($openidBindMobile->custom->customManager->manager)) {
                 $managers[] = $openidBindMobile->custom->customManager->manager;
             }

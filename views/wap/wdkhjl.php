@@ -89,6 +89,8 @@
         
         <ul data-role="listview" data-inset="false" id="woke-ul">
 
+
+        <?php foreach ($myManagers as $myManager) { ?>
         <li>
         <dl class="client_dl">
             <dt>
@@ -111,53 +113,32 @@
 
             <dd>
                 <p><span style="font-size:22px;font-weight: border">
-                杨念念
                 <!--
-                <//?= $user->nickname ?>
+                杨念念
                 -->
 
+                <?= $myManager->name ?>
+   
                 </span> 
                 &nbsp;&nbsp;&nbsp;&nbsp;
 
-                <!--
-                <img src="../web/images/woke/qr.png" width="24px" height="24px">
-            
-   
-                <a href="#qrBtnPopup" data-rel="popup" data-position-to="window" id="qrBtn">
-                    <img src="../web/images/woke/qr.png" width="24px" height="24px">
-                </a>
-                <div data-role="popup" id="qrBtnPopup" class="photopopup" data-overlay-theme="a" data-corners="false" data-tolerance="30,15">
-                -->
-
-
-                <!--<img src="../web/images/woke/qr.png">-->
-                
-                <!--
-                <//?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
-                -->
-
-                <!--
-                </div>
-                -->
-                
                 </p>
 
                 <p class="f13">手机号码：  
-                <!--             
-                <//?php foreach($user->openidBindMobiles as $openidBindMobile): ?>
-                    <//?=  $openidBindMobile->mobile ?>
-                <//?php endforeach; ?>
-                -->
-                <a style="color:#aaa" href="tel:13545296480">
-                13117239900
+
+                <a style="color:#aaa" href="tel:<?= $myManager->mobile ?>">
+                 <?= $myManager->mobile ?>
                 </a>
+
                 </p>
 
             </dd>
         </dl>
  
         </li>
-
+        <?php 
+                }
+        ?>
         <!--
         <li><a ajax-data="false" href="#wytg"><img src="../web/images/woke/wdmy.gif" alt="推荐有礼" class="ui-li-icon ui-corner-none">推荐有礼<span class="ui-li-count"><?= $user->getScore() ?></span></a></li>
         <li><a href="<//?php echo Url::to(['order', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-icon="shop" data-ajax="false"><img src="../web/images/woke/wdcf.gif" alt="我的订单" class="ui-li-icon ui-corner-none">我的订单<span class="ui-li-count"><?= count($user->orders) ?></span></a></li>

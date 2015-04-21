@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\MOffice;
+use app\models\Openidbindmobile;
+
 
 
 /* @var $this yii\web\View */
@@ -75,7 +77,14 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'vip_end_time',
                 'value'=>function ($model, $key, $index, $column) { return $model->isVip() ? $model->vip_end_time : '' ; },
-            ],            
+            ],
+
+            [
+                //'attribute' => 'vip_bind',
+                'label' => '是否绑定',
+                'value'=>function ($model, $key, $index, $column) { return empty(Openidbindmobile::findOne(['mobile'=>$model->mobile])) ? '否':'是' ; },
+                //'filter'=> \app\models\VipLevel::items(),
+            ],       
 
 //            'vip_join_time',
   //          'vip_start_time',

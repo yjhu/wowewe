@@ -19,13 +19,16 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="muser-index">
 
-	<h1><?php //echo Html::encode($this->title) ?></h1>
+	<h1><?php echo Html::encode($this->title) ?></h1>
 
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
+
+    <!--
     <p>
-		<?php echo Html::a('新增员工', ['staffcreate'], ['class' => 'btn btn-success']) ?>
+		<?php // echo Html::a('新增员工', ['staffcreate'], ['class' => 'btn btn-success']) ?>
     </p>
+	-->
 
 	<?php \yii\widgets\Pjax::begin([
 		'timeout' => 10000,
@@ -36,9 +39,20 @@ $this->params['breadcrumbs'][] = $this->title;
 		'options' => ['class' => 'table-responsive'],
 		'tableOptions' => ['class' => 'table table-striped'],        
         'columns' => [
+
 			[
 				'attribute' => 'name',
+				//'headerOptions' => array('style'=>'width:10%;'),	
+				'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+	
+					if($model->is_manager)
+						return (empty($model->name) ? '' : $model->name)."&nbsp;&nbsp;<img src='/wx/web/images/wxmpres/man_blue.png' alt='营业厅主管'>"; 
+					else
+						return (empty($model->name) ? '' : $model->name); 
+				},
 			],
+
 			[
 				'label' => '部门编号',
 				'attribute' => 'office_id',
@@ -46,33 +60,52 @@ $this->params['breadcrumbs'][] = $this->title;
 				'filter'=> false,				
 				'visible'=>false,
 			],
+
 			[
 				'label' => '部门名称',
 				'attribute' => 'office_id',
 				//'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
 				'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
 				'filter'=> MOffice::getOfficeNameOptionAll($searchModel->gh_id,false,false),
-				'headerOptions' => array('style'=>'width:200px;'),		
+				'headerOptions' => array('style'=>'width:25%;'),		
 				//'visible'=>Yii::$app->user->identity->openid == 'admin',
 				'visible'=>Yii::$app->user->getIsAdmin(),
 			],
+
 			[
 				'attribute' => 'mobile',
+				//'headerOptions' => array('style'=>'width:10%;'),	
 			],
+
+
+			[
+				'label' => '微信信息',
+				//'attribute' => 'wxinfo',
+				'value'=>function ($model, $key, $index, $column) { return ''; },
+				//'headerOptions' => array('style'=>'width:25%;'),
+			],
+
 			[
 				'attribute' => 'scene_id',
+				'visible'=>false,
 			],
+
 			[
 				'attribute' => 'cat',
                 'value'=>function ($model, $key, $index, $column) { return MStaff::getStaffCatOptionName($model->cat); },
                 'filter'=> MStaff::getStaffCatOptionName(),
+                'visible'=>false,
 			],
+
+
+
 
 			[
 				'label' => '推广二维码',
                 'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
-						return Html::img($model->getQrImageUrl(), ['width'=>'64']);
+						//return Html::img($model->getQrImageUrl(), ['width'=>'32'])."<a class='/wx/imges/wxmpres/download_gary.png'>下载</a>";
+						return "<img src='/wx/web/images/wxmpres/download_gary.png' href=''>";
 				},
 				'filter'=> false,
 			],
@@ -82,6 +115,9 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { return $model->score.(empty($model->openid)?' [微信未绑定]':''); },
 				'filter'=> false,
 			],
+
+
+			/*
 			[
 				'label' => '是否主管',
 				'attribute' => 'is_manager',
@@ -98,6 +134,9 @@ $this->params['breadcrumbs'][] = $this->title;
 				'filter'=> ['0'=>'否', '1'=>'是'],
 //				'visible'=>Yii::$app->user->getIsAdmin(),
 			],
+			*/
+
+			/*
             [
 				'class' => 'yii\grid\ActionColumn',
 				'template' => '{staffupdate} {staffismanager} {staffdelete}',
@@ -120,6 +159,8 @@ $this->params['breadcrumbs'][] = $this->title;
 					}
 				],
 			],
+			*/
+
 
         ],
     ]); ?>
