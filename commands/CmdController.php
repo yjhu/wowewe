@@ -254,9 +254,13 @@ class CmdController extends Controller
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/user-info
     public function actionUserInfo()
     {    
+        Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
 //        $arr = Yii::$app->wx->WxGetUserInfo(MGh::GH_XIANGYANGUNICOM_OPENID_HBHE);    
-        Yii::$app->wx->setGhId(MGh::GH_WOSO);
-        $arr = Yii::$app->wx->WxGetUserInfo(MGh::GH_WOSO_OPENID_HBHE);    
+//        $arr = Yii::$app->wx->WxGetUserInfo('oKgUduHLF-HAxvHYIwmm3qjfqNf0');  
+        $arr = Yii::$app->wx->WxGetUserInfo('oKgUduOrAFvEKMFAOUbkGFdiWlGM');  
+
+        
+
         U::W($arr);
         return;        
     }
@@ -699,11 +703,13 @@ class CmdController extends Controller
             
             $custom = Custom::findOne(['mobile'=>$custom_mobile]);
             if (!empty($custom)) {
-                U::W("mobile=$custom_mobile already exists");                
-                U::W($arr);
-                continue;
+//                U::W("mobile=$custom_mobile already exists");                
+//                U::W($arr);
+//                continue;
             }
-            $custom = new Custom;
+            else {
+                $custom = new Custom;
+            }
             $custom->mobile = $custom_mobile;
             $custom->is_vip = 1;
             $custom->vip_join_time = $vip_join_time;            
@@ -722,8 +728,8 @@ class CmdController extends Controller
             
             $customManager = CustomManager::findOne(['custom_id'=>$custom->custom_id, 'manager_id'=>$manager->manager_id]);
             if (!empty($customManager)) {
-                U::W('Impossible!!! CustomManager already exists');
-                U::W($arr);
+                //U::W('Impossible!!! CustomManager already exists');
+                //U::W($arr);
             } else {
                 $customManager = new CustomManager;
                 $customManager->custom_id = $custom->custom_id;

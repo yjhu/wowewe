@@ -100,6 +100,11 @@ class MStaff extends ActiveRecord
         return $this->hasOne(MOffice::className(), ['office_id' => 'office_id']);
     }
 
+    public function getUser()
+    {
+        return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
+    }
+
     public function getScore()
     {
         if (empty($this->scene_id))

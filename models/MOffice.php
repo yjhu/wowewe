@@ -329,6 +329,19 @@ class MOffice extends ActiveRecord implements IdentityInterface
         return $json? json_encode($listData) : $listData;
     }
 
+    public static function getOfficeNameOptionSimple2($gh_id, $json=true, $need_prompt=true)
+    {
+        $offices = MOffice::find()->where("gh_id = :gh_id AND role = :role AND is_jingxiaoshang=:is_jingxiaoshang", [':gh_id'=>$gh_id, ':role'=>1, ':is_jingxiaoshang'=>0])->asArray()->all();        
+        $listData = $need_prompt ? ['0'=>'请选择营业厅'] : [];
+        foreach($offices as $office)
+        {
+            $value = $office['office_id'];
+            $text = $office['title'];
+            $listData[$value]=$text;
+        }
+        return $json? json_encode($listData) : $listData;
+    }
+
     public static function getOfficeNameOptionAll($gh_id, $json=true, $need_prompt=true)
     {
         $offices = MOffice::find()->where("gh_id = :gh_id", [':gh_id'=>$gh_id])->asArray()->orderBy(['title'=>SORT_ASC])->all();

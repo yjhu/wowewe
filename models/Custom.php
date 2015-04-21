@@ -86,6 +86,11 @@ class Custom extends ActiveRecord
         return $this->hasOne(CustomManager::className(), ['custom_id' => 'custom_id']);
     }
 
+    public function getOpenidBindMobile()
+    {
+        return $this->hasOne(OpenidBindMobile::className(), ['mobile' => 'mobile']);
+    }
+
 }
 
 
