@@ -139,8 +139,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				
 					if($model->score == 0)
 						return $model->score; 
-					else
+					else {
+//                        MStaffSearch[mobile]
 						return "<a href='#'>".$model->score."</a>"; 
+                    }
 				},
 				'filter'=> false,
 				'headerOptions' => array('style'=>'width:10%;'),
