@@ -197,11 +197,27 @@ class OrderController extends Controller
     public function actionStafflist()
     {
         $searchModel = new MStaffSearch;
+        $searchModel->cat = MStaff::SCENE_CAT_IN;
         $dataProvider = $searchModel->search(Yii::$app->request->get());
         return $this->render('stafflist', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
         ]);
+    }
+
+    public function actionDownloadqr()
+    {
+        $this->layout = false;
+        $qrurl = $_GET['qrurl'];
+        //U::W($qrurl);
+        //U::W(Yii::getAlias('@runtime/qr')); 
+        $url= basename($qrurl);
+        //U::W($url);
+        U::W(Yii::getAlias('@runtime')."\\qr\\".$url);
+
+        Yii::$app->response->xSendFile(Yii::getAlias('@runtime')."\\qr\\".$url);
+        //Yii::$app->response->xSendFile('C:\Work\xampp\htdocs\wx\runtime/qr/gh_03a74ac96138_55.jpg');
+        return;    
     }
 
     public function actionStaffView($id)
