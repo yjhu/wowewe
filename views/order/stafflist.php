@@ -145,8 +145,11 @@ $this->params['breadcrumbs'][] = $this->title;
 				
 					if($model->score == 0)
 						return $model->score; 
-					else
-						return "<a href='#'>".$model->score."</a>"; 
+					else {
+//                        MStaffSearch[mobile]
+						//return "<a href='#'>".$model->score."</a>"; 
+                        return Html::a($model->score, ['admin/index', 'MUserSearch[scene_pid]'=>$model->scene_id]);
+                    }
 				},
 				'filter'=> false,
 				'headerOptions' => array('style'=>'width:10%;'),
