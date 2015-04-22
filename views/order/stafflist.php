@@ -87,6 +87,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
 					//return ''; 
+
+					$mobiles = $model->user->getBindMobileNumbers();
+					$mobile = empty($mobiles) ? '无' : $mobiles[0];
+
 					if(empty($model->openid))
 					{
 						//$wxbind_info = "微信未绑定";
@@ -96,10 +100,12 @@ $this->params['breadcrumbs'][] = $this->title;
 					{
 						if(empty($model->user->headimgurl))
 							return "<img style='float:left;' width=48 src='/wx/web/images/wxmpres/headimg-blank.png'>&nbsp;&nbsp;<span style='color:#aaa'>昵称 ".$model->user->nickname.
-							"<br>&nbsp;&nbsp;地区 ".$model->user->country."&nbsp;".$model->user->province."&nbsp;".$model->user->city."</span>";
+							"<br>&nbsp;&nbsp;地区 ".$model->user->country."&nbsp;".$model->user->province."&nbsp;".$model->user->city.
+							"<br>&nbsp;&nbsp;绑定手机 ".$mobile."</span>";
 						else
 							return "<img style='float:left;' width=48 src=".$model->user->headimgurl.">&nbsp;&nbsp;<span style='color:#aaa'>昵称 ".$model->user->nickname.
-							"<br>&nbsp;&nbsp;地区 ".$model->user->country."&nbsp;".$model->user->province."&nbsp;".$model->user->city."</span>";
+							"<br>&nbsp;&nbsp;地区 ".$model->user->country."&nbsp;".$model->user->province."&nbsp;".$model->user->city.
+							"<br>&nbsp;&nbsp;绑定手机 ".$mobile."</span>";
 					}
 
 				},
