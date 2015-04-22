@@ -57,6 +57,7 @@ class MStaffSearch extends Model
             $this->office_id = Yii::$app->user->identity->office_id;
             $this->addCondition($query, 'office_id');                    
         }
+        $this->addCondition($query, 'cat');
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;

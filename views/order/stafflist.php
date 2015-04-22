@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="muser-index">
 
-	<h1><?php echo Html::encode($this->title) ?></h1>
+	<h1><?php //echo Html::encode($this->title) ?></h1>
 
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -47,10 +47,11 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { 
 	
 					if($model->is_manager)
-						return (empty($model->name) ? '' : $model->name)."&nbsp;&nbsp;<img src='/wx/web/images/wxmpres/man_blue.png' alt='营业厅主管'>"; 
+						return (empty($model->name) ? '' : $model->name)."&nbsp;&nbsp;<img src='/wx/web/images/wxmpres/man_blue.png' title='营业厅主管'>"; 
 					else
 						return (empty($model->name) ? '' : $model->name); 
 				},
+				'headerOptions' => array('style'=>'width:10%;'),
 			],
 
 			[
@@ -67,14 +68,14 @@ $this->params['breadcrumbs'][] = $this->title;
 				//'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
 				'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
 				'filter'=> MOffice::getOfficeNameOptionAll($searchModel->gh_id,false,false),
-				'headerOptions' => array('style'=>'width:25%;'),		
+				'headerOptions' => array('style'=>'width:20%;'),		
 				//'visible'=>Yii::$app->user->identity->openid == 'admin',
 				'visible'=>Yii::$app->user->getIsAdmin(),
 			],
 
 			[
 				'attribute' => 'mobile',
-				//'headerOptions' => array('style'=>'width:10%;'),	
+				'headerOptions' => array('style'=>'width:10%;'),	
 			],
 
 
@@ -86,17 +87,21 @@ $this->params['breadcrumbs'][] = $this->title;
 					//return ''; 
 					if(empty($model->openid))
 					{
-						$wxbind_info = "微信未绑定";
-						return $wxbind_info;
+						//$wxbind_info = "微信未绑定";
+						return "<img width=48 src='/wx/web/images/wxmpres/headimg-blank.png' title='微信未绑定'>";
 					}
 					else
 					{
-						$wxbind_info = "";
-						return $model->nickname.$model->headimgurl;
+						if(empty($model->user->headimgurl))
+							return "<img style='float:left;' width=48 src='/wx/web/images/wxmpres/headimg-blank.png'>&nbsp;&nbsp;<span style='color:#aaa'>昵称 ".$model->user->nickname.
+							"<br>&nbsp;&nbsp;地区 ".$model->user->country."&nbsp;".$model->user->province."&nbsp;".$model->user->city."</span>";
+						else
+							return "<img style='float:left;' width=48 src=".$model->user->headimgurl.">&nbsp;&nbsp;<span style='color:#aaa'>昵称 ".$model->user->nickname.
+							"<br>&nbsp;&nbsp;地区 ".$model->user->country."&nbsp;".$model->user->province."&nbsp;".$model->user->city."</span>";
 					}
 
 				},
-				//'headerOptions' => array('style'=>'width:25%;'),
+				'headerOptions' => array('style'=>'width:24%;'),
 			],
 
 			[
@@ -113,19 +118,28 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 			[
-				'label' => '推广二维码',
+				'label' => '二维码',
                 'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
 						//return Html::img($model->getQrImageUrl(), ['width'=>'32'])."<a class='/wx/imges/wxmpres/download_gary.png'>下载</a>";
-						return "<a href=".$model->getQrImageUrl()."><img src='/wx/web/images/wxmpres/download_gary.png' href=''></a>";
+						return "<a href='index.php?r=order/downloadqr&qrurl=".$model->getQrImageUrl()."'><img src='/wx/web/images/wxmpres/download_gary.png'></a>";
 				},
 				'filter'=> false,
+				'headerOptions' => array('style'=>'width:8%;'),
 			],
 
 			[
 				'label' => '推广成绩',
-				'value'=>function ($model, $key, $index, $column) { return $model->score.(empty($model->openid)?' [微信未绑定]':''); },
+				'format'=>'html',
+				'value'=>function ($model, $key, $index, $column) { 
+				
+					if($model->score == 0)
+						return $model->score; 
+					else
+						return "<a href='#'>".$model->score."</a>"; 
+				},
 				'filter'=> false,
+				'headerOptions' => array('style'=>'width:10%;'),
 			],
 
 

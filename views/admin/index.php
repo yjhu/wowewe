@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		//'id',
 
 			[
-				'attribute' => 'nickname',
+				//'attribute' => 'nickname',
 				'label' => '头像',
 				'format'=>'html',
                 'value'=>function ($model, $key, $index, $column) { 
@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
 					return "$headimgurl";
 				},
-//				'headerOptions' => array('style'=>'width:30%;'),	
+				'headerOptions' => array('style'=>'width:10%;'),	
 			],
 
 
@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
 					return "$nickname";
 				},
-				'headerOptions' => array('style'=>'width:20%;'),	
+				'headerOptions' => array('style'=>'width:10%;'),	
 			],
 
 			[
@@ -56,10 +56,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
                     if (empty($model->user)) {
-                        return '';
+                        return '-';
                     }
                     $mobiles = $model->user->getBindMobileNumbers();
-                    return empty($mobiles) ? '' : implode(',', $mobiles); 
+                    return empty($mobiles) ? '-' : implode(',', $mobiles); 
                  },
 				'headerOptions' => array('style'=>'width:10%;'),	
 			],
@@ -80,13 +80,16 @@ $this->params['breadcrumbs'][] = $this->title;
 					'language'=>'zh-CN',
 				]
 			],
+			'headerOptions' => array('style'=>'width:25%;'),	
 		],
 
+		/*
 		[
 			'attribute' => 'is_liantongstaff',
 			'value'=>function ($model, $key, $index, $column) { return empty($model->is_liantongstaff)?'否':'是'; },
 			'filter'=> ['0'=>'否', '1'=>'是'],
 		],
+		*/
 
 
 		[
@@ -100,23 +103,24 @@ $this->params['breadcrumbs'][] = $this->title;
 	            if($staff->cat == 0) //内部员工
 	            {
 	                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
-	                $row['scene_pid_office'] = empty($staff->office->title) ? '' : $staff->office->title;
-	                $row['scene_pid_cat'] = '内部员工';
+	                //$row['scene_pid_office'] = empty($staff->office->title) ? '' : $staff->office->title;
+	                //$row['scene_pid_cat'] = '内部员工';
 	            }
 	            else
 	            {
 	                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
-	                $row['scene_pid_office'] = '-';
-	                $row['scene_pid_cat'] = '-';
+	                //$row['scene_pid_office'] = '-';
+	                //$row['scene_pid_cat'] = '-';
 	            }
 
 				//$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
 				return $row['scene_pid_name'];
 			},
-			'headerOptions' => array('style'=>'width:10%;'),	
+			'headerOptions' => array('style'=>'width:25%;'),	
 		],	
 
 
+		/*
 		[
 			'attribute' => 'nickname',
 			'label' => '粉丝来源所属部门',
@@ -170,6 +174,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			},
 			'headerOptions' => array('style'=>'width:10%;'),	
 		],	
+		*/
 
 		/*
 		[
