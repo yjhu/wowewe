@@ -2892,13 +2892,28 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
         }        
         Yii::$app->wx->setGhId($gh_id);     
 
+        $flag1 = 0;
+        $flag2 = 0;
 
         if ($model->bindMobileIsInside('wx_t1')) {
-            return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);            
+            $flag1 = 1;
         } elseif ($model->bindMobileIsInside('wx_t2')) {
-            return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models]);     
+            $flag1 = 1;
         }
-        return $this->render('lyhzxyhhint', ['gh_id'=>$gh_id, 'openid'=>$openid]);        
+        else
+        {
+            $flag1 = 0;
+        }
+
+        /*4月第4周老用户活动*/
+        if ($model->bindMobileIsInside('wx_t3')) {
+            $flag2 = 1;
+        }
+
+        
+         return $this->render('lyhzxyh', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models'=>$models, 'flag1'=>$flag1, 'flag2'=>$flag2]);   
+
+        //return $this->render('lyhzxyhhint', ['gh_id'=>$gh_id, 'openid'=>$openid]);        
     }  
 
     public function actionLyhzxyhhint()
@@ -2986,6 +3001,29 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
         U::W($cats);
         return $this->render('llb', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user, 'models'=>$models, 'kind'=>$kind]);
     }  
+
+
+
+    // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/querybymobile1:gh_03a74ac96138
+    public function actionQuerybymobile1()
+    {
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+       
+        /*
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($user->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+        */
+
+        return $this->render('querybymobile1', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }  
+
+
 
 
     /*
