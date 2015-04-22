@@ -20,6 +20,12 @@ CREATE TABLE IF NOT EXISTS wx_openid_bind_mobile (
 
 ALTER TABLE wx_openid_bind_mobile ADD create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
+DROP TABLE IF EXISTS wx_t3;
+CREATE TABLE IF NOT EXISTS wx_t3 (
+    mobile VARCHAR(32) NOT NULL DEFAULT '',
+    KEY idx_mobile(mobile)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 */
 
 /**

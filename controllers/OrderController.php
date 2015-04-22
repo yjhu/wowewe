@@ -9,6 +9,7 @@ use yii\web\View;
 use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\data\ActiveDataProvider;
+use yii\web\Response;
 
 use app\models\U;
 use app\models\MOrder;
@@ -205,19 +206,10 @@ class OrderController extends Controller
         ]);
     }
 
-    public function actionDownloadqr()
+    public function actionDownloadqr($staff_id)
     {
-        $this->layout = false;
-        $qrurl = $_GET['qrurl'];
-        //U::W($qrurl);
-        //U::W(Yii::getAlias('@runtime/qr')); 
-        $url= basename($qrurl);
-        //U::W($url);
-        U::W(Yii::getAlias('@runtime')."\\qr\\".$url);
-
-        Yii::$app->response->xSendFile(Yii::getAlias('@runtime')."\\qr\\".$url);
-        //Yii::$app->response->xSendFile('C:\Work\xampp\htdocs\wx\runtime/qr/gh_03a74ac96138_55.jpg');
-        return;    
+        $staff = MStaff::findOne($staff_id);
+        return Yii::$app->response->sendFile($staff->getQrImageFilePath());
     }
 
     public function actionStaffView($id)

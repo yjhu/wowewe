@@ -644,6 +644,45 @@ class CmdController extends Controller
         fclose($fh);    
     }
 
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/t3
+    public function actionT3old()
+    {
+        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'t3.txt';        
+        $fh = fopen($file, "r");
+        $mobiles = [];
+        while (!feof($fh)) 
+        {
+            $line = fgets($fh);
+            if (empty($line))
+                continue;
+            $mobile = trim($line);
+            $mobiles[] = $mobile;
+        }
+		error_log(json_encode($mobiles), 3, Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'t3.json');																	                
+        fclose($fh);    
+    }
+
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/t3
+    public function actionT3()
+    {
+        $tableName = 'wx_t3';                
+        $n = Yii::$app->db->createCommand("TRUNCATE TABLE {$tableName}")->execute();        
+        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'t3.txt';        
+        $fh = fopen($file, "r");
+        $i = 0;
+        $sm_valid_cids = array();
+        while (!feof($fh)) 
+        {
+            $line = fgets($fh);
+            if (empty($line))
+                continue;
+            $mobile = trim($line);
+            $n = Yii::$app->db->createCommand("INSERT INTO $tableName (mobile) VALUES (:mobile)", [':mobile' => $mobile])->execute();
+            $i++;
+        }
+        fclose($fh);    
+    }
+
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/wxmanager
      public function actionWxmanager()
     {

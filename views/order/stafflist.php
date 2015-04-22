@@ -23,16 +23,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
-
     <!--
     <p>
 		<?php // echo Html::a('新增员工', ['staffcreate'], ['class' => 'btn btn-success']) ?>
     </p>
 	-->
 
-	<?php \yii\widgets\Pjax::begin([
+	<?php 
+/*    \yii\widgets\Pjax::begin([
 		'timeout' => 10000,
-	]); ?>
+	]); 
+*/
+    ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -119,10 +121,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 			[
 				'label' => '二维码',
-                'format'=>'html',
+                'format'=>'raw',
 				'value'=>function ($model, $key, $index, $column) { 
 						//return Html::img($model->getQrImageUrl(), ['width'=>'32'])."<a class='/wx/imges/wxmpres/download_gary.png'>下载</a>";
-						return "<a href='index.php?r=order/downloadqr&qrurl=".$model->getQrImageUrl()."'><img src='/wx/web/images/wxmpres/download_gary.png'></a>";
+						//return "<a href='index.php?r=order/downloadqr&qrurl=".$model->getQrImageUrl()."'><img src='/wx/web/images/wxmpres/download_gary.png'></a>";
+                        //return "<a href='index.php?r=order/downloadqr&qrurl=".$model->getQrImageUrl()."'><img src='/wx/web/images/wxmpres/download_gary.png'></a>";
+                        return Html::a(Html::img(Url::to(Yii::$app->getRequest()->baseUrl.'/images/wxmpres/download_gary.png')), ['downloadqr', 'staff_id'=>$model->staff_id], ['target'=>'_blank']);
 				},
 				'filter'=> false,
 				'headerOptions' => array('style'=>'width:8%;'),
@@ -191,7 +195,10 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-	<?php \yii\widgets\Pjax::end(); ?>
+	<?php /*
+    \yii\widgets\Pjax::end(); 
+    */
+    ?>
 </div>
 
 <?php

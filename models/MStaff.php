@@ -144,6 +144,15 @@ class MStaff extends ActiveRecord
         return $url;
     }
 
+    public function getQrImageFilePath()
+    {
+        $gh_id = $this->gh_id;
+        $this->getQrImageUrl();
+        $scene_id = $this->scene_id;
+        $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
+        return $log_file_path;
+    }
+
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
