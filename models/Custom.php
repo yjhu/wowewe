@@ -30,6 +30,8 @@ use app\models\U;
 use app\models\MOffice;
 use app\models\MSceneDay;
 use app\models\MAccessLog;
+use app\models\OpenidBindMobile;
+
 
 class Custom extends ActiveRecord
 {
@@ -89,6 +91,43 @@ class Custom extends ActiveRecord
     public function getOpenidBindMobile()
     {
         return $this->hasOne(OpenidBindMobile::className(), ['mobile' => 'mobile']);
+    }
+
+    public function getVipStartTime()
+    {
+        return substr($this->vip_start_time, 0, 10);
+    }
+
+    public function getVipEndTime()
+    {
+        return substr($this->vip_end_time, 0, 10);
+    }
+
+    public function getVipJoinTime()
+    {
+        return substr($this->vip_join_time, 0, 10);
+    }
+
+    public static function getBindVipCustoms($in_office)
+    {
+        $mobiles = OpenidBindMobile::getMobiles();
+        if ($in_office == '1') {
+            $customs = Custom::find()->where(['mobile'=>$mobiles])->andWhere("office_id > 0 AND is_vip = 1")->all();
+        } else {
+            $customs = Custom::find()->where(['mobile'=>$mobiles])->andWhere("office_id = 0 AND is_vip = 1")->all();
+        }
+        return $customs;
+    }
+
+    public static function getNotBindVipCustoms($in_office)
+    {
+        $mobiles = OpenidBindMobile::getMobiles();
+        if ($in_office == '1') {
+            $customs = Custom::find()->where(['mobile'=>$mobiles])->andWhere("office_id > 0 AND is_vip = 1")->all();
+        } else {
+            $customs = Custom::find()->where(['mobile'=>$mobiles])->andWhere("office_id = 0 AND is_vip = 1")->all();
+        }
+        return $customs;
     }
 
 }

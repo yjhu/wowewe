@@ -72,6 +72,12 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
         return $this->hasOne(Custom::className(), ['mobile' => 'mobile']);
     }
 
+    public static function getMobiles()
+    {
+        $mobiles = OpenidBindMobile::find()->select(['mobile'])->column();
+        return $mobiles;
+    }
+
     public function attributeLabels()
     {
         return [

@@ -8,6 +8,9 @@ use app\models\CustomSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
+
 
 /**
  * CustomController implements the CRUD actions for Custom model.
@@ -118,4 +121,41 @@ class CustomController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionVipbind()
+    {
+        $in_office = Yii::$app->request->get('in_office', 0);
+        $rows = Custom::getBindVipCustoms($in_office);        
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $rows,
+            'sort' => [
+//                'attributes' => ['score', 'name', 'mobile'],
+            ],
+            'pagination' => [
+                'pageSize' => 50,
+            ],
+        ]);
+
+        if (isset($_GET['download'])) {
+            $data = $rows;
+//            \yii\helpers\ArrayHelper::multisort($data, 'cnt_sum', SORT_DESC);                                    
+            $date = date('Y-m-d-His');
+            $filename = Yii::$app->getRuntimePath()."/vipbind-{$date}.csv";
+            $csv = new \app\models\ECSVExport($data);            
+/*
+            $attributes = ['office_id', 'scene_id', 'title', 'is_jingxiaoshang', 'cnt_office', 'cnt_staffs', 'cnt_sum'];        
+            $csv->setInclude($attributes);
+            $csv->setHeaders(['office_id'=>'营业厅ID', 'scene_id'=>'推广码ID', 'title'=>'名称', 'is_jingxiaoshang'=>'类别', 'cnt_office'=>'部门推广人数', 'cnt_staffs'=>'部门员工推广人数', 'cnt_sum'=>'合计推广人数']);
+*/
+            $csv->toCSV($filename); 
+            Yii::$app->response->sendFile($filename);
+            return;        
+        }
+        
+        return $this->render('vipbind', [
+            'dataProvider' => $dataProvider,
+        ]);        
+        
+    }
+    
 }

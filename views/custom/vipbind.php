@@ -4,14 +4,14 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use app\models\MOffice;
 use app\models\Openidbindmobile;
-
+use app\models\U;
 
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CustomSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '客户管理';
+$this->title = '非营业厅VIP会员绑定列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="custom-index">
@@ -22,8 +22,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <!--
     <h1><?= Html::encode($this->title) ?></h1>
 -->
+
     <p>
-		<?php echo Html::a("非营业厅VIP会员绑定列表", ['vipbind', 'in_office'=>0], ['class' => 'btn btn-success']) ?>
+		<?php echo Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', U::current(['download' => 1]), ['class' => 'btn btn-success', 'data-pjax' => '0',]); ?>
     </p>
 
 
@@ -80,7 +81,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             [
-                //'attribute' => 'vip_bind',
                 'label' => '是否绑定',
                 'value'=>function ($model, $key, $index, $column) { return empty($model->openidBindMobile) ? '否' : '是';},
                 //'filter'=> \app\models\VipLevel::items(),
@@ -91,14 +91,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>function ($model, $key, $index, $column) { return empty($model->openidBindMobile->user->nickname) ? '' : $model->openidBindMobile->user->nickname;},
             ],       
 
-
-/*
-            //['class' => 'yii\grid\ActionColumn'],
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{update}',
-            ],
-*/
         ],
     ]); ?>
 

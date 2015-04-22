@@ -73,4 +73,33 @@ class CustomSearch extends Custom
 
         return $dataProvider;
     }
+
+/*
+    public function search1($params)
+    {
+        $query = Custom::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        if (!($this->load($params) && $this->validate())) {
+            $query->joinWith(['openidBindMobile']);
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'custom_id' => $this->custom_id,
+            'is_vip' => $this->is_vip,
+            'office_id' => $this->office_id,
+            'vip_level_id' => $this->vip_level_id,
+        ]);
+
+        $query->andFilterWhere(['like', 'mobile', $this->mobile])
+            ->andFilterWhere(['like', 'name', $this->name]);
+
+
+        return $dataProvider;
+    }
+*/    
 }
