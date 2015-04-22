@@ -88,9 +88,6 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { 
 					//return ''; 
 
-					$mobiles = $model->user->getBindMobileNumbers();
-					$mobile = empty($mobiles) ? '无' : $mobiles[0];
-
 					if(empty($model->openid))
 					{
 						//$wxbind_info = "微信未绑定";
@@ -98,6 +95,10 @@ $this->params['breadcrumbs'][] = $this->title;
 					}
 					else
 					{
+					$mobiles = $model->user->getBindMobileNumbers();
+					$mobile = empty($mobiles) ? '无' : $mobiles[0];
+
+
 						if(empty($model->user->headimgurl))
 							return "<img style='float:left;' width=48 src='/wx/web/images/wxmpres/headimg-blank.png'>&nbsp;&nbsp;<span style='color:#aaa'>昵称 ".$model->user->nickname.
 							"<br>&nbsp;&nbsp;地区 ".$model->user->country."&nbsp;".$model->user->province."&nbsp;".$model->user->city.
@@ -147,7 +148,8 @@ $this->params['breadcrumbs'][] = $this->title;
 						return $model->score; 
 					else {
 //                        MStaffSearch[mobile]
-						return "<a href='#'>".$model->score."</a>"; 
+						//return "<a href='#'>".$model->score."</a>"; 
+                        return Html::a($model->score, ['admin/index', 'MUserSearch[scene_pid]'=>$model->scene_id]);
                     }
 				},
 				'filter'=> false,
