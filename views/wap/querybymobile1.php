@@ -62,6 +62,7 @@ var olduser = ["13094115777","13094114558","13094113670","13094126178","13177221
 <!--
 <img src='./swiper/olduser1.jpg' width='100%' class="img-rounded">
 -->
+<img src='/wx/web/images/olduser1.jpg' width='100%' class="img-rounded">
 <br><br>
 <h3>老用户身份验证</h3>
 
