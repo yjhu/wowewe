@@ -36,6 +36,21 @@
         <ul data-role="listview" data-inset="false" data-filter="true" data-filter-placeholder="搜索..." class="ui-nodisc-icon ui-alt-icon">
 
 
+        <!-- 4月第4周老用户活动 -->
+        <?php if($flag2 == 1 ) { ?> 
+            <li><a data-ajax="false" href="#">
+                    <img style='padding-top:20px' src="/wx/web/images/womei-hint-120x120.jpg">
+                    <h2 style="color:red !important;">老用户微平台四月活动</h2>
+                    <p>合约价1000-2000元终端，按网龄年度<br>递增模式优惠，最高优惠200元；<br>合约价2000元以上终端，按网龄年度<br>递增模式优惠，最高优惠300元。</p>
+                </a>
+            </li>
+        <?php } ?>
+
+
+
+
+        <?php if($flag1 == 1 ) { ?> 
+
         <?php foreach($models as $model) { 
             if($model->cid==874)  { 
         ?>
@@ -127,7 +142,30 @@
             } 
         ?>
 
+
+        <?php } ?>
         </ul>
+
+
+
+
+
+
+
+
+        <?php if(($flag1 == 0)&&($flag2 == 0)) { ?>
+            <center>
+            <img src="../web/images/woke/womei_sad.png" width="96px" height="96px">
+            <h4>
+
+            您不满足条件<br>暂时无法参与该优惠活动
+            </h4>
+        
+            <h4>
+            谢谢关注
+            </h4>
+            </center>
+        <?php } ?>
     </div>
 
     <div data-role="footer" data-position="fixed">
