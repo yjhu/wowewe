@@ -86,7 +86,88 @@
           </li>
         </ul>
         
-        
+        <br>
+
+      <form class="input-group">
+      <input type="text" placeholder="Full name">
+      <input type="email" placeholder="Email">
+      <input type="text" placeholder="Username">
+      </form>
+      <br>
+
+      <button class="btn">
+        <span class="icon icon-search"></span>
+        Button
+      </button>
+      <button class="btn btn-primary">
+        <span class="icon icon-search"></span>
+        Button
+      </button>
+      <button class="btn btn-positive">
+        <span class="icon icon-search"></span>
+        Button
+      </button>
+      <button class="btn btn-negative">
+        <span class="icon icon-search"></span>
+        Button
+      </button>
+      <button class="btn btn-link">
+        <span class="icon icon-left"></span>
+        Button
+      </button>
+
+
+    <br><br><br>
+
+    <button class="btn btn-block">Block button</button>
+<button class="btn btn-primary btn-block">Block button</button>
+<button class="btn btn-positive btn-block">Block button</button>
+<button class="btn btn-negative btn-block">Block button</button>
+
+<button class="btn btn-block btn-outlined">Block button</button>
+<button class="btn btn-primary btn-block btn-outlined">Block button</button>
+<button class="btn btn-positive btn-block btn-outlined">Block button</button>
+<button class="btn btn-negative btn-block btn-outlined">Block button</button>
+
+<br><br>&nbsp;
+
+<div class="segmented-control">
+  <a class="control-item active" href="#item1mobile">
+    手机
+  </a>
+  <a class="control-item" href="#item2mobile">
+    号卡
+  </a>
+  <a class="control-item" href="#item3mobile">
+    配件
+  </a>
+</div>
+<div class="card">
+  <span id="item1mobile" class="control-content active">各种手机终端</span>
+  <span id="item2mobile" class="control-content">更多靓号</span>
+  <span id="item3mobile" class="control-content">大量手机配件</span>
+</div>
+<br><br>&nbsp;
+
+<div class="slider" id="mySlider">
+  <div class="slide-group">
+    <div class="slide">
+      <img width="100%" src="/wx/web/images/item/iphone6-700x500-1.jpg">
+      <span class="slide-text">
+        <span class="icon icon-left-nav"></span>
+        Slide me
+      </span>
+    </div>
+    <div class="slide">
+       <img width="100%" src="/wx/web/images/item/iphone6-700x500-2.jpg">
+    </div>
+    <div class="slide">
+      <img width="100%" src="/wx/web/images/item/iphone6-700x500-3.jpg">
+    </div>
+  </div>
+</div>
+<br><br>&nbsp;
+
     </div>
 
       

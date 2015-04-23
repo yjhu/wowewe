@@ -32,7 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
 				'format'=>'html',
                 'value'=>function ($model, $key, $index, $column) { 
 					$nickname = $model->nickname;
-					$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
+					$headimgurl = empty($model->headimgurl) ? 
+					"<img style='float:left;' width=48 src='/wx/web/images/wxmpres/headimg-blank.png'>" : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
 					return "$headimgurl";
 				},
 				'headerOptions' => array('style'=>'width:10%;'),	
