@@ -3023,7 +3023,17 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
         return $this->render('querybymobile1', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }  
 
-
+    //ratchet UI frameworks , only for test
+    // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/ratchet:gh_03a74ac96138
+    public function actionRatchet()
+    {
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+       
+        return $this->render('ratchet', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }  
 
 
     /*
