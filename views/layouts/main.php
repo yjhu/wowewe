@@ -28,7 +28,7 @@ AppAsset::register($this);
         <?php
             NavBar::begin([
 				//'brandLabel' => Html::img($asset->baseUrl . '/logo.png'),
-                'brandLabel' => '襄阳联通官方微信营业厅',
+                'brandLabel' => '襄阳联通官方微信管理后台',
 				//'brandLabel' => '襄阳联通',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
@@ -97,7 +97,7 @@ AppAsset::register($this);
 							['label' => '退出','url' => ['/site/logout'],'linkOptions' => ['data-method' => 'post']],
 						]
 					],
-                    ['label' => '建议', 'url' => ['/site/contact']],
+                   // ['label' => '建议', 'url' => ['/site/contact']],
                 ],
             ]);
             NavBar::end();
@@ -117,7 +117,7 @@ AppAsset::register($this);
 <!--
             <p class="pull-left">&copy; 沃手科技 <?= date('Y') ?> (鄂ICP备14010852号)</p>
 -->
-            <p class="pull-left">&copy; 襄阳联通 <?= date('Y') ?></p>
+            <p class="pull-left">&copy; 沃手科技 <?= date('Y') ?></p>
             <p class="pull-right">
 			<?php //echo Yii::powered() ?>
 			</p>

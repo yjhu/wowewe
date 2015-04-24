@@ -30,6 +30,8 @@
 		"kartik-v/yii2-date-range": "*",
 		"kartik-v/yii2-field-range": "*",
 		"kartik-v/bootstrap-star-rating": "*",
+                "kartik-v/yii2-widgets": "*",
+                "kartik-v/yii2-mpdf": "*",
 		"miloschuman/yii2-highcharts-widget": "*",
 	        "yiisoft/yii2-imagine": "*",
 		"yiisoft/yii2-gii": "*"
