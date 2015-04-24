@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					$nickname = $model->nickname;
 
 					$mobiles = $model->getBindMobileNumbers();
-					$mobile = empty($mobiles) ? '无' : $mobiles[0];
+					$mobile = empty($mobiles) ? '无' : implode(',', $mobiles);
 
 					//$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
 					return "<span style='color:#aaa'>昵称 ".$model->nickname.
@@ -60,12 +60,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
 			[
 				'label' => '绑定手机号',
+                                'attribute' => 'mobile',
 				'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
-                    if (empty($model->user)) {
-                        return '-';
-                    }
-                    $mobiles = $model->user->getBindMobileNumbers();
+//                    if (empty($model->user)) {
+//                        return '-';
+//                    }
+                    $mobiles = $model->getBindMobileNumbers();
                     return empty($mobiles) ? '-' : implode(',', $mobiles); 
                  },
 				'headerOptions' => array('style'=>'width:10%;'),	

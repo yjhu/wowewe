@@ -36,12 +36,14 @@ class MUserSearch extends Model
     public $sign_time;
     
     public $sign_money;
+    
+    public $mobile;
         
     public function rules()
     {
         return [
             [['id', 'role', 'status'], 'integer'],
-            [['gh_id', 'nickname', 'create_time', 'create_time_2', 'update_time', 'scene_id', 'scene_pid', 'is_liantongstaff','sign_time','sign_money'], 'safe'],
+            [['gh_id', 'nickname', 'create_time', 'create_time_2', 'update_time', 'scene_id', 'scene_pid', 'is_liantongstaff','sign_time','sign_money', 'mobile'], 'safe'],
         ];
     }
 
@@ -56,18 +58,20 @@ class MUserSearch extends Model
             'status' => '状态',
             'create_time' => '关注时间',
             'update_time' => '更新时间',
+            'mobiles' => '绑定手机',
         ];
     }
 
     public function search($params)
     {
         $query = MUser::find();
+        $query->joinWith('openidBindMobiles');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
         $this->gh_id = Yii::$app->user->getGhid();
-        $this->addCondition($query, 'gh_id');        
+        $this->addCondition($query, 'wx_user.gh_id');        
         
         if (!Yii::$app->user->getIsAdmin())
         {
@@ -88,6 +92,7 @@ class MUserSearch extends Model
         $this->addCondition($query, 'update_time');
         $this->addCondition($query, 'scene_pid');       
         $this->addCondition($query, 'is_liantongstaff');
+       $query->andWhere(['like', 'wx_openid_bind_mobile.mobile', $this->mobile]);
         
         if (trim($this->create_time) !== '') 
         {
