@@ -25,7 +25,14 @@
     <header class="bar bar-nav">
       <a class="icon icon-left-nav pull-left"></a>
       <a class="icon icon-compose pull-right"></a>
-      <h1 class="title">Title</h1>
+
+       <a href="#myPopover">
+    <h1 class="title">
+      Tap title
+      <span class="icon icon-caret"></span>
+    </h1>
+  </a>
+      
     </header>
 
 
@@ -167,6 +174,99 @@
   </div>
 </div>
 <br><br>&nbsp;
+
+
+
+  <div id="myPopover" class="popover">
+  <header class="bar bar-nav">
+    <h1 class="title">Popover title</h1>
+  </header>
+  <ul class="table-view">
+    <li class="table-view-cell">Item1</li>
+    <li class="table-view-cell">Item2</li>
+    <li class="table-view-cell">Item3</li>
+    <li class="table-view-cell">Item4</li>
+    <li class="table-view-cell">Item5</li>
+    <li class="table-view-cell">Item6</li>
+    <li class="table-view-cell">Item7</li>
+    <li class="table-view-cell">Item8</li>
+  </ul>
+</div>
+
+<h5>营业厅</h5>
+<select>
+<option>sample #1</option>
+<option>sample #2</option>
+<option>sample #3</option>
+<option>sample #4</option>
+<option>sample #5</option>
+<option>sample #6</option>
+</select>
+
+<br>
+
+<input type="radio" name="student" value="学生" checked="checked" />学生 
+<input type="radio" name="teacher" value="教师" />教师 
+<input type="radio" name="manager" value="管理员" />管理员
+<br>
+
+
+<input type="checkbox" name="test" />圣诞节  
+<input type="checkbox" name="test" />股市
+<input type="checkbox" name="test" />阿凡达  
+<input type="checkbox" name="test" />十月围城
+<input type="checkbox" name="test" />水价上调
+<br>
+
+
+
+<br><br>&nbsp;
+<br><br>&nbsp;
+
+<div class="content-padded">
+  <span class="icon icon-back"></span>
+  <span class="icon icon-bars"></span>
+  <span class="icon icon-caret"></span>
+  <span class="icon icon-check"></span>
+  <span class="icon icon-close"></span>
+  <span class="icon icon-code"></span>
+  <span class="icon icon-compose"></span>
+  <span class="icon icon-download"></span>
+  <span class="icon icon-edit"></span>
+  <span class="icon icon-forward"></span>
+  <span class="icon icon-gear"></span>
+  <span class="icon icon-home"></span>
+  <span class="icon icon-info"></span>
+  <span class="icon icon-list"></span>
+  <span class="icon icon-more-vertical"></span>
+  <span class="icon icon-more"></span>
+  <span class="icon icon-pages"></span>
+  <span class="icon icon-pause"></span>
+  <span class="icon icon-person"></span>
+  <span class="icon icon-play"></span>
+  <span class="icon icon-plus"></span>
+  <span class="icon icon-refresh"></span>
+  <span class="icon icon-search"></span>
+  <span class="icon icon-share"></span>
+  <span class="icon icon-sound"></span>
+  <span class="icon icon-sound2"></span>
+  <span class="icon icon-sound3"></span>
+  <span class="icon icon-sound4"></span>
+  <span class="icon icon-star-filled"></span>
+  <span class="icon icon-star"></span>
+  <span class="icon icon-stop"></span>
+  <span class="icon icon-trash"></span>
+  <span class="icon icon-up-nav"></span>
+  <span class="icon icon-up"></span>
+  <span class="icon icon-right-nav"></span>
+  <span class="icon icon-right"></span>
+  <span class="icon icon-down-nav"></span>
+  <span class="icon icon-down"></span>
+  <span class="icon icon-left-nav"></span>
+  <span class="icon icon-left"></span>
+</div>
+
+
 
     </div>
 

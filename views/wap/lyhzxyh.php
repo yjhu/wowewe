@@ -38,7 +38,7 @@
 
         <!-- 4月第4周老用户活动 -->
         <?php if($flag2 == 1 ) { ?> 
-            <li><a data-ajax="false" href="http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=208744312&idx=4&sn=e1c300341d2e9ef69ec68497f7346b6c&key=1936e2bc22c2ceb545284659a94d8be89bf41d26bf880cb699bc8c9aa1df4675a497b84a10500a1eddc240b3dbd27b99&ascene=1&uin=MTA4NjEzNjQ0Mw%3D%3D&devicetype=Windows+7&version=61000721&pass_ticket=D%2Bgk%2FAl%2BK4MybeHCcIejcNm71YOzp3mwmqE%2F0d1wXgmLbxzjqQUDyb5KAc2WelvZ">
+            <li><a data-ajax="false" href="http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=208744312&idx=1&sn=c8e1b5a1b8dbbf8f4fa56846e0483714#rd">
                     <img style='padding-top:20px' src="/wx/web/images/womei-hint-120x120.jpg">
                     <h2 style="color:red !important;">老用户微平台四月活动</h2>
                     <p>合约价1000-2000元终端，按网龄年度<br>递增模式优惠，最高优惠200元；<br>合约价2000元以上终端，按网龄年度<br>递增模式优惠，最高优惠300元。</p>
