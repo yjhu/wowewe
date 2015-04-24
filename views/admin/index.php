@@ -28,7 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 			[
 				//'attribute' => 'nickname',
-				'label' => '头像',
+				//'label' => '头像',
+				'label' => '微信信息',
 				'format'=>'html',
                 'value'=>function ($model, $key, $index, $column) { 
 					$nickname = $model->nickname;
@@ -42,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 			[
 				'attribute' => 'nickname',
-				'label' => '微信昵称',
+				'label' => '',
 				'format'=>'html',
                 'value'=>function ($model, $key, $index, $column) { 
 					$nickname = $model->nickname;
@@ -240,7 +241,8 @@ $this->params['breadcrumbs'][] = $this->title;
 			'dataProvider'=>$dataProvider,
 			'filterModel'=>$searchModel,
 			'bordered'=>false,
-			'panel'=>['heading'=>'<h3 class="panel-title">粉丝列表</h3>'],
+			//'panel'=>['heading'=>'<h3 class="panel-title">粉丝列表</h3>'],
+			'panel'=>['heading'=>'<h3 class="panel-title">&nbsp;</h3>'],
 			'export'=>['options'=>['class' => 'btn btn-success']],
 		],
 
