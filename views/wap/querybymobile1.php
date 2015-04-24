@@ -81,15 +81,15 @@ var olduser = ["13094115777","13094114558","13094113670","13094126178","13177221
 
 <div id="aaa" class="alert alert-success" role="alert" style="display:none">
 <h1>恭喜！</h1>
-<p>你已经是襄阳联通老用户，可享各种优惠活动！</p>
+<p>您可享受上述优惠活动，快到联通营业厅抢购吧！</p>
 <p><a href="http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=208744312&idx=4&sn=e1c300341d2e9ef69ec68497f7346b6c&key=1936e2bc22c2ceb545284659a94d8be89bf41d26bf880cb699bc8c9aa1df4675a497b84a10500a1eddc240b3dbd27b99&ascene=1&uin=MTA4NjEzNjQ0Mw%3D%3D&devicetype=Windows+7&version=61000721&pass_ticket=D%2Bgk%2FAl%2BK4MybeHCcIejcNm71YOzp3mwmqE%2F0d1wXgmLbxzjqQUDyb5KAc2WelvZ">返回详情>></a></p>
 </div>
 
 
 <div id="bbb" class="alert alert-info" role="alert" style="display:none">
   <h1>抱歉</h1>
-  <p>您暂时还未成为襄阳联通老用户！</p>
-  <p><a href="tel:10010">详情可致电咨询, 看看哪些优惠活动适合您 >></a></p>
+
+  <p><a href="tel:10010">您暂时还不能参加以上活动,看看哪些优惠活动适合您。详情可致电咨询 >></a></p>
 </div>
 
 

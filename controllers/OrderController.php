@@ -709,6 +709,7 @@ class OrderController extends Controller
         }
     }
 
+/*
     public function actionChannellist()
     {
         $gh_id = Yii::$app->user->getGhid();
@@ -908,7 +909,8 @@ class OrderController extends Controller
         ]);  
 
     }
-
+*/
+    
     public function actionStatvisit()
     {
  

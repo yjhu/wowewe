@@ -6,6 +6,7 @@ CREATE TABLE wx_user (
     id int(10) unsigned NOT NULL AUTO_INCREMENT  PRIMARY KEY,
     gh_id VARCHAR(32) NOT NULL DEFAULT '',
     openid VARCHAR(32) NOT NULL DEFAULT '',
+    unionid VARCHAR(32) NOT NULL DEFAULT '',    
     nickname VARCHAR(32) NOT NULL DEFAULT '',    
     sex tinyint(3) unsigned NOT NULL DEFAULT 0,        
     city VARCHAR(32) NOT NULL DEFAULT '',
@@ -44,6 +45,8 @@ CREATE TABLE wx_user (
 
 ALTER TABLE wx_user ADD user_account_balance int(10) NOT NULL DEFAULT '0';
 ALTER TABLE wx_user ADD user_account_charge_mobile VARCHAR(32) NOT NULL DEFAULT '';
+ALTER TABLE wx_user ADD unionid VARCHAR(32) NOT NULL DEFAULT '' after openid;
+
 
 // role has no use now.
 

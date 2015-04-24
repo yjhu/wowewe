@@ -1,42 +1,29 @@
 <?php
-
 namespace app\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\MAccessLog;
+use app\models\U;
 
-class MAccessLogSearch extends Model
+class MAccessLogSearch extends MAccessLog
 {
-    public $create_time;
 
     public $create_time_2;    
-    
-    public $ToUserName;
-    
-    public $FromUserName;
-    
-    public $MsgType;
-    
-    public $Content;
-    
-    public $Event;
-    
-    public $EventKey;
 
-    public $scene_pid;
-    
     public function rules()
     {
         return [
-            [['ToUserName', 'FromUserName','create_time', 'create_time_2', 'MsgType', 'Content', 'Event', 'EventKey', 'scene_pid'], 'safe'],
+            [['id', 'scene_pid', 'CreateTime', 'MsgId', 'EventKeyCRC'], 'integer'],
+            [['create_time', 'ToUserName', 'FromUserName', 'MsgType', 'Content', 'Event', 'EventKey'], 'safe'],
         ];
     }
 
     public function search($params)
     {
         $query = MAccessLog::find();
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
@@ -48,51 +35,38 @@ class MAccessLogSearch extends Model
                 'pageSize' => 20,
             ],            
         ]);
-        
-        $this->MsgType = Wechat::MSGTYPE_EVENT;
-        $this->addCondition($query, 'MsgType');
 
-        $query->andWhere(['Event' =>  [Wechat::EVENT_SUBSCRIBE, Wechat::EVENT_UNSUBSCRIBE]]);
+//$query->select(['wx_user.*','wx_staff.*','wx_access_log.*']);
+//$query->select('*');
+
+//        $query->with('user');
+        $query->joinWith('user');
+//$query->joinWith(['user' => function($query) { $query->from(['user'=>'wx_user']); }]);
+
+
+//        $query->joinWith('staff');
+         $query->leftJoin('wx_staff', 'wx_access_log.ToUserName = wx_staff.gh_id AND wx_access_log.scene_pid = wx_staff.scene_id AND wx_access_log.scene_pid != 0');
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'create_time' => $this->create_time,
+            'scene_pid' => $this->scene_pid,
+            'CreateTime' => $this->CreateTime,
+            'MsgId' => $this->MsgId,
+            'EventKeyCRC' => $this->EventKeyCRC,
+        ]);
 
-        $this->addCondition($query, 'ToUserName');
-        $this->addCondition($query, 'scene_pid');
+        $query->andFilterWhere(['like', 'ToUserName', $this->ToUserName])
+            ->andFilterWhere(['like', 'FromUserName', $this->FromUserName])
+            ->andFilterWhere(['like', 'MsgType', $this->MsgType])
+            ->andFilterWhere(['like', 'Content', $this->Content])
+            ->andFilterWhere(['like', 'event', $this->Event])
+            ->andFilterWhere(['like', 'EventKey', $this->EventKey]);
 
-        $this->addCondition($query, 'FromUserName', true);
-        
-        if (trim($this->create_time) !== '') 
-        {
-            $query->andWhere('date(create_time)>=:create_time', [':create_time' => $this->create_time]);
-        }
-
-        if (trim($this->create_time_2) !== '') 
-        {
-            $query->andWhere('date(create_time)<=:create_time_2', [':create_time_2' => $this->create_time_2]);
-        }
-        
         return $dataProvider;
     }
 
-    protected function addCondition($query, $attribute, $partialMatch = false)
-    {
-        if (($pos = strrpos($attribute, '.')) !== false) {
-            $modelAttribute = substr($attribute, $pos + 1);
-        } else {
-            $modelAttribute = $attribute;
-        }
-
-        $value = $this->$modelAttribute;
-        if (trim($value) === '') {
-            return;
-        }
-        if ($partialMatch) {
-            $query->andWhere(['like', $attribute, $value]);
-        } else {
-            $query->andWhere([$attribute => $value]);
-        }
-    }
-    
 }

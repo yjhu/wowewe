@@ -69,7 +69,9 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'office_id',
 				//'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
 				'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
-				'filter'=> MOffice::getOfficeNameOptionAll($searchModel->gh_id,false,false),
+//				'filter'=> MOffice::getOfficeNameOptionAll($searchModel->gh_id,false,false),
+                'filter'=> MOffice::getOfficeNameOptionSimple2('gh_03a74ac96138',false,false),
+
 				'headerOptions' => array('style'=>'width:20%;'),		
 				//'visible'=>Yii::$app->user->identity->openid == 'admin',
 				'visible'=>Yii::$app->user->getIsAdmin(),

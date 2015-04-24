@@ -2578,49 +2578,12 @@ EOD;
             Yii::$app->getSession()->set('RETURN_URL', Url::to());
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }
-
-/*       
-        $scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt<0 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
-        
-        //可提现沃点
-        $ktxwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=1 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
-        
-        //预期沃点
-        $yqwd_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status=0',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
-
-        //预期沃点 包含粉丝取消关注
-        $yqwd_fans_qx_scenes = MSceneDetail::find()->where('gh_id=:gh_id AND scene_id=:scene_id AND scene_amt>0 AND status<>1 ORDER BY create_time DESC',[':gh_id'=>$gh_id, ':scene_id'=>$model->scene_id])->all();
-        
-
-        U::W(count($yqwd_fans_qx_scenes));
-*/        
         $scenes = $ktxwd_scenes = $yqwd_scenes = $yqwd_fans_qx_scenes = [];
-
-/*
-        $year = date('Y');
-        $month = date('m');
-//        $year = 2014;
-//        $month = 12;
-        if ($month == 1) {
-            $year = $year - 1;
-            $last_month = 12;
-        } else {        
-            $last_month = $month - 1;
-        }
-        $theFirstDayOfLastMonth = U::getFirstDate($year, $last_month);
-        $theLastDayOfLastMonth = U::getLastDate($year, $last_month);
-
-
-$fans = $user->staff->getFansByRange($theFirstDayOfLastMonth, $theLastDayOfLastMonth); 
-$score =  $user->staff->getScoreByRange($theFirstDayOfLastMonth, $theLastDayOfLastMonth); 
-$expectedMoney = ($score/3)*5;
-$user_acount_balance = $user->getUserAccountBalanceInfo();
-*/
         $date_start = static::getHyzxDateStart();
         $date_end = date("Y-m-d");
         //U::W("$date_start, $date_end");        
         if (empty($model->staff)) {
-            $model->getQrImageUrl();            
+            $model->getQrImageUrl();             
         }
         $fans = $model->staff->getFansByRange($date_start, $date_end); 
         $mobiledFans = $model->staff->getMobiledFansByRange($date_start, $date_end); 
@@ -2639,8 +2602,7 @@ $user_acount_balance = $user->getUserAccountBalanceInfo();
             return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
         }
         $myManagers = $model->getManagers();
-        U::W("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-        U::W($myManagers);
+        //U::W($myManagers);
         return $this->render('wdkhjl', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'myManagers'=>$myManagers]);
     } 
 
