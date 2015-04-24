@@ -123,7 +123,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->isVip() ? "是" : "否";
                 },
     			'filter'=> ['0'=>'否', '1'=>'是'],
-                'headerOptions' => array('style'=>'width:3%;'),    
+                'headerOptions' => array('style'=>'width:5%;'),    
             ],
 
 
@@ -179,7 +179,6 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-<button class='btn btn-warning' title='Popover title' data-container='body' data-toggle='popover' data-placement='right' data-content='右侧的 Popover 中的一些内容'>showit</button>
 </div>
 <script type="text/javascript">
 
