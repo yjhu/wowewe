@@ -38,7 +38,7 @@
 
         <!-- 4月第4周老用户活动 -->
         <?php if($flag2 == 1 ) { ?> 
-            <li><a data-ajax="false" href="#">
+            <li><a data-ajax="false" href="http://mp.weixin.qq.com/s?__biz=MzA4ODkwOTYxMA==&mid=208744312&idx=1&sn=c8e1b5a1b8dbbf8f4fa56846e0483714#rd">
                     <img style='padding-top:20px' src="/wx/web/images/womei-hint-120x120.jpg">
                     <h2 style="color:red !important;">老用户微平台四月活动</h2>
                     <p>合约价1000-2000元终端，按网龄年度<br>递增模式优惠，最高优惠200元；<br>合约价2000元以上终端，按网龄年度<br>递增模式优惠，最高优惠300元。</p>

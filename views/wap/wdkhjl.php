@@ -152,7 +152,6 @@
     <a href="javascript:reloadVipfwzq();" class="ui-btn">返回</a>
     -->
 
-
     </div>
 
     <div data-role="footer" data-position="fixed">

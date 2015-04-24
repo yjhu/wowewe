@@ -32,10 +32,11 @@ $this->params['breadcrumbs'][] = $this->title;
 				'format'=>'html',
                 'value'=>function ($model, $key, $index, $column) { 
 					$nickname = $model->nickname;
-					$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
+					$headimgurl = empty($model->headimgurl) ? 
+					"<img style='float:left;' width=48 src='/wx/web/images/wxmpres/headimg-blank.png'>" : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 48), ['style'=>'width:46px;']);
 					return "$headimgurl";
 				},
-				'headerOptions' => array('style'=>'width:10%;'),	
+				'headerOptions' => array('style'=>'width:5%;'),	
 			],
 
 
@@ -45,10 +46,16 @@ $this->params['breadcrumbs'][] = $this->title;
 				'format'=>'html',
                 'value'=>function ($model, $key, $index, $column) { 
 					$nickname = $model->nickname;
-					$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
-					return "$nickname";
+
+					$mobiles = $model->getBindMobileNumbers();
+					$mobile = empty($mobiles) ? '无' : $mobiles[0];
+
+					//$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
+					return "<span style='color:#aaa'>昵称 ".$model->nickname.
+					"<br>地区 ".$model->country."&nbsp;".$model->province."&nbsp;".$model->city.
+					"<br>绑定手机 ".$mobile."</span>";
 				},
-				'headerOptions' => array('style'=>'width:10%;'),	
+				'headerOptions' => array('style'=>'width:18%;'),	
 			],
 
 			[
@@ -90,7 +97,6 @@ $this->params['breadcrumbs'][] = $this->title;
 			'filter'=> ['0'=>'否', '1'=>'是'],
 		],
 		*/
-
 
 		[
 			'attribute' => 'nickname',
