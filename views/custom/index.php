@@ -61,7 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $vip_start_time = $model->isVip() ? $model->getVipStartTime() : '' ;
                     $vip_end_time = $model->isVip() ? $model->getVipEndTime() : '' ;
 
-                    $customlist = "VIP级别 ".$level."加入时间 ".$vip_join_time."开始时间 ".$vip_start_time."结束时间 ".$vip_end_time;
+                    $customlist = "VIP级别 ".$level."<br>加入时间 ".$vip_join_time."<br>开始时间 ".$vip_start_time."<br>结束时间 ".$vip_end_time;
 
                     //return $model->name."&nbsp;<a style='float:right' tabindex='0' class='btn btn-info glyphicon glyphicon-th-list' role='button' data-trigger='focus' title='".$cusername."' data-toggle='popover' data-placement='right' data-content='".$customlist."'></a>";
                     return $model->name;
@@ -183,7 +183,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <script type="text/javascript">
 
     $(function () {
-      $('[data-toggle="popover"]').popover()
+      $('[data-toggle="popover"]').popover({html : true })
       //alert('hi');
     })
 
