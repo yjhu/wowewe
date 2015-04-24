@@ -19,7 +19,7 @@ public $user_nickname;
         return [
             [['scene_pid', 'CreateTime', 'MsgId', 'EventKeyCRC'], 'integer'],
             [['create_time', 'ToUserName', 'FromUserName', 'MsgType', 'Content', 'Event', 'EventKey'], 'safe'],
-            [['user.nickname', 'user_nickname'],  'safe'],            
+            [['user_nickname'],  'safe'],            
 
         ];
     }
@@ -56,7 +56,7 @@ public $user_nickname;
 
 
 //        $query->joinWith('staff');
-//         $query->leftJoin('wx_staff', 'wx_access_log.ToUserName = wx_staff.gh_id AND wx_access_log.scene_pid = wx_staff.scene_id AND wx_access_log.scene_pid != 0');
+         $query->leftJoin('wx_staff', 'wx_access_log.ToUserName = wx_staff.gh_id AND wx_access_log.scene_pid = wx_staff.scene_id AND wx_access_log.scene_pid != 0');
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
@@ -69,10 +69,7 @@ public $user_nickname;
 
         $query->andFilterWhere(['like', 'ToUserName', $this->ToUserName])
             ->andFilterWhere(['like', 'FromUserName', $this->FromUserName])
-//            ->andFilterWhere(['like', 'nickname', $this->FromUserName])   
-            ->andFilterWhere(['like', 'user.nickname', $this->user_nickname])
-//        ->andFilterWhere(['LIKE', 'user.nickname', $this->getAttribute('user.nickname')])
-
+            ->andFilterWhere(['like', 'wx_user.nickname', $this->user_nickname])
             ->andFilterWhere(['like', 'MsgType', $this->MsgType])
             ->andFilterWhere(['like', 'Content', $this->Content])
             ->andFilterWhere(['like', 'event', $this->Event])
