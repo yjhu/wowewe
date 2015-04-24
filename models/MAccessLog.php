@@ -5,7 +5,7 @@ namespace app\models;
 /*
 DROP TABLE IF EXISTS wx_access_log;
 CREATE TABLE wx_access_log (
-    id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    access_log_id int(10) unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     scene_pid int(10) unsigned NOT NULL DEFAULT '0',    
     ToUserName VARCHAR(32) NOT NULL DEFAULT '',
@@ -45,9 +45,25 @@ class MAccessLog extends ActiveRecord
         return 'wx_access_log';
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'FromUserName' => '粉丝openid',
+            'scene_pid' => '第一推荐者',
+            'EventKey' => '直接推荐者',
+            'create_time' => '时间',
+            'Event' => '事件',
+        ];
+    }
+
     public function getUser()
     {
         return $this->hasOne(MUser::className(), ['gh_id' => 'ToUserName', 'openid' => 'FromUserName']);
+    }
+
+    public function getStaff()
+    {
+        return $this->hasOne(MStaff::className(), ['gh_id' => 'ToUserName','scene_id' => 'scene_pid']);
     }
 
     public function beforeSave($insert)

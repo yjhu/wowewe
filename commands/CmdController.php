@@ -789,38 +789,6 @@ class CmdController extends Controller
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/importcustom
     public function actionImportcustom()
     {
-/*        
-        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'custom.txt';
-        $fh = fopen($file, "r");
-        $i=0;
-        $invalid_titles = [];
-        while (!feof($fh)) 
-        {
-            $line = fgets($fh);
-            if (empty($line))
-                continue;
-            $arr = explode("\t", $line);            
-            $arr[1] = iconv('GBK','UTF-8//IGNORE', $arr[1]);
-            $arr[2] = iconv('GBK','UTF-8//IGNORE', $arr[2]);
-            $mobile = trim($arr[0]);
-            $name = trim($arr[1]);
-            $office_title = trim($arr[2]);
-            $office = MOffice::findOne(['gh_id'=>'gh_03a74ac96138', 'title'=>$office_title]);
-            if (empty($office)) {
-                U::W($arr);
-                $invalid_titles[] = $office_title;
-            }
-            $i++;            
-            if ($i % 1000 == 1)
-                U::W($i);
-        }
-        fclose($fh);    
-        if (!empty($invalid_titles)) {
-            U::W(['invalid_titles', $invalid_titles]);                
-            exit;
-        }
-        return;
-*/
         $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'custom.txt';
         $fh = fopen($file, "r");
         $i=0;
@@ -859,8 +827,60 @@ class CmdController extends Controller
         }
         fclose($fh);    
 
-    }
+    }    
 
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/refresh-fan-headimgurl
+    public function actionRefreshFanHeadimgurl()
+    {        
+        $gh_id = Yii::$app->wx->getGhid();
+        $db = \Yii::$app->db;
+        $query = new Query();
+        $tableName = MUser::tableName();
+        $query->from($tableName)->where('id>0')->orderBy(['id'=>SORT_ASC]);
+        $i = 0;
+        foreach ($query->each() as $user)
+        {
+            //$size = U::getRemoteFileSize($user['headimgurl']);
+            //if ($size == 5093) 
+            {
+                if (!$user['subscribe']) {
+                    continue;
+                }
+                U::W(["refresh", $user]);                
+                Yii::$app->wx->setGhId($user['gh_id']);            
+                $arr = Yii::$app->wx->WxGetUserInfo($user['openid']);                                  
+                U::W($arr);
+                if ($arr['subscribe'] == 0) {
+                    $n = $db->createCommand()->update($tableName, 
+                        [
+                            'subscribe' => 0,
+                        ], 
+                        'id = :id', [':id'=>$user['id']])->execute();                
+                    
+                } else {
+                    $n = $db->createCommand()->update($tableName, 
+                        [
+                            'nickname' => $arr['nickname'],                     
+                            'headimgurl' => $arr['headimgurl'], 
+                            'city' => empty($arr['city']) ? '' : $arr['city'],
+                            'province' => empty($arr['province']) ? '' : $arr['province'],
+                            'country' => empty($arr['country']) ? '' : $arr['country'],
+                            'sex' => empty($arr['sex']) ? '' : $arr['sex'],
+                            'subscribe' => empty($arr['subscribe']) ? '' : $arr['subscribe'],                    
+                            //'unionid' => empty($arr['unionid']) ? '' : $arr['unionid'],
+                        ], 
+                        'id = :id', [':id'=>$user['id']])->execute();                
+                }
+                U::W("id={$user['id']}");
+            }
+            $i++;
+            if ($i % 1000 == 1)
+                U::W($i);
+        }
+    
+        
+
+    }    
 
 
 
