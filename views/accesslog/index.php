@@ -24,7 +24,12 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'id',
             
 //            'FromUserName',         
-                'user.nickname',
+//                'user.nickname',
+            [
+                'attribute'=>'user_nickname',
+                'value'=>'user.nickname',
+
+            ],
 /*
                [
                     'label' => '微信昵称',
@@ -43,13 +48,13 @@ $this->params['breadcrumbs'][] = $this->title;
             
 //          'staff.name',
 //            'staff.name',
-
+/*
                [
                     'label' => '推荐者姓名',
                     'value'=>function ($model, $key, $index, $column) { return $model->staff->name; },
                ],
 
-           // 'ToUserName',
+*/           // 'ToUserName',
             
             // 'CreateTime',
             
