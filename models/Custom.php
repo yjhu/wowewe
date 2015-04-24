@@ -63,7 +63,7 @@ class Custom extends ActiveRecord
             'vip_end_time' => '结束时间',
             'vip_level_id' => 'VIP级别',
             'office_id' => '营业厅编号',
-            'is_vip' => '是否VIP客户',
+            'is_vip' => 'VIP',
         ];
     }
 
@@ -87,7 +87,7 @@ class Custom extends ActiveRecord
     {
         return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
     }
-    
+
     public function getCustomManager()
     {
         return $this->hasOne(CustomManager::className(), ['custom_id' => 'custom_id']);

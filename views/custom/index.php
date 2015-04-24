@@ -29,23 +29,45 @@ $this->params['breadcrumbs'][] = $this->title;
 <!--
 <button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">点我弹出/隐藏弹出框</button>
 -->
+
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
             //'custom_id',
-            'mobile',
-            //'name',
 
             [
-                'attribute' => 'name',
-                'format'=>'html',
-                'value'=>function ($model, $key, $index, $column) {
-                    //return $model->name."<a tabindex='0' class='btn btn-lg btn-danger' role='button' data-toggle='popover' data-trigger='focus' title='Dismissible popover' data-content='very engaging'>可消失的弹出框</a>";
-                    return $model->name;
+                'attribute' => 'mobile',
+                //'format'=>'html',
+                'value'=>function ($model, $key, $index, $column) { 
+                    return $model->mobile;
                 },
-                'headerOptions' => array('style'=>'width:15%;'),    
+                'headerOptions' => array('style'=>'width:10%;'),    
+            ],
+
+            //'name',
+            [
+                'attribute' => 'name',
+                'format'=>'raw',
+
+                'value'=>function ($model, $key, $index, $column) {
+
+                    //VIP级别   加入时间    开始时间    结束时间
+                    $cusername = $model->name; 
+                    $level = \app\models\VipLevel::items($model->vip_level_id);
+                    $vip_join_time =  $model->isVip() ? $model->getVipJoinTime() : '' ;
+                    $vip_start_time = $model->isVip() ? $model->getVipStartTime() : '' ;
+                    $vip_end_time = $model->isVip() ? $model->getVipEndTime() : '' ;
+
+                    $customlist = "VIP级别 ".$level."加入时间 ".$vip_join_time."开始时间 ".$vip_start_time."结束时间 ".$vip_end_time;
+
+                    //return $model->name."&nbsp;<a style='float:right' tabindex='0' class='btn btn-info glyphicon glyphicon-th-list' role='button' data-trigger='focus' title='".$cusername."' data-toggle='popover' data-placement='right' data-content='".$customlist."'></a>";
+                    return $model->name;
+
+                },
+                'headerOptions' => array('style'=>'width:10%;'),    
             ],
 
 
@@ -77,8 +99,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
 
                 },
-                'headerOptions' => array('style'=>'width:24%;'),
+                'headerOptions' => array('style'=>'width:20%;'),
             ],
+
+            [
+                'label' => '部门名称',
+                'attribute' => 'office_id',
+                //'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
+                'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
+                'filter'=> MOffice::getOfficeNameOptionSimple2('gh_03a74ac96138',false,false),
+                //'headerOptions' => array('style'=>'width:200px;'),      
+                //'visible'=>Yii::$app->user->identity->openid == 'admin',
+                'visible'=>Yii::$app->user->getIsAdmin(),
+                'headerOptions' => array('style'=>'width:15%;'),    
+            ],            
+
 
             [
                 'attribute' => 'is_vip',
@@ -88,39 +123,34 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->isVip() ? "是" : "否";
                 },
     			'filter'=> ['0'=>'否', '1'=>'是'],
-                'headerOptions' => array('style'=>'width:5%;'),    
+                'headerOptions' => array('style'=>'width:3%;'),    
             ],
 
-            [
-                'label' => '部门名称',
-                'attribute' => 'office_id',
-                //'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
-                'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
-                'filter'=> MOffice::getOfficeNameOptionSimple2('gh_03a74ac96138',false,false),
-                'headerOptions' => array('style'=>'width:200px;'),      
-                //'visible'=>Yii::$app->user->identity->openid == 'admin',
-                'visible'=>Yii::$app->user->getIsAdmin(),
-            ],            
 
             //'vip_level_id',
             [
                 'attribute' => 'vip_level_id',
                 'value'=>function ($model, $key, $index, $column) { return \app\models\VipLevel::items($model->vip_level_id); },
                 'filter'=> \app\models\VipLevel::items(),
+                'headerOptions' => array('style'=>'width:10%;'),    
             ],            
 
             [
                 'attribute' => 'vip_join_time',
                 'value'=>function ($model, $key, $index, $column) { return $model->isVip() ? $model->getVipJoinTime() : '' ; },
+                'headerOptions' => array('style'=>'width:10%;'),    
             ],            
             [
                 'attribute' => 'vip_start_time',
                 'value'=>function ($model, $key, $index, $column) { return $model->isVip() ? $model->getVipStartTime() : '' ; },
+                'headerOptions' => array('style'=>'width:10%;'),    
             ],            
             [
                 'attribute' => 'vip_end_time',
                 'value'=>function ($model, $key, $index, $column) { return $model->isVip() ? $model->getVipEndTime() : '' ; },
+                'headerOptions' => array('style'=>'width:10%;'),    
             ],
+      
 
             /*
             [
@@ -149,7 +179,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-
+<button class='btn btn-warning' title='Popover title' data-container='body' data-toggle='popover' data-placement='right' data-content='右侧的 Popover 中的一些内容'>showit</button>
 </div>
 <script type="text/javascript">
 
