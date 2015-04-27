@@ -82,10 +82,11 @@ class Custom extends ActiveRecord
     {
         return $this->is_vip ? true : false;
     }    
-
+    
     public function getUser()
     {
-        return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
+//        return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
+        return empty($this->openidBindMobile->user) ? null : $this->openidBindMobile->user;
     }
 
     public function getCustomManager()

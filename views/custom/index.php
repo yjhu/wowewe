@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+//use yii\grid\GridView;
+use kartik\grid\GridView;
 use app\models\MOffice;
 use app\models\Openidbindmobile;
 
@@ -80,7 +81,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format'=>'html',
                 'value'=>function ($model, $key, $index, $column) { 
 
-                    if(empty($model->openid))
+//                    if(empty($model->openid))
+                    if(empty($model->user))
                     {
                         //$wxbind_info = "微信未绑定";
                         return "<img width=48 src='/wx/web/images/wxmpres/headimg-nowx-blank.png' title='微信未绑定'>";
@@ -101,7 +103,28 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
 
                 },
+                'attribute'=>'is_bind',
+                'filter'=> ['1'=>'绑定', '0'=>'未绑定'],
                 'headerOptions' => array('style'=>'width:20%;'),
+            ],
+
+            [
+                'label' => '关注时间',
+                'attribute'=>'subscribe_time_start',
+                'value'=>function ($model, $key, $index, $column) { 
+                    return empty($model->openidBindMobile->user) ? '' : $model->openidBindMobile->user->create_time;
+                },
+                'filterType'=>\kartik\grid\GridView::FILTER_DATE,
+                'format'=>'raw',
+                'filterWidgetOptions'=>[
+                    'type' => \kartik\widgets\DatePicker::TYPE_RANGE,
+                    'attribute2'=>'subscribe_time_end',
+                    'pluginOptions'=>[
+                        'format'=>'yyyy-mm-dd',
+                        'language'=>'zh-CN',
+                    ]
+                ],
+                'headerOptions' => array('style'=>'width:35%;'),	
             ],
 
             [
@@ -109,7 +132,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'office_id',
                 //'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
                 'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
-                'filter'=> MOffice::getOfficeNameOptionSimple2('gh_03a74ac96138',false,false),
+                //'filter'=> MOffice::getOfficeNameOptionSimple2('gh_03a74ac96138',false,false),
+                'filter'=> \yii\helpers\ArrayHelper::merge(['0'=>'非营业厅'], MOffice::getOfficeNameOptionSimple2('gh_03a74ac96138',false,false)),
                 //'headerOptions' => array('style'=>'width:200px;'),      
                 //'visible'=>Yii::$app->user->identity->openid == 'admin',
                 'visible'=>Yii::$app->user->getIsAdmin(),

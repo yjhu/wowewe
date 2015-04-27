@@ -12,6 +12,12 @@ use app\models\Custom;
  */
 class CustomSearch extends Custom
 {
+    public $is_bind;
+
+    public $subscribe_time_start;    
+
+    public $subscribe_time_end;        
+
     /**
      * @inheritdoc
      */
@@ -20,6 +26,7 @@ class CustomSearch extends Custom
         return [
             [['custom_id', 'is_vip', 'office_id', 'vip_level_id'], 'integer'],
             [['mobile', 'name', 'vip_join_time', 'vip_start_time', 'vip_end_time'], 'safe'],
+            [['is_bind', 'subscribe_time_start', 'subscribe_time_end'],  'safe'],
         ];
     }
 
@@ -43,6 +50,9 @@ class CustomSearch extends Custom
     {
         $query = Custom::find();
 
+        $query->joinWith('openidBindMobile');
+        $query->leftJoin('wx_user', 'wx_user.gh_id = wx_openid_bind_mobile.gh_id AND wx_user.openid = wx_openid_bind_mobile.openid');
+        
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -53,23 +63,39 @@ class CustomSearch extends Custom
                 'office_id' => $this->office_id,
             ]);            
         }
-
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
+
+        if ($this->is_bind !== '') {
+            if ($this->is_bind == 1) {
+                //$query->andWhere('wx_openid_bind_mobile.mobile is not null');            
+                $query->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]]);
+            } else {
+                $query->andWhere(['wx_openid_bind_mobile.mobile' => null]);
+            }
+        }
+        
         $query->andFilterWhere([
             'custom_id' => $this->custom_id,
             'is_vip' => $this->is_vip,
             'office_id' => $this->office_id,
             'vip_level_id' => $this->vip_level_id,
-//            'vip_join_time' => $this->vip_join_time,
-//            'vip_start_time' => $this->vip_start_time,
-//            'vip_end_time' => $this->vip_end_time,
         ]);
 
         $query->andFilterWhere(['like', 'mobile', $this->mobile])
             ->andFilterWhere(['like', 'name', $this->name]);
+
+        if (trim($this->subscribe_time_start) !== '') 
+        {
+            $query->andWhere('date(wx_user.create_time)>=:subscribe_time_start', [':subscribe_time_start' => $this->subscribe_time_start]);
+        }
+
+        if (trim($this->subscribe_time_end) !== '') 
+        {
+            $query->andWhere('date(wx_user.create_time)<=:subscribe_time_end', [':subscribe_time_end' => $this->subscribe_time_end]);
+        }
 
         return $dataProvider;
     }

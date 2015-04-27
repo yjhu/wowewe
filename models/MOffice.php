@@ -176,6 +176,7 @@ use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 
 use app\models\MGh;
+use app\models\U;
 
 class MOffice extends ActiveRecord implements IdentityInterface
 {
@@ -339,6 +340,7 @@ class MOffice extends ActiveRecord implements IdentityInterface
             $text = $office['title'];
             $listData[$value]=$text;
         }
+        U::utf8_array_asort($listData);
         return $json? json_encode($listData) : $listData;
     }
 

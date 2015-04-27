@@ -26,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'FromUserName',         
 //                'user.nickname',
             [
+                'label' => '微信昵称',
                 'attribute'=>'user_nickname',
                 'value'=>'user.nickname',
 
@@ -40,14 +41,17 @@ $this->params['breadcrumbs'][] = $this->title;
             
                [
                     'attribute' => 'Event',
-//                    'value'=>function ($model, $key, $index, $column) {  \app\models\U::W($model); return $model->Event == 'subscribe' ? '关注' : '取消关注'; },
-                    'value'=>function ($model, $key, $index, $column) {  \app\models\U::W($model); return $model->Event == 'subscribe' ? '关注' : '取消关注'; },
+                    'value'=>function ($model, $key, $index, $column) { return $model->Event == 'subscribe' ? '关注' : '取消关注'; },
                ],
 
             'scene_pid',
             
-//          'staff.name',
-//            'staff.name',
+            [
+                'label' => '推广者姓名',
+                'attribute'=>'staff_name',
+                'value'=>'staff.name',
+
+            ],
 /*
                [
                     'label' => '推荐者姓名',

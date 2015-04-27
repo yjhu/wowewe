@@ -15,6 +15,8 @@ use yii\filters\VerbFilter;
  */
 class AccesslogController extends Controller
 {
+    public $enableCsrfValidation = false;
+
     public function behaviors()
     {
         return [

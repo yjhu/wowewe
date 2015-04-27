@@ -17,6 +17,8 @@ use yii\data\ArrayDataProvider;
  */
 class CustomController extends Controller
 {
+    public $enableCsrfValidation = false;
+
     public function behaviors()
     {
         return [
