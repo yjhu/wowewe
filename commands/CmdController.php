@@ -786,6 +786,97 @@ class CmdController extends Controller
     }
 
 
+    public function actionImportvipnew()
+    {
+        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'vip.txt';
+        $fh = fopen($file, "r");
+        $i=0;
+        while (!feof($fh)) 
+        {
+            $line = fgets($fh);
+            if (empty($line))
+                continue;
+            $line = iconv('GBK','UTF-8//IGNORE', $line);            
+            $arr = explode("\t", $line);            
+            //$arr[1] = iconv('GBK','UTF-8//IGNORE', $arr[1]);
+            //$arr[2] = iconv('GBK','UTF-8//IGNORE', $arr[2]);
+            //$arr[3] = iconv('GBK','UTF-8//IGNORE', $arr[3]);
+            $custom_mobile = trim($arr[0]);
+            $manager_name = trim($arr[1]);
+            $manager_mobile = trim($arr[2]);            
+            $vip_level_title = trim($arr[3]);    
+            $office_title = trim($arr[4]);                  
+            
+            //$vip_join_time = trim($arr[4]);   
+            //$vip_join_time = str_replace("/", "-", $vip_join_time);
+            //$vip_start_time = trim($arr[5]);   
+            //$vip_start_time = str_replace("/", "-", $vip_start_time);
+            //$vip_end_time = trim($arr[6]);   
+            //$vip_end_time = str_replace("/", "-", $vip_end_time);
+            $vipLevel = VipLevel::findOne(['title'=>$vip_level_title]);
+            if (empty($vipLevel)) {
+                $vipLevel = new VipLevel;
+                $vipLevel->title = $vip_level_title;
+                if (!$vipLevel->save(false)) {
+                    U::W('save vipLevel err');
+                }
+            }
+
+            $office = MOffice::findOne(['title'=>$office_title]);
+             
+
+            $custom = Custom::findOne(['mobile'=>$custom_mobile]);
+            if (!empty($custom)) {
+                U::W("mobile=$custom_mobile already exists");                
+                U::W($arr);
+//                continue;
+            }
+            else {
+                $custom = new Custom;
+                $custom->vip_join_time = '0000-00-00 00:00:00';
+            }
+            $custom->mobile = $custom_mobile;
+            $custom->is_vip = 1;
+            //$custom->vip_join_time = $vip_join_time;            
+            //$custom->vip_start_time = $vip_start_time;            
+            //$custom->vip_end_time = $vip_end_time;                        
+            $custom->vip_level_id = $vipLevel->vip_level_id;  
+
+            $custom->office_id = empty($office) ? 0 : $office->office_id;
+
+ 
+            $custom->save(false);
+
+            $manager = Manager::findOne(['mobile'=>$manager_mobile]);
+            if (empty($manager)) {
+                $manager = new Manager;
+                //$manager->mobile = $manager_mobile;
+                $manager->name = $manager_name;
+                $manager->save(false);
+            }
+            
+            $customManager = CustomManager::findOne(['custom_id'=>$custom->custom_id, 'manager_id'=>$manager->manager_id]);
+            if (!empty($customManager)) {
+                //U::W('Impossible!!! CustomManager already exists');
+                //U::W($arr);
+            } else {
+                $customManager = new CustomManager;
+                $customManager->custom_id = $custom->custom_id;
+                $customManager->manager_id = $manager->manager_id;
+                if (!$customManager->save(false)) {
+                    U::W('customManager SAVE ERR');
+                }
+            }
+            $i++;
+            //if($i > 5) break;
+
+            if ($i % 1000 == 1)
+                U::W($i);
+            
+        }
+        fclose($fh);    
+    }
+
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/importcustom
     public function actionImportcustom()
     {

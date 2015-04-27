@@ -1529,6 +1529,17 @@ EOD;
                 $order->attr = "{$_GET['cardType']}";
                 break;
 
+            case MItem::ITEM_CAT_CARD_120GLIULIANG:
+                $order->title = '120G流量上网卡';                    
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_CARD_240GLIULIANG:
+                $order->title = '240G流量上网卡';                    
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+
             //双十一活动 上网卡 begin
             //----------------------------------------------------------
             //const ITEM_CAT_CARD_1111_200YUAN_BENDI_5GLIULIANG = 708;
@@ -1795,7 +1806,33 @@ EOD;
                 $order->title = '三星 9006V';                   
                 $order->attr = "{$_GET['cardType']}";
                 break; 
-                                                            
+                            
+            //双4G双百兆手机 5.1 活动
+            case MItem::ITEM_CAT_MOBILE_4G_LIANGXIANG_A3600:
+                $order->title = '联想A3600';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_4G_KUPAI_7061:
+                $order->title = '酷派7061';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_4G_KUPAI_Y76:
+                $order->title = '酷派y76';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_4G_XIAOMI_4G:
+                $order->title = '小米4（4G）';                   
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_4G_HTC_820U:
+                $order->title = 'HTC 820U';          
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            case MItem::ITEM_CAT_MOBILE_4G_IPHONE6_16G:
+                $order->title = 'iPhone6 (16G)';            
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+
 
             //老用户户专享 参与机型及优惠合约
             case MItem::ITEM_CAT_MOBILE_SANXIN_SM_G9006VW:
