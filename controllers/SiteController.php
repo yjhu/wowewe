@@ -20,7 +20,7 @@ use app\models\MOffice;
 
 class SiteController extends Controller
 {
-//    public $enableCsrfValidation = false;
+    public $enableCsrfValidation = false;
     
     public function behaviors()
     {

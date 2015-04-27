@@ -12,14 +12,16 @@ class MAccessLogSearch extends MAccessLog
 
     public $create_time_2;    
 
-public $user_nickname;
+    public $user_nickname;
+
+    public $staff_name;
 
     public function rules()
     {
         return [
             [['scene_pid', 'CreateTime', 'MsgId', 'EventKeyCRC'], 'integer'],
             [['create_time', 'ToUserName', 'FromUserName', 'MsgType', 'Content', 'Event', 'EventKey'], 'safe'],
-            [['user_nickname'],  'safe'],            
+            [['user_nickname', 'staff_name'],  'safe'],            
 
         ];
     }
@@ -47,20 +49,20 @@ public $user_nickname;
 
 //        $dataProvider->sort->attributes['user.nickname'] =  ['asc'=>['user.nickname' => SORT_ASC],'desc'=>['user.nickname' => SORT_DESC]];
 
-//$query->select(['wx_user.*','wx_staff.*','wx_access_log.*']);
-//$query->select('*');
+        $query->select(['wx_user.*','wx_staff.*','wx_access_log.*']);
+        //$query->select('*');
 
 //        $query->with('user');
         $query->joinWith('user');
-//$query->joinWith(['user' => function($query) { $query->from(['user'=>'wx_user']); }]);
-
+        //$query->joinWith(['user' => function($query) { $query->from(['user'=>'wx_user']); }]);
 
 //        $query->joinWith('staff');
-         $query->leftJoin('wx_staff', 'wx_access_log.ToUserName = wx_staff.gh_id AND wx_access_log.scene_pid = wx_staff.scene_id AND wx_access_log.scene_pid != 0');
+        $query->leftJoin('wx_staff', 'wx_access_log.ToUserName = wx_staff.gh_id AND wx_access_log.scene_pid = wx_staff.scene_id AND wx_access_log.scene_pid != 0');
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
+        
         $query->andFilterWhere([
             'create_time' => $this->create_time,
             'scene_pid' => $this->scene_pid,
@@ -70,6 +72,7 @@ public $user_nickname;
         $query->andFilterWhere(['like', 'ToUserName', $this->ToUserName])
             ->andFilterWhere(['like', 'FromUserName', $this->FromUserName])
             ->andFilterWhere(['like', 'wx_user.nickname', $this->user_nickname])
+            ->andFilterWhere(['like', 'wx_staff.name', $this->staff_name])            
             ->andFilterWhere(['like', 'MsgType', $this->MsgType])
             ->andFilterWhere(['like', 'Content', $this->Content])
             ->andFilterWhere(['like', 'event', $this->Event])

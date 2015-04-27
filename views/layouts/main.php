@@ -51,7 +51,7 @@ AppAsset::register($this);
 							['label' => '员工管理','url' => ['/order/stafflist'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '粉丝管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '客户管理','url' => ['/custom/index'],'linkOptions' => ['data-method' => 'post']],
-							['label' => '推荐查询','url' => ['/accesslog/index'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '推广查询','url' => ['/accesslog/index'],'linkOptions' => ['data-method' => 'post']],
 						]
 					],					
 					[
@@ -75,7 +75,7 @@ AppAsset::register($this);
 							['label' => '商品套餐管理','url' => ['/admin/pkglist'],'linkOptions' => ['data-method' => 'post']],
 							'<li class="divider"></li>',
 							['label' => '粉丝管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post']],
-							['label' => '推荐查询','url' => ['/accesslog/index'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '推广查询','url' => ['/accesslog/index'],'linkOptions' => ['data-method' => 'post']],
 							//['label' => '粉丝管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post'], 'visible' => Yii::$app->user->isRoot],
 							'<li class="divider"></li>',
 							['label' => '微信菜单配置','url' => ['/wxmenu/index'],'linkOptions' => ['data-method' => 'post']],

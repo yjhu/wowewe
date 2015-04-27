@@ -513,6 +513,21 @@ class U
         return strlen(stream_get_contents($fp));
     }
 
+    public static function utf8_array_asort(&$array)
+    {
+        if(!isset($array) || !is_array($array)) {
+            return false;
+        }
+        foreach($array as $k=>$v) {
+            $array[$k] = iconv('UTF-8', 'GBK//IGNORE', $v);
+        }
+        asort($array);
+        foreach($array as $k=>$v) {
+            $array[$k] = iconv('GBK', 'UTF-8//IGNORE', $v);
+        }
+        return true;
+    }
+
 }
 
 /*
