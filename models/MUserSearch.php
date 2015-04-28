@@ -38,12 +38,15 @@ class MUserSearch extends Model
     public $sign_money;
     
     public $mobile;
-        
+
+    public $office_id;
+    
     public function rules()
     {
         return [
             [['id', 'role', 'status'], 'integer'],
             [['gh_id', 'nickname', 'create_time', 'create_time_2', 'update_time', 'scene_id', 'scene_pid', 'is_liantongstaff','sign_time','sign_money', 'mobile'], 'safe'],
+            [['office_id',], 'safe'],            
         ];
     }
 
@@ -68,7 +71,18 @@ class MUserSearch extends Model
         $query->joinWith('openidBindMobiles');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
+/*            
+            'sort' => [
+                'attributes' => [
+                    'name' => [
+                        'asc' => ['id' => SORT_ASC],
+                        'desc' => ['id' => SORT_DESC],
+                        'default' => SORT_DESC,
+                    ],
+                ],
+            ]
+*/            
+        ]);    
 
         $this->gh_id = Yii::$app->user->getGhid();
         $this->addCondition($query, 'wx_user.gh_id');        
@@ -92,8 +106,13 @@ class MUserSearch extends Model
         $this->addCondition($query, 'update_time');
         $this->addCondition($query, 'scene_pid');       
         $this->addCondition($query, 'is_liantongstaff');
-       $query->andWhere(['like', 'wx_openid_bind_mobile.mobile', $this->mobile]);
-        
+        $query->andWhere(['like', 'wx_openid_bind_mobile.mobile', $this->mobile]);
+        if (!empty($this->office_id)) {
+            $office = MOffice::findOne($this->office_id);
+            if (!empty($office)) {
+                $query->andFilterWhere(['scene_pid' => $office->getSceneids()]);
+            }
+        }
         if (trim($this->create_time) !== '') 
         {
             $query->andWhere('date(create_time)>=:create_time', [':create_time' => $this->create_time]);

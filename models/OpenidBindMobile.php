@@ -68,6 +68,12 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
         ];
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+        static::exportToWechat(MGh::GH_HOYA);
+    }
+
     public function getUser()
     {
         return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
