@@ -40,13 +40,15 @@ class MUserSearch extends Model
     public $mobile;
 
     public $office_id;
+
+    public $staff_name;    
     
     public function rules()
     {
         return [
             [['id', 'role', 'status'], 'integer'],
             [['gh_id', 'nickname', 'create_time', 'create_time_2', 'update_time', 'scene_id', 'scene_pid', 'is_liantongstaff','sign_time','sign_money', 'mobile'], 'safe'],
-            [['office_id',], 'safe'],            
+            [['office_id', 'staff_name'], 'safe'],            
         ];
     }
 
@@ -81,7 +83,12 @@ class MUserSearch extends Model
                     ],
                 ],
             ]
-*/            
+*/
+/*
+            'sort' => [
+                'attributes' => ['id'],
+            ],
+*/
         ]);    
 
         $this->gh_id = Yii::$app->user->getGhid();
