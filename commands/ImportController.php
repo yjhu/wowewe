@@ -48,7 +48,7 @@ class ImportController extends Controller
             if (empty($region)) {
                 $region = new MMarketingRegion;
                 $region->name = $region_name_utf8;
-                $region->save();
+                $region->save(false);
             }
             
             $msc = MMarketingServiceCenter::findOne(['name' => $msc_name_utf8]);
@@ -56,33 +56,39 @@ class ImportController extends Controller
                 $msc = new MMarketingServiceCenter;
                 $msc->name = $msc_name_utf8;
                 $msc->region_id = $region -> id;
-                $msc->save();
+                $msc->save(false);
             }
             
             $office = MOffice::findOne(['title' => $office_name_utf8]);
             if (empty($office)) {                
-//                echo ($i + 1) . $line;
-                echo $i . "can't find office name: ".$office_name .PHP_EOL;
-                continue;
+                $office = new MOffice;
+                $office->gh_id = 'gh_03a74ac96138'; // 襄阳联通公共ID
+                $office->title = $office_name_utf8;
+                $office->is_jingxiaoshang = 1;
+                $office->save(false);
             }
             if (empty($office->msc)) {
                 yii::$app->db->createCommand()->insert('wx_rel_office_msc', [
                     'office_id' => $office->office_id,
                     'msc_id' => $msc->id,
-                ]);
+                ])->execute();
             }
             
             $staff = MStaff::findOne(['name' => $supervisor_name_utf8]);
             if (empty($staff)) {                
-                echo ($i + 1) . $line;
-                echo "can't find staff name: ".$supervisor_name;
-                continue;
+                $staff = new MStaff;
+                $staff->office_id = 25;
+                $staff->name = $supervisor_name_utf8;
+                $staff->gh_id = 'gh_03a74ac96138'; // 襄阳联通公共ID
+                $staff->mobile = $supervisor_mobile;
+                $staff->cat = 0;
+                $staff->save();
             }
-            if (empty($staff->supervisedOffices) || empty($office->supervior)) {
+            if (empty($staff->supervisedOffices) || empty($office->supervisor)) {
                 yii::$app->db->createCommand()->insert('wx_rel_supervision_staff_office', [
                     'office_id' => $office->office_id,
                     'staff_id' => $staff->staff_id,
-                ]);
+                ])->execute();
             }
         
         }
