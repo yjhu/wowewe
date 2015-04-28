@@ -67,7 +67,8 @@
             || $model->cid==711
             -->
              <?php foreach($models as $model) { if($model->cid==700 || $model->cid==701 || 
-                $model->cid==715 || $model->cid==716 || $model->cid==717 || $model->cid==718 || $model->cid==719) 
+                $model->cid==715 || $model->cid==716 || $model->cid==717 || $model->cid==718 || $model->cid==719 ||
+                $model->cid==718 || $model->cid==717) 
             {?>
                 <li><a data-ajax="false" href="<?php echo  Url::to(['wap/card', 'cid'=>$model->cid],true) ?>">
                         <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
@@ -77,7 +78,7 @@
                         <?php if(($model->cid != 718) || ($model->cid != 719)) { ?>  
                         <p class='line'>原价: ￥<?= $model->old_price/100 ?></p>
                         <?php } ?>
-                        
+
                         <!--
                         <p>双11活动价: ￥<//?= $model->price/100 ?></p>
                         -->

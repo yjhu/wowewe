@@ -44,7 +44,27 @@
                     <p>合约价1000-2000元终端，按网龄年度<br>递增模式优惠，最高优惠200元；<br>合约价2000元以上终端，按网龄年度<br>递增模式优惠，最高优惠300元。</p>
                 </a>
             </li>
+
+
+            <?php foreach($models as $model) { 
+                if($model->cid==875 || $model->cid==876)  { 
+            ?>
+                <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
+                        <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
+                        <h2><?= $model->title ?></h2>
+                        <p><?= $model->title_hint ?></p>
+                  
+                        <p class='line'>原价: ￥<?= round($model->old_price/100) ?></p>
+                  
+                        <p>老用户专享价: ￥<?= round($model->price/100) ?></p>
+                    </a>
+                </li>
+            <?php } } ?>
+
         <?php } ?>
+
+
+        
 
 
 
