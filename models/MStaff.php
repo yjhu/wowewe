@@ -25,11 +25,8 @@ CREATE TABLE wx_staff (
     scene_id int(10) unsigned NOT NULL DEFAULT '0' COMMENT '推广者的推广id',    
     cat tinyint(3) NOT NULL DEFAULT 0 COMMENT '推广者身份类型, 0:内部员工, 1:外部推广者, 2:部门本身',    
     KEY office_id_idx(office_id),
-    KEY gh_id_idx(gh_id)
+    KEY idx_gh_id_scene_id(gh_id, scene_id),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-ALTER TABLE wx_staff DROP KEY gh_id_idx;
-ALTER TABLE wx_staff ADD KEY idx_gh_id_scene_id(gh_id, scene_id);
 
 */
 
@@ -106,6 +103,11 @@ class MStaff extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
+    }
+
+    public static function getLianTongStaffs()
+    {
+        return MStaff::find()->where(['gh_id'=>Yii::$app->user->getGhid(), 'cat' => static::SCENE_CAT_IN])->all();
     }
 
     public function getScore()
