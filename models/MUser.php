@@ -425,18 +425,13 @@ class MUser extends ActiveRecord implements IdentityInterface
         return $this->hasOne(MStaff::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
     }
 
-/*
-    public function getVipManagers()
-    {
-        $managers = [];
-        foreach ($this->openidBindMobiles as $openidBindMobile) {
-            if (!empty($openidBindMobile->vipManager)) {
-                $managers[] = $openidBindMobile->vipManager;
-            }
-        }
-        return $managers;
+    public function getSceneStaff()
+    {        
+        if ($this->scene_pid == 0)
+            return null;
+        return $this->hasOne(MStaff::className(), ['gh_id' => 'gh_id', 'scene_id' => 'scene_pid']);
     }
-*/
+
     public function getManagers()
     {
         $managers = [];
