@@ -19,15 +19,16 @@ return [
 		],
 
 		'cache' => [
-			'class' => 'yii\caching\MemCache',
-			'keyPrefix' => 'ya54dee8',
-			'servers' => [
-				[
-					'host' => 'localhost',
-					'port' => 11211,
-					'weight' => 100,
-				],
-			],
+                        'class' => 'yii\caching\DummyCache',
+//			'class' => 'yii\caching\MemCache',
+//			'keyPrefix' => 'ya54dee8',
+//			'servers' => [
+//				[
+//					'host' => 'localhost',
+//					'port' => 11211,
+//					'weight' => 100,
+//				],
+//			],
 		],		
 
 
