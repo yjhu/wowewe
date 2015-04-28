@@ -99,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		*/
 
 		[
-			'attribute' => 'nickname',
+			'attribute' => 'staff_name',
 			'label' => '推广者',
 			'format'=>'html',
             'value'=>function ($model, $key, $index, $column) { 
@@ -135,107 +135,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'filter' => MOffice::getOfficeNameOptionSimple2(Yii::$app->user->getGhid(), false, false),
 		],	
 
-		/*
-		[
-			'attribute' => 'nickname',
-			'label' => '粉丝来源所属部门',
-			'format'=>'html',
-            'value'=>function ($model, $key, $index, $column) { 
-				$nickname = $model->nickname;
-
-	            $staff = MStaff::findOne(['gh_id'=>$model->gh_id, 'scene_id'=>$model->scene_pid]);
-	            if($staff->cat == 0) //内部员工
-	            {
-	                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
-	                $row['scene_pid_office'] = empty($staff->office->title) ? '' : $staff->office->title;
-	                $row['scene_pid_cat'] = '内部员工';
-	            }
-	            else
-	            {
-	                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
-	                $row['scene_pid_office'] = '-';
-	                $row['scene_pid_cat'] = '-';
-	            }
-
-				//$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
-				return $row['scene_pid_office'];
-			},
-			'headerOptions' => array('style'=>'width:15%;'),	
-		],	
-
-		[
-			'attribute' => 'nickname',
-			'label' => '粉丝来源类别',
-			'format'=>'html',
-            'value'=>function ($model, $key, $index, $column) { 
-				$nickname = $model->nickname;
-
-	            $staff = MStaff::findOne(['gh_id'=>$model->gh_id, 'scene_id'=>$model->scene_pid]);
-	            if($staff->cat == 0) //内部员工
-	            {
-	                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
-	                $row['scene_pid_office'] = empty($staff->office->title) ? '' : $staff->office->title;
-	                $row['scene_pid_cat'] = '内部员工';
-	            }
-	            else
-	            {
-	                $row['scene_pid_name'] = empty($staff->name) ? '' : $staff->name;
-	                $row['scene_pid_office'] = '-';
-	                $row['scene_pid_cat'] = '-';
-	            }
-
-				//$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
-				return $row['scene_pid_cat'];
-			},
-			'headerOptions' => array('style'=>'width:10%;'),	
-		],	
-		*/
-
-		/*
-		[
-			'attribute' => 'scene_id',
-			'value'=>function ($model, $key, $index, $column) { return empty($model->scene_id)?'':$model->scene_id; },
-		],
-		*/
-
-/*
-		[
-			'attribute'=>'create_time',
-			'filterType'=>GridView::FILTER_DATE_RANGE,
-			'format'=>'raw',
-			'width'=>'170px',
-			'filterWidgetOptions'=>[
-				'convertFormat'=>true,
-				'pluginOptions'=>[
-					//'timePicker'=>true,
-					//'timePickerIncrement'=>15,
-					//'format'=>'Y-m-d h:i A'
-					'separator'=>' : ',
-					//'locale'=>'zh-CN',
-					'format'=>'Y-m-d'
-				]
-			],
-		],
-		[
-			'class'=>'kartik\grid\BooleanColumn',
-			'attribute'=>'status', 
-			'vAlign'=>'middle',
-		],
-		[
-			'class'=>'kartik\grid\ActionColumn',
-			'dropdown'=>false,
-			'order'=>DynaGrid::ORDER_FIX_RIGHT
-		],
-		['class'=>'kartik\grid\CheckboxColumn',  'order'=>DynaGrid::ORDER_FIX_RIGHT],
-*/
-
-		/*
-		[
-			'class' => 'yii\grid\ActionColumn',
-		]
-		*/
-
-
 	];
 		
 	echo DynaGrid::widget([
@@ -251,27 +150,10 @@ $this->params['breadcrumbs'][] = $this->title;
 			//'panel'=>['heading'=>'<h3 class="panel-title">粉丝列表</h3>'],
 			'panel'=>['heading'=>'<h3 class="panel-title">&nbsp;</h3>'],
 			'export'=>['options'=>['class' => 'btn btn-success']],
-		],
-		
+		],		
 		'options'=>['id'=>'dynagrid-1'] // a unique identifier is important
 	]);
 
-/*
-    echo \yii\grid\GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-	'options' => ['class' => 'table-responsive'],
-	'tableOptions' => ['class' => 'table table-striped'],
-        
-        'columns' => [
-            'id',            
-            'openid',            
-			'nickname', 
-			'email:email',
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); 
-*/
 ?>
 
 
@@ -279,20 +161,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php
 /*
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-	'options' => ['class' => 'table-responsive'],
-	'tableOptions' => ['class' => 'table table-striped'],
-        
-        'columns' => [
-            'id',            
-            'openid',            
-			'nickname', 
-			'email:email',
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
 
 */
 

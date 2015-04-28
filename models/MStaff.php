@@ -99,6 +99,17 @@ class MStaff extends ActiveRecord
     {
         return $this->hasOne(MOffice::className(), ['office_id' => 'office_id']);
     }
+    
+    public function getSupervisedOffices()
+    {
+        return $this->hasMany(MOffice::className(), ['office_id' => 'office_id'])
+            ->viaTable('wx_rel_supervision_staff_office', ['staff_id' => 'staff_id']);
+    }
+    
+    public function isSupervisor()
+    {
+        return !empty($this->supervisedOffices);
+    }
 
     public function getUser()
     {
