@@ -47,6 +47,21 @@ class AdminController extends Controller
     {
         $searchModel = new MUserSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->get());
+
+        if (isset($_GET['download'])) {
+            $dataProvider->setPagination(false);
+            $data = $dataProvider->getModels();
+            $date = date('Y-m-d-His');
+            $filename = Yii::$app->getRuntimePath()."/user-{$date}.csv";
+            $csv = new \app\models\ECSVExport($data);
+            $attributes = ['nickname', 'bindMobileNumbersStr', 'create_time', 'sceneStaff.name', 'sceneStaff.office.title'];                    
+            $csv->setInclude($attributes);                
+            $csv->setHeaders(['Nickname'=>'微信昵称', 'Bind Mobile Numbers Str'=>'绑定手机号', 'Create Time'=>'关注时间', ]);
+            $csv->toCSV($filename); 
+            Yii::$app->response->sendFile($filename);
+            return;
+        }
+        
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,

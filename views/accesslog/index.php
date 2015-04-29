@@ -49,8 +49,13 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => '推广者姓名',
                 'attribute'=>'staff_name',
-                'value'=>'staff.name',
-
+//                'value'=>'staff.name',
+                'value'=>function ($model, $key, $index, $column) { 
+                    if ($model->scene_pid == 0) {
+                        return '';
+                    }
+                    return empty($model->staff->name) ? '' : $model->staff->name; 
+                },
             ],
 /*
                [

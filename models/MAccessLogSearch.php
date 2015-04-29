@@ -25,12 +25,7 @@ class MAccessLogSearch extends MAccessLog
 
         ];
     }
-/*
-    public function attributes()
-    {
-        return array_merge(parent::attributes(), ['user.nickname']);
-    }
-*/
+    
     public function search($params)
     {
         $query = MAccessLog::find();
@@ -39,7 +34,7 @@ class MAccessLogSearch extends MAccessLog
             'query' => $query,
             'sort' => [
                 'defaultOrder' => [
-                    'id' => SORT_DESC
+                    'access_log_id' => SORT_DESC
                 ]
             ],
             'pagination' => [
@@ -47,17 +42,23 @@ class MAccessLogSearch extends MAccessLog
             ],            
         ]);
 
-//        $dataProvider->sort->attributes['user.nickname'] =  ['asc'=>['user.nickname' => SORT_ASC],'desc'=>['user.nickname' => SORT_DESC]];
+        //$dataProvider->sort->attributes['user.nickname'] =  ['asc'=>['user.nickname' => SORT_ASC],'desc'=>['user.nickname' => SORT_DESC]];
 
         $query->select(['wx_user.*','wx_staff.*','wx_access_log.*']);
         //$query->select('*');
 
-//        $query->with('user');
+        //$query->with('user');
         $query->joinWith('user');
         //$query->joinWith(['user' => function($query) { $query->from(['user'=>'wx_user']); }]);
 
-//        $query->joinWith('staff');
+        //$query->joinWith('staff');
         $query->leftJoin('wx_staff', 'wx_access_log.ToUserName = wx_staff.gh_id AND wx_access_log.scene_pid = wx_staff.scene_id AND wx_access_log.scene_pid != 0');
+
+        if (!Yii::$app->user->getIsAdmin())
+        {
+            $office = Yii::$app->user->identity;
+            $query->andWhere(['wx_access_log.scene_pid' => $office->getSceneids()]);
+        }
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;

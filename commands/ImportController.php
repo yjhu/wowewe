@@ -92,6 +92,6 @@ class ImportController extends Controller
             }
         
         }
-        fclose($fh);    
+        fclose($fh);   
     }
 }

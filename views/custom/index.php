@@ -6,7 +6,7 @@ use kartik\grid\GridView;
 use app\models\MOffice;
 use app\models\Openidbindmobile;
 
-
+use app\models\U;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CustomSearch */
@@ -24,6 +24,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 -->
     <p>
+		<?php echo Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', U::current(['download' => 1]), ['class' => 'btn btn-success', 'data-pjax' => '0',]); ?>
+
 		<?php echo Html::a("非营业厅VIP会员绑定列表", ['vipbind', 'in_office'=>0], ['class' => 'btn btn-success']) ?>
     </p>
 

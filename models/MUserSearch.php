@@ -71,24 +71,14 @@ class MUserSearch extends Model
     {
         $query = MUser::find();
         $query->joinWith('openidBindMobiles');
+        $query->select('*');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-/*            
             'sort' => [
-                'attributes' => [
-                    'name' => [
-                        'asc' => ['id' => SORT_ASC],
-                        'desc' => ['id' => SORT_DESC],
-                        'default' => SORT_DESC,
-                    ],
-                ],
-            ]
-*/
-/*
-            'sort' => [
-                'attributes' => ['id'],
+                'defaultOrder' => [
+                    'id' => SORT_DESC
+                ]
             ],
-*/
         ]);    
 
         $this->gh_id = Yii::$app->user->getGhid();
@@ -122,12 +112,12 @@ class MUserSearch extends Model
         }
         if (trim($this->create_time) !== '') 
         {
-            $query->andWhere('date(create_time)>=:create_time', [':create_time' => $this->create_time]);
+            $query->andWhere('date(wx_user.create_time)>=:create_time', [':create_time' => $this->create_time]);
         }
 
         if (trim($this->create_time_2) !== '') 
         {
-            $query->andWhere('date(create_time)<=:create_time_2', [':create_time_2' => $this->create_time_2]);
+            $query->andWhere('date(wx_user.create_time)<=:create_time_2', [':create_time_2' => $this->create_time_2]);
         }
 
         return $dataProvider;
