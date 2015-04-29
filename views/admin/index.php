@@ -6,6 +6,7 @@ use app\models\MStaff;
 
 use app\models\MUser;
 use app\models\MOffice;
+use app\models\U;
 
 $this->title = '粉丝管理';
 $this->params['breadcrumbs'][] = $this->title;
@@ -17,6 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
     <p>
 		<?php //echo Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+		<?php echo Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', U::current(['download' => 1]), ['class' => 'btn btn-success', 'data-pjax' => '0',]); ?>
     </p>
 
 <?php 
@@ -39,7 +41,6 @@ $this->params['breadcrumbs'][] = $this->title;
             },
             'headerOptions' => array('style'=>'width:5%;'),	
         ],
-
 
         [
             'attribute' => 'nickname',
@@ -134,8 +135,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	];
 		
-	echo DynaGrid::widget([
+	echo GridView::widget([
 		'columns'=>$columns,
+/*
 		'storage'=>DynaGrid::TYPE_COOKIE,
 		//'theme'=>'panel-danger',
 		//'theme'=>'panel-primary',
@@ -146,9 +148,16 @@ $this->params['breadcrumbs'][] = $this->title;
 			'bordered'=>false,
 			//'panel'=>['heading'=>'<h3 class="panel-title">粉丝列表</h3>'],
 			'panel'=>['heading'=>'<h3 class="panel-title">&nbsp;</h3>'],
-			'export'=>['options'=>['class' => 'btn btn-success']],
+//			'export'=>['options'=>['class' => 'btn btn-success']],
+			'export'=>false,
 		],		
 		'options'=>['id'=>'dynagrid-1'] // a unique identifier is important
+*/
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'options' => ['class' => 'table-responsive'],
+        'tableOptions' => ['class' => 'table table-striped'],
+
 	]);
 
 ?>

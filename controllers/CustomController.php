@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 
+use app\models\U;
 
 /**
  * CustomController implements the CRUD actions for Custom model.
@@ -39,6 +40,20 @@ class CustomController extends Controller
     {
         $searchModel = new CustomSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        if (isset($_GET['download'])) {
+            $dataProvider->setPagination(false);
+            $data = $dataProvider->getModels();
+            $date = date('Y-m-d-His');
+            $filename = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.$this->id."-{$date}.csv";
+            $csv = new \app\models\ECSVExport($data);
+            $attributes = ['mobile','name','user.nickname', 'user.create_time', 'office.title', 'is_vip', 'vipLevel.title'];
+            $csv->setInclude($attributes);                
+            $csv->setHeaders(['User Nickname'=>'微信昵称', 'VIP'=>'是否VIP', 'User Create Time'=>'关注时间', 'title'=>'VIP级别']);
+            $csv->toCSV($filename);
+            Yii::$app->response->sendFile($filename);
+            return;
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,

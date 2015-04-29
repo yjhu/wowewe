@@ -21,6 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<h1><?php //echo Html::encode($this->title) ?></h1>
 
+		<?php echo Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', U::current(['download' => 1]), ['class' => 'btn btn-success', 'data-pjax' => '0',]); ?>
+
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <!--

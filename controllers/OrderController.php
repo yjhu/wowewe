@@ -200,6 +200,21 @@ class OrderController extends Controller
         $searchModel = new MStaffSearch;
         $searchModel->cat = MStaff::SCENE_CAT_IN;
         $dataProvider = $searchModel->search(Yii::$app->request->get());
+
+        if (isset($_GET['download'])) {
+            $dataProvider->setPagination(false);
+            $data = $dataProvider->getModels();
+            $date = date('Y-m-d-His');
+            $filename = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.$this->action->id."---stafflist-{$date}.csv";
+            $csv = new \app\models\ECSVExport($data);
+            $attributes = ['mobile', 'office.title', 'user.nickname', 'is_vip', 'vipLevel.title'];
+            $csv->setInclude($attributes);                
+            $csv->setHeaders(['User Nickname'=>'微信昵称', 'VIP'=>'是否VIP', 'User Create Time'=>'关注时间', 'title'=>'VIP级别']);
+            $csv->toCSV($filename);
+            Yii::$app->response->sendFile($filename);
+            return;
+        }
+
         return $this->render('stafflist', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
