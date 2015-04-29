@@ -48,4 +48,10 @@ class MMarketingServiceCenter extends \yii\db\ActiveRecord
     {
         $this->hasOne(MMarketingRegion::className(), ['id' => 'region_id']);
     }
+
+     public function getOffices()
+    {
+        $this->hasMany(MOffice::className(), ['office_id' => 'office_id'])
+            ->viaTable('wx_rel_office_msc', ['msc_id' => 'id']);
+    }
 }

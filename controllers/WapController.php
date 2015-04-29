@@ -38,6 +38,11 @@ use app\models\AlipaySubmit;
 use app\models\JSSDK;
 use app\models\HeatMap;
 
+use app\models\MMarketingRegion;
+use app\models\MMarketingServiceCenter;
+
+
+
 require_once __DIR__."/../models/wxpay/WxPayData.php";
 
 use app\models\wxpay\NativePay;
@@ -3087,6 +3092,65 @@ EOD;
         //return $this->render('dudaosubmit', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'jssdk'=>$jssdk, 'myPoint'=>$myPoint]);
         return $this->render('dudaoview', ['gh_id'=>$gh_id, 'openid'=>$openid, 'jssdk'=>$jssdk]);
         //return $this->render('dudaoview');
+    }
+
+
+
+    public function actionCsmdzltj1()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+        /*
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);        
+        Yii::$app->wx->setGhId($gh_id);
+        $gh = Yii::$app->wx->getGh();
+        $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
+        */
+
+        //$models_mr = new MMarketingRegion();  
+
+        $models_mr = MMarketingRegion::find()->all();
+        return $this->render('csmdzltj1', ['gh_id'=>'gh_id', 'openid'=>'openid', 'models_mr'=>$models_mr]);
+    }
+
+
+    public function actionCsmdzltj2()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+        /*
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);        
+        Yii::$app->wx->setGhId($gh_id);
+        $gh = Yii::$app->wx->getGh();
+        $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
+        */
+
+        //$models_mr = new MMarketingRegion();  
+
+        $mr_id = $_GET['mr_id'];
+        $mr = MMarketingRegion::findOne(['id' => $mr_id]);
+        return $this->render('csmdzltj2', ['gh_id'=>'gh_id', 'openid'=>'openid', 'models_msc'=>$mr->mscs]);
+    }
+
+
+    public function actionCsmdzltj3()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+
+
+        $msc_id = $_GET['msc_id'];
+        $msc = MMarketingServiceCenter::findOne(['id' => $msc_id]);
+
+        U::W("++++++++++++++++++++");
+        U::W($msc);
+        U::W($msc->offices);
+
+        return $this->render('csmdzltj3', ['gh_id'=>'gh_id', 'openid'=>'openid', 'models_office'=>$msc->offices]);
     }
 
 
