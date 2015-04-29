@@ -40,7 +40,7 @@ use app\models\HeatMap;
 
 use app\models\MMarketingRegion;
 use app\models\MMarketingServiceCenter;
-
+use app\models\MOfficeCampaignPicCategory;
 
 
 require_once __DIR__."/../models/wxpay/WxPayData.php";
@@ -3096,7 +3096,7 @@ EOD;
 
 
 
-    public function actionCsmdzltj1()
+    public function actionQdxcjspb1()
     {
         //$this->layout = 'wap';    
         $this->layout = false;    
@@ -3112,11 +3112,11 @@ EOD;
         //$models_mr = new MMarketingRegion();  
 
         $models_mr = MMarketingRegion::find()->all();
-        return $this->render('csmdzltj1', ['gh_id'=>'gh_id', 'openid'=>'openid', 'models_mr'=>$models_mr]);
+        return $this->render('qdxcjspb1', ['gh_id'=>'gh_id', 'openid'=>'openid', 'models_mr'=>$models_mr]);
     }
 
 
-    public function actionCsmdzltj2()
+    public function actionQdxcjspb2()
     {
         //$this->layout = 'wap';    
         $this->layout = false;    
@@ -3133,25 +3133,106 @@ EOD;
 
         $mr_id = $_GET['mr_id'];
         $mr = MMarketingRegion::findOne(['id' => $mr_id]);
-        return $this->render('csmdzltj2', ['gh_id'=>'gh_id', 'openid'=>'openid', 'models_msc'=>$mr->mscs]);
+        return $this->render('qdxcjspb2', ['gh_id'=>'gh_id', 'openid'=>'openid', 'models_msc'=>$mr->mscs]);
     }
 
 
+    public function actionQdxcjspb3()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+
+        $msc_id = $_GET['msc_id'];
+        $msc = MMarketingServiceCenter::findOne(['id' => $msc_id]);
+
+        return $this->render('qdxcjspb3', ['gh_id'=>'gh_id', 'openid'=>'openid', 'models_office'=>$msc->offices]);
+    }
+
+  
+    public function actionQdxcjspb4()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+
+        //$msc_id = $_GET['msc_id'];
+        //$msc = MMarketingServiceCenter::findOne(['id' => $msc_id]);
+
+        $office_id = $_GET['office_id'];
+        $office = MOffice::findOne(['office_id' => $office_id]);
+
+        $campaign_pic_categories = MOfficeCampaignPicCategory::find()->orderBy('sort_order')->all();
+
+        return $this->render('qdxcjspb4', ['gh_id'=>'gh_id', 'openid'=>'openid', 'office'=>$office, 'models_categories' => $campaign_pic_categories]);
+    }
+
+    /*评分页面*/
+    public function actionQdxcjspb5()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+
+        $model_category_id = $_GET['model_category_id'];
+        $model_ocpc = MOfficeCampaignPicCategory::findOne(['id' => $model_category_id]);
+
+        return $this->render('qdxcjspb5', ['gh_id'=>'gh_id', 'openid'=>'openid', 'model_ocpc'=>$model_ocpc]);
+    }
+
+
+
+
+
+    /*督导门店选择页面*/
+    public function actionCsmdzltj1()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+
+        $staff_id = $_GET['staff_id'];
+        $staff = MStaff::findOne(['staff_id' => $staff_id]);
+
+        return $this->render('csmdzltj1', ['gh_id'=>'gh_id', 'openid'=>'openid', 'staff_id'=>$staff_id, 'models_office'=>$staff->supervisedOffices, 'staff_id'=>$staff_id, ]);
+    }
+
+
+    public function actionCsmdzltj2()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+
+
+        $office_id = $_GET['office_id'];
+        $office = MOffice::findOne(['office_id' => $office_id]);
+
+        $campaign_pic_categories = MOfficeCampaignPicCategory::find()->orderBy('sort_order')->all();
+
+        return $this->render('csmdzltj2', ['gh_id'=>'gh_id', 'openid'=>'openid', 'staff_id'=>'staff_id', 'model_office'=>$office, 'models_categories' => $campaign_pic_categories]);
+    }
+
+    /*督导提交图片的页面*/
     public function actionCsmdzltj3()
     {
         //$this->layout = 'wap';    
         $this->layout = false;    
 
 
-        $msc_id = $_GET['msc_id'];
-        $msc = MMarketingServiceCenter::findOne(['id' => $msc_id]);
+        //$office_id = $_GET['office_id'];
+        //$office = MOffice::findOne(['office_id' => $office_id]);
 
-        U::W("++++++++++++++++++++");
-        U::W($msc);
-        U::W($msc->offices);
+        //$campaign_pic_categories = MOfficeCampaignPicCategory::find()->orderBy('sort_order')->all();
 
-        return $this->render('csmdzltj3', ['gh_id'=>'gh_id', 'openid'=>'openid', 'models_office'=>$msc->offices]);
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        //$model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);        
+        Yii::$app->wx->setGhId($gh_id);
+
+        $gh = Yii::$app->wx->getGh();
+        $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
+
+
+        return $this->render('csmdzltj3', ['gh_id'=>'gh_id', 'openid'=>'openid', 'jssdk'=>$jssdk]);
     }
+
+
 
 
     /*

@@ -33,7 +33,7 @@
     <header class="bar bar-nav">
   
       <h1 class="title">
-       参赛门店资料提交
+       渠道宣传竞赛评选
       </h1>
 
     </header>
@@ -42,15 +42,13 @@
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
         <p class="content-padded">
-          <?= $model_office->title ?>
+          <?= $office->title ?>
         </p>
-
-
 
       <?php foreach($models_categories as $model_category) {  ?>
           <ul class="table-view">
             <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj3','cat_name'=>$model_category->name],true) ?>">
+              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb5','model_category_id'=>$model_category->id],true) ?>">
                 <img class="media-object pull-left" src="http://placehold.it/80x80">
                 <div class="media-body">
                   <?= $model_category->name ?>

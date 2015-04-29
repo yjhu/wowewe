@@ -21,6 +21,14 @@
 
     <!-- Include the compiled Ratchet CSS -->
     <link href="/wx/web/ratchet/dist/css/ratchet.css" rel="stylesheet">
+
+    <style type="text/css">
+    #show{
+      color: red;
+      font-size: 24pt;
+      font-weight: bolder;
+    }
+    </style>
   
     <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
     <!-- Include the compiled Ratchet JS -->
@@ -33,7 +41,7 @@
     <header class="bar bar-nav">
   
       <h1 class="title">
-       参赛门店资料提交
+       渠道宣传竞赛评选
       </h1>
 
     </header>
@@ -41,33 +49,35 @@
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
-        <p class="content-padded">
-          <?= $model_office->title ?>
-        </p>
+      <p>
+        <?= $model_ocpc->name ?>
+      </p>
+       <img width=100% class="media-object pull-left" src="http://placehold.it/240x240">
+
+       <br>
+        &nbsp;
+       <br>
 
 
+      <form>
+            <div style="float:left">
+                <input id="myrange" type="range"  style="height:20px;width:280px;" value=1 min="1" max="18" onchange="change()"> 
+                &nbsp;
+                <span id="show">1</span>
+            </div>
 
-      <?php foreach($models_categories as $model_category) {  ?>
-          <ul class="table-view">
-            <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj3','cat_name'=>$model_category->name],true) ?>">
-                <img class="media-object pull-left" src="http://placehold.it/80x80">
-                <div class="media-body">
-                  <?= $model_category->name ?>
-                  <!--
-                  <p>...</p>
-                  -->
-                </div>
-              </a>
-            </li>
-      <?php } ?>
-
-        </ul>
-      
+              &nbsp;<br><br>
+              <button class="btn btn-positive btn-block" id="submit_rank">提交评分成绩</button>
+      </form>
 
     </div>
-
-      
+      <script type="text/javascript"> 
+        function change(){ 
+          var num=document.getElementById("myrange"); 
+          var show=document.getElementById("show"); 
+          show.innerHTML=num.value; 
+        } 
+      </script>
       
   </body>
 </html>
