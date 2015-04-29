@@ -2,9 +2,8 @@
   use yii\helpers\Html;
     use yii\helpers\Url;
     use app\models\U;
-?>
-    
 
+?>
 
 <!DOCTYPE html>
 <html>
@@ -21,63 +20,103 @@
 
     <!-- Include the compiled Ratchet CSS -->
     <link href="/wx/web/ratchet/dist/css/ratchet.css" rel="stylesheet">
-
-    <style type="text/css">
-    #show{
-      color: red;
-      font-size: 24pt;
-      font-weight: bolder;
-    }
-    </style>
   
     <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
     <!-- Include the compiled Ratchet JS -->
     <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
+
+    <script type="text/javascript">
+         var cat = "<?= $model_ocpc->id ?>";
+    </script>
+
   </head>
   <body>
 
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-  
+      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
       <h1 class="title">
        渠道宣传竞赛评选
       </h1>
-
     </header>
-
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
-      <p>
-        <?= $model_ocpc->name ?>
-      </p>
-       <img width=100% class="media-object pull-left" src="http://placehold.it/240x240">
+      <button class="btn btn-primary btn-block"><?= $model_ocpc->name ?></button>
+        <p>
+        <span class="badge"><?= $office->title ?> </span>   
+        <span class="badge">督导员:<?= $supervisor->name ?>&nbsp;<?= $supervisor->mobile ?></span>
+        </p>
+   
+       <img width=100% class="media-object pull-left" src="http://placehold.it/200x200">
 
-       <br>
         &nbsp;
        <br>
 
-
       <form>
-            <div style="float:left">
-                <input id="myrange" type="range"  style="height:20px;width:280px;" value=1 min="1" max="18" onchange="change()"> 
-                &nbsp;
-                <span id="show">1</span>
-            </div>
+            <!--
+            <input id="myrange" type="number"  style="height:64px;width:80%;font-size:48px;color:red;font-weight:bolder;text-align:center" value=1 min="1" max="18"> 
+            -->
+            <center>
+            <div style="vertical-align: middle;">
 
-              &nbsp;<br><br>
-              <button class="btn btn-positive btn-block" id="submit_rank">提交评分成绩</button>
+            <span id="minStr" class="badge"></span>
+            <span style="height:64px;font-size:48px;" class="icon icon-left" onclick="sub()"></span>
+            &nbsp;&nbsp;
+            <span id="myrangeStr" style="height:64px;width:50%;font-size:48px;color:red;font-weight:bolder;text-align:center">1</span>
+            <input type=hidden id="myrange" name="myrange">
+            &nbsp;&nbsp;
+            <span style="height:64px;font-size:48px;" class="icon icon-right" onclick="add()"></span>
+            <span id="maxStr" class="badge"></span>
+
+            </div>
+            </center>
+
+            <button class="btn btn-positive btn-block" id="submit_rank">提交评分成绩</button>
       </form>
 
     </div>
-      <script type="text/javascript"> 
-        function change(){ 
-          var num=document.getElementById("myrange"); 
-          var show=document.getElementById("show"); 
-          show.innerHTML=num.value; 
-        } 
-      </script>
+
+      <script type="text/javascript">
+   
+     
+
+      var MIN=1;
+      var MAX;
       
+      if(cat == 6) 
+      {
+        MAX = 10 
+      }
+      else
+      {
+        MAX = 18;
+      } 
+      $("#minStr").html(MIN);
+      $("#maxStr").html(MAX);
+      
+      $("#myrangeStr").html(MAX/2);
+      $("#myrange").val(MAX/2);
+        
+      var range = MAX/2;
+
+      function add()
+      {
+        range++;
+        if(range>MAX) range = MAX;
+        $("#myrangeStr").html(range);
+        $("#myrange").val(range);
+      }
+
+      function sub()
+      {
+        range--
+        if(range<MIN) range = MIN;
+
+        $("#myrangeStr").html(range);
+        $("#myrange").val(range);
+      }
+      </script>
   </body>
 </html>

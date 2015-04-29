@@ -31,7 +31,7 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-  
+      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
       <h1 class="title">
        参赛门店资料提交
       </h1>
@@ -45,12 +45,11 @@
           <?= $model_office->title ?>
         </p>
 
-
-
+       <ul class="table-view">
       <?php foreach($models_categories as $model_category) {  ?>
-          <ul class="table-view">
+   
             <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj3','cat_name'=>$model_category->name],true) ?>">
+              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj3','model_category_id'=>$model_category->id],true) ?>">
                 <img class="media-object pull-left" src="http://placehold.it/80x80">
                 <div class="media-body">
                   <?= $model_category->name ?>
@@ -61,7 +60,6 @@
               </a>
             </li>
       <?php } ?>
-
         </ul>
       
 

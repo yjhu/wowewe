@@ -3174,7 +3174,10 @@ EOD;
         $model_category_id = $_GET['model_category_id'];
         $model_ocpc = MOfficeCampaignPicCategory::findOne(['id' => $model_category_id]);
 
-        return $this->render('qdxcjspb5', ['gh_id'=>'gh_id', 'openid'=>'openid', 'model_ocpc'=>$model_ocpc]);
+        $office_id = $_GET['office_id'];
+        $office = MOffice::findOne(['office_id' => $office_id]);      
+
+        return $this->render('qdxcjspb5', ['gh_id'=>'gh_id', 'openid'=>'openid', 'office'=>$office, 'supervisor' => $office->supervisor, 'model_ocpc'=>$model_ocpc]);
     }
 
 
@@ -3228,8 +3231,10 @@ EOD;
         $gh = Yii::$app->wx->getGh();
         $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
 
+        $model_category_id = $_GET['model_category_id'];
+        $model_ocpc = MOfficeCampaignPicCategory::findOne(['id' => $model_category_id]);
 
-        return $this->render('csmdzltj3', ['gh_id'=>'gh_id', 'openid'=>'openid', 'jssdk'=>$jssdk]);
+        return $this->render('csmdzltj3', ['gh_id'=>'gh_id', 'openid'=>'openid', 'model_ocpc'=>$model_ocpc, 'jssdk'=>$jssdk]);
     }
 
 

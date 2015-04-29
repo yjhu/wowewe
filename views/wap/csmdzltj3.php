@@ -33,11 +33,10 @@ $signPackage = $jssdk->GetSignPackage();
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-  
+      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
       <h1 class="title">
        参赛门店资料提交
       </h1>
-
     </header>
 
 
@@ -45,9 +44,9 @@ $signPackage = $jssdk->GetSignPackage();
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
       <p>
-        <?= $_GET['cat_name'] ?>
+        <?= $model_ocpc->name ?>
       </p>
-       <img width=100% class="media-object pull-left" src="http://placehold.it/240x240">
+       <img width=100% class="media-object pull-left" src="http://placehold.it/200x200">
 
 
         <button class="btn btn-info btn-lg" id="chooseImage">选择照片</button><br>

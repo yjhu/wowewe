@@ -31,7 +31,7 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-  
+      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
       <h1 class="title">
        渠道宣传竞赛评选
       </h1>
@@ -44,21 +44,21 @@
         <p class="content-padded">
           <?= $office->title ?>
         </p>
-
-      <?php foreach($models_categories as $model_category) {  ?>
-          <ul class="table-view">
-            <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb5','model_category_id'=>$model_category->id],true) ?>">
-                <img class="media-object pull-left" src="http://placehold.it/80x80">
-                <div class="media-body">
-                  <?= $model_category->name ?>
-                  <!--
-                  <p>...</p>
-                  -->
-                </div>
-              </a>
-            </li>
-      <?php } ?>
+      <ul class="table-view">
+          <?php foreach($models_categories as $model_category) {  ?>
+             
+                <li class="table-view-cell media">
+                  <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb5','office_id'=>$office->office_id, 'model_category_id'=>$model_category->id],true) ?>">
+                    <img class="media-object pull-left" src="http://placehold.it/80x80">
+                    <div class="media-body">
+                      <?= $model_category->name ?>
+                      <!--
+                      <p>...</p>
+                      -->
+                    </div>
+                  </a>
+                </li>
+          <?php } ?>
 
         </ul>
       

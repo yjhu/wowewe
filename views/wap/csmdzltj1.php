@@ -31,7 +31,9 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-  
+
+      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
+
       <h1 class="title">
        参赛门店资料提交
       </h1>
@@ -65,7 +67,6 @@
         <?php } ?>
         </ul>
       
-
     </div>
 
       
