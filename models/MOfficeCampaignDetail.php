@@ -48,4 +48,9 @@ class MOfficeCampaignDetail extends \yii\db\ActiveRecord
             'created_time' => 'Created Time',
         ];
     }
+    
+    public function getPicCategory()
+    {
+        return $this->hasOne(MOfficeCampaignPicCategory::className(), ['id' => 'pic_category']);
+    }
 }

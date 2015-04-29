@@ -1,7 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-//use yii\grid\GridView;
+use yii\grid\GridView;
+
 use app\models\MStaff;
 
 use app\models\MUser;
@@ -23,8 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php 
 
-	use kartik\dynagrid\DynaGrid;
-	use kartik\grid\GridView;
+	//use kartik\dynagrid\DynaGrid;
+	//use kartik\grid\GridView;
+	
+
 	$columns = [
 		//['class'=>'kartik\grid\SerialColumn', 'order'=>DynaGrid::ORDER_FIX_LEFT],
 		//'id',
@@ -73,8 +76,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
         [
             'attribute'=>'create_time',
-            'filterType'=>GridView::FILTER_DATE,
-            //'filterType'=>GridView::FILTER_RANGE,
+            //'filterType'=>GridView::FILTER_DATE,
+            'filterType'=>GridView::FILTER_RANGE,
             'format'=>'raw',
             //'width'=>'270px',
             'filterWidgetOptions'=>[

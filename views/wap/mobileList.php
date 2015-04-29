@@ -36,12 +36,40 @@
         
         <!--<ul data-role="listview" data-inset="true">-->
         <ul data-role="listview" data-inset="false" data-filter="true" data-filter-placeholder="搜索..." class="ui-nodisc-icon ui-alt-icon">
+        
+
+        <!--  /*5.1 手机直降*/ -->
+        <?php foreach($models as $model) { 
+            if(
+                $model->cid==864 ||
+                $model->cid==865 ||
+                $model->cid==866 ||
+                $model->cid==867 ||
+                $model->cid==868 ||
+                $model->cid==869
+                )  
+        { ?>
+            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
+                    <img style='padding-top:10px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
+                    <h2><?= $model->title ?></h2>
+                    <p><?= $model->title_hint ?></p>
+                    <!--
+                    <p class='line'>原价: ￥<//?= round($model->old_price/100) ?></p>
+                    <p>惊爆价: ￥<//?= round($model->price/100) ?></p>
+                    -->
+                    <p>价格: ￥<?= round($model->price/100) ?></p>
+                </a>
+            </li>
+        <?php } } ?>
+
+
+
         <!--  /*4g手机疯狂直降*/ -->
         <?php foreach($models as $model) { 
             if(
                 $model->cid==859 ||
                 $model->cid==860 ||
-                $model->cid==861 ||
+                /*$model->cid==861 ||  iphone6 16g*/
                 $model->cid==862 ||
                 $model->cid==863 
                 )  

@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property string $name
+ * @property integer $sort_order
  */
 class MOfficeCampaignPicCategory extends \yii\db\ActiveRecord
 {
@@ -26,6 +27,7 @@ class MOfficeCampaignPicCategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['sort_order'], 'integer'],
             [['name'], 'string', 'max' => 255]
         ];
     }
@@ -38,6 +40,7 @@ class MOfficeCampaignPicCategory extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'sort_order' => 'Sort Order',
         ];
     }
 }

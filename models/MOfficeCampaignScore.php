@@ -44,4 +44,9 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
             'score' => 'Score',
         ];
     }
+    
+    public function getCampaignDetail()
+    {
+        return $this->hasOne(MOfficeCampaignDetail::className(), ['id' => 'office_campaign_id']);
+    }
 }
