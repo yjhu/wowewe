@@ -339,6 +339,19 @@ class MUser extends ActiveRecord implements IdentityInterface
         return $this->hasMany(OpenidBindMobile::className(), ['gh_id'=>'gh_id', 'openid'=>'openid']);
     }
 
+    public function getCustomer()
+    {
+        return $this->hasOne(Custom::className(), ['mobile'=>'mobile'])
+            ->viaTable('wx_openid_bind_mobile', ['gh_id'=>'gh_id', 'openid'=>'openid']);
+    }
+
+    public function getMobileStaff()
+    {
+        return $this->hasOne(MStaff::className(), ['mobile'=>'mobile'])
+            ->viaTable('wx_openid_bind_mobile', ['gh_id'=>'gh_id', 'openid'=>'openid']);
+    }
+
+
     public function getOrders()
     {
         return $this->hasMany(MOrder::className(), ['gh_id'=>'gh_id', 'openid'=>'openid']);

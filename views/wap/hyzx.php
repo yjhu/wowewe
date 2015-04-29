@@ -101,7 +101,7 @@
                     <img id="myphoto" src="<?php echo $user->headimgurl; ?>" width="56">
                     </div>
                 </div>
-                <p class="f9 marT7"><em id="vip_p" class="pu_vip"></em></p>
+
             </dt>
 
             <dd>
@@ -130,6 +130,13 @@
                 <?php endforeach; ?>
                 </p>
 
+                <?php if(!empty($user->mobileStaff) || !empty($user->staff)) {?>
+                    <p class="f13"><em>襄阳联通员工</em></p>
+                <?php } else if(!empty($user->customer)) { ?>
+                    <p class="f13"><em id="vip_p" class="pu_vip"></em></p>
+                <?php } else {?>
+                     <p class="f13">会员</p>
+                <?php } ?>
             </dd>
         </dl>
  
@@ -144,6 +151,21 @@
         <li><a ajax-data="false" href="#wytg"><img src="../web/images/woke/wdmy.gif" alt="推荐有礼" class="ui-li-icon ui-corner-none">推荐有礼<span class="ui-li-count"><?= $user->getScore() ?></span></a></li>
         
         <li><a ajax-data="false" href="<?php echo Url::to(['jssdksample', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" alt="4G测速有奖" class="ui-li-icon ui-corner-none">4G测速有奖</a></li>
+
+    
+        <?php if(!empty($user->mobileStaff) || !empty($user->staff)) {?>
+            <li><a ajax-data="false" href="<?php echo Url::to(['csmdzltj1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" alt="渠道宣传竞赛评选" class="ui-li-icon ui-corner-none">渠道宣传竞赛评选</a></li>
+        <?php }  ?>
+
+
+        <?php if(!empty($user->mobileStaff) && ($user->mobileStaff->isSupervisor())) {?>
+            <li><a ajax-data="false" href="<?php echo Url::to(['xxx', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" alt="参赛门店资料提交" class="ui-li-icon ui-corner-none">参赛门店资料提交</a></li>
+        <?php }  ?>
+
+
+       
+
+
         
         <li><a href="<?php echo Url::to(['order', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-icon="shop" data-ajax="false"><img src="../web/images/woke/wddd.gif" alt="我的订单" class="ui-li-icon ui-corner-none">我的订单<span class="ui-li-count"><?= count($user->orders) ?></span></a></li>
        
