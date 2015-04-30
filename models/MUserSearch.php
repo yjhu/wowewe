@@ -105,7 +105,7 @@ class MUserSearch extends Model
         $this->addCondition($query, 'update_time');
         $this->addCondition($query, 'scene_pid');       
         $this->addCondition($query, 'is_liantongstaff');
-        $query->andWhere(['like', 'wx_openid_bind_mobile.mobile', $this->mobile]);
+        $query->andFilterWhere(['like', 'wx_openid_bind_mobile.mobile', $this->mobile]);
         if (!empty($this->office_id)) {
             $office = MOffice::findOne($this->office_id);
             if (!empty($office)) {
