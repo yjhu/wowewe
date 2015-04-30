@@ -368,6 +368,12 @@ class MOffice extends ActiveRecord implements IdentityInterface
         }
         return $json? json_encode($listData) : $listData;
     }
+    
+    public function getMsc()
+    {
+        return $this->hasOne(\app\models\MMarketingServiceCenter::className(), ['id' => 'msc_id'])
+                ->viaTable('wx_rel_office_msc', ['office_id' => $this->office_id]);
+    }
 
     public function afterSave($insert, $changedAttributes)
     {

@@ -44,7 +44,7 @@
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
         <p class="content-padded">
-           <?= $office->title ?>
+           <?= $office->msc->marketingRegion->name ?>><?= $office->msc->name ?>><?= $office->title ?>
         </p>
       <ul class="table-view">
           <?php foreach($models_categories as $model_category) {  ?>
