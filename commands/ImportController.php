@@ -32,7 +32,6 @@ class ImportController extends Controller
             $i++;
             if (empty($line))
                 continue;
-//            $line = iconv('GBK','UTF-8//IGNORE', $line);
             $fields = explode(",", $line);    
             $office_name = trim($fields[0]);
             $office_name_utf8 = iconv('GBK','UTF-8//IGNORE', $office_name);
@@ -91,6 +90,43 @@ class ImportController extends Controller
                 ])->execute();
             }
         
+        }
+        fclose($fh);   
+    }
+    
+        /**
+     * This command import office supervision data.
+     * @param string $filename the file to be imported to DB.
+     */
+    public function actionScorer($filename = 'scorer.csv')
+    {
+        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'imported_data'.DIRECTORY_SEPARATOR.$filename;
+        $fh = fopen($file, "r");
+        $i=0;
+        while (!feof($fh)) 
+        {
+            $line = fgets($fh);
+            $i++;
+            if (empty($line))
+                continue;
+            $fields = explode(",", $line);    
+            $scorer_name = trim($fields[0]);
+            $scorer_name_utf8 = iconv('GBK','UTF-8//IGNORE', $scorer_name);
+            $scorer_department = trim(trim($fields[1]), "0..9");
+            $scorer_department_utf8 = iconv('GBK','UTF-8//IGNORE', $scorer_department);
+            $scorer_position = trim(trim($fields[2]), "0..9");
+            $scorer_position_utf8 = iconv('GBK','UTF-8//IGNORE', $scorer_position);
+            $scorer_mobile = trim($fields[3]);
+            
+            $scorer = \app\models\MOfficeCampaignScorer::findOne(['name' => $scorer_name_utf8, 'mobile' => $scorer_mobile]);
+            if (empty($scorer)) {
+                $scorer = new \app\models\MOfficeCampaignScorer;
+                $scorer->name = $scorer_name_utf8;
+                $scorer->department = $scorer_department_utf8;
+                $scorer->position = $scorer_position_utf8;
+                $scorer->mobile = $scorer_mobile;
+                $scorer->save(false);
+            }        
         }
         fclose($fh);   
     }

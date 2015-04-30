@@ -113,6 +113,15 @@ class MStaff extends ActiveRecord
     {
         return !empty($this->supervisedOffices);
     }
+    
+    public function getOfficeCampaignScorer()
+    {
+        return $this->hasOne(MOfficeCampaignScorer::className(), ['mobile' => 'mobile']);
+    }
+    public function isOfficeCampaignScorer()
+    {
+        return !$empty($this->officeCampaignScorer);
+    }
 
     public function getUser()
     {
