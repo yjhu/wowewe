@@ -49,7 +49,7 @@
       <?php foreach($models_categories as $model_category) {  ?>
    
             <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj3','model_category_id'=>$model_category->id],true) ?>">
+              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj3', 'office_id'=>$model_office->office_id, 'model_category_id'=>$model_category->id],true) ?>">
                 <img class="media-object pull-left" src="http://placehold.it/80x80">
                 <div class="media-body">
                   <?= $model_category->name ?>

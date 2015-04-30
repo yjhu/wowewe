@@ -48,13 +48,11 @@ $signPackage = $jssdk->GetSignPackage();
       </p>
        <img width=100% class="media-object pull-left" src="http://placehold.it/200x200">
 
-
-        <button class="btn btn-info btn-lg" id="chooseImage">选择照片</button><br>
-       <br>
-        &nbsp;
-       <br>
+    
       <form>
-              <button class="btn btn-positive btn-block" id="submit_pic">上传照片</button>
+              <input type="hidden" class="form-control" id="serverId">
+              <button class="btn btn-positive btn-block" id="chooseImage">选择照片</button>
+              <button class="btn btn-negative btn-block" id="submitImage">上传照片</button>
       </form>
 
     </div>
@@ -119,13 +117,17 @@ $signPackage = $jssdk->GetSignPackage();
 
 <script>
 
+var cat = "<?= $model_ocpc->id ?>";
+var office_id = "<?= $model_office->office_id ?>";
+
 $("#chooseImage").hide();
+$("#submitImage").hide();
+
 
 wx.ready(function () {
    alert('aaaa');
 
     $("#chooseImage").show();
-
 
   // 5 图片接口
   // 5.1 拍照、本地选图
@@ -138,6 +140,10 @@ wx.ready(function () {
           return;
           //return false;
         }
+
+        $("#chooseImage").hide();
+        $("#submitImage").show();
+
 
         images.localId = res.localIds;
         //alert('已选择 ' + res.localIds.length + ' 张图片');
@@ -221,7 +227,7 @@ wx.error(function (res) {
   alert(res.errMsg);
 });
 
-document.querySelector('#submit_pic').onclick = function () {
+document.querySelector('#submitImage').onclick = function () {
 //    alert(1);
 //    return false;
 
@@ -253,28 +259,28 @@ document.querySelector('#submit_pic').onclick = function () {
             //alert('localid=' + images.localId[0] + ', serverId=' + images.serverId[0]);
 
             $("#serverId").val(images.serverId[0]);
-           
-            //serverId = $("#serverId").val();
+            serverId = $("#serverId").val();
+
            // status = $("#status").val();
 
             //alert('status'+status);
-            //alert("&lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId);
+            alert("cat="+cat+"&office_id="+office_id+"&serverId="+serverId);
 
-            /*
             $.ajax({
-                    url: "<?php echo Url::to(['wap/handlespeed'], true) ; ?>",
+                    url: "<?php echo Url::to(['wap/handlecsmdzltj'], true) ; ?>",
                     type:"GET",
                     cache:false,
                     dataType:'json',
                     //data: $("#productForm").serialize();
-                     data: "lon="+lon+"&lat="+lat+"&speed_up="+speed_up+"&speed_down="+speed_down+"&speed_delay="+speed_delay+"&serverId="+serverId+"&status="+status,
+                     data: "cat="+cat+"&office_id="+office_id+"&serverId="+serverId,
                     success: function(json_data){
-                      //alert('success');
-                      var url = "<?php echo Url::to(['wap/jssdksample'], true); ?>";
-                      location.href = url;
+                      alert('success');
+                      //var url = "<?php echo Url::to(['wap/csmdzltj2'], true); ?>";
+                      //location.href = url;
+                      history.back();
                     }
                });
-              */
+        
 
           }
         },

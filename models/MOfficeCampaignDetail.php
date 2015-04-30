@@ -15,6 +15,10 @@ use Yii;
  */
 class MOfficeCampaignDetail extends \yii\db\ActiveRecord
 {
+
+
+    const PHOTO_PATH = 'office_campaign_detail';
+
     /**
      * @inheritdoc
      */
@@ -53,4 +57,39 @@ class MOfficeCampaignDetail extends \yii\db\ActiveRecord
     {
         return $this->hasOne(MOfficeCampaignPicCategory::className(), ['id' => 'pic_category']);
     }
+
+
+        public function afterDelete()
+        {
+            $file = $this->getPicFile();
+            @unlink($file);
+            parent::afterDelete();
+        }
+
+        public function getPicFile()
+        {
+            return Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . self::PHOTO_PATH . DIRECTORY_SEPARATOR . $this->pic_url;
+        }
+
+        public function getPicFileSize()
+        {
+            return filesize($this->getPicFile());
+        }
+
+        public function getImageUrl()
+        {
+            $gh_id = $this->gh_id;
+            $pic_url = $this->pic_url;
+            $log_file_path = $this->getPicFile();
+            /*
+            if ((!file_exists($log_file_path)) || $this->getPicFileSize() == 0|| $this->getPicFileSize() == 47)
+            {
+                Yii::$app->wx->setGhId($gh_id);    
+                Yii::$app->wx->WxMediaDownload($this->media_id, $log_file_path);
+            } 
+            */                
+            $url = Yii::$app->request->getHostInfo() . Yii::$app->request->getBaseUrl() . '/'. self::PHOTO_PATH. '/' ."{$this->pic_url}";
+            return $url;
+        }
+
 }

@@ -43,7 +43,7 @@
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
-      <button class="btn btn-primary btn-block"><?= $model_ocpc->name ?></button>
+      <button class="btn btn-block" style="background-color:#d9d9d9"><?= $model_ocpc->name ?></button>
         <p>
         <span class="badge"><?= $office->title ?> </span>   
         <span class="badge">督导员:<?= $supervisor->name ?>&nbsp;<?= $supervisor->mobile ?></span>
@@ -51,10 +51,8 @@
    
        <img width=100% class="media-object pull-left" src="http://placehold.it/200x200">
 
-        &nbsp;
-       <br>
 
-      <form>
+      <form id="productForm">
             <!--
             <input id="myrange" type="number"  style="height:64px;width:80%;font-size:48px;color:red;font-weight:bolder;text-align:center" value=1 min="1" max="18"> 
             -->
@@ -62,12 +60,12 @@
             <div style="vertical-align: middle;">
 
             <span id="minStr" class="badge"></span>
-            <span style="height:64px;font-size:48px;" class="icon icon-left" onclick="sub()"></span>
+            <span style="height:50px;font-size:48px;" class="icon icon-left" onclick="sub()"></span>
             &nbsp;&nbsp;
-            <span id="myrangeStr" style="height:64px;width:50%;font-size:48px;color:red;font-weight:bolder;text-align:center">1</span>
+            <span id="myrangeStr" style="height:50px;width:50%;font-size:48px;color:red;font-weight:bolder;text-align:center">1</span>
             <input type=hidden id="myrange" name="myrange">
             &nbsp;&nbsp;
-            <span style="height:64px;font-size:48px;" class="icon icon-right" onclick="add()"></span>
+            <span style="height:50px;font-size:48px;" class="icon icon-right" onclick="add()"></span>
             <span id="maxStr" class="badge"></span>
 
             </div>
@@ -78,45 +76,70 @@
 
     </div>
 
-      <script type="text/javascript">
-   
-     
-
-      var MIN=1;
-      var MAX;
-      
-      if(cat == 6) 
-      {
-        MAX = 10 
-      }
-      else
-      {
-        MAX = 18;
-      } 
-      $("#minStr").html(MIN);
-      $("#maxStr").html(MAX);
-      
-      $("#myrangeStr").html(MAX/2);
-      $("#myrange").val(MAX/2);
+    <script type="text/javascript">
+           var MIN=1;
+        var MAX;
+        if(cat == 6) 
+        {
+          MAX = 10 
+        }
+        else
+        {
+          MAX = 18;
+        } 
+        $("#minStr").html(MIN);
+        $("#maxStr").html(MAX);
         
-      var range = MAX/2;
+        $("#myrangeStr").html(MAX/2);
+        $("#myrange").val(MAX/2);
+          
+        var range = MAX/2;
 
-      function add()
-      {
-        range++;
-        if(range>MAX) range = MAX;
-        $("#myrangeStr").html(range);
-        $("#myrange").val(range);
-      }
+        function add()
+        {
+          range++;
+          if(range>MAX) range = MAX;
+          $("#myrangeStr").html(range);
+          $("#myrange").val(range);
+        }
 
-      function sub()
-      {
-        range--
-        if(range<MIN) range = MIN;
+        function sub()
+        {
+          range--
+          if(range<MIN) range = MIN;
 
-        $("#myrangeStr").html(range);
-        $("#myrange").val(range);
-      }
-      </script>
+          $("#myrangeStr").html(range);
+          $("#myrange").val(range);
+        }
+
+      $(document).ready(function(){
+       // alert('ready');
+
+
+        $("#submit_rank").click(function(){
+         // alert("click and submit");
+
+          $.ajax({
+            url: "<?php echo Url::to(['wap/handleqdxcjspb'], true) ; ?>",
+            type:"GET",
+            cache:false,
+            dataType:'json',
+            data: $("#productForm").serialize(),
+
+            //data: "&currentPage="+currentPage+"&size="+size+"&cid="+cid+"&feeSum="+feeSum,
+            success: function(json_data){
+                    //var json_data = eval('('+msg+')');
+   
+                    alert("submit ok");
+                    //var url = "<?php echo Url::to(['wap/jssdksample'], true); ?>";
+                    //location.href = url;
+              }
+          });
+
+        })
+
+      })
+
+    </script>
   </body>
 </html>
