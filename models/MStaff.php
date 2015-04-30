@@ -28,6 +28,9 @@ CREATE TABLE wx_staff (
     KEY idx_gh_id_scene_id(gh_id, scene_id),
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+ALTER TABLE wx_staff DROP KEY gh_id_idx;
+ALTER TABLE wx_staff ADD KEY idx_gh_id_scene_id(gh_id, scene_id);
+
 */
 
 
