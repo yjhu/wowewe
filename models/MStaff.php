@@ -120,7 +120,7 @@ class MStaff extends ActiveRecord
     }
     public function isOfficeCampaignScorer()
     {
-        return !$empty($this->officeCampaignScorer);
+        return !empty($this->officeCampaignScorer);
     }
 
     public function getUser()

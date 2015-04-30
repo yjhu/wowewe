@@ -46,7 +46,10 @@
 
         <ul class="table-view">
 
-        <?php foreach($models_office as $model_office) {  ?>
+        <?php 
+        foreach($models_office as $model_office) {  
+          if (!empty($model_office->supervisor)) {
+        ?>
 
             <li class="table-view-cell media">
             <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb4','office_id'=>$model_office->office_id],true) ?>">
@@ -61,13 +64,23 @@
               </div>
             </a>
           </li>
-        <?php } ?>
+        <?php }} ?>
         </ul>
-      
+             &nbsp;<br>&nbsp;<br>&nbsp;<br>  
 
     </div>
 
-      
+     <?php
+    $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
+    $end_date =  \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
+  ?>
+
+ 
+  <nav class="bar bar-tab">
+    <a class="tab-item" href="#">
+      本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
+    </a>
+  </nav>    
       
   </body>
 </html>

@@ -34,7 +34,6 @@
 
     <header class="bar bar-nav">
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
-      <a class="icon icon-right-nav icon-info" id="btn_info"></a>
 
       <h1 class="title">
        渠道宣传竞赛评选
@@ -49,13 +48,16 @@
            <?= $office->msc->marketingRegion->name ?>><?= $office->msc->name ?>><?= $office->title ?>
         </p>
       <ul class="table-view">
+        <?php if (!empty($office->supervisor)) { ?>
+        <li class="table-view-cell table-view-divider">督导员：<?= $office->supervisor->name." ".$office->supervisor->mobile ?></li>
+        <?php } ?>
           <?php foreach($models_categories as $model_category) {  ?>
              
                 <li class="table-view-cell media">
 
                     <?php 
-                        $model_office_campaign_detail = MOfficeCampaignDetail::findOne(['pic_category' => $model_category->id, 'office_id' => $office->office_id]);
-
+                        // $model_office_campaign_detail = MOfficeCampaignDetail::findOne(['pic_category' => $model_category->id, 'office_id' => $office->office_id]);
+                        $model_office_campaign_detail = MOfficeCampaignDetail::getDetailByOfficeAndPicCategory($office->office_id, $model_category->id);
                         if(!empty($model_office_campaign_detail))
                         {
                           $url = $model_office_campaign_detail->getImageUrl();
@@ -68,16 +70,16 @@
 
                   <?php if(!empty($model_office_campaign_detail)) {?>
                     <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb5','office_id'=>$office->office_id, 'model_category_id'=>$model_category->id],true) ?>">
-                      
-                    <span class="badge">1</span>
                     <!--
+                    <span class="badge">1</span>
                     <span class="badge badge-primary">2</span>
                     <span class="badge badge-positive">3</span>
                     <span class="badge badge-negative">4</span>
                     -->
-     
-                  <?php } ?>    
-
+                   
+                  <?php } else {?>    
+                       <span class="badge badge-negative">督导员未提交资料</span>
+                  <?php } ?>
                     <img class="media-object pull-left" src="<?= $url ?>" width="64" height="64">
                     
                     <div class="media-body">
@@ -98,10 +100,20 @@
 
         </ul>
       
-
+        &nbsp;<br>&nbsp;<br>&nbsp;<br> 
     </div>
 
-      
+      <?php
+    $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
+    $end_date =  \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
+  ?>
+
+ 
+  <nav class="bar bar-tab">
+    <a class="tab-item" href="#">
+      本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
+    </a>
+  </nav>   
       
   </body>
 </html>

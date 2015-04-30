@@ -65,7 +65,7 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
     
     const CAMPAIGN_ENDDATE = 25;
     
-    public static function getOfficeScoreByOfficeAndPicCategory($office_id, $pic_category, $date = null)
+    public static function getOfficeScoreByPicCategory($office_id, $pic_category, $date = null)
     {
         if ($date == null) $timestamp = time();
         else               $timestamp = strtotime($date);
@@ -95,15 +95,50 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
                     ->all()
                     ;
         if (empty($scores)) {
-            return false;
+            return ['count' => 0, 'total' => 0];
         }
-        
-        $count = 0;
-        $total = 0;
+        $count = 0; $total = 0;
         foreach ($scores as $score) {
             $count++;
             $total += $score->score;
         }
         return ['count' => $count, 'total' => $total];
     }
+
+        public static function getOfficeScoreByStaffAndPicCategory($office_id, $staff_id, $pic_category, $date = null)
+        {
+            if ($date == null) $timestamp = time();
+            else               $timestamp = strtotime($date);
+            
+            $year = date('Y', $timestamp);
+            $month = date('m', $timestamp);
+            $day = date('d', $timestamp);
+            if ($day > self::CAMPAIGN_ENDDATE) {
+                $month = $month + 1;
+                if ($month > 12) {
+                    $year = $year + 1;
+                    $month = 1;
+                }
+            }
+           
+            $end_time = sprintf("%04d-%02d-%02d 23:59:59", $year, $month, self::CAMPAIGN_ENDDATE);
+            $end_date = \DateTime::createFromFormat("Y-m-d H:i:s", $end_time);
+            $start_date = clone($end_date);
+            $start_date->sub(date_interval_create_from_date_string('1 month'));
+    //        $start_date = date_sub($start_date, date_interval_create_from_date_string('1 month'));
+            
+            $score = self::find()->joinWith('campaignDetail')
+                        ->andWhere(['wx_office_campaign_detail.office_id' => $office_id])
+                        ->andWhere(['wx_office_campaign_detail.pic_category' => $pic_category])
+                        ->andWhere(['staff_id' => $staff_id])
+                        ->andWhere('wx_office_campaign_detail.created_time >= :start_time', [':start_time' => $start_date->format("Y-m-d H:i:s")])
+                        ->andWhere('wx_office_campaign_detail.created_time < :end_time', [':end_time' => $end_date->format("Y-m-d H:i:s")])
+                        ->one()
+                        ;
+            if (empty($score)) {
+                return false;
+            } else {
+                return $score->score;
+            }            
+        }
 }

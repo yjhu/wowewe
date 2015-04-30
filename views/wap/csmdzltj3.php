@@ -40,11 +40,13 @@ $signPackage = $jssdk->GetSignPackage();
        参赛门店资料提交
       </h1>
     </header>
-
-
-
+    <?php 
+      $scores = \app\models\MOfficeCampaignScore::getOfficeScoreByPicCategory($model_office->office_id, $model_ocpc->id);
+      $supervisor = $model_office->supervisor;
+    ?>
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
+
       <p>
         <?= $model_ocpc->name ?>
       </p>
@@ -62,6 +64,8 @@ $signPackage = $jssdk->GetSignPackage();
       ?>
 
       <img width=100% class="media-object pull-left" src="<?= $url ?>">
+
+      <?php if ($scores['count'] == 0) { ?>
     
       <form>
               <input type="hidden" class="form-control" id="serverId">
@@ -69,10 +73,32 @@ $signPackage = $jssdk->GetSignPackage();
               <button class="btn btn-negative btn-block" id="submitImage">上传照片</button>
       </form>
 
+      <?php } else { ?>
+        <div class="card">
+          <ul class="table-view">
+          <li class="table-view-cell table-view-divider"><?= $model_office->msc->marketingRegion->name.">".$model_office->msc->name.">".$model_office->title ?></li>
+          <li class="table-view-cell table-view-divider"><?= "督导员：{$supervisor->name} {$supervisor->mobile}" ?></li>
+          <li class="table-view-cell table-view-divider"><?= "评选内容：{$model_ocpc->name}" ?></li>
+          <li class="table-view-cell">平均得分：<span class="badge badge-primary pull-right"><?= printf("%.1f", $scores['total']/$scores['count']) ?></span></li>
+          <li class="table-view-cell">评分人数：<span class="badge badge-primary pull-right"><?= $scores['count'] ?></span></li>
+          </ul>
+        </div>
+      <?php } ?>
+ &nbsp;<br>&nbsp;<br>&nbsp;<br>
     </div>
-      
-  </body>
+  <?php
+    $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
+    $end_date =  \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
+  ?>
 
+ 
+  <nav class="bar bar-tab">
+    <a class="tab-item" href="#">
+      本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
+    </a>
+  </nav>    
+  </body>
+<?php if ($scores['count'] == 0) { ?>
   <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script>
   //$("#submit_speed").hide();
@@ -289,7 +315,7 @@ document.querySelector('#submitImage').onclick = function () {
                     data: "cat="+cat+"&office_id="+office_id+"&serverId="+serverId,
                     success: function(json_data){
                       //alert('success');
-                      var url = "<?php echo Url::to(['wap/csmdzltj2','office_id'=>$model_office->office_id], true); ?>";
+                      var url = "<?php echo Url::to(['wap/csmdzltj2','office_id'=>$model_office->office_id,'staff_id'=>$supervisor->staff_id], true); ?>";
                       location.href = url;
                       //history.back();
                     }
@@ -310,4 +336,5 @@ document.querySelector('#submitImage').onclick = function () {
 };
 
 </script>
+<?php } ?>
 </html>

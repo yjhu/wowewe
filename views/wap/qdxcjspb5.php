@@ -41,14 +41,32 @@
       </h1>
     </header>
 
+    <?php
+      $scores = \app\models\MOfficeCampaignScore::getOfficeScoreByPicCategory($office->office_id, $model_ocpc->id); 
+      $is_scorer = false;
+      if ($staff->isOfficeCampaignScorer()) {
+        $is_scorer = true;
+        $scorer_score = \app\models\MOfficeCampaignScore::getOfficeScoreByStaffAndPicCategory($office->office_id, $staff->staff_id, $model_ocpc->id);
+        $scorer = $staff->officeCampaignScorer;
+        if ($scorer_score === false) 
+          $can_score = true;
+        else
+          $can_score = false;
+      } else {
+        $can_score = false; 
+      }
+    ?>
+
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
-      <button class="btn btn-block" style="background-color:#d9d9d9"><?= $model_ocpc->name ?></button>
+      <?php if ($can_score) { ?>
+        <button class="btn btn-block" style="background-color:#d9d9d9"><?= $model_ocpc->name ?></button>
+      
         <p>
         <span class="badge"><?= $office->title ?> </span>   
         <span class="badge">督导员:<?= $supervisor->name ?>&nbsp;<?= $supervisor->mobile ?></span>
         </p>
-   
+      <?php } ?>
 
        <?php 
         $model_office_campaign_detail = MOfficeCampaignDetail::findOne(['pic_category' => $model_ocpc->id, 'office_id' => $office->office_id]);
@@ -63,36 +81,64 @@
 
        <img width=100% class="media-object pull-left" src="<?= $url ?>">
 
+      <?php 
+          
 
-      <form id="productForm">
-            <!--
-            <input id="myrange" type="number"  style="height:64px;width:80%;font-size:48px;color:red;font-weight:bolder;text-align:center" value=1 min="1" max="18"> 
-            -->
-            <center>
-            <div style="vertical-align: middle;">
+          if( $can_score)
+          {
+      ?>
+        <form id="productForm">
+              <!--
+              <input id="myrange" type="number"  style="height:64px;width:80%;font-size:48px;color:red;font-weight:bolder;text-align:center" value=1 min="1" max="18"> 
+              -->
+              <center>
+              <div style="vertical-align: middle;">
 
-            <span id="minStr" class="badge"></span>
-            <span style="height:50px;font-size:48px;color:#ccc" class="icon icon-left" onclick="sub()"></span>
-            &nbsp;
-            <span id="myrangeStr" style="height:50px;width:50%;font-size:48px;color:red;font-weight:bolder;text-align:center">1</span>
-            <input type=hidden id="myrange" name="myrange">
-            &nbsp;
-            <span style="height:50px;font-size:48px;color:#ccc" class="icon icon-right" onclick="add()"></span>
-            <span id="maxStr" class="badge"></span>
+              <span id="minStr" class="badge"></span>
+              <span id="minIcon" style="height:50px;font-size:48px;color:#ccc" class="icon icon-left" onclick="sub()"></span>
+              &nbsp;
+              <span id="myrangeStr" style="height:50px;width:50%;font-size:48px;color:red;font-weight:bolder;text-align:center">1</span>
+              <input type=hidden id="myrange" name="myrange">
+              &nbsp;
+              <span id="maxIcon" style="height:50px;font-size:48px;color:#ccc" class="icon icon-right" onclick="add()"></span>
+              <span id="maxStr" class="badge"></span>
 
-            </div>
-            </center>
-            &nbsp;<br>
-            <button class="btn btn-positive btn-block" id="submit_rank">提交评分成绩</button>
-      </form>
+              </div>
+              </center>
+              &nbsp;<br>
+              <button class="btn btn-positive btn-block" id="submit_rank">提交评分成绩</button>
+        </form>
 
+
+
+      <?php } else { ?>
+            <div class="card">
+            <ul class="table-view">
+            <li class="table-view-cell table-view-divider"><?= $office->msc->marketingRegion->name.">".$office->msc->name.">".$office->title ?></li>
+            <li class="table-view-cell table-view-divider"><?= "督导员：{$supervisor->name} {$supervisor->mobile}" ?></li>
+            <li class="table-view-cell table-view-divider"><?= "评选内容：{$model_ocpc->name}" ?></li>
+            <li class="table-view-cell">平均得分：<span class="badge badge-primary pull-right"><?= printf("%.1f", $scores['total']/$scores['count']) ?></span></li>
+            <li class="table-view-cell">评分人数：<span class="badge badge-primary pull-right"><?= $scores['count'] ?></span></li>
+            <?php if ($is_scorer) { ?>
+            <li class="table-view-cell table-view-divider"><?= $scorer->department." ".$scorer->position ?></li>
+            <li class="table-view-cell table-view-divider"><?= $scorer->name." ".$scorer->mobile ?></li>
+            <li class="table-view-cell">您的评分：<span class="badge badge-positive pull-right"><?= $scorer_score ?></span></li>
+            <?php } ?>
+            </ul>
+          </div>
+      <?php } ?>
+        &nbsp;<br>&nbsp;<br>&nbsp;<br> 
     </div>
 
+      <?php         
+
+          if( $can_score)
+          {
+      ?>
     <script type="text/javascript">
         
         var office_campaign_id = "<?= $model_office_campaign_detail->id ?>";
         var staff_id = "<?= $staff->staff_id ?>";
-        //var score
 
         var MIN=1;
         var MAX;
@@ -130,8 +176,6 @@
         }
 
       $(document).ready(function(){
-       // alert('ready');
-
 
         $("#submit_rank").click(function(){
          // alert("click and submit");
@@ -144,15 +188,12 @@
             type:"GET",
             cache:false,
             dataType:'json',
-            //data: $("#productForm").serialize(),
-
             data: "office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+score,
             success: function(json_data){
                     //var json_data = eval('('+msg+')');
-   
-                    alert("submit ok");
-                    //var url = "<?php echo Url::to(['wap/jssdksample'], true); ?>";
-                    //location.href = url;
+                    //alert("submit ok");
+                    var url = "<?php echo Url::to(['wap/qdxcjspb4', 'office_id'=>$office->office_id], true); ?>";
+                    location.href = url;
               }
           });
 
@@ -161,5 +202,18 @@
       })
 
     </script>
+          <?php } ?>
+
+            <?php
+    $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
+    $end_date =  \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
+  ?>
+
+ 
+  <nav class="bar bar-tab">
+    <a class="tab-item" href="#">
+      本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
+    </a>
+  </nav> 
   </body>
 </html>

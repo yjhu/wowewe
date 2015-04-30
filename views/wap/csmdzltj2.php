@@ -48,6 +48,7 @@
         </p>
 
        <ul class="table-view">
+               <li class="table-view-cell table-view-divider"><?= "督导员：{$model_staff->name} {$model_staff->mobile}" ?></li>
       <?php foreach($models_categories as $model_category) {  ?>
    
             <li class="table-view-cell media">
@@ -75,11 +76,20 @@
             </li>
       <?php } ?>
         </ul>
-      
+        &nbsp;<br>&nbsp;<br>&nbsp;<br> 
 
     </div>
 
-      
+  <?php
+    $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
+    $end_date =  \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
+  ?>
+
+  <nav class="bar bar-tab">
+    <a class="tab-item" href="#">
+      本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
+    </a>
+  </nav>    
       
   </body>
 </html>

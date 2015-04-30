@@ -48,11 +48,22 @@
       </p>
 
         <ul class="table-view">
-
-        <?php foreach($models_office as $model_office) {  ?>
+        <li class="table-view-cell table-view-divider"><?= "督导员：{$staff->name} {$staff->mobile}" ?></li>
+        <?php foreach($models_office as $model_office) {  
+            $detail_status = \app\models\MOfficeCampaignDetail::getDetailReadyStatus($model_office->office_id);
+        ?>
 
             <li class="table-view-cell media">
-            <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj2','office_id'=>$model_office->office_id],true) ?>">
+            <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj2','office_id'=>$model_office->office_id, 'staff_id' => $staff->staff_id],true) ?>">
+
+            <?php if($detail_status == \app\models\MOfficeCampaignDetail::DETAIL_COMPLETE) { ?>
+              <span class="badge badge-positive">已提交</span>
+            <?php } elseif($detail_status == \app\models\MOfficeCampaignDetail::DETAIL_IMCOMPLETE) { ?> 
+              <span class="badge badge-negative">未提交</span>
+            <?php } else { ?>
+              <span class="badge badge-primary">部分提交</span>
+            <?php } ?>
+            
             <!--
               <img class="media-object pull-left" src="http://placehold.it/80x80">
             -->
@@ -66,10 +77,20 @@
           </li>
         <?php } ?>
         </ul>
-      
+           &nbsp;<br>&nbsp;<br>&nbsp;<br>    
     </div>
+  
 
-      
+<?php
+    $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
+    $end_date =  \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
+  ?>
+
+  <nav class="bar bar-tab">
+    <a class="tab-item" href="#">
+      本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
+    </a>
+  </nav>    
       
   </body>
 </html>

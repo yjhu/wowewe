@@ -3113,6 +3113,7 @@ EOD;
 
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
 
         //$models_mr = new MMarketingRegion();  
 
@@ -3136,6 +3137,7 @@ EOD;
 
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
 
         //$models_mr = new MMarketingRegion();  
 
@@ -3152,7 +3154,7 @@ EOD;
 
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
-
+        Yii::$app->wx->setGhId($gh_id);
 
         $msc_id = $_GET['msc_id'];
         $msc = MMarketingServiceCenter::findOne(['id' => $msc_id]);
@@ -3171,6 +3173,7 @@ EOD;
 
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
 
         $office_id = $_GET['office_id'];
         $office = MOffice::findOne(['office_id' => $office_id]);
@@ -3186,8 +3189,10 @@ EOD;
         //$this->layout = 'wap';    
         $this->layout = false;    
 
-        $gh_id = U::getSessionParam('gh_id');
+        //$gh_id = U::getSessionParam('gh_id');
+        $gh_id = 'gh_03a74ac96138';
         $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
 
         $model_category_id = $_GET['model_category_id'];
         $model_ocpc = MOfficeCampaignPicCategory::findOne(['id' => $model_category_id]);
@@ -3207,21 +3212,20 @@ EOD;
 
 
 
-
-
     /*督导门店选择页面*/
     public function actionCsmdzltj1()
     {
         //$this->layout = 'wap';    
         $this->layout = false;    
 
-       $gh_id = U::getSessionParam('gh_id');
+        $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
 
         $staff_id = $_GET['staff_id'];
         $staff = MStaff::findOne(['staff_id' => $staff_id]);
 
-        return $this->render('csmdzltj1', ['gh_id' => $gh_id, 'openid' => $openid, 'staff_id' => $staff_id, 'models_office' => $staff->supervisedOffices, 'staff_id' => $staff_id, ]);
+        return $this->render('csmdzltj1', ['gh_id' => $gh_id, 'openid' => $openid, 'staff' => $staff, 'models_office' => $staff->supervisedOffices, 'staff_id' => $staff_id, ]);
     }
 
 
@@ -3232,13 +3236,16 @@ EOD;
 
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
 
         $office_id = $_GET['office_id'];
+        $staff_id = $_GET['staff_id'];
         $office = MOffice::findOne(['office_id' => $office_id]);
+        $staff = MStaff::findOne(['staff_id' => $staff_id]);
 
         $campaign_pic_categories = MOfficeCampaignPicCategory::find()->orderBy('sort_order')->all();
 
-        return $this->render('csmdzltj2', ['gh_id' => $gh_id, 'openid' => $openid, 'model_office' => $office, 'models_categories' => $campaign_pic_categories]);
+        return $this->render('csmdzltj2', ['gh_id' => $gh_id, 'openid' => $openid, 'model_office' => $office, 'model_staff' => $staff,'models_categories' => $campaign_pic_categories]);
     }
 
     /*督导提交图片的页面*/
@@ -3271,11 +3278,11 @@ EOD;
 
     public function actionHandleqdxcjspb()
     {
-         U::W("======================actionHandleqdxcjspb----------------------");
         $this->layout = false;   
    
-       // $gh_id = U::getSessionParam('gh_id');
-       // $openid = U::getSessionParam('openid');
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
 
         $office_campaign_id = empty($_GET['office_campaign_id']) ? 0 : $_GET['office_campaign_id'];
         $staff_id = empty($_GET['staff_id']) ? 0 : $_GET['staff_id'];
@@ -3291,15 +3298,12 @@ EOD;
                          
         $model->save(false);       
 
-        U::W("----------------actionHandleqdxcjspb----------------------");
         return json_encode(['code'=>0]);
     }
 
 
     public function actionHandlecsmdzltj()
     {
-        U::W("======================handlecsmdzltj----------------------");
-
         $this->layout = false;   
        
         //$gh_id = U::getSessionParam('gh_id');
@@ -3310,7 +3314,7 @@ EOD;
         $media_id = empty($_GET['serverId']) ? 0 : $_GET['serverId'];        
 
         if (empty($media_id)) {
-            U::W([$_GET]);
+            //U::W([$_GET]);
             return json_encode(['code'=>1]);            
         }
 
@@ -3336,8 +3340,6 @@ EOD;
         }                         
         $model->save(false);       
  
-        U::W($_GET);
-        U::W("----------------handlecsmdzltj----------------------");
         return json_encode(['code'=>0]);
     }
 
