@@ -72,17 +72,17 @@
             <div style="vertical-align: middle;">
 
             <span id="minStr" class="badge"></span>
-            <span style="height:50px;font-size:48px;" class="icon icon-left" onclick="sub()"></span>
-            &nbsp;&nbsp;
+            <span style="height:50px;font-size:48px;color:#ccc" class="icon icon-left" onclick="sub()"></span>
+            &nbsp;
             <span id="myrangeStr" style="height:50px;width:50%;font-size:48px;color:red;font-weight:bolder;text-align:center">1</span>
             <input type=hidden id="myrange" name="myrange">
-            &nbsp;&nbsp;
-            <span style="height:50px;font-size:48px;" class="icon icon-right" onclick="add()"></span>
+            &nbsp;
+            <span style="height:50px;font-size:48px;color:#ccc" class="icon icon-right" onclick="add()"></span>
             <span id="maxStr" class="badge"></span>
 
             </div>
             </center>
-
+            &nbsp;<br>
             <button class="btn btn-positive btn-block" id="submit_rank">提交评分成绩</button>
       </form>
 

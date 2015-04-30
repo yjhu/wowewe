@@ -34,6 +34,8 @@
 
     <header class="bar bar-nav">
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
+      <a class="icon icon-right-nav icon-info" id="btn_info"></a>
+
       <h1 class="title">
        渠道宣传竞赛评选
       </h1>
@@ -59,21 +61,38 @@
                           $url = $model_office_campaign_detail->getImageUrl();
                         }
                         else
+                        {
                           $url = 'http://placehold.it/64x64';
+                        }
                     ?>
 
-                  <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb5','office_id'=>$office->office_id, 'model_category_id'=>$model_category->id],true) ?>">
-                    
+                  <?php if(!empty($model_office_campaign_detail)) {?>
+                    <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb5','office_id'=>$office->office_id, 'model_category_id'=>$model_category->id],true) ?>">
+                      
+                    <span class="badge">1</span>
+                    <!--
+                    <span class="badge badge-primary">2</span>
+                    <span class="badge badge-positive">3</span>
+                    <span class="badge badge-negative">4</span>
+                    -->
+     
+                  <?php } ?>    
+
                     <img class="media-object pull-left" src="<?= $url ?>" width="64" height="64">
                     
-
                     <div class="media-body">
                       <?= $model_category->name ?>
                       <!--
                       <p>...</p>
                       -->
+
                     </div>
-                  </a>
+
+                  <?php if(!empty($model_office_campaign_detail)) { ?>
+                    </a>
+                  <?php } ?>
+
+
                 </li>
           <?php } ?>
 
