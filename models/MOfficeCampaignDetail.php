@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "wx_office_campaign_detail".
@@ -13,8 +14,8 @@ use Yii;
  * @property string $pic_category
  * @property string $created_time
  */
-class MOfficeCampaignDetail extends \yii\db\ActiveRecord
-{
+class MOfficeCampaignDetail extends \yii\db\ActiveRecord {
+
 
 
     const PHOTO_PATH = 'office_campaign_detail';
@@ -22,16 +23,14 @@ class MOfficeCampaignDetail extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'wx_office_campaign_detail';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['office_id', 'pic_category'], 'integer'],
             [['created_time'], 'safe'],
@@ -39,11 +38,21 @@ class MOfficeCampaignDetail extends \yii\db\ActiveRecord
         ];
     }
 
+    public function behaviors() {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'created_time',
+                'updatedAtAttribute' => 'created_time',
+                'value' => new \yii\db\Expression('NOW()'),
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'office_id' => 'Office ID',
@@ -52,9 +61,8 @@ class MOfficeCampaignDetail extends \yii\db\ActiveRecord
             'created_time' => 'Created Time',
         ];
     }
-    
-    public function getPicCategory()
-    {
+
+    public function getPicCategory() {
         return $this->hasOne(MOfficeCampaignPicCategory::className(), ['id' => 'pic_category']);
     }
 
