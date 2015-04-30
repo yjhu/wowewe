@@ -86,7 +86,8 @@ class MOfficeCampaignDetail extends \yii\db\ActiveRecord {
 
         public function getImageUrl()
         {
-            $gh_id = $this->gh_id;
+            //$gh_id = $this->gh_id;
+
             $pic_url = $this->pic_url;
             $log_file_path = $this->getPicFile();
             /*

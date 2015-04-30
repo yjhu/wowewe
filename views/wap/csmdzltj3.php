@@ -2,6 +2,8 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\U;
+use app\models\MOfficeCampaignDetail;
+
 
 //require_once "jssdk.php";
 //$jssdk = new JSSDK("yourAppID", "yourAppSecret");
@@ -46,8 +48,20 @@ $signPackage = $jssdk->GetSignPackage();
       <p>
         <?= $model_ocpc->name ?>
       </p>
-       <img width=100% class="media-object pull-left" src="http://placehold.it/200x200">
+       
 
+      <?php 
+          $model_office_campaign_detail = MOfficeCampaignDetail::findOne(['pic_category' => $model_ocpc->id, 'office_id' => $model_office->office_id]);
+
+          if(!empty($model_office_campaign_detail))
+          {
+            $url = $model_office_campaign_detail->getImageUrl();
+          }
+          else
+            $url = 'http://placehold.it/200x200';
+      ?>
+
+      <img width=100% class="media-object pull-left" src="<?= $url ?>">
     
       <form>
               <input type="hidden" class="form-control" id="serverId">
@@ -125,14 +139,14 @@ $("#submitImage").hide();
 
 
 wx.ready(function () {
-   alert('aaaa');
+   //alert('aaaa');
 
     $("#chooseImage").show();
 
   // 5 图片接口
   // 5.1 拍照、本地选图
   document.querySelector('#chooseImage').onclick = function () {
-    alert("bbbb");
+    //alert("bbbb");
     wx.chooseImage({
       success: function (res) {
         if (res.localIds.length > 1) {
@@ -264,7 +278,7 @@ document.querySelector('#submitImage').onclick = function () {
            // status = $("#status").val();
 
             //alert('status'+status);
-            alert("cat="+cat+"&office_id="+office_id+"&serverId="+serverId);
+            //alert("cat="+cat+"&office_id="+office_id+"&serverId="+serverId);
 
             $.ajax({
                     url: "<?php echo Url::to(['wap/handlecsmdzltj'], true) ; ?>",
@@ -272,12 +286,12 @@ document.querySelector('#submitImage').onclick = function () {
                     cache:false,
                     dataType:'json',
                     //data: $("#productForm").serialize();
-                     data: "cat="+cat+"&office_id="+office_id+"&serverId="+serverId,
+                    data: "cat="+cat+"&office_id="+office_id+"&serverId="+serverId,
                     success: function(json_data){
-                      alert('success');
-                      //var url = "<?php echo Url::to(['wap/csmdzltj2'], true); ?>";
-                      //location.href = url;
-                      history.back();
+                      //alert('success');
+                      var url = "<?php echo Url::to(['wap/csmdzltj2','office_id'=>$model_office->office_id], true); ?>";
+                      location.href = url;
+                      //history.back();
                     }
                });
         

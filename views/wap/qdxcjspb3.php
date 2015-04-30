@@ -41,7 +41,7 @@
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
       <p class="content-padded">
-      门店选择
+      <?= $msc->marketingRegion->name ?> > <?= $msc->name ?> > 门店选择
       </p>
 
         <ul class="table-view">

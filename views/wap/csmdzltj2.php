@@ -2,6 +2,8 @@
   use yii\helpers\Html;
     use yii\helpers\Url;
     use app\models\U;
+
+    use app\models\MOfficeCampaignDetail;
 ?>
     
 
@@ -50,7 +52,19 @@
    
             <li class="table-view-cell media">
               <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj3', 'office_id'=>$model_office->office_id, 'model_category_id'=>$model_category->id],true) ?>">
-                <img class="media-object pull-left" src="http://placehold.it/80x80">
+               
+                <?php 
+                    $model_office_campaign_detail = MOfficeCampaignDetail::findOne(['pic_category' => $model_category->id, 'office_id' => $model_office->office_id]);
+
+                    if(!empty($model_office_campaign_detail))
+                    {
+                      $url = $model_office_campaign_detail->getImageUrl();
+                    }
+                    else
+                      $url = 'http://placehold.it/64x64';
+                ?>
+                <img class="media-object pull-left" src="<?= $url ?>" width="64" height="64">
+               
                 <div class="media-body">
                   <?= $model_category->name ?>
                   <!--

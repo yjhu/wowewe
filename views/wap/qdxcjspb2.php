@@ -40,8 +40,9 @@
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
+
       <p class="content-padded">
-      营服中心选择
+      <?= $mr->name ?> > 营服中心选择
       </p>
 
         <ul class="table-view">

@@ -2,7 +2,7 @@
   use yii\helpers\Html;
     use yii\helpers\Url;
     use app\models\U;
-
+    use app\models\MOfficeCampaignDetail;
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +49,19 @@
         <span class="badge">督导员:<?= $supervisor->name ?>&nbsp;<?= $supervisor->mobile ?></span>
         </p>
    
-       <img width=100% class="media-object pull-left" src="http://placehold.it/200x200">
+
+       <?php 
+        $model_office_campaign_detail = MOfficeCampaignDetail::findOne(['pic_category' => $model_ocpc->id, 'office_id' => $office->office_id]);
+
+        if(!empty($model_office_campaign_detail))
+        {
+          $url = $model_office_campaign_detail->getImageUrl();
+        }
+        else
+          $url = 'http://placehold.it/200x200';
+        ?>
+
+       <img width=100% class="media-object pull-left" src="<?= $url ?>">
 
 
       <form id="productForm">
@@ -77,7 +89,12 @@
     </div>
 
     <script type="text/javascript">
-           var MIN=1;
+        
+        var office_campaign_id = "<?= $model_office_campaign_detail->id ?>";
+        var staff_id = "<?= $staff->staff_id ?>";
+        //var score
+
+        var MIN=1;
         var MAX;
         if(cat == 6) 
         {
@@ -119,14 +136,17 @@
         $("#submit_rank").click(function(){
          // alert("click and submit");
 
+          score = $("#myrange").val();
+          //alert("office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+score);
+
           $.ajax({
             url: "<?php echo Url::to(['wap/handleqdxcjspb'], true) ; ?>",
             type:"GET",
             cache:false,
             dataType:'json',
-            data: $("#productForm").serialize(),
+            //data: $("#productForm").serialize(),
 
-            //data: "&currentPage="+currentPage+"&size="+size+"&cid="+cid+"&feeSum="+feeSum,
+            data: "office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+score,
             success: function(json_data){
                     //var json_data = eval('('+msg+')');
    
