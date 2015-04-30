@@ -31,20 +31,17 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
-
       <h1 class="title">
-       参赛门店资料提交
+       渠道宣传竞赛评选
       </h1>
-
     </header>
 
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
       <p class="content-padded">
-      督导门店选择
+      门店选择
       </p>
 
         <ul class="table-view">
@@ -52,7 +49,7 @@
         <?php foreach($models_office as $model_office) {  ?>
 
             <li class="table-view-cell media">
-            <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj2','office_id'=>$model_office->office_id],true) ?>">
+            <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb4','office_id'=>$model_office->office_id],true) ?>">
             <!--
               <img class="media-object pull-left" src="http://placehold.it/80x80">
             -->
@@ -67,6 +64,7 @@
         <?php } ?>
         </ul>
       
+
     </div>
 
       

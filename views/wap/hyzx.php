@@ -154,16 +154,14 @@
 
     
         <?php if(!empty($user->mobileStaff) || !empty($user->staff)) {?>
-            <li><a ajax-data="false" href="<?php echo Url::to(['csmdzltj1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" alt="渠道宣传竞赛评选" class="ui-li-icon ui-corner-none">渠道宣传竞赛评选</a></li>
+            <li><a ajax-data="false" href="<?php echo Url::to(['qdxcjspb1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" alt="渠道宣传竞赛评选" class="ui-li-icon ui-corner-none">渠道宣传竞赛评选</a></li>
         <?php }  ?>
 
 
         <?php if(!empty($user->mobileStaff) && ($user->mobileStaff->isSupervisor())) {?>
-            <li><a ajax-data="false" href="<?php echo Url::to(['xxx', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" alt="参赛门店资料提交" class="ui-li-icon ui-corner-none">参赛门店资料提交</a></li>
+            <li><a ajax-data="false" href="<?php echo Url::to(['csmdzltj1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'staff_id'=>$user->mobileStaff->staff_id]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" alt="参赛门店资料提交" class="ui-li-icon ui-corner-none">参赛门店资料提交</a></li>
         <?php }  ?>
 
-
-       
 
 
         

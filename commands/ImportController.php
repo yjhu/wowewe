@@ -92,6 +92,44 @@ class ImportController extends Controller
             }
         
         }
-        fclose($fh);    
+        fclose($fh);   
+    }
+    
+    public function actionTestdata()
+    {
+        if (YII_DEBUG == false) return;
+        
+        $categories = \app\models\MOfficeCampaignPicCategory::find()->all();
+        foreach ($categories as $category) {
+            $max_score = ($category->sort_order == 6) ? 10 : 18;
+            
+            $office_campaign_detail = new \app\models\MOfficeCampaignDetail;
+            $office_campaign_detail->office_id = 15;
+            $office_campaign_detail->pic_category = $category->id;
+            $office_campaign_detail->save(false);
+            
+            $office_campaign_score = new \app\models\MOfficeCampaignScore;
+            $office_campaign_score->office_campaign_id = $office_campaign_detail->id;
+            $office_campaign_score->staff_id = 451;
+            $office_campaign_score->score = rand(0, $max_score);
+            $office_campaign_score->save(false);
+            
+            $office_campaign_score = new \app\models\MOfficeCampaignScore;
+            $office_campaign_score->office_campaign_id = $office_campaign_detail->id;
+            $office_campaign_score->staff_id = 529;
+            $office_campaign_score->score = rand(0, $max_score);
+            $office_campaign_score->save(false);
+            
+            $office_campaign_score = new \app\models\MOfficeCampaignScore;
+            $office_campaign_score->office_campaign_id = $office_campaign_detail->id;
+            $office_campaign_score->staff_id = 576;
+            $office_campaign_score->score = rand(0, $max_score);
+            $office_campaign_score->save(false);           
+        }
+    }
+    
+    public function actionTest()
+    {
+        var_dump(\app\models\MOfficeCampaignScore::getOfficeScoreByOfficeAndPicCategory(15, 1));
     }
 }

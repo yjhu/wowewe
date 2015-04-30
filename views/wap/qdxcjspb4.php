@@ -31,11 +31,9 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
-
       <h1 class="title">
-       参赛门店资料提交
+       渠道宣传竞赛评选
       </h1>
 
     </header>
@@ -43,30 +41,28 @@
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
-      <p class="content-padded">
-      督导门店选择
-      </p>
+        <p class="content-padded">
+          <?= $office->title ?>
+        </p>
+      <ul class="table-view">
+          <?php foreach($models_categories as $model_category) {  ?>
+             
+                <li class="table-view-cell media">
+                  <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb5','office_id'=>$office->office_id, 'model_category_id'=>$model_category->id],true) ?>">
+                    <img class="media-object pull-left" src="http://placehold.it/80x80">
+                    <div class="media-body">
+                      <?= $model_category->name ?>
+                      <!--
+                      <p>...</p>
+                      -->
+                    </div>
+                  </a>
+                </li>
+          <?php } ?>
 
-        <ul class="table-view">
-
-        <?php foreach($models_office as $model_office) {  ?>
-
-            <li class="table-view-cell media">
-            <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj2','office_id'=>$model_office->office_id],true) ?>">
-            <!--
-              <img class="media-object pull-left" src="http://placehold.it/80x80">
-            -->
-              <div class="media-body">
-                <?= $model_office->title ?>
-                <!--
-                <p>...</p>
-                -->
-              </div>
-            </a>
-          </li>
-        <?php } ?>
         </ul>
       
+
     </div>
 
       
