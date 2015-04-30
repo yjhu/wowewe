@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+//use yii\grid\GridView;
+use kartik\grid\GridView;
+//	use kartik\dynagrid\DynaGrid;
 
 use app\models\MStaff;
 
@@ -24,13 +26,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?php 
 
-	//use kartik\dynagrid\DynaGrid;
-	//use kartik\grid\GridView;
-	
-
 	$columns = [
 		//['class'=>'kartik\grid\SerialColumn', 'order'=>DynaGrid::ORDER_FIX_LEFT],
-		//'id',
+//		'id',
+//        'gh_id',
+//        'openid',
+
         [
             //'attribute' => 'nickname',
             //'label' => '头像',
@@ -74,22 +75,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'headerOptions' => array('style'=>'width:10%;'),	
         ],
 
-        [
-            'attribute'=>'create_time',
-            //'filterType'=>GridView::FILTER_DATE,
-            'filterType'=>GridView::FILTER_RANGE,
-            'format'=>'raw',
-            //'width'=>'270px',
-            'filterWidgetOptions'=>[
-                'type' => \kartik\widgets\DatePicker::TYPE_RANGE,
-                'attribute2'=>'create_time_2',
-                'pluginOptions'=>[
-                    'format'=>'yyyy-mm-dd',
-                    'language'=>'zh-CN',
-                ]
+            [
+                'label' => '关注时间',
+                'attribute'=>'create_time',
+                'filterType'=>\kartik\grid\GridView::FILTER_DATE,
+                'format'=>'raw',
+                'filterWidgetOptions'=>[
+                    'type' => \kartik\widgets\DatePicker::TYPE_RANGE,
+                    'attribute2'=>'create_time_2',
+                    'pluginOptions'=>[
+                        'format'=>'yyyy-mm-dd',
+                        'language'=>'zh-CN',
+                    ]
+                ],
+                'headerOptions' => array('style'=>'width:35%;'),	
             ],
-            'headerOptions' => array('style'=>'width:25%;'),	
-        ],
 
 		/*
 		[
@@ -128,7 +128,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			'label' => '推广者所属部门',
 			'format'=>'html',
             'value'=>function ($model, $key, $index, $column) { 
-                if (empty($model->sceneStaff)) {
+                if (empty($model->sceneStaff->office->title)) {
                     return '';
                 }
                 return $model->sceneStaff->office->title;

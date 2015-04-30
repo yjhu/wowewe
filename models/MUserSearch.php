@@ -14,6 +14,8 @@ class MUserSearch extends Model
     public $id;
 
     public $gh_id;
+
+    public $openid;    
     
     public $nickname;
 
@@ -71,7 +73,7 @@ class MUserSearch extends Model
     {
         $query = MUser::find();
         $query->joinWith('openidBindMobiles');
-        $query->select('*');
+//        $query->select('*');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [

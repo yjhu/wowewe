@@ -30,9 +30,6 @@ use yii\db\ActiveRecord;
  * $csv->setOutputFile($outputFile);
  * $csv->toCSV();
  *
- * @author Kenrick Buchanan
- * @version 0.6.9
-
 
 Yii::import('ext.ECSVExport');
  
@@ -262,9 +259,7 @@ class ECSVExport
      */
     protected $_exclude = array();
 
-//hehb
     protected $_include = array();
-//end
 
     /**
      * column delimiter
@@ -485,7 +480,6 @@ class ECSVExport
         return $this->_exclude;
     }
 
-//hehb
     public function setInclude($arr)
     {
             $this->_include = $arr;
@@ -496,7 +490,6 @@ class ECSVExport
     {
         return $this->_include;
     }
-//end
 
     /**
      * get the set model relations
@@ -868,12 +861,15 @@ class ECSVExport
         $value = str_replace('\"', '"', $value);
     }
 
-    //added by hehb
     public function getGbkRows($arr)
     {
         $rows = [];
         foreach ($arr as $i => $v) {
-            $rows[$i] =iconv("UTF-8","GBK//IGNORE", $v);
+            if (function_exists ('mb_convert_encoding')) {
+                $rows[$i] = mb_convert_encoding($v, "GBK", "UTF-8");
+            } else {
+                $rows[$i] = iconv("UTF-8","GBK//IGNORE", $v);
+            }
         }     
         return $rows;
     }

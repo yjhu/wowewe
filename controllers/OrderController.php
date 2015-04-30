@@ -205,11 +205,11 @@ class OrderController extends Controller
             $dataProvider->setPagination(false);
             $data = $dataProvider->getModels();
             $date = date('Y-m-d-His');
-            $filename = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.$this->action->id."---stafflist-{$date}.csv";
+            $filename = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.$this->action->id."-{$date}.csv";
             $csv = new \app\models\ECSVExport($data);
-            $attributes = ['mobile', 'office.title', 'user.nickname', 'is_vip', 'vipLevel.title'];
+            $attributes = ['name', 'mobile', 'office.title', 'user.nickname', 'score'];
             $csv->setInclude($attributes);                
-            $csv->setHeaders(['User Nickname'=>'微信昵称', 'VIP'=>'是否VIP', 'User Create Time'=>'关注时间', 'title'=>'VIP级别']);
+            $csv->setHeaders(['Score'=>'成绩']);
             $csv->toCSV($filename);
             Yii::$app->response->sendFile($filename);
             return;
