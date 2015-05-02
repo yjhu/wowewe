@@ -54,5 +54,39 @@ class MMarketingServiceCenter extends \yii\db\ActiveRecord
         return $this->hasMany(MOffice::className(), ['office_id' => 'office_id'])
             ->viaTable('wx_rel_office_msc', ['msc_id' => 'id']);
     }
+    
+    public function getOfficeCount()
+    {
+        $count = 0;
+        foreach($this->offices as $office) {
+            if (!empty($office->supervisor)) $count++;
+        }
+        return $count;
+    }
+    public function getDetailedOfficeCount()
+    {
+        $count = 0;
+        foreach($this->offices as $office) {
+            if (MOfficeCampaignDetail::getDetailReadyStatus($office->office_id) == MOfficeCampaignDetail::DETAIL_COMPLETE)
+                $count++;
+        }
+        return $count;
+    }
+    public function getScoredOfficeCount()
+    {
+        $count = 0;
+        foreach($this->offices as $office) {
+            if (MOfficeCampaignScore::getScore($office->office_id) !== false) $count++;
+        }
+        return $count;
+    }
+    public function getScoredOfficeCountByScorer($scorer_id)
+    {
+        $count = 0;
+        foreach($this->offices as $office) {
+            if (MOfficeCampaignScore::getScoreByScorer($office->office_id, $scorer_id) !== false) $count++;
+        }
+        return $count;
+    }
   
 }

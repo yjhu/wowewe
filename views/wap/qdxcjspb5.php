@@ -42,11 +42,11 @@
     </header>
 
     <?php
-      $scores = \app\models\MOfficeCampaignScore::getOfficeScoreByPicCategory($office->office_id, $model_ocpc->id); 
+      $scores = \app\models\MOfficeCampaignScore::getScoreByPicCategory($office->office_id, $model_ocpc->id); 
       $is_scorer = false;
       if ($staff->isOfficeCampaignScorer()) {
         $is_scorer = true;
-        $scorer_score = \app\models\MOfficeCampaignScore::getOfficeScoreByStaffAndPicCategory($office->office_id, $staff->staff_id, $model_ocpc->id);
+        $scorer_score = \app\models\MOfficeCampaignScore::getScoreByScorerAndPicCategory($office->office_id, $staff->staff_id, $model_ocpc->id);
         $scorer = $staff->officeCampaignScorer;
         if ($scorer_score === false) 
           $can_score = true;
