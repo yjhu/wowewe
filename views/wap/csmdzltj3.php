@@ -74,7 +74,7 @@ $signPackage = $jssdk->GetSignPackage();
       </form>
 
       <?php } else { ?>
-        <div class="card">
+        <span>
           <ul class="table-view">
           <li class="table-view-cell table-view-divider"><?= $model_office->msc->marketingRegion->name.">".$model_office->msc->name.">".$model_office->title ?></li>
           <li class="table-view-cell table-view-divider"><?= "督导员：{$supervisor->name} {$supervisor->mobile}" ?></li>
@@ -82,7 +82,7 @@ $signPackage = $jssdk->GetSignPackage();
           <li class="table-view-cell">平均得分：<span class="badge badge-primary pull-right"><?= printf("%.1f", $scores['total']/$scores['count']) ?></span></li>
           <li class="table-view-cell">评分人数：<span class="badge badge-primary pull-right"><?= $scores['count'] ?></span></li>
           </ul>
-        </div>
+        </span>
       <?php } ?>
  &nbsp;<br>&nbsp;<br>&nbsp;<br>
     </div>

@@ -3306,8 +3306,9 @@ EOD;
     {
         $this->layout = false;   
        
-        //$gh_id = U::getSessionParam('gh_id');
-        //$openid = U::getSessionParam('openid');
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
 
         $office_id = empty($_GET['office_id']) ? 0 : $_GET['office_id'];
         $cat = empty($_GET['cat']) ? 1 : $_GET['cat'];
@@ -3320,7 +3321,10 @@ EOD;
 
         $model_office_campaign_detail = MOfficeCampaignDetail::findOne(['pic_category' => $cat, 'office_id' => $office_id]);
         if(!empty($model_office_campaign_detail))
+        {
+            U::W("model_office_campaign_detail Not NULL , update ...");
             $model_office_campaign_detail->delete();
+        }
 
         $model = new MOfficeCampaignDetail;
         //$model->gh_id = $gh_id;

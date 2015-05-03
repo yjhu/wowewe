@@ -112,7 +112,7 @@
 
 
       <?php } else { ?>
-            <div class="card">
+        <span>
             <ul class="table-view">
             <li class="table-view-cell table-view-divider"><?= $office->msc->marketingRegion->name.">".$office->msc->name.">".$office->title ?></li>
             <li class="table-view-cell table-view-divider"><?= "督导员：{$supervisor->name} {$supervisor->mobile}" ?></li>
@@ -125,7 +125,7 @@
             <li class="table-view-cell">您的评分：<span class="badge badge-positive pull-right"><?= $scorer_score ?></span></li>
             <?php } ?>
             </ul>
-          </div>
+        </span>
       <?php } ?>
         &nbsp;<br>&nbsp;<br>&nbsp;<br> 
     </div>
