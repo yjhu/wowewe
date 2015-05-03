@@ -112,10 +112,11 @@
 
         <div class="content">
             <ul class="table-view">
-            <li class="table-view-cell"><span class="badge">1</span></li>
-            <li class="table-view-cell"><span class="badge badge-primary">2</span></li>
-            <li class="table-view-cell"><span class="badge badge-positive">3</span></li>
-            <li class="table-view-cell"><span class="badge badge-negative">4</span></li>
+            <li class="table-view-cell table-view-divider">图例</li>
+            <li class="table-view-cell"><span class="badge">&nbsp;</span>参赛门店数量</li>
+            <li class="table-view-cell"><span class="badge badge-primary">&nbsp;</span>已提交资料门店数量</li>
+            <li class="table-view-cell"><span class="badge badge-positive">&nbsp;</span>参加评分门店数量</li>
+            <li class="table-view-cell"><span class="icon icon-info" style="color:red">&nbsp;</span>你未评分</li>
             </ul>
         </div>
       </div>
