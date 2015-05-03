@@ -32,6 +32,7 @@
 
     <header class="bar bar-nav">
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
+      <a class="icon icon-info pull-right" href="#myModalexample" class="btn"></a>
       <h1 class="title">
        渠道宣传竞赛评选
       </h1>
@@ -82,19 +83,41 @@
         </ul>
              &nbsp;<br>&nbsp;<br>&nbsp;<br>  
 
-    </div>
+      <?php
+        $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
+        $end_date =  \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
+      ?>
 
-    <?php
-    $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
-    $end_date =  \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
-  ?>
+      <div class="bar bar-standard bar-footer-secondary">
+        <a class="btn btn-block btn-primary" style="color:#fff" href="<?php echo  Url::to(['qdxcjspbpm'],true) ?>">排行榜</a>
+      </div>
+    
+      <br>
+      <br>
 
- 
-  <nav class="bar bar-tab">
-    <a class="tab-item" href="#">
-      本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
-    </a>
-  </nav>     
+      <nav class="bar bar-tab">
+        <a class="tab-item" href="#">
+          本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
+        </a>
+      </nav>    
+
+
+      <div id="myModalexample" class="modal">
+        <header class="bar bar-nav">
+          <a class="icon icon-close pull-right" href="#myModalexample"></a>
+          <h1 class="title">图例说明</h1>
+        </header>
+
+        <div class="content">
+            <ul class="table-view">
+            <li class="table-view-cell"><span class="badge badge-positive">&nbsp;</span>参加评分门店数量</li>
+            <li class="table-view-cell"><span class="badge badge-primary">&nbsp;</span>已提交资料门店数量</li>
+            <li class="table-view-cell"><span class="badge">&nbsp;</span>参赛门店数量</li>
+            <li class="table-view-cell"><span class="badge badge-inverted"><span class="icon icon-info" style="color:red"></span></span>你未评分</li>
+            </ul>
+        </div>
+      </div>
+    </div>  
       
   </body>
 </html>

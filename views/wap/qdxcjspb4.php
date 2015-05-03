@@ -103,9 +103,6 @@
                   <?php } ?>
                     <img class="media-object pull-left" src="<?= $url ?>" width="64" height="64">
                     
-              
-
-
                     <div class="media-body">
                       <?= $model_category->name ?>
                       <!--
@@ -125,19 +122,26 @@
         </ul>
       
         &nbsp;<br>&nbsp;<br>&nbsp;<br> 
-    </div>
-
+        
       <?php
-    $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
-    $end_date =  \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
-  ?>
+        $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
+        $end_date =  \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
+      ?>
 
- 
-  <nav class="bar bar-tab">
-    <a class="tab-item" href="#">
-      本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
-    </a>
-  </nav>   
+      <div class="bar bar-standard bar-footer-secondary">
+        <a class="btn btn-block btn-primary" style="color:#fff" href="<?php echo  Url::to(['qdxcjspbpm'],true) ?>">排行榜</a>
+      </div>
+    
+      <br>
+      <br>
+
+      <nav class="bar bar-tab">
+        <a class="tab-item" href="#">
+          本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
+        </a>
+      </nav>
+
+    </div>
       
   </body>
 </html>

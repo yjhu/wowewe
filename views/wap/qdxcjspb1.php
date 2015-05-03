@@ -37,9 +37,7 @@
       <h1 class="title">
        渠道宣传竞赛评选
       </h1>
-
     </header>
-
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
@@ -108,15 +106,14 @@
       <div id="myModalexample" class="modal">
         <header class="bar bar-nav">
           <a class="icon icon-close pull-right" href="#myModalexample"></a>
-          <h1 class="title">Modal</h1>
+          <h1 class="title">图例说明</h1>
         </header>
 
         <div class="content">
             <ul class="table-view">
-            <li class="table-view-cell table-view-divider">图例</li>
-            <li class="table-view-cell"><span class="badge">&nbsp;</span>参赛门店数量</li>
-            <li class="table-view-cell"><span class="badge badge-primary">&nbsp;</span>已提交资料门店数量</li>
             <li class="table-view-cell"><span class="badge badge-positive">&nbsp;</span>参加评分门店数量</li>
+            <li class="table-view-cell"><span class="badge badge-primary">&nbsp;</span>已提交资料门店数量</li>
+            <li class="table-view-cell"><span class="badge">&nbsp;</span>参赛门店数量</li>
             <li class="table-view-cell"><span class="badge badge-inverted"><span class="icon icon-info" style="color:red"></span></span>你未评分</li>
             </ul>
         </div>
@@ -124,8 +121,5 @@
     </div>
 
 
-
-      
-      
   </body>
 </html>

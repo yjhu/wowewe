@@ -42,11 +42,11 @@
     </header>
 
     <?php
-      $scores = \app\models\MOfficeCampaignScore::getScoreByPicCategory($office->office_id, $model_ocpc->id); 
+      $scores = \app\models\MOfficeCampaignScore::getOfficeScoreByPicCategory($office->office_id, $model_ocpc->id); 
       $is_scorer = false;
       if ($staff->isOfficeCampaignScorer()) {
         $is_scorer = true;
-        $scorer_score = \app\models\MOfficeCampaignScore::getScoreByScorerAndPicCategory($office->office_id, $staff->staff_id, $model_ocpc->id);
+        $scorer_score = \app\models\MOfficeCampaignScore::getOfficeScoreByStaffAndPicCategory($office->office_id, $staff->staff_id, $model_ocpc->id);
         $scorer = $staff->officeCampaignScorer;
         if ($scorer_score === false) 
           $can_score = true;
@@ -128,7 +128,6 @@
         </span>
       <?php } ?>
         &nbsp;<br>&nbsp;<br>&nbsp;<br> 
-    </div>
 
       <?php         
 
@@ -204,16 +203,27 @@
     </script>
           <?php } ?>
 
-            <?php
-    $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
-    $end_date =  \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
-  ?>
 
- 
-  <nav class="bar bar-tab">
-    <a class="tab-item" href="#">
-      本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
-    </a>
-  </nav> 
+
+    <?php
+        $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
+        $end_date =  \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
+      ?>
+
+      <div class="bar bar-standard bar-footer-secondary">
+        <a class="btn btn-block btn-primary" style="color:#fff" href="<?php echo  Url::to(['qdxcjspbpm'],true) ?>">排行榜</a>
+      </div>
+    
+      <br>
+      <br>
+
+      <nav class="bar bar-tab">
+        <a class="tab-item" href="#">
+          本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
+        </a>
+      </nav>   
+
+    </div>
+
   </body>
 </html>
