@@ -94,14 +94,15 @@
       <div class="bar bar-standard bar-footer-secondary">
         <a class="btn btn-block btn-primary" style="color:#fff" href="<?php echo  Url::to(['qdxcjspbpm'],true) ?>">排行榜</a>
       </div>
-      &nbsp;<br><br>
+    
+      <br>
+      <br>
 
-      <div class="bar bar-standard bar-footer">
+      <nav class="bar bar-tab">
         <a class="tab-item" href="#">
-        本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
+          本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
         </a>
-      </div>
-
+      </nav>    
 
 
       <div id="myModalexample" class="modal">
@@ -116,7 +117,7 @@
             <li class="table-view-cell"><span class="badge">&nbsp;</span>参赛门店数量</li>
             <li class="table-view-cell"><span class="badge badge-primary">&nbsp;</span>已提交资料门店数量</li>
             <li class="table-view-cell"><span class="badge badge-positive">&nbsp;</span>参加评分门店数量</li>
-            <li class="table-view-cell"><span class="icon icon-info" style="color:red">&nbsp;</span>你未评分</li>
+            <li class="table-view-cell"><span class="badge badge-inverted"><span class="icon icon-info" style="color:red"></span></span>你未评分</li>
             </ul>
         </div>
       </div>

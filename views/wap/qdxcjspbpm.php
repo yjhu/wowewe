@@ -58,14 +58,14 @@
         <?php 
           } else {
             $rank = 0;
-            foreach ($ranking as $office_id => $office_score) {
+            foreach ($ranking as $rank_item) {
               $rank++;
-              $office = \app\models\MOffice::findOne(['office_id' => $office_id]);
+              $office = \app\models\MOffice::findOne(['office_id' => $rank_item['office_id']]);
         ?>
               <li class="table-view-cell media">
-                <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb4','office_id'=>$office_id],true) ?>">
+                <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb4','office_id'=>$rank_item['office_id']],true) ?>">
                   <div class="pull-right">
-                    <span class="badge badge-primary"><?= $office_score; ?></span>
+                    <span class="badge badge-primary"><?= printf("%.1f", $rank_item['score']); ?>分</span>
                   </div>
                   <div class="media-body">
                     <?= $rank;?>&nbsp;&nbsp;<?= $office->title; ?>
