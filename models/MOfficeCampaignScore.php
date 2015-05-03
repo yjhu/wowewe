@@ -131,19 +131,22 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
     
     public static function getScoreRanking($date = null) {
         $ranking = array();
-        /**
         $mrs = MMarketingRegion::find()->all();
         foreach($mrs as $mr) {
             foreach($mr->mscs as $msc) {
                 foreach($msc->offices as $office) {
                     $score = self::getScore($office->office_id, $date);
                     if ($score !== false) {
-                        $ranking["{$office->office_id}"] = $score;
+                        $ranking[] = ['office_id' => $office->office_id, 'score' => $score];
                     }
                 }
             }
         }
-        **/
+        
+        foreach($ranking as $key => $row) {
+            $score[$key] = $row['score'];
+        }        
+        array_multisort($score, SORT_DESC, $ranking);
         //return arsort($ranking);
         return $ranking;
     }
