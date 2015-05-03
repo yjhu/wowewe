@@ -41,7 +41,7 @@ $signPackage = $jssdk->GetSignPackage();
       </h1>
     </header>
     <?php 
-      $scores = \app\models\MOfficeCampaignScore::getOfficeScoreByPicCategory($model_office->office_id, $model_ocpc->id);
+      $scores = \app\models\MOfficeCampaignScore::getScoreByPicCategory($model_office->office_id, $model_ocpc->id);
       $supervisor = $model_office->supervisor;
     ?>
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
