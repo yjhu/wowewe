@@ -2,6 +2,7 @@
   use yii\helpers\Html;
     use yii\helpers\Url;
     use app\models\U;
+
 ?>
     
 
@@ -33,58 +34,54 @@
     <header class="bar bar-nav">
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
       <h1 class="title">
-       渠道宣传竞赛评选
+       渠道宣传竞赛评选排行榜
       </h1>
     </header>
 
+    <?php
+      $ranking = \app\models\MOfficeCampaignScore::getScoreRanking(); 
+      U::W('=============================');  
+      U::W($ranking);
+    ?>
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
 
-      <p class="content-padded">
-      <?= $mr->name ?> > 营服中心选择
-      </p>
-
         <ul class="table-view">
-
-        <?php foreach($models_msc as $model_msc) {  ?>
-
-            <li class="table-view-cell media">
-            <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb3','msc_id'=>$model_msc->id],true) ?>">
-            <!--
-              <img class="media-object pull-left" src="http://placehold.it/80x80">
-            -->
-            <div class="pull-right">
-              <?php
-                $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]); 
-                $staff = $wx_user->staff;
-                if ($staff->isOfficeCampaignScorer()) {
-                  $myScoredCount = $model_msc->getScoredOfficeCountByScorer($staff->staff_id);
-                  $detailedCount = $model_msc->getDetailedOfficeCount();
-                  if ($myScoredCount < $detailedCount) {
-              ?>
-                <span class="badge badge-negative"><?= $detailedCount - $myScoredCount ?></span>
-              <?php }} ?>
-              <span class="badge badge-positive"><?= $model_msc->getScoredOfficeCount(); ?></span>
-              <span class="badge badge-primary"><?= $model_msc->getDetailedOfficeCount(); ?></span>
-              <span class="badge"><?= $model_msc->getOfficeCount(); ?></span>     
-             </div>
-
-              <div class="media-body">
-                <?= $model_msc->name ?>
-                <!--
-                <p>...</p>
-                -->
-              </div>
-            </a>
+        <?php 
+          if (count($ranking) == 0) {
+        ?>
+          <li class="table-view-cell media">
+            <div class="pull-right"></div>
+            <div class="media-body">本期活动暂无排名</div>
           </li>
-        <?php } ?>
+        <?php 
+          } else {
+            $rank = 0;
+            foreach ($ranking as $office_id => $office_score) {
+              $rank++;
+              $office = \app\models\MOffice::findOne(['office_id' => $office_id]);
+        ?>
+              <li class="table-view-cell media">
+                <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb4','office_id'=>$office_id],true) ?>">
+                  <div class="pull-right">
+                    <span class="badge badge-primary"><?= $office_score; ?></span>
+                  </div>
+                  <div class="media-body">
+                    <?= $rank;?>&nbsp;&nbsp;<?= $office->title; ?>
+                  </div>
+                </a>
+              </li>
+        <?php 
+            }
+          }
+        ?>
+
         </ul>
-             &nbsp;<br>&nbsp;<br>&nbsp;<br>  
+        &nbsp;<br>&nbsp;<br>&nbsp;<br>  
 
     </div>
-
-    <?php
+  <?php
     $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
     $end_date =  \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
   ?>
@@ -94,7 +91,8 @@
     <a class="tab-item" href="#">
       本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
     </a>
-  </nav>     
+  </nav> 
+      
       
   </body>
 </html>

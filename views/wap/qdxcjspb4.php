@@ -48,8 +48,12 @@
            <?= $office->msc->marketingRegion->name ?>><?= $office->msc->name ?>><?= $office->title ?>
         </p>
       <ul class="table-view">
-        <?php if (!empty($office->supervisor)) { ?>
+        <?php if (!empty($office->supervisor)) { 
+          $officeScore = \app\models\MOfficeCampaignScore::getScore($office->office_id);
+        ?>
         <li class="table-view-cell table-view-divider">督导员：<?= $office->supervisor->name." ".$office->supervisor->mobile ?></li>
+        <li class="table-view-cell table-view-divider">门店当前总分：<span class="badge badge-positive pull-left"><?= $officeScore?printf("%.1F",$officeScore):'未评分' ?></span></li>
+
         <?php } ?>
           <?php foreach($models_categories as $model_category) {  ?>
              
@@ -76,12 +80,32 @@
                     <span class="badge badge-positive">3</span>
                     <span class="badge badge-negative">4</span>
                     -->
-                   
+                    <div class="pull-right">
+                      <?php
+                        $score = \app\models\MOfficeCampaignScore::getScoreByPicCategory($office->office_id, $model_category->id); 
+                        if ($score['count'] != 0) {
+                          $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]); 
+                          $staff = $wx_user->staff;
+                          if ($staff->isOfficeCampaignScorer()) {
+                            $myscore = \app\models\MOfficeCampaignScore::getScoreByScorerAndPicCategory($office->office_id, $staff->staff_id, $model_category->id);
+                            if ($myscore === false) {
+                      ?>
+                              <span class="icon icon-info" style="color:red"></span>
+                            <?php }}?>
+                        <span class="badge badge-positive"><?= printf("%.1F", $score['total']/$score['count']); ?>分</span>
+                      <?php } else { ?>
+                        <span class="badge badge-negative"><?= "未评分"; ?></span>    
+                      <?php } ?> 
+                    </div>
+
                   <?php } else {?>    
                        <span class="badge badge-negative">督导员未提交资料</span>
                   <?php } ?>
                     <img class="media-object pull-left" src="<?= $url ?>" width="64" height="64">
                     
+              
+
+
                     <div class="media-body">
                       <?= $model_category->name ?>
                       <!--

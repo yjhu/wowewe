@@ -111,7 +111,7 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
         $pic_categories = MOfficeCampaignPicCategory::find()->all();
         $total = 0;
         foreach($pic_categories as $pic_category) {
-            $score = self::getScoreByScorerAndPicCategory($office_id, $scorer_id, $pic_category, $date);
+            $score = self::getScoreByScorerAndPicCategory($office_id, $scorer_id, $pic_category->id, $date);
             if ($score === false) return false;
             $total += $score;
         }
@@ -122,7 +122,7 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
         $pic_categories = MOfficeCampaignPicCategory::find()->all();
         $total = 0;
         foreach($pic_categories as $pic_category) {
-            $scores = self::getScoreByPicCategory($office_id, $pic_category, $date);
+            $scores = self::getScoreByPicCategory($office_id, $pic_category->id, $date);
             if ($scores['count'] == 0) return false;
             $total += $scores['total']/$scores['count'];
         }
@@ -131,17 +131,20 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
     
     public static function getScoreRanking($date = null) {
         $ranking = array();
+        /**
         $mrs = MMarketingRegion::find()->all();
         foreach($mrs as $mr) {
             foreach($mr->mscs as $msc) {
                 foreach($msc->offices as $office) {
                     $score = self::getScore($office->office_id, $date);
                     if ($score !== false) {
-                        $ranking["$office->office_id"] = $score;
+                        $ranking["{$office->office_id}"] = $score;
                     }
                 }
             }
         }
-        return arsort($ranking);
+        **/
+        //return arsort($ranking);
+        return $ranking;
     }
 }

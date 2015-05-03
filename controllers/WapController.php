@@ -3210,6 +3210,17 @@ EOD;
         return $this->render('qdxcjspb5', ['gh_id' => $gh_id, 'openid' => $openid, 'office' => $office, 'staff' => $staff , 'model_office_campaign_detail' => $model_office_campaign_detail, 'supervisor' => $office->supervisor, 'model_ocpc' => $model_ocpc]);
     }
 
+    /*排行榜页面*/
+    public function actionQdxcjspbpm()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+
+        return $this->render('qdxcjspbpm', ['gh_id' => $gh_id, 'openid' => $openid]);
+    }
 
 
     /*督导门店选择页面*/

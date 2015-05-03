@@ -56,6 +56,28 @@
             <!--
               <img class="media-object pull-left" src="http://placehold.it/80x80">
             -->
+            <div class="pull-right">
+              <?php
+                $score = \app\models\MOfficeCampaignScore::getScore($model_office->office_id); 
+                if ($score) {
+                  $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]); 
+                  $staff = $wx_user->staff;
+                  if ($staff->isOfficeCampaignScorer()) {
+                    $myscore = \app\models\MOfficeCampaignScore::getScoreByScorer($model_office->office_id, $staff->staff_id);
+                    if ($myscore === false) {
+              ?>
+                    <span class="icon icon-info" style="color:red"></span>
+                    <?php }} ?>
+                <span class="badge badge-positive"><?= printf("%.1F", $score); ?></span>
+              <?php 
+                } else { 
+                  if (\app\models\MOfficeCampaignDetail::getDetailReadyStatus($model_office->office_id) != \app\models\MOfficeCampaignDetail::DETAIL_COMPLETE) {
+              ?>
+                <span class="badge badge-negative"><?= "督导员未提交资料"; ?></span>
+              <?php } else { ?>
+                <span class="badge badge-negative"><?= "未评分"; ?></span>    
+              <?php }} ?> 
+             </div>
               <div class="media-body">
                 <?= $model_office->title ?>
                 <!--
