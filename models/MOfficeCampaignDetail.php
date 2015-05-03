@@ -101,26 +101,10 @@ class MOfficeCampaignDetail extends \yii\db\ActiveRecord {
             return $url;
         }
 
-        const CAMPAIGN_ENDDATE = 25;
         public static function getDetailByOfficeAndPicCategory($office_id, $pic_category, $date = null) 
         {
-            if ($date == null) $timestamp = time();
-            else               $timestamp = strtotime($date);
-
-            $year = date('Y', $timestamp);
-            $month = date('m', $timestamp);
-            $day = date('d', $timestamp);
-            if ($day > self::CAMPAIGN_ENDDATE) {
-                $month = $month + 1;
-                if ($month > 12) {
-                    $year = $year + 1;
-                    $month = 1;
-                }
-            }
-            $end_time = sprintf("%04d-%02d-%02d 23:59:59", $year, $month, self::CAMPAIGN_ENDDATE);
-            $end_date = \DateTime::createFromFormat("Y-m-d H:i:s", $end_time);
-            $start_date = clone($end_date);
-            $start_date->sub(date_interval_create_from_date_string('1 month'));
+            $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
+            $end_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
 
             $detail = self::find()
                         ->andWhere(['office_id' => $office_id, 'pic_category' => $pic_category])
@@ -138,23 +122,8 @@ class MOfficeCampaignDetail extends \yii\db\ActiveRecord {
 
         public static function getDetailReadyStatus($office_id, $date = null) 
         {
-            if ($date == null) $timestamp = time();
-            else               $timestamp = strtotime($date);
-
-            $year = date('Y', $timestamp);
-            $month = date('m', $timestamp);
-            $day = date('d', $timestamp);
-            if ($day > self::CAMPAIGN_ENDDATE) {
-                $month = $month + 1;
-                if ($month > 12) {
-                    $year = $year + 1;
-                    $month = 1;
-                }
-            }
-            $end_time = sprintf("%04d-%02d-%02d 23:59:59", $year, $month, self::CAMPAIGN_ENDDATE);
-            $end_date = \DateTime::createFromFormat("Y-m-d H:i:s", $end_time);
-            $start_date = clone($end_date);
-            $start_date->sub(date_interval_create_from_date_string('1 month'));
+            $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
+            $end_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
 
             $pic_categories = MOfficeCampaignPicCategory::find()->all();
             $category_count = 0; $detail_count = 0;

@@ -45,4 +45,37 @@ class MMarketingRegion extends \yii\db\ActiveRecord
     {
         return $this->hasMany(MMarketingServiceCenter::className(), ['region_id' => 'id']);               
     }
+    
+    public function getOfficeCount()
+    {
+        $count = 0;
+        foreach($this->mscs as $msc) {
+           $count += $msc->getOfficeCount();
+        }
+        return $count;
+    }
+    public function getDetailedOfficeCount()
+    {
+        $count = 0;
+        foreach($this->mscs as $msc) {
+           $count += $msc->getDetailedOfficeCount();
+        }
+        return $count;
+    }
+    public function getScoredOfficeCount()
+    {
+        $count = 0;
+        foreach($this->mscs as $msc) {
+           $count += $msc->getScoredOfficeCount();
+        }
+        return $count;
+    }
+     public function getScoredOfficeCountByScorer($scorer_id)
+    {
+        $count = 0;
+        foreach($this->mscs as $msc) {
+           $count += $msc->getScoredOfficeCountByScorer($scorer_id);
+        }
+        return $count;
+    }
 }
