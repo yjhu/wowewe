@@ -145,14 +145,13 @@
         //var score = $("#myrange").val();
 
         var MIN=1;
-        var MAX;
         if(cat == 6) 
         {
-          MAX = 10 
+          var MAX = 10;
         }
         else
         {
-          MAX = 18;
+          var MAX = 18;
         } 
         $("#minStr").html(MIN);
         $("#maxStr").html(MAX);
@@ -167,45 +166,43 @@
             if(range>MAX) range = MAX;
             $("#myrangeStr").html(range);
             $("#myrange").val(range);
-            alert(range);
+            //alert(range);
         });
 
         $("#minIcon").click(function(){
-            range--
+            range--;
             if(range<MIN) range = MIN;
             $("#myrangeStr").html(range);
             $("#myrange").val(range);
-            alert(range);
+            //alert(range);
         });
 
-        function commitForm()
-        {
-            alert("ajax");
+     
+        $("#submit_rank").click(function(){
+          //alert("office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+$('#myrange').val());
+
             $.ajax({
             url: "<?php echo Url::to(['wap/handleqdxcjspb','gh_id'=>$gh_id, 'openid'=>$openid], true) ; ?>",
             type:"GET",
             cache:false,
+            //async:false,
             dataType:"json",
             data: "office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+$('#myrange').val(),
             success: function(t){
                     //var json_data = eval('('+msg+')');
-                    alert("submit ok");
-                    var url = "<?php echo Url::to(['wap/qdxcjspb4','gh_id'=>$gh_id, 'openid'=>$openid, 'office_id'=>$office->office_id], true); ?>";
-                    location.href = url;
+                    alert("感谢您的评分。");
+                    //alert(t.code)
+                    location.href = "<?php echo Url::to(['qdxcjspb4', 'gh_id'=>$_GET['gh_id'], 'openid'=>$_GET['openid'], 'office_id'=>$office->office_id],true) ?>";
               },
               error: function(){
                 alert('error!');
               }
           });
-        }
 
-    
-        $("#submit_rank").click(function(){
-          alert("click and submit");
-          alert("office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+$('#myrange').val());
-          commitForm();
+           return false;
+
+
         });
-         return false;
 
       });
 

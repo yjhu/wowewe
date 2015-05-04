@@ -68,7 +68,7 @@
               ?>
                     <span class="icon icon-info" style="color:red"></span>
                     <?php }} ?>
-                <span class="badge badge-positive"><?= printf("%.1F", $score); ?></span>
+                <span class="badge badge-positive"><?= printf("%.1F", $score); ?>分</span>
               <?php 
                 } else { 
                   if (\app\models\MOfficeCampaignDetail::getDetailReadyStatus($model_office->office_id) != \app\models\MOfficeCampaignDetail::DETAIL_COMPLETE) {

@@ -81,7 +81,7 @@
           </li>
         <?php } ?>
         </ul>
-             &nbsp;<br>&nbsp;<br>&nbsp;<br>  
+        &nbsp;<br>&nbsp;<br>&nbsp;<br>  
 
 
       <?php
@@ -101,6 +101,8 @@
           本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
         </a>
       </nav>    
+      
+    </div>
 
 
       <div id="myModalexample" class="modal">
@@ -118,9 +120,5 @@
             </ul>
         </div>
       </div>
-
-    </div>
-
-
   </body>
 </html>

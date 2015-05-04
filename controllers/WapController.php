@@ -3286,10 +3286,10 @@ EOD;
     }
 
 
-
+    // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/handleqdxcjspb:gh_03a74ac96138
     public function actionHandleqdxcjspb()
     {
-        U::W("++++!!!!!!!!!!!!!!!!!!!+++++++actionHandleqdxcjspb+++!!!!!!!!!!!!!!!!!!!++++++++++");
+     
         $this->layout = false;   
    
         $gh_id = U::getSessionParam('gh_id');
@@ -3309,8 +3309,8 @@ EOD;
         $model->score = $score;
                          
         $model->save(false);       
-        U::W("+++++++++++++++++++++++++actionHandleqdxcjspb++++++++++++++++++++++++++");
-        return json_encode(['code'=>'0']);
+ 
+        return json_encode(['code'=>0]);
     }
 
 

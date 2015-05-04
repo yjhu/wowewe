@@ -101,7 +101,7 @@
         </a>
       </nav>    
 
-
+      </div>  
       <div id="myModalexample" class="modal">
         <header class="bar bar-nav">
           <a class="icon icon-close pull-right" href="#myModalexample"></a>
@@ -116,8 +116,7 @@
             <li class="table-view-cell"><span class="badge badge-inverted"><span class="icon icon-info" style="color:red"></span></span>你未评分</li>
             </ul>
         </div>
-      </div>
-    </div>  
-      
+      </div>      
+
   </body>
 </html>
