@@ -1,10 +1,10 @@
 <?php
 
 /*
-C:\xampp\php\php.exe C:\htdocs\wx\yii night
-/usr/bin/php /mnt/wwwroot/wx/yii night
-0 1 * * * /usr/bin/php /mnt/wwwroot/wx/yii night
-*/
+  C:\xampp\php\php.exe C:\htdocs\wx\yii night
+  /usr/bin/php /mnt/wwwroot/wx/yii night
+  0 1 * * * /usr/bin/php /mnt/wwwroot/wx/yii night
+ */
 
 namespace app\commands;
 
@@ -12,7 +12,6 @@ use Yii;
 use yii\db\ActiveRecord;
 use yii\console\Controller;
 use yii\db\Query;
-
 use app\models\U;
 use app\models\MGh;
 use app\models\MUser;
@@ -25,171 +24,156 @@ use app\models\MStaff;
 use app\models\MAccessLog;
 use app\models\MUserAccount;
 
-class NightController extends Controller
-{
-	public function actionIndex()
-	{
-		set_time_limit(0);
-		if (!ini_set('memory_limit', '-1'))
-			U::W("ini_set(memory_limit) error");    
-		$time=microtime(true);	
-            $yesterday = date("Y-m-d",strtotime("-1 day"));
-            //$yesterday = '2014-11-02';    
+class NightController extends Controller {
 
-            $theFirstDayOfLastMonth = U::getFirstDayOfLastMonth();
-            $theLastDayOfLastMonth = U::getLastDayOfLastMonth();
-            
-            U::W("###########".__CLASS__." BEGIN");		
+    public function actionIndex() {
+        set_time_limit(0);
+        if (!ini_set('memory_limit', '-1'))
+            U::W("ini_set(memory_limit) error");
+        $time = microtime(true);
+        $yesterday = date("Y-m-d", strtotime("-1 day"));
+        //$yesterday = '2014-11-02';    
 
-/*
-        self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
-        return;
-*/            
-/*
-		self::statSceneDay($yesterday);
-		return;
-*/
+        $theFirstDayOfLastMonth = U::getFirstDayOfLastMonth();
+        $theLastDayOfLastMonth = U::getLastDayOfLastMonth();
 
-/*
-        $time = time();
-        for($i=180;$i>0;$i--) {
-            $yesterday = date("Y-m-d",strtotime("-{$i} day", $time));
-            self::statSceneDay($yesterday);            
-        }        
-        return;
-*/        
+        U::W("###########" . __CLASS__ . " BEGIN");
 
-		self::confirmSceneDetail();
+        /*
+          self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
+          return;
+         */
+        /*
+          self::statSceneDay($yesterday);
+          return;
+         */
 
-		self::closeExpiredOrders();
+        /*
+          $time = time();
+          for($i=180;$i>0;$i--) {
+          $yesterday = date("Y-m-d",strtotime("-{$i} day", $time));
+          self::statSceneDay($yesterday);
+          }
+          return;
+         */
 
-		self::statSceneDay($yesterday);
+        self::confirmSceneDetail();
 
-		//MDisk::updateAll(['cnt' => 3]);
-		$tableName = MDisk::tableName();
-		$n = MDisk::deleteAll();
-		U::W("DELETE $tableName, $n");	
+        self::closeExpiredOrders();
 
-		if (date('N') == 1)
-		{
-			U::W("Begin Weekly ...");	
-			U::W("End Weekly ...");						
-		}		
+        self::statSceneDay($yesterday);
 
-		if (date('j') == 1)
-		{
-			U::W("Begin Monthly ...");	
+        //MDisk::updateAll(['cnt' => 3]);
+        $tableName = MDisk::tableName();
+        $n = MDisk::deleteAll();
+        U::W("DELETE $tableName, $n");
 
-			$tableName = MOrder::tableName();
-			Yii::$app->db->createCommand("OPTIMIZE TABLE $tableName")->execute();		
-			U::W("OPTIMIZE TABLE $tableName");
+        if (date('N') == 1) {
+            U::W("Begin Weekly ...");
+            U::W("End Weekly ...");
+        }
 
-			$tableName = MMobnum::tableName();
-			Yii::$app->db->createCommand("OPTIMIZE TABLE $tableName")->execute();		
-			U::W("OPTIMIZE TABLE $tableName");
+        if (date('j') == 1) {
+            U::W("Begin Monthly ...");
 
-			U::W("End Monthly ...");						
-		}		
+            $tableName = MOrder::tableName();
+            Yii::$app->db->createCommand("OPTIMIZE TABLE $tableName")->execute();
+            U::W("OPTIMIZE TABLE $tableName");
 
-            if (date('j') == 15) {
-                U::W("on 15th every month, add recommending fans fee of last month for user ...");
-                self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
-            }       
+            $tableName = MMobnum::tableName();
+            Yii::$app->db->createCommand("OPTIMIZE TABLE $tableName")->execute();
+            U::W("OPTIMIZE TABLE $tableName");
 
-		U::W("###########".__CLASS__." END, (time: ".sprintf('%.3f', microtime(true)-$time)."s)");			
-	}
+            U::W("End Monthly ...");
+        }
 
-	public static function closeExpiredOrders() 
-	{
-		$tableName = MOrder::tableName();
-		// auto close the orders exceed 2 days
-		$n = Yii::$app->db->createCommand()->update($tableName, ['status' => MOrder::STATUS_CLOSED_AUTO], 'status=:status AND create_time < DATE_SUB(NOW(), INTERVAL 2 day)', [':status'=>MOrder::STATUS_AUTION])->execute();
-		U::W("UPDATE $tableName, $n");		
+        if (date('j') == 15) {
+            U::W("on 15th every month, add recommending fans fee of last month for user ...");
+            self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
+        }
 
-/*		
-		//move the unsuccessful orders exceed 90 days to bak table
-		$n = Yii::$app->db->createCommand("INSERT INTO {$tableName}_arc SELECT * FROM $tableName WHERE status!=:status AND create_time < DATE_SUB(NOW(), INTERVAL 90 day)", [':status'=>MOrder::STATUS_OK])->execute();
-		U::W("INSERT $tableName, $n");		
-		
-		$n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE status!=:status AND create_time < DATE_SUB(NOW(), INTERVAL 90 day)", [':status'=>MOrder::STATUS_OK])->execute();
-		U::W("DELETE $tableName, $n");		
-*/
-		//release mobile number
-		$tableName = MMobnum::tableName();
-		$n = Yii::$app->db->createCommand()->update($tableName, ['status' => MMobnum::STATUS_UNUSED, 'locktime' => 0], 'status=:status AND locktime < :locktime', [':status'=>MMobnum::STATUS_LOCKED, ':locktime'=>time()-2*24*3600])->execute();
-		U::W("UPDATE $tableName, $n");	
-		
-		$n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE status=:status", [':status'=>MMobnum::STATUS_USED])->execute();
-		U::W("DELETE $tableName, $n");
-	}
+        U::W("###########" . __CLASS__ . " END, (time: " . sprintf('%.3f', microtime(true) - $time) . "s)");
+    }
 
-	public static function confirmSceneDetail() 
-	{
-        $tableName = MSceneDetail::tableName();	
-        $query = (new Query()) ->from($tableName)->where("status=:status AND scene_amt>0", [':status'=>MSceneDetail::STATUS_INIT]);
+    public static function closeExpiredOrders() {
+        $tableName = MOrder::tableName();
+        // auto close the orders exceed 2 days
+        $n = Yii::$app->db->createCommand()->update($tableName, ['status' => MOrder::STATUS_CLOSED_AUTO], 'status=:status AND create_time < DATE_SUB(NOW(), INTERVAL 2 day)', [':status' => MOrder::STATUS_AUTION])->execute();
+        U::W("UPDATE $tableName, $n");
+
+        /* 		
+          //move the unsuccessful orders exceed 90 days to bak table
+          $n = Yii::$app->db->createCommand("INSERT INTO {$tableName}_arc SELECT * FROM $tableName WHERE status!=:status AND create_time < DATE_SUB(NOW(), INTERVAL 90 day)", [':status'=>MOrder::STATUS_OK])->execute();
+          U::W("INSERT $tableName, $n");
+
+          $n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE status!=:status AND create_time < DATE_SUB(NOW(), INTERVAL 90 day)", [':status'=>MOrder::STATUS_OK])->execute();
+          U::W("DELETE $tableName, $n");
+         */
+        //release mobile number
+        $tableName = MMobnum::tableName();
+        $n = Yii::$app->db->createCommand()->update($tableName, ['status' => MMobnum::STATUS_UNUSED, 'locktime' => 0], 'status=:status AND locktime < :locktime', [':status' => MMobnum::STATUS_LOCKED, ':locktime' => time() - 2 * 24 * 3600])->execute();
+        U::W("UPDATE $tableName, $n");
+
+        $n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE status=:status", [':status' => MMobnum::STATUS_USED])->execute();
+        U::W("DELETE $tableName, $n");
+    }
+
+    public static function confirmSceneDetail() {
+        $tableName = MSceneDetail::tableName();
+        $query = (new Query())->from($tableName)->where("status=:status AND scene_amt>0", [':status' => MSceneDetail::STATUS_INIT]);
         $amt = 0;
-        foreach ($query->each() as $row)
-        {                
-            if ($row['cat'] == MSceneDetail::CAT_FAN)
-            {
+        foreach ($query->each() as $row) {
+            if ($row['cat'] == MSceneDetail::CAT_FAN) {
                 if (empty($row['openid_fan']))
                     continue;
-                    
-                $fan = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid_fan']]);
+
+                $fan = MUser::findOne(['gh_id' => $row['gh_id'], 'openid' => $row['openid_fan']]);
                 if ($fan === null)
                     continue;
-                
-                if ($fan->isActivedFan())
-                {
-                    U::W('ACTIVE id='.$row['id']);
+
+                if ($fan->isActivedFan()) {
+                    U::W('ACTIVE id=' . $row['id']);
                     $model = MSceneDetail::findOne($row['id']);
                     $model->status = MSceneDetail::STATUS_CONFIRMED;
-                    if ($model->save(false))
-                    {
-                        $user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid']]);
-                        U::W("SAVE BALANCE1 ".$user->scene_balance);
-                        
+                    if ($model->save(false)) {
+                        $user = MUser::findOne(['gh_id' => $row['gh_id'], 'openid' => $row['openid']]);
+                        U::W("SAVE BALANCE1 " . $user->scene_balance);
+
                         $user->scene_balance += $model->scene_amt;
-                        U::W("SAVE BALANCE2 ".$user->scene_balance);                        
+                        U::W("SAVE BALANCE2 " . $user->scene_balance);
                         $user->scene_balance_time = date("Y-m-d H:i:s");
                         $user->save(false);
                     }
+                } else {
+                    U::W('NO ACTIVE id=' . $row['id']);
                 }
-                else
-                {
-                    U::W('NO ACTIVE id='.$row['id']);                
-                }
-            }
-            else if ($row['cat'] == MSceneDetail::CAT_SIGN)
-            {
-                U::W('ACTIVE id='.$row['id']);
+            } else if ($row['cat'] == MSceneDetail::CAT_SIGN) {
+                U::W('ACTIVE id=' . $row['id']);
                 $model = MSceneDetail::findOne($row['id']);
                 $model->status = MSceneDetail::STATUS_CONFIRMED;
-                if ($model->save(false))
-                {
-                    $user = MUser::findOne(['gh_id'=>$row['gh_id'], 'openid'=>$row['openid']]);
-                    U::W("SAVE CAT_SIGN BALANCE1 ".$user->scene_balance);
-                    
+                if ($model->save(false)) {
+                    $user = MUser::findOne(['gh_id' => $row['gh_id'], 'openid' => $row['openid']]);
+                    U::W("SAVE CAT_SIGN BALANCE1 " . $user->scene_balance);
+
                     $user->scene_balance += $model->scene_amt;
-                    U::W("SAVE CAT_SIGN BALANCE2 ".$user->scene_balance);                        
+                    U::W("SAVE CAT_SIGN BALANCE2 " . $user->scene_balance);
                     $user->scene_balance_time = date("Y-m-d H:i:s");
                     $user->save(false);
-                }                
+                }
             }
-        }	
-	}
+        }
+    }
 
-    public static function statSceneDay($date) 
-    {    
-		U::W(__METHOD__." BEGIN");		    
+    public static function statSceneDay($date) {
+        U::W(__METHOD__ . " BEGIN");
         $tableName = MSceneDay::tableName();
-        $ghs = MGh::find()->all();        
-        foreach($ghs as $gh) {
-            foreach($gh->staffs as $staff) {            
-                if ($staff->scene_id !=0 ) {
+        $ghs = MGh::find()->all();
+        foreach ($ghs as $gh) {
+            foreach ($gh->staffs as $staff) {
+                if ($staff->scene_id != 0) {
                     $score = MAccessLog::getScoreByRange($gh->gh_id, $staff->scene_id, $date, $date);
                     if ($score != 0) {
-                        Yii::$app->db->createCommand("INSERT INTO $tableName (gh_id,create_date,scene_id,score) VALUES (:gh_id,:create_date,:scene_id,:score)", [':gh_id'=>$gh->gh_id, ':create_date'=>$date, ':scene_id'=>$staff->scene_id,':score'=>$score])->execute();                
+                        Yii::$app->db->createCommand("INSERT INTO $tableName (gh_id,create_date,scene_id,score) VALUES (:gh_id,:create_date,:scene_id,:score)", [':gh_id' => $gh->gh_id, ':create_date' => $date, ':scene_id' => $staff->scene_id, ':score' => $score])->execute();
                     }
                 }
             }
@@ -199,34 +183,33 @@ class NightController extends Controller
             $staff->scene_id = 0;
             $score = MAccessLog::getScoreByRange($gh->gh_id, $staff->scene_id, $date, $date);
             if ($score != 0) {
-                Yii::$app->db->createCommand("INSERT INTO $tableName (gh_id,create_date,scene_id,score) VALUES (:gh_id,:create_date,:scene_id,:score)", [':gh_id'=>$gh->gh_id, ':create_date'=>$date, ':scene_id'=>$staff->scene_id,':score'=>$score])->execute();                
+                Yii::$app->db->createCommand("INSERT INTO $tableName (gh_id,create_date,scene_id,score) VALUES (:gh_id,:create_date,:scene_id,:score)", [':gh_id' => $gh->gh_id, ':create_date' => $date, ':scene_id' => $staff->scene_id, ':score' => $score])->execute();
             }
         }
-		U::W(__METHOD__." END");		            
-        return;      
-        
-/*
-        $tableName = MAccessLog::tableName();
-        $n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE create_time < DATE_SUB(NOW(), INTERVAL 90 day)")->execute();
-        U::W("DELETE $tableName, $n");      
+        U::W(__METHOD__ . " END");
+        return;
 
-        $tableName = MAccessLogAll::tableName();
-        $n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE create_time < DATE_SUB(NOW(), INTERVAL 180 day)")->execute();
-        U::W("DELETE $tableName, $n");      
-*/        
+        /*
+          $tableName = MAccessLog::tableName();
+          $n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE create_time < DATE_SUB(NOW(), INTERVAL 90 day)")->execute();
+          U::W("DELETE $tableName, $n");
+
+          $tableName = MAccessLogAll::tableName();
+          $n = Yii::$app->db->createCommand("DELETE FROM $tableName WHERE create_time < DATE_SUB(NOW(), INTERVAL 180 day)")->execute();
+          U::W("DELETE $tableName, $n");
+         */
     }
 
-    public static function addRecommendFanAmount($date_start, $date_end) 
-    {
-		U::W(__METHOD__." BEGIN from $date_start, $date_end");		    
+    public static function addRecommendFanAmount($date_start, $date_end) {
+        U::W(__METHOD__ . " BEGIN from $date_start, $date_end");
         $tableName = MSceneDay::tableName();
-        $ghs = MGh::find()->all();        
-        foreach($ghs as $gh) {
+        $ghs = MGh::find()->all();
+        foreach ($ghs as $gh) {
             if ($gh->gh_id !== MGh::GH_XIANGYANGUNICOM) {
                 continue;
-            }            
-            foreach($gh->staffs as $staff) {            
-                if ($staff->scene_id !=0 && !empty($staff->openid)) {
+            }
+            foreach ($gh->staffs as $staff) {
+                if ($staff->scene_id != 0 && !empty($staff->openid)) {
                     $real_score = MAccessLog::getRealScoreByRange($gh->gh_id, $staff->scene_id, $date_start, $date_end);
                     if ($real_score > 0) {
                         //$amount = intval($real_score) * 100;                        
@@ -243,21 +226,25 @@ class NightController extends Controller
                             $model->save(false);
                             U::W("SAVE OK, scene_id={$staff->scene_id}, openid={$staff->openid}, amount={$model->amount}");
                         }
-                    }
-                    else {
+                    } else {
                         U::W("scene_id={$staff->scene_id}, openid={$staff->openid}, realscore={$real_score}, ");
                     }
-                }
-                else {
+                } else {
                     U::W("scene_id={$staff->scene_id}, openid={$staff->openid}");
                 }
             }
-            
         }
-		U::W(__METHOD__." END");		            
-        return;          
-    }    
-    
+        U::W(__METHOD__ . " END");
+        return;
+    }
+
+    public function actionUserAccount() {
+        $theFirstDayOfLastMonth = U::getFirstDayOfLastMonth();
+        $theLastDayOfLastMonth = U::getLastDayOfLastMonth();
+        self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
+        return;
+    }
+
 }
 
 /*
