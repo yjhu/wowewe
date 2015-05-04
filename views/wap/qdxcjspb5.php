@@ -185,13 +185,16 @@
             url: "<?php echo Url::to(['wap/handleqdxcjspb','gh_id'=>$gh_id, 'openid'=>$openid], true) ; ?>",
             type:"GET",
             cache:false,
-            dataType:'json',
+            dataType:"json",
             data: "office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+$('#myrange').val(),
-            success: function(json_data){
+            success: function(t){
                     //var json_data = eval('('+msg+')');
                     alert("submit ok");
                     var url = "<?php echo Url::to(['wap/qdxcjspb4','gh_id'=>$gh_id, 'openid'=>$openid, 'office_id'=>$office->office_id], true); ?>";
                     location.href = url;
+              },
+              error: function(){
+                alert('error!');
               }
           });
         }
