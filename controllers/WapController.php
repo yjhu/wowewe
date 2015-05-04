@@ -1546,6 +1546,12 @@ EOD;
                 $order->attr = "{$_GET['cardType']}";
                 break;
 
+            case MItem::ITEM_CAT_CARD_60YUANBAO5G_SHANGWANGKA:
+                $order->title = '60元包5G上网卡';           
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+
 
             //双十一活动 上网卡 begin
             //----------------------------------------------------------
