@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
 use app\models\MUser;
+use app\models\U;
 
 class MUserSearch extends Model
 {
@@ -98,7 +99,6 @@ class MUserSearch extends Model
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
-
         $this->addCondition($query, 'id');
         $this->addCondition($query, 'nickname', true);
         $this->addCondition($query, 'status');

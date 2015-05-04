@@ -47,6 +47,8 @@ ALTER TABLE wx_user ADD user_account_balance int(10) NOT NULL DEFAULT '0';
 ALTER TABLE wx_user ADD user_account_charge_mobile VARCHAR(32) NOT NULL DEFAULT '';
 ALTER TABLE wx_user ADD unionid VARCHAR(32) NOT NULL DEFAULT '' after openid;
 
+ALTER TABLE wx_user ADD scene_pid_direct int(10) unsigned NOT NULL DEFAULT '0' after scene_pid;
+
 
 // role has no use now.
 

@@ -42,10 +42,13 @@ $this->params['breadcrumbs'][] = $this->title;
            [
                 'label' => '粉丝来源',
                 'value'=>function ($model, $key, $index, $column) { 
+                    if (empty($model->user->scene_pid)) {
+                        return '';
+                    }
                     $staff = MStaff::findOne(['gh_id'=>$model->gh_id, 'scene_id'=>$model->user->scene_pid]);
-
-                    //return empty($model->user) ? '' : $model->user->scene_pid;
-                    //$staff->hasOne(MOffice::className(), ['office_id' => 'office_id']);
+                    if (empty($staff)) {
+                        return '';
+                    }
                     if($staff->cat == 0) //内部员工
                     {
                         return empty($staff->name) ? '' : $staff->name.'-'.$staff->office->title.'-'.'内部员工';
@@ -54,8 +57,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     {
                         return empty($staff->name) ? '' : $staff->name;
                     }
-
-                    //return empty($staff->name) ? '' : $staff->name.'-'.$staff->office_id.'-'.$staff->cat;
                  },
            ],
 
