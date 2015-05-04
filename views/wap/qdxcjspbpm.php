@@ -34,7 +34,7 @@
     <header class="bar bar-nav">
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
       <h1 class="title">
-       渠道宣传竞赛评选排行榜
+       <img src="../web/images/comm-icon/iconfont-paiming-blue.png">&nbsp;渠道宣传竞赛评选排行榜
       </h1>
     </header>
 
