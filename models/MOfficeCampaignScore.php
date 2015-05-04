@@ -143,6 +143,10 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
             }
         }
         
+        if (count($ranking) == 0) {
+            return $ranking;
+        }
+
         foreach($ranking as $key => $row) {
             $score[$key] = $row['score'];
         }        
