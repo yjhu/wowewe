@@ -902,8 +902,8 @@ class CmdController extends Controller
             
             $custom = Custom::findOne(['mobile'=>$mobile]);
             if (!empty($custom)) {
-                U::W("mobile=$mobile already exists");                
-                U::W($arr);
+                //U::W("mobile=$mobile already exists");                
+                //U::W($arr);
             } else {
                 $custom = new Custom;
             }

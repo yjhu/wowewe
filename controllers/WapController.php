@@ -3289,6 +3289,7 @@ EOD;
 
     public function actionHandleqdxcjspb()
     {
+        U::W("++++!!!!!!!!!!!!!!!!!!!+++++++actionHandleqdxcjspb+++!!!!!!!!!!!!!!!!!!!++++++++++");
         $this->layout = false;   
    
         $gh_id = U::getSessionParam('gh_id');
@@ -3308,8 +3309,8 @@ EOD;
         $model->score = $score;
                          
         $model->save(false);       
-
-        return json_encode(['code'=>0]);
+        U::W("+++++++++++++++++++++++++actionHandleqdxcjspb++++++++++++++++++++++++++");
+        return json_encode(['code'=>'0']);
     }
 
 

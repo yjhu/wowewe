@@ -3,6 +3,8 @@
     use yii\helpers\Url;
     use app\models\U;
     use app\models\MOfficeCampaignDetail;
+
+
 ?>
 
 <!DOCTYPE html>
@@ -42,11 +44,11 @@
     </header>
 
     <?php
-      $scores = \app\models\MOfficeCampaignScore::getOfficeScoreByPicCategory($office->office_id, $model_ocpc->id); 
+      $scores = \app\models\MOfficeCampaignScore::getScoreByPicCategory($office->office_id, $model_ocpc->id); 
       $is_scorer = false;
       if ($staff->isOfficeCampaignScorer()) {
         $is_scorer = true;
-        $scorer_score = \app\models\MOfficeCampaignScore::getOfficeScoreByStaffAndPicCategory($office->office_id, $staff->staff_id, $model_ocpc->id);
+        $scorer_score = \app\models\MOfficeCampaignScore::getScoreByScorerAndPicCategory($office->office_id, $staff->staff_id, $model_ocpc->id);
         $scorer = $staff->officeCampaignScorer;
         if ($scorer_score === false) 
           $can_score = true;
@@ -95,12 +97,12 @@
               <div style="vertical-align: middle;">
 
               <span id="minStr" class="badge"></span>
-              <span id="minIcon" style="height:50px;font-size:48px;color:#ccc" class="icon icon-left" onclick="sub()"></span>
+              <span id="minIcon" style="height:50px;font-size:48px;color:#ccc" class="icon icon-left"></span>
               &nbsp;
               <span id="myrangeStr" style="height:50px;width:50%;font-size:48px;color:red;font-weight:bolder;text-align:center">1</span>
               <input type=hidden id="myrange" name="myrange">
               &nbsp;
-              <span id="maxIcon" style="height:50px;font-size:48px;color:#ccc" class="icon icon-right" onclick="add()"></span>
+              <span id="maxIcon" style="height:50px;font-size:48px;color:#ccc" class="icon icon-right"></span>
               <span id="maxStr" class="badge"></span>
 
               </div>
@@ -135,9 +137,12 @@
           {
       ?>
     <script type="text/javascript">
-        
+
+      $(document).ready(function(){
+
         var office_campaign_id = "<?= $model_office_campaign_detail->id ?>";
         var staff_id = "<?= $staff->staff_id ?>";
+        //var score = $("#myrange").val();
 
         var MIN=1;
         var MAX;
@@ -157,52 +162,56 @@
           
         var range = MAX/2;
 
-        function add()
+        $("#maxIcon").click(function(){
+            range++;
+            if(range>MAX) range = MAX;
+            $("#myrangeStr").html(range);
+            $("#myrange").val(range);
+            alert(range);
+        });
+
+        $("#minIcon").click(function(){
+            range--
+            if(range<MIN) range = MIN;
+            $("#myrangeStr").html(range);
+            $("#myrange").val(range);
+            alert(range);
+        });
+
+        function commitForm()
         {
-          range++;
-          if(range>MAX) range = MAX;
-          $("#myrangeStr").html(range);
-          $("#myrange").val(range);
-        }
-
-        function sub()
-        {
-          range--
-          if(range<MIN) range = MIN;
-
-          $("#myrangeStr").html(range);
-          $("#myrange").val(range);
-        }
-
-      $(document).ready(function(){
-
-        $("#submit_rank").click(function(){
-         // alert("click and submit");
-
-          score = $("#myrange").val();
-          //alert("office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+score);
-
-          $.ajax({
+            alert("ajax");
+            $.ajax({
             url: "<?php echo Url::to(['wap/handleqdxcjspb','gh_id'=>$gh_id, 'openid'=>$openid], true) ; ?>",
             type:"GET",
             cache:false,
-            dataType:'json',
-            data: "office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+score,
-            success: function(json_data){
+            dataType:"json",
+            data: "office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+$('#myrange').val(),
+            success: function(t){
                     //var json_data = eval('('+msg+')');
-                    //alert("submit ok");
+                    alert("submit ok");
                     var url = "<?php echo Url::to(['wap/qdxcjspb4','gh_id'=>$gh_id, 'openid'=>$openid, 'office_id'=>$office->office_id], true); ?>";
                     location.href = url;
+              },
+              error: function(){
+                alert('error!');
               }
           });
+        }
 
-        })
+    
+        $("#submit_rank").click(function(){
+          alert("click and submit");
+          alert("office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+$('#myrange').val());
+          commitForm();
+        });
+         return false;
 
-      })
+      });
 
     </script>
-          <?php } ?>
 
+    <?php } ?>
 
 
     <?php

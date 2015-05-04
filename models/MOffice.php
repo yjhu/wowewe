@@ -291,7 +291,7 @@ class MOffice extends ActiveRecord implements IdentityInterface
     {        
         $staffs = $this->staffs;
         $scene_ids = \yii\helpers\ArrayHelper::getColumn($staffs, 'scene_id');
-        return $scene_ids;
+        return array_diff($scene_ids, [0]);
     }
 
     public function getOfficeStaff()

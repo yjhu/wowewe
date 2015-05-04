@@ -16,6 +16,8 @@ use yii\filters\VerbFilter;
  */
 class HeatmapController extends Controller
 {
+    public $enableCsrfValidation = false;
+
     public function behaviors()
     {
         return [

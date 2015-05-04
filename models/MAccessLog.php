@@ -24,7 +24,6 @@ CREATE TABLE wx_access_log (
 ALTER TABLE wx_access_log ADD scene_pid int(10) unsigned NOT NULL DEFAULT '0' after create_time;
 ALTER TABLE wx_access_log CHANGE id access_log_id int(10) unsigned NOT NULL AUTO_INCREMENT;
 
-
 */
 
 use Yii;
