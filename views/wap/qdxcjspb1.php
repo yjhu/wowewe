@@ -90,7 +90,10 @@
       ?>
 
       <div class="bar bar-standard bar-footer-secondary">
-        <a class="btn btn-block btn-primary" style="color:#fff" href="<?php echo  Url::to(['qdxcjspbpm'],true) ?>">排行榜</a>
+        <a class="btn btn-block btn-primary" style="color:#fff" href="<?php echo  Url::to(['qdxcjspbpm'],true) ?>">
+        <img src="../web/images/comm-icon/iconfont-paiming.png" height="16">
+        排行榜
+        </a>
       </div>
     
       <br>
@@ -101,7 +104,7 @@
           本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
         </a>
       </nav>    
-      
+
     </div>
 
 
