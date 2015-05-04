@@ -48,6 +48,6 @@ class ExportController extends \yii\console\Controller
             }
         }
         fclose($fh);   
-        var_dump($all_mobiles);
+//        var_dump($all_mobiles);
     }
 }
