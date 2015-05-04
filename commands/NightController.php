@@ -87,8 +87,8 @@ class NightController extends Controller {
             U::W("End Monthly ...");
         }
 
-        if (date('j') == 15) {
-            U::W("on 15th every month, add recommending fans fee of last month for user ...");
+        if (date('j') == 1) {
+            U::W("on 1st every month, add recommending fans fee of last month for user ...");
             self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
         }
 

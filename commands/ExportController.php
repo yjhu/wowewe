@@ -25,12 +25,13 @@ class ExportController extends \yii\console\Controller {
         $fh = fopen($file, "w");
         fprintf($fh, "用户微信昵称,用户手机号,是否员工,提交时间\n");
         foreach ($heatmap_records as $heatmap) {
-//            $staff = (!empty($heatmap->user->staff)) ? $heatmap->user->staff : $heatmap->user->mobileStaff;
-            $staff = $heatmap->user->mobileStaff;
-//            var_dump($staff);
+            $user = $heatmap->user;
+            $staff = $user->staff;
+            if (!empty($staff) && $staff->cat == \app\models\MStaff::SCENE_CAT_IN);
+            else $staff = $user->mobileStaff;
 
             $mobiles = array();
-            $bind_mobiles = $heatmap->user->openidBindMobiles;
+            $bind_mobiles = $user->openidBindMobiles;
             if (!empty($bind_mobiles)) {
                 foreach ($bind_mobiles as $bind_mobile) {
                     $mobiles[] = $bind_mobile->mobile;
@@ -38,7 +39,11 @@ class ExportController extends \yii\console\Controller {
             }
             if (!empty(array_diff($mobiles, $all_mobiles))) {
                 $all_mobiles = array_merge($all_mobiles, $mobiles);
-                fprintf($fh, "%s,%s,%s,%s\n", $heatmap->user->nickname, "[" . $heatmap->user->getBindMobileNumbersStr() . "]", (!empty($staff)) ? "员工：{$staff->name}" : "否", $heatmap->create_time
+                fprintf($fh, "%s,%s,%s,%s\n", 
+                        $user->nickname, 
+                        "[" . $user->getBindMobileNumbersStr() . "]", 
+                        (!empty($staff)) ? "员工：{$staff->name}" : "否", 
+                        $heatmap->create_time
                 );
             }
         }
@@ -60,20 +65,21 @@ class ExportController extends \yii\console\Controller {
         fprintf($fh, "用户微信昵称,用户手机号,是否员工,类型,金额,充值手机号码,时间\n");
         foreach ($useraccount_records as $useraccount_record) {
             $user = $useraccount_record->user;
-            $staff = $user->mobileStaff;
+            $staff = $user->staff;
+            if (!empty($staff) && $staff->cat == \app\models\MStaff::SCENE_CAT_IN);
+            else $staff = $user->mobileStaff;
             
             fprintf($fh, "%s,%s,%s,%s,%s,%s,%s\n", 
                     $user->nickname, 
                     "[" . $user->getBindMobileNumbersStr() . "]", 
                     (!empty($staff)) ? "员工：{$staff->name}" : "否", 
                     \app\models\MUserAccount::getCatOptionName($useraccount_record->cat),
-                    $useraccount_record->amount,
+                    intval($useraccount_record->amount/100),
                     $user->user_account_charge_mobile,
                     $useraccount_record->create_time
                     );
         }
         fclose($fh);
-//        var_dump($all_mobiles);
     }
 
 }
