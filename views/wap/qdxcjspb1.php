@@ -50,7 +50,7 @@
         <?php foreach($models_mr as $model_mr) {  ?>
 
             <li class="table-view-cell media">
-            <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb2','mr_id'=>$model_mr->id],true) ?>">
+            <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb2','gh_id'=>$gh_id, 'openid'=>$openid, 'mr_id'=>$model_mr->id],true) ?>">
             <!--
               <img class="media-object pull-left" src="http://placehold.it/80x80">
             -->
@@ -118,6 +118,7 @@
             </ul>
         </div>
       </div>
+
     </div>
 
 

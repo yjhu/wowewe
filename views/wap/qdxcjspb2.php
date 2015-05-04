@@ -51,7 +51,7 @@
         <?php foreach($models_msc as $model_msc) {  ?>
 
             <li class="table-view-cell media">
-            <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb3','msc_id'=>$model_msc->id],true) ?>">
+            <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb3', 'gh_id'=>$gh_id, 'openid'=>$openid, 'msc_id'=>$model_msc->id],true) ?>">
             <!--
               <img class="media-object pull-left" src="http://placehold.it/80x80">
             -->

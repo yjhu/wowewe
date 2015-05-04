@@ -2,7 +2,7 @@
   use yii\helpers\Html;
     use yii\helpers\Url;
     use app\models\U;
-
+    use app\models\MUser;
     use app\models\MOfficeCampaignDetail;
 ?>
     
@@ -33,7 +33,7 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
+      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre();"></a>
       <h1 class="title">
        参赛门店资料提交
       </h1>
@@ -90,6 +90,24 @@
       本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
     </a>
   </nav>    
+   
+
+  <?php
+          $gh_id = U::getSessionParam('gh_id');
+          $openid = U::getSessionParam('openid');        
+          $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+
+          $staff_id = $model->mobileStaff->staff_id;
+  ?>
+
+  <script type="text/javascript">
+    function back2pre()
+    {
+      //alert("back to first page!");
       
+      location.href = "<?php echo Url::to(['csmdzltj1', 'gh_id'=>$gh_id, 'openid'=>$openid, 'staff_id'=>$staff_id],true) ?>";
+    }
+  </script>      
+
   </body>
 </html>

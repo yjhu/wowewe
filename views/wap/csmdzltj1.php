@@ -32,7 +32,7 @@
 
     <header class="bar bar-nav">
 
-      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
+      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre();"></a>
 
       <h1 class="title">
        参赛门店资料提交
@@ -91,6 +91,19 @@
       本期活动时间：<?= $start_date->format('Y-m-d'); ?> 至 <?= $end_date->format('Y-m-d'); ?>
     </a>
   </nav>    
+
+  <?php
+          $gh_id = U::getSessionParam('gh_id');
+          $openid = U::getSessionParam('openid');
+  ?>
+
+  <script type="text/javascript">
+    function back2pre()
+    {
+      location.href = "<?php echo Url::to(['hyzx', 'gh_id'=>$gh_id, 'openid'=>$openid, 'item'=>'hyzx'],true) ?>";
+    }
+  </script>
+
       
   </body>
 </html>

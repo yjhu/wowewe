@@ -73,7 +73,7 @@
                     ?>
 
                   <?php if(!empty($model_office_campaign_detail)) {?>
-                    <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb5','office_id'=>$office->office_id, 'model_category_id'=>$model_category->id],true) ?>">
+                    <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb5', 'gh_id'=>$gh_id, 'openid'=>$openid, 'office_id'=>$office->office_id, 'model_category_id'=>$model_category->id],true) ?>">
                     <!--
                     <span class="badge">1</span>
                     <span class="badge badge-primary">2</span>

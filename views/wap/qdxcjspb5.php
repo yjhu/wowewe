@@ -183,7 +183,7 @@
           //alert("office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+score);
 
           $.ajax({
-            url: "<?php echo Url::to(['wap/handleqdxcjspb'], true) ; ?>",
+            url: "<?php echo Url::to(['wap/handleqdxcjspb','gh_id'=>$gh_id, 'openid'=>$openid], true) ; ?>",
             type:"GET",
             cache:false,
             dataType:'json',
@@ -191,7 +191,7 @@
             success: function(json_data){
                     //var json_data = eval('('+msg+')');
                     //alert("submit ok");
-                    var url = "<?php echo Url::to(['wap/qdxcjspb4', 'office_id'=>$office->office_id], true); ?>";
+                    var url = "<?php echo Url::to(['wap/qdxcjspb4','gh_id'=>$gh_id, 'openid'=>$openid, 'office_id'=>$office->office_id], true); ?>";
                     location.href = url;
               }
           });
