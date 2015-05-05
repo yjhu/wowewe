@@ -126,8 +126,10 @@ class MOfficeCampaignDetail extends \yii\db\ActiveRecord {
             $end_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
 
             $pic_categories = MOfficeCampaignPicCategory::find()->all();
+            $office = \app\models\MOffice::findOne(['office_id' => $office_id]);
             $category_count = 0; $detail_count = 0;
             foreach($pic_categories as $pic_category) {
+                if ((!$office->is_selfOperated) && $pic_category->sort_order == 6) continue;
                 $category_count++;
                 $detail = self::find()
                         ->andWhere(['office_id' => $office_id, 'pic_category' => $pic_category->id])
