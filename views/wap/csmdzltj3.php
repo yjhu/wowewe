@@ -37,7 +37,7 @@ $signPackage = $jssdk->GetSignPackage();
     <header class="bar bar-nav">
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
       <h1 class="title">
-       参赛门店资料提交
+       渠道宣传竞赛资料提交
       </h1>
     </header>
     <?php 
@@ -60,7 +60,8 @@ $signPackage = $jssdk->GetSignPackage();
             $url = $model_office_campaign_detail->getImageUrl();
           }
           else
-            $url = 'http://placehold.it/200x200';
+            //$url = 'http://placehold.it/200x200';
+            $url = '../web/images/comm-icon/upload-pic-700x700.gif';
       ?>
 
       <img width=100% class="media-object pull-left" src="<?= $url ?>">

@@ -32,8 +32,10 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
+      <a class="icon icon-left-nav pull-left" id="btn_back" href="#exit"></a>
+      <!--
       <a class="icon icon-info pull-right" href="#myModalexample" class="btn"></a>
+      -->
       <h1 class="title">
        渠道宣传竞赛评选
       </h1>
@@ -126,5 +128,23 @@
             </ul>
         </div>
       </div>
+
+      <div id="exit" class="modal">
+        <header class="bar bar-nav">
+          <a class="icon icon-close pull-right" href="#exit"></a>
+          <h1 class="title">确认要退出？</h1>
+        </header>
+
+        <div class="content">
+  
+            <br>
+            <a class="btn btn-block" href="#exit">不退出，再看看。</a>
+            <a class="btn btn-negative btn-block" onclick="javascript:history.back();">退出</a>
+            
+     
+        </div>
+      </div>
+
+
   </body>
 </html>

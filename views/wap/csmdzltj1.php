@@ -35,7 +35,7 @@
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre();"></a>
 
       <h1 class="title">
-       参赛门店资料提交
+       渠道宣传竞赛资料提交
       </h1>
 
     </header>
@@ -44,11 +44,11 @@
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
       <p class="content-padded">
-      督导门店选择
+      门店选择
       </p>
 
         <ul class="table-view">
-        <li class="table-view-cell table-view-divider"><?= "督导员：{$staff->name} {$staff->mobile}" ?></li>
+        <li class="table-view-cell table-view-divider"><?= "{$staff->name} {$staff->mobile}" ?></li>
         <?php foreach($models_office as $model_office) {  
             $detail_status = \app\models\MOfficeCampaignDetail::getDetailReadyStatus($model_office->office_id);
         ?>

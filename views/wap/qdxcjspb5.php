@@ -78,7 +78,8 @@
           $url = $model_office_campaign_detail->getImageUrl();
         }
         else
-          $url = 'http://placehold.it/200x200';
+          //$url = 'http://placehold.it/200x200';
+          $url = '../web/images/comm-icon/upload-pic-700x700.gif';
         ?>
 
        <img width=100% class="media-object pull-left" src="<?= $url ?>">

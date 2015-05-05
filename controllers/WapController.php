@@ -1546,6 +1546,12 @@ EOD;
                 $order->attr = "{$_GET['cardType']}";
                 break;
 
+            case MItem::ITEM_CAT_CARD_60YUANBAO5G_SHANGWANGKA:
+                $order->title = '60元包5G上网卡';           
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+
 
             //双十一活动 上网卡 begin
             //----------------------------------------------------------
@@ -3237,9 +3243,12 @@ EOD;
 
         $staff_id = $_GET['staff_id'];
         $staff = MStaff::findOne(['staff_id' => $staff_id]);
+        if ($staff->isSelfOperatedOfficeDirector())
+            $offices = array($staff->directedOffice);
+        else
+            $offices = $staff->supervisedOffices;
 
-        return $this->render('csmdzltj1', ['gh_id' => $gh_id, 'openid' => $openid, 'staff' => $staff, 'models_office' => $staff->supervisedOffices, 'staff_id' => $staff_id, ]);
-    }
+        return $this->render('csmdzltj1', ['gh_id' => $gh_id, 'openid' => $openid, 'staff' =>$staff, 'models_office' => $offices, 'staff_id' => $staff_id, ]);     }
 
 
     public function actionCsmdzltj2()

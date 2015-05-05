@@ -59,7 +59,8 @@ class MMarketingServiceCenter extends \yii\db\ActiveRecord
     {
         $count = 0;
         foreach($this->offices as $office) {
-            if (!empty($office->supervisor)) $count++;
+            if ((!empty($office->supervisor)) || ($office->is_selfOperated)) 
+                $count++;
         }
         return $count;
     }

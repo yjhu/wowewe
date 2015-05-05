@@ -129,6 +129,8 @@ class MItem extends ActiveRecord
 	const ITEM_CAT_CARD_120GLIULIANG = 718;
 	const ITEM_CAT_CARD_240GLIULIANG = 719;
 
+	const ITEM_CAT_CARD_60YUANBAO5G_SHANGWANGKA = 720;
+
 	//数信业务
 	const ITEM_CAT_SXYW_WKHB = 800;
 	const ITEM_CAT_SXYW_AIQIYI10 = 801;
@@ -306,6 +308,7 @@ class MItem extends ActiveRecord
 			self::ITEM_CAT_CARD_120GLIULIANG => '120G流量上网卡',
 			self::ITEM_CAT_CARD_240GLIULIANG => '240G流量上网卡',
 
+			self::ITEM_CAT_CARD_60YUANBAO5G_SHANGWANGKA => '60元包5G上网卡',
 
 			self::ITEM_CAT_4GTAOCAN => '4G套餐',
 

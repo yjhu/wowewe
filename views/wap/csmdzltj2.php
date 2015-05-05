@@ -35,7 +35,7 @@
     <header class="bar bar-nav">
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre();"></a>
       <h1 class="title">
-       参赛门店资料提交
+       渠道宣传竞赛资料提交
       </h1>
 
     </header>
@@ -62,7 +62,7 @@
                       $url = $model_office_campaign_detail->getImageUrl();
                     }
                     else
-                      $url = 'http://placehold.it/64x64';
+                      $url = '../web/images/comm-icon/upload-pic-64x64.png';
                 ?>
                 <img class="media-object pull-left" src="<?= $url ?>" width="64" height="64">
                
