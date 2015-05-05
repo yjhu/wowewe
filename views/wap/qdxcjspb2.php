@@ -62,6 +62,7 @@
               <?php
                 $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]); 
                 $staff = $wx_user->staff;
+                $scored_offices = $model_msc->getScoredOfficeCount();
                 if ($staff->isOfficeCampaignScorer()) {
                   $myScoredCount = $model_msc->getScoredOfficeCountByScorer($staff->staff_id);
                   $detailedCount = $model_msc->getDetailedOfficeCount();
@@ -69,8 +70,10 @@
               ?>
                 <span class="badge badge-negative"><?= $detailedCount - $myScoredCount ?></span>
               <?php }} ?>
-              <span class="badge badge-positive"><?= $model_msc->getScoredOfficeCount(); ?></span>
-              <span class="badge badge-primary"><?= $model_msc->getDetailedOfficeCount(); ?></span>
+              <?php if ($scored_offices > 0) { ?>
+              <span class="badge badge-positive">已评:<?= $scored_offices; ?></span>
+              <?php } ?>
+              <!--<span class="badge badge-primary"><?= $model_msc->getDetailedOfficeCount(); ?></span>-->
               <span class="badge"><?= $model_msc->getOfficeCount(); ?></span>     
              </div>
 

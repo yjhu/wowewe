@@ -128,7 +128,7 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
             if ((!$office->is_selfOperated) && $pic_category->sort_order == 6) continue;
             $scores = self::getScoreByPicCategory($office_id, $pic_category->id, $date);
             if ($scores['count'] == 0) return false;
-            $total += $scores['total']/$scores['count'];
+            $total += $scores['count'] == 1 ? $scores['total'] : $scores['total']/$scores['count'];
         }
         return $total;
     }
