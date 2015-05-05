@@ -39,7 +39,8 @@
     </header>
 
     <?php
-      $ranking = \app\models\MOfficeCampaignScore::getScoreRanking(); 
+      $ranking = \app\models\MOfficeCampaignScore::getScoreRanking();
+      $ranking_2 = \app\models\MOfficeCampaignScore::getScoreRanking(1); 
     ?>
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
@@ -47,14 +48,49 @@
 
         <div class="segmented-control">
           <a class="control-item active" href="#item1mobile">
-           按自营厅排名
+           自营厅
           </a>
           <a class="control-item" href="#item2mobile">
-           按合作厅排名
+           合作厅
           </a>
         </div>
         <div class="card">
           <span id="item1mobile" class="control-content active">
+              <ul class="table-view">
+              <?php 
+                if (count($ranking_2) == 0) {
+              ?>
+                <li class="table-view-cell media">
+                  <div class="pull-right"></div>
+                  <div class="media-body">本期活动暂无排名</div>
+                </li>
+              <?php 
+                } else {
+                  $rank = 0;
+                  foreach ($ranking_2 as $rank_item) {
+                    $rank++;
+                    $office = \app\models\MOffice::findOne(['office_id' => $rank_item['office_id']]);
+              ?>
+                    <li class="table-view-cell media">
+                      <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb4','office_id'=>$rank_item['office_id']],true) ?>">
+                        <div class="pull-right">
+                          <span class="badge badge-primary"><?= printf("%.1f", $rank_item['score']); ?>分</span>
+                        </div>
+                        <div class="media-body">
+                          <?= $rank;?>&nbsp;&nbsp;<?= $office->title; ?>
+                        </div>
+                      </a>
+                    </li>
+              <?php 
+                  }
+                }
+              ?>
+              </ul>
+
+          </span>
+
+
+          <span id="item2mobile" class="control-content">
               <ul class="table-view">
               <?php 
                 if (count($ranking) == 0) {
@@ -85,11 +121,6 @@
                 }
               ?>
               </ul>
-
-          </span>
-          <span id="item2mobile" class="control-content">
-              按合作厅排名
-
           </span>
         </div>
 

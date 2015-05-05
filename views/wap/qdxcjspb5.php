@@ -65,8 +65,12 @@
         <button class="btn btn-block" style="background-color:#d9d9d9"><?= $model_ocpc->name ?></button>
       
         <p>
-        <span class="badge"><?= $office->title ?> </span>   
-        <span class="badge">督导员:<?= $supervisor->name ?>&nbsp;<?= $supervisor->mobile ?></span>
+        <span class="badge"><?= $office->title ?> </span>
+        <?php if ($office->is_selfOperated) { ?>
+          <span class="badge">班长：<?= $office->manager ?>&nbsp;<?= $office->mobile ?></span>
+        <?php } else { ?>   
+          <span class="badge">督导员：<?= $supervisor->name ?>&nbsp;<?= $supervisor->mobile ?></span>
+        <?php } ?>
         </p>
       <?php } ?>
 
@@ -118,9 +122,13 @@
         <span>
             <ul class="table-view">
             <li class="table-view-cell table-view-divider"><?= $office->msc->marketingRegion->name.">".$office->msc->name.">".$office->title ?></li>
+          <?php if ($office->is_selfOperated) { ?>
+            <li class="table-view-cell table-view-divider"><?= "班长：{$office->manager} {$office->mobile}" ?></li>
+          <?php } else { ?>
             <li class="table-view-cell table-view-divider"><?= "督导员：{$supervisor->name} {$supervisor->mobile}" ?></li>
+          <?php } ?>
             <li class="table-view-cell table-view-divider"><?= "评选内容：{$model_ocpc->name}" ?></li>
-            <li class="table-view-cell">平均得分：<span class="badge badge-primary pull-right"><?= printf("%.1f", $scores['total']/$scores['count']) ?></span></li>
+            <li class="table-view-cell">平均得分：<span class="badge badge-primary pull-right"><?= $scores['count'] == 1 ? $scores['total'] : printf("%.1f", $scores['total']/$scores['count']) ?></span></li>
             <li class="table-view-cell">评分人数：<span class="badge badge-primary pull-right"><?= $scores['count'] ?></span></li>
             <?php if ($is_scorer) { ?>
             <li class="table-view-cell table-view-divider"><?= $scorer->department." ".$scorer->position ?></li>
@@ -143,9 +151,10 @@
 
         var office_campaign_id = "<?= $model_office_campaign_detail->id ?>";
         var staff_id = "<?= $staff->staff_id ?>";
+        var office_isSelfOperated = "<?= $office->is_selfOperated ?>";
         //var score = $("#myrange").val();
 
-        var MIN=1;
+        var MIN=0;
         if(cat == 6) 
         {
           var MAX = 10;
@@ -153,6 +162,7 @@
         else
         {
           var MAX = 18;
+          if (!office_isSelfOperated) MAX = 20;
         } 
         $("#minStr").html(MIN);
         $("#maxStr").html(MAX);

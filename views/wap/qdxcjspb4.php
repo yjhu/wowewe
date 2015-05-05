@@ -48,14 +48,21 @@
            <?= $office->msc->marketingRegion->name ?>><?= $office->msc->name ?>><?= $office->title ?>
         </p>
       <ul class="table-view">
-        <?php if (!empty($office->supervisor)) { 
+        <?php if ((!empty($office->supervisor)) || ($office->is_selfOperated)) { 
           $officeScore = \app\models\MOfficeCampaignScore::getScore($office->office_id);
+          if ($office->is_selfOperated) {
         ?>
-        <li class="table-view-cell table-view-divider">督导员：<?= $office->supervisor->name." ".$office->supervisor->mobile ?></li>
-        <li class="table-view-cell table-view-divider">门店当前总分：<span class="badge badge-positive pull-left"><?= $officeScore?printf("%.1F",$officeScore):'未评分' ?></span></li>
+          <li class="table-view-cell table-view-divider">班长：<?= $office->manager." ".$office->mobile ?></li>
+        <?php } else { ?>
+          <li class="table-view-cell table-view-divider">督导员：<?= $office->supervisor->name." ".$office->supervisor->mobile ?></li>
+        <?php } ?>
+        <li class="table-view-cell table-view-divider">门店当前总分：<span class="badge badge-positive pull-left"><?= $officeScore?printf("%.1F",floatval($officeScore)):'未评分' ?></span></li>
 
         <?php } ?>
-          <?php foreach($models_categories as $model_category) {  ?>
+          <?php 
+            foreach($models_categories as $model_category) {  
+              if ((!$office->is_selfOperated) && ($model_category->sort_order == 6)) continue;
+          ?>
              
                 <li class="table-view-cell media">
 
@@ -92,7 +99,7 @@
                       ?>
                               <span class="icon icon-info" style="color:red"></span>
                             <?php }}?>
-                        <span class="badge badge-positive"><?= printf("%.1F", $score['total']/$score['count']); ?>分</span>
+                        <span class="badge badge-positive"><?= $score['count'] == 1 ? $score['total'] : printf("%.1F", $score['total']/$score['count']); ?>分</span>
                       <?php } else { ?>
                         <span class="badge badge-negative"><?= "未评分"; ?></span>    
                       <?php } ?> 

@@ -50,6 +50,7 @@
         <ul class="table-view">
         <li class="table-view-cell table-view-divider"><?= "{$staff->name} {$staff->mobile}" ?></li>
         <?php foreach($models_office as $model_office) {  
+            if ($model_office->is_selfOperated && !$staff->isSelfOperatedOfficeDirector()) continue;
             $detail_status = \app\models\MOfficeCampaignDetail::getDetailReadyStatus($model_office->office_id);
         ?>
 

@@ -48,8 +48,11 @@
         </p>
 
        <ul class="table-view">
-               <li class="table-view-cell table-view-divider"><?= "督导员：{$model_staff->name} {$model_staff->mobile}" ?></li>
-      <?php foreach($models_categories as $model_category) {  ?>
+               <li class="table-view-cell table-view-divider"><?= "{$model_staff->name} {$model_staff->mobile}" ?></li>
+      <?php 
+        foreach($models_categories as $model_category) { 
+          if ((!($model_office->is_selfOperated)) && ($model_category->sort_order == 6)) continue;
+      ?>
    
             <li class="table-view-cell media">
               <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj3', 'office_id'=>$model_office->office_id, 'model_category_id'=>$model_category->id],true) ?>">
