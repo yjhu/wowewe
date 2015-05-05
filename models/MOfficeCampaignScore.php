@@ -108,9 +108,11 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
     }
     
     public static function getScoreByScorer($office_id, $scorer_id, $date = null) {
+        $office = \app\models\MOffice::findOne(['office_id' => $office_id]);
         $pic_categories = MOfficeCampaignPicCategory::find()->all();
         $total = 0;
         foreach($pic_categories as $pic_category) {
+            if ((!$office->is_selfOperated) && $pic_category->sort_order == 6) continue;
             $score = self::getScoreByScorerAndPicCategory($office_id, $scorer_id, $pic_category->id, $date);
             if ($score === false) return false;
             $total += $score;
@@ -120,8 +122,10 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
     
     public static function getScore($office_id, $date = null) {
         $pic_categories = MOfficeCampaignPicCategory::find()->all();
+        $office = \app\models\MOffice::findOne(['office_id' => $office_id]);
         $total = 0;
         foreach($pic_categories as $pic_category) {
+            if ((!$office->is_selfOperated) && $pic_category->sort_order == 6) continue;
             $scores = self::getScoreByPicCategory($office_id, $pic_category->id, $date);
             if ($scores['count'] == 0) return false;
             $total += $scores['total']/$scores['count'];
@@ -129,12 +133,13 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
         return $total;
     }
     
-    public static function getScoreRanking($date = null) {
+    public static function getScoreRanking($is_selfOperated = 0, $date = null) {
         $ranking = array();
         $mrs = MMarketingRegion::find()->all();
         foreach($mrs as $mr) {
             foreach($mr->mscs as $msc) {
                 foreach($msc->offices as $office) {
+                    if ($office->is_selfOperated != $is_selfOperated)continue;
                     $score = self::getScore($office->office_id, $date);
                     if ($score !== false) {
                         $ranking[] = ['office_id' => $office->office_id, 'score' => $score];
