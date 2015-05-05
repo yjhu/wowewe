@@ -32,7 +32,10 @@
 
     <header class="bar bar-nav">
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
+
+      <!--
       <a class="icon icon-info pull-right" href="#myModalexample" class="btn"></a>
+      -->
       <h1 class="title">
        渠道宣传竞赛评选
       </h1>

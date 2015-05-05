@@ -99,7 +99,7 @@
                     </div>
 
                   <?php } else {?>    
-                       <span class="badge badge-negative">督导员未提交资料</span>
+                       <span class="badge badge-negative">未提交资料</span>
                   <?php } ?>
                     <img class="media-object pull-left" src="<?= $url ?>" width="64" height="64">
                     

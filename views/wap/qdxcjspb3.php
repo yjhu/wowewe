@@ -73,7 +73,7 @@
                 } else { 
                   if (\app\models\MOfficeCampaignDetail::getDetailReadyStatus($model_office->office_id) != \app\models\MOfficeCampaignDetail::DETAIL_COMPLETE) {
               ?>
-                <span class="badge badge-negative"><?= "督导员未提交资料"; ?></span>
+                <span class="badge badge-negative"><?= "未提交资料"; ?></span>
               <?php } else { ?>
                 <span class="badge badge-negative"><?= "未评分"; ?></span>    
               <?php }} ?> 
