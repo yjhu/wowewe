@@ -590,6 +590,94 @@ EOD;
         return $arr;
     }
 
+
+    public function GetJsApiParameters($UnifiedOrderResult)
+    {
+        require_once __DIR__."/../models/wxpay/WxPayData.php";
+    
+        if(!array_key_exists("appid", $UnifiedOrderResult)
+        || !array_key_exists("prepay_id", $UnifiedOrderResult)
+        || $UnifiedOrderResult['prepay_id'] == "")
+        {
+            U::W(['appid or prepay_id not exists', $UnifiedOrderResult]);
+            throw new \Exception("para error");
+        }
+        $jsapi = new WxPayJsApiPay();
+        $jsapi->SetAppid($UnifiedOrderResult["appid"]);
+        $timeStamp = (string)time();
+        $jsapi->SetTimeStamp($timeStamp);
+        $jsapi->SetNonceStr(WxPayApi::getNonceStr());
+        $jsapi->SetPackage("prepay_id=" . $UnifiedOrderResult['prepay_id']);
+        $jsapi->SetSignType("MD5");
+        $jsapi->SetPaySign($jsapi->MakeSign());
+        $parameters = json_encode($jsapi->GetValues());
+        return $parameters;
+    }
+
+    public function GetOrderJsApiParameters()
+    {
+        require_once __DIR__."/../models/wxpay/WxPayData.php";
+    
+        $input = new WxPayUnifiedOrder();
+        $input->SetBody($this->detail);
+        //$input->SetAttach("test");
+        $input->SetOut_trade_no($this->oid);
+        $input->SetTotal_fee("{$this->feesum}");
+        if ($this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_HBHE) {
+            $input->SetTotal_fee("1");
+        }
+        $input->SetTime_start(date("YmdHis"));
+        $input->SetTime_expire(date("YmdHis", time() + 3600));
+        //$input->SetGoods_tag("test");
+        $input->SetNotify_url("http://wosotech.com/wx/web/wxpaynotify.php");
+        $input->SetTrade_type("JSAPI");
+        $input->SetOpenid($this->openid);
+        $unifiedOrder = WxPayApi::unifiedOrder($input);
+        U::W($unifiedOrder);
+        $jsApiParameters = $this->GetJsApiParameters($unifiedOrder);
+        //U::W($jsApiParameters);        
+        return $jsApiParameters;    
+    }
+    
+/*
+    Array
+    (
+        [appid] => wx1b122a21f985ea18
+        [err_code] => ORDERNOTEXIST
+        [err_code_des] => 订单不存在
+        [mch_id] => 1234585602
+        [nonce_str] => OxhI6dxTH9qS3vqj
+        [result_code] => FAIL
+        [return_code] => SUCCESS
+        [return_msg] => OK
+        [sign] => B502261BBADFD3124ADA6079CB9121CD
+    )
+
+Array
+    (
+        [appid] => wx1b122a21f985ea18
+        [cash_fee] => 1
+        [cash_refund_fee] => 1
+        [coupon_refund_count] => 0
+        [coupon_refund_fee] => 0
+        [mch_id] => 1234585602
+        [nonce_str] => qZt8kYwlzOjOpssF
+        [out_refund_no] => 55494FDD0B01C
+        [out_trade_no] => 55494F7511D58
+        [refund_channel] => Array
+            (
+            )
+
+        [refund_fee] => 1
+        [refund_id] => 2001230398201505060004685282
+        [result_code] => SUCCESS
+        [return_code] => SUCCESS
+        [return_msg] => OK
+        [sign] => 8FE0AE9C2D0323953227853EFCC69641
+        [total_fee] => 1
+        [transaction_id] => 1001230398201505060111550271
+    )    
+*/
     public function refund()
     {
         if ($this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_KZENG ||$this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_HBHE) {
@@ -607,6 +695,10 @@ EOD;
         U::W([__METHOD__, $input]);        
         $result = WxPayApi::refund($input);
         U::W([__METHOD__, $result]);
+        if ($result["return_code"] == "SUCCESS" && $result["result_code"] == "SUCCESS") {
+            //$this->status = MOrder::STATUS_OK;    
+            //$this->save();
+        }        
         return $result;
     }    
 }
