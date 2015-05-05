@@ -1973,7 +1973,12 @@ EOD;
                 //$manager->sendWxm($order->getWxNoticeToManager());
                 //U::W('sendSm');
                 //$manager->sendSm($order->getSmNoticeToManager());
-                $arr = $order->sendTemplateNoticeToManager($manager);
+                try {
+                    $arr = $order->sendTemplateNoticeToManager($manager);
+                } catch(\Exception $e) {
+                    U::W($e->getMessage());
+                }            
+                
             } else {
                 U::W(['Have no manager or the manager has not binded openid', $order]);
             }
@@ -2000,6 +2005,7 @@ EOD;
         $url = $notify->GetPrePayUrl("123456789");
         U::W('after NativePay='.$url);
 */
+/*
         $detail = $order->detail;
         $input = new WxPayUnifiedOrder();
         $input->SetBody($detail);
@@ -2020,6 +2026,9 @@ EOD;
         
         $jsApiParameters = $this->GetJsApiParameters($unifiedOrder);
         U::W($jsApiParameters);
+*/        
+        $jsApiParameters = $order->GetOrderJsApiParameters();
+
         return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$jsApiParameters]);
 
     }
