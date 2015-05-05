@@ -108,6 +108,16 @@ class MStaff extends ActiveRecord
         return $this->hasMany(MOffice::className(), ['office_id' => 'office_id'])
             ->viaTable('wx_rel_supervision_staff_office', ['staff_id' => 'staff_id']);
     }
+
+    public function getDirectedOffice()
+    {
+        return $this->hasOne(MOffice::className(), ['manager' => 'name', 'mobile' => 'mobile']);
+    }
+
+    public function isSelfOperatedOfficeDirector()
+    {
+        return !empty($this->directedOffice);
+    }
     
     public function isSupervisor()
     {

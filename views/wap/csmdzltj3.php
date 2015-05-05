@@ -37,7 +37,7 @@ $signPackage = $jssdk->GetSignPackage();
     <header class="bar bar-nav">
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
       <h1 class="title">
-       参赛门店资料提交
+       渠道宣传竞赛资料提交
       </h1>
     </header>
     <?php 

@@ -68,7 +68,7 @@
                         }
                         else
                         {
-                          $url = 'http://placehold.it/64x64';
+                          $url = '../web/images/comm-icon/upload-pic-64x64.png';
                         }
                     ?>
 

@@ -158,8 +158,14 @@
         <?php }  ?>
 
 
-        <?php if(!empty($user->mobileStaff) && ($user->mobileStaff->isSupervisor())) {?>
-            <li><a ajax-data="false" href="<?php echo Url::to(['csmdzltj1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'staff_id'=>$user->mobileStaff->staff_id]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" alt="参赛门店资料提交" class="ui-li-icon ui-corner-none">参赛门店资料提交</a></li>
+        <?php 
+            if (!empty($user->staff) && $user->staff->cat == \app\models\MStaff::SCENE_CAT_IN)
+                $staff = $user->staff;
+            else
+                $staff = $user->mobileStaff;
+            if (!empty($staff) && ($staff->isSupervisor() || $staff->isSelfOperatedOfficeDirector())) {
+        ?>
+            <li><a ajax-data="false" href="<?php echo Url::to(['csmdzltj1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'staff_id'=>$staff->staff_id]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" alt="渠道宣传竞赛资料提交" class="ui-li-icon ui-corner-none">渠道宣传竞赛资料提交</a></li>
         <?php }  ?>
 
 

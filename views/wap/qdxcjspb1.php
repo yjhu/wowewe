@@ -131,12 +131,17 @@
 
       <div id="exit" class="modal">
         <header class="bar bar-nav">
-          <a class="icon icon-close pull-right" href="#myModalexample"></a>
+          <a class="icon icon-close pull-right" href="#exit"></a>
           <h1 class="title">确认要退出？</h1>
         </header>
 
         <div class="content">
+  
+            <br>
+            <a class="btn btn-block" href="#exit">不退出，再看看。</a>
+            <a class="btn btn-negative btn-block" onclick="javascript:history.back();">退出</a>
             
+     
         </div>
       </div>
 
