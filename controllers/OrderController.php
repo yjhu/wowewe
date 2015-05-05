@@ -58,7 +58,6 @@ class OrderController extends Controller
 
     public function init()
     {
-        //U::W(['init....', $_GET,$_POST, $GLOBALS]);
         //U::W(['init....', $_GET,$_POST]);
     }
 
@@ -184,6 +183,13 @@ class OrderController extends Controller
             //return $this->redirect(['index']);            
         }
         return $this->render('chat', ['model' => $model]);        
+    }
+
+    public function actionRefund($id)
+    {
+        $model = $this->findModel($id);
+        $model->refund();
+        return $this->redirect(['index']);
     }
 
     protected function findModel($id)

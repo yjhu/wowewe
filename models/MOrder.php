@@ -94,9 +94,19 @@ use app\models\MItem;
 use app\models\MOffice;
 use app\models\MSceneDetail;
 use app\models\Wechat;
-
 use yii\helpers\Url;
-
+use app\models\MGh;
+use app\models\wxpay\NativePay;
+use app\models\wxpay\WxPayNotify;
+use app\models\wxpay\WxPayApi;
+use app\models\wxpay\WxPayData;
+use app\models\wxpay\WxPayUnifiedOrder;
+use app\models\wxpay\WxPayJsApiPay;
+use app\models\wxpay\WxPayOrderQuery;
+use app\models\wxpay\WxPayException;
+use app\models\wxpay\WxPayConfig;
+use app\models\wxpay\WxPayRefund;
+    
 class MOrder extends ActiveRecord
 {
     const STATUS_AUTION = 0;
@@ -415,10 +425,6 @@ class MOrder extends ActiveRecord
         $usermobile_info = ($this->usermobile=="undefined")?"":", 联系电话{$this->usermobile}";
         $kaitong_info = ($this->kaitong == null) ?"":", {$this->kaitong}";
 
-//        $str = <<<EOD
-//{$model->nickname}, 您已订购【{$detail}】{$select_mobnum_info}。 订单编号为【{$this->oid}】, 订单金额为{$feesum}元, 用户信息为【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 请您在24小时内携身份证或相关证件{$office_info}办理, 逾期将自动关闭。 【{$gh->nickname}】
-//EOD;
-
         $str = <<<EOD
 {$model->nickname}, 您已订购【{$detail}】{$select_mobnum_info}。 订单编号【{$this->oid}】{$kaitong_info},订单金额{$feesum}元,  用户信息【{$this->username}, 身份证{$this->userid}{$usermobile_info}】。 【{$gh->nickname}】
 EOD;
@@ -447,11 +453,6 @@ EOD;
         $feesum = sprintf("%0.2f",$this->feesum/100);
         $office = MOffice::findOne($this->office_id);
         $title = ($office !== null) ? mb_substr($office->title, 0, 5, 'utf-8') : '';
-/*
-        $str = <<<EOD
-【{$gh->nickname}】{$title}订单【{$this->oid}】,{$detail},{$feesum}元,{$this->username},电话{$this->usermobile}
-EOD;
-*/
         $str = <<<EOD
 【沃手科技】{$title}订单【{$this->oid}】,{$detail},{$feesum}元,{$this->username},电话{$this->usermobile}
 EOD;
@@ -489,7 +490,6 @@ EOD;
             if (isset($arr[$otherPack]) && $otherPack!='999')
                 $str .= '/'.$arr[$otherPack];
 
-            //$str .= '/'.$selectNum;
         }
         else if ($this->cid == MItem::ITEM_CAT_CARD_WO || $this->cid == MItem::ITEM_CAT_CARD_XIAOYUAN)
         {
@@ -589,302 +589,25 @@ EOD;
         $arr = Yii::$app->wx->WxTemplateSend($msg);
         return $arr;
     }
+
+    public function refund()
+    {
+        if ($this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_KZENG ||$this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_HBHE) {
+           $this->feesum = 1;
+        }
     
+        require_once __DIR__."/../models/wxpay/WxPayData.php";
+
+        $input = new WxPayRefund();
+        $input->SetOut_trade_no($this->oid);
+        $input->SetTotal_fee($this->feesum);
+        $input->SetRefund_fee($this->feesum);
+        $input->SetOut_refund_no(MOrder::generateOid());
+        $input->SetOp_user_id(WxPayConfig::MCHID);
+        U::W([__METHOD__, $input]);        
+        $result = WxPayApi::refund($input);
+        U::W([__METHOD__, $result]);
+        return $result;
+    }    
 }
-
-/*        
-DROP TABLE IF EXISTS wx_order_arc;
-CREATE TABLE wx_order_arc LIKE wx_order;
-
-DROP TABLE IF EXISTS wx_order_arc;
-CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
-
-ALTER TABLE wx_order ADD userid VARCHAR(32) NOT NULL DEFAULT '', ADD username VARCHAR(16) NOT NULL DEFAULT '', ADD usermobile VARCHAR(16) NOT NULL DEFAULT '';
-
-    $flowPackName = ['0'=>'100MB', '1'=>'300MB', '2'=>'500MB', '3'=>'1GB', '4'=>'2GB', '5'=>'3GB', '6'=>'4GB', '7'=>'6GB', '8'=>'11GB'];
-
-    $flowPackFee = ['0'=>'8', '1'=>'16', '2'=>'24', '3'=>'48', '4'=>'72', '5'=>'96', '6'=>'120', '7'=>'152', '8'=>'232'];            
-
-    $voicePackName = ['0'=>'200分钟', '1'=>'300分钟', '2'=>'500分钟', '3'=>'1000分钟', '4'=>'2000分钟', '5'=>'3000分钟'];            
-
-    $voicePackFee = ['0'=>'32', '1'=>'40', '2'=>'56', '3'=>'112', '4'=>'160', '5'=>'240'];            
-
-    $msgPackName = ['0'=>'200条', '1'=>'400条', '2'=>'600条', '3'=>'不选'];            
-
-    $msgPackFee = ['0'=>'10', '1'=>'20', '2'=>'30', '3'=>'0'];            
-
-    $callShowPackName = ['0'=>'来显', '1'=>'不选'];            
-
-    $callShowPackFee = ['0'=>'6', '1'=>'0'];
-
-    public static function getFlowPackName()
-    {
-        return json_encode($this->flowPackName);
-    }
-
-    public static function getFlowPackFee()
-    {
-        return json_encode($this->flowPackFee);
-    }
-    
-    public static function getVoicePackName()
-    {
-        return json_encode($this->voicePackName);
-    }
-        
-    public static function getVoicePackFee()
-    {
-        return json_encode($this->voicePackFee);
-    }
-    
-    public static function getMsgPackName()
-    {
-        return json_encode($this->msgPackName);
-    }
-    
-    public static function getMsgPackFee()
-    {
-        return json_encode($this->msgPackFee);
-    }    
-    
-    public static function getCallShowPackName()
-    {
-        return json_encode($this->callShowPackName);
-    }    
-    
-    public static function getCallShowPackFee()
-    {
-        return json_encode($this->callShowPackFee);
-    }
-    
-    public function getDetailStrCore()
-    {
-        if ($this->cid == MItem::ITEM_CAT_DIY)
-        {
-            list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack, $selectNum) = explode(',', $this->attr);
-
-            $arr = self::getCardTypeName(false);
-            if (isset($arr[$cardType]) && $cardType!='999')
-                $str .= '/'.$arr[$cardType];
-            
-            $arr = self::getFlowPackName(false);
-            if (isset($arr[$flowPack]) && $flowPack!='999')
-                $str .= '/'.$arr[$flowPack].'流量包';
-
-            $arr = self::getVoicePackName(false);
-            if (isset($arr[$voicePack]) && $voicePack!='999')
-                $str .= '/'.$arr[$voicePack].'语音包';
-
-            $arr = self::getMsgPackName(false);
-            if (isset($arr[$msgPack]) && $msgPack!='999')
-                $str .= '/'.$arr[$msgPack].'短信包';
-
-            $arr = self::getCallShowPackName(false);
-            if (isset($arr[$callshowPack]) && $callshowPack!='999')
-                $str .= '/'.$arr[$callshowPack].'来电显示';
-
-            $arr = self::getOtherPackName(false);
-            if (isset($arr[$otherPack]) && $otherPack!='999')
-                $str .= '/'.$arr[$otherPack].;
-
-            $str .= '/'.$selectNum;
-
-            $detailStr = str_replace(array('"', "'", "+", " "), '', $str);
-            return $detailStr;
-        }
-    }    
-
-    public function getWxNotice($real_pay=false)
-    {
-        if ($this->cid == MItem::ITEM_CAT_DIY)
-        {
-            $gh = MGh::findOne($this->gh_id);                        
-            $model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);                        
-            $office = MOffice::findOne($this->office_id);    
-            
-            list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack, $selectNum) = explode(',', $this->attr);
-            
-            $arr = self::getCardTypeName(false);
-            $cardTypeStr = isset($arr[$cardType]) ? $arr[$cardType] : '';
-            $arr = self::getFlowPackName(false);
-            $flowPackStr = isset($arr[$flowPack]) ? $arr[$flowPack] : '';
-            $arr = self::getVoicePackName(false);
-            $voicePackStr = isset($arr[$voicePack]) ? $arr[$voicePack] : '';
-            $arr = self::getMsgPackName(false);
-            $msgPackStr = isset($arr[$msgPack]) ? $arr[$msgPack] : '';
-            $arr = self::getCallShowPackName(false);
-            $callshowPackStr = isset($arr[$callshowPack]) ? $arr[$callshowPack] : '';
-            $str = <<<EOD
-【{$gh->nickname}】{$model->nickname}您的订单号{$this->oid}已生成。
-购买商品:{$this->title}
-卡类型:{$cardTypeStr}
-流量包:{$flowPackStr}
-语音包:{$voicePackStr}
-短信包:{$msgPackStr}
-来电显示:{$callshowPackStr}
-卡号:{$selectNum}
-EOD;
-            return $str;
-        }
-    }    
-
-
-            $arr = self::getCardTypeName(false);
-            $cardTypeStr = isset($arr[$cardType]) ? $arr[$cardType] : '';
-            $arr = self::getFlowPackName(false);
-            $flowPackStr = isset($arr[$flowPack]) ? $arr[$flowPack] : '';
-            $arr = self::getVoicePackName(false);
-            $voicePackStr = isset($arr[$voicePack]) ? $arr[$voicePack] : '';
-            $arr = self::getMsgPackName(false);
-            $msgPackStr = isset($arr[$msgPack]) ? $arr[$msgPack] : '';
-            $arr = self::getCallShowPackName(false);
-            $callshowPackStr = isset($arr[$callshowPack]) ? $arr[$callshowPack] : '';
-
-            $str = <<<EOD
-{$model->nickname}，您已订购:{$this->title}【{$cardTypeStr}/{$flowPackStr}流量包/..】，手机号码为{$selectNum}。订单编号为xx,订单金额为yy。请您在48小时内至xx(addrees,mobile)办理。【{$gh->nickname}】
-
-
-
-                {$this->oid}已生成。
-购买商品:{$this->title}
-卡类型:{$cardTypeStr}
-流量包:{$flowPackStr}
-语音包:{$voicePackStr}
-短信包:{$msgPackStr}
-来电显示:{$callshowPackStr}
-卡号:{$selectNum}
-EOD;
-            return $str;
-
-        if ($this->cid == MItem::ITEM_CAT_DIY)
-        {
-            list($cardType,$flowPack,$voicePack,$msgPack,$callshowPack, $otherPack) = explode(',', $this->attr);
-            $str = <<<EOD
-{$model->nickname},您已订购【{$detail}】,手机号码为{$selectNum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
-EOD;
-            return $str;
-        }
-        else if ($this->cid == MItem::ITEM_CAT_CARD_WO)
-        {
-            list($cardType) = explode(',', $this->attr);
-            $str = <<<EOD
-{$model->nickname},您已订购【{$detail}】,手机号码为{$selectNum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
-EOD;
-            return $str;
-        }
-        else if ($this->cid == MItem::ITEM_CAT_CARD_XIAOYUAN)
-        {
-            list($cardType) = explode(',', $this->attr);
-            $str = <<<EOD
-{$model->nickname},您已订购【{$detail}】,手机号码为{$selectNum}。订单编号为【{$this->oid}】,订单金额为{$feesum}元。请您在48小时内至{$office->title}({$office->address},{$office->manager},{$office->mobile})办理,逾期自动关闭。【{$gh->nickname}】
-EOD;
-            return $str;
-        }
-        else
-            return 'Error';
-
-//ALTER TABLE wx_order ADD select_mobnum VARCHAR(16) NOT NULL DEFAULT '' after title;
-        
-    public function getWxNoticeToManager($real_pay=false)
-    {
-        $gh = MGh::findOne($this->gh_id);                        
-        $model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);                        
-        $office = MOffice::findOne($this->office_id);
-        $detail = $this->detail;
-        $feesum = sprintf("%0.2f",$this->feesum/100);
-        //$create_time = substr($model->create_time, 0, 10);
-        $str = <<<EOD
-{$office->title}, 用户{$model->nickname}于{$model->create_time} 在微信营业厅成功下单, 订单信息如下:
-订单号: 【{$this->oid}】
-商品: 【{$detail}】, 
-卡号: {$this->select_mobnum}, 
-金额: {$feesum}元
-姓名: {$this->username}
-身份证: {$this->userid}
-联系电话: {$this->usermobile}】
-【{$gh->nickname}】
-EOD;
-            return $str;
-    }    
-            
-        $str = <<<EOD
-【{$gh->nickname}】{$office->title}: {$model->nickname}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】
-EOD;
-
-
-        
-ALTER TABLE wx_order ADD pay_kind tinyint(10) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_order ADD aliwap_trade_no VARCHAR(64) NOT NULL DEFAULT '';
-ALTER TABLE wx_order ADD aliwap_total_fee VARCHAR(16) NOT NULL DEFAULT '';
-ALTER TABLE wx_order ADD aliwap_trade_status VARCHAR(32) NOT NULL DEFAULT '';
-ALTER TABLE wx_order ADD aliwap_buyer_email VARCHAR(64) NOT NULL DEFAULT '';
-ALTER TABLE wx_order ADD aliwap_quantity int(10) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_order ADD aliwap_gmt_payment TIMESTAMP;
-
-ALTER TABLE wx_order ADD KEY gh_id_aliwap_trade_no(gh_id,aliwap_trade_no);
-    
-DROP TABLE IF EXISTS wx_order_arc;
-CREATE TABLE wx_order_arc ENGINE=MyISAM DEFAULT CHARSET=utf8 AS SELECT * FROM wx_order where 1=2;
-
-//给卖家留言
-ALTER TABLE wx_order ADD memo VARCHAR(256) NOT NULL DEFAULT '';
-
-
-ALTER TABLE wx_order ADD val_pkg_3g4g VARCHAR(32) NOT NULL DEFAULT '';
-ALTER TABLE wx_order ADD val_pkg_period int(10) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_order ADD val_pkg_monthprice int(10) unsigned NOT NULL DEFAULT '0';
-ALTER TABLE wx_order ADD val_pkg_plan VARCHAR(8) NOT NULL DEFAULT '';
-
-ALTER TABLE wx_order ADD address VARCHAR(256) NOT NULL DEFAULT '';
-ALTER TABLE wx_order ADD kaitong VARCHAR(16) NOT NULL DEFAULT '';
-
-//    const STATUS_PAYED = 1;        
-//    const STATUS_SHIPPED = 2;
-//    const STATUS_CLOSED_OFFICE = 8;    
-
-    public function afterSave($insert, $changedAttributes)
-    {        
-        if (!empty($this->scene_id) && !empty($this->scene_amt))
-        {
-            if ($insert)
-            {
-                $ar = new MSceneDetail;
-                $ar->scene_id = $this->scene_id;             
-                $ar->scene_src_id = $this->scene_src_id;
-                $ar->gh_id = $this->gh_id;
-                $ar->openid = $this->openid;
-                $ar->scene_amt = $this->scene_amt;
-                $ar->oid = $this->oid;
-                $ar->memo = $this->detail;                                 
-                $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_INIT;
-                if ($ar->save(false))
-                {
-                    $this->scene_auto_id = $this->pdo->lastInsertId();
-                    $this->
-                }                                
-            }
-            else
-            {
-            }
-        }        
-        parent::afterSave($insert, $changedAttributes);        
-    }
-
-ALTER TABLE wx_order ADD memo_reply VARCHAR(128) NOT NULL DEFAULT '' after memo;
-ALTER TABLE wx_order ADD scene_auto_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
-ALTER TABLE wx_order ADD scene_amt int(10) NOT NULL DEFAULT '0' after openid;
-ALTER TABLE wx_order ADD scene_src_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
-ALTER TABLE wx_order ADD scene_id int(10) unsigned NOT NULL DEFAULT '0' after openid;
-  
-// czhm 充值号码
-ALTER TABLE wx_order ADD czhm VARCHAR(64) NOT NULL DEFAULT '';
-
-
-//wlgs 物流公司
-ALTER TABLE wx_order ADD wlgs int(10) unsigned NOT NULL DEFAULT '0';
-
-//wldh 物流单号
-ALTER TABLE wx_order ADD wldh VARCHAR(64) NOT NULL DEFAULT '';  
-*/
-
 
