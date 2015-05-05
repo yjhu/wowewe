@@ -130,7 +130,7 @@
                 <?php endforeach; ?>
                 </p>
 
-                <?php if(!empty($user->mobileStaff) || !empty($user->staff)) {?>
+                <?php if((!empty($user->mobileStaff)) || ((!empty($user->staff)) && $user->staff->cat == \app\models\MStaff::SCENE_CAT_IN)) {?>
                     <p class="f13"><em>襄阳联通员工</em></p>
                 <?php } else if(!empty($user->customer)) { ?>
                     <p class="f13"><em id="vip_p" class="pu_vip"></em></p>
@@ -153,7 +153,7 @@
         <li><a ajax-data="false" href="<?php echo Url::to(['jssdksample', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" alt="4G测速有奖" class="ui-li-icon ui-corner-none">4G测速有奖</a></li>
 
     
-        <?php if(!empty($user->mobileStaff) || !empty($user->staff)) {?>
+        <?php  if((!empty($user->mobileStaff)) || ((!empty($user->staff)) && $user->staff->cat == \app\models\MStaff::SCENE_CAT_IN)) {?>
             <li><a ajax-data="false" href="<?php echo Url::to(['qdxcjspb1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-ajax="false"><img src="../web/images/woke/wdsc.gif" alt="渠道宣传竞赛评选" class="ui-li-icon ui-corner-none">渠道宣传竞赛评选</a></li>
         <?php }  ?>
 
