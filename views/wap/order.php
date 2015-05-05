@@ -292,6 +292,8 @@ function load_data2(i, n)
 	else if(n.cid == 713)
 		imgurl = '../web/images/item/96gliuliang-1111-700x500.jpg-120x120.jpg';
 
+	//718 719 720
+
 	else if(n.cid == 800)
 		imgurl = '../web/show_res/index.jpg';
 	else if(n.cid == 801)
@@ -366,6 +368,26 @@ function load_data2(i, n)
 	else if(n.cid == 863)
 		imgurl = '../web/images/item/sanxing-g9006v-700x500.jpg-120x120.jpg';
 	//4g手机 疯狂直降 end
+	//5.1
+
+	else if(n.cid == 864)
+		imgurl = '../web/images/item/lianxiang-a3600/lianxiang-a3600-700x500.jpg-120x120.jpg';
+
+	else if(n.cid == 865)
+		imgurl = '../web/images/item/kupai-7061/kupai-7061-700x500.jpg-120x120.jpg';
+
+	else if(n.cid == 866)
+		imgurl = '../web/images/item/kupai-y76/kupai-y76-700x500.jpg-120x120.jpg';
+
+	else if(n.cid == 867)
+		imgurl = '../web/images/item/xiaomi4-4g/xiaomi4-4g-700x500.jpg-120x120.jpg';
+
+	else if(n.cid == 868)
+		imgurl = '../web/images/item/htc-820u/htc-820u-700x500.jpg-120x120.jpg';
+
+	else if(n.cid == 869)
+		imgurl = '../web/images/item/iphone6-16g-5.1/iphone6-16g-700x500.jpg-120x120.jpg';
+
 
 	//老用户专享
 	else if(n.cid == 870)
@@ -378,7 +400,13 @@ function load_data2(i, n)
 		imgurl = '../web/images/item/lianxiang-a606-700x500.jpg-120x120.jpg';
 	else if(n.cid == 874)
 		imgurl = '../web/images/item/zhongxing-v5-700x500.jpg-120x120.jpg';
+	else if(n.cid == 875)
+		imgurl = '../web/images/item/iphone4s-8g-5.1/iphone4s-8g-700x500.jpg-120x120.jpg';
+	else if(n.cid == 876)
+		imgurl = '../web/images/item/iphone5s-16g-5.1/iphone5s-16g-700x500.jpg-120x120.jpg';
 	//老用户专享end
+
+
 
 	if(n.val_pkg_3g4g == "3g")
 		val_pkg_3g4g_name="3G普通套餐";
