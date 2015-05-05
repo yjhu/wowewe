@@ -40,9 +40,12 @@ class WxPayConfig
 	const MCHID = '1234585602';
 	const KEY = 'xiangylt20140526huyajun197310070';
 	const APPSECRET = '35eda7e6cd9b69f5ffb3c8662f62eb25';
-	const SSLCERT_PATH = '../cert/xiangyangunicom/apiclient_cert.pem';
-	const SSLKEY_PATH = '../cert/xiangyangunicom/apiclient_key.pem';
-
+//	const SSLCERT_PATH = '../cert/xiangyangunicom/apiclient_cert.pem';
+//	const SSLKEY_PATH = '../cert/xiangyangunicom/apiclient_key.pem';
+	const SSLCERT_PATH = '../models/wxpay/cert/xiangyangunicom/apiclient_cert.pem';
+	const SSLKEY_PATH = '../models/wxpay/cert/xiangyangunicom/apiclient_key.pem';
+//	const SSLCERT_PATH = 'xiangyangunicom/apiclient_cert.pem';
+//	const SSLKEY_PATH = 'xiangyangunicom/apiclient_key.pem';
 
 
 	//=======【curl代理设置】===================================

@@ -123,6 +123,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => '开通',
 				'attribute' => 'kaitong',	
 			],
+/*            
 			[
 				'attribute' => 'wlgs',
 				'value'=>function ($model, $key, $index, $column) { return MOrder::getOrderWuliugongsiName($model->wlgs); },
@@ -133,6 +134,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => '物流单号',
 				'attribute' => 'wldh',	
 			],
+*/
 /*
             [
 				'class' => 'yii\grid\ActionColumn',
@@ -141,7 +143,7 @@ $this->params['breadcrumbs'][] = $this->title;
 */
             [
 				'class' => 'yii\grid\ActionColumn',
-				'template' => '{view} {update} {chat}',
+				'template' => '{view} {update} {chat} {refund}',
 				'buttons' => [
 					'chat' => function ($url, $model) {
 						return Html::a('<span class="glyphicon glyphicon-send"></span>', $url, [
@@ -150,7 +152,16 @@ $this->params['breadcrumbs'][] = $this->title;
 							'data-pjax' => '0',
 							//'data-pjax' => '1',
 						]);
+					},
+					'refund' => function ($url, $model) {
+						return Html::a('<span class="glyphicon glyphicon-off"></span>', $url, [
+							'title' => Yii::t('yii', 'Refund'),
+							'data-method' => 'post',
+							'data-pjax' => '0',
+							//'data-pjax' => '1',
+						]);
 					}
+
 				],
 			],
 

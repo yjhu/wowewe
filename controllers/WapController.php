@@ -2006,7 +2006,9 @@ EOD;
         //$input->SetAttach("test");
         $input->SetOut_trade_no($order->oid);
         $input->SetTotal_fee("{$order->feesum}");
-        //$input->SetTotal_fee("1");
+        if ($openid == MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $openid == MGh::GH_XIANGYANGUNICOM_OPENID_HBHE) {
+            $input->SetTotal_fee("1");
+        }
         $input->SetTime_start(date("YmdHis"));
         $input->SetTime_expire(date("YmdHis", time() + 3600));
         //$input->SetGoods_tag("test");
