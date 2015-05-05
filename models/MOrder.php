@@ -635,7 +635,7 @@ EOD;
         $unifiedOrder = WxPayApi::unifiedOrder($input);
         U::W($unifiedOrder);
         $jsApiParameters = $this->GetJsApiParameters($unifiedOrder);
-        U::W($jsApiParameters);        
+        //U::W($jsApiParameters);        
         return $jsApiParameters;    
     }
     
@@ -652,6 +652,31 @@ EOD;
         [return_msg] => OK
         [sign] => B502261BBADFD3124ADA6079CB9121CD
     )
+
+Array
+    (
+        [appid] => wx1b122a21f985ea18
+        [cash_fee] => 1
+        [cash_refund_fee] => 1
+        [coupon_refund_count] => 0
+        [coupon_refund_fee] => 0
+        [mch_id] => 1234585602
+        [nonce_str] => qZt8kYwlzOjOpssF
+        [out_refund_no] => 55494FDD0B01C
+        [out_trade_no] => 55494F7511D58
+        [refund_channel] => Array
+            (
+            )
+
+        [refund_fee] => 1
+        [refund_id] => 2001230398201505060004685282
+        [result_code] => SUCCESS
+        [return_code] => SUCCESS
+        [return_msg] => OK
+        [sign] => 8FE0AE9C2D0323953227853EFCC69641
+        [total_fee] => 1
+        [transaction_id] => 1001230398201505060111550271
+    )    
 */
     public function refund()
     {
@@ -670,6 +695,10 @@ EOD;
         U::W([__METHOD__, $input]);        
         $result = WxPayApi::refund($input);
         U::W([__METHOD__, $result]);
+        if ($result["return_code"] == "SUCCESS" && $result["result_code"] == "SUCCESS") {
+            //$this->status = MOrder::STATUS_OK;    
+            //$this->save();
+        }        
         return $result;
     }    
 }

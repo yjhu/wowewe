@@ -1991,68 +1991,10 @@ EOD;
         {
             U::W([__METHOD__, $order->getErrors()]);
         }
-/*        
-        Yii::$app->wx->clearGh();
-        Yii::$app->wx->setGhId(MGh::GH_WOSO);
-//        $url = Yii::$app->wx->create_native_url($order->oid);
-        $url = Yii::$app->wx->create_native_url_v3($order->oid);
-        Yii::$app->wx->clearGh();
-        Yii::$app->wx->setGhId($gh_id);        
-*/        
-/*
-        U::W('before NativePay');
-        $notify = new NativePay();
-        $url = $notify->GetPrePayUrl("123456789");
-        U::W('after NativePay='.$url);
-*/
-/*
-        $detail = $order->detail;
-        $input = new WxPayUnifiedOrder();
-        $input->SetBody($detail);
-        //$input->SetAttach("test");
-        $input->SetOut_trade_no($order->oid);
-        $input->SetTotal_fee("{$order->feesum}");
-        if ($openid == MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $openid == MGh::GH_XIANGYANGUNICOM_OPENID_HBHE) {
-            $input->SetTotal_fee("1");
-        }
-        $input->SetTime_start(date("YmdHis"));
-        $input->SetTime_expire(date("YmdHis", time() + 3600));
-        //$input->SetGoods_tag("test");
-        $input->SetNotify_url("http://wosotech.com/wx/web/wxpaynotify.php");
-        $input->SetTrade_type("JSAPI");
-        $input->SetOpenid($openid);
-        $unifiedOrder = WxPayApi::unifiedOrder($input);
-        U::W($unifiedOrder);
         
-        $jsApiParameters = $this->GetJsApiParameters($unifiedOrder);
-        U::W($jsApiParameters);
-*/        
         $jsApiParameters = $order->GetOrderJsApiParameters();
-
         return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$jsApiParameters]);
-
     }
-
-	public function GetJsApiParameters($UnifiedOrderResult)
-	{
-		if(!array_key_exists("appid", $UnifiedOrderResult)
-		|| !array_key_exists("prepay_id", $UnifiedOrderResult)
-		|| $UnifiedOrderResult['prepay_id'] == "")
-		{
-		    U::W(['appid or prepay_id not exists', $UnifiedOrderResult]);
-			throw new \Exception("para error");
-		}
-		$jsapi = new WxPayJsApiPay();
-		$jsapi->SetAppid($UnifiedOrderResult["appid"]);
-		$timeStamp = (string)time();
-		$jsapi->SetTimeStamp($timeStamp);
-		$jsapi->SetNonceStr(WxPayApi::getNonceStr());
-		$jsapi->SetPackage("prepay_id=" . $UnifiedOrderResult['prepay_id']);
-		$jsapi->SetSignType("MD5");
-		$jsapi->SetPaySign($jsapi->MakeSign());
-		$parameters = json_encode($jsapi->GetValues());
-		return $parameters;
-	}
 
     //http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=mobileNum&currentPage=1&cid=10&feeSum=1
     //http://127.0.0.1/wx/web/index.php?r=wap/ajaxdata&cat=diskRestCnt&cid=10
@@ -4645,4 +4587,63 @@ return $xmlStr;
     
         
 */
+
+/*        
+        Yii::$app->wx->clearGh();
+        Yii::$app->wx->setGhId(MGh::GH_WOSO);
+//        $url = Yii::$app->wx->create_native_url($order->oid);
+        $url = Yii::$app->wx->create_native_url_v3($order->oid);
+        Yii::$app->wx->clearGh();
+        Yii::$app->wx->setGhId($gh_id);        
+*/        
+/*
+        U::W('before NativePay');
+        $notify = new NativePay();
+        $url = $notify->GetPrePayUrl("123456789");
+        U::W('after NativePay='.$url);
+*/
+/*
+	public function GetJsApiParameters($UnifiedOrderResult)
+	{
+		if(!array_key_exists("appid", $UnifiedOrderResult)
+		|| !array_key_exists("prepay_id", $UnifiedOrderResult)
+		|| $UnifiedOrderResult['prepay_id'] == "")
+		{
+		    U::W(['appid or prepay_id not exists', $UnifiedOrderResult]);
+			throw new \Exception("para error");
+		}
+		$jsapi = new WxPayJsApiPay();
+		$jsapi->SetAppid($UnifiedOrderResult["appid"]);
+		$timeStamp = (string)time();
+		$jsapi->SetTimeStamp($timeStamp);
+		$jsapi->SetNonceStr(WxPayApi::getNonceStr());
+		$jsapi->SetPackage("prepay_id=" . $UnifiedOrderResult['prepay_id']);
+		$jsapi->SetSignType("MD5");
+		$jsapi->SetPaySign($jsapi->MakeSign());
+		$parameters = json_encode($jsapi->GetValues());
+		return $parameters;
+	}
+
+
+        $detail = $order->detail;
+        $input = new WxPayUnifiedOrder();
+        $input->SetBody($detail);
+        //$input->SetAttach("test");
+        $input->SetOut_trade_no($order->oid);
+        $input->SetTotal_fee("{$order->feesum}");
+        if ($openid == MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $openid == MGh::GH_XIANGYANGUNICOM_OPENID_HBHE) {
+            $input->SetTotal_fee("1");
+        }
+        $input->SetTime_start(date("YmdHis"));
+        $input->SetTime_expire(date("YmdHis", time() + 3600));
+        //$input->SetGoods_tag("test");
+        $input->SetNotify_url("http://wosotech.com/wx/web/wxpaynotify.php");
+        $input->SetTrade_type("JSAPI");
+        $input->SetOpenid($openid);
+        $unifiedOrder = WxPayApi::unifiedOrder($input);
+        U::W($unifiedOrder);
+        
+        $jsApiParameters = $this->GetJsApiParameters($unifiedOrder);
+        U::W($jsApiParameters);
+*/        
 
