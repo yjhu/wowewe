@@ -230,10 +230,10 @@ class MOrder extends ActiveRecord
         if (isset($changedAttributes['status']) || isset($changedAttributes['pay_kind']))  {
             $this->sendTemplateNoticeToCustom();  
             if (($this->status == self::STATUS_SUBMITTED && $this->pay_kind == self::PAY_KIND_CASH) 
-                    || ($this->status == self::STATUS_PAID)) {
-                $manager = MStaff::findOne(['office_id'=>$this->office_id, 'is_manager'=>1]);
-                if (!empty($manager) && !empty($manager->openid))
-                    $this->sendTemplateNoticeToManager($manager);
+                    || ($this->status == self::STATUS_PAID)) {                
+                $director = $this->office->director;
+                if (!empty($director) && !empty($director->openid))
+                    $this->sendTemplateNoticeToManager($director);
             }
         }
     }
