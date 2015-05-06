@@ -170,6 +170,25 @@
                     );
                 }
 
+                function callpayout()
+                {
+					$.ajax({
+						url: "<?php echo Url::to(['wap/handlecallpayout','oid'=>$model->oid], true) ; ?>",
+						type:"GET",
+						cache:false,
+						dataType:"json",
+						//data: "xxx="+xxx+"&yyy="+yyy,
+						success: function(t){
+								callpay();
+						},
+						error: function(){
+							alert('error!');
+						}
+					});
+
+					return false;
+                }
+
                 function callpay()
                 {
                     if (typeof WeixinJSBridge == "undefined"){
@@ -239,7 +258,7 @@ $(function(){
 
 	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
 
-			<a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin" style="background-color: #44B549" onclick="callpay()" >立即支付</a>
+			<a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin" style="background-color: #44B549" onclick="callpayout()" >立即支付</a>
 
 
 	    <?php ActiveForm::end(); ?>
