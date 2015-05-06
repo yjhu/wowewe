@@ -2689,7 +2689,7 @@ EOD;
         $item = MItem::findOne(['gh_id'=>$gh_id, 'cid'=>$model->cid]);
         //$item = MItem::findOne($model->cid);
 
-
+/*
         $input = new WxPayUnifiedOrder();
         $input->SetBody("test");
         $input->SetAttach("test");
@@ -2705,7 +2705,9 @@ EOD;
         U::W($unifiedOrder);        
         $jsApiParameters = $this->GetJsApiParameters($unifiedOrder);
         U::W($jsApiParameters);
-        
+*/
+//        $jsApiParameters = $order->GetOrderJsApiParameters();
+        $jsApiParameters = '';
         return $this->render('orderinfo',['gh_id'=>$gh_id, 'openid'=>$openid, 'model' => $model, 'item' => $item, 'jsApiParameters'=>$jsApiParameters]);
     }
 
