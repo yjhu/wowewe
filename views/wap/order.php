@@ -223,10 +223,21 @@ function load_data1(i, n)
 	$("#create_time").html(n.create_time);
 	$("#pay_kind").html(pay_kind[n.pay_kind]);
 
-	if(n.pay_kind == 0) //线下支付
-		$("#pay_kind").html(pay_kind[n.pay_kind] +"<span style='color:blue' class='weixin_pay' myUrl="+n.url+">&nbsp;&nbsp;微信支付</span>");
+	if(n.status == 0) //STATUS_SUBMITTED
+	{
+		if(n.pay_kind == 0)
+		{
+			$("#pay_kind").html(pay_kind[n.pay_kind]);
+		}
+		else
+		{
+			$("#pay_kind").html(pay_kind[n.pay_kind] +"<span style='color:blue' class='weixin_pay' myUrl="+n.url+">&nbsp;&nbsp;继续支付</span>"+"<span style='color:blue' class='xianxia_pay' myOid="+n.oid+">&nbsp;&nbsp;线下支付</span>");
+		}
+	}
 	else
+	{
 		$("#pay_kind").html(pay_kind[n.pay_kind]);
+	}
 
 	$("#detail").html(n.detail);
 	$("#val_pkg_3g4g").html(val_pkg_3g4g_name);
@@ -708,17 +719,32 @@ $(document).on("pageinit", "#orderdetail", function(){
 	/*weixin pay @在详情页*/
 	$(document).on("tap",".weixin_pay",function(){
 
-		alert("weixin_pay");
+		//alert("weixin_pay");
 		url = $(this).attr('myUrl');
-		alert(url);
+		//alert(url);
 		jsApiParameters = JSON.parse(url);
-
-		alert(jsApiParameters);
+		//alert(jsApiParameters);
 		callpay();
-
 	   	return false;
 
 	});
+
+
+	$(document).on("tap",".xianxia_pay",function(){
+
+		//alert("weixin_pay");
+		oid = $(this).attr('myOid');
+		//alert(oid);
+
+		var url = "<?php echo Url::to(['wap/orderxianxiapay'], true); ?>";
+		//$.mobile.changePage((url+'&oid='+json_data.oid),{transition:"slide"});              
+		window.location.href = url+'&oid='+oid;
+
+	   	return false;
+	});
+
+
+	
 
 
 });
