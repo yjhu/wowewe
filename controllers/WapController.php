@@ -2033,9 +2033,14 @@ EOD;
             case 'orderview':
                 $oid = isset($_GET["oid"]) ? $_GET["oid"] : 1;
                 $data = MOrder::find()->select('*')->where("oid=:oid", [':oid'=>$oid])->asArray()->one();
-
                 $data['statusName'] = MOrder::getOrderStatusName($data['status']);
-                    
+                $order = MOrder::findOne($oid); 
+                if ($order->status == MOrder::STATUS_SUBMITTED) {
+                    $jsApiParameters = $order->GetOrderJsApiParameters();
+                    $data['url'] = $jsApiParameters;
+                } else {
+                    $data['url'] = '';
+                }
                 break;
         
             case 'myorder':
@@ -2043,7 +2048,7 @@ EOD;
                 $openid = U::getSessionParam('openid');                                        
                 $page = isset($_GET["currentPage"]) ? $_GET["currentPage"] : 1;
                 $size = isset($_GET['size']) ? $_GET['size'] : 8;    
-                $data = MOrder::find()->select('*')->where("gh_id=:gh_id AND openid=:openid", [':gh_id'=>$gh_id, ':openid'=>$openid])->orderBy(['oid' => SORT_DESC])->offset(($page-1)*$size)->limit($size)->asArray()->all();                
+                $data = MOrder::find()->select('*')->where("gh_id=:gh_id AND openid=:openid AND status!=:status", [':gh_id'=>$gh_id, ':openid'=>$openid, ':status'=>MOrder::STATUS_DRAFT])->orderBy(['oid' => SORT_DESC])->offset(($page-1)*$size)->limit($size)->asArray()->all();                
                 foreach($data as &$row)
                 {
                     $row['statusName'] = MOrder::getOrderStatusName($row['status']);
