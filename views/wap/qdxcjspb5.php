@@ -128,7 +128,10 @@
             <li class="table-view-cell table-view-divider"><?= "督导员：{$supervisor->name} {$supervisor->mobile}" ?></li>
           <?php } ?>
             <li class="table-view-cell table-view-divider"><?= "评选内容：{$model_ocpc->name}" ?></li>
-            <li class="table-view-cell">平均得分：<span class="badge badge-primary pull-right"><?= $scores['count'] == 1 ? $scores['total'] : printf("%.1f", $scores['total']/$scores['count']) ?></span></li>
+
+
+            <li class="table-view-cell">平均得分：<span class="badge badge-primary pull-right"><?= $scores['count'] == 0 ? 0 : ($scores['count'] == 1 ? $scores['total'] : printf("%.1f", $scores['total']/$scores['count'])) ?></span></li>
+
             <li class="table-view-cell">评分人数：<span class="badge badge-primary pull-right"><?= $scores['count'] ?></span></li>
             <?php if ($is_scorer) { ?>
             <li class="table-view-cell table-view-divider"><?= $scorer->department." ".$scorer->position ?></li>

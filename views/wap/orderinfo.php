@@ -134,14 +134,16 @@
 			<div>
 			<fieldset data-role="controlgroup" data-type="horizontal" id="paykind-field">
 			<legend>支付方式</legend>
-				<?php $flag=1; foreach($itemPayKindOption as $value => $text) { ?>
-				<?php if($flag==1){?>
-					<input type="radio" name="paykind" id="paykind_<?= $value ?>" value="<?= $value ?>" checked />
-				<?php }else{?>
-					<input type="radio" name="paykind" id="paykind_<?= $value ?>" value="<?= $value ?>" />
-				<?php } ?>
-				<label for="paykind_<?= $value ?>"><?= $text ?></label>
-				<?php $flag=0; } ?>	
+				<?php foreach($itemPayKindOption as $value => $text) { ?>
+					
+					<?php if($value == 2) { ?>
+						<input type="radio" name="paykind" id="paykind_<?= $value ?>" value="<?= $value ?>" checked />
+					<?php } else { ?>
+						<input type="radio" name="paykind" id="paykind_<?= $value ?>" value="<?= $value ?>" />
+					<?php } ?>
+		
+						<label for="paykind_<?= $value ?>"><?= $text ?></label>
+				<?php } ?>	
 			</fieldset>						
 			</div>
 
@@ -194,11 +196,19 @@ $(function(){
 
 					$("#btn-pay-weixin").hide();
 
+			
 					<?php if($item->ctrl_supportpay == 0) {?>
 						$("#btn-pay").html("我知道了");
 					<?php } else {?>
 						$("#btn-pay").html("立即支付");
 					<?php } ?>
+
+					if($("#paykind_2").is(':checked') == true)
+					{		        	
+						$("#btn-pay-weixin").show();
+						$("#btn-pay").hide();
+					}
+
 
 				    $("[name=paykind]").click(function(){
 			

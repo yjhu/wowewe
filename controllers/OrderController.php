@@ -80,7 +80,7 @@ class OrderController extends Controller
         if (isset($_GET['orderdownload']))
         {
             //$dataProvider->query->select($attributes);
-            $dataProvider->query->select(['*', '(feesum)/100 as gh_id', "CONCAT('\'',userid) as appid_recv", "(CASE status WHEN 0 THEN '等待付款' WHEN 3 THEN '交易成功' WHEN 7 THEN '用户取消订单' WHEN 9 THEN '超时自动取消订单' ELSE '' END) as partner", "(CASE pay_kind WHEN 0 THEN '自取' WHEN 1 THEN '支付宝' WHEN 2 THEN '微信支付' ELSE '' END) as openid_recv"]);
+            $dataProvider->query->select(['*', '(feesum)/100 as gh_id', "CONCAT('\'',userid) as appid_recv", "(CASE status WHEN 0 THEN '等待付款' WHEN 3 THEN '交易成功' WHEN 7 THEN '用户取消订单' WHEN 9 THEN '超时自动取消订单' ELSE '' END) as partner", "(CASE pay_kind WHEN 0 THEN '线下支付' WHEN 1 THEN '支付宝' WHEN 2 THEN '微信支付' ELSE '' END) as openid_recv"]);
             $dataProvider->setPagination(false);
             $data = $dataProvider->getModels();
 
