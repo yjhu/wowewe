@@ -51,7 +51,7 @@ class AlipaycallbackController extends Controller
         }
         $model->pay_kind = MOrder::PAY_KIND_ALIWAP;
         $model->aliwap_trade_no = $_GET['trade_no'];
-        $model->status = MOrder::STATUS_OK;
+        $model->status = MOrder::STATUS_SUCCEEDED;
         if (!$model->save(false))
         {
             U::W(['save db error', $_GET, $_POST, $model->getErrors()]);

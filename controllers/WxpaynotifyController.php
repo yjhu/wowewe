@@ -179,7 +179,7 @@ class PayNotifyCallBack extends WxPayNotify
         if ($order === null) {
             U::W(['ERROR!!! oid does not exist', __METHOD__, $data]);
         }
-        $order->status = MOrder::STATUS_OK;
+        $order->status = MOrder::STATUS_SUCCEEDED;
         $order->partner = $data['mch_id'];
         $order->time_end = $data['time_end'];
         $order->total_fee = $data['total_fee'];

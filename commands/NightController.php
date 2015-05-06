@@ -98,7 +98,7 @@ class NightController extends Controller {
     public static function closeExpiredOrders() {
         $tableName = MOrder::tableName();
         // auto close the orders exceed 2 days
-        $n = Yii::$app->db->createCommand()->update($tableName, ['status' => MOrder::STATUS_CLOSED_AUTO], 'status=:status AND create_time < DATE_SUB(NOW(), INTERVAL 2 day)', [':status' => MOrder::STATUS_AUTION])->execute();
+        $n = Yii::$app->db->createCommand()->update($tableName, ['status' => MOrder::STATUS_SYSTEM_CLOSED], 'status=:status AND create_time < DATE_SUB(NOW(), INTERVAL 2 day)', [':status' => MOrder::STATUS_SUBMITTED])->execute();
         U::W("UPDATE $tableName, $n");
 
         /* 		

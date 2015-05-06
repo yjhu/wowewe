@@ -57,7 +57,7 @@ class AlipaynotifyController extends Controller
         $model->aliwap_gmt_payment = $arr['gmt_payment'];
         if($arr['trade_status'] == 'TRADE_FINISHED' || $arr['trade_status'] == 'TRADE_SUCCESS')
         {
-            $model->status = MOrder::STATUS_OK;
+            $model->status = MOrder::STATUS_SUCCEEDED;
         }
         else
         {

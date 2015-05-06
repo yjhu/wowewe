@@ -140,11 +140,11 @@ class OrderController extends Controller
                 $mobnum = MMobnum::findOne($model->select_mobnum);
                 if ($mobnum !== null)
                 {
-                    if ($model->status == MOrder::STATUS_OK)
+                    if ($model->status == MOrder::STATUS_SUCCEEDED)
                         $mobnum->status = MMobnum::STATUS_USED;
-                    else if ($model->status == MOrder::STATUS_AUTION)
+                    else if ($model->status == MOrder::STATUS_SUBMITTED)
                         $mobnum->status = MMobnum::STATUS_LOCKED;
-                    else if ($model->status == MOrder::STATUS_CLOSED_USER)
+                    else if ($model->status == MOrder::STATUS_BUYER_CLOSED)
                         $mobnum->status = MMobnum::STATUS_UNUSED;                        
                     $mobnum->save(false);                
                 }
