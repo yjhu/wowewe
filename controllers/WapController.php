@@ -419,7 +419,7 @@ EOD;
             return 'success';
         }
         if ($_GET['trade_state'] == 0)
-            $order ->status = MOrder::STATUS_OK;
+            $order ->status = MOrder::STATUS_SUCCEEDED;
         else
         {
             U::W(['status error', __METHOD__, $_GET, $_POST]);
@@ -2012,7 +2012,7 @@ EOD;
                 $model = MOrder::findOne($oid);
                 if ($model === null)
                     U::D(["invalid oid:$oid", __METHOD__]);
-                $model->status = MOrder::STATUS_CLOSED_USER;
+                $model->status = MOrder::STATUS_BUYER_CLOSED;
                 if ($model->save(true, ['status']))
                 {                
                     $mobnum = MMobnum::findOne($model->select_mobnum);

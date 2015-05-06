@@ -109,10 +109,18 @@ use app\models\wxpay\WxPayRefund;
     
 class MOrder extends ActiveRecord
 {
-    const STATUS_AUTION = 0;
-    const STATUS_OK = 3;        
-    const STATUS_CLOSED_USER = 7;        
-    const STATUS_CLOSED_AUTO = 9;            
+    const STATUS_DRAFT = 13;             // 订单初始状态    
+    const STATUS_SUBMITTED = 0;         // 订单已提交
+    const STATUS_PAID = 1;              // 订单已支付
+    const STATUS_FULFILLED = 2;         // 订单已办理
+    const STATUS_SUCCEEDED = 3;         // 订单成功
+    const STATUS_BUYER_REFUND_CLOSED = 4;   // 用户申请退款，退款成功后，自动关闭订单
+    const STATUS_SELLER_REFUND_CLOSED = 5;  // 卖家发起退款，退款成功后，自动关闭订单
+    const STATUS_SELLER_ROLLBACK_CLOSED = 6;    // 线下支付，卖家发起从已办理状态至订单关闭
+    const STATUS_BUYER_CLOSED = 7;      // 用户主动关闭未支付订单
+    const STATUS_SELLER_CLOSED = 8;     // 卖家主动关闭未支付订单
+    const STATUS_SYSTEM_CLOSED = 9;     // 系统超时关闭未支付订单      
+    const STATUS_SYSTEM_SUCCEEDED = 10; // 订单已办理，用户未确认，系统超时自动成功
 
     const PAY_KIND_CASH = 0;
     const PAY_KIND_ALIWAP = 1;
@@ -169,6 +177,9 @@ class MOrder extends ActiveRecord
     {
         if (parent::beforeSave($insert)) 
         {
+            if ($insert) {
+                $this->status = MOrder::STATUS_DRAFT;
+            }
             if (!empty($this->scene_id) && !empty($this->scene_amt))
             {
                 if ($insert)
@@ -181,7 +192,7 @@ class MOrder extends ActiveRecord
                     $ar->scene_amt = $this->scene_amt;
                     $ar->oid = $this->oid;
                     $ar->memo = $this->detail;                                 
-                    $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_INIT;
+                    $ar->status = $this->status == MOrder::STATUS_SUCCEEDED ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_INIT;
                     if (!$ar->save(false))
                     {
                         U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
@@ -193,7 +204,7 @@ class MOrder extends ActiveRecord
                 {
                     if (($ar = MSceneDetail::findOne($this->scene_auto_id)) !== null) 
                     {
-                        $ar->status = $this->status == MOrder::STATUS_OK ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_INIT;
+                        $ar->status = $this->status == MOrder::STATUS_SUCCEEDED ? MSceneDetail::STATUS_CONFIRMED : MSceneDetail::STATUS_INIT;
                         if (!$ar->save(false))
                         {
                             U::W([__METHOD__, __LINE__, $_GET, $ar->getErrors()]);
@@ -232,10 +243,10 @@ class MOrder extends ActiveRecord
     static function getOrderStatusName($key=null)
     {
         $arr = array(
-            self::STATUS_AUTION => '等待付款',
-            self::STATUS_OK => '交易成功',
-            self::STATUS_CLOSED_USER => '用户取消订单',
-            self::STATUS_CLOSED_AUTO => '超时自动取消订单',
+            self::STATUS_SUBMITTED => '等待付款',
+            self::STATUS_SUCCEEDED => '交易成功',
+            self::STATUS_BUYER_CLOSED => '用户取消订单',
+            self::STATUS_SYSTEM_CLOSED => '超时自动取消订单',
         );        
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
@@ -243,9 +254,9 @@ class MOrder extends ActiveRecord
     static function getOrderStatusOptionForOffice()
     {
         $arr = array(
-            self::STATUS_AUTION => '等待付款',
-            self::STATUS_OK => '交易成功',
-            self::STATUS_CLOSED_USER => '取消订单',
+            self::STATUS_SUBMITTED => '等待付款',
+            self::STATUS_SUCCEEDED => '交易成功',
+            self::STATUS_BUYER_CLOSED => '取消订单',
         );        
         return $arr;
     }
