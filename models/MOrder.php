@@ -607,23 +607,6 @@ EOD;
         return $arr;
     }
 
-/*
-    public function sendTemplateNoticeToCustom()
-    {
-        $user = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);        
-        $office = MOffice::findOne($this->office_id);
-        $kaitong_info = empty($this->kaitong) ? "" : "{$this->kaitong}";
-        $detail = $this->detail." 卡号{$this->select_mobnum} {$kaitong_info}";
-        $feesum = sprintf("%0.2f",$this->feesum/100);
-        $first = "营业厅：襄阳联通{$office->title}";
-        $remark = "用户信息：{$this->username}，身份证{$this->userid}，联系电话{$this->usermobile}";
-        $url = Url::to(['order', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
-        $msg = Wechat::getTemplateOrderStatusNotify($this->openid, $url, $first, $remark, $this->oid, $detail, date("Y-m-d H:i:s"), $feesum, '成功');                
-        Yii::$app->wx->setGhId($this->gh_id); 
-        $arr = Yii::$app->wx->WxTemplateSend($msg);
-        return $arr;
-    }
-*/
     public function sendTemplateNoticeToCustom()
     {
         $user = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);        
@@ -639,8 +622,6 @@ EOD;
         $msg = Wechat::getTemplateOrderStatusNotify($this->openid, $url, $first, $remark, $this->oid, $detail, $this->create_time, $feesum, $statusStr, $payKindStr);                
         Yii::$app->wx->setGhId($this->gh_id); 
         $arr = Yii::$app->wx->WxTemplateSend($msg);
-//        U::W('---------------sendTemplateNoticeToCustom() ');
-//        U::W($arr);
         return $arr;
     }
 
