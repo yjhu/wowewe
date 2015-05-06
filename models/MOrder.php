@@ -222,11 +222,17 @@ class MOrder extends ActiveRecord
     {
         parent::afterSave($insert, $changedAttributes);
         if ($insert) {
-            return true;
+            return;
         }
         
         if ((!empty($changedAttributes['status'])) || (!empty($changedAttributes['pay_kind'])) ) {
-            $arr = $order->sendTemplateNoticeToCustom();            
+            $this->sendTemplateNoticeToCustom();  
+            if (($this->status == self::STATUS_SUBMITTED && $this->pay_kind == self::PAY_KIND_CASH) 
+                    || ($this->status == self::STATUS_PAID)) {
+                $manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
+                if (!empty($manager) && !empty($manager->openid))
+                    $this->sendTemplateNoticeToManager($manager);
+            }
         }
     }
     
@@ -262,14 +268,14 @@ class MOrder extends ActiveRecord
     static function getOrderStatusOptionForOffice()
     {
         return static::getOrderStatusName();
-/×
+/*
         $arr = array(
             self::STATUS_SUBMITTED => '等待付款',
             self::STATUS_SUCCEEDED => '交易成功',
             self::STATUS_BUYER_CLOSED => '取消订单',
         );        
         return $arr;
-×/
+*/
     }
 
     static function getOrderPayKindOption($key=null)
@@ -590,7 +596,10 @@ EOD;
         $first = "营业厅：{$office->title}";
         $remark = "用户信息：{$this->username}，身份证{$this->userid}，联系电话{$this->usermobile}";
         $url = '';
-        $msg = Wechat::getTemplateOrderStatusNotify($staff->openid, $url, $first, $remark, $this->oid, $detail, date("Y-m-d H:i:s"), $feesum, '成功');                
+        $statusStr = self::getOrderStatusName($this->status);
+        $payKindStr = self::getOrderPayKindOption($this->pay_kind);
+        $msg = Wechat::getTemplateOrderStatusNotify($staff->openid, $url, $first, $remark, $this->oid, $detail, date("Y-m-d H:i:s"), 
+                $feesum, $statusStr, $payKindStr);                
         Yii::$app->wx->setGhId($this->gh_id); 
         $arr = Yii::$app->wx->WxTemplateSend($msg);
         return $arr;
