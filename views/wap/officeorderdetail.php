@@ -46,20 +46,28 @@ use app\models\U;
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
+    <br>
+    <p>枣阳营业厅 &nbsp;&nbsp;曾开 13545296480</p>
 
       <img width=100% height=200 class="media-object pull-left" src="../web/images/comm-icon/upload-pic-64x64.png">
 
+
         <span>
           <ul class="table-view">
+
             <li class="table-view-cell table-view-divider">订单信息</li>
 
             <li class="table-view-cell"><span class="orderitem">订单编号</span>&nbsp;&nbsp; 1234567890</li>
             <li class="table-view-cell"><span class="orderitem">商品名称</span>&nbsp;&nbsp; 联想A3600</li>
+
+            <li class="table-view-cell"><span class="orderitem">支付方式</span>&nbsp;&nbsp; 微信支付</li>
             <li class="table-view-cell"><p><span class="orderitem">订单状态</span>
+
+
             &nbsp;&nbsp; 
             等待付款
             &nbsp;&nbsp; 
-            <a href="#cancelorder">取消订单</a>
+            <a class="btn btn-negative btn-outlined" href="#cancelorder">取消订单<span class="icon icon icon-close"></span></a>
             </p>
             </li>
 

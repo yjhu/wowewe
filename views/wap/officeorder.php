@@ -63,6 +63,26 @@
                   <p><span class="orderitem">下单时间</span>&nbsp;&nbsp;2015-05-06 18:00:00</p>
                   <p><span class="orderitem">商品名称</span>&nbsp;&nbsp;联想A3600</p>
                   <p><span class="orderitem">价格</span>&nbsp;&nbsp;￥399</p>
+                  <p><span class="orderitem">支付方式</span>&nbsp;&nbsp;微信支付</p>
+                  <p><span class="orderitem">订单状态</span>&nbsp;&nbsp;<span class="badge  badge-positive">已支付</span></p>
+
+                </div> 
+              </a>
+            </li>
+
+            <li class="table-view-cell media">
+              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['officeorderdetail'],true) ?>">
+
+                <img class="media-object pull-left" src="../web/images/comm-icon/upload-pic-64x64.png" width="80" height="80">
+               
+                <div class="media-body">
+                  <p><span class="orderitem">订单编号</span>&nbsp;&nbsp;1234567890</p>
+                  <p><span class="orderitem">下单时间</span>&nbsp;&nbsp;2015-05-06 18:00:00</p>
+                  <p><span class="orderitem">商品名称</span>&nbsp;&nbsp;联想A3600</p>
+                  <p><span class="orderitem">价格</span>&nbsp;&nbsp;￥399</p>
+                  <p><span class="orderitem">支付方式</span>&nbsp;&nbsp;线下支付</p>
+                  <p><span class="orderitem">订单状态</span>&nbsp;&nbsp;<span class="badge badge-negative">未支付</span></p>
+
                 </div>
               </a>
             </li>
@@ -77,23 +97,13 @@
                   <p><span class="orderitem">下单时间</span>&nbsp;&nbsp;2015-05-06 18:00:00</p>
                   <p><span class="orderitem">商品名称</span>&nbsp;&nbsp;联想A3600</p>
                   <p><span class="orderitem">价格</span>&nbsp;&nbsp;￥399</p>
+                  <p><span class="orderitem">支付方式</span>&nbsp;&nbsp;线下支付</p>
+                  <p><span class="orderitem">订单状态</span>&nbsp;&nbsp;<span class="badge badge-negative">未支付</span></p>
+
                 </div>
               </a>
             </li>
-
-            <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['officeorderdetail'],true) ?>">
-
-                <img class="media-object pull-left" src="../web/images/comm-icon/upload-pic-64x64.png" width="80" height="80">
-               
-                <div class="media-body">
-                  <p><span class="orderitem">订单编号</span>&nbsp;&nbsp;1234567890</p>
-                  <p><span class="orderitem">下单时间</span>&nbsp;&nbsp;2015-05-06 18:00:00</p>
-                  <p><span class="orderitem">商品名称</span>&nbsp;&nbsp;联想A3600</p>
-                  <p><span class="orderitem">价格</span>&nbsp;&nbsp;￥399</p>
-                </div>
-              </a>
-            </li>                   
+                
         </ul>
         &nbsp;<br>&nbsp;<br>&nbsp;<br> 
 
