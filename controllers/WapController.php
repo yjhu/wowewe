@@ -2627,6 +2627,8 @@ EOD;
             $model->save(false);
             if ($model->pay_kind == MOrder::PAY_KIND_CASH) 
             {
+                $model->status = MOrder::STATUS_SUBMITTED;
+                $model->save(false);                
                 return $this->redirect(['wap/order']);    
             }
                 
