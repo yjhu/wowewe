@@ -3199,8 +3199,8 @@ EOD;
         $staff = MStaff::findOne(['staff_id' => $staff_id]);
         if ($staff->isSelfOperatedOfficeDirector())
             $offices = array($staff->directedOffice);
-        else
-            $offices = $staff->supervisedOffices;
+        if ($staff->isSupervisor())
+            $offices = array_merge ($offices, $staff->supervisedOffices);
 
         return $this->render('csmdzltj1', ['gh_id' => $gh_id, 'openid' => $openid, 'staff' =>$staff, 'models_office' => $offices, 'staff_id' => $staff_id, ]);     }
 

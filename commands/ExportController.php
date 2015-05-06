@@ -53,7 +53,7 @@ class ExportController extends \yii\console\Controller {
 
     /**
      * This command export user account data.
-     * @param string $filename the file to be imported to DB.
+     * @param string $filename the file to be exported to.
      */
     public function actionUserAccount($filename = 'user-account.csv') {
         $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
@@ -78,6 +78,33 @@ class ExportController extends \yii\console\Controller {
                     $user->user_account_charge_mobile,
                     $useraccount_record->create_time
                     );
+        }
+        fclose($fh);
+    }
+    
+    /**
+     * This command export user account data.
+     * @param string $filename the file to be exported to.
+     */
+    public function actionSupervisor($filename = 'supervisor.csv') {
+        $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
+
+        $staffs = \app\models\MStaff::find()
+                ->all();
+
+        $fh = fopen($file, "w");
+        fprintf($fh, "督导员姓名,督导员手机号,管理门店名,门店所属营服中心,门店所属区县\n");
+        foreach ($staffs as $staff) {
+            $supervised_offices = $staff->supervisedOffices;
+            if (!$supervised_offices) continue;
+            foreach($supervised_offices as $supervised_office) {
+                if ($supervised_office->is_selfOperated) continue;
+                fprintf($fh, "%s,%s,%s,%s,%s\n",
+                        $staff->name, $staff->mobile, $supervised_office->title, 
+                        $supervised_office->msc->name,
+                        $supervised_office->msc->marketingRegion->name
+                        );
+            }            
         }
         fclose($fh);
     }
