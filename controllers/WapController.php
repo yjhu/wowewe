@@ -2455,12 +2455,11 @@ EOD;
         $oid = $_GET['oid'];
 
         $order = MOrder::findOne(['oid'=>$oid]);
-        $order->status = MOder::
-        $order->pay_kind
-
-        return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+        $order->status = MOder::STATUS_SUBMITTED;
+        $order->pay_kind = MOder::PAY_KIND_WECHAT;
+        $order->save(false);
+        return json_encode(['code'=>0]);
     }
-
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/nearestoffice:gh_03a74ac96138
     public function actionNearestoffice()
