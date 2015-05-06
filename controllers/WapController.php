@@ -2306,7 +2306,7 @@ EOD;
                         return json_encode(['code'=>1, 'errmsg'=>'save score to db error']);
                     }        
                 }
-				$data['czsjhm'] = $model->user_account_charge_mobile;
+				$data['czsjhm'] = $user->user_account_charge_mobile;
                 break;				
 				
 			
@@ -2586,7 +2586,8 @@ EOD;
         $date_end = date("Y-m-d");
         //U::W("$date_start, $date_end");        
         if (empty($model->staff)) {
-            $model->getQrImageUrl();             
+            $model->getQrImageUrl();        
+            return $this->refresh();
         }
         $fans = $model->staff->getFansByRange($date_start, $date_end); 
         $mobiledFans = $model->staff->getMobiledFansByRange($date_start, $date_end); 

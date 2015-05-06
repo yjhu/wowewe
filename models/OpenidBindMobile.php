@@ -71,7 +71,6 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
-        static::exportToWechat(MGh::GH_HOYA);
     }
 
     public function getUser()

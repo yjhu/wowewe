@@ -1081,7 +1081,7 @@ $realMoney = (count($mobiledFans)/1)*5;
 <script>
 var ktwd = "<?=  $user->getWokeKtwd()-$user->getWokeYtwd(); ?>";
 
-var item = "<?=  $_GET['item']; ?>";
+var item = "<?=  empty($_GET['item']) ? 'hyzx' : $_GET['item']; ?>";
 
 checkPrePage();
 
