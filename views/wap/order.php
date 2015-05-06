@@ -100,8 +100,13 @@ $basename = basename(__FILE__, '.php');
 	<div role="main" class="ui-content">
 	<h2>订单详情</h2>
 		<p><span class="title_comm">订单编号:</span>&nbsp;<span id="oid"></span></p>
-		<p><span class="title_comm">订单状态:</span>&nbsp;<span id="status"></span></p>
+
+		
+		
 		<p><span class="title_comm">商品名称:</span>&nbsp;<span id="title"></span></p>
+		<p><span class="title_comm">支付方式:</span>&nbsp;<span id="pay_kind"></span></p>
+		<p><span class="title_comm">订单状态:</span>&nbsp;<span id="status"></span></p>
+
 		<p><span class="title_comm">下单时间:</span>&nbsp;<span id="create_time"></span></p>
 		<p><span class="title_comm">商品详情:</span>&nbsp;<span id="detail"></span>&nbsp;&nbsp;<span id="val_pkg_3g4g"></span></p>
 		<p><span class="title_comm">营业厅:</span>&nbsp;<span id="office_id"></span></p>
@@ -146,6 +151,8 @@ var  currentPage = 1;
 var size = 3;
 var count = 0;
 
+var pay_kind = {"0":"线下支付", "1":"支付宝", "2":"微信支付"};
+
 var gh_id = '<?php echo $user->gh_id; ?>';
 var openid = '<?php echo $user->openid; ?>';
 
@@ -178,6 +185,8 @@ function load_data1(i, n)
 	$("#oid").html(n.oid);
 	$("#title").html(n.title);
 	$("#create_time").html(n.create_time);
+	$("#pay_kind").html(pay_kind[n.pay_kind]);
+
 	$("#detail").html(n.detail);
 	$("#val_pkg_3g4g").html(val_pkg_3g4g_name);
 	$("#feesum").html(n.feesum/100);
@@ -443,7 +452,9 @@ function load_data2(i, n)
 	<p><span class='title_comm'>订单编号:</span>&nbsp;<span color='color:blue'>"+n.oid+"</span></p>\
 	<p><span class='title_comm'>下单时间:</span>&nbsp;"+n.create_time+"</p>\
 	<p><span class='title_comm'>商品名称:</span>&nbsp;"+n.title+ '&nbsp;&nbsp;' +val_pkg_3g4g_name+"</p>\
-	<p><span class='title_comm'>价格:</span>&nbsp;￥"+(n.feesum)/100+"&nbsp;&nbsp;"+(n.kaitong)+"</p>"+wldh_span+"<p><span id='wl_result'></p>";
+	<p><span class='title_comm'>价格:</span>&nbsp;￥"+(n.feesum)/100+"&nbsp;&nbsp;"+(n.kaitong)+"</p>"+wldh_span+"<p><span id='wl_result'></p>\
+	<p><span class='title_comm'>支付方式:</span>&nbsp;"+pay_kind[n.pay_kind]+"</p>\
+	<p><span class='title_comm'>订单状态:</span>&nbsp;"+n.statusName+"</p>";
 
 	txt_mos="";
 	//if(n.status == 0) //wait to pay 
