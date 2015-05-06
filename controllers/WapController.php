@@ -2449,6 +2449,19 @@ EOD;
         return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
+    public function handleCallpayout()
+    {        
+        $this->layout = false;
+        $oid = $_GET['oid'];
+
+        $order = MOrder::findOne(['oid'=>$oid]);
+        $order->status = MOder::
+        $order->pay_kind
+
+        return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/nearestoffice:gh_03a74ac96138
     public function actionNearestoffice()
     {
