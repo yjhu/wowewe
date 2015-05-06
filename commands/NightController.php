@@ -97,9 +97,16 @@ class NightController extends Controller {
 
     public static function closeExpiredOrders() {
         $tableName = MOrder::tableName();
+        
+        $n = Yii::$app->db->createCommand()->delete($tableName, 'status=:status AND create_time < DATE_SUB(NOW(), INTERVAL 2 day)', [':status' => MOrder::STATUS_DRAFT])->execute();
+        U::W("UPDATE $tableName, $n --- 系统删除2天前的僵死订单。");
+        
         // auto close the orders exceed 2 days
         $n = Yii::$app->db->createCommand()->update($tableName, ['status' => MOrder::STATUS_SYSTEM_CLOSED], 'status=:status AND create_time < DATE_SUB(NOW(), INTERVAL 2 day)', [':status' => MOrder::STATUS_SUBMITTED])->execute();
-        U::W("UPDATE $tableName, $n");
+        U::W("UPDATE $tableName, $n --- 系统自动关闭超时2天的提交订单。");
+        
+        $n = Yii::$app->db->createCommand()->update($tableName, ['status' => MOrder::STATUS_SYSTEM_SUCCEEDED], 'status=:status AND create_time < DATE_SUB(NOW(), INTERVAL 2 day)', [':status' => MOrder::STATUS_FULFILLED])->execute();
+        U::W("UPDATE $tableName, $n --- 系统自动确认超时2天的已办理订单。");
 
         /* 		
           //move the unsuccessful orders exceed 90 days to bak table

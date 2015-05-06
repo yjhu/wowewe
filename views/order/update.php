@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = '修改';
 
 		<?= $form->field($model, 'status')->dropDownList(MOrder::getOrderStatusOptionForOffice()) ?>
 
-		<?= $form->field($model, 'wlgs')->dropDownList(MOrder::getOrderWuliugongsiOption()) ?>
+		<?= $form->field($model, 'wlgs')->dropDownList(MOrder::getOrderWuliugongsiName()) ?>
 
 		<?= $form->field($model, 'wldh')->textInput(['maxlength' => 100]) ?>
 

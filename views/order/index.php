@@ -44,6 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'detail',
 				'headerOptions' => array('style'=>'width:100px;'),			
 			],
+                                        /**
 			[
 				'attribute' => 'cid',
 				'value'=>function ($model, $key, $index, $column) { return MItem::getItemCatName($model->cid); },
@@ -74,6 +75,8 @@ $this->params['breadcrumbs'][] = $this->title;
 					]
 				],
 			],
+                                         * 
+                                         */
 
 /*	
 			[

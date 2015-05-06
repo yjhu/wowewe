@@ -220,16 +220,18 @@ class MOrder extends ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
+//        U::W('---------- MOrder::afterSave()------------');
+//        U::W($changedAttributes);
         parent::afterSave($insert, $changedAttributes);
         if ($insert) {
             return;
         }
         
-        if ((!empty($changedAttributes['status'])) || (!empty($changedAttributes['pay_kind'])) ) {
+        if (isset($changedAttributes['status']) || isset($changedAttributes['pay_kind']))  {
             $this->sendTemplateNoticeToCustom();  
             if (($this->status == self::STATUS_SUBMITTED && $this->pay_kind == self::PAY_KIND_CASH) 
                     || ($this->status == self::STATUS_PAID)) {
-                $manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
+                $manager = MStaff::findOne(['office_id'=>$this->office_id, 'is_manager'=>1]);
                 if (!empty($manager) && !empty($manager->openid))
                     $this->sendTemplateNoticeToManager($manager);
             }
@@ -598,7 +600,7 @@ EOD;
         $url = '';
         $statusStr = self::getOrderStatusName($this->status);
         $payKindStr = self::getOrderPayKindOption($this->pay_kind);
-        $msg = Wechat::getTemplateOrderStatusNotify($staff->openid, $url, $first, $remark, $this->oid, $detail, date("Y-m-d H:i:s"), 
+        $msg = Wechat::getTemplateOrderStatusNotify($staff->openid, $url, $first, $remark, $this->oid, $detail, $this->create_time, 
                 $feesum, $statusStr, $payKindStr);                
         Yii::$app->wx->setGhId($this->gh_id); 
         $arr = Yii::$app->wx->WxTemplateSend($msg);
@@ -634,9 +636,11 @@ EOD;
         $url = Url::to(['order', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
         $statusStr = static::getOrderStatusName($this->status);
         $payKindStr = static::getOrderPayKindOption($this->pay_kind);
-        $msg = Wechat::getTemplateOrderStatusNotify($this->openid, $url, $first, $remark, $this->oid, $detail, date("Y-m-d H:i:s"), $feesum, $statusStr, $payKindStr);                
+        $msg = Wechat::getTemplateOrderStatusNotify($this->openid, $url, $first, $remark, $this->oid, $detail, $this->create_time, $feesum, $statusStr, $payKindStr);                
         Yii::$app->wx->setGhId($this->gh_id); 
         $arr = Yii::$app->wx->WxTemplateSend($msg);
+//        U::W('---------------sendTemplateNoticeToCustom() ');
+//        U::W($arr);
         return $arr;
     }
 
