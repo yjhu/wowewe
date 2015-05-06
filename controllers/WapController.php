@@ -2452,6 +2452,29 @@ EOD;
         return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/officeorder:gh_03a74ac96138
+    public function actionOfficeorder()
+    {        
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        //$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);    
+        return $this->render('officeorder', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/officeorderdetail:gh_03a74ac96138
+    public function actionOfficeorderdetail()
+    {        
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        //$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);    
+        return $this->render('officeorderdetail', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }
+
+
+
     public function actionHandlecallpayout()
     {        
         $this->layout = false;
