@@ -163,6 +163,42 @@ var wldh_span = "";
 office_name = <?php echo \app\models\MOffice::getOfficeNameOption($user->gh_id); ?>;
 
 
+var jsApiParameters;
+
+function jsApiCall()
+{
+    WeixinJSBridge.invoke(
+        'getBrandWCPayRequest',
+        jsApiParameters,
+        function(res){
+            //WeixinJSBridge.log(res.err_msg);
+            //alert(res.err_code+res.err_desc+res.err_msg);
+            if (res.err_msg == 'get_brand_wcpay_request:ok')
+            {
+            } 
+            else
+            {
+            }
+            window.location.href = "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/order' ; ?>";
+        }
+    );
+}
+
+
+function callpay()
+{
+    if (typeof WeixinJSBridge == "undefined"){
+        if( document.addEventListener ){
+            document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+        }else if (document.attachEvent){
+            document.attachEvent('WeixinJSBridgeReady', jsApiCall); 
+            document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+        }
+    }else{
+        jsApiCall();
+    }
+}
+
 function load_wl_data(n)
 {
 	var wl_info = "";
@@ -186,6 +222,11 @@ function load_data1(i, n)
 	$("#title").html(n.title);
 	$("#create_time").html(n.create_time);
 	$("#pay_kind").html(pay_kind[n.pay_kind]);
+
+	if(n.pay_kind == 0) //线下支付
+		$("#pay_kind").html(pay_kind[n.pay_kind] +"<span style='color:blue' class='weixin_pay' myUrl="+n.url+">&nbsp;&nbsp;微信支付</span>");
+	else
+		$("#pay_kind").html(pay_kind[n.pay_kind]);
 
 	$("#detail").html(n.detail);
 	$("#val_pkg_3g4g").html(val_pkg_3g4g_name);
@@ -661,6 +702,24 @@ $(document).on("pageinit", "#orderdetail", function(){
 	   return false;
 
 	});
+
+
+
+	/*weixin pay @在详情页*/
+	$(document).on("tap",".weixin_pay",function(){
+
+		alert("weixin_pay");
+		url = $(this).attr('myUrl');
+		alert(url);
+		jsApiParameters = JSON.parse(url);
+
+		alert(jsApiParameters);
+		callpay();
+
+	   	return false;
+
+	});
+
 
 });
 
