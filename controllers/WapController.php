@@ -1965,6 +1965,7 @@ EOD;
                 $model->save(false);
             }
 
+/*
             //send wx message and sm 
             $manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
             if ($manager !== null && !empty($manager->openid))
@@ -1986,6 +1987,8 @@ EOD;
             // send wx message to user
             //$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);                    
             $arr = $order->sendTemplateNoticeToCustom();
+*/
+
         }
         else
         {
@@ -2449,14 +2452,13 @@ EOD;
         return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
-    public function handleCallpayout()
+    public function actionHandlecallpayout()
     {        
         $this->layout = false;
         $oid = $_GET['oid'];
-
         $order = MOrder::findOne(['oid'=>$oid]);
-        $order->status = MOder::STATUS_SUBMITTED;
-        $order->pay_kind = MOder::PAY_KIND_WECHAT;
+        $order->status = MOrder::STATUS_SUBMITTED;
+        $order->pay_kind = MOrder::PAY_KIND_WECHAT;
         $order->save(false);
         return json_encode(['code'=>0]);
     }

@@ -218,17 +218,18 @@ class MOrder extends ActiveRecord
         return false;
     }
 
-    static function getOrderWuliugongsiOption()
+    public function afterSave($insert, $changedAttributes)
     {
-        $arr = array(
-            self::WLGS_NULL => '',
-            self::WLGS_SFSD => '顺丰速递',
-            self::WLGS_TTKD => '天天快递',
-        );        
-        return $arr;
-    }    
-
-
+        parent::afterSave($insert, $changedAttributes);
+        if ($insert) {
+            return true;
+        }
+        
+        if ((!empty($changedAttributes['status'])) || (!empty($changedAttributes['pay_kind'])) ) {
+            $arr = $order->sendTemplateNoticeToCustom();            
+        }
+    }
+    
     static function getOrderWuliugongsiName($key=null)
     {
         $arr = array(
@@ -239,26 +240,36 @@ class MOrder extends ActiveRecord
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
 
-
     static function getOrderStatusName($key=null)
     {
         $arr = array(
-            self::STATUS_SUBMITTED => '等待付款',
+            self::STATUS_DRAFT => '初始状态',
+            self::STATUS_SUBMITTED => '已提交',
+            self::STATUS_PAID => '已支付',
+            self::STATUS_FULFILLED => '已办理',
             self::STATUS_SUCCEEDED => '交易成功',
+            self::STATUS_BUYER_REFUND_CLOSED => '退款成功,交易关闭',
+            self::STATUS_SELLER_REFUND_CLOSED => '退款成功,交易关闭',
+            self::STATUS_SELLER_ROLLBACK_CLOSED => '订单撤销,交易关闭',
             self::STATUS_BUYER_CLOSED => '用户取消订单',
-            self::STATUS_SYSTEM_CLOSED => '超时自动取消订单',
+            self::STATUS_SELLER_CLOSED => '营业厅取消订单',
+            self::STATUS_SYSTEM_CLOSED => '交易超时关闭',
+            self::STATUS_SYSTEM_SUCCEEDED => '交易自动成功',
         );        
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
 
     static function getOrderStatusOptionForOffice()
     {
+        return static::getOrderStatusName();
+/×
         $arr = array(
             self::STATUS_SUBMITTED => '等待付款',
             self::STATUS_SUCCEEDED => '交易成功',
             self::STATUS_BUYER_CLOSED => '取消订单',
         );        
         return $arr;
+×/
     }
 
     static function getOrderPayKindOption($key=null)
@@ -266,7 +277,7 @@ class MOrder extends ActiveRecord
         $arr = array(
             self::PAY_KIND_WECHAT => '微信支付',
             self::PAY_KIND_CASH => '线下支付',
-            self::PAY_KIND_ALIWAP => '支付宝',
+            self::PAY_KIND_ALIWAP => '支付宝支付',
         );        
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
@@ -585,6 +596,7 @@ EOD;
         return $arr;
     }
 
+/*
     public function sendTemplateNoticeToCustom()
     {
         $user = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);        
@@ -600,7 +612,24 @@ EOD;
         $arr = Yii::$app->wx->WxTemplateSend($msg);
         return $arr;
     }
-
+*/
+    public function sendTemplateNoticeToCustom()
+    {
+        $user = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);        
+        $office = MOffice::findOne($this->office_id);
+        $kaitong_info = empty($this->kaitong) ? "" : "{$this->kaitong}";
+        $detail = $this->detail." 卡号{$this->select_mobnum} {$kaitong_info}";
+        $feesum = sprintf("%0.2f",$this->feesum/100);
+        $first = "营业厅：襄阳联通{$office->title}";
+        $remark = "用户信息：{$this->username}，身份证{$this->userid}，联系电话{$this->usermobile}";
+        $url = Url::to(['order', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
+        $statusStr = static::getOrderStatusName($this->status);
+        $payKindStr = static::getOrderPayKindOption($this->pay_kind);
+        $msg = Wechat::getTemplateOrderStatusNotify($this->openid, $url, $first, $remark, $this->oid, $detail, date("Y-m-d H:i:s"), $feesum, $statusStr, $payKindStr);                
+        Yii::$app->wx->setGhId($this->gh_id); 
+        $arr = Yii::$app->wx->WxTemplateSend($msg);
+        return $arr;
+    }
 
     public function GetJsApiParameters($UnifiedOrderResult)
     {

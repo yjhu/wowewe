@@ -1441,7 +1441,7 @@ EOD;
         return $resp;        
     }
 
-    public static function getTemplateOrderStatusNotify($openid, $url, $first, $remark, $oid, $title, $time, $price, $status)
+    public static function getTemplateOrderStatusNotify($openid, $url, $first, $remark, $oid, $title, $time, $price, $statusStr, $payKindStr='')
     {
         //OPENTM472091377 
         $template_id = '4Pajh0meMTGywu1A8NpVaR5e4hwe3GdbaELwbAneXWs';
@@ -1470,11 +1470,11 @@ EOD;
                     'color' => $color
                 ],
                 'keyword4' => [
-                    'value' => $price,
+                    'value' => "{$price} {$payKindStr}",
                     'color' => $color
                 ],                
                 'keyword5' => [
-                    'value' => $status,
+                    'value' => $statusStr,
                     'color' => $color
                 ],                                
                 'remark' => [
