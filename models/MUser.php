@@ -357,8 +357,8 @@ class MUser extends ActiveRecord implements IdentityInterface
     public function getOrders()
     {
         $sql = "select * from ".MOrder::tableName().
-               " where gh_id=".$this->gh_id." and openid=".$this->openid.
-                " and status !=".MOrder::STATUS_DRAFT.
+               " where gh_id='".$this->gh_id."' and openid='".$this->openid.
+                "' and status !=".MOrder::STATUS_DRAFT.
                 " and create_time > DATE_SUB(NOW(), INTERVAL 7 day) order by create_time DESC";
                
         return Morder::findBySql($sql)->all();
