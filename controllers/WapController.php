@@ -2467,9 +2467,10 @@ EOD;
 
         $staff = MStaff::findOne(['staff_id'=>$staff_id]);  
         $office = $staff->office;  
-        $orders = MOrder::findBySql('select * from wx_order where office_id = :office_id and status != :status and create_time > DATE_SUB(NOW(), INTERVAL 7 day)', 
-            [':office_id' => $office->office_id, ':status' => MOrder::STATUS_DRAFT])
-            ->all();
+//        $orders = MOrder::findBySql('select * from wx_order where office_id = :office_id and status != :status and create_time > DATE_SUB(NOW(), INTERVAL 7 day)', 
+//            [':office_id' => $office->office_id, ':status' => MOrder::STATUS_DRAFT])
+//            ->all();
+        $orders = MOrder::getOfficeOrders($office->office_id);
 
         return $this->render('officeorder', ['office'=>$office, 'staff'=>$staff, 'orders' => $orders]);
     }
