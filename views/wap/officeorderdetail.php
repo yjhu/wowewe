@@ -72,23 +72,39 @@ use app\models\MOrder;
 
             <?php echo MOrder::getOrderStatusName($order->status) ?>
             <?php 
-              if ($order->status == MOrder::STATUS_PAID || ($order->status == MOrder::STATUS_SUBMITTED && $order->pay_kind == MOrder::PAY_KIND_CASH)) {
-                //订单状态改为 MOrder::STATUS_FULFILLED
-                echo "<span class='pull-right'>";
-                echo "&nbsp;&nbsp;";
-                echo "<span class='btn btn-negative' id='gbdd_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_CLOSED."  staff_id=".$staff->staff_id." office_id=".$office->office_id.">关闭订单<span class='icon icon-close'></span></span>";
-                echo "&nbsp;&nbsp;";
-                echo "<span class='btn btn-positive' id='blcg_attr' oid=".$order->oid." status=".MOrder::STATUS_FULFILLED."  staff_id=".$staff->staff_id." office_id=".$office->office_id.">办理成功<span class='icon icon-check'></span></span>";  
-                echo "</span>";
-              } else if ($order->status == MOrder::STATUS_FULFILLED && $staff->isSelfOperatedOfficeDirector()) {
-                if ($order->pay_kind == MOrder::PAY_KIND_CASH)
-                  echo "<span class='btn btn-positive' id='cxbl_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_ROLLBACK_CLOSED." staff_id=".$staff->staff_id." office_id=".$office->office_id.">撤销办理</span>"; //订单状态改为 MOrder::STATUS_SELLER_ROLLBACK_CLOSED
-                else
-                  echo "<span class='btn btn-positive' id='cxblbtk_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_REFUND_CLOSED." staff_id=".$staff->staff_id." office_id=".$office->office_id.">撤销办理并退款</span>"; //订单状态改为 MOrder::STATUS_SELLER_REFUND_CLOSED
-              }
-
+              /*
+                if ($order->status == MOrder::STATUS_PAID || ($order->status == MOrder::STATUS_SUBMITTED && $order->pay_kind == MOrder::PAY_KIND_CASH)) {
+                  //订单状态改为 MOrder::STATUS_FULFILLED
+                  echo "<span class='pull-right'>";
+                  echo "&nbsp;&nbsp;";
+                  echo "<span class='btn btn-negative' id='gbdd_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_CLOSED."  staff_id=".$staff->staff_id." office_id=".$office->office_id.">关闭订单<span class='icon icon-close'></span></span>";
+                  echo "&nbsp;&nbsp;";
+                  echo "<span class='btn btn-positive' id='blcg_attr' oid=".$order->oid." status=".MOrder::STATUS_FULFILLED."  staff_id=".$staff->staff_id." office_id=".$office->office_id.">办理成功<span class='icon icon-check'></span></span>";  
+                  echo "</span>";
+                } else if ($order->status == MOrder::STATUS_FULFILLED && $staff->isSelfOperatedOfficeDirector()) {
+                  if ($order->pay_kind == MOrder::PAY_KIND_CASH)
+                    echo "<span class='btn btn-positive' id='cxbl_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_ROLLBACK_CLOSED." staff_id=".$staff->staff_id." office_id=".$office->office_id.">撤销办理</span>"; //订单状态改为 MOrder::STATUS_SELLER_ROLLBACK_CLOSED
+                  else
+                    echo "<span class='btn btn-positive' id='cxblbtk_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_REFUND_CLOSED." staff_id=".$staff->staff_id." office_id=".$office->office_id.">撤销办理并退款</span>"; //订单状态改为 MOrder::STATUS_SELLER_REFUND_CLOSED
+                }
+                */
             ?>
 
+            <?php if ($order->sellerCanCancel($staff)) {
+                echo "<span class='btn btn-negative' id='gbdd_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_CLOSED."  staff_id=".$staff->staff_id." office_id=".$office->office_id.">关闭订单<span class='icon icon-close'></span></span>";
+              } ?>
+
+            <?php if ($order->sellerCanFulfill($staff)) {
+               echo "<span class='btn btn-positive' id='blcg_attr' oid=".$order->oid." status=".MOrder::STATUS_FULFILLED."  staff_id=".$staff->staff_id." office_id=".$office->office_id.">办理成功<span class='icon icon-check'></span></span>";
+            } ?>
+
+            <?php if ($order->sellerCanRollback($staff)) {
+              echo "<span class='btn btn-positive' id='cxbl_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_ROLLBACK_CLOSED." staff_id=".$staff->staff_id." office_id=".$office->office_id.">撤销办理</span>";
+            } ?>
+
+            <?php if ($order->sellerCanRollbackRefund($staff)) {
+               echo "<span class='btn btn-positive' id='cxblbtk_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_REFUND_CLOSED." staff_id=".$staff->staff_id." office_id=".$office->office_id.">撤销办理并退款</span>";
+            } ?>
 
             </li>
 
@@ -151,6 +167,7 @@ use app\models\MOrder;
 
     function orderchangestatusajax(oid,status,staff_id,office_id)
     {
+          //alert('oid'+oid+'status'+status+'staff_id'+staff_id+'office_id'+office_id);
           $.ajax({
           url: "<?php echo Url::to(['wap/orderchangestatusajax'], true) ; ?>",
           type:"GET",
@@ -165,9 +182,12 @@ use app\models\MOrder;
               alert('error!');
             }
         });
+
+        return false;
     }
 
   $(document).ready(function(){
+
 
 
     $("#blcg_attr").click(function(){
@@ -179,8 +199,6 @@ use app\models\MOrder;
         
         if(!confirm("办理成功，确定?"))
           return false;
-
-        //alert("oid"+oid+"status"+status+"staff_id"+staff_id);
 
         orderchangestatusajax(oid,status,staff_id,office_id);
         return false;

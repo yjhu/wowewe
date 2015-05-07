@@ -69,19 +69,28 @@
                   <p><span class="orderitem">支付方式</span>&nbsp;&nbsp;
                     <?= MOrder::getOrderPayKindOption($order->pay_kind) ?>
                   </p>
+
                   <p><span class="orderitem">订单状态</span>&nbsp;&nbsp;
-                    <?php if($order->status == MOrder::STATUS_PAID || 
-                      $order->status == MOrder::STATUS_SUBMITTED ||
-                      $order->status == MOrder::PAY_KIND_CASH )
-                          {
-                            $csstagbegin = "<span class='badge  badge-positive'>";
-                            $csstagend = "</span>";
-                          }
-                          else
-                          {
-                            $csstagbegin = "";
-                            $csstagend = "";
-                          }
+                    <?php 
+                      //需处理的状态
+                      if($order->status == MOrder::STATUS_PAID || 
+                        $order->status == MOrder::STATUS_SUBMITTED ||
+                        $order->status == MOrder::STATUS_FULFILLED)
+                        {
+                              $csstagbegin = "<span class='badge  badge-primary'>";
+                              $csstagend = "</span>";
+                        }
+                        else if($order->status == MOrder::STATUS_SUCCEEDED || 
+                              $order->status == MOrder::STATUS_SYSTEM_SUCCEEDED)
+                        {
+                              $csstagbegin = "<span class='badge  badge-positive'>";
+                              $csstagend = "</span>";
+                        }
+                        else
+                        {
+                              $csstagbegin = "";
+                              $csstagend = "";
+                        }
                     ?>
 
                     <?= $csstagbegin ?>
