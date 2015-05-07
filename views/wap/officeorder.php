@@ -3,8 +3,7 @@
     use yii\helpers\Url;
     use app\models\U;
     use app\models\MUser;
-
-
+    use app\models\MOrder;
 
 ?>
     
@@ -50,60 +49,44 @@
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
+    <P></P>
 
        <ul class="table-view">
    
-            <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['officeorderdetail'],true) ?>">
+          <?php foreach($orders as $order) {  ?>
 
-                <img class="media-object pull-left" src="../web/images/comm-icon/upload-pic-64x64.png" width="80" height="80">
+            <li class="table-view-cell media">
+              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['officeorderdetail', 'office_id'=>$office->office_id, 'staff_id'=>$staff->staff_id, 'oid'=>$order->oid],true) ?>">
+
+                <img class="media-object pull-left" src="<?php echo $order->item->pic_url.'-120x120.jpg' ?>" width="80" height="80">
                
                 <div class="media-body">
-                  <p><span class="orderitem">订单编号</span>&nbsp;&nbsp;1234567890</p>
-                  <p><span class="orderitem">下单时间</span>&nbsp;&nbsp;2015-05-06 18:00:00</p>
-                  <p><span class="orderitem">商品名称</span>&nbsp;&nbsp;联想A3600</p>
-                  <p><span class="orderitem">价格</span>&nbsp;&nbsp;￥399</p>
-                  <p><span class="orderitem">支付方式</span>&nbsp;&nbsp;微信支付</p>
-                  <p><span class="orderitem">订单状态</span>&nbsp;&nbsp;<span class="badge  badge-positive">已支付</span></p>
+                  <p><span class="orderitem">订单编号</span>&nbsp;&nbsp;<?= $order->oid ?></p>
+                  <p><span class="orderitem">下单时间</span>&nbsp;&nbsp;<?= $order->create_time ?></p>
+                  <p><span class="orderitem">商品名称</span>&nbsp;&nbsp;<?= $order->title ?></p>
+                  <p><span class="orderitem">商品价格</span>&nbsp;&nbsp;￥<?= ($order->feesum)/100 ?>元</p>
+                  <p><span class="orderitem">支付方式</span>&nbsp;&nbsp;
+                    <?= MOrder::getOrderPayKindOption($order->pay_kind) ?>
+                  </p>
+                  <p><span class="orderitem">订单状态</span>&nbsp;&nbsp;
+
+                    <?php if($order->status == MOrder::STATUS_PAID) {?>
+                    <span class="badge  badge-positive">
+                    <?php } ?>
+
+                      <?php echo MOrder::getOrderStatusName($order->status) ?>
+
+                    <?php if($order->status == MOrder::STATUS_PAID) {?>
+                      </span>
+                    <?php } ?>
+                   
+                  </p>
 
                 </div> 
               </a>
             </li>
 
-            <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['officeorderdetail'],true) ?>">
-
-                <img class="media-object pull-left" src="../web/images/comm-icon/upload-pic-64x64.png" width="80" height="80">
-               
-                <div class="media-body">
-                  <p><span class="orderitem">订单编号</span>&nbsp;&nbsp;1234567890</p>
-                  <p><span class="orderitem">下单时间</span>&nbsp;&nbsp;2015-05-06 18:00:00</p>
-                  <p><span class="orderitem">商品名称</span>&nbsp;&nbsp;联想A3600</p>
-                  <p><span class="orderitem">价格</span>&nbsp;&nbsp;￥399</p>
-                  <p><span class="orderitem">支付方式</span>&nbsp;&nbsp;线下支付</p>
-                  <p><span class="orderitem">订单状态</span>&nbsp;&nbsp;<span class="badge badge-negative">未支付</span></p>
-
-                </div>
-              </a>
-            </li>
-
-            <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['officeorderdetail'],true) ?>">
-
-                <img class="media-object pull-left" src="../web/images/comm-icon/upload-pic-64x64.png" width="80" height="80">
-               
-                <div class="media-body">
-                  <p><span class="orderitem">订单编号</span>&nbsp;&nbsp;1234567890</p>
-                  <p><span class="orderitem">下单时间</span>&nbsp;&nbsp;2015-05-06 18:00:00</p>
-                  <p><span class="orderitem">商品名称</span>&nbsp;&nbsp;联想A3600</p>
-                  <p><span class="orderitem">价格</span>&nbsp;&nbsp;￥399</p>
-                  <p><span class="orderitem">支付方式</span>&nbsp;&nbsp;线下支付</p>
-                  <p><span class="orderitem">订单状态</span>&nbsp;&nbsp;<span class="badge badge-negative">未支付</span></p>
-
-                </div>
-              </a>
-            </li>
-                
+            <?php } ?>
         </ul>
         &nbsp;<br>&nbsp;<br>&nbsp;<br> 
 

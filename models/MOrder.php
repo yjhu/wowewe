@@ -220,13 +220,10 @@ class MOrder extends ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
-//        U::W('---------- MOrder::afterSave()------------');
-//        U::W($changedAttributes);
         parent::afterSave($insert, $changedAttributes);
         if ($insert) {
             return;
-        }
-        
+        }        
         if (isset($changedAttributes['status']) || isset($changedAttributes['pay_kind']))  {
             $this->sendTemplateNoticeToCustom();  
             if (($this->status == self::STATUS_SUBMITTED && $this->pay_kind == self::PAY_KIND_CASH) 
@@ -270,14 +267,6 @@ class MOrder extends ActiveRecord
     static function getOrderStatusOptionForOffice()
     {
         return static::getOrderStatusName();
-/*
-        $arr = array(
-            self::STATUS_SUBMITTED => '等待付款',
-            self::STATUS_SUCCEEDED => '交易成功',
-            self::STATUS_BUYER_CLOSED => '取消订单',
-        );        
-        return $arr;
-*/
     }
 
     static function getOrderPayKindOption($key=null)
@@ -734,7 +723,7 @@ Array
         [transaction_id] => 1001230398201505060111550271
     )    
 */
-    public function refund()
+    public function refund($isManager = 1)
     {
         if ($this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_KZENG ||$this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_HBHE) {
            $this->feesum = 1;
@@ -748,12 +737,12 @@ Array
         $input->SetRefund_fee($this->feesum);
         $input->SetOut_refund_no(MOrder::generateOid());
         $input->SetOp_user_id(WxPayConfig::MCHID);
-        U::W([__METHOD__, $input]);        
+        //U::W([__METHOD__, $input]);        
         $result = WxPayApi::refund($input);
         U::W([__METHOD__, $result]);
         if ($result["return_code"] == "SUCCESS" && $result["result_code"] == "SUCCESS") {
-            //$this->status = MOrder::STATUS_OK;    
-            //$this->save();
+            $this->status = $isManager ? MOrder::STATUS_SELLER_REFUND_CLOSED : MOrder::STATUS_BUYER_REFUND_CLOSED;            
+            $this->save(false);
         }        
         return $result;
     }    

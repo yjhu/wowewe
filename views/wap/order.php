@@ -143,6 +143,17 @@ $basename = basename(__FILE__, '.php');
 	    </div>
 	</div>
 
+
+	<!-- 退款确认弹窗 -->
+	<div data-role="popup" id="confirm_tuikuan" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:400px;">
+	    <div role="main" class="ui-content">
+	        <h3 class="ui-title">确定要退款吗？亲。</h3>
+	    	<p>一旦退款可能会错过您心仪的宝贝哟！如果您需要请再次下单.</p>
+	        <a id="cancel" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-c" data-rel="back">不, 我再看看</a>
+	        <a id="yes" href="#" class="ui-btn ui-mini  ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-transition="flow">是的</a>
+	    </div>
+	</div>
+
 </div>
 
 
@@ -264,6 +275,8 @@ function load_data1(i, n)
 
 	if(n.status == 0)
 		$("#status").html(n.statusName +"<span style='color:blue' class='qxdd_orderdetail' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span>");
+	else if(n.status == 1) //退款
+		$("#status").html(n.statusName +"<span style='color:blue' class='tuikuan_orderdetail' myOid="+n.oid+">&nbsp;&nbsp;退款</span>");
 	else
 		$("#status").html(n.statusName);
 
@@ -743,6 +756,30 @@ $(document).on("pageinit", "#orderdetail", function(){
 	   	return false;
 	});
 
+
+	$(document).on("tap",".tuikuan_orderdetail",function(){
+
+		//alert("weixin_pay");
+		oid = $(this).attr('myOid');
+		ismanager = 0; //用户发起的退款请求
+		//alert(oid);
+
+		var url = "<?php echo Url::to(['wap/ordertuikuan'], true); ?>";
+
+	    // Show the confirmation popup
+	    $( "#confirm_tuikuan" ).popup( "open" );
+	    $( "#confirm_tuikuan #yes" ).on( "click", function() {
+	        $( "#confirm_tuikuan" ).popup( "close" );
+
+	        window.location.href = url+'&oid='+oid+'&ismanager='+ismanager;
+	    });
+
+	    $( "#confirm_tuikuan #cancel" ).on( "click", function() {
+	        $( "#confirm_tuikuan #yes" ).off();
+	    });
+
+	   	return false;
+	});
 
 	
 

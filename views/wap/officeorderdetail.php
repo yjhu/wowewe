@@ -2,7 +2,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\U;
-
+use app\models\MOrder;
 
 ?>
 
@@ -47,9 +47,9 @@ use app\models\U;
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
     <br>
-    <p>枣阳营业厅 &nbsp;&nbsp;曾开 13545296480</p>
+    <p><?= $office->title ?> &nbsp;&nbsp;<?= $staff->name." ".$staff->mobile ?></p>
 
-      <img width=100% height=200 class="media-object pull-left" src="../web/images/comm-icon/upload-pic-64x64.png">
+      <img width=100% height=240 class="media-object pull-left" src="<?= $order->item->pic_url ?>">
 
 
         <span>
@@ -57,31 +57,37 @@ use app\models\U;
 
             <li class="table-view-cell table-view-divider">订单信息</li>
 
-            <li class="table-view-cell"><span class="orderitem">订单编号</span>&nbsp;&nbsp; 1234567890</li>
-            <li class="table-view-cell"><span class="orderitem">商品名称</span>&nbsp;&nbsp; 联想A3600</li>
+            <li class="table-view-cell"><span class="orderitem">订单编号</span>&nbsp;&nbsp; <?= $order->oid ?></li>
+            <li class="table-view-cell"><span class="orderitem">商品名称</span>&nbsp;&nbsp; <?= $order->title ?></li>
 
-            <li class="table-view-cell"><span class="orderitem">支付方式</span>&nbsp;&nbsp; 微信支付</li>
-            <li class="table-view-cell"><p><span class="orderitem">订单状态</span>
+            <li class="table-view-cell"><span class="orderitem">商品价格</span>&nbsp;&nbsp; ￥<?= ($order->feesum)/100 ?>元</li>
 
+            <li class="table-view-cell"><span class="orderitem">支付方式</span>&nbsp;&nbsp; 
+            <?= MOrder::getOrderPayKindOption($order->pay_kind) ?></li>
 
-            &nbsp;&nbsp; 
-            等待付款
-            &nbsp;&nbsp; 
-            <a class="btn btn-negative btn-outlined" href="#cancelorder">取消订单<span class="icon icon icon-close"></span></a>
-            </p>
+            <li class="table-view-cell"><span class="orderitem">订单状态</span>&nbsp;&nbsp; 
+                <?php if($order->status == MOrder::STATUS_PAID) { ?>
+                <span class="badge badge-positive pull-left">
+                <?php } ?>
+
+                  <?php echo MOrder::getOrderStatusName($order->status) ?>
+
+                <?php if($order->status == MOrder::STATUS_PAID) { ?>
+                  </span>
+                <?php } ?>
             </li>
 
-            <li class="table-view-cell"><span class="orderitem">下单时间</span>&nbsp;&nbsp; 2015-05-06 18:00:00</li>
-            <li class="table-view-cell"><span class="orderitem">订单详情</span>&nbsp;&nbsp; 联想A3600 安卓智能手机</li>
+            <li class="table-view-cell"><span class="orderitem">下单时间</span>&nbsp;&nbsp; <?= $order->create_time ?></li>
+            <li class="table-view-cell"><span class="orderitem">订单详情</span>&nbsp;&nbsp; <?= $order->detail ?></li>
 
             <li class="table-view-cell table-view-divider">用户信息</li>
-            <li class="table-view-cell"><span class="orderitem">用户姓名</span>&nbsp;&nbsp; 曾开</li>
-            <li class="table-view-cell"><span class="orderitem">联系电话</span>&nbsp;&nbsp; 13545296480</li>
-            <li class="table-view-cell"><span class="orderitem">身份证号</span>&nbsp;&nbsp; 123456789012345</li>
+            <li class="table-view-cell"><span class="orderitem">用户姓名</span>&nbsp;&nbsp; <?= $order->username ?></li>
+            <li class="table-view-cell"><span class="orderitem">联系电话</span>&nbsp;&nbsp; <?= $order->usermobile ?></li>
+            <li class="table-view-cell"><span class="orderitem">身份证号</span>&nbsp;&nbsp; <?= $order->userid ?></li>
 
 
             <li class="table-view-cell table-view-divider">收货地址</li>
-            <li class="table-view-cell">武汉光谷国际2栋1309 邮编430074</li>
+            <li class="table-view-cell"><?= !empty($order->address) ? $order->address : "" ?></li>
 
           </ul>
         </span>
@@ -90,27 +96,6 @@ use app\models\U;
     </div>
 
 
-      <!-- 取消订单确认弹窗 -->
-      <div id="cancelorder" class="modal">
-        <header class="bar bar-nav">
-          <a class="icon icon-close pull-right" href="#cancelorder"></a>
-          <h1 class="title">确实要取消订单吗?</h1>
-        </header>
-
-        <div class="content">
-            
-            <ul class="table-view">
-            <li class="table-view-cell table-view-divider">订单信息</li>
-            <li class="table-view-cell"><span class="orderitem">订单编号</span>&nbsp;&nbsp; 1234567890</li>
-            <li class="table-view-cell"><span class="orderitem">商品名称</span>&nbsp;&nbsp; 联想A3600</li>
-            </ul>
-
-            <br>
-            <a class="btn btn-block" href="#cancelorder">不取消，再看看。</a>
-            <a class="btn btn-negative btn-block" onclick="#">取消订单</a>
-            
-        </div>
-      </div>
 
   </body>
 

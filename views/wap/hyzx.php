@@ -170,9 +170,21 @@
 
 
 
-        
+
         <li><a href="<?php echo Url::to(['order', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>" data-icon="shop" data-ajax="false"><img src="../web/images/woke/wddd.gif" alt="我的订单" class="ui-li-icon ui-corner-none">我的订单<span class="ui-li-count"><?= count($user->orders) ?></span></a></li>
        
+
+        <?php 
+            if (!empty($user->staff) && $user->staff->cat == \app\models\MStaff::SCENE_CAT_IN)
+                $staff = $user->staff;
+            else
+                $staff = $user->mobileStaff;
+
+            if (!empty($staff) && !empty($staff->office) && !empty($staff->office->is_selfOperated)) {
+        ?>
+        <li><a ajax-data="false" href="<?php echo Url::to(['officeorder', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'staff_id'=>$staff->staff_id]) ?>" data-ajax="false"><img src="../web/images/woke/wddd.gif" alt="营业厅订单" class="ui-li-icon ui-corner-none">营业厅订单</a></li>
+        <?php }  ?>
+
 
 		<?php if (empty($user->user_account_charge_mobile)) {?>
 		<li><a href="#czsjmh"><img src="../web/images/woke/wdcf.gif" class="ui-li-icon ui-corner-none">充值手机号<span class="ui-li-count">未填</span></a></li>
