@@ -750,12 +750,12 @@ $(document).on("pageinit", "#orderdetail", function(){
 
 		//alert("weixin_pay");
 		oid = $(this).attr('myOid');
-		ismanger = 0; //用户发起的退款请求
+		ismanager = 0; //用户发起的退款请求
 		//alert(oid);
 
 		var url = "<?php echo Url::to(['wap/ordertuikuan'], true); ?>";
 		//$.mobile.changePage((url+'&oid='+json_data.oid),{transition:"slide"});              
-		window.location.href = url+'&oid='+oid+'&ismanger='+ismanger;
+		window.location.href = url+'&oid='+oid+'&ismanager='+ismanager;
 
 	   	return false;
 	});
