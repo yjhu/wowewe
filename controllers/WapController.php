@@ -2461,10 +2461,17 @@ EOD;
     public function actionOfficeorder()
     {        
         $this->layout = false;
-        $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
-        //$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);    
-        return $this->render('officeorder', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    //    $gh_id = U::getSessionParam('gh_id');
+    //    $openid = U::getSessionParam('openid');
+        $staff_id = $_GET['staff_id'];
+
+        $staff = MStaff::findOne(['staff_id'=>$staff_id]);  
+        $office = $staff->office;  
+        $orders = MOrder::findBySql('select * from wx_order where office_id = :office_id and status != :status and create_time > DATE_SUB(NOW(), INTERVAL 7 day)', 
+            [':office_id' => $office->office_id, ':status' => MOrder::STATUS_DRAFT])
+            ->all();
+
+        return $this->render('officeorder', ['office'=>$office, 'staff'=>$staff, 'orders' => $orders]);
     }
 
 
@@ -2475,7 +2482,17 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         //$user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);    
-        return $this->render('officeorderdetail', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+
+        $office_id = $_GET['office_id'];
+        $office = MOffice::findOne(['office_id'=>$office_id]);
+
+        $staff_id = $_GET['staff_id'];
+        $staff = MStaff::findOne(['staff_id'=>$staff_id]);
+
+        $oid = $_GET['oid'];
+        $order = MOrder::findOne(['oid'=>$oid]);
+
+        return $this->render('officeorderdetail', ['office'=>$office, 'staff'=>$staff, 'order' => $order]);
     }
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/officeorderdetail:gh_03a74ac96138
