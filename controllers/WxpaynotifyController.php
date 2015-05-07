@@ -22,6 +22,7 @@ use app\models\MOffice;
 use app\models\MGh;
 use app\models\MChannel;
 use app\models\MOrder;
+use app\models\MOrderTrail;
 use app\models\MItem;
 use app\models\MMobnum;
 use app\models\MDisk;
@@ -138,10 +139,8 @@ class PayNotifyCallBack extends WxPayNotify
             [trade_type] => JSAPI
             [transaction_id] => 1001230398201504170068650671
         )
-    */    
-	public function NotifyProcess($data, &$msg)
-	{
-	    /* for test
+
+        // for test
         $data = [];
         $data['appid'] = 'wx1b122a21f985ea18';
         $data['attach'] = 'test';
@@ -160,25 +159,25 @@ class PayNotifyCallBack extends WxPayNotify
         $data['total_fee'] = '1';
         $data['trade_type'] = 'JSAPI';
         $data['transaction_id'] = '1001230398201504170068650671';
-	    */
-	    
-		U::W([__METHOD__, $data, $msg]);	
-		$notfiyOutput = array();
-		
-		if(!array_key_exists("transaction_id", $data)){
-			$msg = "输入参数不正确";
-			return false;
-		}
-		if(!$this->Queryorder($data["transaction_id"])){
-			$msg = "订单查询失败";
-			return false;
-		}
+        
+    */    
+    public function NotifyProcess($data, &$msg)
+    {
+        //U::W([__METHOD__, $data, $msg]);	
+        $notfiyOutput = array();
 
-        // begin process order
-        $order = MOrder::findOne($data["out_trade_no"]);
-        if ($order === null) {
-            U::W(['ERROR!!! oid does not exist', __METHOD__, $data]);
+        if(!array_key_exists("transaction_id", $data)){
+            $msg = "输入参数不正确";
+            return false;
         }
+        if(!$this->Queryorder($data["transaction_id"])){
+            $msg = "订单查询失败";
+            return false;
+        }
+
+        $order = MOrder::findOne($data["out_trade_no"]);
+        $status_old = $order->status;        
+        $pay_kind_old = $order->pay_kind;                
         $order->status = MOrder::STATUS_PAID;
         $order->partner = $data['mch_id'];
         $order->time_end = $data['time_end'];
@@ -188,7 +187,20 @@ class PayNotifyCallBack extends WxPayNotify
         $order->openid_recv = $data['openid'];        
         $order->issubscribe_recv = $data['is_subscribe'];
         $order->pay_kind = MOrder::PAY_KIND_WECHAT;        
-        $order->save(false);
+        if ($order->save(false)) {
+            $orderTrail = new MOrderTrail;
+            $orderTrail->oid = $order->oid;
+            $orderTrail->status_old = $status_old;
+            $orderTrail->status_new = $order->status;
+            $orderTrail->pay_kind_old = $pay_kind_old;
+            $orderTrail->pay_kind_new = $order->pay_kind;            
+            $orderTrail->save(false);        
+        }
+
+        return true;
+    }
+}
+
 /*
         if ($data['trade_state'] == 0    )
         {
@@ -213,12 +225,6 @@ class PayNotifyCallBack extends WxPayNotify
             U::W(['trade_state is not 0', __METHOD__, $data, $_POST]);        
         }
 */        
-        //end
-
-		return true;
-	}
-}
-
 
 
 
