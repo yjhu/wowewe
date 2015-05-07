@@ -170,7 +170,7 @@ use app\models\MOrder;
 
 
     $("#cxblbtk_attr").click(function(){
-        alert("撤销办理并退款");
+        //alert("撤销办理并退款");
 
         $("#cxblbtk_attr").html("处理中...");
 
@@ -179,7 +179,7 @@ use app\models\MOrder;
         staff_id = $(this).attr('staff_id');
         office_id = $(this).attr('office_id');
 
-        alert("oid"+oid+"status"+status+"staff_id"+staff_id+"office_id"+office_id);
+        //alert("oid"+oid+"status"+status+"staff_id"+staff_id+"office_id"+office_id);
 
         $.ajax({
           url: "<?php echo Url::to(['wap/orderrefundajax'], true) ; ?>",
@@ -190,7 +190,7 @@ use app\models\MOrder;
           success: function(t){
 
                   var url = "<?php echo Url::to(['officeorderdetail'],true) ?>";
-                  location.href = url+'&oid='+oid+'&status='+status+'&office_id='+office_id;
+                  location.href = url+'&oid='+oid+'&staff_id='+staff_id+'&office_id='+office_id;
             },
             error: function(){
               alert('error!');
