@@ -2519,7 +2519,7 @@ EOD;
         $order = MOrder::findOne(['oid'=>$oid]);
         $order->status = $status;
         $order->save(false);        
-        return $this->redirect('officeorderdetail', 'office_id'=>$order->office_id, 'staff_id'=>$staff_id, 'oid'=>$order->oid]);                      
+        return $this->redirect(['officeorderdetail', 'office_id'=>$order->office_id, 'staff_id'=>$staff_id, 'oid'=>$order->oid]);                      
     }
 
     public function actionHandlecallpayout()
