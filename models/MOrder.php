@@ -744,5 +744,57 @@ Array
         }        
         return false;
     }    
+    
+    public function buyerCanCancel()
+    {
+        if ($this->status == self::STATUS_SUBMITTED)
+            return true;
+        else 
+            return false;
+    }
+    public function buyerCanPay()
+    {
+        if ($this->status == self::STATUS_SUBMITTED && $this->pay_kind == self::PAY_KIND_WECHAT)
+            return true;
+        else 
+            return false;
+    }
+    
+    public function buyerCanRefund()
+    {
+        if ($this->status == self::STATUS_PAID)
+            return true;
+        else 
+            return false;
+    }
+    
+    public function buyerCanConfirm()
+    {
+        if ($this->status == self::STATUS_FULFILLED)
+            return true;
+        else 
+            return false;
+    }
+    
+    public function sellerCanCancel($staff)
+    {
+        return $this->status == self::STATUS_SUBMITTED ? true : false;
+    }
+    
+    public function sellerCanFulfill($staff)
+    {
+        return ($this->status == self::STATUS_SUBMITTED && $this->pay_kind == self::PAY_KIND_CASH) ||
+               ($this->status == self::STATUS_PAID) ? true : false;
+    }
+    
+    public function sellerCanRollback($staff)
+    {
+        return ($this->status == self::STATUS_FULFILLED && $this->pay_kind == self::PAY_KIND_CASH && $staff->isSelfOperatedOfficeDirector()) ? true : false;
+    }
+    
+     public function sellerCanRollbackRefund($staff)
+    {
+        return ($this->status == self::STATUS_FULFILLED && $this->pay_kind == self::PAY_KIND_WECHAT && $staff->isSelfOperatedOfficeDirector()) ? true : false;
+    }
 }
 
