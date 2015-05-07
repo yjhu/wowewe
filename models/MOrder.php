@@ -319,6 +319,24 @@ class MOrder extends ActiveRecord
         return self::getOrderStatusName($this->status);
     }
 
+    public static function getOfficeOrders($office_id)
+    {
+        
+    }
+    
+     public static function getOfficeOrdersCount($office_id)
+    {
+        $sql = "select * from {self::tableName()} ".
+               "where office_id=:office_id and ".
+               "( ".
+                "(status = {self::STATUS_SUBMITTED} and pay_kind = {self::PAY_KIND_CASH}) or ".
+                "(status in ({self::STATUS_PAID}, {self::STATUS_FULFILLED}, {self::STATUS_SUCCEEDED}, {self::STATUS_SYSTEM_SUCCEEDED}, "
+                . "{self::STATUS_SELLER_REFUND_CLOSED}, {self::STATUS_SELLER_ROLLBACK_CLOSED})) ".
+                ") "
+                ;
+        return self::findBySql($sql, [':office_id'=> $office_id])->count();
+    }
+    
     public function getUser()
     {
         $model = MUser::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);

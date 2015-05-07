@@ -34,8 +34,18 @@ class CheckController extends \yii\console\Controller {
             echo ++$i; echo ":";
             echo $selfOperated_office->title;
             $director = $selfOperated_office->director;
-            if (!empty($director))
+            if (!empty($director)) {
                 echo " ".$director->name.' '.$director->mobile;
+                if (empty($director->office) || $director->office->office_id != $selfOperated_office->office_id) {
+                    echo " "."班长的营业厅对应错了。";
+                    if (empty($director->office))
+                        echo "(NULL)";
+                    else
+                        echo "{$director->office->title}({$director->office->office_id} != {$selfOperated_office->office_id})";
+                     $director->office_id = $selfOperated_office->office_id;
+                     $director->save(false);
+                }
+            }
             echo PHP_EOL;
         }
     }

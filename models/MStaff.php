@@ -100,7 +100,7 @@ class MStaff extends ActiveRecord
     
     public function getOffice()
     {
-        return $this->hasOne(MOffice::className(), ['office_id' => 'office_id']);
+        return $this->hasOne(MOffice::className(), ['gh_id' => 'gh_id', 'office_id' => 'office_id']);
     }
     
     public function getSupervisedOffices()
