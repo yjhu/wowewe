@@ -761,17 +761,37 @@ $(document).on("pageinit", "#orderdetail", function(){
 
 		//alert("weixin_pay");
 		oid = $(this).attr('myOid');
-		ismanager = 0; //用户发起的退款请求
+		status = "<?= MOrder::STATUS_BUYER_REFUND_CLOSED ?>";
 		//alert(oid);
 
-		var url = "<?php echo Url::to(['wap/ordertuikuan'], true); ?>";
+		//var url = "<?php echo Url::to(['wap/ordertuikuan'], true); ?>";
 
 	    // Show the confirmation popup
 	    $( "#confirm_tuikuan" ).popup( "open" );
 	    $( "#confirm_tuikuan #yes" ).on( "click", function() {
 	        $( "#confirm_tuikuan" ).popup( "close" );
 
-	        window.location.href = url+'&oid='+oid+'&ismanager='+ismanager;
+	        //window.location.href = url+'&oid='+oid+'&ismanager='+ismanager;
+
+	        $.ajax({
+	          url: "<?php echo Url::to(['wap/orderrefundajax'], true) ; ?>",
+	          type:"GET",
+	          cache:false,
+	          dataType:"json",
+	          data: "oid="+oid+"&status="+status,
+	          success: function(t){
+
+	                  var url = "<?php echo Url::to(['order'],true) ?>";
+	                  location.href = url+'&gh_id='+gh_id+'&openid='+openid;
+	            },
+	            error: function(){
+	              alert('error!');
+	            }
+	        });
+
+	        return false;
+
+
 	    });
 
 	    $( "#confirm_tuikuan #cancel" ).on( "click", function() {

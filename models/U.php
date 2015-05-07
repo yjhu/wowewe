@@ -527,6 +527,33 @@ class U
         }
         return true;
     }
+    
+    public static function compress_image_file($orig_filename, $max_width=1000, $new_filename=null)
+    {
+        if (!file_exists($orig_filename)) return;
+        list($width, $height, $imagetype) = getimagesize($orig_filename);
+        if ($width == 0) return;
+        if ($width <= $max_width) return; 
+        else {
+            $new_width = $max_width;
+            $new_height = intval(floatval($new_width)/$width * $height);
+        }
+        if ($new_filename == null) $new_filename = $orig_filename;
+        if ($imagetype == IMAGETYPE_JPEG) { 
+            $old_image = imagecreatefromjpeg($orig_filename);
+        } else if ($imagetype == IMAGETYPE_PNG) {
+            $old_image = imagecreatefrompng($orig_filename);
+        } else {
+//            echo "IMAGETYPE: ".$imagetype."\t".$old_filename.PHP_EOL;
+            return;
+        }
+        
+        $new_image = imagecreatetruecolor($new_width, $new_height);
+        imagecopyresampled($new_image, $old_image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+        imagejpeg($new_image, $new_filename);
+        imagedestroy($old_image);
+        imagedestroy($new_image);
+    }
 
 }
 
