@@ -38,7 +38,7 @@ use app\models\MOrder;
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
+      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre();"></a>
       <h1 class="title">
        营业厅订单详情
       </h1>
@@ -73,7 +73,13 @@ use app\models\MOrder;
             <?php echo MOrder::getOrderStatusName($order->status) ?>
             <?php 
               if ($order->status == MOrder::STATUS_PAID || ($order->status == MOrder::STATUS_SUBMITTED && $order->pay_kind == MOrder::PAY_KIND_CASH)) {
-                echo "<span class='btn btn-positive' id='blcg_attr' oid=".$order->oid." status=".MOrder::STATUS_FULFILLED."  staff_id=".$staff->staff_id.">办理成功</span>";  //订单状态改为 MOrder::STATUS_FULFILLED
+                //订单状态改为 MOrder::STATUS_FULFILLED
+                echo "<span class='pull-right'>";
+                echo "&nbsp;&nbsp;";
+                echo "<span class='btn btn-negative' id='gbdd_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_CLOSED."  staff_id=".$staff->staff_id.">关闭订单<span class='icon icon-close'></span></span>";
+                echo "&nbsp;&nbsp;";
+                echo "<span class='btn btn-positive' id='blcg_attr' oid=".$order->oid." status=".MOrder::STATUS_FULFILLED."  staff_id=".$staff->staff_id.">办理成功<span class='icon icon-check'></span></span>";  
+                echo "</span>";
               } else if ($order->status == MOrder::STATUS_FULFILLED && $staff->isSelfOperatedOfficeDirector()) {
                 if ($order->pay_kind == MOrder::PAY_KIND_CASH)
                   echo "<span class='btn btn-positive' id='cxbl_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_ROLLBACK_CLOSED." staff_id=".$staff->staff_id.">撤销办理</span>"; //订单状态改为 MOrder::STATUS_SELLER_ROLLBACK_CLOSED
@@ -136,11 +142,33 @@ use app\models\MOrder;
 
 
   <script type="text/javascript">
+
+    function back2pre()
+    {
+      //alert("officeorder");
+      location.href = "<?php echo Url::to(['officeorder','staff_id'=>$staff->staff_id],true) ?>";
+    }
+
   $(document).ready(function(){
 
 
     $("#blcg_attr").click(function(){
         //alert("办理成功");
+        oid = $(this).attr('oid');
+        status = $(this).attr('status');
+        staff_id = $(this).attr('staff_id');
+        
+        //alert("oid"+oid+"status"+status+"staff_id"+staff_id);
+        //location.href="#blcg";
+
+        var url = "<?php echo Url::to(['wap/changeofficeorderstatus'], true); ?>";
+        window.location.href = url+'&oid='+oid+'&status='+status+'&staff_id='+staff_id;
+        return false;
+    });
+
+
+    $("#gbdd_attr").click(function(){
+        //alert("关闭订单");
         oid = $(this).attr('oid');
         status = $(this).attr('status');
         staff_id = $(this).attr('staff_id');

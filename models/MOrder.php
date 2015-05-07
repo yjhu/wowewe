@@ -314,7 +314,7 @@ class MOrder extends ActiveRecord
                "( ".
                 "(status = ".self::STATUS_SUBMITTED." and pay_kind = ".self::PAY_KIND_CASH.") or ".
                 "(status in (".self::STATUS_PAID.", ".self::STATUS_FULFILLED.", ".self::STATUS_SUCCEEDED.", ".self::STATUS_SYSTEM_SUCCEEDED.", "
-                . self::STATUS_SELLER_REFUND_CLOSED.", ".self::STATUS_SELLER_ROLLBACK_CLOSED.")) ".
+                . self::STATUS_SELLER_REFUND_CLOSED.", ".self::STATUS_SELLER_CLOSED.", ".self::STATUS_SELLER_ROLLBACK_CLOSED.")) ".
                 ") and ".
                 "create_time > DATE_SUB(NOW(), INTERVAL 7 day) order by create_time DESC"
                 ;
