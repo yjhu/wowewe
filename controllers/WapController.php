@@ -2540,12 +2540,15 @@ EOD;
         $status = $_GET['status'];
         $order = MOrder::findOne(['oid'=>$oid]);
         $status_old = $order->status;
+        $pay_kind_old = $order->pay_kind;
         $order->status = $status;
         if ($order->save(false)) {
             $orderTrail = new MOrderTrail;
             $orderTrail->oid = $oid;
             $orderTrail->status_old = $status_old;
-            $orderTrail->status_new = $status;
+            $orderTrail->status_new = $order->status;
+            $orderTrail->pay_kind_old = $pay_kind_old;
+            $orderTrail->pay_kind_new = $order->pay_kind;            
             $orderTrail->staff_id = empty($_GET['staff_id']) ? 0 : $_GET['staff_id'];
             $orderTrail->save(false);
         }
@@ -2558,11 +2561,14 @@ EOD;
         $status = $_GET['status'];
         $order = MOrder::findOne(['oid'=>$oid]);
         $status_old = $order->status;        
+        $pay_kind_old = $order->pay_kind;        
         if ($order->refund($status)) {
             $orderTrail = new MOrderTrail;
             $orderTrail->oid = $oid;
             $orderTrail->status_old = $status_old;
-            $orderTrail->status_new = $status;
+            $orderTrail->status_new = $order->status;
+            $orderTrail->pay_kind_old = $pay_kind_old;
+            $orderTrail->pay_kind_new = $order->pay_kind;
             $orderTrail->staff_id = empty($_GET['staff_id']) ? 0 : $_GET['staff_id'];
             $orderTrail->save(false);        
         }        
@@ -2574,9 +2580,20 @@ EOD;
         $this->layout = false;
         $oid = $_GET['oid'];
         $order = MOrder::findOne(['oid'=>$oid]);
+        $status_old = $order->status;        
+        $pay_kind_old = $order->pay_kind;
         $order->status = MOrder::STATUS_SUBMITTED;
         $order->pay_kind = MOrder::PAY_KIND_WECHAT;
-        $order->save(false);
+        if ($order->save(false)) {
+            $orderTrail = new MOrderTrail;
+            $orderTrail->oid = $oid;
+            $orderTrail->status_old = $status_old;
+            $orderTrail->status_new = $order->status;
+            $orderTrail->pay_kind_old = $pay_kind_old;
+            $orderTrail->pay_kind_new = $order->pay_kind;            
+            $orderTrail->staff_id = empty($_GET['staff_id']) ? 0 : $_GET['staff_id'];
+            $orderTrail->save(false);        
+        }
         return json_encode(['code'=>0]);
     }
 
