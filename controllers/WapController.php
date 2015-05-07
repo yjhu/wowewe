@@ -2505,35 +2505,6 @@ EOD;
         return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);      
     }
 
-/*
-    public function actionOrdertuikuan($oid, $ismanager)
-    {        
-        $order = MOrder::findOne(['oid'=>$oid]);
-        $status = $ismanager ? MOrder::STATUS_SELLER_REFUND_CLOSED : MOrder::STATUS_BUYER_REFUND_CLOSED;
-        $order->refund($status);
-        return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);              
-    }
-
-    public function actionChangeofficeorderstatus()
-    {        
-        $oid = $_GET['oid'];
-        $status = $_GET['status'];
-        $staff_id = $_GET['staff_id'];
-        $order = MOrder::findOne(['oid'=>$oid]);
-        $order->status = $status;
-        $order->save(false);        
-        return $this->redirect(['officeorderdetail', 'office_id'=>$order->office_id, 'staff_id'=>$staff_id, 'oid'=>$order->oid]);                      
-    }
-
-    public function actionOrderchangestatusajax()
-    {        
-        $oid = $_GET['oid'];
-        $status = $_GET['status'];
-        $order = MOrder::findOne(['oid'=>$oid]);
-        $order->status = $status;
-        return json_encode(['code' => 0]);
-    }
-*/
     public function actionOrderchangestatusajax()
     {        
         $oid = $_GET['oid'];
@@ -4799,4 +4770,33 @@ return $xmlStr;
         $jsApiParameters = $this->GetJsApiParameters($unifiedOrder);
         U::W($jsApiParameters);
 */        
+/*
+    public function actionOrdertuikuan($oid, $ismanager)
+    {        
+        $order = MOrder::findOne(['oid'=>$oid]);
+        $status = $ismanager ? MOrder::STATUS_SELLER_REFUND_CLOSED : MOrder::STATUS_BUYER_REFUND_CLOSED;
+        $order->refund($status);
+        return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);              
+    }
+
+    public function actionChangeofficeorderstatus()
+    {        
+        $oid = $_GET['oid'];
+        $status = $_GET['status'];
+        $staff_id = $_GET['staff_id'];
+        $order = MOrder::findOne(['oid'=>$oid]);
+        $order->status = $status;
+        $order->save(false);        
+        return $this->redirect(['officeorderdetail', 'office_id'=>$order->office_id, 'staff_id'=>$staff_id, 'oid'=>$order->oid]);                      
+    }
+
+    public function actionOrderchangestatusajax()
+    {        
+        $oid = $_GET['oid'];
+        $status = $_GET['status'];
+        $order = MOrder::findOne(['oid'=>$oid]);
+        $order->status = $status;
+        return json_encode(['code' => 0]);
+    }
+*/
 
