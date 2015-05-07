@@ -2491,8 +2491,9 @@ EOD;
     public function actionOrdertuikuan($oid, $ismanager)
     {        
         $order = MOrder::findOne(['oid'=>$oid]);
-        $order->status = $ismanager ? MOrder::STATUS_SELLER_REFUND_CLOSED : MOrder::STATUS_BUYER_REFUND_CLOSED;
-        $order->save(false);
+        $order->refund($ismanager);
+        //$order->status = $ismanager ? MOrder::STATUS_SELLER_REFUND_CLOSED : MOrder::STATUS_BUYER_REFUND_CLOSED;
+        //$order->save(false);
         return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);              
     }
 

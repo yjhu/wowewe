@@ -712,7 +712,7 @@ Array
         [transaction_id] => 1001230398201505060111550271
     )    
 */
-    public function refund()
+    public function refund($isManager = 1)
     {
         if ($this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_KZENG ||$this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_HBHE) {
            $this->feesum = 1;
@@ -726,12 +726,12 @@ Array
         $input->SetRefund_fee($this->feesum);
         $input->SetOut_refund_no(MOrder::generateOid());
         $input->SetOp_user_id(WxPayConfig::MCHID);
-        U::W([__METHOD__, $input]);        
+        //U::W([__METHOD__, $input]);        
         $result = WxPayApi::refund($input);
         U::W([__METHOD__, $result]);
         if ($result["return_code"] == "SUCCESS" && $result["result_code"] == "SUCCESS") {
-            //$this->status = MOrder::STATUS_OK;    
-            //$this->save();
+            $this->status = $isManager ? MOrder::STATUS_SELLER_REFUND_CLOSED : MOrder::STATUS_BUYER_REFUND_CLOSED;            
+            $this->save(false);
         }        
         return $result;
     }    
