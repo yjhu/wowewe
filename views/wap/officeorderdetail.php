@@ -74,7 +74,7 @@ use app\models\MOrder;
             <?php 
               if ($order->status == MOrder::STATUS_PAID || ($order->status == MOrder::STATUS_SUBMITTED && $order->pay_kind == MOrder::PAY_KIND_CASH)) {
                 echo "<span class='btn btn-positive' id='blcg_attr' oid=".$order->oid." status=".MOrder::STATUS_FULFILLED."  staff_id=".$staff->staff_id.">办理成功</span>";  //订单状态改为 MOrder::STATUS_FULFILLED
-              } else if ($oder->status == MOrder::STATUS_FULFILLED && $staff->isSelfOperatedOfficeDirector()) {
+              } else if ($order->status == MOrder::STATUS_FULFILLED && $staff->isSelfOperatedOfficeDirector()) {
                 if ($order->pay_kind == MOrder::PAY_KIND_CASH)
                   echo "<span class='btn btn-positive' id='cxbl_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_ROLLBACK_CLOSED." staff_id=".$staff->staff_id.">撤销办理</span>"; //订单状态改为 MOrder::STATUS_SELLER_ROLLBACK_CLOSED
                 else
