@@ -737,14 +737,12 @@ Array
         $input->SetRefund_fee($this->feesum);
         $input->SetOut_refund_no(MOrder::generateOid());
         $input->SetOp_user_id(WxPayConfig::MCHID);
-        //U::W([__METHOD__, $input]);        
         $result = WxPayApi::refund($input);
-        U::W([__METHOD__, $result]);
         if ($result["return_code"] == "SUCCESS" && $result["result_code"] == "SUCCESS") {
             $this->status = $status;
-            $this->save(false);
+            return $this->save(false);
         }        
-        return $result;
+        return false;
     }    
 }
 
