@@ -220,13 +220,10 @@ class MOrder extends ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
-//        U::W('---------- MOrder::afterSave()------------');
-//        U::W($changedAttributes);
         parent::afterSave($insert, $changedAttributes);
         if ($insert) {
             return;
-        }
-        
+        }        
         if (isset($changedAttributes['status']) || isset($changedAttributes['pay_kind']))  {
             $this->sendTemplateNoticeToCustom();  
             if (($this->status == self::STATUS_SUBMITTED && $this->pay_kind == self::PAY_KIND_CASH) 
@@ -270,14 +267,6 @@ class MOrder extends ActiveRecord
     static function getOrderStatusOptionForOffice()
     {
         return static::getOrderStatusName();
-/*
-        $arr = array(
-            self::STATUS_SUBMITTED => '等待付款',
-            self::STATUS_SUCCEEDED => '交易成功',
-            self::STATUS_BUYER_CLOSED => '取消订单',
-        );        
-        return $arr;
-*/
     }
 
     static function getOrderPayKindOption($key=null)

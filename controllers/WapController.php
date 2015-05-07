@@ -2478,7 +2478,6 @@ EOD;
         return $this->render('officeorderdetail', ['gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/officeorderdetail:gh_03a74ac96138
     public function actionOrderxianxiapay($oid)
     {        
         $order = MOrder::findOne(['oid'=>$oid]);
@@ -2487,13 +2486,10 @@ EOD;
         return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);      
     }
 
-    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/ordertuikuan:gh_03a74ac96138
     public function actionOrdertuikuan($oid, $ismanager)
     {        
         $order = MOrder::findOne(['oid'=>$oid]);
         $order->refund($ismanager);
-        //$order->status = $ismanager ? MOrder::STATUS_SELLER_REFUND_CLOSED : MOrder::STATUS_BUYER_REFUND_CLOSED;
-        //$order->save(false);
         return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);              
     }
 
