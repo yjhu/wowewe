@@ -73,10 +73,10 @@ use app\models\MOrder;
             <?php echo MOrder::getOrderStatusName($order->status) ?>
             <?php 
               if ($order->status == MOrder::STATUS_PAID || ($oder->status == MOrder::STATUS_SUBMITTED && $order->pay_kind == MOrder::PAY_KIND_CASH)) {
-                echo "<span class='btn btn-positive' id='blcg_attr' oid=".$order->oid." status=".MOrder::STATUS_FULFILLED.">办理成功</span>";  //订单状态改为 MOrder::STATUS_FULFILLED
+                echo "<span class='btn btn-positive' id='blcg_attr' oid=".$order->oid." status=".MOrder::STATUS_FULFILLED."  staff_id=".$staff->staff_id.">办理成功</span>";  //订单状态改为 MOrder::STATUS_FULFILLED
               } else if ($oder->status == MOrder::STATUS_FULFILLED && $staff->isSelfOperatedOfficeDirector()) {
                 if ($order->pay_kind == MOrder::PAY_KIND_CASH)
-                  echo "<span class='btn btn-positive' id='cxbl_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_ROLLBACK_CLOSED.">撤销办理</span>"; //订单状态改为 MOrder::STATUS_SELLER_ROLLBACK_CLOSED
+                  echo "<span class='btn btn-positive' id='cxbl_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_ROLLBACK_CLOSED." staff_id=".$staff->staff_id.">撤销办理</span>"; //订单状态改为 MOrder::STATUS_SELLER_ROLLBACK_CLOSED
                 else
                   echo "撤销办理并退款"; //订单状态改为 MOrder::STATUS_SELLER_REFUND_CLOSED
               }
@@ -143,11 +143,13 @@ use app\models\MOrder;
         alert("办理成功");
         oid = $(this).attr('oid');
         status = $(this).attr('status');
-        alert("oid"+oid+"status"+status);
+        staff_id = $(this).attr('staff_id');
+        
+        alert("oid"+oid+"status"+status+"staff_id"+staff_id);
         //location.href="#blcg";
 
-        var url = "<?php echo Url::to(['wap/oodblcg'], true); ?>";
-        window.location.href = url+'&oid='+oid+'&status='+status;
+        var url = "<?php echo Url::to(['wap/changeofficeorderstatus'], true); ?>";
+        window.location.href = url+'&oid='+oid+'&status='+status+'&staff_id='+staff_id;
         return false;
     });
 
@@ -156,11 +158,13 @@ use app\models\MOrder;
         alert("撤销办理");
         oid = $(this).attr('oid');
         status = $(this).attr('status');
-        alert("oid"+oid+"status"+status);
+        staff_id = $(this).attr('staff_id');
+
+        alert("oid"+oid+"status"+status+"staff_id"+staff_id);
         //location.href="#blcg";
 
-        var url = "<?php echo Url::to(['wap/oodcxbl'], true); ?>";
-        window.location.href = url+'&oid='+oid+'&status='+status;
+        var url = "<?php echo Url::to(['wap/changeofficeorderstatus'], true); ?>";
+        window.location.href = url+'&oid='+oid+'&status='+status+'&staff_id='+staff_id;
         return false;
     });
 
