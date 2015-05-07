@@ -49,5 +49,21 @@ class CheckController extends \yii\console\Controller {
             echo PHP_EOL;
         }
     }
+    
+    public function actionOfficeCampaignDetail()
+    {
+        $details = \app\models\MOfficeCampaignDetail::find()->all();
+        foreach ($details as $detail) {
+            $pic_filename = $detail->getPicFile();
+            $pic_filename_new = $pic_filename."-new.jpg";
+            try {
+                \app\models\U::compress_image_file($pic_filename);
+                echo $pic_filename." compressed.".PHP_EOL;
+            } catch (Exception $e) {
+                echo $e->getMessage();
+                echo $pic_filename.PHP_EOL;
+            }
+        }
+    }
 
 }

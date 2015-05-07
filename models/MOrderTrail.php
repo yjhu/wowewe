@@ -10,6 +10,8 @@ CREATE TABLE wx_order_trail (
     staff_id int(10) unsigned NOT NULL DEFAULT '0',
     status_old int(10) unsigned NOT NULL DEFAULT '0',
     status_new int(10) unsigned NOT NULL DEFAULT '0',
+    pay_kind_old int(10) unsigned NOT NULL DEFAULT '0',
+    pay_kind_new int(10) unsigned NOT NULL DEFAULT '0',    
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     KEY idx_oid(oid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -47,7 +49,7 @@ class MOrderTrail extends ActiveRecord
     public function rules()
     {
         return [
-            [['status_old', 'status_new', 'staff_id'], 'integer'],       
+            [['status_old', 'status_new', 'pay_kind_old', 'pay_kind_new', 'staff_id'], 'integer'],       
             [['oid'],  'string', 'min' => 1, 'max' => 64],          
         ];
     }
