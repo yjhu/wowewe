@@ -309,12 +309,12 @@ class MOrder extends ActiveRecord
     }
     
     private static function _getOfficeOrdersSql($office_id) {
-        return "select * from {self::tableName()} ".
-               "where office_id={$office_id} and ".
+        return "select * from ".self::tableName().
+               " where office_id=".$office_id." and ".
                "( ".
-                "(status = {self::STATUS_SUBMITTED} and pay_kind = {self::PAY_KIND_CASH}) or ".
-                "(status in ({self::STATUS_PAID}, {self::STATUS_FULFILLED}, {self::STATUS_SUCCEEDED}, {self::STATUS_SYSTEM_SUCCEEDED}, "
-                . "{self::STATUS_SELLER_REFUND_CLOSED}, {self::STATUS_SELLER_ROLLBACK_CLOSED})) ".
+                "(status = ".self::STATUS_SUBMITTED." and pay_kind = ".self::PAY_KIND_CASH.") or ".
+                "(status in (".self::STATUS_PAID.", ".self::STATUS_FULFILLED.", ".self::STATUS_SUCCEEDED.", ".self::STATUS_SYSTEM_SUCCEEDED.", "
+                . self::STATUS_SELLER_REFUND_CLOSED.", ".self::STATUS_SELLER_ROLLBACK_CLOSED.")) ".
                 ") and ".
                 "create_time > DATE_SUB(NOW(), INTERVAL 7 day) order by create_time DESC"
                 ;
@@ -322,7 +322,7 @@ class MOrder extends ActiveRecord
     
     public static function getOfficeOrdersCount($office_id)
     {
-        return self::findBySql(self::_getOfficeOrdersSql($office_id))->count();
+        return count(self::getOfficeOrders($office_id));
     }
     
     public static function getOfficeOrders($office_id)
