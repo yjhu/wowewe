@@ -78,7 +78,7 @@ use app\models\MOrder;
                 if ($order->pay_kind == MOrder::PAY_KIND_CASH)
                   echo "<span class='btn btn-positive' id='cxbl_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_ROLLBACK_CLOSED." staff_id=".$staff->staff_id.">撤销办理</span>"; //订单状态改为 MOrder::STATUS_SELLER_ROLLBACK_CLOSED
                 else
-                  echo "<span class='btn btn-positive' id='cxblbtk_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_REFUND_CLOSED." staff_id=".$staff->staff_id.">撤销办理并退款</span>"; //订单状态改为 MOrder::STATUS_SELLER_REFUND_CLOSED
+                  echo "<span class='btn btn-positive' id='cxblbtk_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_REFUND_CLOSED." staff_id=".$staff->staff_id." office_id=".$office->office_id.">撤销办理并退款</span>"; //订单状态改为 MOrder::STATUS_SELLER_REFUND_CLOSED
               }
 
             ?>
@@ -177,17 +177,20 @@ use app\models\MOrder;
         oid = $(this).attr('oid');
         status = $(this).attr('status');
         staff_id = $(this).attr('staff_id');
+        office_id = $(this).attr('office_id');
 
-        alert("oid"+oid+"status"+status+"staff_id"+staff_id);
+        alert("oid"+oid+"status"+status+"staff_id"+staff_id+"office_id"+office_id);
 
         $.ajax({
-          url: "<?php echo Url::to(['wap/changeorderstatusajax'], true) ; ?>",
+          url: "<?php echo Url::to(['wap/orderrefundajax'], true) ; ?>",
           type:"GET",
           cache:false,
           dataType:"json",
-          data: "oid="+oid+"&status="+status+"&staff_id="+staff_id,
+          data: "oid="+oid+"&status="+status+"&staff_id="+staff_id+"&office_id="+office_id,
           success: function(t){
-                  location.href = "<?php echo Url::to(['officeorderdetail','office_id'=>$order->office_id, 'staff_id'=>$staff_id, 'oid'=>$order->oid],true) ?>";
+
+                  var url = "<?php echo Url::to(['officeorderdetail'],true) ?>";
+                  location.href = url+'&oid='+oid+'&status='+status+'&office_id='+office_id;
             },
             error: function(){
               alert('error!');
