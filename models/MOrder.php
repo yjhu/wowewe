@@ -314,7 +314,7 @@ class MOrder extends ActiveRecord
                "( ".
                 "(status = ".self::STATUS_SUBMITTED." and pay_kind = ".self::PAY_KIND_CASH.") or ".
                 "(status in (".self::STATUS_PAID.", ".self::STATUS_FULFILLED.", ".self::STATUS_SUCCEEDED.", ".self::STATUS_SYSTEM_SUCCEEDED.", "
-                . self::STATUS_SELLER_REFUND_CLOSED.", ".self::STATUS_SELLER_ROLLBACK_CLOSED.")) ".
+                . self::STATUS_SELLER_REFUND_CLOSED.", ".self::STATUS_SELLER_CLOSED.", ".self::STATUS_SELLER_ROLLBACK_CLOSED.")) ".
                 ") and ".
                 "create_time > DATE_SUB(NOW(), INTERVAL 7 day) order by create_time DESC"
                 ;
@@ -737,14 +737,12 @@ Array
         $input->SetRefund_fee($this->feesum);
         $input->SetOut_refund_no(MOrder::generateOid());
         $input->SetOp_user_id(WxPayConfig::MCHID);
-        //U::W([__METHOD__, $input]);        
         $result = WxPayApi::refund($input);
-        U::W([__METHOD__, $result]);
         if ($result["return_code"] == "SUCCESS" && $result["result_code"] == "SUCCESS") {
             $this->status = $status;
-            $this->save(false);
+            return $this->save(false);
         }        
-        return $result;
+        return false;
     }    
 }
 
