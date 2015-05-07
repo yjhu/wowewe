@@ -2511,25 +2511,16 @@ EOD;
         return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);              
     }
 
-
-    //办理成功
-    public function actionOodblcg($oid, $status)
+    public function actionChangeofficeorderstatus()
     {        
+        $oid = $_GET['oid'];
+        $status = $_GET['status'];
+        $staff_id = $_GET['staff_id'];
         $order = MOrder::findOne(['oid'=>$oid]);
-        //$order->refund($ismanager);
-        //return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);              
+        $order->status = $status;
+        $order->save(false);        
+        return $this->redirect('officeorderdetail', 'office_id'=>$order->office_id, 'staff_id'=>$staff_id, 'oid'=>$order->oid]);                      
     }
-
-    //取消办理
-    public function actionOodcxbl($oid, $status)
-    {        
-        $order = MOrder::findOne(['oid'=>$oid]);
-        //$order->refund($ismanager);
-        //return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);              
-    }
-
-    
-    
 
     public function actionHandlecallpayout()
     {        
