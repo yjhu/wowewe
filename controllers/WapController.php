@@ -2487,6 +2487,17 @@ EOD;
         return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);      
     }
 
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/ordertuikuan:gh_03a74ac96138
+    public function actionOrdertuikuan($oid)
+    {        
+        //$order = MOrder::findOne(['oid'=>$oid]);
+        //$order->pay_kind = MOrder::PAY_KIND_CASH;
+        //$order->save(false);
+        //return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);      
+    }
+
+
+
     public function actionHandlecallpayout()
     {        
         $this->layout = false;
