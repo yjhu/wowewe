@@ -49,7 +49,8 @@
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
-    <P></P>
+        <br>
+        <p><?= $office->title ?> &nbsp;&nbsp;<?= $staff->name." ".$staff->mobile ?></p>
 
        <ul class="table-view">
    

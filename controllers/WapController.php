@@ -2511,6 +2511,26 @@ EOD;
         return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);              
     }
 
+
+    //办理成功
+    public function actionOodblcg($oid, $status)
+    {        
+        $order = MOrder::findOne(['oid'=>$oid]);
+        //$order->refund($ismanager);
+        //return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);              
+    }
+
+    //取消办理
+    public function actionOodcxbl($oid, $status)
+    {        
+        $order = MOrder::findOne(['oid'=>$oid]);
+        //$order->refund($ismanager);
+        //return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);              
+    }
+
+    
+    
+
     public function actionHandlecallpayout()
     {        
         $this->layout = false;

@@ -73,10 +73,10 @@ use app\models\MOrder;
             <?php echo MOrder::getOrderStatusName($order->status) ?>
             <?php 
               if ($order->status == MOrder::STATUS_PAID || ($oder->status == MOrder::STATUS_SUBMITTED && $order->pay_kind == MOrder::PAY_KIND_CASH)) {
-                echo "办理成功";  //订单状态改为 MOrder::STATUS_FULFILLED
+                echo "<span class='btn btn-positive' id='blcg_attr' oid=".$order->oid." status=".MOrder::STATUS_FULFILLED.">办理成功</span>";  //订单状态改为 MOrder::STATUS_FULFILLED
               } else if ($oder->status == MOrder::STATUS_FULFILLED && $staff->isSelfOperatedOfficeDirector()) {
                 if ($order->pay_kind == MOrder::PAY_KIND_CASH)
-                  echo "撤销办理"; //订单状态改为 MOrder::STATUS_SELLER_ROLLBACK_CLOSED
+                  echo "<span class='btn btn-positive' id='cxbl_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_ROLLBACK_CLOSED.">撤销办理</span>"; //订单状态改为 MOrder::STATUS_SELLER_ROLLBACK_CLOSED
                 else
                   echo "撤销办理并退款"; //订单状态改为 MOrder::STATUS_SELLER_REFUND_CLOSED
               }
@@ -92,7 +92,7 @@ use app\models\MOrder;
             <li class="table-view-cell table-view-divider">用户信息</li>
             <li class="table-view-cell"><span class="orderitem">用户姓名</span>&nbsp;&nbsp; <?= $order->username ?></li>
             <li class="table-view-cell"><span class="orderitem">联系电话</span>&nbsp;&nbsp; <?= $order->usermobile ?></li>
-            <li class="table-view-cell"><span class="orderitem">身份证号</span>&nbsp;&nbsp; <?= $order->改为 ?></li>
+            <li class="table-view-cell"><span class="orderitem">身份证号</span>&nbsp;&nbsp; <?= $order->userid ?></li>
 
 
             <li class="table-view-cell table-view-divider">收货地址</li>
@@ -104,6 +104,72 @@ use app\models\MOrder;
  &nbsp;<br>&nbsp;<br>&nbsp;<br>
     </div>
 
+
+
+      <div id="blcg" class="modal">
+        <header class="bar bar-nav">
+          <a class="icon icon-close pull-right" href="#blcg"></a>
+          <h1 class="title">办理成功, 确认？</h1>
+        </header>
+
+        <div class="content">
+            <br>
+            <a class="btn btn-block" href="#blcg">否</a>
+            <a class="btn btn-positive btn-block" id="handleBlcg">是</a>
+        </div>
+      </div>
+
+
+      <div id="cxbl" class="modal">
+        <header class="bar bar-nav">
+          <a class="icon icon-close pull-right" href="#cxbl"></a>
+          <h1 class="title">撤销办理, 确认？</h1>
+        </header>
+
+        <div class="content">
+            <br>
+            <a class="btn btn-block" href="#cxbl">否</a>
+            <a class="btn btn-positive btn-block" onclick="#">是</a>
+        </div>
+      </div>
+
+
+
+  <script type="text/javascript">
+  $(document).ready(function(){
+
+
+    $("#blcg_attr").click(function(){
+        alert("办理成功");
+        oid = $(this).attr('oid');
+        status = $(this).attr('status');
+        alert("oid"+oid+"status"+status);
+        //location.href="#blcg";
+
+        var url = "<?php echo Url::to(['wap/oodblcg'], true); ?>";
+        window.location.href = url+'&oid='+oid+'&status='+status;
+        return false;
+    });
+
+
+    $("#cxbl_attr").click(function(){
+        alert("撤销办理");
+        oid = $(this).attr('oid');
+        status = $(this).attr('status');
+        alert("oid"+oid+"status"+status);
+        //location.href="#blcg";
+
+        var url = "<?php echo Url::to(['wap/oodcxbl'], true); ?>";
+        window.location.href = url+'&oid='+oid+'&status='+status;
+        return false;
+    });
+
+
+
+  });
+
+
+  </script>
 
 
   </body>
