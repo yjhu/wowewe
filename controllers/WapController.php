@@ -3414,6 +3414,7 @@ EOD;
             Yii::$app->wx->setGhId('gh_03a74ac96138');
             //Yii::$app->wx->WxMediaDownload($model->media_id, $log_file_path);
             Yii::$app->wx->WxMediaDownload($media_id, $log_file_path);
+            U::compress_image_file($log_file_path);
         }                         
         $model->save(false);       
  
