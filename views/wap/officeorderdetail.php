@@ -67,13 +67,13 @@ use app\models\MOrder;
 
             <li class="table-view-cell"><span class="orderitem">订单状态</span>&nbsp;&nbsp; 
                 <?php if($order->status == MOrder::STATUS_PAID) { ?>
-                <span class="badge badge-positive pull-left">
+                <button class="btn btn-outlined btn-positive pull-left">
                 <?php } ?>
 
                   <?php echo MOrder::getOrderStatusName($order->status) ?>
 
                 <?php if($order->status == MOrder::STATUS_PAID) { ?>
-                  </span>
+                  </button>
                 <?php } ?>
             </li>
 
