@@ -22,6 +22,7 @@ use app\models\MOffice;
 use app\models\MGh;
 use app\models\MChannel;
 use app\models\MOrder;
+use app\models\MOrderTrail;
 use app\models\MItem;
 use app\models\MMobnum;
 use app\models\MDisk;
@@ -2504,6 +2505,7 @@ EOD;
         return $this->redirect(['order', 'gh_id'=>$order->gh_id, 'openid'=>$order->openid]);      
     }
 
+/*
     public function actionOrdertuikuan($oid, $ismanager)
     {        
         $order = MOrder::findOne(['oid'=>$oid]);
@@ -2523,12 +2525,47 @@ EOD;
         return $this->redirect(['officeorderdetail', 'office_id'=>$order->office_id, 'staff_id'=>$staff_id, 'oid'=>$order->oid]);                      
     }
 
+    public function actionOrderchangestatusajax()
+    {        
+        $oid = $_GET['oid'];
+        $status = $_GET['status'];
+        $order = MOrder::findOne(['oid'=>$oid]);
+        $order->status = $status;
+        return json_encode(['code' => 0]);
+    }
+*/
+    public function actionOrderchangestatusajax()
+    {        
+        $oid = $_GET['oid'];
+        $status = $_GET['status'];
+        $order = MOrder::findOne(['oid'=>$oid]);
+        $status_old = $order->status;
+        $order->status = $status;
+        if ($order->save(false)) {
+            $orderTrail = new MOrderTrail;
+            $orderTrail->oid = $oid;
+            $orderTrail->status_old = $status_old;
+            $orderTrail->status_new = $status;
+            $orderTrail->staff_id = empty($_GET['staff_id']) ? 0 : $_GET['staff_id'];
+            $orderTrail->save(false);
+        }
+        return json_encode(['code' => 0]);
+    }
+
     public function actionOrderrefundajax()
     {        
         $oid = $_GET['oid'];
         $status = $_GET['status'];
         $order = MOrder::findOne(['oid'=>$oid]);
-        $order->refund($status);
+        $status_old = $order->status;        
+        if ($order->refund($status)) {
+            $orderTrail = new MOrderTrail;
+            $orderTrail->oid = $oid;
+            $orderTrail->status_old = $status_old;
+            $orderTrail->status_new = $status;
+            $orderTrail->staff_id = empty($_GET['staff_id']) ? 0 : $_GET['staff_id'];
+            $orderTrail->save(false);        
+        }        
         return json_encode(['code' => 0]);
     }
 
