@@ -2523,7 +2523,7 @@ EOD;
         return $this->redirect(['officeorderdetail', 'office_id'=>$order->office_id, 'staff_id'=>$staff_id, 'oid'=>$order->oid]);                      
     }
 
-    public function actionChangeorderstatusajax()
+    public function actionOrderrefundajax()
     {        
         $oid = $_GET['oid'];
         $status = $_GET['status'];
