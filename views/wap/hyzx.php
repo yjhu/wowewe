@@ -7,6 +7,9 @@
     use app\models\MChannel;
     use app\models\MSceneDetail;
     use app\models\MUser;
+
+    use app\models\MOrder;
+    
 ?>
 
 
@@ -180,9 +183,11 @@
             else
                 $staff = $user->mobileStaff;
 
-            if (!empty($staff) && !empty($staff->office) && !empty($staff->office->is_selfOperated)) {
+            if (!empty($staff) && !empty($staff->office) && $staff->office->is_selfOperated) {
         ?>
-        <li><a ajax-data="false" href="<?php echo Url::to(['officeorder', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'staff_id'=>$staff->staff_id]) ?>" data-ajax="false"><img src="../web/images/woke/wddd.gif" alt="营业厅订单" class="ui-li-icon ui-corner-none">营业厅订单</a></li>
+        <li><a ajax-data="false" href="<?php echo Url::to(['officeorder', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'staff_id'=>$staff->staff_id]) ?>" data-ajax="false"><img src="../web/images/woke/wddd.gif" alt="营业厅订单" class="ui-li-icon ui-corner-none">营业厅订单<span class="ui-li-count"><?= MOrder::getOfficeOrdersCount($staff->office->office_id) ?></span></a></li>
+
+
         <?php }  ?>
 
 

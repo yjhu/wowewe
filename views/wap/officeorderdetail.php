@@ -65,16 +65,25 @@ use app\models\MOrder;
             <li class="table-view-cell"><span class="orderitem">支付方式</span>&nbsp;&nbsp; 
             <?= MOrder::getOrderPayKindOption($order->pay_kind) ?></li>
 
+
+
             <li class="table-view-cell"><span class="orderitem">订单状态</span>&nbsp;&nbsp; 
-                <?php if($order->status == MOrder::STATUS_PAID) { ?>
-                <button class="btn btn-outlined btn-positive pull-left">
-                <?php } ?>
 
-                  <?php echo MOrder::getOrderStatusName($order->status) ?>
 
-                <?php if($order->status == MOrder::STATUS_PAID) { ?>
-                  </button>
-                <?php } ?>
+            <?php echo MOrder::getOrderStatusName($order->status) ?>
+            <?php 
+              if ($order->status == MOrder::STATUS_PAID || ($oder->status == MOrder::STATUS_SUBMITTED && $order->pay_kind == MOrder::PAY_KIND_CASH)) {
+                echo "办理成功";  //订单状态改为 MOrder::STATUS_FULFILLED
+              } else if ($oder->status == MOrder::STATUS_FULFILLED && $staff->isSelfOperatedOfficeDirector()) {
+                if ($order->pay_kind == MOrder::PAY_KIND_CASH)
+                  echo "撤销办理"; //订单状态改为 MOrder::STATUS_SELLER_ROLLBACK_CLOSED
+                else
+                  echo "撤销办理并退款"; //订单状态改为 MOrder::STATUS_SELLER_REFUND_CLOSED
+              }
+
+            ?>
+
+
             </li>
 
             <li class="table-view-cell"><span class="orderitem">下单时间</span>&nbsp;&nbsp; <?= $order->create_time ?></li>
@@ -83,7 +92,7 @@ use app\models\MOrder;
             <li class="table-view-cell table-view-divider">用户信息</li>
             <li class="table-view-cell"><span class="orderitem">用户姓名</span>&nbsp;&nbsp; <?= $order->username ?></li>
             <li class="table-view-cell"><span class="orderitem">联系电话</span>&nbsp;&nbsp; <?= $order->usermobile ?></li>
-            <li class="table-view-cell"><span class="orderitem">身份证号</span>&nbsp;&nbsp; <?= $order->userid ?></li>
+            <li class="table-view-cell"><span class="orderitem">身份证号</span>&nbsp;&nbsp; <?= $order->改为 ?></li>
 
 
             <li class="table-view-cell table-view-divider">收货地址</li>
