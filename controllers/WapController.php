@@ -3410,7 +3410,7 @@ EOD;
 
         $office_id = empty($_GET['office_id']) ? 0 : $_GET['office_id'];
         $cat = empty($_GET['cat']) ? 1 : $_GET['cat'];
-        $media_id = empty($_GET['serverId']) ? 0 : $_GET['serverId'];        
+        $media_id = empty($_GET['serverId']) ? 0 : json_decode($_GET['serverId'], true);        
 
         if (empty($media_id)) {
             //U::W([$_GET]);
@@ -3432,15 +3432,18 @@ EOD;
         $model->pic_category = $cat;
         //$model->media_id = $media_id;    
 
-        $model->pic_url = "{$media_id}.jpg";
-        $log_file_path = $model->getPicFile();
-        if ((!file_exists($log_file_path)) || $model->getPicFileSize() == 0|| $model->getPicFileSize() == 47)
-        {
+        //$model->pic_url = "{$media_id}.jpg";
+        $media_url = array();
+        foreach ($media_id as $media) {
+            $filename = $media . ".jpg";
+            $log_file_path = $model->getPicFileByMedia($filename);           
             Yii::$app->wx->setGhId('gh_03a74ac96138');
             //Yii::$app->wx->WxMediaDownload($model->media_id, $log_file_path);
-            Yii::$app->wx->WxMediaDownload($media_id, $log_file_path);
+            Yii::$app->wx->WxMediaDownload($media, $log_file_path);
             U::compress_image_file($log_file_path);
-        }                         
+            $media_url[] = $filename;
+        }
+        $model->pic_url = implode(",", $media_url);                       
         $model->save(false);       
  
         return json_encode(['code'=>0]);

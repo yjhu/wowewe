@@ -57,15 +57,27 @@ $signPackage = $jssdk->GetSignPackage();
 
           if(!empty($model_office_campaign_detail))
           {
-            $url = $model_office_campaign_detail->getImageUrl();
+            $urls = $model_office_campaign_detail->getImageUrls();
           }
           else
             //$url = 'http://placehold.it/200x200';
-            $url = '../web/images/comm-icon/upload-pic-700x700.gif';
+            $urls = ['../web/images/comm-icon/upload-pic-700x700.gif'];
       ?>
 
-      <img width=100% class="media-object pull-left" src="<?= $url ?>">
+      <!--
+      <img width=100% class="media-object pull-left" src="<//?= $url ?>">
+      -->
 
+        <div class="slider" id="mySlider">
+        <div class="slide-group">
+            <?php foreach ($urls as $url) { ?>
+                <div class="slide">
+                    <img width=100% src="<?= $url ?>">
+                </div>
+            <?php } ?>  
+        </div>
+        </div>
+      
       <?php if ($scores['count'] == 0) { ?>
     
       <form>
@@ -162,12 +174,17 @@ $signPackage = $jssdk->GetSignPackage();
 
 <script>
 
-var cat = "<?= $model_ocpc->id ?>";
+var cat = "<?= $model_ocpc->sort_order ?>";
 var office_id = "<?= $model_office->office_id ?>";
 
 $("#chooseImage").hide();
 $("#submitImage").hide();
 
+if (cat == 6) {
+    $("#chooseImage").html("选择照片(最多5张)");
+} else {
+    $("#chooseImage").html("选择照片(只能1张)");
+}
 
 wx.ready(function () {
    //alert('aaaa');
@@ -180,11 +197,21 @@ wx.ready(function () {
     //alert("bbbb");
     wx.chooseImage({
       success: function (res) {
-        if (res.localIds.length > 1) {
-          alert('一次只能选择一张图片，请重新选择！');
-          return;
-          //return false;
+
+        if (cat == 6) {
+            if (res.localIds.length > 5) {
+              alert('最多只能选择5张图片，请重新选择！');
+              return;
+              //return false;
+            }
+        } else {
+            if (res.localIds.length > 1) {
+              alert('只能选择一张图片，请重新选择！');
+              return;
+              //return false;
+            }
         }
+        
 
         $("#chooseImage").hide();
         $("#submitImage").show();
@@ -211,10 +238,10 @@ wx.ready(function () {
       alert('请先选择上传图片');
       return;
     }
-    if (images.localId.length > 1) {
-      alert('Select one picture every time');
-      return;
-    }
+    //if (images.localId.length > 1) {
+    //  alert('Select one picture every time');
+    //  return;
+    //}
 
     var i = 0, length = images.localId.length;
     images.serverId = [];
@@ -280,10 +307,10 @@ document.querySelector('#submitImage').onclick = function () {
       alert('请先选择上传图片');
       return false;
     }
-    if (images.localId.length > 1) {
-      alert('Select one picture every time');
-      return false;
-    }
+//    if (images.localId.length > 1) {
+//      alert('Select one picture every time');
+//      return false;
+//    }
 
     var i = 0, length = images.localId.length;
     images.serverId = [];
@@ -293,8 +320,8 @@ document.querySelector('#submitImage').onclick = function () {
         success: function (res) {
           //alert('localid=' + images.localId[i] + 'serverId=' + res.serverId);
           i++;
-          //alert('已上传：' + i + '/' + length);
-          alert('恭喜你，已成功上传！');
+          alert('已上传：' + i + '/' + length);
+          // alert('恭喜你，已成功上传！');
           images.serverId.push(res.serverId);
           if (i < length) {
             upload();
@@ -302,8 +329,8 @@ document.querySelector('#submitImage').onclick = function () {
           else {
 
             //alert('localid=' + images.localId[0] + ', serverId=' + images.serverId[0]);
-
-            $("#serverId").val(images.serverId[0]);
+            alert('恭喜你，已成功上传！');
+            $("#serverId").val(JSON.stringify(images.serverId));
             serverId = $("#serverId").val();
 
            // status = $("#status").val();

@@ -69,14 +69,23 @@ class MOfficeCampaignDetail extends \yii\db\ActiveRecord {
 
         public function afterDelete()
         {
-            $file = $this->getPicFile();
-            @unlink($file);
+            $media_urls = explode(",", $this->pic_url);
+            foreach($media_urls as $media_url) {
+                $file = $this->getPicFileByMedia($media_url);
+                @unlink($file);
+            }
             parent::afterDelete();
         }
-
+        
+        public function getPicFileByMedia($media_url)
+        {
+            return Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . self::PHOTO_PATH . DIRECTORY_SEPARATOR . $media_url;
+        }
+        
         public function getPicFile()
         {
-            return Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . self::PHOTO_PATH . DIRECTORY_SEPARATOR . $this->pic_url;
+            $media_urls = explode(",", $this->pic_url);
+            return Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . self::PHOTO_PATH . DIRECTORY_SEPARATOR . $media_url[0];
         }
 
         public function getPicFileSize()
@@ -84,12 +93,22 @@ class MOfficeCampaignDetail extends \yii\db\ActiveRecord {
             return filesize($this->getPicFile());
         }
 
+        public function getImageUrls()
+        {
+            $media_urls = explode(",", $this->pic_url);
+            $urls = [];
+            foreach($media_urls as $media_url){
+                $urls[] = Yii::$app->request->getHostInfo() . Yii::$app->request->getBaseUrl() . '/'. self::PHOTO_PATH. '/' ."{$media_url}";
+            }
+            return $urls;
+        }
+        
         public function getImageUrl()
         {
             //$gh_id = $this->gh_id;
 
-            $pic_url = $this->pic_url;
-            $log_file_path = $this->getPicFile();
+            $media_urls = explode(",", $this->pic_url);
+//            $log_file_path = $this->getPicFile();
             /*
             if ((!file_exists($log_file_path)) || $this->getPicFileSize() == 0|| $this->getPicFileSize() == 47)
             {
@@ -97,7 +116,7 @@ class MOfficeCampaignDetail extends \yii\db\ActiveRecord {
                 Yii::$app->wx->WxMediaDownload($this->media_id, $log_file_path);
             } 
             */                
-            $url = Yii::$app->request->getHostInfo() . Yii::$app->request->getBaseUrl() . '/'. self::PHOTO_PATH. '/' ."{$this->pic_url}";
+            $url = Yii::$app->request->getHostInfo() . Yii::$app->request->getBaseUrl() . '/'. self::PHOTO_PATH. '/' ."{$media_urls[0]}";
             return $url;
         }
 
