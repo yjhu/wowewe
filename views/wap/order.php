@@ -277,6 +277,8 @@ function load_data1(i, n)
 		$("#status").html(n.statusName +"<span style='color:blue' class='qxdd_orderdetail' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span>");
 	else if(n.status == 1) //退款
 		$("#status").html(n.statusName +"<span style='color:blue' class='tuikuan_orderdetail' myOid="+n.oid+">&nbsp;&nbsp;退款</span>");
+	else if(n.status == 2) //订单已办理 时用户发起的确认 STATUS_FULFILLED 
+		$("#status").html(n.statusName +"<span style='color:blue' class='queren_orderdetail' myOid="+n.oid+">&nbsp;&nbsp;确认</span>");
 	else
 		$("#status").html(n.statusName);
 
@@ -802,7 +804,30 @@ $(document).on("pageinit", "#orderdetail", function(){
 	});
 
 	
+	$(document).on("tap",".queren_orderdetail",function(){
 
+		oid = $(this).attr('myOid');
+		status = "<?= MOrder::STATUS_SUCCEEDED ?>";
+		//alert(oid);
+
+        $.ajax({
+          url: "<?php echo Url::to(['wap/orderchangestatusajax'], true) ; ?>",
+          type:"GET",
+          cache:false,
+          dataType:"json",
+          data: "oid="+oid+"&status="+status,
+          success: function(t){
+
+                  var url = "<?php echo Url::to(['order'],true) ?>";
+                  location.href = url+'&gh_id='+gh_id+'&openid='+openid;
+            },
+            error: function(){
+              alert('error!');
+            }
+        });
+
+        return false;
+	});
 
 });
 
