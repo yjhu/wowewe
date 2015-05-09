@@ -180,25 +180,13 @@ var office_id = "<?= $model_office->office_id ?>";
 $("#chooseImage").hide();
 $("#submitImage").hide();
 
-<<<<<<< .mine
-if(cat == 6)
-{
-  $("#chooseImage").html("选择照片(最多5张)");
-}
-else
-{
-  $("#chooseImage").html("选择照片(只能1张)");
-}
-=======
+
 if (cat == 6) {
     $("#chooseImage").html("选择照片(最多5张)");
 } else {
     $("#chooseImage").html("选择照片(只能1张)");
 }
 
-
-
->>>>>>> .theirs
 
 wx.ready(function () {
    //alert('aaaa');
