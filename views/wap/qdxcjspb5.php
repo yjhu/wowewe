@@ -79,15 +79,27 @@
 
         if(!empty($model_office_campaign_detail))
         {
-          $url = $model_office_campaign_detail->getImageUrl();
+          $urls = $model_office_campaign_detail->getImageUrls();
         }
         else
           //$url = 'http://placehold.it/200x200';
-          $url = '../web/images/comm-icon/upload-pic-700x700.gif';
+          $urls = ['../web/images/comm-icon/upload-pic-700x700.gif'];
         ?>
 
-       <img width=100% class="media-object pull-left" src="<?= $url ?>">
+        <!--
+       <img width=100% class="media-object pull-left" src="<//?= $url ?>">
+        -->
 
+        <div class="slider" id="mySlider">
+            <div class="slide-group">
+                <?php foreach ($urls as $url) { ?>
+                    <div class="slide">
+                        <img width=100% src="<?= $url ?>">
+                    </div>
+                <?php } ?>  
+            </div>
+        </div>
+       
       <?php 
           
 
