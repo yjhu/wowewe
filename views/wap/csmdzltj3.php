@@ -162,12 +162,20 @@ $signPackage = $jssdk->GetSignPackage();
 
 <script>
 
-var cat = "<?= $model_ocpc->id ?>";
+var cat = "<?= $model_ocpc->sort_order ?>";
 var office_id = "<?= $model_office->office_id ?>";
 
 $("#chooseImage").hide();
 $("#submitImage").hide();
 
+if(cat == 6)
+{
+  $("#chooseImage").html("选择照片(最多5张)");
+}
+else
+{
+  $("#chooseImage").html("选择照片(只能1张)");
+}
 
 wx.ready(function () {
    //alert('aaaa');
@@ -180,10 +188,22 @@ wx.ready(function () {
     //alert("bbbb");
     wx.chooseImage({
       success: function (res) {
-        if (res.localIds.length > 1) {
-          alert('一次只能选择一张图片，请重新选择！');
-          return;
-          //return false;
+
+        if(cat==6)/*为其他时*/
+        {
+            if (res.localIds.length > 5) {
+            alert('最多只能选择5张图片，请重新选择！');
+            return;
+            //return false;
+            }
+        }
+        else
+        {
+          if (res.localIds.length > 1) {
+            alert('一次只能选择一张图片，请重新选择！');
+            return;
+            //return false;
+          }
         }
 
         $("#chooseImage").hide();
@@ -211,10 +231,12 @@ wx.ready(function () {
       alert('请先选择上传图片');
       return;
     }
-    if (images.localId.length > 1) {
-      alert('Select one picture every time');
-      return;
-    }
+
+
+    //if (images.localId.length > 1) {
+    //  alert('Select one picture every time');
+    //  return;
+    //}
 
     var i = 0, length = images.localId.length;
     images.serverId = [];
