@@ -27,7 +27,7 @@ class MMarketingServiceCenter extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['region_id'], 'integer'],
+            [['region_id', 'office_total_count'], 'integer'],
             [['name'], 'string', 'max' => 255]
         ];
     }
@@ -57,21 +57,28 @@ class MMarketingServiceCenter extends \yii\db\ActiveRecord
     
     public function getOfficeCount()
     {
+        if (!empty($this->office_total_count)) return $this->office_total_count;
         $count = 0;
         foreach($this->offices as $office) {
             if ((!empty($office->supervisor)) || ($office->is_selfOperated)) 
                 $count++;
         }
+//        \app\models\U::W("-------------getOfficeCount()");
+//        \app\models\U::W($this);
+        $this->updateAttributes(['office_total_count' => $count]);
         return $count;
     }
     public function getDetailedOfficeCount()
     {
-        $count = 0;
-        foreach($this->offices as $office) {
-            if (MOfficeCampaignDetail::getDetailReadyStatus($office->office_id) == MOfficeCampaignDetail::DETAIL_COMPLETE)
-                $count++;
-        }
-        return $count;
+        return $this->office_detailed_count;
+//        if (!empty($this->office_detailed_count)) return $this->office_detailed_count;
+//        $count = 0;
+//        foreach($this->offices as $office) {
+//            if (MOfficeCampaignDetail::getDetailReadyStatus($office->office_id) == MOfficeCampaignDetail::DETAIL_COMPLETE)
+//                $count++;
+//        }
+//        $this->updateAttributes(['office_detailed_count' => $count]);
+//        return $count;
     }
     public function getScoredOfficeCount()
     {

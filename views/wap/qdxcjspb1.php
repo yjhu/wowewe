@@ -49,7 +49,11 @@
 
         <ul class="table-view">
 
-        <?php foreach($models_mr as $model_mr) {  ?>
+        <?php 
+        foreach($models_mr as $model_mr) {  
+            $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]); 
+            $staff = $wx_user->staff;
+        ?>
 
             <li class="table-view-cell media">
             <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb2','gh_id'=>$gh_id, 'openid'=>$openid, 'mr_id'=>$model_mr->id],true) ?>">
@@ -58,8 +62,7 @@
             -->
              <div class="pull-right">
               <?php
-                $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]); 
-                $staff = $wx_user->staff;
+                
                 $scored_count = $model_mr->getScoredOfficeCount();
                 if ($staff->isOfficeCampaignScorer()) {
                   $myScoredCount = $model_mr->getScoredOfficeCountByScorer($staff->staff_id);
@@ -71,7 +74,6 @@
               <?php if ($scored_count > 0) { ?>
               <span class="badge badge-positive">已评:<?= $scored_count; ?></span>
               <?php } ?>
-              <!--<span class="badge badge-primary"><?= $model_mr->getDetailedOfficeCount(); ?></span>-->
               <span class="badge"><?= $model_mr->getOfficeCount(); ?></span>     
              </div>
 

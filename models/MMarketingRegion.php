@@ -26,6 +26,7 @@ class MMarketingRegion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['office_total_counter'], 'integer'],
             [['name'], 'string', 'max' => 255]
         ];
     }
@@ -48,19 +49,26 @@ class MMarketingRegion extends \yii\db\ActiveRecord
     
     public function getOfficeCount()
     {
+        if (!empty($this->office_total_count)) return $this->office_total_count;
         $count = 0;
         foreach($this->mscs as $msc) {
            $count += $msc->getOfficeCount();
         }
+        $this->office_total_count = $count;
+        $this->save(false);
         return $count;
     }
+    
     public function getDetailedOfficeCount()
     {
-        $count = 0;
-        foreach($this->mscs as $msc) {
-           $count += $msc->getDetailedOfficeCount();
-        }
-        return $count;
+        return $this->office_detailed_count;
+//        if (!empty($this->office_detailed_count)) return $this->office_detailed_count;
+//        $count = 0;
+//        foreach($this->mscs as $msc) {
+//           $count += $msc->getDetailedOfficeCount();
+//        }
+//        $this->updateAttributes(['office_detailed_count' => $count]);
+//        return $count;
     }
     public function getScoredOfficeCount()
     {
