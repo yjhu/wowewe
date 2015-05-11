@@ -42,7 +42,9 @@ class MGh extends ActiveRecord
 
     const GH_XIANGYANGUNICOM_OPENID_HBHE = 'oKgUduNHzUQlGRIDAghiY7ywSeWk';
     const GH_XIANGYANGUNICOM_OPENID_KZENG = 'oKgUduJJFo9ocN8qO9k2N5xrKoGE';
-    const GH_XIANGYANGUNICOM_OPENID_GTSUN = 'oKgUduNaK7mfojofz2qnSxa_FTMs';    
+    const GH_XIANGYANGUNICOM_OPENID_GTSUN = 'oKgUduNaK7mfojofz2qnSxa_FTMs';
+    //zhangjie
+    const GH_XIANGYANGUNICOM_OPENID_JZHANG = 'oKgUduJd29M339-sRZG3tV1k7o2A';
 
     const GH_WOSO_OPENID_HBHE = 'oSHFKs7-TgmNpLGjtaY4Sto9Ye8o';
     const GH_WOSO_OPENID_KZENG = 'oSHFKs9_gq4Ve6sHdQ86mJh1U3ZQ';

@@ -112,7 +112,7 @@
               -->
               <center>
               <div style="vertical-align: middle;">
-
+                        
               <span id="minStr" class="badge"></span>
               <span id="minIcon" style="height:50px;font-size:48px;color:#ccc" class="icon icon-left"></span>
               &nbsp;

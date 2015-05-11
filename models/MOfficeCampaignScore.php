@@ -90,7 +90,7 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
     public static function getScoreByScorerAndPicCategory($office_id, $scorer_id, $pic_category, $date = null)
     {
         $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
-        $end_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();;
+        $end_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
 
         $score = self::find()->joinWith('campaignDetail')
                     ->andWhere(['wx_office_campaign_detail.office_id' => $office_id])

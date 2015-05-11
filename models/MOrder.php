@@ -668,7 +668,9 @@ EOD;
         //$input->SetAttach("test");
         $input->SetOut_trade_no($this->oid);
         $input->SetTotal_fee("{$this->feesum}");
-        if ($this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_HBHE) {
+        if ($this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || 
+                $this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_HBHE ||
+                $this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_JZHANG) {
             $input->SetTotal_fee("1");
         }
         $input->SetTime_start(date("YmdHis"));
@@ -725,7 +727,9 @@ Array
 */
     public function refund($status)
     {
-        if ($this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_KZENG ||$this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_HBHE) {
+        if ($this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_KZENG ||
+            $this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_HBHE ||
+            $this->openid == MGh::GH_XIANGYANGUNICOM_OPENID_JZHANG) {
            $this->feesum = 1;
         }
     
