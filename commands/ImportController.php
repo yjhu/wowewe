@@ -68,6 +68,8 @@ class ImportController extends Controller {
                     'office_id' => $office->office_id,
                     'msc_id' => $msc->id,
                 ])->execute();
+                $msc->updateCounters(['office_total_count' => 1]);
+                $region->updateCounters(['office_total_count' => 1]);
             }
 
             $staff = MStaff::findOne(['name' => $supervisor_name_utf8]);
