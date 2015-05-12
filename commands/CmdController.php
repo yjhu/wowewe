@@ -588,7 +588,7 @@ class CmdController extends Controller
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/sm-balance
     public function actionSmBalance()
     {        
-	 echo "guodu:".ESmsGuodu::B(true);
+        echo "guodu:".ESmsGuodu::B(false);
     }
 
     //first convert into txt file
