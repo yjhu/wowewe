@@ -39,7 +39,34 @@ class ImportController extends Controller {
             $supervisor_name = trim($fields[3]);
             $supervisor_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $supervisor_name);
             $supervisor_mobile = trim($fields[4]);
-
+            $comment = trim($fields[5]);
+            $comment_utf8 = iconv('GBK', 'UTF-8//IGNORE', $comment);
+            
+            $need2delete = false;
+            if (mb_strpos($comment, '删除') === false);
+            else $need2delete = true;
+            
+            if ($need2delete) {
+               if (!empty($office_name_utf8) && $office_name_utf8 != '') {
+                   $office = MOffice::findOne(['title' => $office_name_utf8, 'gh_id' => \app\models\MGh::GH_XIANGYANGUNICOM]);
+                   if (!empty($office)) {
+                        // 删除督导关系
+                        yii::$app->db->createCommand()->delete('wx_rel_supervision_staff_office', [
+                            'office_id' => $office->office_id,
+                        ])->execute();
+                        // 删除营服所属关系
+                        if (!empty($office->msc)) {
+                            $office->msc->updateCounters(['office_total_count' => -1]);
+                            $office->msc->marketingRegion->updateCounters(['office_total_count' => -1]);
+                            yii::$app->db->createCommand()->delete('wx_rel_office_msc', [
+                                'office_id' => $office->office_id,
+                            ])->execute();
+                        }
+                   }
+               }
+               continue;
+            }
+            
             if (empty($region_name_utf8) || $region_name_utf8 == '') continue;
             $region = MMarketingRegion::findOne(['name' => $region_name_utf8]);
             if (empty($region)) {
