@@ -3318,6 +3318,7 @@ EOD;
 
         $staff_id = $_GET['staff_id'];
         $staff = MStaff::findOne(['staff_id' => $staff_id]);
+        $offices = [];
         if ($staff->isSelfOperatedOfficeDirector())
             $offices = array($staff->directedOffice);
         if ($staff->isSupervisor())
