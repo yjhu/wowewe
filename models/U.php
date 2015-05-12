@@ -461,12 +461,12 @@ class U
 
     public static function getFirstDate($year, $month)
     {
-        return date('Y-m-d', mktime(0, 0, 0, $month, 1, $year));
+        return date('Y-m-d H:i:s', mktime(0, 0, 0, $month, 1, $year));
     }
 
     public static function getLastDate($year, $month)
     {
-        return date('Y-m-t', mktime(0, 0, 0, $month, 1, $year));
+        return date('Y-m-t H:i:s', mktime(23, 59, 59, $month, 1, $year));
     }
 
     public static function getFirstDayOfLastMonth()
