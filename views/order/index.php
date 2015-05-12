@@ -44,7 +44,7 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'detail',
 				'headerOptions' => array('style'=>'width:100px;'),			
 			],
-                                        /**
+
 			[
 				'attribute' => 'cid',
 				'value'=>function ($model, $key, $index, $column) { return MItem::getItemCatName($model->cid); },
@@ -54,11 +54,13 @@ $this->params['breadcrumbs'][] = $this->title;
 				'attribute' => 'feesum',
 				'value'=>function ($model, $key, $index, $column) { return "￥".sprintf("%0.2f",$model->feesum/100); },
 			],
+/*
 			[
 				'label' => '卡号',
 				'attribute' => 'select_mobnum',
 				'headerOptions' => array('style'=>'width:80px;'),			
 			],
+*/
 			[
 				'attribute'=>'create_time',
 				'filterType'=>GridView::FILTER_DATE,
@@ -75,8 +77,6 @@ $this->params['breadcrumbs'][] = $this->title;
 					]
 				],
 			],
-                                         * 
-                                         */
 
 /*	
 			[
@@ -146,7 +146,7 @@ $this->params['breadcrumbs'][] = $this->title;
 */
             [
 				'class' => 'yii\grid\ActionColumn',
-				'template' => '{view} {update} {chat} {refund}',
+				'template' => '{view} {update} {chat}',
 				'buttons' => [
 					'chat' => function ($url, $model) {
 						return Html::a('<span class="glyphicon glyphicon-send"></span>', $url, [
@@ -156,6 +156,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							//'data-pjax' => '1',
 						]);
 					},
+/*
 					'refund' => function ($url, $model) {
 						return Html::a('<span class="glyphicon glyphicon-off"></span>', $url, [
 							'title' => Yii::t('yii', 'Refund'),
@@ -164,7 +165,7 @@ $this->params['breadcrumbs'][] = $this->title;
 							//'data-pjax' => '1',
 						]);
 					}
-
+*/
 				],
 			],
 
