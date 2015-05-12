@@ -231,13 +231,13 @@ class NightController extends Controller {
                             $model->amount = $amount;
                             $model->memo = '推荐粉丝';
                             $model->save(false);
-                            U::W("SAVE OK, scene_id={$staff->scene_id}, openid={$staff->openid}, amount={$model->amount}");
+//                            U::W("SAVE OK, scene_id={$staff->scene_id}, openid={$staff->openid}, amount={$model->amount}");
                         }
                     } else {
-                        U::W("scene_id={$staff->scene_id}, openid={$staff->openid}, realscore={$real_score}, ");
+//                        U::W("scene_id={$staff->scene_id}, openid={$staff->openid}, realscore={$real_score}, ");
                     }
                 } else {
-                    U::W("scene_id={$staff->scene_id}, openid={$staff->openid}");
+//                    U::W("scene_id={$staff->scene_id}, openid={$staff->openid}");
                 }
             }
         }

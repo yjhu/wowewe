@@ -108,6 +108,8 @@ class MUserAccount extends ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
+//        static $items = 0;
+//        static $openids = [];
         parent::afterSave($insert, $changedAttributes);
         $user = $this->user;
         if (!empty($user)) {
@@ -116,7 +118,16 @@ class MUserAccount extends ActiveRecord
             } else {
                 $user->user_account_balance = $user->user_account_balance - $this->_oldAmount + $this->amount;
             }
+//            U::W("--------MUserAccount::afterSave()");
+//            U::W([++$items, $user->user_account_balance, $user->openid]);
+//            if (in_array($user->openid, $openids)) {
+//                U::W(["duplicate openid: ", $user->openid, $user->staff->staff_id]);
+//            } else 
+//                $openids[] = $user->openid;
             $user->save(false);            
+        } else {
+            U::W("---------------MUserAccount::afterSave()");
+            U::W($this);
         }
     }    
 
