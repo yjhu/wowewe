@@ -27,7 +27,7 @@ class ImportController extends Controller {
         while (!feof($fh)) {
             $line = fgets($fh);
             $i++;
-            if (empty($line))
+            if (empty($line) || trim($line) == '')
                 continue;
             $fields = explode(",", $line);
             $office_name = trim($fields[0]);
@@ -40,6 +40,7 @@ class ImportController extends Controller {
             $supervisor_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $supervisor_name);
             $supervisor_mobile = trim($fields[4]);
 
+            if (empty($region_name_utf8) || $region_name_utf8 == '') continue;
             $region = MMarketingRegion::findOne(['name' => $region_name_utf8]);
             if (empty($region)) {
                 $region = new MMarketingRegion;
@@ -47,6 +48,7 @@ class ImportController extends Controller {
                 $region->save(false);
             }
 
+            if (empty($msc_name_utf8) || $msc_name_utf8 == '') continue;
             $msc = MMarketingServiceCenter::findOne(['name' => $msc_name_utf8]);
             if (empty($msc)) {
                 $msc = new MMarketingServiceCenter;
@@ -55,6 +57,7 @@ class ImportController extends Controller {
                 $msc->save(false);
             }
 
+            if (empty($office_name_utf8) || $office_name_utf8 == '') continue;
             $office = MOffice::findOne(['title' => $office_name_utf8]);
             if (empty($office)) {
                 $office = new MOffice;
@@ -72,6 +75,7 @@ class ImportController extends Controller {
                 $region->updateCounters(['office_total_count' => 1]);
             }
 
+            if (empty($supervisor_name_utf8) || $supervisor_name_utf8 == '') continue;
             $staff = MStaff::findOne(['name' => $supervisor_name_utf8, 'gh_id' => \app\models\MGh::GH_XIANGYANGUNICOM]);
             if (empty($staff)) {
                 $staff = new MStaff;
