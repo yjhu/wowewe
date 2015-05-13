@@ -277,7 +277,7 @@ function load_data1(i, n)
 		$("#status").html(n.statusName +"<span style='color:blue' class='qxdd_orderdetail' myOid="+n.oid+">&nbsp;&nbsp;取消订单</span>");
 	else if(n.status == 1) //退款
 		$("#status").html(n.statusName +"<span style='color:blue' class='tuikuan_orderdetail' myOid="+n.oid+">&nbsp;&nbsp;退款</span>");
-	else if(n.status == 2) //订单已办理 时用户发起的确认 STATUS_FULFILLED 
+	else if(n.status == 2) //订单已办理 时用户发起的确认 STATUS_SUCCEEDED 
 		$("#status").html(n.statusName +"<span style='color:blue' class='queren_orderdetail' myOid="+n.oid+">&nbsp;&nbsp;确认</span>");
 	else
 		$("#status").html(n.statusName);

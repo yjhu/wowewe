@@ -65,34 +65,42 @@ use app\models\MOrder;
             <li class="table-view-cell"><span class="orderitem">商品价格</span>&nbsp;&nbsp; ￥<?= ($order->feesum)/100 ?>元</li>
 
             <li class="table-view-cell"><span class="orderitem">支付方式</span>&nbsp;&nbsp; 
-            <?= MOrder::getOrderPayKindOption($order->pay_kind) ?></li>
+              <?= MOrder::getOrderPayKindOption($order->pay_kind) ?>
+            </li>
 
-            <?php if ($order->buyerCanPay()) {
-              //echo "<span style='color:blue' class='weixin_pay' myUrl="+n.url+">&nbsp;&nbsp;继续支付</span>";
-              echo "<span class='btn btn-positive' id='weixin_pay' myUrl=".$order->GetOrderJsApiParameters().">&nbsp;&nbsp;继续支付</span>";
-            } ?>
+            <li class="table-view-cell table-view-divider">
 
-            <?php if ($order->buyerCanPay()) {
-              echo "<span class='btn btn-positive' id='xianxia_pay' oid=".$order->oid."status=".MOrder::PAY_KIND_CASH.">&nbsp;&nbsp;线下支付</span>";
-            } ?>
+                <span class="orderitem">
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <?php if ($order->buyerCanPay()) {
+                        //echo "<span style='color:blue' class='weixin_pay' myUrl="+n.url+">&nbsp;&nbsp;继续支付</span>";
+                        echo "<span class='btn btn-positive' id='weixin_pay' myUrl=".$order->GetOrderJsApiParameters().">继续支付</span>";
+                      } ?>
+                      &nbsp;&nbsp;
+                      <?php if ($order->buyerCanPay()) {
+                        echo "<span class='btn' id='xianxia_pay' oid=".$order->oid."status=".MOrder::PAY_KIND_CASH.">线下支付</span>";
+                      } ?>
+                </span>
+
+
+            </li>
 
             <li class="table-view-cell"><span class="orderitem">订单状态</span>&nbsp;&nbsp; 
 
-            <?php echo MOrder::getOrderStatusName($order->status) ?>
+              <?php echo MOrder::getOrderStatusName($order->status) ?>
 
-            <?php if ($order->buyerCanCancel()) {
-              echo "<span class='btn btn-negative' id='qxdd_attr' oid=".$order->oid." status=".MOrder::STATUS_BUYER_CLOSED.">取消订单<span class='icon icon-close'></span></span>";
-            } ?>
+              <?php if ($order->buyerCanCancel()) {
+                echo "<span class='btn btn-negative' id='qxdd_attr' oid=".$order->oid." status=".MOrder::STATUS_BUYER_CLOSED.">取消订单</span>";
+              } ?>
 
-            <?php if ($order->buyerCanRefund()) {
-              echo "<span class='btn btn-negative' id='tk_attr' oid=".$order->oid." status=".MOrder::STATUS_BUYER_REFUND_CLOSED.">退款<span class='icon icon-close'></span></span>";
-            } ?>
+              <?php if ($order->buyerCanRefund()) {
+                echo "<span class='btn btn-negative' id='tk_attr' oid=".$order->oid." status=".MOrder::STATUS_BUYER_REFUND_CLOSED.">退款</span>";
+              } ?>
 
-            <?php if ($order->buyerCanConfirm()) {
-              echo "<span class='btn btn-negative' id='qr_attr' oid=".$order->oid." status=".MOrder::STATUS_SUCCEEDED.">确认<span class='icon icon-close'></span></span>";
-            } ?>
-
-
+              <?php if ($order->buyerCanConfirm()) {
+                echo "<span class='btn btn-positive' id='qr_attr' oid=".$order->oid." status=".MOrder::STATUS_SUCCEEDED.">确认<span class='icon icon-check'></span></span>";
+              } ?>
             </li>
 
             <li class="table-view-cell"><span class="orderitem">下单时间</span>&nbsp;&nbsp; <?= $order->create_time ?></li>
@@ -156,7 +164,7 @@ use app\models\MOrder;
     function back2pre()
     {
       //alert("officeorder");
-      //location.href = "<//?//php echo Url::to(['officeorder','staff_id'=>$staff->staff_id],true) ?>";
+      location.href = "<?php echo Url::to(['myorder'],true) ?>";
     }
 
     function orderchangestatusajax(oid,status)

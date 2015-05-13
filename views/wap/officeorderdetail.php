@@ -91,7 +91,7 @@ use app\models\MOrder;
             ?>
 
             <?php if ($order->sellerCanCancel($staff)) {
-                echo "<span class='btn btn-negative' id='gbdd_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_CLOSED."  staff_id=".$staff->staff_id." office_id=".$office->office_id.">关闭订单<span class='icon icon-close'></span></span>";
+                echo "<span class='btn btn-negative' id='gbdd_attr' oid=".$order->oid." status=".MOrder::STATUS_SELLER_CLOSED."  staff_id=".$staff->staff_id." office_id=".$office->office_id.">关闭订单</span>";
               } ?>
 
             <?php if ($order->sellerCanFulfill($staff)) {
