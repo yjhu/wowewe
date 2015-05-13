@@ -61,7 +61,8 @@
             <div class="pull-right">
               <?php
                 $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]); 
-                $staff = $wx_user->staff;
+                $staff = $wx_user->mobileStaff;
+                if (empty($staff)) $staff = $wx_user->staff;
                 $scored_offices = $model_msc->getScoredOfficeCount();
                 if ($staff->isOfficeCampaignScorer()) {
                   $myScoredCount = $model_msc->getScoredOfficeCountByScorer($staff->staff_id);

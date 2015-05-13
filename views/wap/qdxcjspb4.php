@@ -92,7 +92,8 @@
                         $score = \app\models\MOfficeCampaignScore::getScoreByPicCategory($office->office_id, $model_category->id); 
                         if ($score['count'] != 0) {
                           $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]); 
-                          $staff = $wx_user->staff;
+                          $staff = $wx_user->mobileStaff;
+                          if (empty($staff)) $staff = $wx_user->staff;
                           if ($staff->isOfficeCampaignScorer()) {
                             $myscore = \app\models\MOfficeCampaignScore::getScoreByScorerAndPicCategory($office->office_id, $staff->staff_id, $model_category->id);
                             if ($myscore === false) {

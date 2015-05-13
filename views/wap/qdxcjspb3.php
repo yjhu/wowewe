@@ -61,7 +61,8 @@
                 $score = \app\models\MOfficeCampaignScore::getScore($model_office->office_id); 
                 if ($score) {
                   $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]); 
-                  $staff = $wx_user->staff;
+                  $staff = $wx_user->mobileStaff;
+                  if (empty($staff)) $staff = $wx_user->staff;
                   if ($staff->isOfficeCampaignScorer()) {
                     $myscore = \app\models\MOfficeCampaignScore::getScoreByScorer($model_office->office_id, $staff->staff_id);
                     if ($myscore === false) {

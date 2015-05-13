@@ -65,5 +65,55 @@ class CheckController extends \yii\console\Controller {
             }
         }
     }
-
+    
+    public function actionWxuserBelongto()
+    {
+        $total_count = \app\models\MUser::find()->count();
+        $offset = 0; $step = 1000;
+        while (true) {
+            if ($offset > $total_count) break;
+            $wx_users = \app\models\MUser::find()->orderBy('id')->offset($offset)->limit($step)->all();
+            foreach($wx_users as $wx_user) {
+//                echo $wx_user->openid.PHP_EOL;
+                if ($wx_user->belongto  == 0) {
+                    $wx_user->belongto = $wx_user->getBelongTo();
+                    $wx_user->save(false);
+                }
+            }
+            $offset += $step;
+        }
+        echo "done with ". $total_count . PHP_EOL;
+    }
+    
+    public function actionOfficeCampaignScorer() {
+        $scorers = \app\models\MOfficeCampaignScorer::find()->all();
+        foreach($scorers as $scorer) {
+            $openidbindmobile = \app\models\OpenidBindMobile::findOne(['mobile' => $scorer->mobile]);
+            if (empty($openidbindmobile)) {
+                echo "{$scorer->name}({$scorer->mobile})手机未绑定。".PHP_EOL;
+            }
+            $staffs = \app\models\MStaff::find()->where(['gh_id' => \app\models\MGh::GH_XIANGYANGUNICOM, 'mobile' => $scorer->mobile])->all();
+            if (empty($staffs)) {
+                echo "{$scorer->name}({$scorer->mobile})不在Staff表中。".PHP_EOL;
+                $staff = new \app\models\MStaff;
+            } else if (count($staffs) > 1) {
+                echo "{$scorer->name}({$scorer->mobile})在Staff表中存在多项。".PHP_EOL;
+                $n = count($staffs); $selected = -1;
+                for ($i = 0; $i < $n; $i++) {
+                    $staff = $staffs[$i];
+                    if (empty($staff->openid) || $selected != -1) $staff->delete();
+                    else if (!empty($staff->openid)) $selected = $i;
+                }
+                if ($selected == -1) $staff = new \app\models\MStaff;
+                else                 $staff = $staffs[$selected];
+            } else {
+                $staff = $staffs[0];               
+            }
+            $staff->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM;
+            $staff->name = $scorer->name;
+            $staff->mobile = $scorer->mobile;
+            $staff->cat = \app\models\MStaff::SCENE_CAT_IN;
+            $staff->save(false);
+        }
+    }
 }

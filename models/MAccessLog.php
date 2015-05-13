@@ -115,14 +115,21 @@ class MAccessLog extends ActiveRecord
         //U::W("scene_id=$scene_id,$date_start, $date_end");    
         $count_plus = 0;
         $fan_openids = array();
-        $accessLogs = MAccessLog::find()->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$gh_id, ':scene_pid' => $scene_id, ':Event'=>'subscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])->all();        
+        $accessLogs = MAccessLog::find()
+                ->where('ToUserName=:ToUserName AND scene_pid=:scene_pid AND Event=:Event AND date(create_time)>=:date_start AND date(create_time)<=:date_end ', [':ToUserName'=>$gh_id, ':scene_pid' => $scene_id, ':Event'=>'subscribe', ':date_start'=>$date_start, ':date_end'=>$date_end])
+                ->andWhere(['booked' => 0])
+                ->all();        
         foreach ($accessLogs as $accessLog) {
             $fan = $accessLog->user;
             if (!empty($fan)) {                
                 // just can get money only if the recommended fan bind a mobile
-                if (in_array($fan->openid, $fan_openids)) continue;
+                if (in_array($fan->openid, $fan_openids)) {
+                    $accessLog->updateAttributes(['booked' => 1]);
+                    continue;
+                }
                 $fan_openids[] = $fan->openid;
                 if ($fan->subscribe && !empty($fan->openidBindMobiles)) {
+                    $accessLog->updateAttributes(['booked' => 1]);
                     $count_plus++;
                 }
             }

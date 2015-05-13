@@ -89,8 +89,12 @@ class NightController extends Controller {
             U::W("End Monthly ...");
         }
 
-        if (date('j') == 1) {
-            U::W("on 1st every month, add recommending fans fee of last month for user ...");
+//        if (date('j') == 1) {
+        {
+//            U::W("on 1st every month, add recommending fans fee of last month for user ...");
+            $start_date = '2015-04-01';
+            $end_date = date("Y-m-d", strtotime("-1 month"));
+            U::W("NightController::addRecommendFanAmount runs [".$start_date.", ".$end_date.']');
             self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
         }
 
@@ -213,14 +217,16 @@ class NightController extends Controller {
 
     public static function addRecommendFanAmount($date_start, $date_end) {
         U::W(__METHOD__ . " BEGIN from $date_start, $date_end");
-        $tableName = MSceneDay::tableName();
+//        $tableName = MSceneDay::tableName();
         $ghs = MGh::find()->all();
         foreach ($ghs as $gh) {
             if ($gh->gh_id !== MGh::GH_XIANGYANGUNICOM) {
                 continue;
             }
             foreach ($gh->staffs as $staff) {
-                if ($staff->scene_id != 0 && !empty($staff->openid)) {
+                if ($staff->scene_id != 0 && 
+                        ($staff->cat == MStaff::SCENE_CAT_OUT || $staff->cat == MStaff::SCENE_CAT_FAN) && 
+                        !empty($staff->openid)) {
                     $real_score = MAccessLog::getRealScoreByRange($gh->gh_id, $staff->scene_id, $date_start, $date_end);
                     if ($real_score > 0) {
                         //$amount = intval($real_score) * 100;                        

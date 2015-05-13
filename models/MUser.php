@@ -350,7 +350,7 @@ class MUser extends ActiveRecord implements IdentityInterface
 
     public function getMobileStaff()
     {
-        return $this->hasOne(MStaff::className(), ['mobile'=>'mobile'])
+        return $this->hasOne(MStaff::className(), ['gh_id'=>'gh_id', 'mobile'=>'mobile'])
             ->viaTable('wx_openid_bind_mobile', ['gh_id'=>'gh_id', 'openid'=>'openid']);
     }
 
@@ -450,7 +450,10 @@ class MUser extends ActiveRecord implements IdentityInterface
 
     public function getStaff()
     {
-        return $this->hasOne(MStaff::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
+        if (!empty($this->mobileStaff)) 
+            return $this->mobileStaff;
+        else 
+            return $this->hasOne(MStaff::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
     }
 
     public function getSceneStaff()
@@ -513,6 +516,25 @@ class MUser extends ActiveRecord implements IdentityInterface
         Yii::$app->wx->setGhId($this->gh_id); 
         $arr = Yii::$app->wx->WxTemplateSend($msg);
         return $arr;
+    }
+    
+        
+    public function getBelongTo() {
+//        echo "MUser::getBelongTo()";
+        if ($this->scene_pid == 0) return 0;
+        $staff = MStaff::findOne(['gh_id' => $this->gh_id, 'scene_id' => $this->scene_pid]);
+        if (empty($staff))
+            return 0;
+        if ($staff->cat == MStaff::SCENE_CAT_OFFICE || $staff->cat == MStaff::SCENE_CAT_IN )
+            return $staff->office_id;
+        $wx_user = $staff->user;
+        if (empty($wx_user))
+            return 0;
+        if ($wx_user->scene_pid == $staff->scene_id)
+            return 0;
+//        if ($wx_user->belongto)
+            return $wx_user->belongto;
+//        return $wx_user->getBelongTo();
     }
 
 }
