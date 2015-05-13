@@ -2458,6 +2458,21 @@ EOD;
         return $this->render('order', ['user'=>$user, 'gh_id'=>$gh_id, 'openid'=>$openid]);
     }
 
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/myorder:gh_03a74ac96138
+    public function actionMyorder()
+    {        
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        $orders = $user->getOrders();
+        
+        return $this->render('myorder', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user, 'orders' => $orders]);
+    }
+
+
+
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/officeorder:gh_03a74ac96138
     public function actionOfficeorder()
     {        
@@ -3468,15 +3483,34 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/hyzx1:gh_03a74ac96138
     /*我*/
     public function actionHyzx1()
-    {
-        //$this->layout = 'wap';    
-        $this->layout = false;    
-        //$gh_id = U::getSessionParam('gh_id');
-        //$openid = U::getSessionParam('openid');
-        //Yii::$app->wx->setGhId($gh_id);
+    {    
+
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');    
+        Yii::$app->wx->setGhId($gh_id); 
+
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($user->openidBindMobiles)) {        
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+
+        $scenes = $ktxwd_scenes = $yqwd_scenes = $yqwd_fans_qx_scenes = [];
+        $date_start = static::getHyzxDateStart();
+        $date_end = date("Y-m-d");
+        //U::W("$date_start, $date_end");        
+        if (empty($user->staff)) {
+            $user->getQrImageUrl();        
+            return $this->refresh();
+        }
+
+        $fans = $user->staff->getFansByRange($date_start, $date_end); 
+        $mobiledFans = $user->staff->getMobiledFansByRange($date_start, $date_end); 
+        //return $this->render('hyzx', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes, 'fans'=>$fans, 'mobiledFans'=>$mobiledFans]);
 
         //return $this->render('tjyl1', ['gh_id' => $gh_id, 'openid' => $openid]);
-        return $this->render('hyzx1');
+        return $this->render('hyzx1',['gh_id' => $gh_id, 'openid' => $openid, 'user' => $user, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes, 'fans'=>$fans, 'mobiledFans'=>$mobiledFans]);
     }
 
     /*活动*/
@@ -3518,6 +3552,20 @@ EOD;
         return $this->render('hyzx4');
     }
     /*end of 会员中心 新版 powered by ratchet */
+
+
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/show517huodong:gh_03a74ac96138  
+    public function actionShow517huodong()
+    {
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);     
+        return $this->render('show517huodong', ['gh_id'=>$gh_id, 'openid'=>$openid]);
+    }  
+
+
 
     /*
         1: 漏话提醒
