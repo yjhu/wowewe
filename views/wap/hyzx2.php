@@ -71,7 +71,7 @@
             <li class="table-view-cell media">
               <a class="navigate-right">
                 <!--
-                <span class="media-object pull-left icon icon-list" style="color:#42a8e1"></span>
+                <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
                 -->
                 <div class="media-body">
                   推荐有礼
@@ -82,7 +82,7 @@
             <li class="table-view-cell media">
               <a class="navigate-right">
                 <!--
-                <span class="media-object pull-left icon icon-list" style="color:#42a8e1"></span>
+                <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
                 -->
                 <div class="media-body">
                   4G测速有奖
@@ -93,7 +93,7 @@
             <li class="table-view-cell media">
               <a class="navigate-right">
                 <!--
-                <span class="media-object pull-left icon icon-list" style="color:#42a8e1"></span>
+                <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
                 -->
                 <div class="media-body">
                   渠道宣传竞赛评选
@@ -130,22 +130,22 @@
     </div><!-- end of content -->
 
     <nav class="bar bar-tab">
-      <a class="tab-item" href="<?php echo Url::to(['hyzx1']) ?>">
+      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx1']) ?>">
         <span class="icon icon-person"></span>
         <span class="tab-label">我</span>
       </a>
 
-      <a class="tab-item active" href="<?php echo Url::to(['hyzx2']) ?>">
+      <a data-ignore="push" class="tab-item active" href="<?php echo Url::to(['hyzx2']) ?>">
         <span class="icon icon-star-filled"></span>
         <span class="tab-label">活动</span>
       </a>
 
-      <a class="tab-item" href="<?php echo Url::to(['hyzx3']) ?>">
+      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx3']) ?>">
         <span class="icon icon-home"></span>
         <span class="tab-label">营业厅</span>
       </a>
 
-      <a class="tab-item" href="<?php echo Url::to(['hyzx4']) ?>">
+      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx4']) ?>">
         <span class="icon icon-gear"></span>
         <span class="tab-label">设置</span>
       </a>
