@@ -3450,6 +3450,21 @@ EOD;
         return json_encode(['code'=>0]);
     }
 
+    /*推荐有礼 用户view*/
+    public function actionTjyl1()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+        //$gh_id = U::getSessionParam('gh_id');
+        //$openid = U::getSessionParam('openid');
+        //Yii::$app->wx->setGhId($gh_id);
+
+        //return $this->render('tjyl1', ['gh_id' => $gh_id, 'openid' => $openid]);
+        return $this->render('tjyl1');
+    }
+
+
+
     /*
         1: 漏话提醒
         2: 开机提醒
