@@ -12,10 +12,10 @@ class ESmsGuodu extends ESms
 	const BALANCE_URL = "http://221.179.180.158:8081/QxtSms_surplus/surplus";			
 	
 	const ORDER_USERNAME = 'xylt';	
-	const ORDER_PASSWORD = 'he0825';	
-
+	const ORDER_PASSWORD = 'WosoTech@2000';
+   
 	const PROM_USERNAME = 'xylt';	
-	const PROM_PASSWORD = 'he0825';
+	const PROM_PASSWORD = 'WosoTech@2000';
 
 	public $contentType = 8;		// long message , 1: <=70(bytes)    2:2x67(bytes)  3:3x67(bytes)
 	public $appendID = '0';

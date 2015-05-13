@@ -67,7 +67,23 @@ class MOfficeCampaignDetail extends \yii\db\ActiveRecord {
     public function getOffice() {
         return $this->hasOne(MOffice::className(), ['office_id' => 'office_id']);
     }
-
+    
+    public function beforeDelete()
+    {
+        if (parent::beforeDelete()) {
+            if(self::DETAIL_COMPLETE == self::getDetailReadyStatus($this->office_id)) {
+                $office = $this->office;
+                $msc = $office->msc;
+                $mr = $msc->marketingRegion;
+                $msc->updateCounters(['office_detailed_count' => -1]);
+                $mr->updateCounters(['office_detailed_count' => -1]);                
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     public function afterSave( $insert, $changedAttributes ) {
         if ($insert) {
             if (1 == self::getDetailsCount()) {

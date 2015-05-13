@@ -27,7 +27,7 @@ class ImportController extends Controller {
         while (!feof($fh)) {
             $line = fgets($fh);
             $i++;
-            if (empty($line))
+            if (empty($line) || trim($line) == '')
                 continue;
             $fields = explode(",", $line);
             $office_name = trim($fields[0]);
@@ -39,7 +39,42 @@ class ImportController extends Controller {
             $supervisor_name = trim($fields[3]);
             $supervisor_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $supervisor_name);
             $supervisor_mobile = trim($fields[4]);
-
+            $comment = trim($fields[5]);
+            $comment_utf8 = iconv('GBK', 'UTF-8//IGNORE', $comment);
+//            echo "comment = ".$comment.", comment_utf8 = ".$comment_utf8.PHP_EOL;
+            $need2delete = false;
+            if (mb_strpos($comment_utf8, '删除') === false);
+            else $need2delete = true;
+            
+            if ($need2delete) {
+//                echo "deleting ......".PHP_EOL;
+                if (!empty($office_name_utf8) && $office_name_utf8 != '') {
+                   $office = MOffice::findOne(['title' => $office_name_utf8, 'gh_id' => \app\models\MGh::GH_XIANGYANGUNICOM]);
+                   if (!empty($office)) {
+                        // 删除督导关系
+//                       echo "deleting supervision relation ...".$office->title.PHP_EOL;
+                        yii::$app->db->createCommand()->delete('wx_rel_supervision_staff_office', [
+                            'office_id' => $office->office_id,
+                        ])->execute();
+                        // 删除营服所属关系
+                        if (!empty($office->msc)) {
+//                            echo "deleting MSC/MR relation ...".$office->title.PHP_EOL;
+                            $office->msc->updateCounters(['office_total_count' => -1]);
+                            $office->msc->marketingRegion->updateCounters(['office_total_count' => -1]);
+                            if ($office->msc->marketingRegion->office_total_count == 0)
+                                $office->msc->marketingRegion->delete();
+                            if ($office->msc->office_total_count == 0)
+                                $office->msc->delete();
+                            yii::$app->db->createCommand()->delete('wx_rel_office_msc', [
+                                'office_id' => $office->office_id,
+                            ])->execute();
+                        }
+                   }
+               }
+               continue;
+            }
+            
+            if (empty($region_name_utf8) || $region_name_utf8 == '') continue;
             $region = MMarketingRegion::findOne(['name' => $region_name_utf8]);
             if (empty($region)) {
                 $region = new MMarketingRegion;
@@ -47,6 +82,7 @@ class ImportController extends Controller {
                 $region->save(false);
             }
 
+            if (empty($msc_name_utf8) || $msc_name_utf8 == '') continue;
             $msc = MMarketingServiceCenter::findOne(['name' => $msc_name_utf8]);
             if (empty($msc)) {
                 $msc = new MMarketingServiceCenter;
@@ -55,10 +91,11 @@ class ImportController extends Controller {
                 $msc->save(false);
             }
 
+            if (empty($office_name_utf8) || $office_name_utf8 == '') continue;
             $office = MOffice::findOne(['title' => $office_name_utf8]);
             if (empty($office)) {
                 $office = new MOffice;
-                $office->gh_id = 'gh_03a74ac96138'; // 襄阳联通公共ID
+                $office->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM; // 襄阳联通公共ID
                 $office->title = $office_name_utf8;
                 $office->is_jingxiaoshang = 1;
                 $office->save(false);
@@ -68,19 +105,35 @@ class ImportController extends Controller {
                     'office_id' => $office->office_id,
                     'msc_id' => $msc->id,
                 ])->execute();
+                $msc->updateCounters(['office_total_count' => 1]);
+                $region->updateCounters(['office_total_count' => 1]);
             }
 
-            $staff = MStaff::findOne(['name' => $supervisor_name_utf8]);
+            if (empty($supervisor_name_utf8) || $supervisor_name_utf8 == '') continue;
+            $staff = MStaff::findOne(['name' => $supervisor_name_utf8, 'gh_id' => \app\models\MGh::GH_XIANGYANGUNICOM]);
             if (empty($staff)) {
                 $staff = new MStaff;
                 $staff->office_id = 25;
                 $staff->name = $supervisor_name_utf8;
-                $staff->gh_id = 'gh_03a74ac96138'; // 襄阳联通公共ID
+                $staff->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM; // 襄阳联通公共ID
                 $staff->mobile = $supervisor_mobile;
                 $staff->cat = 0;
-                $staff->save();
+                $staff->save(false);
+            } else if ($staff->mobile != $supervisor_mobile) {
+                $staff->updateAttributes(['mobile' => $supervisor_mobile]); // 修改员工电话
             }
+            
             if (empty($staff->supervisedOffices) || empty($office->supervisor)) {
+                yii::$app->db->createCommand()->insert('wx_rel_supervision_staff_office', [
+                    'office_id' => $office->office_id,
+                    'staff_id' => $staff->staff_id,
+                ])->execute();
+            } else if ($office->supervisor->staff_id != $staff->staff_id) {
+                // 如果旧有的督导关系需要修改，先要删除原督导关系，再重新建立新的督导关系
+                yii::$app->db->createCommand()->delete('wx_rel_supervision_staff_office', [
+                    'office_id' => $office->office_id,
+                    'staff_id' => $office->supervisor->staff_id,
+                ])->execute();
                 yii::$app->db->createCommand()->insert('wx_rel_supervision_staff_office', [
                     'office_id' => $office->office_id,
                     'staff_id' => $staff->staff_id,
@@ -181,4 +234,53 @@ class ImportController extends Controller {
         fclose($fh);
     }
 
+    public function actionTjylCharge($filename = 'tjyl-charge.csv') {
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, "r");
+        while (!feof($fh)) {
+            $line = trim(fgets($fh));
+            if (empty($line) || strlen($line) == 0) continue;
+            $fields = explode(",", $line);
+            $charge_mobile = trim($fields[0]);
+            $charge_ammount = trim($fields[1]);
+            if (empty($charge_ammount) || strlen($charge_ammount)==0 || $charge_ammount == 0) continue;
+            if (empty($charge_mobile) || strlen($charge_mobile)==0 || strlen($charge_mobile) != 11) continue;
+            $wx_user = \app\models\MUser::findOne(['user_account_charge_mobile' => $charge_mobile]);
+            if (!empty($wx_user)) {
+                echo $wx_user->nickname ." mobile ".$charge_mobile." charged ".$charge_ammount.PHP_EOL;
+                $user_account = new \app\models\MUserAccount;
+                $user_account->gh_id = $wx_user->gh_id;
+                $user_account->openid = $wx_user->openid;
+                $user_account->scene_id = $wx_user->staff->scene_id;
+                $user_account->cat = \app\models\MUserAccount::CAT_CREDIT_CHARGE_MOBILE;
+                $user_account->amount = - $charge_ammount * 100;
+                $user_account->memo = "推荐有礼";
+                $user_account->charge_mobile = $charge_mobile;
+                $user_account->save(false);
+//                Yii::$app->db->createCommand()->insert('wx_user_account', [
+//                            'gh_id' => $wx_user->gh_id,
+//                            'openid' => $wx_user->openid,
+//                            'scene_id' => $wx_user->staff->scene_id,
+//                            'cat' => \app\models\MUserAccount::CAT_CREDIT_CHARGE_MOBILE,
+//                            'amount' => - $charge_ammount * 100,
+//                            'memo' => "推荐有礼",
+//                            'charge_mobile' => $charge_mobile,
+//                        ])->execute();
+            } else {
+                echo "can't find charge mobile ".$charge_mobile . "({$charge_ammount})".PHP_EOL;
+            }
+        }
+        fclose($fh);
+    }
+    
+    public function actionCs4gCharge($filename = 'cs4g-charge.csv') {
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, "r");
+        while (!feof($fh)) {
+            $line = trim(fgets($fh));
+            if (empty($line) || strlen($line) == 0) continue;
+            $fields = explode(",", $line);
+        }
+        fclose($fh);
+    }
 }

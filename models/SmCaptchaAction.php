@@ -141,7 +141,7 @@ class SmCaptchaAction extends Action
                     U::W('fake to send sm');
 
                 $n = Yii::$app->db->createCommand()->insert($this->tableName, ['mobile'=>$mobile, 'created'=>date("Y-m-d"), 'verify_code'=>$session[$name], 'ip'=>$ip])->execute();
-                
+                error_log($mobile.','.date('Y-m-d H:i:s').','.$session[$name].','.$ip, 3, Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'wx_mobile_verify_code.log');                
             }
             else
             {
