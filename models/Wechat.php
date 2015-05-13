@@ -1486,6 +1486,84 @@ EOD;
         return $resp;        
     }
 
+    public static function getTemplateDonateMobileBill($openid, $url, $first, $remark, $mobile, $amount)
+    {
+        //TM00285
+        $template_id = 's0NLB7NoHgv0WerSbHMSNtICTBLDRNbG_50LkaRBKOE';
+        $topcolor = '#FF0000';
+        $color = '#173177';
+        $resp = [
+            'touser' => $openid,
+            'template_id' => $template_id,
+            'url' => $url,
+            "topcolor" => $topcolor,
+            'data' => [
+                'first' => [
+                    'value' => $first,
+                    'color' => $color
+                ],
+                'number' => [
+                    'value' => $mobile,
+                    'color' => $color
+                ],
+                'amount' => [
+                    'value' => $amount,
+                    'color' => $color
+                ],
+                'remark' => [
+                    'value' => $remark,
+                    'color' => $color
+                ],                
+            ]
+        ];
+        return $resp;        
+    }
+
+    public static function getTemplateCharge($openid, $url, $first, $remark, $accountType, $account, $amount, $result)
+    {
+        //TM00027
+        $template_id = 'Gr2duWirz-IR3Q2mXf3YpX6JoQS03k4WHXzdB7lMZIk';
+        $topcolor = '#FF0000';
+        $color = '#173177';
+        $resp = [
+            'touser' => $openid,
+            'template_id' => $template_id,
+            'url' => $url,
+            "topcolor" => $topcolor,
+            'data' => [
+                'first' => [
+                    'value' => $first,
+                    'color' => $color
+                ],
+                'accountType' => [
+                    'value' => $accountType,
+                    'color' => $color
+                ],
+                'account' => [
+                    'value' => $account,
+                    'color' => $color
+                ],
+                'accountType' => [
+                    'value' => $accountType,
+                    'color' => $color
+                ],
+                'amount' => [
+                    'value' => $amount,
+                    'color' => $color
+                ],                
+                'result' => [
+                    'value' => $result,
+                    'color' => $color
+                ],
+                'remark' => [
+                    'value' => $remark,
+                    'color' => $color
+                ],                
+            ]
+        ];
+        return $resp;        
+    }
+
 }
 
 
