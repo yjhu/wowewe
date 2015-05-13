@@ -93,10 +93,11 @@
             <li class="table-view-cell table-view-divider"></li>
 
             <li class="table-view-cell media">
-              <a class="navigate-right">
+              <a class="navigate-right" href="<?php echo Url::to(['myorder', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
 
                 <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
                 <div class="media-body">
+
                   我的订单
                 </div>
               </a>
