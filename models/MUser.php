@@ -114,6 +114,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 
 use app\models\MUserAccount;
+use yii\helpers\Url;
 
 class MUser extends ActiveRecord implements IdentityInterface
 {
@@ -469,6 +470,49 @@ class MUser extends ActiveRecord implements IdentityInterface
             }
         }
         return $managers;
+    }
+
+    public function sendTemplateCharge($amount, $remark = '')
+    {
+        $amountStr = sprintf("%0.2f", $amount/100);
+        $url = Url::to(['wap/hyzx', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
+        $first = '襄阳联通官方微信平台会员账户';
+        if (empty($remark)) {
+            $balanceStr = sprintf("%0.2f", $this->user_account_balance/100);
+            $remark = "账户充值记账成功！您的账户余额为:{$balanceStr}";
+        }
+        $accountType = '微信昵称';
+        $account = $this->nickname;
+        $msg = Wechat::getTemplateCharge($this->openid, $url, $first, $remark, $accountType, $account, $amountStr, '成功');
+        Yii::$app->wx->setGhId($this->gh_id); 
+        $arr = Yii::$app->wx->WxTemplateSend($msg);
+        return $arr;
+    }
+
+    public function sendTemplateDonateMobileBill($mobile, $amount, $remark = '')
+    {
+        $url = Url::to(['wap/hyzx', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
+        $amountStr = sprintf("%0.2f", $amount/100);
+        $first = '襄阳联通官方微信平台';
+        if (empty($remark)) {
+            $balanceStr = sprintf("%0.2f", $this->user_account_balance/100);
+            $remark = "赠送话费成功！您的账户余额为:{$balanceStr}";
+        }
+        $msg = Wechat::getTemplateDonateMobileBill($this->openid, $url, $first, $remark, $mobile, $amountStr);                
+        Yii::$app->wx->setGhId($this->gh_id); 
+        $arr = Yii::$app->wx->WxTemplateSend($msg);
+        return $arr;
+    }
+
+    public function sendSmAlert($balance)
+    {
+        $url = '';
+        $first = '沃手科技：短信余量不足鸟！！！';
+        $remark = "短信余量: {$balance}, 请沃手科技相关人员尽快联系购买短信";
+        $msg = Wechat::getTemplateDonateMobileBill($this->openid, $url, $first, $remark, '', '');                
+        Yii::$app->wx->setGhId($this->gh_id); 
+        $arr = Yii::$app->wx->WxTemplateSend($msg);
+        return $arr;
     }
 
 }

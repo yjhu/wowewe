@@ -589,6 +589,8 @@ class CmdController extends Controller
     public function actionSmBalance()
     {        
         echo "guodu:".ESmsGuodu::B(false);
+        \app\commands\NightController::checkSmBalance();
+        return;
     }
 
     //first convert into txt file
@@ -1112,6 +1114,9 @@ class CmdController extends Controller
         fclose($handle);
 
     }
+$model = MUser::findOne(['gh_id' => MGh::GH_XIANGYANGUNICOM, 'openid' => MGh::GH_XIANGYANGUNICOM_OPENID_HBHE]);
+$model->sendTemplateDonateMobileBill('13871000002', 18900);
+$model->sendTemplateCharge(19900);            
         
 */
 

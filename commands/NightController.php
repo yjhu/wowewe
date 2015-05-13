@@ -23,6 +23,8 @@ use app\models\MSceneDay;
 use app\models\MStaff;
 use app\models\MAccessLog;
 use app\models\MUserAccount;
+use app\models\sm\ESms;
+use app\models\sm\ESmsGuodu;
 
 class NightController extends Controller {
 
@@ -91,6 +93,8 @@ class NightController extends Controller {
             U::W("on 1st every month, add recommending fans fee of last month for user ...");
             self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
         }
+
+        self::checkSmBalance();
 
         U::W("###########" . __CLASS__ . " END, (time: " . sprintf('%.3f', microtime(true) - $time) . "s)");
     }
@@ -252,6 +256,18 @@ class NightController extends Controller {
         return;
     }
 
+    public static function checkSmBalance() 
+    {
+        $balance = ESmsGuodu::B(false);
+        if ($balance < 1000) {
+            $model = MUser::findOne(['gh_id' => MGh::GH_XIANGYANGUNICOM, 'openid' => MGh::GH_XIANGYANGUNICOM_OPENID_KZENG]);
+            try {
+                $model->sendSmAlert($balance);
+            } catch (\Exception $e) {
+                U::W($e->getCode().':'.$e->getMessage());
+            }            
+        }        
+    }
 }
 
 /*
