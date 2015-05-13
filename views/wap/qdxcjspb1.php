@@ -52,7 +52,8 @@
         <?php 
         foreach($models_mr as $model_mr) {  
             $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]); 
-            $staff = $wx_user->staff;
+            $staff = $wx_user->mobileStaff;
+            if (empty($staff)) $wx_user->staff;
         ?>
 
             <li class="table-view-cell media">

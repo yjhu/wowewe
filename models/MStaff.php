@@ -376,7 +376,8 @@ EOD;
             }         
         }
         return $mobiledFans;
-    }        
+    }    
+
 }
 
 
