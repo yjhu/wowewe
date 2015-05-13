@@ -15,6 +15,17 @@ use app\models\MMarketingServiceCenter;
 use app\models\MOfficeCampaignPicCategory;
 
 class ImportController extends Controller {
+    public function init()
+    {        
+        Yii::$app->getUrlManager()->setBaseUrl('/wx/web/index.php');
+        Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
+        Yii::$app->getUrlManager()->setScriptUrl('/wx/web/index.php');
+        //Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
+        //Yii::$app->wx->setGhId(MGh::GH_HOYA);
+        
+        //Yii::$app->wx->setGhId(MGh::GH_WOSO);
+        Yii::$app->wx->setGhId(\app\models\MGh::GH_XIANGYANGUNICOM);
+    }
 
     /**
      * This command import office supervision data.

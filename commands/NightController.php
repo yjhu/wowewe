@@ -27,7 +27,18 @@ use app\models\sm\ESms;
 use app\models\sm\ESmsGuodu;
 
 class NightController extends Controller {
-
+    public function init()
+    {        
+        Yii::$app->getUrlManager()->setBaseUrl('/wx/web/index.php');
+        Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
+        Yii::$app->getUrlManager()->setScriptUrl('/wx/web/index.php');
+        //Yii::$app->getUrlManager()->setHostInfo('http://wosotech.com');
+        //Yii::$app->wx->setGhId(MGh::GH_HOYA);
+        
+        //Yii::$app->wx->setGhId(MGh::GH_WOSO);
+        Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
+    }
+    
     public function actionIndex() {
         set_time_limit(0);
         if (!ini_set('memory_limit', '-1'))
@@ -239,7 +250,7 @@ class NightController extends Controller {
                             $model->scene_id = $staff->scene_id;
                             $model->cat = MUserAccount::CAT_DEBIT_FAN;
                             $model->amount = $amount;
-                            $model->memo = '推荐粉丝';
+                            $model->memo = '推荐有礼';
                             $model->save(false);
 //                            U::W("SAVE OK, scene_id={$staff->scene_id}, openid={$staff->openid}, amount={$model->amount}");
                         }
