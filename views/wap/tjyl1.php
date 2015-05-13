@@ -148,10 +148,31 @@
       </span>
     </div>
 
+    </div><!-- end of content -->
 
-
-    </div>
-
+      
+    <nav class="bar bar-tab">
+      <a class="tab-item active" href="#home">
+        <span class="icon icon-home"></span>
+        <span class="tab-label">Home</span>
+      </a>
+      <a class="tab-item" href="#profile">
+        <span class="icon icon-person"></span>
+        <span class="tab-label">Profile</span>
+      </a>
+      <a class="tab-item" href="#fav">
+        <span class="icon icon-star-filled"></span>
+        <span class="tab-label">Favorites</span>
+      </a>
+      <a class="tab-item" href="#search">
+        <span class="icon icon-search"></span>
+        <span class="tab-label">Search</span>
+      </a>
+      <a class="tab-item" href="#settings">
+        <span class="icon icon-gear"></span>
+        <span class="tab-label">Settings</span>
+      </a>
+    </nav>
 
 
 
