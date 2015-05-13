@@ -3450,6 +3450,75 @@ EOD;
         return json_encode(['code'=>0]);
     }
 
+    /*推荐有礼 用户view*/
+    public function actionTjyl1()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+        //$gh_id = U::getSessionParam('gh_id');
+        //$openid = U::getSessionParam('openid');
+        //Yii::$app->wx->setGhId($gh_id);
+
+        //return $this->render('tjyl1', ['gh_id' => $gh_id, 'openid' => $openid]);
+        return $this->render('tjyl1');
+    }
+
+
+    /*会员中心 新版 powered by ratchet */
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/hyzx1:gh_03a74ac96138
+    /*我*/
+    public function actionHyzx1()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+        //$gh_id = U::getSessionParam('gh_id');
+        //$openid = U::getSessionParam('openid');
+        //Yii::$app->wx->setGhId($gh_id);
+
+        //return $this->render('tjyl1', ['gh_id' => $gh_id, 'openid' => $openid]);
+        return $this->render('hyzx1');
+    }
+
+    /*活动*/
+    public function actionHyzx2()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+        //$gh_id = U::getSessionParam('gh_id');
+        //$openid = U::getSessionParam('openid');
+        //Yii::$app->wx->setGhId($gh_id);
+
+        //return $this->render('tjyl1', ['gh_id' => $gh_id, 'openid' => $openid]);
+        return $this->render('hyzx2');
+    }
+
+    /*营业厅*/
+    public function actionHyzx3()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+        //$gh_id = U::getSessionParam('gh_id');
+        //$openid = U::getSessionParam('openid');
+        //Yii::$app->wx->setGhId($gh_id);
+
+        //return $this->render('tjyl1', ['gh_id' => $gh_id, 'openid' => $openid]);
+        return $this->render('hyzx3');
+    }
+
+    /*设置*/
+    public function actionHyzx4()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+        //$gh_id = U::getSessionParam('gh_id');
+        //$openid = U::getSessionParam('openid');
+        //Yii::$app->wx->setGhId($gh_id);
+
+        //return $this->render('tjyl1', ['gh_id' => $gh_id, 'openid' => $openid]);
+        return $this->render('hyzx4');
+    }
+    /*end of 会员中心 新版 powered by ratchet */
+
     /*
         1: 漏话提醒
         2: 开机提醒

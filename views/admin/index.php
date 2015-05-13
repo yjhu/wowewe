@@ -15,6 +15,13 @@ $this->title = '粉丝管理';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
+
+<?php
+  include('../models/utils/emoji.php');
+?>
+
+<link href="./php-emoji/emoji.css" rel="stylesheet">
+
 <div class="muser-index">
 
 	<h1><?php //echo Html::encode($this->title) ?></h1>
@@ -38,7 +45,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'label' => '微信信息',
             'format'=>'html',
             'value'=>function ($model, $key, $index, $column) { 
-                $nickname = $model->nickname;
+                $nicknameStr = $model->nickname;
+                $nickname = emoji_unified_to_html($nicknameStr);
+
                 $headimgurl = empty($model->headimgurl) ? 
                 "<img style='float:left;' width=48 src='/wx/web/images/wxmpres/headimg-blank.png'>" : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 48), ['style'=>'width:46px;']);
                 return "$headimgurl";
@@ -51,13 +60,22 @@ $this->params['breadcrumbs'][] = $this->title;
             'label' => '',
             'format'=>'html',
             'value'=>function ($model, $key, $index, $column) { 
-                $nickname = $model->nickname;
+                $nicknameStr = $model->nickname;
+                
+                /*
+                    //function emoji_docomo_to_unified(   $text){ return emoji_convert($text, 'docomo_to_unified'); }
+                    //function emoji_kddi_to_unified(     $text){ return emoji_convert($text, 'kddi_to_unified'); }
+                    function emoji_softbank_to_unified( $text){ return emoji_convert($text, 'softbank_to_unified'); }
+                    //function emoji_google_to_unified(   $text){ return emoji_convert($text, 'google_to_unified'); }
+                */
+
+                $nickname = emoji_unified_to_html(emoji_softbank_to_unified($nicknameStr));
 
                 $mobiles = $model->getBindMobileNumbers();
                 $mobile = empty($mobiles) ? '无' : implode(',', $mobiles);
 
                 //$headimgurl = empty($model->headimgurl) ? '' : Html::img(app\models\U::getUserHeadimgurl($model->headimgurl, 46), ['style'=>'width:46px;']);
-                return "<span style='color:#aaa'>昵称 ".$model->nickname.
+                return "<span style='color:#aaa'>昵称 ".$nickname.
                 "<br>地区 ".$model->country."&nbsp;".$model->province."&nbsp;".$model->city.
                 "<br>绑定手机 ".$mobile."</span>";
             },
