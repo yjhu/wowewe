@@ -2467,8 +2467,23 @@ EOD;
         $openid = U::getSessionParam('openid');
         $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
         $orders = $user->getOrders();
-        
+
         return $this->render('myorder', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$user, 'orders' => $orders]);
+    }
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/myorderdetail:gh_03a74ac96138
+    public function actionMyorderdetail()
+    {        
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);    
+
+        $oid = $_GET['oid'];
+        $order = MOrder::findOne(['oid'=>$oid]);
+
+        return $this->render('myorderdetail', ['user' => $user, 'order' => $order]);
     }
 
 
