@@ -479,14 +479,16 @@ class MUser extends ActiveRecord implements IdentityInterface
     {
         $amountStr = sprintf("%0.2f", $amount/100);
         $url = Url::to(['wap/hyzx', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
+//        $url = '';
         $first = '襄阳联通官方微信平台会员账户';
         if (empty($remark)) {
             $balanceStr = sprintf("%0.2f", $this->user_account_balance/100);
-            $remark = "账户充值记账成功！您的账户余额为:{$balanceStr}";
+            $remark = "账户充值记账成功！您当前的会员账户余额为:{$balanceStr}";
         }
         $accountType = '微信昵称';
         $account = $this->nickname;
         $msg = Wechat::getTemplateCharge($this->openid, $url, $first, $remark, $accountType, $account, $amountStr, '成功');
+//        $msg = Wechat::getTemplateCharge(MGh::GH_XIANGYANGUNICOM_OPENID_YJHU, $url, $first, $remark, $accountType, $account, $amountStr, '成功');
         Yii::$app->wx->setGhId($this->gh_id); 
         $arr = Yii::$app->wx->WxTemplateSend($msg);
         return $arr;
@@ -495,13 +497,15 @@ class MUser extends ActiveRecord implements IdentityInterface
     public function sendTemplateDonateMobileBill($mobile, $amount, $remark = '')
     {
         $url = Url::to(['wap/hyzx', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
+//        $url = '';
         $amountStr = sprintf("%0.2f", $amount/100);
         $first = '襄阳联通官方微信平台';
         if (empty($remark)) {
             $balanceStr = sprintf("%0.2f", $this->user_account_balance/100);
-            $remark = "赠送话费成功！您的账户余额为:{$balanceStr}";
+            $remark = "赠送话费成功！您当前的会员账户余额为:{$balanceStr}";
         }
-        $msg = Wechat::getTemplateDonateMobileBill($this->openid, $url, $first, $remark, $mobile, $amountStr);                
+        $msg = Wechat::getTemplateDonateMobileBill($this->openid, $url, $first, $remark, $mobile, $amountStr); 
+//        $msg = Wechat::getTemplateDonateMobileBill(MGh::GH_XIANGYANGUNICOM_OPENID_YJHU, $url, $first, $remark, $mobile, $amountStr); 
         Yii::$app->wx->setGhId($this->gh_id); 
         $arr = Yii::$app->wx->WxTemplateSend($msg);
         return $arr;

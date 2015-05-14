@@ -45,6 +45,9 @@ class MUserAccount extends ActiveRecord
     const CAT_DEBIT_SIGN = 1;
     const CAT_DEBIT_ITEM = 2;
     const CAT_CREDIT_CHARGE_MOBILE = 100;
+    
+    const STATUS_CHARGE_COMPLETE = 0;
+    const STATUS_CHARGE_REQUEST = 1;
 
     public function rules()
     {
@@ -124,7 +127,22 @@ class MUserAccount extends ActiveRecord
 //                U::W(["duplicate openid: ", $user->openid, $user->staff->staff_id]);
 //            } else 
 //                $openids[] = $user->openid;
-            $user->save(false);            
+            if ($user->save(false)) {
+                if ($insert) {
+                    if ($this->cat == self::CAT_DEBIT_FAN) {
+                        $remark = sprintf("感谢您参加襄阳联通官方微信平台%s活动，获得的奖励已存入您的会员帐户，您帐户的当前余额为%.2f元。该帐户的金额可以每月底在会员中心申请兑换话费。请注意：仅限襄阳联通本地手机号码。", 
+                                $this->memo, $user->user_account_balance/100);
+                        $user->sendTemplateCharge($this->amount, $remark);
+                    } else if ($this->cat == self::CAT_CREDIT_CHARGE_MOBILE && $this->status == self::STATUS_CHARGE_COMPLETE) {
+                        $user->sendTemplateDonateMobileBill($this->charge_mobile, abs($this->amount));
+                    }
+                } else {
+                    if ($this->cat == self::CAT_CREDIT_CHARGE_MOBILE && $this->status == self::STATUS_CHARGE_COMPLETE) {
+                        $user->sendTemplateDonateMobileBill($this->charge_mobile, abs($this->amount));
+                    }
+                }
+            }   
+            
         } else {
             U::W("---------------MUserAccount::afterSave()");
             U::W($this);
