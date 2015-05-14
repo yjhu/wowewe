@@ -97,22 +97,22 @@
     </div><!-- end of content -->
 
     <nav class="bar bar-tab">
-      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx1']) ?>">
+      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-person"></span>
         <span class="tab-label">我</span>
       </a>
 
-      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx2']) ?>">
+      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx2', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-star-filled"></span>
         <span class="tab-label">活动</span>
       </a>
 
-      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx3']) ?>">
+      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx3', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-home"></span>
         <span class="tab-label">营业厅</span>
       </a>
 
-      <a data-ignore="push" class="tab-item active" href="<?php echo Url::to(['hyzx4']) ?>">
+      <a data-ignore="push" class="tab-item active" href="<?php echo Url::to(['hyzx4', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-gear"></span>
         <span class="tab-label">设置</span>
       </a>
