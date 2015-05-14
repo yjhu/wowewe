@@ -49,12 +49,16 @@
     <div class="content">
       <p class="content-padded">
          <span style="float:left">
-            <img src='../web/images/woke/0.jpg' width="64" height="64">
+            <img id="myphoto" src="<?php echo $user->headimgurl; ?>" width="64" height="64">
           </span>
 
           <span style="float:left">
-            &nbsp;&nbsp;<b>曾开</b> <br>
-            &nbsp;&nbsp;13545296480 <br>
+            &nbsp;&nbsp;<b><?= $user->nickname ?></b> <br>
+            &nbsp;&nbsp;
+            <?php foreach($user->openidBindMobiles as $openidBindMobile): ?>
+              <?=  $openidBindMobile->mobile ?>
+            <?php endforeach; ?>
+             <br>
             &nbsp;&nbsp;<a href="#rhtg">如何推广?</a>
           </span>
 
@@ -69,7 +73,7 @@
           <ul class="table-view">
 
             <li class="table-view-cell media">
-              <a class="navigate-right">
+              <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['addbindmobile', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
                 <!--
                 <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
                 -->
@@ -132,7 +136,7 @@
 
           <br>
           <center>
-          <img src="../web/images/woke/qr.png" width=240>
+              <?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
           </center>
           <br>
           <br>

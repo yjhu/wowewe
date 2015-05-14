@@ -3328,11 +3328,12 @@ EOD;
     {
         //$this->layout = 'wap';    
         $this->layout = false;    
-        $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
-        Yii::$app->wx->setGhId($gh_id);
+        //$gh_id = U::getSessionParam('gh_id');
+        //$openid = U::getSessionParam('openid');
+        //Yii::$app->wx->setGhId($gh_id);
 
-        return $this->render('qdxcjspbpm', ['gh_id' => $gh_id, 'openid' => $openid]);
+        //return $this->render('qdxcjspbpm', ['gh_id' => $gh_id, 'openid' => $openid]);
+        return $this->render('qdxcjspbpm');
     }
 
 

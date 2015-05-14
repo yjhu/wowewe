@@ -335,7 +335,8 @@ class MOrder extends ActiveRecord
     
     public static function getOfficeOrdersCount($office_id)
     {
-        return self::findBySql(self::getOfficeOrders($office_id))->count();
+        //return self::findBySql(self::getOfficeOrders($office_id))->count();
+        return count(self::getOfficeOrders($office_id));
     }
     
     public static function getOfficeOrders($office_id)

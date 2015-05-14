@@ -49,12 +49,16 @@
     <div class="content">
       <p class="content-padded">
          <span style="float:left">
-            <img src='../web/images/woke/0.jpg' width="64" height="64">
+            <img id="myphoto" src="<?php echo $user->headimgurl; ?>" width="64" height="64">
           </span>
 
           <span style="float:left">
-            &nbsp;&nbsp;<b>曾开</b> <br>
-            &nbsp;&nbsp;13545296480 <br>
+            &nbsp;&nbsp;<b><?= $user->nickname ?></b> <br>
+            &nbsp;&nbsp;
+            <?php foreach($user->openidBindMobiles as $openidBindMobile): ?>
+              <?=  $openidBindMobile->mobile ?>
+            <?php endforeach; ?>
+             <br>
             &nbsp;&nbsp;<a href="#rhtg">如何推广?</a>
           </span>
 
@@ -62,7 +66,6 @@
               <a href="#showQr"><img src='../web/images/woke/qr.png' width=24></a>
           </span>
       </p>
-    
       <br><br><br><br><br>
 
         <span>
@@ -90,8 +93,9 @@
               </a>
             </li>
 
+        <?php  if((!empty($user->mobileStaff)) || ((!empty($user->staff)) && $user->staff->cat == \app\models\MStaff::SCENE_CAT_IN)) {?>
             <li class="table-view-cell media">
-              <a class="navigate-right">
+              <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['qdxcjspb1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
                 <!--
                 <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
                 -->
@@ -101,9 +105,19 @@
               </a>
             </li>
 
+        <?php }  ?>
+
+
+        <?php 
+            if (!empty($user->staff) && $user->staff->cat == \app\models\MStaff::SCENE_CAT_IN)
+                $staff = $user->staff;
+            else
+                $staff = $user->mobileStaff;
+            if (!empty($staff) && ($staff->isSupervisor() || $staff->isSelfOperatedOfficeDirector())) {
+        ?>
 
             <li class="table-view-cell media">
-              <a class="navigate-right">
+              <a class="navigate-right" href="<?php echo Url::to(['csmdzltj1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'staff_id'=>$user->staff->staff_id]) ?>">
                 <!--
                 <span class="media-object pull-left icon icon-list" style="color:#42a8e1"></span>
                 -->
@@ -112,6 +126,10 @@
                 </div>
               </a>
             </li>
+
+        <?php }  ?>
+
+
             <!--
             <li class="table-view-cell">
             渠道宣传资料提交
@@ -152,8 +170,6 @@
     </nav>
 
 
-
-
     <div id="showQr" class="modal">
       <header class="bar bar-nav">
         <a class="icon icon-close pull-right" href="#showQr"></a>
@@ -164,7 +180,7 @@
 
           <br>
           <center>
-          <img src="../web/images/woke/qr.png" width=240>
+              <?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
           </center>
           <br>
           <br>
@@ -187,7 +203,6 @@
           <a class="btn btn-block" href="#rhtg">返回</a>
       </div>
     </div>
-    
 
   <script type="text/javascript">
 
