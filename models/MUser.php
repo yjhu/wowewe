@@ -365,13 +365,24 @@ class MUser extends ActiveRecord implements IdentityInterface
         return Morder::findBySql($sql)->all();
 //        return $this->hasMany(MOrder::className(), ['gh_id'=>'gh_id', 'openid'=>'openid']);
     }
+    public function getOrderInfoCount()
+    {
+        $sql = "select * from ".MOrder::tableName().
+               " where gh_id='".$this->gh_id."' and openid='".$this->openid.
+                "' and status =".MOrder::STATUS_SUBMITTED.
+                " and status =".MOrder::STATUS_PAID.
+                " and status =".MOrder::STATUS_FULFILLED.
+                " and create_time > DATE_SUB(NOW(), INTERVAL 1 month) order by create_time DESC";
+               
+        return Morder::findBySql($sql)->count();
+//        return $this->hasMany(MOrder::className(), ['gh_id'=>'gh_id', 'openid'=>'openid']);
+    }
 
     public function newSceneIdForOpenid()
     {
         $staff = new MStaff;
         $staff->gh_id = $this->gh_id;
         $staff->openid = $this->openid;        
-//        $staff->office_id = $this->office_id;
         $staff->scene_id = MStaff::newSceneId($this->gh_id);
         $staff->name = $this->nickname;
         $staff->cat = MStaff::SCENE_CAT_FAN;                
@@ -437,12 +448,7 @@ class MUser extends ActiveRecord implements IdentityInterface
         }
         return $staff->getFans(); 
     }
-/*
-    public function getUserAccounts()
-    {
-        return $this->hasMany(MUserAccount::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
-    }
-*/   
+
     public function getUserAccountBalanceInfo()
     {
         return Yii::$app->formatter->asCurrency($this->user_account_balance/100);    
@@ -479,7 +485,6 @@ class MUser extends ActiveRecord implements IdentityInterface
     {
         $amountStr = sprintf("%0.2f", $amount/100);
         $url = Url::to(['wap/hyzx', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
-//        $url = '';
         $first = '襄阳联通官方微信平台会员账户';
         if (empty($remark)) {
             $balanceStr = sprintf("%0.2f", $this->user_account_balance/100);
@@ -488,7 +493,7 @@ class MUser extends ActiveRecord implements IdentityInterface
         $accountType = '微信昵称';
         $account = $this->nickname;
         $msg = Wechat::getTemplateCharge($this->openid, $url, $first, $remark, $accountType, $account, $amountStr, '成功');
-//        $msg = Wechat::getTemplateCharge(MGh::GH_XIANGYANGUNICOM_OPENID_YJHU, $url, $first, $remark, $accountType, $account, $amountStr, '成功');
+        $msg = Wechat::getTemplateCharge(MGh::GH_XIANGYANGUNICOM_OPENID_YJHU, $url, $first, $remark, $accountType, $account, $amountStr, '成功');
         Yii::$app->wx->setGhId($this->gh_id); 
         $arr = Yii::$app->wx->WxTemplateSend($msg);
         return $arr;
@@ -497,7 +502,6 @@ class MUser extends ActiveRecord implements IdentityInterface
     public function sendTemplateDonateMobileBill($mobile, $amount, $remark = '')
     {
         $url = Url::to(['wap/hyzx', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
-//        $url = '';
         $amountStr = sprintf("%0.2f", $amount/100);
         $first = '襄阳联通官方微信平台';
         if (empty($remark)) {
@@ -505,7 +509,7 @@ class MUser extends ActiveRecord implements IdentityInterface
             $remark = "赠送话费成功！您当前的会员账户余额为:{$balanceStr}";
         }
         $msg = Wechat::getTemplateDonateMobileBill($this->openid, $url, $first, $remark, $mobile, $amountStr); 
-//        $msg = Wechat::getTemplateDonateMobileBill(MGh::GH_XIANGYANGUNICOM_OPENID_YJHU, $url, $first, $remark, $mobile, $amountStr); 
+        $msg = Wechat::getTemplateDonateMobileBill(MGh::GH_XIANGYANGUNICOM_OPENID_YJHU, $url, $first, $remark, $mobile, $amountStr); 
         Yii::$app->wx->setGhId($this->gh_id); 
         $arr = Yii::$app->wx->WxTemplateSend($msg);
         return $arr;
@@ -524,7 +528,6 @@ class MUser extends ActiveRecord implements IdentityInterface
     
         
     public function getBelongTo() {
-//        echo "MUser::getBelongTo()";
         if ($this->scene_pid == 0) return 0;
         $staff = MStaff::findOne(['gh_id' => $this->gh_id, 'scene_id' => $this->scene_pid]);
         if (empty($staff))

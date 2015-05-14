@@ -320,9 +320,22 @@ class MOrder extends ActiveRecord
                 ;
     } 
     
+    public static function getOfficeOrderInfoCount($office_id)
+    {
+        $sql = "select * from ".self::tableName().
+               " where office_id=".$office_id." and ".
+               "( ".
+                "(status = ".self::STATUS_SUBMITTED." and pay_kind = ".self::PAY_KIND_CASH.") or ".
+                "(status in (".self::STATUS_PAID.", ".self::STATUS_FULFILLED.")) ".
+                ") and ".
+                "create_time > DATE_SUB(NOW(), INTERVAL 7 day) order by create_time DESC"
+                ;
+        return self::findBySql($sql)->count();
+    }
+    
     public static function getOfficeOrdersCount($office_id)
     {
-        return count(self::getOfficeOrders($office_id));
+        return self::findBySql(self::getOfficeOrders($office_id))->count();
     }
     
     public static function getOfficeOrders($office_id)
