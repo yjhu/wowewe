@@ -2,6 +2,7 @@
   use yii\helpers\Html;
     use yii\helpers\Url;
     use app\models\U;
+    use app\models\MUser;
 
     //use app\models\utils;
     //use app\models\utils\emoji;
@@ -95,7 +96,7 @@
             <li class="table-view-cell media">
               <a class="navigate-right" href="<?php echo Url::to(['myorder', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
                 <span class="badge badge-negative">
-                5
+                <?= $user->getOrderInfoCount() ?>
                 </span>
                 <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
                 <div class="media-body">
