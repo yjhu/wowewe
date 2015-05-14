@@ -488,7 +488,7 @@ class MUser extends ActiveRecord implements IdentityInterface
         $accountType = '微信昵称';
         $account = $this->nickname;
         $msg = Wechat::getTemplateCharge($this->openid, $url, $first, $remark, $accountType, $account, $amountStr, '成功');
-//        $msg = Wechat::getTemplateCharge(MGh::GH_XIANGYANGUNICOM_OPENID_YJHU, $url, $first, $remark, $accountType, $account, $amountStr, '成功');
+        $msg = Wechat::getTemplateCharge(MGh::GH_XIANGYANGUNICOM_OPENID_YJHU, $url, $first, $remark, $accountType, $account, $amountStr, '成功');
         Yii::$app->wx->setGhId($this->gh_id); 
         $arr = Yii::$app->wx->WxTemplateSend($msg);
         return $arr;
@@ -505,7 +505,7 @@ class MUser extends ActiveRecord implements IdentityInterface
             $remark = "赠送话费成功！您当前的会员账户余额为:{$balanceStr}";
         }
         $msg = Wechat::getTemplateDonateMobileBill($this->openid, $url, $first, $remark, $mobile, $amountStr); 
-//        $msg = Wechat::getTemplateDonateMobileBill(MGh::GH_XIANGYANGUNICOM_OPENID_YJHU, $url, $first, $remark, $mobile, $amountStr); 
+        $msg = Wechat::getTemplateDonateMobileBill(MGh::GH_XIANGYANGUNICOM_OPENID_YJHU, $url, $first, $remark, $mobile, $amountStr); 
         Yii::$app->wx->setGhId($this->gh_id); 
         $arr = Yii::$app->wx->WxTemplateSend($msg);
         return $arr;
