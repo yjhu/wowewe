@@ -79,7 +79,7 @@ use app\models\MOrder;
                       } ?>
                       &nbsp;&nbsp;
                       <?php if ($order->buyerCanPay()) {
-                        echo "<span class='btn' id='xianxia_pay' oid=".$order->oid."status=".MOrder::PAY_KIND_CASH.">线下支付</span>";
+                        echo "<span class='btn' id='xianxia_pay' oid=".$order->oid." status=".MOrder::PAY_KIND_CASH.">线下支付</span>";
                       } ?>
                 </span>
 

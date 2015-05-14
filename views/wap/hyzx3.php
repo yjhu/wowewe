@@ -69,7 +69,7 @@
           <ul class="table-view">
 
             <li class="table-view-cell media">
-              <a class="navigate-right">
+              <a class="navigate-right" href="<?php echo Url::to(['officeorder', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'staff_id'=>$staff->staff_id]) ?>">
 
                 <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
                 <div class="media-body">
