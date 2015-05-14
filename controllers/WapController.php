@@ -3579,6 +3579,24 @@ EOD;
         //return $this->render('tjyl1', ['gh_id' => $gh_id, 'openid' => $openid]);
         return $this->render('hyzx4', ['user'=>$user]);
     }
+
+    //绑定管理 新版
+    public function actionBdgl()
+    {
+        //$this->layout = 'wap';    
+        $this->layout = false;    
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');    
+        Yii::$app->wx->setGhId($gh_id);
+
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+
+        //return $this->render('tjyl1', ['gh_id' => $gh_id, 'openid' => $openid]);
+        return $this->render('bdgl', ['user'=>$user]);
+    }
+
+
+
     /*end of 会员中心 新版 powered by ratchet */
 
 

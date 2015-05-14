@@ -55,7 +55,7 @@
       ?>
    
             <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj3', 'office_id'=>$model_office->office_id, 'model_category_id'=>$model_category->id],true) ?>">
+              <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj3', 'gh_id' => $gh_id, 'openid' => $openid, 'office_id'=>$model_office->office_id, 'model_category_id'=>$model_category->id],true) ?>">
                
                 <?php 
                     $model_office_campaign_detail = MOfficeCampaignDetail::findOne(['pic_category' => $model_category->id, 'office_id' => $model_office->office_id]);

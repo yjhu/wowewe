@@ -67,7 +67,7 @@
           </span>
 
           <span style="float:left">
-            &nbsp;&nbsp;<b><?= $user->nickname ?></b> <br>
+            &nbsp;&nbsp;<b><?= emoji_unified_to_html(emoji_softbank_to_unified($user->nickname)) ?></b> <br>
             &nbsp;&nbsp;
             <?php foreach($user->openidBindMobiles as $openidBindMobile): ?>
               <?=  $openidBindMobile->mobile ?>
@@ -130,22 +130,22 @@
     </div><!-- end of content -->
 
     <nav class="bar bar-tab">
-      <a data-ignore="push" class="tab-item active" href="<?php echo Url::to(['hyzx1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+      <a class="tab-item active" href="<?php echo Url::to(['hyzx1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-person"></span>
         <span class="tab-label">我</span>
       </a>
 
-      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx2', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+      <a class="tab-item" href="<?php echo Url::to(['hyzx2', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-star-filled"></span>
         <span class="tab-label">活动</span>
       </a>
 
-      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx3', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+      <a class="tab-item" href="<?php echo Url::to(['hyzx3', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-home"></span>
         <span class="tab-label">营业厅</span>
       </a>
 
-      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx4', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+      <a class="tab-item" href="<?php echo Url::to(['hyzx4', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-gear"></span>
         <span class="tab-label">设置</span>
       </a>

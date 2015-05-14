@@ -55,7 +55,7 @@
         ?>
 
             <li class="table-view-cell media">
-            <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj2','office_id'=>$model_office->office_id, 'staff_id' => $staff->staff_id],true) ?>">
+            <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['csmdzltj2', 'gh_id' => $gh_id, 'openid' => $openid, 'office_id'=>$model_office->office_id, 'staff_id' => $staff->staff_id],true) ?>">
 
             <?php if($detail_status == \app\models\MOfficeCampaignDetail::DETAIL_COMPLETE) { ?>
               <span class="badge badge-positive">已提交</span>

@@ -355,7 +355,7 @@ document.querySelector('#submitImage').onclick = function () {
                     data: "cat="+cat+"&office_id="+office_id+"&serverId="+serverId,
                     success: function(json_data){
                       //alert('success');
-                      var url = "<?php echo Url::to(['wap/csmdzltj2','office_id'=>$model_office->office_id,'staff_id'=>$supervisor->staff_id], true); ?>";
+                      var url = "<?php echo Url::to(['wap/csmdzltj2', 'gh_id' => $gh_id, 'openid' => $openid, 'office_id'=>$model_office->office_id,'staff_id'=>$supervisor->staff_id], true); ?>";
                       location.href = url;
                       //history.back();
                     }

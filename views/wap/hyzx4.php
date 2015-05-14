@@ -3,7 +3,10 @@
     use yii\helpers\Url;
     use app\models\U;
 ?>
-    
+
+<?php
+  include('../models/utils/emoji.php');
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -19,7 +22,8 @@
 
     <!-- Include the compiled Ratchet CSS -->
     <link href="/wx/web/ratchet/dist/css/ratchet.css" rel="stylesheet">
-  
+    <link href="./php-emoji/emoji.css" rel="stylesheet">
+
     <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
     <!-- Include the compiled Ratchet JS -->
     <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
@@ -33,7 +37,6 @@
     <!--
       <a class="icon icon-left-nav pull-left" id="btn_back"></a>
     -->
-
 
       <h1 class="title">
         <!--
@@ -53,7 +56,7 @@
           </span>
 
           <span style="float:left">
-            &nbsp;&nbsp;<b><?= $user->nickname ?></b> <br>
+            &nbsp;&nbsp;<b><?= emoji_unified_to_html(emoji_softbank_to_unified($user->nickname)) ?></b> <br>
             &nbsp;&nbsp;
             <?php foreach($user->openidBindMobiles as $openidBindMobile): ?>
               <?=  $openidBindMobile->mobile ?>
@@ -83,16 +86,6 @@
               </a>
             </li>
 
-            <!--
-            <li class="table-view-cell">
-            渠道宣传资料提交
-            </li>
-            -->
-
-            <!--
-            <li class="table-view-cell">Item 3 <button class="btn btn-positive">Button</button></li>
-            <li class="table-view-cell">Item 4 <button class="btn btn-negative">Button</button></li>
-            -->
           </ul>
         </span>
  
@@ -101,22 +94,22 @@
     </div><!-- end of content -->
 
     <nav class="bar bar-tab">
-      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+      <a class="tab-item" href="<?php echo Url::to(['hyzx1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-person"></span>
         <span class="tab-label">我</span>
       </a>
 
-      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx2', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+      <a class="tab-item" href="<?php echo Url::to(['hyzx2', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-star-filled"></span>
         <span class="tab-label">活动</span>
       </a>
 
-      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx3', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+      <a class="tab-item" href="<?php echo Url::to(['hyzx3', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-home"></span>
         <span class="tab-label">营业厅</span>
       </a>
 
-      <a data-ignore="push" class="tab-item active" href="<?php echo Url::to(['hyzx4', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+      <a class="tab-item active" href="<?php echo Url::to(['hyzx4', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-gear"></span>
         <span class="tab-label">设置</span>
       </a>
