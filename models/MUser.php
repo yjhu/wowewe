@@ -369,12 +369,12 @@ class MUser extends ActiveRecord implements IdentityInterface
     {
         $sql = "select * from ".MOrder::tableName().
                " where gh_id='".$this->gh_id."' and openid='".$this->openid.
-                "' and status =".MOrder::STATUS_SUBMITTED.
-                " and status =".MOrder::STATUS_PAID.
-                " and status =".MOrder::STATUS_FULFILLED.
-                " and create_time > DATE_SUB(NOW(), INTERVAL 1 month) order by create_time DESC";
+                "' and (status =".MOrder::STATUS_SUBMITTED.
+                " or status =".MOrder::STATUS_PAID.
+                " or status =".MOrder::STATUS_FULFILLED.
+                ") and create_time > DATE_SUB(NOW(), INTERVAL 1 month) order by create_time DESC";
                
-        return Morder::findBySql($sql)->count();
+        return count(Morder::findBySql($sql)->all());
 //        return $this->hasMany(MOrder::className(), ['gh_id'=>'gh_id', 'openid'=>'openid']);
     }
 
