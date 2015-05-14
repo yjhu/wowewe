@@ -383,7 +383,6 @@ class MUser extends ActiveRecord implements IdentityInterface
         $staff = new MStaff;
         $staff->gh_id = $this->gh_id;
         $staff->openid = $this->openid;        
-//        $staff->office_id = $this->office_id;
         $staff->scene_id = MStaff::newSceneId($this->gh_id);
         $staff->name = $this->nickname;
         $staff->cat = MStaff::SCENE_CAT_FAN;                
@@ -449,12 +448,7 @@ class MUser extends ActiveRecord implements IdentityInterface
         }
         return $staff->getFans(); 
     }
-/*
-    public function getUserAccounts()
-    {
-        return $this->hasMany(MUserAccount::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
-    }
-*/   
+
     public function getUserAccountBalanceInfo()
     {
         return Yii::$app->formatter->asCurrency($this->user_account_balance/100);    
@@ -491,7 +485,6 @@ class MUser extends ActiveRecord implements IdentityInterface
     {
         $amountStr = sprintf("%0.2f", $amount/100);
         $url = Url::to(['wap/hyzx', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
-//        $url = '';
         $first = '襄阳联通官方微信平台会员账户';
         if (empty($remark)) {
             $balanceStr = sprintf("%0.2f", $this->user_account_balance/100);
@@ -509,7 +502,6 @@ class MUser extends ActiveRecord implements IdentityInterface
     public function sendTemplateDonateMobileBill($mobile, $amount, $remark = '')
     {
         $url = Url::to(['wap/hyzx', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
-//        $url = '';
         $amountStr = sprintf("%0.2f", $amount/100);
         $first = '襄阳联通官方微信平台';
         if (empty($remark)) {
@@ -536,7 +528,6 @@ class MUser extends ActiveRecord implements IdentityInterface
     
         
     public function getBelongTo() {
-//        echo "MUser::getBelongTo()";
         if ($this->scene_pid == 0) return 0;
         $staff = MStaff::findOne(['gh_id' => $this->gh_id, 'scene_id' => $this->scene_pid]);
         if (empty($staff))
