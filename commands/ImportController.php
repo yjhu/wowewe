@@ -291,6 +291,229 @@ class ImportController extends Controller {
             $line = trim(fgets($fh));
             if (empty($line) || strlen($line) == 0) continue;
             $fields = explode(",", $line);
+            $charge_mobile = trim($fields[0]);
+            $charge_ammount = trim($fields[1]);
+            if (empty($charge_ammount) || strlen($charge_ammount)==0 || $charge_ammount == 0) continue;
+            if (empty($charge_mobile) || strlen($charge_mobile)==0 || strlen($charge_mobile) != 11) continue;
+            $openidbindmobile = \app\models\OpenidBindMobile::findOne([
+                    'gh_id' => \app\models\MGh::GH_XIANGYANGUNICOM,
+                    'mobile' => $charge_mobile,
+            ]);
+            if (!empty($openidbindmobile)) {
+                $wx_user = $openidbindmobile->user;
+                if (!empty($wx_user)) {
+                    echo $wx_user->nickname ." mobile ".$charge_mobile." charged ".$charge_ammount.PHP_EOL;
+                    $user_account = new \app\models\MUserAccount;
+                    $user_account->gh_id = $wx_user->gh_id;
+                    $user_account->openid = $wx_user->openid;
+//                    $user_account->scene_id = $wx_user->staff->scene_id;
+                    $user_account->cat = \app\models\MUserAccount::CAT_DEBIT_FAN;
+                    $user_account->amount =  $charge_ammount * 100;
+                    $user_account->memo = "4G测速";
+                    $user_account->charge_mobile = $charge_mobile;
+                    $user_account->save(false);
+                    
+                    $user_account = new \app\models\MUserAccount;
+                    $user_account->gh_id = $wx_user->gh_id;
+                    $user_account->openid = $wx_user->openid;
+//                    $user_account->scene_id = $wx_user->staff->scene_id;
+                    $user_account->cat = \app\models\MUserAccount::CAT_CREDIT_CHARGE_MOBILE;
+                    $user_account->amount = - $charge_ammount * 100;
+                    $user_account->memo = "4G测速";
+                    $user_account->charge_mobile = $charge_mobile;
+                    $user_account->save(false);
+                } else {
+                    echo "can't find charge mobile ".$charge_mobile . "({$charge_ammount})".PHP_EOL;
+                }
+            }
+        }
+        fclose($fh);
+    }
+    
+    public function actionEmployee($filename = 'employee.csv') {
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, "r");
+        while (!feof($fh)) {
+            $line = trim(fgets($fh));
+            if (empty($line) || strlen($line) == 0) continue;
+            $fields = explode(",", $line);
+            $name = trim($fields[0]);
+            $name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $name);
+            $department = trim($fields[1]);
+            $department_utf8 = iconv('GBK', 'UTF-8//IGNORE', $department);
+            $position = trim($fields[2]);
+            $position_utf8 = iconv('GBK', 'UTF-8//IGNORE', $position);
+            $mobiles = explode(';', trim($fields[3]));
+            
+//            $name_utf8 = $name;
+//            $department_utf8 = $department;
+//            $position_utf8 = $position;
+            
+            echo "{$name_utf8},{$department_utf8},{$position_utf8},{$fields[3]},";
+            foreach($mobiles as $mobile) {
+                $mobile = trim($mobile);
+                if (strlen($mobile) != 11 || !is_numeric($mobile)) echo "[$mobile]非手机号码；";
+                else {
+                    $staff = \app\models\MStaff::findOne([
+                        'gh_id'=>  \app\models\MGh::GH_XIANGYANGUNICOM,
+                        'mobile' => $mobile,
+                    ]);
+                    if (empty($staff)) {
+                        echo "[{$mobile}未存入数据库]；"; 
+                        $staff = new \app\models\MStaff;
+                        $staff->office_id = 25;
+                        $staff->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM;
+                        $staff->name = $name_utf8;
+                        $staff->mobile = $mobile;
+                    }  else {
+//                        echo "[{$mobile}已存入数据库]；";
+                    }
+                    $staff->cat = \app\models\MStaff::SCENE_CAT_IN;
+                    $staff->save(false);
+                    
+                    $employee = \app\models\ClientEmployee::findOne([
+                        'gh_id'=>  \app\models\MGh::GH_XIANGYANGUNICOM,
+                        'mobile' => $mobile,
+                    ]);
+                    if (empty($employee)) {
+                        $employee = new \app\models\ClientEmployee;
+                        $employee->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM;
+                        $employee->mobile = $mobile;
+                        $employee->name = $name_utf8;
+                        $employee->department = $department_utf8;
+                        $employee->position = $position_utf8;
+                    } else {
+                        $employee->name = $name_utf8;
+                        $employee->department = $department_utf8;
+                        $employee->position = $position_utf8;
+                    }
+                    $employee->save(false);
+                    
+                    $openidbindmobile = \app\models\OpenidBindMobile::findOne([
+                        'gh_id'=>  \app\models\MGh::GH_XIANGYANGUNICOM,
+                        'mobile' => $mobile,
+                    ]);
+                    
+                    if (empty($openidbindmobile)) {
+//                        echo "[手机号{$mobile}未绑定]；";
+                        echo "否；";
+                    } else {
+//                        echo "[手机号{$mobile}已绑定]；";
+                        echo "是；";
+                    }
+                    if (
+                            !empty($staff) && 
+                            !empty($openidbindmobile) &&
+                            $staff->openid != $openidbindmobile->openid
+                    ) {
+                        $staff->openid = $openidbindmobile->openid;
+                        $staff->save(false);
+                    }
+                }
+                echo PHP_EOL;
+            }
+//            if (count($fields) > 3)
+//            echo implode("\t", $fields).PHP_EOL;
+        }
+        fclose($fh);
+    }
+    
+    public function actionAgency($filename = 'agency.csv') {
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, "r");
+        while (!feof($fh)) {
+            $line = trim(fgets($fh));
+            if (empty($line) || strlen($line) == 0) continue;
+            $fields = explode(",", $line);
+            $contact_person = trim($fields[0]);
+            $contact_parson_utf8 = iconv('GBK', 'UTF-8//IGNORE', $contact_person);
+            $msc_brev_name = trim($fields[1]);
+            $msc_brev_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $msc_brev_name);
+            $title = trim($fields[2]);
+            $title_utf8 = iconv('GBK', 'UTF-8//IGNORE', $title);
+            $mobiles = explode(';', trim($fields[3]));
+            
+//            $name_utf8 = $name;
+//            $department_utf8 = $department;
+//            $position_utf8 = $position;
+            
+            echo "{$contact_parson_utf8},{$msc_brev_name_utf8},{$title_utf8},{$fields[3]},";
+            foreach($mobiles as $mobile) {
+                $mobile = trim($mobile);
+                if (strlen($mobile) != 11 || !is_numeric($mobile)) echo "[$mobile]非手机号码；";
+                else {
+                    $staff = \app\models\MStaff::findOne([
+                        'gh_id'=>  \app\models\MGh::GH_XIANGYANGUNICOM,
+                        'mobile' => $mobile,
+                    ]);
+                    if (empty($staff)) {
+                        echo "[{$mobile}未存入数据库]；"; 
+                        $office = \app\models\MOffice::findOne([
+                            'title' => $title_utf8,
+                        ]);
+                        if (empty($office)) {
+                            $office = new \app\models\MOffice;
+                            $office->title = $title_utf8;
+                            $office->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM;
+                            $office->manager = $contact_parson_utf8;
+                            $office->mobile = $mobile;
+                            $office->region = $msc_brev_name_utf8;
+                            $office->save(false);
+                        }
+                        $staff = new \app\models\MStaff;
+                        $staff->office_id = $office->office_id;
+                        $staff->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM;
+                        $staff->name = $contact_parson_utf8;
+                        $staff->mobile = $mobile;
+                    }  else {
+//                        echo "[{$mobile}已存入数据库]；";
+                    }
+                    $staff->cat = \app\models\MStaff::SCENE_CAT_OUT;
+                    $staff->save(false);
+                    
+                    $agency = \app\models\ClientAgency::findOne([
+                        'gh_id'=>  \app\models\MGh::GH_XIANGYANGUNICOM,
+                        'mobile' => $mobile,
+                    ]);
+                    if (empty($agency)) {
+                        $agency = new \app\models\ClientAgency();
+                        $agency->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM;
+                        $agency->mobile = $mobile;
+                        $agency->contact_person = $contact_parson_utf8;
+                        $agency->msc_brev_name = $msc_brev_name_utf8;
+                        $agency->title = $title_utf8;
+                    } else {
+                        $agency->contact_person = $contact_parson_utf8;
+                        $agency->msc_brev_name = $msc_brev_name_utf8;
+                        $agency->title = $title_utf8;
+                    }
+                    $agency->save(false);
+                    
+                    $openidbindmobile = \app\models\OpenidBindMobile::findOne([
+                        'gh_id'=>  \app\models\MGh::GH_XIANGYANGUNICOM,
+                        'mobile' => $mobile,
+                    ]);
+                    
+                    if (empty($openidbindmobile)) {
+//                        echo "[手机号{$mobile}未绑定]；";
+                        echo "否；";
+                    } else {
+//                        echo "[手机号{$mobile}已绑定]；";
+                        echo "是；";
+                    }
+                    if (
+                            !empty($staff) && 
+                            !empty($openidbindmobile) &&
+                            $staff->openid != $openidbindmobile->openid
+                    ) {
+                        $staff->openid = $openidbindmobile->openid;
+                        $staff->save(false);
+                    }
+                }
+                echo PHP_EOL;
+            }
+//            if (count($fields) > 3)
+//            echo implode("\t", $fields).PHP_EOL;
         }
         fclose($fh);
     }
