@@ -452,7 +452,28 @@ class MUser extends ActiveRecord implements IdentityInterface
     public function getUserAccountBalanceInfo()
     {
         return Yii::$app->formatter->asCurrency($this->user_account_balance/100);    
-    }    
+    } 
+
+    public function getUserAccounts()
+    {
+        return $this->hasMany(\app\models\MUserAccount::className(), [
+            'gh_id' => 'gh_id',
+            'openid' => 'openid',
+        ]);
+    }
+
+    public function getUserAccountDepositTotal()
+    {
+        $sql = 'select sum(amount) from wx_user_account where gh_id = :gh_id and openid = :openid and cat = :cat';
+        $total = Yii::$app->db->createCommand($sql)
+                    ->bindValues([
+                        ':gh_id' => $this->gh_id,
+                        ':openid' => $this->openid,
+                        ':cat' => \app\models\MUserAccount::CAT_DEBIT_FAN,
+                      ])
+                    ->queryScalar();
+        return Yii::$app->formatter->asCurrency($total/100);
+    }   
 
     public function getStaff()
     {

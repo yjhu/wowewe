@@ -33,8 +33,12 @@
     .btn {
       font-size: 16px;
     }
-
+    .orderitem{
+          color:#aaaaaa;
+          font-size: 11pt;
+    }
     </style>
+
 
     <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
     <!-- Include the compiled Ratchet JS -->
@@ -87,17 +91,35 @@
           <ul class="table-view">
 
             <li class="table-view-cell table-view-divider">我的账户</li>
-            <li class="table-view-cell">余额 <button class="btn btn-positive btn-outlined" style="width:90px;height:40px;size:12px">￥50</button></li>
-            <li class="table-view-cell">支付历史 <button class="btn btn-primary btn-outlined" style="width:90px;height:40px;size:12px">￥2048</button></li>
+            <li class="table-view-cell">余额 
+            <a class="btn btn-positive btn-outlined" style="width:150px;size:12px" href="#zhmx">
+            <?= $user->getUserAccountBalanceInfo() ?>
+            </a>
+            </li>
 
+            <li class="table-view-cell">总收入
+            <a class="btn btn-primary btn-outlined" style="width:150px;size:12px" href="#zhmx">
+            <?= $user->getUserAccountDepositTotal() ?>
+            </a>
+            </li>
 
+            </ul>
+            <?php if ($user->user_account_balance > 0) { ?>
+              <a class="btn btn-positive btn-block"  href="#txcz">我要提现充话费</a>
+            <?php } ?>
+
+            <ul class="table-view">
             <li class="table-view-cell table-view-divider"></li>
 
             <li class="table-view-cell media">
               <a class="navigate-right" href="<?php echo Url::to(['myorder', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
-                <span class="badge badge-negative">
-                <?= $user->getOrderInfoCount() ?>
-                </span>
+                
+                <?php if($user->getOrderInfoCount() > 0) { ?>
+                  <span class="badge badge-negative">
+                  <?= $user->getOrderInfoCount() ?>
+                  </span>
+                <?php } ?>
+
                 <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
                 <div class="media-body">
                   我的订单
@@ -112,7 +134,9 @@
             -->
           </ul>
         </span>
- 
+
+
+
       <br><br><br>
 
       <p>
@@ -186,8 +210,146 @@
       </div>
     </div>
     
+    <!-- 提现充值窗口 -->
+    <div id="txcz" class="modal">
+      <header class="bar bar-nav">
+        <a class="icon icon-close pull-right" href="#txcz"></a>
+        <h1 class="title">提现充话费</h1>
+      </header>
+
+      <div class="content">
+          <p class="content-padded">
+          敬请注意：所充话费每月底统一处理，下月初到帐。
+          </p>
+
+          <input type="tel" id="czhm" placeholder="手机号码" value="<?=  empty($openidBindMobile->mobile)? "" : $openidBindMobile->mobile ?>">
+          
+          <input type="tel" id='czje' placeholder="请输入5的倍数，最多可充金额 <?= $user->user_account_balance/100 ?>">
+
+          <br>
+          <button class="btn btn-positive btn-block" id='qdchf'>确定充话费</button>
+          <a class="btn btn-block" href="#txcz">暂不充话费, 返回</a>
+      </div>
+    </div>
+
+
+
+    <!-- 我的账户明细显示窗口 -->
+    <div id="zhmx" class="modal">
+      <header class="bar bar-nav">
+        <a class="icon icon-close pull-right" href="#zhmx"></a>
+        <h1 class="title">账户明细</h1>
+      </header>
+
+      <div class="content">
+          <p class="content-padded">
+          </p>
+
+          <ul class="table-view">
+
+          <?php 
+            foreach ($user->userAccounts as $user_account) { 
+              if ($user_account->amount > 0)
+                $bk_color = "green";
+              else
+                $bk_color = "red";
+          ?>
+  
+            <li class="table-view-cell" >                
+                  <p><span class="orderitem">时间</span>&nbsp;&nbsp;<?= $user_account->create_time ?></p>
+                  <p><span class="orderitem">金额</span>&nbsp;&nbsp;<span style="color: <?= $bk_color ?>"><?= Yii::$app->formatter->asCurrency($user_account->amount/100) ?></span></p>
+                  <p><span class="orderitem">备注</span>&nbsp;&nbsp;<?= $user_account->memo ?></p>
+            </li>
+            <?php } ?>
+
+
+    
+          </ul>
+
+          <a class="btn btn-block" href="#zhmx"> 返回</a>
+
+      </div>
+    </div>
+
+
 
   <script type="text/javascript">
+
+
+    function qdchfajax(czhm,czje)
+    {
+          //alert('czhm'+czhm+'czje'+czje);
+          $.ajax({
+          url: "<?php echo Url::to(['wap/chonghuafeiajax'], true) ; ?>",
+          type:"GET",
+          cache:false,
+          dataType:"json",
+          data: "czhm="+czhm+"&czje="+czje,
+          success: function(t){
+
+                  if(t.code==0)
+                  {
+                      alert("恭喜, 话费充值成功！");
+                      var url = "<?php echo Url::to(['hyzx1'],true) ?>";
+                      location.href = url+'&gh_id=<?= $user->gh_id ?>&openid<?= $user->gh_id ?>';
+                  }
+                  else
+                  {
+                    alert('error');
+                  }
+
+            },
+            error: function(){
+              alert('error!');
+            }
+        });
+
+        return false;
+    }
+
+
+    $(document).ready(function(){
+
+      $("#qdchf").click(function(){
+          //alert("确定充话费");
+          //mobile = $(this).attr('mobile');
+          //alert('解除绑定'+mobile);
+
+          var czhm = $("#czhm").val();
+          var czje = $("#czje").val();
+          //alert("czhm"+ czhm + "czje"+czje);
+
+          var usermobileReg = /(^(1)\d{10}$)/;
+          if((usermobileReg.test(czhm) === false) || (czhm == ""))
+          {
+            alert("充值手机号码不正确，\n请重新填写。");
+            return  false;
+          }
+
+          var ye = '<?= $user->user_account_balance/100 ?>';
+    
+          if((czje >= 5 && czje <= parseInt(ye)) && (czje%5 == 0 ))
+          {
+            ;
+            //alert("充值金额"+czje);
+          }
+          else
+          {
+            alert("充值金额为5的整数倍，\n请确认填写正确。");
+            return  false;
+          }
+ 
+
+          if(!confirm("现在就申请充话费，确定?"))
+            return false;
+
+          qdchfajax(czhm,czje);
+          return false;
+      });
+
+
+    });
+
 
   </script>
 

@@ -330,7 +330,7 @@ class MOrder extends ActiveRecord
                 ") and ".
                 "create_time > DATE_SUB(NOW(), INTERVAL 7 day) order by create_time DESC"
                 ;
-        return self::findBySql($sql)->count();
+        return count(self::findBySql($sql)->all());
     }
     
     public static function getOfficeOrdersCount($office_id)

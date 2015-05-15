@@ -3526,7 +3526,7 @@ EOD;
         //return $this->render('hyzx', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes, 'fans'=>$fans, 'mobiledFans'=>$mobiledFans]);
 
         //return $this->render('tjyl1', ['gh_id' => $gh_id, 'openid' => $openid]);
-        return $this->render('hyzx1',['gh_id' => $gh_id, 'openid' => $openid, 'user' => $user, 'scenes'=>$scenes, 'ktxwd_scenes'=>$ktxwd_scenes, 'yqwd_scenes'=>$yqwd_scenes, 'yqwd_fans_qx_scenes'=>$yqwd_fans_qx_scenes, 'fans'=>$fans, 'mobiledFans'=>$mobiledFans]);
+        return $this->render('hyzx1',['gh_id' => $gh_id, 'openid' => $openid, 'user' => $user, 'mobiledFans'=>$mobiledFans]);
     }
 
     /*活动*/
@@ -3595,6 +3595,32 @@ EOD;
         return $this->render('bdgl', ['user'=>$user]);
     }
 
+
+
+    public function actionChonghuafeiajax()
+    {        
+        $czhm = $_GET['czhm'];
+        $czje = $_GET['czje'];
+
+        /*
+        $order = MOrder::findOne(['oid'=>$oid]);
+        $status_old = $order->status;
+        $pay_kind_old = $order->pay_kind;
+        $order->status = $status;
+        if ($order->save(false)) {
+            $orderTrail = new MOrderTrail;
+            $orderTrail->oid = $oid;
+            $orderTrail->status_old = $status_old;
+            $orderTrail->status_new = $order->status;
+            $orderTrail->pay_kind_old = $pay_kind_old;
+            $orderTrail->pay_kind_new = $order->pay_kind;            
+            $orderTrail->staff_id = empty($_GET['staff_id']) ? 0 : $_GET['staff_id'];
+            $orderTrail->save(false);
+        }
+        */
+        
+        return json_encode(['code' => 0]);
+    }
 
 
     /*end of 会员中心 新版 powered by ratchet */
