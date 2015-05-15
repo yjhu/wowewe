@@ -3603,28 +3603,47 @@ EOD;
 
     public function actionChonghuafeiajax()
     {        
-        $czhm = $_GET['czhm'];
-        $czje = $_GET['czje'];
+        $czhm   = $_GET['czhm'];
+        $czje   = $_GET['czje'];
+        $gh_id  = $_GET['gh_id'];
+        $openid = $_GET['openid'];
 
-        /*
-        $order = MOrder::findOne(['oid'=>$oid]);
-        $status_old = $order->status;
-        $pay_kind_old = $order->pay_kind;
-        $order->status = $status;
-        if ($order->save(false)) {
-            $orderTrail = new MOrderTrail;
-            $orderTrail->oid = $oid;
-            $orderTrail->status_old = $status_old;
-            $orderTrail->status_new = $order->status;
-            $orderTrail->pay_kind_old = $pay_kind_old;
-            $orderTrail->pay_kind_new = $order->pay_kind;            
-            $orderTrail->staff_id = empty($_GET['staff_id']) ? 0 : $_GET['staff_id'];
-            $orderTrail->save(false);
-        }
-        */
+//        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+//        if (empty($wx_user)) return json_encode(['code' => -1]);
+
+        $user_account = new \app\models\MUserAccount;
+        $user_account->gh_id = $gh_id;
+        $user_account->openid = $openid;
+        $user_account->cat = \app\models\MUserAccount::CAT_CREDIT_CHARGE_MOBILE;
+        $user_account->amount = - $czje * 100;
+        $user_account->memo = "提现充话费申请";
+        $user_account->charge_mobile = $czhm;
+        $user_account->status = \app\models\MUserAccount::STATUS_CHARGE_REQUEST;
+        $user_account->save(false);
 
         return json_encode(['code' => 0]);
     }
+
+
+    public function actionQxchonghuafeiajax()
+    {        
+        $uid   = $_GET['uid'];
+
+        $user_account = \app\models\MUserAccount::findOne(['id' => $uid]);
+        if (empty($user_account)) return json_encode(['code' => 0]);
+        if (
+            $user_account->cat    != \app\models\MUserAccount::CAT_CREDIT_CHARGE_MOBILE ||
+            $user_account->status != \app\models\MUserAccount::STATUS_CHARGE_REQUEST
+        ) {
+            return json_encode(['code' => -1]);
+        }
+        
+        $user_account->delete();
+        return json_encode(['code' => 0]);
+    }
+
+
+
 
 
     /*end of 会员中心 新版 powered by ratchet */

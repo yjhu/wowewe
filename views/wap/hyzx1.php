@@ -3,6 +3,8 @@
     use yii\helpers\Url;
     use app\models\U;
     use app\models\MUser;
+    use app\models\MUserAccount;
+    
 
     //use app\models\utils;
     //use app\models\utils\emoji;
@@ -154,22 +156,22 @@
     </div><!-- end of content -->
 
     <nav class="bar bar-tab">
-      <a class="tab-item active" href="<?php echo Url::to(['hyzx1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+      <a data-ignore="push" class="tab-item active" href="<?php echo Url::to(['hyzx1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-person"></span>
         <span class="tab-label">我</span>
       </a>
 
-      <a class="tab-item" href="<?php echo Url::to(['hyzx2', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx2', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-star-filled"></span>
         <span class="tab-label">活动</span>
       </a>
 
-      <a class="tab-item" href="<?php echo Url::to(['hyzx3', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx3', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-home"></span>
         <span class="tab-label">营业厅</span>
       </a>
 
-      <a class="tab-item" href="<?php echo Url::to(['hyzx4', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+      <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx4', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-gear"></span>
         <span class="tab-label">设置</span>
       </a>
@@ -258,7 +260,17 @@
             <li class="table-view-cell" >                
                   <p><span class="orderitem">时间</span>&nbsp;&nbsp;<?= $user_account->create_time ?></p>
                   <p><span class="orderitem">金额</span>&nbsp;&nbsp;<span style="color: <?= $bk_color ?>"><?= Yii::$app->formatter->asCurrency($user_account->amount/100) ?></span></p>
-                  <p><span class="orderitem">备注</span>&nbsp;&nbsp;<?= $user_account->memo ?></p>
+                  <p>
+                  <span class="orderitem">备注</span>&nbsp;&nbsp;<?= $user_account->memo ?>
+
+                  <?php
+                      if($user_account->status == MUserAccount::STATUS_CHARGE_REQUEST) {
+                  ?>
+                      <span id="qxsq" class="btn btn-outlined pull-right" uid="<?= $user_account->id ?>"  amount="<?= $user_account->amount ?>">取消申请</span>
+                  <?php 
+                    }
+                  ?>
+                  </p>
             </li>
             <?php } ?>
 
@@ -275,6 +287,8 @@
 
   <script type="text/javascript">
 
+    var gh_id = "<?= $user->gh_id ?>";
+    var openid = "<?= $user->openid ?>";
 
     function qdchfajax(czhm,czje)
     {
@@ -284,20 +298,50 @@
           type:"GET",
           cache:false,
           dataType:"json",
-          data: "czhm="+czhm+"&czje="+czje,
+          data: "czhm="+czhm+"&czje="+czje+"&gh_id="+gh_id+"&openid="+openid,
           success: function(t){
 
                   if(t.code==0)
                   {
-                      alert("恭喜, 话费充值成功！");
+                      alert("您本次的话费充值申请已提交，所有申请会在月底统一处理，下月初到帐，敬请查收。");
                       var url = "<?php echo Url::to(['hyzx1'],true) ?>";
-                      location.href = url+'&gh_id=<?= $user->gh_id ?>&openid<?= $user->gh_id ?>';
+                      location.href = url+'&gh_id=<?= $user->gh_id ?>&openid<?= $user->openid ?>';
                   }
                   else
                   {
                     alert('error');
                   }
 
+            },
+            error: function(){
+              alert('error!');
+            }
+        });
+
+        return false;
+    }
+
+
+    function qxsqajax(uid,amount)
+    {
+          $.ajax({
+          url: "<?php echo Url::to(['wap/qxchonghuafeiajax'], true) ; ?>",
+          type:"GET",
+          cache:false,
+          dataType:"json",
+          data: "uid="+uid,
+          success: function(t){
+
+                  if(t.code==0)
+                  {
+                      alert("本次话费充值申请已取消。\n"+Math.abs(amount/100)+"元已返还到您的帐户。");
+                      var url = "<?php echo Url::to(['hyzx1'],true) ?>";
+                      location.href = url+'&gh_id=<?= $user->gh_id ?>&openid<?= $user->openid ?>';
+                  }
+                  else
+                  {
+                    alert('error');
+                  }
             },
             error: function(){
               alert('error!');
@@ -328,17 +372,23 @@
 
           var ye = '<?= $user->user_account_balance/100 ?>';
     
-          if((czje >= 5 && czje <= parseInt(ye)) && (czje%5 == 0 ))
+          if(czje < 5)
           {
-            ;
-            //alert("充值金额"+czje);
-          }
-          else
-          {
-            alert("充值金额为5的整数倍，\n请确认填写正确。");
+            alert("充值金额至少为5元，\n请重新填写。");
             return  false;
           }
- 
+
+          if(czje > parseInt(ye))
+          {
+            alert("充值金额超出了您的帐户余额，\n请重新填写。");
+            return  false;
+          }
+
+          if(czje%5 != 0)
+          {
+            alert("充值金额必须是5的倍数，\n请重新填写。");
+            return  false;
+          }
 
           if(!confirm("现在就申请充话费，确定?"))
             return false;
@@ -347,6 +397,17 @@
           return false;
       });
 
+      $("#qxsq").click(function(){
+            //alert("取消申请");
+            uid = $(this).attr('uid');
+            amount = $(this).attr('amount');
+
+            if(!confirm("取消充话费申请，确定?"))
+              return false;
+
+            qxsqajax(uid,amount);
+            return false;
+          });
 
     });
 
