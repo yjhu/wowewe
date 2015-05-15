@@ -46,7 +46,8 @@
                 $model->cid==866 ||
                 $model->cid==867 ||
                 $model->cid==868 ||
-                $model->cid==869
+                $model->cid==869 ||
+                $model->cid==877
                 )  
         { ?>
             <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">

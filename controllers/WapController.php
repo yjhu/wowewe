@@ -1846,6 +1846,10 @@ EOD;
                 $order->title = 'iPhone6 (16G)';            
                 $order->attr = "{$_GET['cardType']}";
                 break; 
+            case MItem::ITEM_CAT_MOBILE_SANXING_N9106W:
+                $order->title = '三星N9106W';            
+                $order->attr = "{$_GET['cardType']}";
+                break;
 
 
             //老用户户专享 参与机型及优惠合约
@@ -3618,7 +3622,7 @@ EOD;
             $orderTrail->save(false);
         }
         */
-        
+
         return json_encode(['code' => 0]);
     }
 

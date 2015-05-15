@@ -202,6 +202,7 @@ class MItem extends ActiveRecord
 	const ITEM_CAT_MOBILE_LYH_IPHONE4S_8GB = 875;
 	const ITEM_CAT_MOBILE_LYH_IPHONE5S_16GB = 876;
 
+	const ITEM_CAT_MOBILE_SANXING_N9106W = 877;
 
 	//流量包 国内
  	const ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI = 902;
@@ -354,6 +355,9 @@ class MItem extends ActiveRecord
 			//老用户户专享 5.1
 			self::ITEM_CAT_MOBILE_LYH_IPHONE4S_8GB  => 'iPhone4S 8GB',
 			self::ITEM_CAT_MOBILE_LYH_IPHONE5S_16GB  => 'iPhone5S 16GB',
+
+			self::ITEM_CAT_MOBILE_SANXING_N9106W  => '三星N9106W',
+			
 			
 
 
