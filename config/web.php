@@ -55,15 +55,13 @@ $config = [
 	
 	
 	'cache' => [
-		//'class' => 'yii\caching\ApcCache',
-		'class' => 'yii\caching\DummyCache',
+		'class' => 'yii\caching\ApcCache',
 	],		
 	
 	'formatter'=> [
 		'datetimeFormat'=>'Y-m-d H:i:s',
 		'dateFormat'=>'Y-m-d',
 		'timeFormat'=>'H:i:s',
-		'currencyCode'=>'CNY',
 	],
 	
 	'user' => [
@@ -99,7 +97,6 @@ $config = [
 		],
 	],
 */        
-
 
 	'log' => [
 	    'traceLevel' => YII_DEBUG ? 5 : 2,
