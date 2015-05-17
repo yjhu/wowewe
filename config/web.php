@@ -55,8 +55,7 @@ $config = [
 	
 	
 	'cache' => [
-		//'class' => 'yii\caching\ApcCache',
-		'class' => 'yii\caching\DummyCache',
+		'class' => 'yii\caching\ApcCache',
 	],		
 	
 	'formatter'=> [

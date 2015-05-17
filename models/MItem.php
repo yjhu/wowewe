@@ -505,8 +505,15 @@ class MItem extends ActiveRecord
 		return $arr;
 	}
 
-
-
+    public function attributeLabels()
+    {
+        return [
+            'quantity'=>'数量',
+            'price'=>'现价',
+			'old_price'=>'原价',
+			'title'=>'标题',
+        ];
+    }
 
 }
 
