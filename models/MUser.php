@@ -442,7 +442,8 @@ class MUser extends ActiveRecord implements IdentityInterface
     
     public function getFans()
     {
-        $staff = MStaff::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
+//        $staff = MStaff::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
+        $staff = $this->staff;
         if (empty($staff)) {
             return [];
         }

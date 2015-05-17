@@ -40,7 +40,7 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back()"></a>
+      <a data-ignore="push" class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre()"></a>
       <h1 class="title">
        营业厅订单
       </h1>
@@ -109,6 +109,12 @@
     </div>
 
 
-
+    <script type="text/javascript">
+        function back2pre()
+        {
+          //alert("back!");
+          location.href = "<?php echo Url::to(['hyzx3', 'gh_id'=>$staff->gh_id, 'openid'=>$staff->openid]) ?>";
+        }
+    </script>
   </body>
 </html>

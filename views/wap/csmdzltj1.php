@@ -32,7 +32,7 @@
 
     <header class="bar bar-nav">
 
-      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre();"></a>
+      <a data-ignore="push" class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre();"></a>
 
       <h1 class="title">
        渠道宣传竞赛资料提交
@@ -101,7 +101,7 @@
   <script type="text/javascript">
     function back2pre()
     {
-      location.href = "<?php echo Url::to(['hyzx', 'gh_id'=>$gh_id, 'openid'=>$openid, 'item'=>'hyzx'],true) ?>";
+      location.href = "<?php echo Url::to(['hyzx2', 'gh_id'=>$gh_id, 'openid'=>$openid, 'item'=>'hyzx'],true) ?>";
     }
   </script>
 

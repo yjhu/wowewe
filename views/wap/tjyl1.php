@@ -3,6 +3,10 @@
     use yii\helpers\Url;
     use app\models\U;
 ?>
+
+<?php
+  include('../models/utils/emoji.php');
+?>
     
 <!DOCTYPE html>
 <html>
@@ -20,6 +24,8 @@
     <!-- Include the compiled Ratchet CSS -->
     <link href="/wx/web/ratchet/dist/css/ratchet.css" rel="stylesheet">
   
+    <link href="./php-emoji/emoji.css" rel="stylesheet">
+
     <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
     <!-- Include the compiled Ratchet JS -->
     <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
@@ -30,7 +36,7 @@
 
     <header class="bar bar-nav">
 
-      <a class="icon icon-left-nav pull-left" id="btn_back"></a>
+      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="history.back();"></a>
 
       <h1 class="title">
       <img src="../web/images/comm-icon/iconfont-liwu.png?v5" width="18">&nbsp;
@@ -59,22 +65,29 @@
 
     <div class="card">
       <span id="item1mobile" class="control-content active">
+ 
       <p class="content-padded">
-        <span style="float:left">
-          <img src='../web/images/woke/0.jpg' width="64" height="64">
-        </span>
+         <span style="float:left">
+            <img id="myphoto" src="<?php echo $user->headimgurl; ?>" width="64" height="64">
+          </span>
 
-        <span style="float:left">
-          &nbsp;&nbsp;<b>曾开</b> <br>
-          &nbsp;&nbsp;13545296480 <br>
-          &nbsp;&nbsp;<a href="#rhtg">如何推广?</a>
-        </span>
+          <span style="float:left">
+            &nbsp;&nbsp;<b><?= emoji_unified_to_html(emoji_softbank_to_unified($user->nickname)) ?></b> <br>
+            &nbsp;&nbsp;
+            <?php foreach($user->openidBindMobiles as $openidBindMobile): ?>
+              <?=  $openidBindMobile->mobile ?>
+            <?php endforeach; ?>
+             <br>
+            &nbsp;&nbsp;<a href="#rhtg">如何推广?</a>
+          </span>
 
-        <span style="float:right"><br>
-            <a href="#showQr"><img src='../web/images/woke/qr.png' width=32></a>
-        </span>
-      </p>
+          <span style="float:right"><br>
+              <a href="#showQr"><img src='../web/images/woke/qr.png' width=24></a>
+          </span>
+      </p>      
+
       <br><br><br><br><br>
+
 
         <span>
           <ul class="table-view">
@@ -151,6 +164,7 @@
     </div><!-- end of content -->
 
       
+    <!--  
     <nav class="bar bar-tab">
       <a class="tab-item active" href="#home">
         <span class="icon icon-home"></span>
@@ -173,8 +187,7 @@
         <span class="tab-label">Settings</span>
       </a>
     </nav>
-
-
+    -->
 
 
     <div id="showQr" class="modal">
