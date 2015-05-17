@@ -77,7 +77,7 @@
           <ul class="table-view">
 
             <li class="table-view-cell media">
-              <a class="navigate-right">
+              <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['tjyl1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
                 <!--
                 <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
                 -->
