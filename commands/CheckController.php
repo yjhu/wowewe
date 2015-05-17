@@ -116,4 +116,13 @@ class CheckController extends \yii\console\Controller {
             $staff->save(false);
         }
     }
+    
+    public function actionUserAccountBalance() {
+        Yii::$app->db->createCommand("update wx_user set user_account_balance = 0")->execute();
+        $user_accounts = \app\models\MUserAccount::find()->all();
+        foreach($user_accounts as $user_account) {
+//            if ($user_account->cat == \app\models\MUserAccount::CAT_DEBIT_FAN)
+                $user_account->user->updateCounters(['user_account_balance' => $user_account->amount]);
+        }
+    }
 }
