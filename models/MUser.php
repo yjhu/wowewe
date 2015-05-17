@@ -460,7 +460,7 @@ class MUser extends ActiveRecord implements IdentityInterface
         return $this->hasMany(\app\models\MUserAccount::className(), [
             'gh_id' => 'gh_id',
             'openid' => 'openid',
-        ]);
+        ])->orderBy('create_time DESC');
     }
 
     public function getUserAccountDepositTotal()

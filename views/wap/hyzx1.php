@@ -307,13 +307,18 @@
             <li class="table-view-cell" >                
                   <p><span class="orderitem">时间</span>&nbsp;&nbsp;<?= $user_account->create_time ?></p>
                   <p><span class="orderitem">金额</span>&nbsp;&nbsp;<span style="color: <?= $bk_color ?>"><?= Yii::$app->formatter->asCurrency($user_account->amount/100) ?></span></p>
+                  <?php
+                      if($user_account->cat == MUserAccount::CAT_CREDIT_CHARGE_MOBILE) {
+                  ?>
+                  <p><span class="orderitem">号码</span>&nbsp;&nbsp;<?= $user_account->charge_mobile ?></p>
+                  <?php } ?>
                   <p>
                   <span class="orderitem">备注</span>&nbsp;&nbsp;<?= $user_account->memo ?>
 
                   <?php
                       if($user_account->status == MUserAccount::STATUS_CHARGE_REQUEST) {
                   ?>
-                      <span id="qxsq" class="btn btn-outlined pull-right" uid="<?= $user_account->id ?>"  amount="<?= $user_account->amount ?>">取消申请</span>
+                  <button id="qxsq" class="btn btn-negative btn-outlined pull-right" uid="<?= $user_account->id ?>"  amount="<?= $user_account->amount ?>"><span class="icon icon-close">取消申请</span></button>
                   <?php 
                     }
                   ?>
