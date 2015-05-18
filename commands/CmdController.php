@@ -937,7 +937,7 @@ class CmdController extends Controller
             //$size = U::getRemoteFileSize($user['headimgurl']);
             //if ($size == 5093) 
             {
-                if (!$user['subscribe']) {
+                if (empty($user['subscribe'])) {
                     continue;
                 }
                 U::W(["refresh", $user]);                
