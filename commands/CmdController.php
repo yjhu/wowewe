@@ -922,14 +922,15 @@ class CmdController extends Controller
 
     }    
 
-    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/refresh-fan-headimgurl
-    public function actionRefreshFanHeadimgurl()
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/refresh-fan-headimgurl 10000
+    public function actionRefreshFanHeadimgurl($id = null)
     {        
+        $id = empty($id) ? 0: $id;    
         $gh_id = Yii::$app->wx->getGhid();
         $db = \Yii::$app->db;
         $query = new Query();
         $tableName = MUser::tableName();
-        $query->from($tableName)->where('id>0')->orderBy(['id'=>SORT_ASC]);
+        $query->from($tableName)->where('id > :id', [':id'=>$id])->orderBy(['id'=>SORT_ASC]);
         $i = 0;
         foreach ($query->each() as $user)
         {
