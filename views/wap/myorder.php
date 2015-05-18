@@ -41,11 +41,42 @@
 
     <header class="bar bar-nav">
       <a data-ignore="push" class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre()"></a>
-      <h1 class="title">
-       我的订单
-      </h1>
+
+       <a href="#myPopover">
+          <h1 class="title">
+          我的订单
+          <!--
+          <span class="icon icon-caret"></span>
+          -->
+          </h1>
+        </a>
 
     </header>
+
+    <div id="myPopover" class="popover">
+      <ul class="table-view">
+        <li class="table-view-cell">
+              <a class="navigate-right">
+              <span class="badge badge-negative">5</span>
+                待付款
+              </a>
+        </li>
+        <li class="table-view-cell">
+              <a class="navigate-right">
+              <span class="badge badge-primary">150</span>
+                三个月内订单
+              </a>
+        </li>
+        <li class="table-view-cell">
+              <a class="navigate-right">
+              <span class="badge badge-primary">320</span>
+                三个月前订单
+              </a>
+        </li>
+
+      </ul>
+    </div>
+
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">

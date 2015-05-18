@@ -106,9 +106,11 @@
 
             <li class="table-view-cell media">
               <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['jssdksample', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
-                <!--
-                <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
-                -->
+                
+                <span class="media-object pull-left">
+                  <img src="../web/images/comm-icon/iconfont-kuaijie.png">
+                </span>
+         
                 <div class="media-body">
                   4G测速有奖
                 </div>
@@ -118,9 +120,11 @@
         <?php  if((!empty($user->mobileStaff)) || ((!empty($user->staff)) && $user->staff->cat == \app\models\MStaff::SCENE_CAT_IN)) {?>
             <li class="table-view-cell media">
               <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['qdxcjspb1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
-                <!--
-                <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
-                -->
+      
+                <span class="media-object pull-left">
+                  <img src="../web/images/comm-icon/iconfont-paiming-blue.png">
+                </span>
+         
                 <div class="media-body">
                   渠道宣传竞赛评选
                 </div>

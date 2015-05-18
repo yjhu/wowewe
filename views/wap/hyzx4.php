@@ -92,9 +92,11 @@
 
             <li class="table-view-cell media">
               <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['addbindmobile', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
-                <!--
-                <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
-                -->
+               
+                <span class="media-object pull-left">
+                      <img src="../web/images/comm-icon/iconfont-bangdingshouji.png">
+                </span>
+               
                 <div class="media-body">
                   绑定管理
                 </div>

@@ -137,7 +137,10 @@
                   </span>
                 <?php } ?>
 
-                <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
+                <span class="media-object pull-left">
+                <img src="../web/images/comm-icon/iconfont-order.png" style="width:16px;height:16px">
+                </span>
+
                 <div class="media-body">
                   我的订单
                 </div>
@@ -147,7 +150,9 @@
             <li class="table-view-cell media">
               <a class="navigate-right" href="<?php echo Url::to(['wdtg', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
                 
-                <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
+                <span class="media-object pull-left">
+                  <img src="../web/images/comm-icon/iconfont-pengyouquan.png?v3" style="width:16px;height:16px">
+                </span>
                 <div class="media-body">
                   我的推广
                 </div>
