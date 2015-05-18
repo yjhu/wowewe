@@ -165,7 +165,7 @@
                             else
                             {
                             }
-                            window.location.href = "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/order' ; ?>";
+                            window.location.href = "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/myorder' ; ?>";
                         }
                     );
                 }

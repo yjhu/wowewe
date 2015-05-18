@@ -957,7 +957,7 @@ EOD;
     public function WxGetMaterials($type, $offset=0, $count=20)
     {
         $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/material/batchget_material", ['access_token'=>$this->accessToken], self::json_encode(['type'=>$type, 'offset'=>$offset, 'count'=>$count]));
-        $this->checkWxApiResp($arr, [__METHOD__, $articles]);
+        $this->checkWxApiResp($arr, [__METHOD__]);
         return $arr;
     }
 
