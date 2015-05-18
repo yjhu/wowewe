@@ -3490,12 +3490,20 @@ EOD;
     {
         //$this->layout = 'wap';    
         $this->layout = false;    
-        //$gh_id = U::getSessionParam('gh_id');
-        //$openid = U::getSessionParam('openid');
-        //Yii::$app->wx->setGhId($gh_id);
+   
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
 
         //return $this->render('tjyl1', ['gh_id' => $gh_id, 'openid' => $openid]);
-        return $this->render('tjyl1');
+
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($user->openidBindMobiles)) {        
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid]);    
+        }
+
+        return $this->render('tjyl1', ['gh_id' => $gh_id, 'openid' => $openid, 'user' => $user]);
     }
 
 
@@ -3507,7 +3515,8 @@ EOD;
 
         $this->layout = false;
         $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');    
+        $openid = U::getSessionParam('openid'); 
+//        $openid = 'oKgUduKP1yXx_e4JviO9X-cGzm90';   
         Yii::$app->wx->setGhId($gh_id); 
 
         $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
@@ -3644,6 +3653,23 @@ EOD;
 
 
 
+    //我的推广
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/wdtg:gh_03a74ac96138
+    public function actionWdtg()
+    {
+        //$this->layout = 'wap';
+        $this->layout = false;    
+
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');  
+//        $openid = 'oKgUduKP1yXx_e4JviO9X-cGzm90';  
+        Yii::$app->wx->setGhId($gh_id);
+
+        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        $fans = $user->getFans();
+
+        return $this->render('wdtg', ['user'=>$user, 'fans' => $fans]);
+    }
 
 
     /*end of 会员中心 新版 powered by ratchet */

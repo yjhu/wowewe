@@ -270,7 +270,14 @@ class MOffice extends ActiveRecord implements IdentityInterface {
     }
 
     public function getSupervisor() {
-        return $this->hasOne(MStaff::className(), ['staff_id' => 'staff_id'])
+        if ($this->is_selfOperated) 
+          return $this->hasOne(MStaff::className(), [
+                    'name' => 'manager',
+                    'mobile' => 'mobile',
+                    'gh_id' => 'gh_id',
+                 ]);
+        else 
+          return $this->hasOne(MStaff::className(), ['staff_id' => 'staff_id'])
                         ->viaTable('wx_rel_supervision_staff_office', ['office_id' => 'office_id']);
     }
 

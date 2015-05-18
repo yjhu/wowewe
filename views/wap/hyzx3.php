@@ -61,12 +61,27 @@
 
           <span style="float:left">
             &nbsp;&nbsp;<b><?= emoji_unified_to_html(emoji_softbank_to_unified($user->nickname)) ?></b> <br>
+            &nbsp;&nbsp;<?=  $user->getBindMobileNumbersStr() ?><br>
             &nbsp;&nbsp;
-            <?php foreach($user->openidBindMobiles as $openidBindMobile): ?>
-              <?=  $openidBindMobile->mobile ?>
-            <?php endforeach; ?>
-             <br>
-            &nbsp;&nbsp;<a href="#rhtg">如何推广?</a>
+            <?php 
+            if (
+              !empty($user->staff) &&
+              $user->staff->cat == \app\models\MStaff::SCENE_CAT_IN
+            ) { 
+                //$is_employee = true;
+                $mobiles = $user->getBindMobileNumbers();
+                if (count($mobiles) > 0) {
+                  $mobile = $mobiles[0];
+                  $employee = \app\models\ClientEmployee::findOne([
+                    'gh_id' => $user->gh_id,
+                    'mobile' => $mobile,
+                  ]);
+                }
+            ?>
+              襄阳联通员工 <?= !empty($employee) ? $employee->name : '' ?>
+            <?php } else { ?>
+              会员
+            <?php } ?>
           </span>
 
           <span style="float:right"><br>
@@ -118,18 +133,24 @@
         <span class="tab-label">活动</span>
       </a>
 
+      <?php 
+      if (
+        !empty($user->staff) &&
+        !empty($user->staff->office) &&
+        $user->staff->office->is_selfOperated
+      ) { 
+      ?>
       <a data-ignore="push" class="tab-item active" href="<?php echo Url::to(['hyzx3', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-home"></span>
         <span class="tab-label">营业厅</span>
       </a>
+      <?php } ?>
 
       <a data-ignore="push" class="tab-item" href="<?php echo Url::to(['hyzx4', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
         <span class="icon icon-gear"></span>
         <span class="tab-label">设置</span>
       </a>
     </nav>
-
-
 
 
     <div id="showQr" class="modal">
@@ -140,12 +161,14 @@
 
       <div class="content">
 
-          <br>
           <center>
               <?php echo Html::img($user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
+              <br>
+              <a href="#rhtg">如何推广?</a>
+              <br> <br>
+              &nbsp;
           </center>
-          <br>
-          <br>
+
           <a class="btn btn-block" href="#showQr">返回</a>
       </div>
     </div>
@@ -160,7 +183,18 @@
 
       <div class="content">
 
-          <p>如何推广123...</p>
+         <div class="card" style="border:0">
+          <p></p>
+          <p>1、首先，您关注<strong>襄阳联通官方微信服务号</strong>后，还需要绑定手机号成为会员，联通、移动、电信的号码都可以绑定。</p>
+          <p>2、成为襄阳联通官方微信服务号会员后，进入会员中心，点击顶部的二维码图标就可以获得您专属的<strong>推广二维码</strong>。</p>
+          <p>3、将您的<strong>专属推广二维码</strong>通过微信发送到<strong>朋友圈</strong>或者直接<strong>转发给您的好友</strong>，也可以直接让他们面对面扫码。当您的朋友或好友<strong>扫码关注襄阳联通官方微信服务号</strong>后，即记为您的推广成绩。</p>
+          <p>4、如果您的朋友或者好友关注后还<strong>继续绑定手机号成为会员</strong>，那就更好了。现在襄阳联通正在进行<strong>推荐有礼</strong>的活动，每推广一个关注会员，你就会获得<strong>5元推广奖金</strong>哦。</p>
+          <p>5、请注意：您推广的会员必须关注襄阳联通官方微信服务号<strong>达一个月</strong>后，您的推广奖金才会生效，生效时会有微信消息发送给您。</p>
+          <p>6、您的推广奖金会存入您的<strong>会员帐号</strong>中，您可以在每月底从会员帐户中<strong>提现进行话费充值</strong>，有几点约定：
+          <ul><li>充值号码必须是襄阳联通本地手机号码；</li><li>充值金额不能超过您的帐户余额；</li><li>充值金额必须是5元的整数倍。</li></ul>
+          </p>
+          <p>7、所有的话费充值会在<strong>每月初统一处理，统一到帐</strong>，到帐后会有短信和微信通知，还请您注意查收。</p>
+          </div>
           <br>
           <a class="btn btn-block" href="#rhtg">返回</a>
       </div>

@@ -158,8 +158,22 @@ class MStaff extends ActiveRecord
         if (empty($this->scene_id)) {
             return $fans;
         }
-        $fans = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])->all();
+        $fans = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])
+                ->orderBy('create_time DESC')->all();
         return $fans;    
+    }
+
+    public function getFanCount()
+    {
+        return MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])->count();  
+    }
+
+    public function getFanBoundCount()
+    {
+        return MUser::find()->joinWith('openidBindMobiles')
+            ->where(['wx_user.gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])
+            ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => '']])
+            ->count();  
     }
 
     public function getQrImageUrl()
