@@ -82,6 +82,7 @@
               $user->staff->cat == \app\models\MStaff::SCENE_CAT_IN
             ) { 
                 //$is_employee = true;
+                /*
                 $mobiles = $user->getBindMobileNumbers();
                 if (count($mobiles) > 0) {
                   $mobile = $mobiles[0];
@@ -90,8 +91,9 @@
                     'mobile' => $mobile,
                   ]);
                 }
+                */
             ?>
-              襄阳联通员工 <?= !empty($employee) ? $employee->name : '' ?>
+              襄阳联通员工 <?//= !empty($employee) ? $employee->name : '' ?>
             <?php } else { ?>
               会员
             <?php } ?>
@@ -148,7 +150,7 @@
             </li>
 
             <li class="table-view-cell media">
-              <a class="navigate-right" href="<?php echo Url::to(['wdtg', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+              <a data-ignore="push"  class="navigate-right" href="<?php echo Url::to(['wdtg', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
                 
                 <span class="media-object pull-left">
                   <img src="../web/images/comm-icon/iconfont-pengyouquan.png?v3" style="width:16px;height:16px">

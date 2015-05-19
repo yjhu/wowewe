@@ -95,7 +95,7 @@
           <ul class="table-view">
 
             <li class="table-view-cell media">
-              <a class="navigate-right" href="<?php echo Url::to(['officeorder', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'staff_id'=>$staff->staff_id]) ?>">
+              <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['officeorder', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'staff_id'=>$staff->staff_id]) ?>">
 
                 <?php if(MOrder::getOfficeOrderInfoCount($staff->office_id) > 0) { ?>
                   <span class="badge badge-negative">
@@ -110,6 +110,74 @@
               </a>
             </li>
  
+ <!--
+    const GH_XIANGYANGUNICOM_OPENID_HBHE = 'oKgUduNHzUQlGRIDAghiY7ywSeWk';
+    const GH_XIANGYANGUNICOM_OPENID_KZENG = 'oKgUduJJFo9ocN8qO9k2N5xrKoGE';
+    const GH_XIANGYANGUNICOM_OPENID_GTSUN = 'oKgUduNaK7mfojofz2qnSxa_FTMs';
+    const GH_XIANGYANGUNICOM_OPENID_YJHU = 'oKgUduHLF-HAxvHYIwmm3qjfqNf0';
+ -->
+            <?php if($user->openid=='oKgUduNHzUQlGRIDAghiY7ywSeWk' ||
+                    $user->openid=='oKgUduJJFo9ocN8qO9k2N5xrKoGE' ||
+                    $user->openid=='oKgUduHLF-HAxvHYIwmm3qjfqNf0') { ?>
+            <li class="table-view-cell media">
+              <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'staff_id'=>$staff->staff_id]) ?>">
+                <!--
+                <span class="badge badge-negative">
+                1000
+                </span>
+                -->
+                <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
+                <div class="media-body">
+                  员工管理
+                </div>
+              </a>
+            </li>
+
+
+            <li class="table-view-cell media">
+              <a data-ignore="push"  class="navigate-right" href="#">
+                <!--
+                <span class="badge badge-negative">
+                1000
+                </span>
+                -->
+                <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
+                <div class="media-body">
+                  粉丝管理
+                </div>
+              </a>
+            </li>
+
+            <li class="table-view-cell media">
+              <a data-ignore="push"  class="navigate-right" href="#">
+                <!--
+                <span class="badge badge-negative">
+                1000
+                </span>
+                -->
+                <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
+                <div class="media-body">
+                  客户管理
+                </div>
+              </a>
+            </li>      
+
+            <li class="table-view-cell media">
+              <a class="navigate-right" href="#">
+                <!--
+                <span class="badge badge-negative">
+                1000
+                </span>
+                -->
+                <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
+                <div class="media-body">
+                  推广查询
+                </div>
+              </a>
+            </li>      
+            <?php } ?>
+
+
 
             <!--
             <li class="table-view-cell">Item 3 <button class="btn btn-positive">Button</button></li>

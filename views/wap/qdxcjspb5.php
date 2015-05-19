@@ -112,15 +112,20 @@
               -->
               <center>
               <div style="vertical-align: middle;">
-                        
+               <!--     
               <span id="minStr" class="badge"></span>
               <span id="minIcon" style="height:50px;font-size:48px;color:#ccc" class="icon icon-left"></span>
               &nbsp;
               <span id="myrangeStr" style="height:50px;width:50%;font-size:48px;color:red;font-weight:bolder;text-align:center">1</span>
-              <input type=hidden id="myrange" name="myrange">
+              -->
+              <input type="number" id="myrange" name="myrange" placeholder="评分"><span id="rangHint"></span>
+              <br>
+              <input type="text" id="comment" name="comment" placeholder="备注">
+              <!--
               &nbsp;
               <span id="maxIcon" style="height:50px;font-size:48px;color:#ccc" class="icon icon-right"></span>
               <span id="maxStr" class="badge"></span>
+              -->
 
               </div>
               </center>
@@ -179,9 +184,10 @@
           var MAX = 18;
           if (!office_isSelfOperated) MAX = 20;
         } 
-        $("#minStr").html(MIN);
-        $("#maxStr").html(MAX);
+        $("#rangHint").html('('+MIN+'-'+MAX+')');
+
         
+        /*
         $("#myrangeStr").html(MAX/2);
         $("#myrange").val(MAX/2);
           
@@ -202,10 +208,16 @@
             $("#myrange").val(range);
             //alert(range);
         });
-
+        */
      
         $("#submit_rank").click(function(){
           //alert("office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+$('#myrange').val());
+          //
+            if(($('#myrange').val() < MIN) || ($('#myrange').val() > MAX))
+            {
+              alert("您的评分超出了评分范围，请重新输入。");
+              return false;
+            }
 
             $.ajax({
             url: "<?php echo Url::to(['wap/handleqdxcjspb','gh_id'=>$gh_id, 'openid'=>$openid], true) ; ?>",
@@ -213,7 +225,7 @@
             cache:false,
             //async:false,
             dataType:"json",
-            data: "office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+$('#myrange').val(),
+            data: "office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+$('#myrange').val()+"&comment="+$('#comment').val(),
             success: function(t){
                     //var json_data = eval('('+msg+')');
                     alert("感谢您的评分。");

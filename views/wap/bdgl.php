@@ -141,6 +141,7 @@
       $("#zjbd").click(function(){
           //alert("增加绑定");
           mobile = $(this).attr('mobile');
+          
 
           //if(!confirm("添加手机号绑定，确定?"))
           // return false;
