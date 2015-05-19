@@ -3421,7 +3421,8 @@ EOD;
         $office_campaign_id = empty($_GET['office_campaign_id']) ? 0 : $_GET['office_campaign_id'];
         $staff_id = empty($_GET['staff_id']) ? 0 : $_GET['staff_id'];
         $score = empty($_GET['score']) ? 0 : $_GET['score'];
-
+        $comment = empty($_GET['comment']) ? 0 : $_GET['comment'];
+        
         $model = new MOfficeCampaignScore;
         //$model->gh_id = $gh_id;
         //$model->openid = $openid;   
@@ -3429,6 +3430,7 @@ EOD;
         $model->office_campaign_id = $office_campaign_id;
         $model->staff_id = $staff_id;
         $model->score = $score;
+        $model->comment = $comment;
                          
         $model->save(false);       
  
