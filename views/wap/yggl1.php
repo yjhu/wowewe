@@ -47,7 +47,7 @@
 
     <header class="bar bar-nav">
 
-      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="history.back();"></a>
+      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre();"></a>
 
       <h1 class="title">
       <!--
@@ -146,8 +146,16 @@
                   <label style="color:#777777">手机号码</label>
                    <input type="text"  id="ygsjhm">
                 </div>
-
-              <br><br>
+              
+               <p class="content-padded"> </p>
+               <br>
+                <div class="input-row">
+                  <label style="color:#777777">内部员工</label>
+                      <div class="toggle" >
+                      <div class="toggle-handle" id="myToggle"></div>
+                      </div>
+                </div>
+                <br>
               <button class="btn btn-positive btn-block" style="border-radius:3px">确定</button>
 
               <a class="btn btn-block" style="border-radius:3px" href="#xzyg"> 返回</a>
@@ -164,23 +172,24 @@
   //var ul-content;
   //alert($("#ul-content").html());
   var count = 0;
+  var yuangongFlag = -1;
   var office_id = "<?= $office->office_id ?>";
 
 function load_data2(i, n)
 {
   count++;
-
-  text ="<li class=\"table-view-cell media\">\
-          <a data-ignore=\"push\" class=\"navigate-right\" href=\"/wx/web/index.php?r=wap/yggl2&staff_id=\"+n.staff_id+\">\
-          <div class=\"media-body\">\
-          "+n.name+"\
-          <p>\
-          手机号码 "+n.mobile+"\
-          <br>\
-          </p>\
-          </div>\
-          </a>\
-          </li>";
+  //alert(n.staff_id);
+  text ="<li class=\"table-view-cell media\">"+
+          "<a data-ignore='push' class='navigate-right' href=/wx/web/index.php?r=wap/yggl2&staff_id="+n.staff_id+"&searchStr="+$("#searchStr").val()+">"+
+          "<div class=\"media-body\">"+
+          n.name+
+          "<p>"+
+          "手机号码 "+n.mobile+
+          "<br>"+
+          "</p>"+
+          "</div>"+
+          "</a>"+
+          "</li>";
 
   $("#ul-content").append(text);
 }
@@ -200,7 +209,7 @@ function load_data2(i, n)
               {
                   //var url = "<//?//php echo Url::to(['hyzx1'],true) ?>";
                   //location.href = url+'&gh_id=<//?//= $user->gh_id ?>&openid<//?//= $user->openid ?>';
-                  alert("query ok");
+                  //alert("query ok");
                   //$("#ul-content").hide();
                   //$("#ul-content").html("<p>没有找到哟 :( </p");
                   $("#ul-content").html("");
@@ -232,7 +241,31 @@ function load_data2(i, n)
           return false;
       }); 
 
+
+      $('#myToggle').click(function(){
+
+              yuangongFlag = yuangongFlag * (-1);
+              if(yuangongFlag == -1)
+              {
+                alert("不是内部员工")
+              }
+              else
+              {
+                alert("内部员工")
+              }
+
+      })
+
+
+
   })
+
+
+  function back2pre()
+  {
+     location.href = "<?php echo Url::to(['hyzx3']) ?>";
+  }
+
 
   </script>
 

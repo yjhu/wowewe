@@ -135,7 +135,7 @@
     <br>
     <button class="btn btn-positive btn-block" style="border-radius:3px" staff_id="<?= $staff->staff_id?>">修改</button>
     <button class="btn btn-negative btn-block" style="border-radius:3px" id="btnDel" staff_id="<?= $staff->staff_id?>">删除</button>
-    <button class="btn btn-block" style="border-radius:3px" onclick="history.back();">返回</button>
+    <button class="btn btn-block" style="border-radius:3px" onclick="back2pre();">返回</button>
 
     </div>
     </div><!-- end of content -->
@@ -199,6 +199,14 @@
       return false;
     }
 
+
+
+    function back2pre()
+    {
+        location.href = "<?php echo Url::to(['yggl1', 'staff_id'=>$staff->staff_id]) ?>";
+    }
+
+
     $(document).ready(function(){
 
         $('#btnDel').click(function() {
@@ -213,6 +221,7 @@
         }); 
 
     })
+
 
 
   </script>
