@@ -7,12 +7,9 @@ use Yii;
 /**
  * This is the model class for table "client_employee".
  *
- * @property integer $id
- * @property string $gh_id
+ * @property integer $employee_id
  * @property string $name
- * @property string $department
- * @property string $position
- * @property string $mobile
+ * @property integer $client_id
  */
 class ClientEmployee extends \yii\db\ActiveRecord
 {
@@ -30,7 +27,8 @@ class ClientEmployee extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gh_id', 'name', 'department', 'position', 'mobile'], 'string', 'max' => 255]
+            [['client_id'], 'integer'],
+            [['name'], 'string', 'max' => 255]
         ];
     }
 
@@ -40,12 +38,15 @@ class ClientEmployee extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'gh_id' => 'Gh ID',
+            'employee_id' => 'Employee ID',
             'name' => 'Name',
-            'department' => 'Department',
-            'position' => 'Position',
-            'mobile' => 'Mobile',
+            'client_id' => 'Client ID',
         ];
+    }
+    
+    public function getOrganizations()
+    {
+        return $this->hasMany(\app\models\ClientOrganization::className(), ['organization_id' => 'organization_id'])
+                ->viaTable('client_employee_organization', ['employee_id' => 'employee_id']);
     }
 }

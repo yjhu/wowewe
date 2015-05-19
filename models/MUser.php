@@ -506,7 +506,7 @@ class MUser extends ActiveRecord implements IdentityInterface
     public function sendTemplateCharge($amount, $remark = '')
     {
         $amountStr = sprintf("%0.2f", $amount/100);
-        $url = Url::to(['wap/hyzx', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
+        $url = Url::to(['wap/hyzx1', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
         $first = '襄阳联通官方微信平台会员账户';
         if (empty($remark)) {
             $balanceStr = sprintf("%0.2f", $this->user_account_balance/100);
@@ -523,7 +523,7 @@ class MUser extends ActiveRecord implements IdentityInterface
 
     public function sendTemplateDonateMobileBill($mobile, $amount, $remark = '')
     {
-        $url = Url::to(['wap/hyzx', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
+        $url = Url::to(['wap/hyzx1', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
         $amountStr = sprintf("%0.2f", $amount/100);
         $first = '襄阳联通官方微信平台';
         if (empty($remark)) {

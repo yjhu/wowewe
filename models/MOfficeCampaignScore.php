@@ -107,6 +107,28 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
         }            
     }
     
+    public static function getCommentByScorerAndPicCategory($office_id, $scorer_id, $pic_category, $date = null)
+    {
+        $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
+        $end_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
+
+        $score = self::find()->joinWith('campaignDetail')
+                    ->andWhere(['wx_office_campaign_detail.office_id' => $office_id])
+                    ->andWhere(['wx_office_campaign_detail.pic_category' => $pic_category])
+                    ->andWhere(['staff_id' => $scorer_id])
+                    ->andWhere('wx_office_campaign_detail.created_time >= :start_time', [':start_time' => $start_date->format("Y-m-d H:i:s")])
+                    ->andWhere('wx_office_campaign_detail.created_time < :end_time', [':end_time' => $end_date->format("Y-m-d H:i:s")])
+                    ->one()
+                    ;
+        if (empty($score)) {
+            return false;
+        } else {
+            return $score->comment;
+        }            
+    }
+    
+    
+    
     public static function getScoreByScorer($office_id, $scorer_id, $date = null) {
         $office = \app\models\MOffice::findOne(['office_id' => $office_id]);
         $pic_categories = MOfficeCampaignPicCategory::find()->all();
