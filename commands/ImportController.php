@@ -331,6 +331,10 @@ class ImportController extends Controller {
     }
     
     public function actionEmployee($filename = 'employee.csv') {
+        
+        $xyunicom = \app\models\WosoClient::findOne(['title_abbrev' => '襄阳联通']);
+        if (empty($xyunicom)) die('不能找到襄阳联通。');
+        
         $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
         $fh = fopen($filepathname, "r");
         while (!feof($fh)) {
@@ -344,79 +348,107 @@ class ImportController extends Controller {
             $position = trim($fields[2]);
             $position_utf8 = iconv('GBK', 'UTF-8//IGNORE', $position);
             $mobiles = explode(';', trim($fields[3]));
+            echo "{$name_utf8},{$department_utf8},{$position_utf8},{$fields[3]}".PHP_EOL;
             
-//            $name_utf8 = $name;
-//            $department_utf8 = $department;
-//            $position_utf8 = $position;
+            $employee = \app\models\ClientEmployee::findOne(['name' => $name_utf8]);
+            if (empty($employee)) {
+                $employee = new \app\models\ClientEmployee;
+                $employee->client_id = $xyunicom->client_id;  
+                $employee->name = $name_utf8;
+                $employee->save(false);
+            }
             
-            echo "{$name_utf8},{$department_utf8},{$position_utf8},{$fields[3]},";
+            $organization = \app\models\ClientOrganization::findOne(['title' => $department_utf8]);
+            if (empty($organization)) {
+                $organization = new \app\models\ClientOrganization;
+                $organization->client_id = $xyunicom->client_id;
+                $organization->title = $department_utf8;
+                $organization->save(false);
+            }
+            
+            $row = (new \yii\db\Query())->select('*')->from('client_employee_organization')->where([
+                'employee_id'       => $employee->employee_id,
+                'organization_id'   => $organization->organization_id,
+            ])->one();
+            if (false === $row) {
+                \Yii::$app->db->createCommand()->insert('client_employee_organization', [
+                    'employee_id'       => $employee->employee_id,
+                    'organization_id'   => $organization->organization_id,
+                    'position'          => $position_utf8,
+                ])->execute();
+            } else {
+                \Yii::$app->db->createCommand()->update('client_employee_organization', ['position' => $position_utf8], [
+                    'employee_id'       => $employee->employee_id,
+                    'organization_id'   => $organization->organization_id,
+                ])->execute();
+            }
+                        
             foreach($mobiles as $mobile) {
                 $mobile = trim($mobile);
                 if (strlen($mobile) != 11 || !is_numeric($mobile)) echo "[$mobile]非手机号码；";
                 else {
-                    $staff = \app\models\MStaff::findOne([
-                        'gh_id'=>  \app\models\MGh::GH_XIANGYANGUNICOM,
-                        'mobile' => $mobile,
-                    ]);
-                    if (empty($staff)) {
-                        echo "[{$mobile}未存入数据库]；"; 
-                        $staff = new \app\models\MStaff;
-                        $staff->office_id = 25;
-                        $staff->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM;
-                        $staff->name = $name_utf8;
-                        $staff->mobile = $mobile;
-                    }  else {
-//                        echo "[{$mobile}已存入数据库]；";
-                    }
-                    $staff->cat = \app\models\MStaff::SCENE_CAT_IN;
-                    $staff->save(false);
-                    
-                    $employee = \app\models\ClientEmployee::findOne([
-                        'gh_id'=>  \app\models\MGh::GH_XIANGYANGUNICOM,
-                        'mobile' => $mobile,
-                    ]);
-                    if (empty($employee)) {
-                        $employee = new \app\models\ClientEmployee;
-                        $employee->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM;
-                        $employee->mobile = $mobile;
-                        $employee->name = $name_utf8;
-                        $employee->department = $department_utf8;
-                        $employee->position = $position_utf8;
-                    } else {
-                        $employee->name = $name_utf8;
-                        $employee->department = $department_utf8;
-                        $employee->position = $position_utf8;
-                    }
-                    $employee->save(false);
-                    
-                    $openidbindmobile = \app\models\OpenidBindMobile::findOne([
-                        'gh_id'=>  \app\models\MGh::GH_XIANGYANGUNICOM,
-                        'mobile' => $mobile,
-                    ]);
-                    
-                    if (empty($openidbindmobile)) {
-//                        echo "[手机号{$mobile}未绑定]；";
-                        echo "否；";
-                    } else {
-//                        echo "[手机号{$mobile}已绑定]；";
-                        echo "是；";
-                    }
-                    if (
-                            !empty($staff) && 
-                            !empty($openidbindmobile) &&
-                            $staff->openid != $openidbindmobile->openid
-                    ) {
-                        $staff->openid = $openidbindmobile->openid;
-                        $staff->save(false);
+                    $row = (new \yii\db\Query())->select('*')->from('client_employee_mobile')->where([
+                        'employee_id' => $employee->employee_id,
+                        'mobile'      => $mobile,  
+                    ])->one();
+                    if (false === $row) {
+                        \Yii::$app->db->createCommand()->insert('client_employee_mobile', [
+                            'employee_id' => $employee->employee_id,
+                            'mobile'      => $mobile,
+                        ])->execute();
                     }
                 }
-                echo PHP_EOL;
             }
-//            if (count($fields) > 3)
-//            echo implode("\t", $fields).PHP_EOL;
         }
         fclose($fh);
     }
+    
+     public function actionOrganizationChart($filename = 'organization-chart.csv') {    
+            
+        $xyunicom = \app\models\WosoClient::findOne(['title_abbrev' => '襄阳联通']);
+        if (empty($xyunicom)) die('不能找到襄阳联通。');
+        
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, "r");
+        while (!feof($fh)) {
+            $line = trim(fgets($fh));
+            if (empty($line) || strlen($line) == 0) continue;
+            $fields = explode(",", $line);
+            $subordinate_name = trim($fields[0]);
+            $subordinate_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $subordinate_name);
+            $superior_name = trim($fields[1]);
+            $superior_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $superior_name);
+            echo "{$subordinate_name}({$subordinate_name_utf8}),{$superior_name}({$superior_name_utf8}))".PHP_EOL;
+            
+            $subordinate_organization = \app\models\ClientOrganization::findOne(['title' => $subordinate_name_utf8]);
+            if (empty($subordinate_organization)) {
+                $subordinate_organization = new \app\models\ClientOrganization;
+                $subordinate_organization->client_id = $xyunicom->client_id;
+                $subordinate_organization->title = $subordinate_name_utf8;
+                $subordinate_organization->save(false);
+            }
+            
+            $superior_organization = \app\models\ClientOrganization::findOne(['title' => $superior_name_utf8]);
+            if (empty($superior_organization)) {
+                $superior_organization = new \app\models\ClientOrganization;
+                $superior_organization->client_id = $xyunicom->client_id;
+                $superior_organization->title = $superior_name_utf8;
+                $superior_organization->save(false);
+            }
+            
+            $row = (new \yii\db\Query())->select('*')->from('client_organization_chart')->where([
+                'subordinate_id' => $subordinate_organization->organization_id,
+                'superior_id'    => $superior_organization->organization_id,
+            ])->one();
+            if (false === $row) {
+                \Yii::$app->db->createCommand()->insert('client_organization_chart', [
+                    'subordinate_id' => $subordinate_organization->organization_id,
+                    'superior_id'    => $superior_organization->organization_id,
+                ])->execute();
+            }
+        }
+        fclose($fh);
+     }
     
     public function actionAgency($filename = 'agency.csv') {
         $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;

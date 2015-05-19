@@ -622,7 +622,7 @@ EOD;
         $feesum = sprintf("%0.2f",$this->feesum/100);
         $first = "营业厅：{$office->title}";
         $remark = "用户信息：{$this->username}，身份证{$this->userid}，联系电话{$this->usermobile}";
-        $url = '';
+        $url = Url::to(['wap/officeorder', 'staff_id'=>$staff->staff_id], true);
         $statusStr = self::getOrderStatusName($this->status);
         $payKindStr = self::getOrderPayKindOption($this->pay_kind);
         $msg = Wechat::getTemplateOrderStatusNotify($staff->openid, $url, $first, $remark, $this->oid, $detail, $this->create_time, 
@@ -641,7 +641,7 @@ EOD;
         $feesum = sprintf("%0.2f",$this->feesum/100);
         $first = "营业厅：襄阳联通{$office->title}";
         $remark = "用户信息：{$this->username}，身份证{$this->userid}，联系电话{$this->usermobile}";
-        $url = Url::to(['order', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
+        $url = Url::to(['wap/myorder', 'gh_id'=>$this->gh_id, 'openid'=>$this->openid], true);
         $statusStr = static::getOrderStatusName($this->status);
         $payKindStr = static::getOrderPayKindOption($this->pay_kind);
         $msg = Wechat::getTemplateOrderStatusNotify($this->openid, $url, $first, $remark, $this->oid, $detail, $this->create_time, $feesum, $statusStr, $payKindStr);                
