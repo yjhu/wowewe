@@ -49,4 +49,16 @@ class ClientEmployee extends \yii\db\ActiveRecord
         return $this->hasMany(\app\models\ClientOrganization::className(), ['organization_id' => 'organization_id'])
                 ->viaTable('client_employee_organization', ['employee_id' => 'employee_id']);
     }
+    
+    public function getMobiles()
+    {
+        $mobiles = [];
+        $rows = (new \yii\db\Query())->select('mobile')->from('client_employee_mobile')->where([
+            'employee_id' => $this->employee_id,
+        ])->all();
+        foreach ($rows as $row) {
+            $mobiles[] = $rows['mobile'];
+        }
+        return $mobiles;
+    }
 }

@@ -450,7 +450,10 @@ class ImportController extends Controller {
         fclose($fh);
      }
     
-    public function actionAgency($filename = 'agency.csv') {
+    public function actionAgent($filename = 'agent.csv') {
+        $xyunicom = \app\models\WosoClient::findOne(['title_abbrev' => '襄阳联通']);
+        if (empty($xyunicom)) die('不能找到襄阳联通。');
+        
         $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
         $fh = fopen($filepathname, "r");
         while (!feof($fh)) {
@@ -458,94 +461,87 @@ class ImportController extends Controller {
             if (empty($line) || strlen($line) == 0) continue;
             $fields = explode(",", $line);
             $contact_person = trim($fields[0]);
-            $contact_parson_utf8 = iconv('GBK', 'UTF-8//IGNORE', $contact_person);
+            $contact_person_utf8 = iconv('GBK', 'UTF-8//IGNORE', $contact_person);
             $msc_brev_name = trim($fields[1]);
             $msc_brev_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $msc_brev_name);
             $title = trim($fields[2]);
             $title_utf8 = iconv('GBK', 'UTF-8//IGNORE', $title);
-            $mobiles = explode(';', trim($fields[3]));
+            $mobiles = explode(';', trim($fields[3]));                        
+//            echo "{$contact_person_utf8},{$msc_brev_name_utf8},{$title_utf8},{$fields[3]}".PHP_EOL;
             
-//            $name_utf8 = $name;
-//            $department_utf8 = $department;
-//            $position_utf8 = $position;
+            $supervision_organization = \app\models\ClientOrganization::find()->where([
+                'like', 'title', $msc_brev_name_utf8
+            ])->andWhere(['client_id' => $xyunicom->client_id])->one();
+//            $supervision_organization = \Yii::$app->db->createCommand('select * from client_organization where title like \'%:title%\'')
+//                    ->bindValue(':title', $msc_brev_name_utf8)->queryOne();
+            if (empty($supervision_organization)) {
+                die("找不到{$msc_brev_name_utf8}");
+            }
             
-            echo "{$contact_parson_utf8},{$msc_brev_name_utf8},{$title_utf8},{$fields[3]},";
-            foreach($mobiles as $mobile) {
+//            var_dump($supervision_organization);
+            
+            $row = false;
+            foreach ($mobiles as $mobile) {
                 $mobile = trim($mobile);
-                if (strlen($mobile) != 11 || !is_numeric($mobile)) echo "[$mobile]非手机号码；";
+                $row = (new \yii\db\Query())->select('*')->from('client_agent')->join('INNER JOIN', 'client_agent_mobile', [
+                    'client_agent.agent_id' => 'client_agent_mobile.agent_id',
+                ])->where([
+                    'name'      => $contact_person_utf8,
+                    'mobile'    => $mobile,
+                ])->one();
+                if (false !== $row) break;
+            }
+            
+            if (false !== $row) {
+                $agent = \app\models\ClientAgent::findOne(['agent_id' => $row['agent_id']]);
+            } else {
+                $agent = new \app\models\ClientAgent;
+                $agent->name = $contact_person_utf8;
+                $agent->save(false);
+            }
+            $outlet = \app\models\ClientOutlet::findOne(['title' => $title_utf8]);
+            if (empty($outlet)) {
+                $outlet = new \app\models\ClientOutlet;
+                $outlet->title       = $title_utf8;
+                $outlet->client_id   = $xyunicom->client_id;
+                $outlet->telephone   = $fields[3];
+                $outlet->category    = \app\models\ClientOutlet::CATEGORY_COOPERATED;
+                $outlet->supervison_organization_id = $supervision_organization->organization_id;
+                $outlet->save(false);
+            } else {
+                $outlet->client_id   = $xyunicom->client_id;
+                $outlet->telephone   = $fields[3];
+                $outlet->category    = \app\models\ClientOutlet::CATEGORY_COOPERATED;
+                $outlet->supervison_organization_id = $supervision_organization->organization_id;
+                $outlet->save(false);
+            }
+            
+            $row = (new \yii\db\Query())->select('*')->from('client_agent_outlet')->where([
+                'agent_id'   => $agent->agent_id,
+                'outlet_id'  => $outlet->outlet_id,
+            ])->one();
+            if (false === $row) {
+                \Yii::$app->db->createCommand()->insert('client_agent_outlet', [
+                    'agent_id'   => $agent->agent_id,
+                    'outlet_id'  => $outlet->outlet_id,
+                    'position'   => '店主',
+                ])->execute();
+            }
+
+            foreach($mobiles as $mobile) {               
+                if (strlen($mobile) != 11 || !is_numeric($mobile)) echo "[$mobile]非手机号码.".PHP_EOL;
                 else {
-                    $staff = \app\models\MStaff::findOne([
-                        'gh_id'=>  \app\models\MGh::GH_XIANGYANGUNICOM,
+                    $row = (new \yii\db\Query())->select('*')->from('client_agent_mobile')->where([
                         'mobile' => $mobile,
-                    ]);
-                    if (empty($staff)) {
-                        echo "[{$mobile}未存入数据库]；"; 
-                        $office = \app\models\MOffice::findOne([
-                            'title' => $title_utf8,
-                        ]);
-                        if (empty($office)) {
-                            $office = new \app\models\MOffice;
-                            $office->title = $title_utf8;
-                            $office->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM;
-                            $office->manager = $contact_parson_utf8;
-                            $office->mobile = $mobile;
-                            $office->region = $msc_brev_name_utf8;
-                            $office->save(false);
-                        }
-                        $staff = new \app\models\MStaff;
-                        $staff->office_id = $office->office_id;
-                        $staff->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM;
-                        $staff->name = $contact_parson_utf8;
-                        $staff->mobile = $mobile;
-                    }  else {
-//                        echo "[{$mobile}已存入数据库]；";
-                    }
-                    $staff->cat = \app\models\MStaff::SCENE_CAT_OUT;
-                    $staff->save(false);
-                    
-                    $agency = \app\models\ClientAgency::findOne([
-                        'gh_id'=>  \app\models\MGh::GH_XIANGYANGUNICOM,
-                        'mobile' => $mobile,
-                    ]);
-                    if (empty($agency)) {
-                        $agency = new \app\models\ClientAgency();
-                        $agency->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM;
-                        $agency->mobile = $mobile;
-                        $agency->contact_person = $contact_parson_utf8;
-                        $agency->msc_brev_name = $msc_brev_name_utf8;
-                        $agency->title = $title_utf8;
-                    } else {
-                        $agency->contact_person = $contact_parson_utf8;
-                        $agency->msc_brev_name = $msc_brev_name_utf8;
-                        $agency->title = $title_utf8;
-                    }
-                    $agency->save(false);
-                    
-                    $openidbindmobile = \app\models\OpenidBindMobile::findOne([
-                        'gh_id'=>  \app\models\MGh::GH_XIANGYANGUNICOM,
-                        'mobile' => $mobile,
-                    ]);
-                    
-                    if (empty($openidbindmobile)) {
-//                        echo "[手机号{$mobile}未绑定]；";
-                        echo "否；";
-                    } else {
-//                        echo "[手机号{$mobile}已绑定]；";
-                        echo "是；";
-                    }
-                    if (
-                            !empty($staff) && 
-                            !empty($openidbindmobile) &&
-                            $staff->openid != $openidbindmobile->openid
-                    ) {
-                        $staff->openid = $openidbindmobile->openid;
-                        $staff->save(false);
+                    ])->one();
+                    if (false === $row) {                                            
+                       \Yii::$app->db->createCommand()->insert('client_agent_mobile', [
+                           'agent_id' => $agent->agent_id,
+                           'mobile'   => $mobile,
+                       ])->execute(); 
                     }
                 }
-                echo PHP_EOL;
             }
-//            if (count($fields) > 3)
-//            echo implode("\t", $fields).PHP_EOL;
         }
         fclose($fh);
     }
