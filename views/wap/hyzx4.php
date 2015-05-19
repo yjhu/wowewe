@@ -64,6 +64,7 @@
               !empty($user->staff) &&
               $user->staff->cat == \app\models\MStaff::SCENE_CAT_IN
             ) { 
+                /*
                 //$is_employee = true;
                 $mobiles = $user->getBindMobileNumbers();
                 if (count($mobiles) > 0) {
@@ -73,8 +74,9 @@
                     'mobile' => $mobile,
                   ]);
                 }
+                */
             ?>
-              襄阳联通员工 <?= !empty($employee) ? $employee->name : '' ?>
+              襄阳联通员工 <!--<?//=// !empty($employee) ? $employee->name : '' ?>-->
             <?php } else { ?>
               会员
             <?php } ?>

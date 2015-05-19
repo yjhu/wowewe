@@ -120,7 +120,7 @@
               -->
               <input type="number" id="myrange" name="myrange" placeholder="评分"><span id="rangHint"></span>
               <br>
-              <input type="text" id="comment" name="comment" placeholder="备注">
+              <input type="text" id="comment" name="comment" placeholder="评语">
               <!--
               &nbsp;
               <span id="maxIcon" style="height:50px;font-size:48px;color:#ccc" class="icon icon-right"></span>
@@ -154,6 +154,7 @@
             <li class="table-view-cell table-view-divider"><?= $scorer->department." ".$scorer->position ?></li>
             <li class="table-view-cell table-view-divider"><?= $scorer->name." ".$scorer->mobile ?></li>
             <li class="table-view-cell">您的评分：<span class="badge badge-positive pull-right"><?= $scorer_score ?></span></li>
+            <li class="table-view-cell">您的评语：<span class="badge badge-positive pull-right"></span></li>
             <?php } ?>
             </ul>
         </span>

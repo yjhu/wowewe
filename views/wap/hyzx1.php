@@ -93,7 +93,7 @@
                 }
                 */
             ?>
-              襄阳联通员工 <?//= !empty($employee) ? $employee->name : '' ?>
+              襄阳联通员工 <!--<?//=// !empty($employee) ? $employee->name : '' ?>-->
             <?php } else { ?>
               会员
             <?php } ?>
