@@ -3685,9 +3685,13 @@ EOD;
     //    $gh_id = U::getSessionParam('gh_id');
     //    $openid = U::getSessionParam('openid');
         $staff_id = $_GET['staff_id'];
+        //$searchStr = empty($_GET['searchStr'])?'':$_GET['searchStr'];
 
         $staff = MStaff::findOne(['staff_id'=>$staff_id]);
+
         $office = $staff->office;  
+
+
 //        $orders = MOrder::findBySql('select * from wx_order where office_id = :office_id and status != :status and create_time > DATE_SUB(NOW(), INTERVAL 7 day)', 
 //            [':office_id' => $office->office_id, ':status' => MOrder::STATUS_DRAFT])
 //            ->all();
@@ -3702,6 +3706,8 @@ EOD;
         //$this->layout = 'wap';
         $this->layout = false;   
         $staff_id = $_GET['staff_id']; 
+        //$searchStr = $_GET['searchStr']; 
+        
 
         $staff = MStaff::findOne(['staff_id'=>$staff_id]);  
         $office = $staff->office;  
@@ -3732,8 +3738,8 @@ EOD;
 
 //        $data = MStaff::find()->select('*')->where(['office_id'=>$office_id])->andFilterWhere(['like', 'name', $searchStr])->asArray()->all();                                 
         $data = MStaff::find()->select('*')->orFilterWhere(['like', 'name', $searchStr])->orFilterWhere(['like', 'mobile', $searchStr])->andWhere(['office_id'=>$office_id,'cat'=>MStaff::SCENE_CAT_IN])->asArray()->all();                                         
-        U::W("+++++++++++++++++++++++");
-        U::W($data);
+        //U::W("+++++++++++++++++++++++");
+        //U::W($data);
         return json_encode(['code' => 0, 'data'=>$data]);
     }
 

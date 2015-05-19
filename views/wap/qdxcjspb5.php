@@ -50,6 +50,8 @@
         $is_scorer = true;
         $scorer_score = \app\models\MOfficeCampaignScore::getScoreByScorerAndPicCategory($office->office_id, $staff->staff_id, $model_ocpc->id);
         $scorer = $staff->officeCampaignScorer;
+        $scorer_comment = \app\models\MOfficeCampaignScore::getCommentByScorerAndPicCategory($office->office_id, $staff->staff_id, $model_ocpc->id);
+       
         if ($scorer_score === false) 
           $can_score = true;
         else
@@ -112,24 +114,22 @@
               -->
               <center>
               <div style="vertical-align: middle;">
-               <!--     
+              
               <span id="minStr" class="badge"></span>
               <span id="minIcon" style="height:50px;font-size:48px;color:#ccc" class="icon icon-left"></span>
               &nbsp;
               <span id="myrangeStr" style="height:50px;width:50%;font-size:48px;color:red;font-weight:bolder;text-align:center">1</span>
-              -->
-              <input type="number" id="myrange" name="myrange" placeholder="评分"><span id="rangHint"></span>
-              <br>
-              <input type="text" id="comment" name="comment" placeholder="评语">
-              <!--
               &nbsp;
+              <input type="hidden" id="myrange" name="myrange" placeholder="评分">
+
               <span id="maxIcon" style="height:50px;font-size:48px;color:#ccc" class="icon icon-right"></span>
               <span id="maxStr" class="badge"></span>
-              -->
-
+              <br>
+              <input type="text" id="comment" name="comment" placeholder="评语">
+         
               </div>
               </center>
-              &nbsp;<br>
+     
               <button class="btn btn-positive btn-block" id="submit_rank">提交评分成绩</button>
         </form>
 
@@ -154,7 +154,7 @@
             <li class="table-view-cell table-view-divider"><?= $scorer->department." ".$scorer->position ?></li>
             <li class="table-view-cell table-view-divider"><?= $scorer->name." ".$scorer->mobile ?></li>
             <li class="table-view-cell">您的评分：<span class="badge badge-positive pull-right"><?= $scorer_score ?></span></li>
-            <li class="table-view-cell">您的评语：<span class="badge badge-positive pull-right"></span></li>
+            <li class="table-view-cell">您的评语：<span><?= $scorer_comment ?></span></li>
             <?php } ?>
             </ul>
         </span>
@@ -185,10 +185,10 @@
           var MAX = 18;
           if (!office_isSelfOperated) MAX = 20;
         } 
-        $("#rangHint").html('('+MIN+'-'+MAX+')');
 
+        $("#minStr").html(MIN);
+        $("#maxStr").html(MAX);
         
-        /*
         $("#myrangeStr").html(MAX/2);
         $("#myrange").val(MAX/2);
           
@@ -209,16 +209,22 @@
             $("#myrange").val(range);
             //alert(range);
         });
-        */
+
      
         $("#submit_rank").click(function(){
           //alert("office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+$('#myrange').val());
           //
+
+            /*
             if(($('#myrange').val() < MIN) || ($('#myrange').val() > MAX))
             {
               alert("您的评分超出了评分范围，请重新输入。");
               return false;
             }
+            */
+
+            if(!confirm("现在就提交评分，确定?"))
+              return false;
 
             $.ajax({
             url: "<?php echo Url::to(['wap/handleqdxcjspb','gh_id'=>$gh_id, 'openid'=>$openid], true) ; ?>",
