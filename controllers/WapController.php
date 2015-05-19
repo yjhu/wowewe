@@ -3672,6 +3672,93 @@ EOD;
     }
 
 
+
+    //员工管理
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/yggl1:gh_03a74ac96138
+    public function actionYggl1()
+    {
+        //$this->layout = 'wap';
+        $this->layout = false;    
+
+    //    $gh_id = U::getSessionParam('gh_id');
+    //    $openid = U::getSessionParam('openid');
+        $staff_id = $_GET['staff_id'];
+
+        $staff = MStaff::findOne(['staff_id'=>$staff_id]);
+        $office = $staff->office;  
+//        $orders = MOrder::findBySql('select * from wx_order where office_id = :office_id and status != :status and create_time > DATE_SUB(NOW(), INTERVAL 7 day)', 
+//            [':office_id' => $office->office_id, ':status' => MOrder::STATUS_DRAFT])
+//            ->all();
+//        $orders = MOrder::getOfficeOrders($office->office_id);
+
+        //return $this->render('yggl1', ['office'=>$office, 'staff'=>$staff, 'orders' => $orders]);
+        return $this->render('yggl1', ['office'=>$office, 'staff'=>$staff]);
+    }
+
+    public function actionYggl2()
+    {
+        //$this->layout = 'wap';
+        $this->layout = false;   
+        $staff_id = $_GET['staff_id']; 
+
+        $staff = MStaff::findOne(['staff_id'=>$staff_id]);  
+        $office = $staff->office;  
+
+        return $this->render('yggl2', ['office'=>$office, 'staff'=>$staff]);
+    }
+    
+    //员工查询
+    public function actionYgglchaxunajax()
+    {       
+        $office_id   = $_GET['office_id'];
+        $searchStr   = $_GET['searchStr'];
+        //$searchStr = $_GET['searchStr'];
+        /* 
+        $uid   = $_GET['uid'];
+
+        $user_account = \app\models\MUserAccount::findOne(['id' => $uid]);
+        if (empty($user_account)) return json_encode(['code' => 0]);
+        if (
+            $user_account->cat    != \app\models\MUserAccount::CAT_CREDIT_CHARGE_MOBILE ||
+            $user_account->status != \app\models\MUserAccount::STATUS_CHARGE_REQUEST
+        ) {
+            return json_encode(['code' => -1]);
+        }
+        P
+        $user_account->delete();
+        */
+
+//        $data = MStaff::find()->select('*')->where(['office_id'=>$office_id])->andFilterWhere(['like', 'name', $searchStr])->asArray()->all();                                 
+        $data = MStaff::find()->select('*')->orFilterWhere(['like', 'name', $searchStr])->orFilterWhere(['like', 'mobile', $searchStr])->andWhere(['office_id'=>$office_id,'cat'=>MStaff::SCENE_CAT_IN])->asArray()->all();                                         
+        U::W("+++++++++++++++++++++++");
+        U::W($data);
+        return json_encode(['code' => 0, 'data'=>$data]);
+    }
+
+    //员工删除
+    public function actionYgglshanchuajax()
+    {       
+        /* 
+        $uid   = $_GET['uid'];
+
+        $user_account = \app\models\MUserAccount::findOne(['id' => $uid]);
+        if (empty($user_account)) return json_encode(['code' => 0]);
+        if (
+            $user_account->cat    != \app\models\MUserAccount::CAT_CREDIT_CHARGE_MOBILE ||
+            $user_account->status != \app\models\MUserAccount::STATUS_CHARGE_REQUEST
+        ) {
+            return json_encode(['code' => -1]);
+        }
+        
+        $user_account->delete();
+        */
+//        $data = MStaff::find()->select('*')->withJoin('')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();                         
+
+        return json_encode(['code' => 0]);
+    }
+
+
+
     /*end of 会员中心 新版 powered by ratchet */
 
 

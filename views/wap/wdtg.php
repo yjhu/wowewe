@@ -30,7 +30,8 @@
     <style type="text/css">
 
       .btn {
-        border-radius: 0px !important; /**/
+        border-radius: 0 ;
+
       }
 
     </style>

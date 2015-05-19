@@ -54,10 +54,16 @@ $config = [
 	],
 	
 	
+	/*
 	'cache' => [
 		'class' => 'yii\caching\ApcCache',
+	],	
+	*/	
+		
+	'cache' => [
+		'class' => 'yii\caching\DummyCache',
 	],		
-	
+
 	'formatter'=> [
 		'datetimeFormat'=>'Y-m-d H:i:s',
 		'dateFormat'=>'Y-m-d',

@@ -61,7 +61,7 @@
         -->
         会员中心
       </h1>
-
+      
     </header>
 
 
@@ -148,7 +148,7 @@
             </li>
 
             <li class="table-view-cell media">
-              <a class="navigate-right" href="<?php echo Url::to(['wdtg', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+              <a data-ignore="push"  class="navigate-right" href="<?php echo Url::to(['wdtg', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
                 
                 <span class="media-object pull-left">
                   <img src="../web/images/comm-icon/iconfont-pengyouquan.png?v3" style="width:16px;height:16px">
