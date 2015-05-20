@@ -516,6 +516,24 @@ class MOffice extends ActiveRecord implements IdentityInterface {
         Yii::$app->cache->set($key, $rows, YII_DEBUG ? 10 : 12 * 3600);
         return $rows;
     }
+    
+    public function getWechatFans()
+    {
+        return \app\models\MUser::find()->where([
+            'gh_id'     => $this->gh_id,
+            'belongto'  => $this->office_id,
+            'subscribe' => 1,
+        ])->all();
+    }
+    
+     public function getWechatFanCount()
+    {
+        return \app\models\MUser::find()->where([
+            'gh_id'     => $this->gh_id,
+            'belongto'  => $this->office_id,
+            'subscribe' => 1,
+        ])->count();        
+    }
 
     public static function getNearestOffices($gh_id, $lon, $lat) {
         $key = __METHOD__ . "{$gh_id}_{$lon}_{$lat}";
