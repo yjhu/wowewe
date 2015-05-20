@@ -182,10 +182,15 @@
                 </div>
 
                 <div class="input-row">
-                  <label style="color:#777777">手机号码</label>
+                  <label style="color:#777777">手机</label>
                    <input type="text"  id="ygsjhm">
                 </div>
               
+                <div class="input-row">
+                  <label style="color:#777777">职位</label>
+                  <input type="text" id="ygzw">
+                </div>
+
                <p class="content-padded"> </p>
              
                 <div class="input-row">
@@ -269,14 +274,14 @@ function load_data2(i, n)
   }
 
 
-  function zjygajax(ygxm,ygsjhm,yuangongFlag,office_id)
+  function zjygajax(ygxm,ygsjhm,ygzw,yuangongFlag,office_id)
   {
         $.ajax({
         url: "<?php echo Url::to(['wap/zjygajax'], true) ; ?>",
         type:"GET",
         cache:false,
         dataType:"json",
-        data: "ygxm="+ygxm+"&ygsjhm"+ygsjhm+"&office_id"+office_id+"&yuangongFlag"+yuangongFlag,
+        data: "ygxm="+ygxm+"&ygsjhm"+ygsjhm+"&ygzw"+ygzw+"&office_id"+office_id+"&yuangongFlag"+yuangongFlag,
         success: function(t){
 
                 if(t.code==0)
@@ -349,7 +354,8 @@ function load_data2(i, n)
           //alert("增加员工");
           var ygxm = $("#ygxm").val();
           var ygsjhm = $("#ygsjhm").val();
-
+          var ygzw = $("#ygzw").val();
+           
           if((ygxm == ""))
           {
             alert("员工姓名不能为空，\n请重新填写。");
@@ -368,7 +374,7 @@ function load_data2(i, n)
           //if(!confirm("现在就增加员工，确定?"))
           //  return false;
 
-          zjygajax(ygxm,ygsjhm,yuangongFlag,office_id);
+          zjygajax(ygxm,ygsjhm,ygzw,yuangongFlag,office_id);
           return false;
       });
 
