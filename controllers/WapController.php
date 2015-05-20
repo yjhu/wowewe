@@ -3743,7 +3743,7 @@ EOD;
         $is_agent           = !$_GET['yuangongFlag'];
         $position           = $_GET['ygzw'];
         
-        if ($isAgent) {
+        if ($is_agent) {
             return \app\models\ClientAgent::addOutletAgent($employee_name, $employee_mobile, $position, $outlet_id);
         } else {
             return \app\models\ClientEmployee::addOutletEmployee($employee_name, $employee_mobile, $position, $outlet_id);

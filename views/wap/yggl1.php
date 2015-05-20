@@ -281,7 +281,7 @@ function load_data2(i, n)
         type:"GET",
         cache:false,
         dataType:"json",
-        data: "ygxm="+ygxm+"&ygsjhm"+ygsjhm+"&ygzw"+ygzw+"&office_id"+office_id+"&yuangongFlag"+yuangongFlag,
+        data: "ygxm="+ygxm+"&ygsjhm="+ygsjhm+"&ygzw="+ygzw+"&office_id="+office_id+"&yuangongFlag="+yuangongFlag,
         success: function(t){
 
                 if(t.code==0)
@@ -369,7 +369,7 @@ function load_data2(i, n)
             return  false;
           }
 
-          alert("员工："+ ygxm + "手机："+ygsjhm + "联通员工" + (yuangongFlag==1)?"是":"否");
+          alert("员工："+ ygxm + "手机："+ygsjhm + "联通员工 :" + yuangongFlag);
 
           //if(!confirm("现在就增加员工，确定?"))
           //  return false;
