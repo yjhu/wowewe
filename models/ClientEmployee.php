@@ -53,11 +53,11 @@ class ClientEmployee extends \yii\db\ActiveRecord
     public function getMobiles()
     {
         $mobiles = [];
-        $rows = (new \yii\db\Query())->select('mobile')->from('client_employee_mobile')->where([
+        $rows = (new \yii\db\Query())->select('*')->from('client_employee_mobile')->where([
             'employee_id' => $this->employee_id,
         ])->all();
         foreach ($rows as $row) {
-            $mobiles[] = $rows['mobile'];
+            $mobiles[] = $row['mobile'];
         }
         return $mobiles;
     }
