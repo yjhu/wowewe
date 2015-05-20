@@ -194,8 +194,8 @@ class ImportController extends Controller {
      * @param string $filename the file to be imported to DB.
      */
     public function actionSelfOperatedOffice($filename = 'self_operated_offices.csv') {
-        
-        Yii::$app->db->createCommand('UPDATE wx_office SET is_selfOperated=0')->execute();
+        $xyunicom = \app\models\WosoClient::findOne(['title_abbrev' => '襄阳联通']);
+        if (empty($xyunicom)) die('不能找到襄阳联通。');        
         
         $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
         $fh = fopen($file, "r");
@@ -215,36 +215,186 @@ class ImportController extends Controller {
             $director_name = trim($fields[3]);
             $director_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $director_name);
             $director_mobile = trim($fields[4]);
-
-            $office = \app\models\MOffice::findOne(['title' => $office_name_utf8]);
-            if (!empty($office)) {
-                $in_msc = (new \yii\db\Query())->select('*')
-                        ->from('wx_rel_office_msc')
-                        ->where(['office_id' => $office->office_id])
-                        ->count();
-                if (!$in_msc) {
-                    echo "{$office_name} does not belong to any msc." . PHP_EOL;
-                    $msc = \app\models\MMarketingServiceCenter::findOne(['name' => $msc_name_utf8]);
-                    if (!empty($msc)) {
-                        yii::$app->db->createCommand()->insert('wx_rel_office_msc', [
-                            'office_id' => $office->office_id,
-                            'msc_id' => $msc->id,
-                        ])->execute();
-                    } else {
-                        echo "can't find msc by name ({$msc_name})" . PHP_EOL;
-                    }
-                }
-                $office->manager = $director_name_utf8;
-                $office->mobile = $director_mobile;
-                $office->is_selfOperated = 1;
-                $office->save(false);
-            } else {
-                echo "can't find office by name ({$office_name})" . PHP_EOL;
+            $address = trim($fields[5]);
+            $address_utf8 = iconv('GBK', 'UTF-8//IGNORE', $address);
+            $telephone = trim($fields[6]);
+            
+            $organization = \app\models\ClientOrganization::find()->where([
+                'client_id' => $xyunicom->client_id,
+            ])->andWhere([
+                'like', 'title', $msc_name_utf8
+            ])->one();
+            if (empty($organization)) {
+                die("can't find organization: {$msc_name_utf8}");
             }
+
+            $outlet = \app\models\ClientOutlet::findOne([
+                'client_id' => $xyunicom->client_id,
+                'title'     => $office_name_utf8,
+            ]);
+            if (empty($outlet)) {
+                $outlet = new \app\models\ClientOutlet;
+                $outlet->client_id  = $xyunicom->client_id;
+                $outlet->title      = $office_name_utf8;
+                $outlet->address    = $address_utf8;
+                $outlet->telephone  = $telephone;
+                $outlet->category   = \app\models\ClientOutlet::CATEGORY_SELFOWNED;
+                $outlet->supervison_organization_id = $organization->organization_id;
+                $outlet->save(false);
+            }                       
         }
         fclose($fh);
     }
 
+    public function actionBlendedOutlet($filename = 'blended-outlet.csv') {
+        $xyunicom = \app\models\WosoClient::findOne(['title_abbrev' => '襄阳联通']);
+        if (empty($xyunicom)) die('不能找到襄阳联通。');        
+        
+        $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($file, "r");
+        $i = 0;
+        while (!feof($fh)) {
+            $line = fgets($fh);
+            $i++;
+            if (empty($line))
+                continue;
+            $fields = explode(",", $line);
+            $mr_name = trim($fields[0]);
+            $mr_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $mr_name);
+            $msc_name = trim($fields[1]);
+            $msc_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $msc_name);
+            $office_name = trim($fields[2]);
+            $office_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $office_name);
+            $director_name = trim($fields[3]);
+            $director_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $director_name);
+            $director_mobile = trim($fields[4]);
+            $address = trim($fields[5]);
+            $address_utf8 = iconv('GBK', 'UTF-8//IGNORE', $address);
+            $telephone = trim($fields[6]);
+            
+            $organization = \app\models\ClientOrganization::find()->where([
+                'client_id' => $xyunicom->client_id,
+            ])->andWhere([
+                'like', 'title', $msc_name_utf8
+            ])->one();
+            if (empty($organization)) {
+                die("can't find organization: {$msc_name_utf8}");
+            }
+
+            $outlet = \app\models\ClientOutlet::findOne([
+                'client_id' => $xyunicom->client_id,
+                'title'     => $office_name_utf8,
+            ]);
+            if (empty($outlet)) {
+                $outlet = new \app\models\ClientOutlet;
+                $outlet->client_id  = $xyunicom->client_id;
+                $outlet->title      = $office_name_utf8;
+                $outlet->address    = $address_utf8;
+                $outlet->telephone  = $telephone;
+                $outlet->category   = \app\models\ClientOutlet::CATEGORY_BLENDED;
+                $outlet->supervison_organization_id = $organization->organization_id;
+                $outlet->save(false);
+            } 
+            
+            $employee = \app\models\ClientEmployee::findOne([
+                'client_id'     => $xyunicom->client_id,
+                'name'          => $director_name_utf8,
+            ]);
+            if (empty($employee)) {
+                $employee = new \app\models\ClientEmployee;
+                $employee->client_id = $xyunicom->client_id;
+                $employee->name      = $director_name_utf8;
+                $employee->save(false);
+            }
+            
+            if (!in_array($director_mobile, $employee->mobiles)) {
+                \Yii::$app->db->createCommand()->insert('client_employee_mobile', [
+                    'employee_id'   => $employee->employee_id,
+                    'mobile'        => $director_mobile,
+                ])->execute();
+            }
+            
+            $row = (new \yii\db\Query())->select('*')->from('client_employee_outlet')->where([
+                'employee_id'   => $employee->employee_id,
+                'outlet_id'     => $outlet->outlet_id,
+            ])->one();
+            if (false === $row) {
+                \Yii::$app->db->createCommand()->insert('client_employee_outlet', [
+                    'employee_id'   => $employee->employee_id,
+                    'outlet_id'     => $outlet->outlet_id,
+                    'position'      => '班长',
+                ])->execute();
+            }
+        }
+        fclose($fh);
+    }
+    
+    public function actionSelfOwnedOutlet($filename = 'self-owned-outlet.csv') {
+        $xyunicom = \app\models\WosoClient::findOne(['title_abbrev' => '襄阳联通']);
+        if (empty($xyunicom)) die('不能找到襄阳联通。');        
+        
+        $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($file, "r");
+        $i = 0;
+        while (!feof($fh)) {
+            $line = fgets($fh);
+            $i++;
+            if (empty($line))
+                continue;
+            $fields = explode(",", $line);          
+            $outlet_title = trim($fields[1]);
+            $outlet_title_utf8 = iconv('GBK', 'UTF-8//IGNORE', $outlet_title);
+            $employee_name = trim($fields[2]);
+            $employee_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $employee_name);
+            $position = trim($fields[3]);
+            $position_utf8 = iconv('GBK', 'UTF-8//IGNORE', $position);
+            $mobile = trim($fields[5]);                       
+
+            $outlet = \app\models\ClientOutlet::findOne([
+                'client_id' => $xyunicom->client_id,
+                'title'     => $outlet_title_utf8,
+            ]);
+            if (empty($outlet)) {
+                die("can't find outlet: {$outlet_title_utf8}");
+            }
+            
+            $employee = \app\models\ClientEmployee::findOne([
+                'client_id' => $xyunicom->client_id,
+                'name'      => $employee_name_utf8,
+            ]);
+            if (empty($employee)) {
+                echo "add employee: {$employee_name_utf8}.".PHP_EOL;
+                $employee = new \app\models\ClientEmployee;
+                $employee->client_id = $xyunicom->client_id;
+                $employee->name      = $employee_name_utf8;
+                $employee->save(false);
+            }
+            
+            if (!in_array($mobile, $employee->mobiles)) {
+                echo "add employee mobile: {$mobile}.".PHP_EOL;
+                \Yii::$app->db->createCommand()->insert('client_employee_mobile', [
+                    'employee_id'   => $employee->employee_id,
+                    'mobile'        => $mobile,
+                ])->execute();
+            }
+            
+            $row = (new \yii\db\Query())->select('*')->from('client_employee_outlet')->where([
+                'employee_id'   => $employee->employee_id,
+                'outlet_id'     => $outlet->outlet_id,
+            ])->one();
+            if (false === $row) {
+                echo "add employee to outlet: {$employee_name_utf8}->{$outlet_title_utf8}({$position_utf8}).".PHP_EOL;
+                \Yii::$app->db->createCommand()->insert('client_employee_outlet', [
+                    'employee_id'   => $employee->employee_id,
+                    'outlet_id'     => $outlet->outlet_id,
+                    'position'      => $position_utf8,
+                ])->execute();
+            }
+            
+        }
+        fclose($fh);
+    }
+    
     public function actionTjylCharge($filename = 'tjyl-charge.csv') {
         $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
         $fh = fopen($filepathname, "r");
