@@ -61,4 +61,23 @@ class ClientEmployee extends \yii\db\ActiveRecord
         }
         return $mobiles;
     }
+
+    public static function findOneByWechatOpenid($gh_id, $openid) {
+        $client_wechat = \app\models\ClientWechat::findOne([
+            'gh_id' => $gh_id,
+        ]);
+        $woso_client = \app\models\WosoClient::findOne([
+            'client_id' => $client_wechat->client_id,
+        ]);
+        $wx_user = \app\models\MUser::findOne([
+            'gh_id'     => $gh_id,
+            'openid'    => $openid,
+        ]);
+        foreach($wx_user->bindMobileNumbers as $mobile) {
+            return self::find()->join('INNER JOIN', 'client_employee_mobile', [
+                
+            ])->where()->one();
+        }
+        return false;
+    }
 }

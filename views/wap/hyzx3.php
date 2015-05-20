@@ -122,7 +122,7 @@
                     $user->openid=='oKgUduJJFo9ocN8qO9k2N5xrKoGE' ||
                     $user->openid=='oKgUduHLF-HAxvHYIwmm3qjfqNf0') { ?>
             <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'staff_id'=>$staff->staff_id]) ?>">
+              <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
                 <!--
                 <span class="badge badge-negative">
                 1000
