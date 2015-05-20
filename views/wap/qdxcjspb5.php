@@ -183,7 +183,7 @@
         else
         {
           var MAX = 18;
-          if (!office_isSelfOperated) MAX = 20;
+          if (!parseInt(office_isSelfOperated)) MAX = 20;
         } 
 
         $("#minStr").html(MIN);

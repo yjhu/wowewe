@@ -3743,6 +3743,36 @@ EOD;
         return json_encode(['code' => 0, 'data'=>$data]);
     }
 
+
+    //员工增加
+    public function actionZjygajax()
+    {       
+        /* 
+        $uid   = $_GET['uid'];
+
+        $user_account = \app\models\MUserAccount::findOne(['id' => $uid]);
+        if (empty($user_account)) return json_encode(['code' => 0]);
+        if (
+            $user_account->cat    != \app\models\MUserAccount::CAT_CREDIT_CHARGE_MOBILE ||
+            $user_account->status != \app\models\MUserAccount::STATUS_CHARGE_REQUEST
+        ) {
+            return json_encode(['code' => -1]);
+        }
+        
+        $user_account->delete();
+        */
+//        $data = MStaff::find()->select('*')->withJoin('')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();                         
+
+        $ygxm   = $_GET['ygxm'];
+        $ygsjhm   = $_GET['ygsjhm'];
+        $office_id   = $_GET['office_id'];
+        $yuangongFlag   = $_GET['yuangongFlag'];
+
+        
+
+        return json_encode(['code' => 0]);
+    }
+
     //员工删除
     public function actionYgglshanchuajax()
     {       
@@ -3767,35 +3797,77 @@ EOD;
 
 
 
-
-
-
-
     //粉丝管理
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/fsgl1:gh_03a74ac96138
     public function actionFsgl1()
     {
         //$this->layout = 'wap';
         $this->layout = false;    
-
     //    $gh_id = U::getSessionParam('gh_id');
     //    $openid = U::getSessionParam('openid');
         $staff_id = $_GET['staff_id'];
-        //$searchStr = empty($_GET['searchStr'])?'':$_GET['searchStr'];
 
         $staff = MStaff::findOne(['staff_id'=>$staff_id]);
 
         $office = $staff->office;  
-
-
-//        $orders = MOrder::findBySql('select * from wx_order where office_id = :office_id and status != :status and create_time > DATE_SUB(NOW(), INTERVAL 7 day)', 
-//            [':office_id' => $office->office_id, ':status' => MOrder::STATUS_DRAFT])
-//            ->all();
-//        $orders = MOrder::getOfficeOrders($office->office_id);
-
-        //return $this->render('yggl1', ['office'=>$office, 'staff'=>$staff, 'orders' => $orders]);
-        return $this->render('yggl1', ['office'=>$office, 'staff'=>$staff]);
+        return $this->render('fsgl1', ['office'=>$office, 'staff'=>$staff]);
     }
+
+
+    public function actionFsgl2()
+    {
+        //$this->layout = 'wap';
+        $this->layout = false;    
+    //    $gh_id = U::getSessionParam('gh_id');
+    //    $openid = U::getSessionParam('openid');
+        $id = $_GET['id'];
+
+        $user = MUser::findOne(['id'=>$id]);
+
+        $office = \app\models\MOffice::findOne([
+            'office_id' => $user->belongto,
+        ]);  
+        return $this->render('fsgl2', ['office'=>$office, 'user'=>$user]);
+    }
+
+
+
+    //粉丝查询
+    public function actionFsglchaxunajax()
+    {       
+        $office_id   = $_GET['office_id'];
+        $searchStr   = $_GET['searchStr'];
+        //$searchStr = $_GET['searchStr'];
+        /* 
+        $uid   = $_GET['uid'];
+
+        $user_account = \app\models\MUserAccount::findOne(['id' => $uid]);
+        if (empty($user_account)) return json_encode(['code' => 0]);
+        if (
+            $user_account->cat    != \app\models\MUserAccount::CAT_CREDIT_CHARGE_MOBILE ||
+            $user_account->status != \app\models\MUserAccount::STATUS_CHARGE_REQUEST
+        ) {
+            return json_encode(['code' => -1]);
+        }
+        P
+        $user_account->delete();
+        */
+
+//        $data = MStaff::find()->select('*')->where(['office_id'=>$office_id])->andFilterWhere(['like', 'name', $searchStr])->asArray()->all();                                 
+        $data = MUser::find()->select('*')
+        ->orFilterWhere(['like', 'nickname', $searchStr])
+        ->orFilterWhere(['like', 'mobile', $searchStr])
+        ->orFilterWhere(['like', 'create_time', $searchStr])
+        ->andWhere(['belongto'=>$office_id])->asArray()->all();                                         
+
+        return json_encode(['code' => 0, 'data'=>$data]);
+    }
+
+
+
+
+
+
 
     /*end of 会员中心 新版 powered by ratchet */
 

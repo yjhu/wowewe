@@ -78,8 +78,7 @@
               <?= count($office->staffs) ?>
               </span>
                <br>
-              <a class="btn" style="border-radius:200px;font-size:20px;background-color:#4d9b4d;border-color:#4d9b4d;color:#fff" href="#xzyg">
-             &#43;
+              <a class="btn icon icon-plus" style="border-radius:200px;font-size:20px;background-color:#4d9b4d;border-color:#4d9b4d;color:#fff" href="#xzyg">
               新增员工
               </a>
         </button>
@@ -160,7 +159,7 @@
                       </div>
                 </div>
                 <br> <br>
-              <button class="btn btn-positive btn-block" style="border-radius:3px">确定</button>
+              <button class="btn btn-positive btn-block" style="border-radius:3px" id="addBtn">确定</button>
 
               <a class="btn btn-block" style="border-radius:3px" href="#xzyg"> 返回</a>
             </div>
@@ -233,6 +232,37 @@ function load_data2(i, n)
     return false;
   }
 
+
+  function zjygajax(ygxm,ygsjhm,yuangongFlag,office_id)
+  {
+        $.ajax({
+        url: "<?php echo Url::to(['wap/zjygajax'], true) ; ?>",
+        type:"GET",
+        cache:false,
+        dataType:"json",
+        data: "ygxm="+ygxm+"&ygsjhm"+ygsjhm+"&office_id"+office_id+"&yuangongFlag"+yuangongFlag,
+        success: function(t){
+
+                if(t.code==0)
+                {
+                    alert("员工已经成功加入。");
+                    var url = "<?php echo Url::to(['yggl1'],true) ?>";
+                    location.href = url+'&staff_id=<?= $staff->staff_id ?>';
+                }
+                else
+                {
+                  alert('error');
+                }
+          },
+          error: function(){
+            alert('error!');
+          }
+      });
+
+      return false;
+  }
+
+
   $(document).ready(function(){
 
 
@@ -250,12 +280,12 @@ function load_data2(i, n)
               if ($('#myToggle').hasClass('active'))
               {
                 yuangongFlag = 1;
-                alert("内部员工:" + yuangongFlag);
+                //alert("内部员工:" + yuangongFlag);
               }
               else
               {
                 yuangongFlag = 0;
-                alert("不是内部员工:" + yuangongFlag);
+                //alert("不是内部员工:" + yuangongFlag);
               }
       });
 
@@ -268,14 +298,42 @@ function load_data2(i, n)
               if ($('#myToggle').hasClass('active'))
               {
                 yuangongFlag = 1;
-                alert("内部员工:" + yuangongFlag);
+                //alert("内部员工:" + yuangongFlag);
               }
               else
               {
                 yuangongFlag = 0;
-                alert("不是内部员工:" + yuangongFlag);
+                //alert("不是内部员工:" + yuangongFlag);
               }
         }
+      });
+
+      /*增加员工*/
+      $("#addBtn").click(function(){
+          //alert("增加员工");
+          var ygxm = $("#ygxm").val();
+          var ygsjhm = $("#ygsjhm").val();
+
+          if((ygxm == ""))
+          {
+            alert("员工姓名不能为空，\n请重新填写。");
+            return  false;
+          }
+ 
+          var usermobileReg = /(^(1)\d{10}$)/;
+          if((usermobileReg.test(ygsjhm) === false) || (ygsjhm == ""))
+          {
+            alert("手机号码不正确，\n请重新填写。");
+            return  false;
+          }
+
+          alert("员工："+ ygxm + "手机："+ygsjhm + "联通员工" + (yuangongFlag==1)?"是":"否");
+
+          //if(!confirm("现在就申请充话费，确定?"))
+          //  return false;
+
+          zjygajax(ygxm,ygsjhm,yuangongFlag,office_id);
+          return false;
       });
 
 
