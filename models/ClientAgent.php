@@ -48,16 +48,15 @@ class ClientAgent extends \yii\db\ActiveRecord
             'agent_id' => $this->agent_id,
         ])->all();
         foreach ($rows as $row) {
-            $mobiles[] = $rows['mobile'];
+            $mobiles[] = $row['mobile'];
         }
         return $mobiles;
     }
     
     public function getWechat() {
-        return \app\models\MUser::find()->join('INNER JOIN', 'wx_openid_bind_mobile', [
-            'gh_id'     => 'gh_id',
-            'openid'    => 'openid',
-        ])->where([
+        return \app\models\MUser::find()->join('INNER JOIN', 'wx_openid_bind_mobile', 
+            'wx_user.gh_id = wx_openid_bind_mobile.gh_id and wx_user.openid = wx_openid_bind_mobile.openid'
+        )->where([
             'in', 'wx_openid_bind_mobile.mobile', $this->mobiles
         ])->one();
     }
