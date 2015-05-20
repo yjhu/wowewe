@@ -153,7 +153,7 @@
                <p class="content-padded"> </p>
              
                 <div class="input-row">
-                  <label style="color:#777777">内部员工</label>
+                  <label style="color:#777777">联通员工</label>
                       <div class="toggle" id="myToggle">
                       <div class="toggle-handle"></div>
                       </div>
@@ -329,7 +329,7 @@ function load_data2(i, n)
 
           alert("员工："+ ygxm + "手机："+ygsjhm + "联通员工" + (yuangongFlag==1)?"是":"否");
 
-          //if(!confirm("现在就申请充话费，确定?"))
+          //if(!confirm("现在就增加员工，确定?"))
           //  return false;
 
           zjygajax(ygxm,ygsjhm,yuangongFlag,office_id);
