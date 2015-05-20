@@ -59,4 +59,32 @@ class ClientOutlet extends \yii\db\ActiveRecord
             'latitude' => 'Latitude',
         ];
     }
+    
+    public function getEmployees() {
+        return $this->hasMany(\app\models\ClientEmployee::className(), [
+            'employee_id' => 'employee_id',
+        ])->viaTable('client_employee_outlet', [
+            'outlet_id' => 'outlet_id',
+        ]);
+    }
+    
+    public function getEmployeeCount() {
+        return (new \yii\db\Query())->select('*')->from('client_employee_outlet')->where([
+            'outlet_id' => $this->outlet_id,
+        ])->count();
+    }
+    
+    public function getAgents() {
+        return $this->hasMany(\app\models\ClientAgent::className(), [
+            'agent_id' => 'agent_id',
+        ])->viaTable('client_agent_outlet', [
+            'outlet_id' => 'outlet_id',
+        ]);
+    }
+    
+    public function getAgentCount() {
+        return (new \yii\db\Query())->select('*')->from('client_agent_outlet')->where([
+            'outlet_id' => $this->outlet_id,
+        ])->count();
+    }
 }
