@@ -107,7 +107,7 @@
         <img class="media-object pull-left" src="<?= (empty($employee->wechat) || empty($employee->wechat->headimgurl)) ? '../web/images/wxmpres/headimg-blank.png':$employee->wechat->headimgurl ?>" width="64" height="64">
         <div class="media-body">
           <!--粉丝昵称--> 
-          <?= $employee->name ?>
+          <?= $employee->name ?>&nbsp;<span class="badge pull-right"><?= $employee->getOutletPosition($outlet->outlet_id) ?></span>
           <p>
             手机号码 <?= implode(",", $employee->mobiles) ?>
             <br>

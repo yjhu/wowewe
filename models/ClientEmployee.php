@@ -125,12 +125,54 @@ class ClientEmployee extends \yii\db\ActiveRecord {
     }
     
     public function getWechat() {
-        return \app\models\MUser::find()->join('INNER JOIN', 'wx_openid_bind_mobile', [
-            'gh_id'     => 'gh_id',
-            'openid'    => 'openid',
-        ])->where([
+        return \app\models\MUser::find()->join('INNER JOIN', 'wx_openid_bind_mobile', 
+            'wx_user.gh_id = wx_openid_bind_mobile.gh_id and wx_user.openid = wx_openid_bind_mobile.openid'
+        )->where([
             'in', 'wx_openid_bind_mobile.mobile', $this->mobiles
         ])->one();
     }
 
+    public static function addOutletEmployee($employee_name, $employee_mobile, $employee_position, $outlet_id) {
+        $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
+        if (empty($outlet)) return json_encode (['code' => -1, 'errMsg' => "门店不存在！（{$outlet_id}）" ]);
+        
+        $employee = self::find()->join('INNER JOIN', 'client_employee_mobile', 'client_employee.employee_id=client_employee_mobile.employee_id')->where([
+            'name'      => $employee_name,
+            'mobile'    => $employee_mobile,
+        ])->one();
+        if (!empty($employee)) {
+            return json_encode([
+                'code'      => -1, 
+                'errMsg'    => "{$employee_name}({$employee_mobile})已存在！",
+            ]);
+        } else {
+            $employee = new self();
+            $employee->name = $employee_name;
+            $employee->save(false);
+            
+            \Yii::$app->db->createCommand()->insert('client_employee_mobile', [
+                'employee_id'  => $employee->employee_id,
+                'mobile'       => $employee_mobile,
+            ])->execute();
+            
+            $row = (new \yii\db\Query())->select('*')->from('client_employee_outlet')->where([
+                'employee_id'  => $employee->employee_id,
+                'outlet_id'    => $outlet->outlet_id,
+            ])->one();
+            if (false === $row) {
+                \Yii::$app->db->createCommand()->insert('client_employee_outlet', [
+                    'employee_id'  => $employee->employee_id,
+                    'outlet_id'    => $outlet->outlet_id,
+                    'position'     => $employee_position,
+                ])->execute();
+            } else {
+                return json_encode([
+                    'code'      => -1, 
+                    'errMsg'    => "{$employee_name}({$employee_mobile})已存在门店{$outlet_id}中！",
+                ]);
+            }
+            
+            return json_encode(['code' => 0]);
+        }
+    }
 }

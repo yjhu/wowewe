@@ -3737,28 +3737,17 @@ EOD;
     //员工增加
     public function actionZjygajax()
     {       
-        /* 
-        $uid   = $_GET['uid'];
-
-        $user_account = \app\models\MUserAccount::findOne(['id' => $uid]);
-        if (empty($user_account)) return json_encode(['code' => 0]);
-        if (
-            $user_account->cat    != \app\models\MUserAccount::CAT_CREDIT_CHARGE_MOBILE ||
-            $user_account->status != \app\models\MUserAccount::STATUS_CHARGE_REQUEST
-        ) {
-            return json_encode(['code' => -1]);
-        }
+        $employee_name      = $_GET['ygxm'];
+        $employee_mobile    = $_GET['ygsjhm'];
+        $outlet_id          = $_GET['office_id'];
+        $is_agent           = !$_GET['yuangongFlag'];
+        $position           = $_GET['ygzw'];
         
-        $user_account->delete();
-        */
-//        $data = MStaff::find()->select('*')->withJoin('')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();                         
-
-        $ygxm   = $_GET['ygxm'];
-        $ygsjhm   = $_GET['ygsjhm'];
-        $office_id   = $_GET['office_id'];
-        $yuangongFlag   = $_GET['yuangongFlag'];
-
-
+        if ($isAgent) {
+            return \app\models\ClientAgent::addOutletAgent($employee_name, $employee_mobile, $position, $outlet_id);
+        } else {
+            return \app\models\ClientEmployee::addOutletEmployee($employee_name, $employee_mobile, $position, $outlet_id);
+        }
 
         return json_encode(['code' => 0]);
     }
