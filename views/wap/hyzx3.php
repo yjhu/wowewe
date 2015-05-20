@@ -137,7 +137,7 @@
 
 
             <li class="table-view-cell media">
-              <a data-ignore="push"  class="navigate-right" href="#">
+              <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['fsgl1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'staff_id'=>$staff->staff_id]) ?>">
                 <!--
                 <span class="badge badge-negative">
                 1000
