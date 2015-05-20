@@ -43,4 +43,10 @@ class ClientWechat extends \yii\db\ActiveRecord
             'gh_id' => 'Gh ID',
         ];
     }
+    
+    public function getClient() {
+        return $this->hasOne(\app\models\WosoClient::className(), [
+            'client_id' => 'client_id',
+        ]);
+    }
 }

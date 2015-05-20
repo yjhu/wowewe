@@ -62,6 +62,9 @@
 
     </header>
 
+    <?php 
+        
+    ?>
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
@@ -72,10 +75,10 @@
         <td width=100%>
           <button class="btn btn-positive btn-block">
     
-              <?= $office->title ?>员工总数
+              <?= $outlet->title ?>员工总数
               <br>
               <span style="font-size:48px;font-weight:bolder;vertical-align: middle;">
-              <?= count($office->staffs) ?>
+              <?= ($outlet->employeeCount + $outlet->agentCount) ?>
               </span>
                <br>
               <a class="btn icon icon-plus" style="border-radius:200px;font-size:20px;background-color:#4d9b4d;border-color:#4d9b4d;color:#fff" href="#xzyg">
@@ -95,25 +98,53 @@
     <ul class="table-view" id="ul-content">
 
         <?php 
-            foreach ($office->staffs as $staff) 
-            { 
-              if($staff->cat == MStaff::SCENE_CAT_OFFICE) continue;
+            foreach ($outlet->employees as $employee) 
+            {             
         ?>
 
         <li class="table-view-cell media">
-        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl2','staff_id'=>$staff->staff_id]) ?>">
-        <img class="media-object pull-left" src="<?= empty($staff->user->headimgurl)?'../web/images/wxmpres/headimg-blank.png':$staff->user->headimgurl ?>" width="64" height="64">
+        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl2','employee_id'=>$employee->employee_id, 'is_agent'=> false]) ?>">
+        <img class="media-object pull-left" src="<?= (empty($employee->wechat) || empty($employee->wechat->headimgurl)) ? '../web/images/wxmpres/headimg-blank.png':$employee->wechat->headimgurl ?>" width="64" height="64">
         <div class="media-body">
           <!--粉丝昵称--> 
-          <?= $staff->name ?>
+          <?= $employee->name ?>
           <p>
-            手机号码 <?= $staff->mobile ?>
+            手机号码 <?= implode(",", $employee->mobiles) ?>
             <br>
             <!--
             2015-05-20
             <br>
             -->
-            <!-- <span style="color:red">已取消关注</span> -->
+            <?php if (!empty($employee->wechat) && $employee->wechat->subscribe != 1 ) { ?>
+            <span style="color:red">已取消关注</span><br/>
+            <?php } ?>
+          </p>
+        </div>
+        </a>
+        </li>
+        <?php } ?>
+        
+        <?php 
+            foreach ($outlet->agents as $agent) 
+            {             
+        ?>
+
+        <li class="table-view-cell media">
+        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl2','agent_id'=>$employee->agent_id, 'is_agent' => true]) ?>">
+        <img class="media-object pull-left" src="<?= (empty($agent->wechat) || empty($agent->wechat->headimgurl)) ? '../web/images/wxmpres/headimg-blank.png':$agent->wechat->headimgurl ?>" width="64" height="64">
+        <div class="media-body">
+          <!--粉丝昵称--> 
+          <?= $agent->name ?>
+          <p>
+            手机号码 <?= implode(",", $agent->mobiles) ?>
+            <br>
+            <!--
+            2015-05-20
+            <br>
+            -->
+            <?php if (!empty($agent->wechat) && $agent->wechat->subscribe != 1 ) { ?>
+            <span style="color:red">已取消关注</span><br/>
+            <?php } ?>
           </p>
         </div>
         </a>
@@ -176,7 +207,7 @@
   //alert($("#ul-content").html());
   var count = 0;
   var yuangongFlag = 0;
-  var office_id = "<?= $office->office_id ?>";
+  var office_id = "<?= $outlet->outlet_id ?>";
 
 function load_data2(i, n)
 {
@@ -247,7 +278,7 @@ function load_data2(i, n)
                 {
                     alert("员工已经成功加入。");
                     var url = "<?php echo Url::to(['yggl1'],true) ?>";
-                    location.href = url+'&staff_id=<?= $staff->staff_id ?>';
+                    location.href = url+'&staff_id=<?= $employee->employee_id ?>';
                 }
                 else
                 {

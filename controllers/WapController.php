@@ -3685,9 +3685,10 @@ EOD;
         $openid = U::getSessionParam('openid');
 
         $employee = \app\models\ClientEmployee::findOneByWechatOpenid($gh_id, $openid);
+//        \Yii::trace($employee);
+        $outlets = $employee->outlets;
 
-
-        return $this->render('yggl1', ['office'=>$office, 'staff'=>$staff]);
+        return $this->render('yggl1', ['outlet' => $outlets[0]]);
     }
 
     public function actionYggl2()

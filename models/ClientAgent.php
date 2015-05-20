@@ -52,4 +52,13 @@ class ClientAgent extends \yii\db\ActiveRecord
         }
         return $mobiles;
     }
+    
+     public function getWechat() {
+        return \app\models\MUser::find()->join('INNER JOIN', 'wx_openid_bind_mobile', [
+            'gh_id'     => 'gh_id',
+            'openid'    => 'openid',
+        ])->where([
+            'in', 'wx_openid_bind_mobile.mobile', $this->mobiles
+        ])->one();
+    }
 }
