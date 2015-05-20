@@ -25,6 +25,7 @@
 
     <!-- Include the compiled Ratchet CSS -->
     <link href="/wx/web/ratchet/dist/css/ratchet.css?v11" rel="stylesheet">
+
   
     <link href="./php-emoji/emoji.css" rel="stylesheet">
 
@@ -40,6 +41,9 @@
     <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
     <!-- Include the compiled Ratchet JS -->
     <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
+
+    <script src="/wx/web/js/jquery.touchSwipe.min.js"></script>
+   
   </head>
   <body>
 
@@ -148,14 +152,14 @@
                 </div>
               
                <p class="content-padded"> </p>
-               <br>
+             
                 <div class="input-row">
                   <label style="color:#777777">内部员工</label>
-                      <div class="toggle" >
-                      <div class="toggle-handle" id="myToggle"></div>
+                      <div class="toggle" id="myToggle">
+                      <div class="toggle-handle"></div>
                       </div>
                 </div>
-                <br>
+                <br> <br>
               <button class="btn btn-positive btn-block" style="border-radius:3px">确定</button>
 
               <a class="btn btn-block" style="border-radius:3px" href="#xzyg"> 返回</a>
@@ -172,7 +176,7 @@
   //var ul-content;
   //alert($("#ul-content").html());
   var count = 0;
-  var yuangongFlag = -1;
+  var yuangongFlag = 0;
   var office_id = "<?= $office->office_id ?>";
 
 function load_data2(i, n)
@@ -243,18 +247,36 @@ function load_data2(i, n)
 
 
       $('#myToggle').click(function(){
-
-              yuangongFlag = yuangongFlag * (-1);
-              if(yuangongFlag == -1)
+              if ($('#myToggle').hasClass('active'))
               {
-                alert("不是内部员工")
+                yuangongFlag = 1;
+                alert("内部员工:" + yuangongFlag);
               }
               else
               {
-                alert("内部员工")
+                yuangongFlag = 0;
+                alert("不是内部员工:" + yuangongFlag);
               }
+      });
 
-      })
+
+      $("#myToggle").swipe( {
+        //Generic swipe handler for all directions
+        threshold: 30,
+        swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+          //$(this).text("You swiped " + direction );  
+              if ($('#myToggle').hasClass('active'))
+              {
+                yuangongFlag = 1;
+                alert("内部员工:" + yuangongFlag);
+              }
+              else
+              {
+                yuangongFlag = 0;
+                alert("不是内部员工:" + yuangongFlag);
+              }
+        }
+      });
 
 
 
