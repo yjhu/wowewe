@@ -3679,25 +3679,14 @@ EOD;
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/yggl1:gh_03a74ac96138
     public function actionYggl1()
     {
-        //$this->layout = 'wap';
         $this->layout = false;    
 
-    //    $gh_id = U::getSessionParam('gh_id');
-    //    $openid = U::getSessionParam('openid');
-        $staff_id = $_GET['staff_id'];
-        //$searchStr = empty($_GET['searchStr'])?'':$_GET['searchStr'];
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
 
-        $staff = MStaff::findOne(['staff_id'=>$staff_id]);
-
-        $office = $staff->office;  
+        $employee = \app\models\ClientEmployee::findOneByWechatOpenid($gh_id, $openid);
 
 
-//        $orders = MOrder::findBySql('select * from wx_order where office_id = :office_id and status != :status and create_time > DATE_SUB(NOW(), INTERVAL 7 day)', 
-//            [':office_id' => $office->office_id, ':status' => MOrder::STATUS_DRAFT])
-//            ->all();
-//        $orders = MOrder::getOfficeOrders($office->office_id);
-
-        //return $this->render('yggl1', ['office'=>$office, 'staff'=>$staff, 'orders' => $orders]);
         return $this->render('yggl1', ['office'=>$office, 'staff'=>$staff]);
     }
 
@@ -3768,7 +3757,7 @@ EOD;
         $office_id   = $_GET['office_id'];
         $yuangongFlag   = $_GET['yuangongFlag'];
 
-        
+
 
         return json_encode(['code' => 0]);
     }
