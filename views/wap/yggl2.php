@@ -145,10 +145,10 @@ include('../models/utils/emoji.php');
 
             <br>
             <?php if ($is_agent) { ?>
-                <button class="btn btn-positive btn-block" style="border-radius:3px" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->agent_id ?>">修改</button>
+                <button class="btn btn-positive btn-block" style="border-radius:3px" id="btnEdit" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->agent_id ?>">修改</button>
                 <button class="btn btn-negative btn-block" style="border-radius:3px" id="btnDel" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->agent_id ?>">删除</button>
             <?php } else { ?>
-                <button class="btn btn-positive btn-block" style="border-radius:3px" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->employee_id ?>">修改</button>
+                <button class="btn btn-positive btn-block" style="border-radius:3px" id="btnEdit" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->employee_id ?>">修改</button>
                 <button class="btn btn-negative btn-block" style="border-radius:3px" id="btnDel" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->employee_id ?>">删除</button>
             <?php } ?>
             <button class="btn btn-block" style="border-radius:3px" onclick="back2pre();">返回</button>
