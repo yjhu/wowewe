@@ -3697,10 +3697,10 @@ EOD;
         $is_agent = $_GET['is_agent']; 
         $outlet_id = $_GET['outlet_id'];
         if ($is_agent) {
-            $agent_id = $_GET['agent_id'];
+            $agent_id = $_GET['entity_id'];
             $entity = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
         } else {
-            $employee_id = $_GET['employee_id'];
+            $employee_id = $_GET['entity_id'];
             $entity = \app\models\ClientEmployee::findOne(['employee_id' => $employee_id]);
         }
         $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
@@ -3775,6 +3775,17 @@ EOD;
             return json_encode(['code' => -1]);
         else
             return json_encode(['code' => 0]);
+    }
+
+    //员工修改
+    public function actionYgglxiugaijax()
+    {       
+        $staff_id      = $_GET['staff_id'];
+
+        
+
+
+        return json_encode(['code' => 0]);
     }
 
 

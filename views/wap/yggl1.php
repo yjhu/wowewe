@@ -103,7 +103,7 @@
         ?>
 
         <li class="table-view-cell media">
-        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl2','outlet_id' => $outlet_id,'employee_id'=>$employee->employee_id, 'is_agent'=> false]) ?>">
+        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl2','outlet_id' => $outlet_id,'entity_id'=>$employee->employee_id, 'is_agent'=> false]) ?>">
         <img class="media-object pull-left" src="<?= (empty($employee->wechat) || empty($employee->wechat->headimgurl)) ? '../web/images/wxmpres/headimg-blank.png':$employee->wechat->headimgurl ?>" width="64" height="64">
         <div class="media-body">
           <!--粉丝昵称--> 
@@ -130,7 +130,7 @@
         ?>
 
         <li class="table-view-cell media">
-        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl2','outlet_id'=>$outlet_id,'agent_id'=>$agent->agent_id, 'is_agent' => true]) ?>">
+        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl2','outlet_id'=>$outlet_id,'entity_id'=>$agent->agent_id, 'is_agent' => true]) ?>">
         <img class="media-object pull-left" src="<?= (empty($agent->wechat) || empty($agent->wechat->headimgurl)) ? '../web/images/wxmpres/headimg-blank.png':$agent->wechat->headimgurl ?>" width="64" height="64">
         <div class="media-body">
           <!--粉丝昵称--> 
