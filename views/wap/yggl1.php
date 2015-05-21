@@ -369,7 +369,7 @@ function load_data2(i, n)
             return  false;
           }
 
-          alert("员工："+ ygxm + "手机："+ygsjhm + "联通员工 :" + yuangongFlag);
+          //alert("员工："+ ygxm + "手机："+ygsjhm + "联通员工 :" + yuangongFlag);
 
           //if(!confirm("现在就增加员工，确定?"))
           //  return false;

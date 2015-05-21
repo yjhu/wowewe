@@ -23,7 +23,7 @@ include('../models/utils/emoji.php');
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
         <!-- Include the compiled Ratchet CSS -->
-        <link href="/wx/web/ratchet/dist/css/ratchet.css?v11" rel="stylesheet">
+        <link href="/wx/web/ratchet/dist/css/ratchet.css?v12" rel="stylesheet">
 
         <link href="./php-emoji/emoji.css" rel="stylesheet">
 
@@ -42,6 +42,8 @@ include('../models/utils/emoji.php');
         <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
         <!-- Include the compiled Ratchet JS -->
         <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
+
+        <script src="/wx/web/js/jquery.touchSwipe.min.js"></script>
     </head>
     <body>
 
@@ -86,15 +88,12 @@ include('../models/utils/emoji.php');
             <!--
             <div class="input-row">
               <label style="color:#777777">姓名</label>
-              <input type="text" value="<?= $entity->name ?>" id="ygxm">
+              <input type="text" value="<//?//= $entity->name ?>" id="ygxm">
             </div>
             -->
 
             <div class="input-row">
                 <label style="color:#777777">手机号码</label>
-                <!--
-                <input type="email" placeholder="ratchetframework@gmail.com">
-                -->
                 <input type="text" value="<?= implode(',', $entity->mobiles) ?>"  id="ygsjhm">
             </div>
 
@@ -104,29 +103,29 @@ include('../models/utils/emoji.php');
             </div>
 
             <p class="content-padded"> </p>
-
             <div class="input-row">
-                <label style="color:#777777">联通员工</label>
-                <div class="toggle" id="myToggle">
-                    <div class="toggle-handle"></div>
-                </div>
+              <label style="color:#777777">联通员工</label>
+
+                  <div class="toggle pull-left" id="myToggle">
+                  <div class="toggle-handle"></div>
+                  </div>
+      
             </div>
-
-
+    
             <?php
-            if (!empty($entity->wechat) && !empty($entity->wechat->headimgurl)) {
-                $wx_nickname = $entity->wechat->nickname;
-                $wx_mobile = $entity->wechat->getBindMobileNumbersStr();
-                $wx_country = $entity->wechat->country;
-                $wx_province = $entity->wechat->province;
-                $wx_city = $entity->wechat->city;
-            } else {
-                $wx_nickname = "";
-                $wx_mobile = "";
-                $wx_country = "";
-                $wx_province = "";
-                $wx_city = "";
-            }
+              if (!empty($entity->wechat) && !empty($entity->wechat->headimgurl)) {
+                  $wx_nickname = $entity->wechat->nickname;
+                  $wx_mobile = $entity->wechat->getBindMobileNumbersStr();
+                  $wx_country = $entity->wechat->country;
+                  $wx_province = $entity->wechat->province;
+                  $wx_city = $entity->wechat->city;
+              } else {
+                  $wx_nickname = "";
+                  $wx_mobile = "";
+                  $wx_country = "";
+                  $wx_province = "";
+                  $wx_city = "";
+              }
             ?>
 
             <p class="content-padded">微信信息 </p>
@@ -155,6 +154,7 @@ include('../models/utils/emoji.php');
             <button class="btn btn-block" style="border-radius:3px" onclick="back2pre();">返回</button>
 
         </div>
+
     </div><!-- end of content -->
 
     <div id="showQr" class="modal">
@@ -172,10 +172,6 @@ include('../models/utils/emoji.php');
                     echo Html::img($entity->wechat->getQrImageUrl(), ['style' => 'display: block;max-width:100%;height: auto;']);
                 ?>
 
-                <!--
-                <br>
-                <a href="#rhtg">如何推广?</a>
-                -->
                 <br><br>
 
                 &nbsp;
@@ -186,6 +182,8 @@ include('../models/utils/emoji.php');
     </div>
 
     <script type="text/javascript">
+
+        var yuangongFlag = 1;
 
 
         function ygglshanchuajax()
@@ -259,6 +257,16 @@ include('../models/utils/emoji.php');
 
         $(document).ready(function () {
 
+            if(yuangongFlag == 1)/*联通员工，checked*/
+            {
+              $("#myToggle").attr("class", "toggle active pull-left");
+            }
+            else
+            {
+              $("#myToggle").attr("class", "toggle pull-left");
+            }
+
+
             $('#btnDel').click(function () {
                 is_agent = $(this).attr('is_agent');
                 entity_id = $(this).attr('entity_id');
@@ -280,6 +288,46 @@ include('../models/utils/emoji.php');
                 ygglxiugaiajax();
                 return false;
             });
+
+
+            $('#myToggle').click(function(){
+                    if ($('#myToggle').hasClass('active'))
+                    {
+                      yuangongFlag = 1;
+                      //alert("内部员工:" + yuangongFlag);
+                    }
+                    else
+                    {
+                      yuangongFlag = 0;
+                      //alert("不是内部员工:" + yuangongFlag);
+                    }
+            });
+
+            $("#myToggle").swipe( {
+              //Generic swipe handler for all directions
+              threshold: 30,
+              swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+                //$(this).text("You swiped " + direction );  
+                    if ($('#myToggle').hasClass('active'))
+                    {
+                      yuangongFlag = 1;
+                      //alert("内部员工:" + yuangongFlag);
+                    }
+                    else
+                    {
+                      yuangongFlag = 0;
+                      //alert("不是内部员工:" + yuangongFlag);
+                    }
+              }
+            });
+
+
+
+
+
+
+
+
 
         })
 
