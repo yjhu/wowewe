@@ -73,6 +73,29 @@ class ClientOutlet extends \yii\db\ActiveRecord
             'outlet_id' => $this->outlet_id,
         ])->count();
     }
+    public function deleteEmployee($employee_id) {
+        \Yii::$app->db->createCommand()->delete('client_employee_outlet', [
+            'employee_id'  => $employee_id,
+            'outlet_id'    => $this->outlet_id,
+        ])->execute();
+        $employee = \app\models\ClientEmployee::findOne(['employee_id' => $employee_id]);
+        if (empty($employee->outlets) && empty($employee->organizations)) {
+            return $employee->delete();
+        }
+        return true;
+    }
+    
+    public function deleteAgent($agent_id) {
+        \Yii::$app->db->createCommand()->delete('client_agent_outlet', [
+            'agent_id'  => $agent_id,
+            'outlet_id' => $this->outlet_id,
+        ])->execute();
+        $agent = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
+        if (empty($agent->outlets)) {
+            return $agent->delete();
+        }
+        return true;
+    }
     
     public function getAgents() {
         return $this->hasMany(\app\models\ClientAgent::className(), [

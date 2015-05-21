@@ -132,6 +132,22 @@ class ClientEmployee extends \yii\db\ActiveRecord {
         ])->one();
     }
 
+    public function beforeDelete() {
+        if (parent::beforeDelete()) {
+            \Yii::$app->db->createCommand()->delete('client_employee_outlet', [
+                'employee_id' => $this->employee_id,
+            ])->execute();
+            \Yii::$app->db->createCommand()->delete('client_employee_organization', [
+                'employee_id' => $this->employee_id,
+            ])->execute();
+            \Yii::$app->db->createCommand()->delete('client_employee_mobile', [
+                'employee_id' => $this->employee_id,
+            ])->execute();
+            return true;
+        } else {
+            return false;
+        }
+    }
     public static function addOutletEmployee($employee_name, $employee_mobile, $employee_position, $outlet_id) {
         $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
         if (empty($outlet)) return json_encode (['code' => -1, 'errMsg' => "门店不存在！（{$outlet_id}）" ]);

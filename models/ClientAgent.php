@@ -53,6 +53,20 @@ class ClientAgent extends \yii\db\ActiveRecord
         return $mobiles;
     }
     
+    public function beforeDelete() {
+        if (parent::beforeDelete()) {
+            \Yii::$app->db->createCommand()->delete('client_agent_outlet', [
+                'agent_id'  => $this->agent_id,
+            ])->execute();
+            \Yii::$app->db->createCommand()->delete('client_agent_mobile', [
+                'agent_id'  => $this->agent_id,
+            ])->execute();
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     public function getWechat() {
         return \app\models\MUser::find()->join('INNER JOIN', 'wx_openid_bind_mobile', 
             'wx_user.gh_id = wx_openid_bind_mobile.gh_id and wx_user.openid = wx_openid_bind_mobile.openid'
@@ -60,6 +74,15 @@ class ClientAgent extends \yii\db\ActiveRecord
             'in', 'wx_openid_bind_mobile.mobile', $this->mobiles
         ])->one();
     }
+    
+    public function getOutlets() {
+        return $this->hasMany(\app\models\ClientOutlet::className(), [
+            'outlet_id' => 'outlet_id',
+        ])->viaTable('client_agent_outlet', [
+            'agent_id'  => 'agent_id',
+        ]);
+    }
+            
     
     public static function addOutletAgent($agent_name, $agent_mobile, $agent_position, $outlet_id) {
         $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);

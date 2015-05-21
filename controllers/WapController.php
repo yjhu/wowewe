@@ -3688,21 +3688,28 @@ EOD;
 //        \Yii::trace($employee);
         $outlets = $employee->outlets;
 
-        return $this->render('yggl1', ['outlet' => $outlets[0]]);
+        return $this->render('yggl1', ['outlet_id' => $outlets[0]->outlet_id]);
     }
 
     public function actionYggl2()
     {
-        //$this->layout = 'wap';
         $this->layout = false;   
-        $staff_id = $_GET['staff_id']; 
-        //$searchStr = $_GET['searchStr']; 
+        $is_agent = $_GET['is_agent']; 
+        $outlet_id = $_GET['outlet_id'];
+        if ($is_agent) {
+            $agent_id = $_GET['agent_id'];
+            $entity = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
+        } else {
+            $employee_id = $_GET['employee_id'];
+            $entity = \app\models\ClientEmployee::findOne(['employee_id' => $employee_id]);
+        }
+        $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
         
-
-        $staff = MStaff::findOne(['staff_id'=>$staff_id]);  
-        $office = $staff->office;  
-
-        return $this->render('yggl2', ['office'=>$office, 'staff'=>$staff]);
+        return $this->render('yggl2', [
+            'entity'=>$entity, 
+            'is_agent'=>$is_agent,
+            'outlet' => $outlet,
+        ]);
     }
     
     //员工查询
@@ -3755,23 +3762,19 @@ EOD;
     //员工删除
     public function actionYgglshanchuajax()
     {       
-        /* 
-        $uid   = $_GET['uid'];
-
-        $user_account = \app\models\MUserAccount::findOne(['id' => $uid]);
-        if (empty($user_account)) return json_encode(['code' => 0]);
-        if (
-            $user_account->cat    != \app\models\MUserAccount::CAT_CREDIT_CHARGE_MOBILE ||
-            $user_account->status != \app\models\MUserAccount::STATUS_CHARGE_REQUEST
-        ) {
-            return json_encode(['code' => -1]);
-        }
+        $is_agent   = $_GET['is_agent'];
+        $entity_id  = $_GET['entity_id'];
+        $outlet_id  = $_GET['outlet_id'];
         
-        $user_account->delete();
-        */
-//        $data = MStaff::find()->select('*')->withJoin('')->where("status=:status AND num_cat=:num_cat AND zdxf <= :zdxf", [':status'=>MMobnum::STATUS_UNUSED, ':num_cat'=>$num_cat, ':zdxf'=>$feeSum])->offset(($page-1)*$size)->limit($size)->asArray()->all();                         
-
-        return json_encode(['code' => 0]);
+        $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
+        if ($is_agent)
+            $ret = $outlet->deleteAgent($entity_id);
+        else 
+            $ret = $outlet->deleteEmployee($entity_id);
+        if (false === $ret)
+            return json_encode(['code' => -1]);
+        else
+            return json_encode(['code' => 0]);
     }
 
 

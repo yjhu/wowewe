@@ -66,10 +66,10 @@
       <tr>
         <td width=100%>
           <a class="btn btn-positive btn-block" href="#showQr">
-            <?= $office->title ?>员工
+            <?= $outlet->title ?>员工
             <br>
             <span style="font-size:48px;font-weight:bolder">
-            <?= $staff->name ?>
+            <?= $entity->name ?>
     
             <img src="../web/images/woke/qr.png" width=24px>
             </span>
@@ -85,7 +85,7 @@
   
       <div class="input-row">
         <label style="color:#777777">姓名</label>
-        <input type="text" value="<?= $staff->name ?>" id="ygxm">
+        <input type="text" value="<?= $entity->name ?>" id="ygxm">
       </div>
 
       <div class="input-row">
@@ -93,18 +93,18 @@
         <!--
         <input type="email" placeholder="ratchetframework@gmail.com">
         -->
-         <input type="text" value="<?= $staff->mobile ?>"  id="ygsjhm">
+         <input type="text" value="<?= implode(',', $entity->mobiles) ?>"  id="ygsjhm">
       </div>
 
       <?php
 
-          if(!empty($staff->user->headimgurl))
+          if(!empty($entity->wechat) && !empty($entity->wechat->headimgurl))
           {
-              $wx_nickname = $staff->user->nickname;
-              $wx_mobile = $staff->user->getBindMobileNumbersStr();
-              $wx_country = $staff->user->country;
-              $wx_province = $staff->user->province;
-              $wx_city = $staff->user->city;
+              $wx_nickname = $entity->wechat->nickname;
+              $wx_mobile = $entity->wechat->getBindMobileNumbersStr();
+              $wx_country = $entity->wechat->country;
+              $wx_province = $entity->wechat->province;
+              $wx_city = $entity->wechat->city;
           }
           else
           {
@@ -133,8 +133,13 @@
       </div>
 
     <br>
-    <button class="btn btn-positive btn-block" style="border-radius:3px" staff_id="<?= $staff->staff_id?>">修改</button>
-    <button class="btn btn-negative btn-block" style="border-radius:3px" id="btnDel" staff_id="<?= $staff->staff_id?>">删除</button>
+    <?php if ($is_agent) { ?>
+    <button class="btn btn-positive btn-block" style="border-radius:3px" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->agent_id?>">修改</button>
+        <button class="btn btn-negative btn-block" style="border-radius:3px" id="btnDel" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->agent_id?>">删除</button>
+    <?php } else { ?>
+        <button class="btn btn-positive btn-block" style="border-radius:3px" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->employee_id?>">修改</button>
+        <button class="btn btn-negative btn-block" style="border-radius:3px" id="btnDel" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->employee_id?>">删除</button>
+    <?php } ?>
     <button class="btn btn-block" style="border-radius:3px" onclick="back2pre();">返回</button>
 
     </div>
@@ -143,14 +148,17 @@
     <div id="showQr" class="modal">
       <header class="bar bar-nav">
         <a class="icon icon-close pull-right" href="#showQr"></a>
-        <h1 class="title"><?= $staff->name ?>的推广二维码</h1>
+        <h1 class="title"><?= $entity->name ?>的推广二维码</h1>
       </header>
 
       <div class="content">
 
           <center>
-    
-              <?php echo Html::img($staff->user->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); ?>
+              
+              <?php 
+                if (!empty($entity->wechat))
+                    echo Html::img($entity->wechat->getQrImageUrl(), ['style'=>'display: block;max-width:100%;height: auto;']); 
+              ?>
       
               <!--
               <br>
@@ -176,7 +184,7 @@
         type:"GET",
         cache:false,
         dataType:"json",
-        //data: "czhm="+czhm+"&czje="+czje+"&gh_id="+gh_id+"&openid="+openid,
+        data: "is_agent="+is_agent+"&entity_id="+entity_id+"&outlet_id="+outlet_id,
         success: function(t){
 
                 if(t.code==0)
@@ -203,7 +211,7 @@
 
     function back2pre()
     {
-        location.href = "<?php echo Url::to(['yggl1', 'staff_id'=>$staff->staff_id]) ?>";
+        location.href = "<?php echo Url::to(['yggl1', 'outlet_id'=>$entity->outlets[0]->outlet_id]) ?>";
     }
 
 
@@ -212,7 +220,9 @@
         $('#btnDel').click(function() {
             //ajax 
             //alert($('#searchStr').val());
-            staff_id = $(this).attr('staff_id');
+            is_agent = $(this).attr('is_agent');
+            entity_id = $(this).attr('entity_id');
+            outlet_id = $(this).attr("outlet_id");
             if(!confirm("删除这个员工，确定?"))
               return false;
 
