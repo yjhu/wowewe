@@ -51,7 +51,7 @@ include('../models/utils/emoji.php');
 
         <header class="bar bar-nav">
 
-            <a class="icon icon-left-nav pull-left" id="btn_back" onclick="history.back();"></a>
+            <a class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre();"></a>
 
             <h1 class="title">
                 <!--
@@ -99,9 +99,10 @@ include('../models/utils/emoji.php');
 
             <div class="input-row">
                 <label style="color:#777777">职位</label>
-                <input type="text" value="" id="ygzw">
+                <input type="text" value="<?= $entity->getOutletPosition($outlet->outlet_id) ?>" id="ygzw">
             </div>
 
+            <!--
             <p class="content-padded"> </p>
             <div class="input-row">
               <label style="color:#777777">联通员工</label>
@@ -109,8 +110,8 @@ include('../models/utils/emoji.php');
                   <div class="toggle pull-left" id="myToggle">
                   <div class="toggle-handle"></div>
                   </div>
-      
             </div>
+            -->
     
             <?php
               if (!empty($entity->wechat) && !empty($entity->wechat->headimgurl)) {
@@ -286,6 +287,13 @@ include('../models/utils/emoji.php');
                 mobile   = $("#ygsjhm").val();
                 position = $("#ygzw").val();
          
+                var usermobileReg = /(^(1)\d{10}$)/;
+                if((usermobileReg.test(mobile) === false) || (mobile == ""))
+                {
+                  alert("手机号码不正确，\n请重新填写。");
+                  return  false;
+                }
+          
                 if (!confirm("修改这个员工，确定?"))
                     return false;
 
@@ -329,11 +337,8 @@ include('../models/utils/emoji.php');
 
 
 
-
-
-
-
         })
+
 
 
     </script>
