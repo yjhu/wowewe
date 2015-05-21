@@ -82,11 +82,12 @@
     </p>
 
     <div class="input-group">
-  
+      <!--
       <div class="input-row">
         <label style="color:#777777">姓名</label>
-        <input type="text" value="<?= $staff->name ?>" id="ygxm">
+        <input type="text" value="<//?//= $staff->name ?>" id="ygxm">
       </div>
+      -->
 
       <div class="input-row">
         <label style="color:#777777">手机号码</label>
@@ -95,6 +96,21 @@
         -->
          <input type="text" value="<?= $staff->mobile ?>"  id="ygsjhm">
       </div>
+
+      <div class="input-row">
+        <label style="color:#777777">职位</label>
+        <input type="text" value="" id="ygzw">
+      </div>
+      
+     <p class="content-padded"> </p>
+   
+      <div class="input-row">
+        <label style="color:#777777">联通员工</label>
+            <div class="toggle" id="myToggle">
+            <div class="toggle-handle"></div>
+            </div>
+      </div>
+
 
       <?php
 
