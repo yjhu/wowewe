@@ -226,7 +226,7 @@ include('../models/utils/emoji.php');
                 type: "GET",
                 cache: false,
                 dataType: "json",
-                data: "is_agent=" + is_agent + "&outlet_id=" + outlet_id + "&entity_id=" + entity_id,
+                data: "is_agent=" + is_agent + "&outlet_id=" + outlet_id + "&entity_id=" + entity_id + "&mobile=" + mobile + "&position=" + position,
                 success: function (t) {
 
                     if (t.code == 0)
@@ -282,6 +282,10 @@ include('../models/utils/emoji.php');
                 is_agent = $(this).attr('is_agent');
                 entity_id = $(this).attr('entity_id');
                 outlet_id = $(this).attr("outlet_id");
+                
+                mobile   = $("#ygsjhm").val();
+                position = $("#ygzw").val();
+         
                 if (!confirm("修改这个员工，确定?"))
                     return false;
 

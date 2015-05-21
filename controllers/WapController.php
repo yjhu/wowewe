@@ -3779,13 +3779,23 @@ EOD;
 
     //员工修改
     public function actionYgglxiugaijax()
-    {       
-        $staff_id      = $_GET['staff_id'];
-
+    {    
+        $is_agent   = $_GET['is_agent'];
+        $entity_id  = $_GET['entity_id'];
+        $outlet_id  = $_GET['outlet_id'];
+        $mobile     = $_GET['mobile'];
+        $position   = $_GET['position'];
         
-
-
-        return json_encode(['code' => 0]);
+        $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
+        if ($is_agent) {
+            $ret = $outlet->alterAgent($entity_id, $mobile, $position);
+        } else {
+            $ret = $outlet->alterEmployee($entity_id, $mobile, $position);
+        }
+         if (false === $ret)
+            return json_encode(['code' => -1]);
+        else
+            return json_encode(['code' => 0]);
     }
 
 

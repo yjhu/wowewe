@@ -85,6 +85,38 @@ class ClientOutlet extends \yii\db\ActiveRecord
         return true;
     }
     
+    public function alterAgent($agent_id, $mobile, $position) {
+        \Yii::$app->db->createCommand()->update('client_agent_mobile', [
+            'mobile' => $mobile,
+        ], [
+            'agent_id' => $agent_id,
+        ])->execute();
+        \Yii::$app->db->createCommand()->update('client_agent_outlet', [
+            'position' => $position,
+        ], [
+            'agent_id'  => $agent_id,
+            'outlet_id' => $this->outlet_id,
+        ])->execute();
+        
+        return true;
+    }
+    
+    public function alterEmployee($employee_id, $mobile, $position) {
+        \Yii::$app->db->createCommand()->update('client_employee_mobile', [
+            'mobile' => $mobile,
+        ], [
+            'employee_id' => $employee_id,
+        ])->execute();
+        \Yii::$app->db->createCommand()->update('client_employee_outlet', [
+            'position' => $position,
+        ], [
+            'employee_id'  => $employee_id,
+            'outlet_id'    => $this->outlet_id,
+        ])->execute();
+        
+        return true;
+    }
+    
     public function deleteAgent($agent_id) {
         \Yii::$app->db->createCommand()->delete('client_agent_outlet', [
             'agent_id'  => $agent_id,
