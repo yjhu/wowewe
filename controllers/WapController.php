@@ -3778,7 +3778,7 @@ EOD;
     }
 
     //员工修改
-    public function actionYgglxiugaijax()
+    public function actionYgglxiugaiajax()
     {    
         $is_agent   = $_GET['is_agent'];
         $entity_id  = $_GET['entity_id'];
