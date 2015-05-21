@@ -3774,6 +3774,17 @@ EOD;
         return json_encode(['code' => 0]);
     }
 
+    //员工修改
+    public function actionYgglxiugaijax()
+    {       
+        $staff_id      = $_GET['staff_id'];
+
+        
+
+
+        return json_encode(['code' => 0]);
+    }
+
 
 
     //粉丝管理

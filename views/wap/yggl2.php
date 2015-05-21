@@ -101,7 +101,7 @@
         <label style="color:#777777">职位</label>
         <input type="text" value="" id="ygzw">
       </div>
-      
+
      <p class="content-padded"> </p>
    
       <div class="input-row">
@@ -216,6 +216,38 @@
     }
 
 
+    function ygglxiugaiajax(staff_id)
+    {
+        //alert('czhm'+czhm+'czje'+czje);
+        $.ajax({
+        url: "<?php echo Url::to(['wap/ygglxiugaiajax'], true) ; ?>",
+        type:"GET",
+        cache:false,
+        dataType:"json",
+        //data: "czhm="+czhm+"&czje="+czje+"&gh_id="+gh_id+"&openid="+openid,
+        data: "staff_id="+staff_id;
+        success: function(t){
+
+                if(t.code==0)
+                {
+                    var url = "<?php echo Url::to(['yggl2'],true) ?>";
+                    location.href = url+'&gh_id=<?= $user->gh_id ?>&openid=<?= $user->openid ?>&staff_id=<?= $staff->staff_id ?>';
+                    alert("edit ok");
+                }
+                else
+                {
+                  alert('error');
+                }
+
+          },
+          error: function(){
+            alert('error!');
+          }
+      });
+
+      return false;
+    }
+
 
     function back2pre()
     {
@@ -233,6 +265,22 @@
               return false;
 
             ygglshanchuajax();
+            return false;
+        }); 
+
+    })
+
+
+    $(document).ready(function(){
+
+        $('#btnEdit').click(function() {
+            //ajax 
+            //alert($('#searchStr').val());
+            staff_id = $(this).attr('staff_id');
+            if(!confirm("修改这个员工，确定?"))
+              return false;
+
+            ygglxiugaiajax(staff_id);
             return false;
         }); 
 
