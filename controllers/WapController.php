@@ -3868,26 +3868,6 @@ EOD;
 
 
 
-    public function actionClientemployeelist()
-    {
-        //$this->layout = 'wap';
-        $this->layout = false;    
-    //    $gh_id = U::getSessionParam('gh_id');
-    //    $openid = U::getSessionParam('openid');
-
-        return $this->render('client-employee-list');
-    }
-
-    public function actionClientemployee()
-    {
-        //$this->layout = 'wap';
-        $this->layout = false;    
-    //    $gh_id = U::getSessionParam('gh_id');
-    //    $openid = U::getSessionParam('openid');
-
-        return $this->render('client-employee');
-    }
-
 
     /*end of 会员中心 新版 powered by ratchet */
 

@@ -233,6 +233,27 @@ class WapxController extends Controller
         $lat = 0;
         return $this->render('officeposition', ['office' => $office, 'lon_begin'=>$lon, 'lat_begin'=>$lat, 'lon_end'=>$office->lon, 'lat_end'=>$office->lat]);        
     }
+
+
+    //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
+    public function actionClientemployeelist()
+    {
+        $this->layout = false;    
+
+        return $this->render('client-employee-list');
+    }
+
+    //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
+    public function actionClientemployee()
+    {
+        $this->layout = false;    
+
+
+        return $this->render('client-employee');
+    }
+
+
+
     
     //http://localhost/wosoprj/web/index.php?r=wapx/client-agent&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&agent_id=1
     public function actionClientAgent($gh_id, $openid, $agent_id, $backwards = true) {
