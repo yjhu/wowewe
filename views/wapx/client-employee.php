@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\U;
+$client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->client;
 ?>
 
 <?php
@@ -57,10 +58,26 @@ include('../models/utils/emoji.php');
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre();"></a>
       -->
             <h1 class="title">
-                <span class="badge badge-positive">员工</span>小强 (12345678900)
+                <span class="badge badge-positive">员工</span> <?= $entity->name ?> (<?= implode(',', $entity->mobiles) ?>)
             </h1>
 
         </header>
+
+        <?php
+          if (!empty($entity->wechat) && !empty($entity->wechat->headimgurl)) {
+              $wx_nickname = $entity->wechat->nickname;
+              $wx_mobile = $entity->wechat->getBindMobileNumbersStr();
+              $wx_country = $entity->wechat->country;
+              $wx_province = $entity->wechat->province;
+              $wx_city = $entity->wechat->city;
+          } else {
+              $wx_nickname = "";
+              $wx_mobile = "";
+              $wx_country = "";
+              $wx_province = "";
+              $wx_city = "";
+          }
+        ?>
 
 
         <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
@@ -73,15 +90,15 @@ include('../models/utils/emoji.php');
 
             <div class="input-row">
                 <label style="color:#777777">昵称</label>
-                <input type="text" value="阿强" readonly>
+                <input type="text" value="<?= $wx_nickname ?>" readonly>
             </div>
             <div class="input-row">
                 <label style="color:#777777">地区</label>
-                <input type="text" value="中国 湖北 武汉" readonly>
+                <input type="text" value="<?= $wx_country ?> <?= $wx_province ?> <?= $wx_city ?>" readonly>
             </div>
             <div class="input-row">
                 <label style="color:#777777">绑定手机</label>
-                <input type="text" value="12345678900" readonly>
+                <input type="text" value="<?= $wx_mobile ?>" readonly>
             </div>
 
 
@@ -90,36 +107,45 @@ include('../models/utils/emoji.php');
             <ul class="table-view">
                 <li class="table-view-cell table-view-divider">所属营业厅</li>
             
+                    <?php foreach ($entity->outlets as $outlet) { ?>
                     <li class="table-view-cell media">
                         <a data-ignore="push"  class="navigate-right" href="">
                             <span class="media-object pull-left icon icon-home"></span>
                             <div class="media-body">
-                                老河口营业厅
+                                <?= $outlet->title ?>
                                 <span class="badge badge-positive pull-right">
-                                   营业员
+                                  <?= $entity->getOutletPosition($outlet->outlet_id) ?>
                                 </span>
                             </div>
                         </a>
                     </li>
+                    <?php } ?>
             </ul>
 
-
-            <p class="content-padded">&nbsp;</p>
             <ul class="table-view">
                 <li class="table-view-cell table-view-divider">所属部门</li>
-            
+                    
+                    
+                    <?php 
+                        $organizations = $entity->organizations;
+                        foreach ($organizations as $organization) { 
+                    ?>
+
                     <li class="table-view-cell media">
                         <a data-ignore="push"  class="navigate-right" href="">
                             <span class="media-object pull-left"><img src="/wx/web/images/comm-icon/iconfont-bumenguanli.png"></span>
                             <div class="media-body">
-                                老河口营服中心
+                                <?= $organization->title ?>
                                 <span class="badge badge-positive pull-right">
-                                   职位
+                                <?= $entity->getOrganizationPosition($organization->organization_id) ?>
                                 </span>
                                 </span>
                             </div>
                         </a>
                     </li>
+                    <?php } ?>
+
+
             </ul>
 
 
@@ -152,15 +178,19 @@ include('../models/utils/emoji.php');
 
 
 
-
-
-  <nav class="bar bar-tab">
-    <a class="tab-item">
-      浏览者(我): 小明 12345678888 
-    </a>
-  
-  </nav> 
-
+    <div class="bar bar-standard bar-footer">
+        <div class="content" style="font-size: 10px;color:#ccc;">
+        <center>
+        <span><img style='width:18px;' src="<?= $wx_user->headimgurl ?>"/>&nbsp;&nbsp;</span>
+        <span><?= emoji_unified_to_html(emoji_softbank_to_unified($wx_user->nickname)) ?>&nbsp;</span>
+        <span><?= $wx_user->getBindMobileNumbersStr() ?></span>
+        <!--
+        <br>
+        <span><//?= $client->title_abbrev ?>&copy;<//?= date('Y') ?></span>
+        -->
+        </center>
+        </div>
+    </div>
 
     <script type="text/javascript">
 

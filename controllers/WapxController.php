@@ -248,20 +248,14 @@ class WapxController extends Controller
     {
         $this->layout = false;    
 
-        $is_agent = $_GET['is_agent']; 
         $outlet_id = $_GET['outlet_id'];
-        if ($is_agent) {
-            $agent_id = $_GET['entity_id'];
-            $entity = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
-        } else {
-            $employee_id = $_GET['entity_id'];
-            $entity = \app\models\ClientEmployee::findOne(['employee_id' => $employee_id]);
-        }
+
+        $employee_id = $_GET['entity_id'];
+        $entity = \app\models\ClientEmployee::findOne(['employee_id' => $employee_id]);
         $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
         
         return $this->render('client-employee', [
             'entity'=>$entity, 
-            'is_agent'=>$is_agent,
             'outlet' => $outlet,
         ]);
 
