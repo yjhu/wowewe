@@ -233,6 +233,42 @@ class WapxController extends Controller
         $lat = 0;
         return $this->render('officeposition', ['office' => $office, 'lon_begin'=>$lon, 'lat_begin'=>$lat, 'lon_end'=>$office->lon, 'lat_end'=>$office->lat]);        
     }
+
+
+    //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
+    public function actionClientemployeelist()
+    {
+        $this->layout = false;    
+
+        return $this->render('client-employee-list');
+    }
+
+    //http://localhost/wx/web/index.php?r=wapx/clientemployee&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&is_agent=0&outlet_id=777&entity_id=647
+    public function actionClientemployee()
+    {
+        $this->layout = false;    
+
+        $is_agent = $_GET['is_agent']; 
+        $outlet_id = $_GET['outlet_id'];
+        if ($is_agent) {
+            $agent_id = $_GET['entity_id'];
+            $entity = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
+        } else {
+            $employee_id = $_GET['entity_id'];
+            $entity = \app\models\ClientEmployee::findOne(['employee_id' => $employee_id]);
+        }
+        $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
+        
+        return $this->render('client-employee', [
+            'entity'=>$entity, 
+            'is_agent'=>$is_agent,
+            'outlet' => $outlet,
+        ]);
+
+    }
+
+
+
     
     //http://wosotech.com/wx/web/index.php?r=wapx/client-agent&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&agent_id=1470&backwards=0
     public function actionClientAgent($gh_id, $openid, $agent_id, $backwards = true) {
