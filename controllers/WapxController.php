@@ -265,7 +265,7 @@ class WapxController extends Controller
 
 
     
-    //http://localhost/wosoprj/web/index.php?r=wapx/client-agent&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&agent_id=1
+    //http://wosotech.com/wx/web/index.php?r=wapx/client-agent&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&agent_id=1470&backwards=0
     public function actionClientAgent($gh_id, $openid, $agent_id, $backwards = true) {
         $this->layout = false;
         $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
@@ -273,12 +273,12 @@ class WapxController extends Controller
         return $this->render('client-agent', ['wx_user' => $wx_user, 'agent' => $agent, 'backwards' => $backwards]);
     }
     
-    //http://localhost/wosoprj/web/index.php?r=wapx/client-agent&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&agent_id=1
-    public function actionClientOrganization($gh_id, $openid, $agent_id, $backwards = true) {
+    //http://wosotech.com/wx/web/index.php?r=wapx/client-organization&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&organization_id=1&backwards=0    
+    public function actionClientOrganization($gh_id, $openid, $organization_id, $backwards = true) {
         $this->layout = false;
         $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
-        $agent   = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
-        return $this->render('client-agent', ['wx_user' => $wx_user, 'agent' => $agent, 'backwards' => $backwards]);
+        $organization   = \app\models\ClientOrganization::findOne(['organization_id' => $organization_id]);
+        return $this->render('client-organization', ['wx_user' => $wx_user, 'organization' => $organization, 'backwards' => $backwards]);
     }
 
 }
