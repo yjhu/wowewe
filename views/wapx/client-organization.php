@@ -31,16 +31,12 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
         <div class="content">
             <?php
                 $direct_superior_organizations = $organization->getDirectSuperiorOrganizations();
-                if (false)
                 if (!empty($direct_superior_organizations)) {
             ?>
                 <ul class="table-view">
                     <li class="table-view-cell table-view-divider">部门所属</li>
                     <?php foreach($direct_superior_organizations as $direct_superior_organization) { ?>
-                    <li class="table-view-cell">
-                        <?php \app\models\U::W('------yjhu--------------'); ?>
-                        <?php \app\models\U::W($direct_superior_organization); ?>
-                        
+                    <li class="table-view-cell">                        
                         <?= !empty($direct_superior_organization) ? $direct_superior_organization->title : '' ?>
                     </li>
                     <?php } ?>
@@ -49,7 +45,6 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
                 } 
                 
                 $direct_subordinate_organizations = $organization->getDirectSubordinateOrganizations();
-                if (false)
                 if (!empty($direct_subordinate_organizations)) {
             ?>
                     <ul class="table-view">
@@ -73,6 +68,31 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
             <?php 
             
                 } 
+                
+                $outlets = $organization->outlets;
+                if (!empty($outlets)) {
+            ?>
+                    <ul class="table-view">
+                        <li class="table-view-cell table-view-divider">管理门店列表</li>
+                        <?php foreach ($outlets as $outlet) { ?> 
+                            <li class="table-view-cell media">
+                                <a class="navigate-right" href="<?= \yii\helpers\Url::to('wapx/client-outlet', [
+                                        'gh_id' => $wx_user->gh_id, 
+                                        'openid' => $wx_user->openid, 
+                                        'outlet_id' => $outlet->$outlet_id,
+                                        'backwards' => 1,
+                                    ]) ?>">
+                                    <span class="media-object pull-left icon icon-home"></span>
+                                    <div class="media-body">
+                                        <?= $outlet->title ?>
+                                    </div>
+                                </a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+            <?php 
+            
+                } 
             
                 $employees = $organization->employees;
                 if (!empty($employees)) {
@@ -87,14 +107,14 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
                                         'employee_id' => $employee->employee_id,
                                         'backwards' => 1,
                                     ]) ?>">
-                                    <?php if (!empty($employee->wechat)) { ?>
-                                    <span class="media-object pull-left"><img src="<?= $employee->wechat->headimageurl ?>"></span>
+                                    <?php if (!empty($employee->wechat) && !empty($employee->wechat->headimgurl)) { ?>
+                                    <span class="media-object pull-left"><img style="width:24px;" src="<?= $employee->wechat->headimgurl ?>"></span>
                                     <?php } else { ?>
                                     <span class="media-object pull-left icon icon-person"></span>
                                     <?php } ?>
                                     <div class="media-body">
                                         <?= $employee->name ?>&nbsp;<?= implode(",", $employee->mobiles) ?>
-                                        <span class="badge badge-positive"><?= $employee->getOrganizationPosition($organization->organization_id) ?></span>
+                                        <span class="badge badge-positive pull-right"><?= $employee->getOrganizationPosition($organization->organization_id) ?></span>
                                     </div>
                                 </a>
                             </li>
