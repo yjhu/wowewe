@@ -49,6 +49,9 @@ class AdminController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->get());
 
         if (isset($_GET['download'])) {
+            if ($dataProvider->getTotalCount() > 10000) {
+                //return 'abc';
+            }
             $dataProvider->setPagination(false);
             $data = $dataProvider->getModels();
             $date = date('Y-m-d-His');
