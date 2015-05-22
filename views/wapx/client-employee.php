@@ -184,10 +184,9 @@ include('../models/utils/emoji.php');
         <span><img style='width:18px;' src="<?= $wx_user->headimgurl ?>"/>&nbsp;&nbsp;</span>
         <span><?= emoji_unified_to_html(emoji_softbank_to_unified($wx_user->nickname)) ?>&nbsp;</span>
         <span><?= $wx_user->getBindMobileNumbersStr() ?></span>
-  
+
         <br>
         <span><?= $client->title_abbrev ?>&copy;<?= date('Y') ?></span>
-  
         </center>
         </div>
     </div>
