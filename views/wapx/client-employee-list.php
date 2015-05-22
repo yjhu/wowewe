@@ -1,9 +1,9 @@
 <?php
-  use yii\helpers\Html;
+    use yii\helpers\Html;
     use yii\helpers\Url;
     use app\models\U;
     use app\models\MStaff;
-    
+    $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->client;
 ?>
 
 <?php
@@ -64,92 +64,35 @@
     </header>
 
 
-
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
 
-
-
-
     <p class="content-padded">
-    所属营业厅 > 老河口营业厅
-    <span class="badge badge-positive pull-right">5人</span>
+    所属营业厅 > <?= $outlet->title ?>
+    <span class="badge badge-positive pull-right">  <?= ($outlet->employeeCount + $outlet->agentCount) ?>人</span>
     </p>
     <ul class="table-view" id="ul-content">
 
+        <?php 
+          foreach ($outlet->employees as $employee) { 
+        ?>
         <li class="table-view-cell media">
         <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['clientemployee']) ?>">
-        <img class="media-object pull-left" src="/wx/web/images/woke/0.jpg" width="64" height="64">
+        <img class="media-object pull-left" src="<?= (empty($employee->wechat) || empty($employee->wechat->headimgurl)) ? '../web/images/wxmpres/headimg-blank.png':$employee->wechat->headimgurl ?>" width="64" height="64">
         <div class="media-body">
           <!--粉丝昵称--> 
-          小强&nbsp;<span class="badge pull-right">营业员</span>
+          小强&nbsp;<span class="badge pull-right"><?= $employee->getOutletPosition($outlet->outlet_id) ?></span>
           <p>
-            手机号码 12345678900
+            手机号码 <?= implode(",", $employee->mobiles) ?>
             <br>
 
           </p>
         </div>
         </a>
         </li>
-            <li class="table-view-cell media">
-        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['clientemployee']) ?>">
-        <img class="media-object pull-left" src="/wx/web/images/woke/0.jpg" width="64" height="64">
-        <div class="media-body">
-          <!--粉丝昵称--> 
-          小强&nbsp;<span class="badge pull-right">营业员</span>
-          <p>
-            手机号码 12345678900
-            <br>
+        <?php } ?>
 
-          </p>
-        </div>
-        </a>
-        </li>
-
-        <li class="table-view-cell media">
-        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['clientemployee']) ?>">
-        <img class="media-object pull-left" src="/wx/web/images/woke/0.jpg" width="64" height="64">
-        <div class="media-body">
-          <!--粉丝昵称--> 
-          小强&nbsp;<span class="badge pull-right">营业员</span>
-          <p>
-            手机号码 12345678900
-            <br>
-
-          </p>
-        </div>
-        </a>
-        </li>        
-
-        <li class="table-view-cell media">
-        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['clientemployee']) ?>">
-        <img class="media-object pull-left" src="/wx/web/images/woke/0.jpg" width="64" height="64">
-        <div class="media-body">
-          <!--粉丝昵称--> 
-          小强&nbsp;<span class="badge pull-right">营业员</span>
-          <p>
-            手机号码 12345678900
-            <br>
-
-          </p>
-        </div>
-        </a>
-        </li>   
-
-                    <li class="table-view-cell media">
-        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['clientemployee']) ?>">
-        <img class="media-object pull-left" src="/wx/web/images/woke/0.jpg" width="64" height="64">
-        <div class="media-body">
-          <!--粉丝昵称--> 
-          小强&nbsp;<span class="badge pull-right">营业员</span>
-          <p>
-            手机号码 12345678900
-            <br>
-
-          </p>
-        </div>
-        </a>
-        </li>   
+ 
     </ul>
 
     &nbsp;
@@ -159,11 +102,18 @@
 
     </div><!-- end of content -->
 
-  <nav class="bar bar-tab">
-    <a class="tab-item" href="#">
-      浏览者(我): 小明 12345678888
-    </a>
-  </nav> 
+    <div class="bar bar-standard bar-footer">
+        <div class="content" style="font-size: 10px;color:#ccc;">
+        <center>
+        <span><img style='width:18px;' src="<?= $wx_user->headimgurl ?>"/>&nbsp;&nbsp;</span>
+        <span><?= emoji_unified_to_html(emoji_softbank_to_unified($wx_user->nickname)) ?>&nbsp;</span>
+        <span><?= $wx_user->getBindMobileNumbersStr() ?></span>
+
+        <br>
+        <span><?= $client->title_abbrev ?>&copy;<?= date('Y') ?></span>
+        </center>
+        </div>
+    </div>
 
   <script type="text/javascript">
   
