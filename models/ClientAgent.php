@@ -82,6 +82,17 @@ class ClientAgent extends \yii\db\ActiveRecord
             'agent_id'  => 'agent_id',
         ]);
     }
+    
+    public function getOutletPosition($outlet_id) {
+        $row = (new \yii\db\Query())->select('*')->from('client_agent_outlet')->where([
+                    'agent_id'  => $this->agent_id,
+                    'outlet_id' => $outlet_id,
+                ])->one();
+        if (false === $row)
+            return false;
+        else
+            return $row['position'];
+    }
             
     
     public static function addOutletAgent($agent_name, $agent_mobile, $agent_position, $outlet_id) {
