@@ -1,6 +1,7 @@
 <?php
 include('../models/utils/emoji.php');
 $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->client;
+\yii\helpers\Url::remember();
 ?>
 <!DOCTYPE html>
 <html>
@@ -22,9 +23,9 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
     <body>
         <header class="bar bar-nav">
             <?php if ($backwards) { ?>
-                <button class="btn btn-link btn-nav pull-left">
+            <a  data-ignore="push" class="btn btn-link btn-nav pull-left" href="<?= \yii\helpers\Url::previous() ?>">
                     <span class="icon icon-left-nav"></span>
-                </button>
+                </a>
             <?php } ?>
             <h1 class="title"><span class="badge badge-positive">部门</span>&nbsp;<?= $organization->title ?></hi>            
         </header>
@@ -44,6 +45,36 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
             <?php             
                 } 
                 
+                $employees = $organization->employees;
+                if (!empty($employees)) {
+            ?>
+                    <ul class="table-view">
+                        <li class="table-view-cell table-view-divider">所属员工列表</li>
+                        <?php foreach ($employees as $employee) { ?> 
+                            <li class="table-view-cell media">
+                                <a class="navigate-right" href="<?= \yii\helpers\Url::to([
+                                        'client-employee', 
+                                        'gh_id' => $wx_user->gh_id, 
+                                        'openid' => $wx_user->openid, 
+                                        'employee_id' => $employee->employee_id,
+                                        'backwards' => 1,
+                                    ]) ?>">
+                                    <?php if (!empty($employee->wechat) && !empty($employee->wechat->headimgurl)) { ?>
+                                    <span class="media-object pull-left"><img style="width:24px;" src="<?= $employee->wechat->headimgurl ?>"></span>
+                                    <?php } else { ?>
+                                    <span class="media-object pull-left icon icon-person"></span>
+                                    <?php } ?>
+                                    <div class="media-body">
+                                        <?= $employee->name ?>&nbsp;<?= implode(",", $employee->mobiles) ?>
+                                        <span class="badge badge-positive pull-right"><?= $employee->getOrganizationPosition($organization->organization_id) ?></span>
+                                    </div>
+                                </a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+            <?php             
+                } 
+                
                 $direct_subordinate_organizations = $organization->getDirectSubordinateOrganizations();
                 if (!empty($direct_subordinate_organizations)) {
             ?>
@@ -51,10 +82,11 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
                         <li class="table-view-cell table-view-divider">下属部门列表</li>
                         <?php foreach ($direct_subordinate_organizations as $direct_subordinate_organization) { ?> 
                             <li class="table-view-cell media">
-                                <a class="navigate-right" href="<?= \yii\helpers\Url::to('wapx/client-orgnization', [
+                                <a data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+                                        'client-organization', 
                                         'gh_id' => $wx_user->gh_id, 
                                         'openid' => $wx_user->openid, 
-                                        'organizatoin_id' => $direct_subordinate_organization->organization_id,
+                                        'organization_id' => $direct_subordinate_organization->organization_id,
                                         'backwards' => 1,
                                     ]) ?>">
                                     <span class="media-object pull-left icon icon-home"></span>
@@ -76,10 +108,11 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
                         <li class="table-view-cell table-view-divider">管理门店列表</li>
                         <?php foreach ($outlets as $outlet) { ?> 
                             <li class="table-view-cell media">
-                                <a class="navigate-right" href="<?= \yii\helpers\Url::to('wapx/client-outlet', [
+                                <a class="navigate-right" href="<?= \yii\helpers\Url::to([
+                                        'client-outlet', 
                                         'gh_id' => $wx_user->gh_id, 
                                         'openid' => $wx_user->openid, 
-                                        'outlet_id' => $outlet->$outlet_id,
+                                        'outlet_id' => $outlet->outlet_id,
                                         'backwards' => 1,
                                     ]) ?>">
                                     <span class="media-object pull-left icon icon-home"></span>
@@ -90,38 +123,11 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
                             </li>
                         <?php } ?>
                     </ul>
-            <?php 
-            
-                } 
-            
-                $employees = $organization->employees;
-                if (!empty($employees)) {
-            ?>
-                    <ul class="table-view">
-                        <li class="table-view-cell table-view-divider">所属员工列表</li>
-                        <?php foreach ($employees as $employee) { ?> 
-                            <li class="table-view-cell media">
-                                <a class="navigate-right" href="<?= \yii\helpers\Url::to('wapx/client-employee', [
-                                        'gh_id' => $wx_user->gh_id, 
-                                        'openid' => $wx_user->openid, 
-                                        'employee_id' => $employee->employee_id,
-                                        'backwards' => 1,
-                                    ]) ?>">
-                                    <?php if (!empty($employee->wechat) && !empty($employee->wechat->headimgurl)) { ?>
-                                    <span class="media-object pull-left"><img style="width:24px;" src="<?= $employee->wechat->headimgurl ?>"></span>
-                                    <?php } else { ?>
-                                    <span class="media-object pull-left icon icon-person"></span>
-                                    <?php } ?>
-                                    <div class="media-body">
-                                        <?= $employee->name ?>&nbsp;<?= implode(",", $employee->mobiles) ?>
-                                        <span class="badge badge-positive pull-right"><?= $employee->getOrganizationPosition($organization->organization_id) ?></span>
-                                    </div>
-                                </a>
-                            </li>
-                        <?php } ?>
-                    </ul>
             <?php } ?>
+            
+            <div>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br></div>
         </div>
+        
         <div class="bar bar-standard bar-footer">
             <div class="content" style="font-size: 10px;color:#ccc;">
                 <center>
