@@ -243,13 +243,28 @@ class WapxController extends Controller
         return $this->render('client-employee-list');
     }
 
-    //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
+    //http://localhost/wx/web/index.php?r=wapx/clientemployee&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&is_agent=0&outlet_id=777&entity_id=647
     public function actionClientemployee()
     {
         $this->layout = false;    
 
+        $is_agent = $_GET['is_agent']; 
+        $outlet_id = $_GET['outlet_id'];
+        if ($is_agent) {
+            $agent_id = $_GET['entity_id'];
+            $entity = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
+        } else {
+            $employee_id = $_GET['entity_id'];
+            $entity = \app\models\ClientEmployee::findOne(['employee_id' => $employee_id]);
+        }
+        $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
+        
+        return $this->render('client-employee', [
+            'entity'=>$entity, 
+            'is_agent'=>$is_agent,
+            'outlet' => $outlet,
+        ]);
 
-        return $this->render('client-employee');
     }
 
 

@@ -49,63 +49,24 @@ include('../models/utils/emoji.php');
 
         <!-- Make sure all your bars are the first things in your <body> -->
 
+
+
         <header class="bar bar-nav">
 
       <!--
       <a class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre();"></a>
       -->
-
             <h1 class="title">
-                员工管理
+                <span class="badge badge-positive">员工</span>小强 (12345678900)
             </h1>
 
         </header>
 
+
         <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
         <div class="content">
 
-        <br>
         <div class="input-group">
-
-            <div class="input-row">
-                <label style="color:#777777">姓名</label>
-                <input type="text" value="小强" > <img src="../web/images/woke/qr.png" width=24px>
-            </div>
-
-
-            <div class="input-row">
-                <label style="color:#777777">手机号码</label>
-                <input type="text" value="12345678900">
-            </div>
-
-
-            <p class="content-padded">&nbsp;</p>
-            <p class="content-padded">所属营业厅</p>
-
-            <div class="input-row">
-                <label style="color:#777777">营业厅</label>
-                <a href="#">老河口营业厅</a>
-            </div>
-
-            <div class="input-row">
-                <label style="color:#777777">职位</label>
-                <input type="text" value="营业员" readonly>
-            </div>
-            
-
-            <p class="content-padded">&nbsp;</p>
-            <p class="content-padded">所属部门</p>
-
-            <div class="input-row">
-                <label style="color:#777777">部门信息</label>
-                <a href="#">老河口营服中心</a>
-            </div>
-
-            <div class="input-row">
-                <label style="color:#777777">职位</label>
-                <input type="text" value="" readonly>
-            </div>
-
 
             <p class="content-padded">&nbsp;</p>
             <p class="content-padded">微信信息 </p>
@@ -123,9 +84,49 @@ include('../models/utils/emoji.php');
                 <input type="text" value="12345678900" readonly>
             </div>
 
+
+            <p class="content-padded">&nbsp;</p>
+    
+            <ul class="table-view">
+                <li class="table-view-cell table-view-divider">所属营业厅</li>
+            
+                    <li class="table-view-cell media">
+                        <a data-ignore="push"  class="navigate-right" href="">
+                            <span class="media-object pull-left icon icon-home"></span>
+                            <div class="media-body">
+                                老河口营业厅
+                                <span class="badge badge-positive pull-right">
+                                   营业员
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+            </ul>
+
+
+            <p class="content-padded">&nbsp;</p>
+            <ul class="table-view">
+                <li class="table-view-cell table-view-divider">所属部门</li>
+            
+                    <li class="table-view-cell media">
+                        <a data-ignore="push"  class="navigate-right" href="">
+                            <span class="media-object pull-left"><img src="/wx/web/images/comm-icon/iconfont-bumenguanli.png"></span>
+                            <div class="media-body">
+                                老河口营服中心
+                                <span class="badge badge-positive pull-right">
+                                   职位
+                                </span>
+                                </span>
+                            </div>
+                        </a>
+                    </li>
+            </ul>
+
+
             <br>
 
         </div>
+
 
     </div><!-- end of content -->
 
@@ -149,10 +150,15 @@ include('../models/utils/emoji.php');
         </div>
     </div>
 
+
+
+
+
   <nav class="bar bar-tab">
-    <a class="tab-item" href="#">
-      浏览者(我): 小明 12345678888
+    <a class="tab-item">
+      浏览者(我): 小明 12345678888 
     </a>
+  
   </nav> 
 
 
