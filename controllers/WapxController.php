@@ -271,16 +271,30 @@ class WapxController extends Controller
 
     
     //http://wosotech.com/wx/web/index.php?r=wapx/client-agent&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&agent_id=1470&backwards=0
-    public function actionClientAgent($gh_id, $openid, $agent_id, $backwards = true) {
+    public function actionClientAgent($gh_id, $openid, $agent_id, $backwards = true, $pop = false) {
         $this->layout = false;
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);            
+        }
+        \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        }            
         $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
         $agent   = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
         return $this->render('client-agent', ['wx_user' => $wx_user, 'agent' => $agent, 'backwards' => $backwards]);
     }
     
     //http://wosotech.com/wx/web/index.php?r=wapx/client-organization&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&organization_id=1&backwards=0    
-    public function actionClientOrganization($gh_id, $openid, $organization_id, $backwards = true) {
+    public function actionClientOrganization($gh_id, $openid, $organization_id, $backwards = true, $pop = false) {
         $this->layout = false;
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);            
+        }
+        \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        }
         $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
         $organization   = \app\models\ClientOrganization::findOne(['organization_id' => $organization_id]);
         return $this->render('client-organization', ['wx_user' => $wx_user, 'organization' => $organization, 'backwards' => $backwards]);

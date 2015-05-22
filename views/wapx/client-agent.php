@@ -22,9 +22,9 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
     <body>
         <header class="bar bar-nav">
             <?php if ($backwards) { ?>
-                <button class="btn btn-link btn-nav pull-left">
+                <a  data-ignore="push" class="btn btn-link btn-nav pull-left" href="<?= \app\models\utils\BrowserHistory::previous() ?>">
                     <span class="icon icon-left-nav"></span>
-                </button>
+                </a>
             <?php } ?>
             <h1 class="title"><span class="badge badge-positive">代理商</span>&nbsp;<?= $agent->name ?>(<?= implode(",", $agent->mobiles) ?>)</hi>            
         </header>
