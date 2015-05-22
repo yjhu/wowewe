@@ -59,4 +59,87 @@ class ClientOutlet extends \yii\db\ActiveRecord
             'latitude' => 'Latitude',
         ];
     }
+    
+    public function getEmployees() {
+        return $this->hasMany(\app\models\ClientEmployee::className(), [
+            'employee_id' => 'employee_id',
+        ])->viaTable('client_employee_outlet', [
+            'outlet_id' => 'outlet_id',
+        ]);
+    }
+    
+    public function getEmployeeCount() {
+        return (new \yii\db\Query())->select('*')->from('client_employee_outlet')->where([
+            'outlet_id' => $this->outlet_id,
+        ])->count();
+    }
+    public function deleteEmployee($employee_id) {
+        \Yii::$app->db->createCommand()->delete('client_employee_outlet', [
+            'employee_id'  => $employee_id,
+            'outlet_id'    => $this->outlet_id,
+        ])->execute();
+        $employee = \app\models\ClientEmployee::findOne(['employee_id' => $employee_id]);
+        if (empty($employee->outlets) && empty($employee->organizations)) {
+            return $employee->delete();
+        }
+        return true;
+    }
+    
+    public function alterAgent($agent_id, $mobile, $position) {
+        \Yii::$app->db->createCommand()->update('client_agent_mobile', [
+            'mobile' => $mobile,
+        ], [
+            'agent_id' => $agent_id,
+        ])->execute();
+        \Yii::$app->db->createCommand()->update('client_agent_outlet', [
+            'position' => $position,
+        ], [
+            'agent_id'  => $agent_id,
+            'outlet_id' => $this->outlet_id,
+        ])->execute();
+        
+        return true;
+    }
+    
+    public function alterEmployee($employee_id, $mobile, $position) {
+        \Yii::$app->db->createCommand()->update('client_employee_mobile', [
+            'mobile' => $mobile,
+        ], [
+            'employee_id' => $employee_id,
+        ])->execute();
+        \Yii::$app->db->createCommand()->update('client_employee_outlet', [
+            'position' => $position,
+        ], [
+            'employee_id'  => $employee_id,
+            'outlet_id'    => $this->outlet_id,
+        ])->execute();
+        
+        return true;
+    }
+    
+    public function deleteAgent($agent_id) {
+        \Yii::$app->db->createCommand()->delete('client_agent_outlet', [
+            'agent_id'  => $agent_id,
+            'outlet_id' => $this->outlet_id,
+        ])->execute();
+        $agent = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
+        if (empty($agent->outlets)) {
+            return $agent->delete();
+        }
+        return true;
+    }
+    
+    public function getAgents() {
+        return $this->hasMany(\app\models\ClientAgent::className(), [
+            'agent_id' => 'agent_id',
+        ])->viaTable('client_agent_outlet', [
+            'outlet_id' => 'outlet_id',
+        ]);
+    }
+    
+    public function getAgentCount() {
+        return (new \yii\db\Query())->select('*')->from('client_agent_outlet')->where([
+            'outlet_id' => $this->outlet_id,
+        ])->count();
+    }
 }

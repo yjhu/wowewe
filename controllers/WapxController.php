@@ -28,23 +28,23 @@ class WapxController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'only' => ['logout'],
+//                'rules' => [
+//                    [
+//                        'actions' => ['logout'],
+//                        'allow' => true,
+//                        'roles' => ['@'],
+//                    ],
+//                ],
+//            ],
+//            'verbs' => [
+//                'class' => VerbFilter::className(),
+//                'actions' => [
+//                    'logout' => ['post'],
+//                ],
+//            ],
         ];
     }
 
@@ -234,31 +234,50 @@ class WapxController extends Controller
         return $this->render('officeposition', ['office' => $office, 'lon_begin'=>$lon, 'lat_begin'=>$lat, 'lon_end'=>$office->lon, 'lat_end'=>$office->lat]);        
     }
 
-}
 
+    //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
+    public function actionClientemployeelist()
+    {
+        $this->layout = false;    
 
+        return $this->render('client-employee-list');
+    }
 
+    //http://localhost/wx/web/index.php?r=wapx/clientemployee&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&is_agent=0&outlet_id=777&entity_id=647
+    public function actionClientemployee()
+    {
+        $this->layout = false;    
 
-/*
-    http://127.0.0.1/wx/web/index.php?r=wapx/staffhome&gh_id=gh_1ad98f5481f3&openid=1
+        $outlet_id = $_GET['outlet_id'];
 
-        if (empty($model->office_id) || empty($model->mobile) || empty($model->name))
-        {
-            $ar = MStaff::findOne(['mobile'=>$mobile]);
-            if ($ar !== null)
-            {
-                $model->office_id = $ar->office_id;
-                $model->name = $ar->name;
-                $model->mobile = $mobile;            
-            }        
-        }
-        //if ($model->load(Yii::$app->request->get()))         
+        $employee_id = $_GET['entity_id'];
+        $entity = \app\models\ClientEmployee::findOne(['employee_id' => $employee_id]);
+        $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
         
-                $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-                if ($user !== null)
-                {
-                    $user->is_liantongstaff = 1;
-                    $user->save(false);
-                }
-                */
+        return $this->render('client-employee', [
+            'entity'=>$entity, 
+            'outlet' => $outlet,
+        ]);
 
+    }
+
+
+
+    
+    //http://localhost/wosoprj/web/index.php?r=wapx/client-agent&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&agent_id=1
+    public function actionClientAgent($gh_id, $openid, $agent_id, $backwards = true) {
+        $this->layout = false;
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        $agent   = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
+        return $this->render('client-agent', ['wx_user' => $wx_user, 'agent' => $agent, 'backwards' => $backwards]);
+    }
+    
+    //http://localhost/wosoprj/web/index.php?r=wapx/client-agent&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&agent_id=1
+    public function actionClientOrganization($gh_id, $openid, $agent_id, $backwards = true) {
+        $this->layout = false;
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        $agent   = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
+        return $this->render('client-agent', ['wx_user' => $wx_user, 'agent' => $agent, 'backwards' => $backwards]);
+    }
+
+}

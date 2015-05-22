@@ -42,6 +42,11 @@ class AdminController extends Controller
     {
         return parent::beforeAction($action);
     }
+    public function init()
+    {
+        //U::W(['init....', $_GET,$_POST, $GLOBALS]);
+        U::W(['init....', $_GET,$_POST, Yii::$app->request->getUrl()]);
+    }
 
     public function actionIndex()
     {

@@ -62,6 +62,9 @@
 
     </header>
 
+    <?php 
+        $outlet = \app\models\ClientOutlet::findOne([ 'outlet_id' => $outlet_id ]);
+    ?>
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
@@ -72,10 +75,10 @@
         <td width=100%>
           <button class="btn btn-positive btn-block">
     
-              <?= $office->title ?>员工总数
+              <?= $outlet->title ?>员工总数
               <br>
               <span style="font-size:48px;font-weight:bolder;vertical-align: middle;">
-              <?= count($office->staffs) ?>
+              <?= ($outlet->employeeCount + $outlet->agentCount) ?>
               </span>
                <br>
               <a class="btn icon icon-plus" style="border-radius:200px;font-size:20px;background-color:#4d9b4d;border-color:#4d9b4d;color:#fff" href="#xzyg">
@@ -95,25 +98,53 @@
     <ul class="table-view" id="ul-content">
 
         <?php 
-            foreach ($office->staffs as $staff) 
-            { 
-              if($staff->cat == MStaff::SCENE_CAT_OFFICE) continue;
+            foreach ($outlet->employees as $employee) 
+            {             
         ?>
 
         <li class="table-view-cell media">
-        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl2','staff_id'=>$staff->staff_id]) ?>">
-        <img class="media-object pull-left" src="<?= empty($staff->user->headimgurl)?'../web/images/wxmpres/headimg-blank.png':$staff->user->headimgurl ?>" width="64" height="64">
+        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl2','outlet_id' => $outlet_id,'entity_id'=>$employee->employee_id, 'is_agent'=> false]) ?>">
+        <img class="media-object pull-left" src="<?= (empty($employee->wechat) || empty($employee->wechat->headimgurl)) ? '../web/images/wxmpres/headimg-blank.png':$employee->wechat->headimgurl ?>" width="64" height="64">
         <div class="media-body">
           <!--粉丝昵称--> 
-          <?= $staff->name ?>
+          <?= $employee->name ?>&nbsp;<span class="badge pull-right"><?= $employee->getOutletPosition($outlet->outlet_id) ?></span>
           <p>
-            手机号码 <?= $staff->mobile ?>
+            手机号码 <?= implode(",", $employee->mobiles) ?>
             <br>
             <!--
             2015-05-20
             <br>
             -->
-            <!-- <span style="color:red">已取消关注</span> -->
+            <?php if (!empty($employee->wechat) && $employee->wechat->subscribe != 1 ) { ?>
+            <span style="color:red">已取消关注</span><br/>
+            <?php } ?>
+          </p>
+        </div>
+        </a>
+        </li>
+        <?php } ?>
+        
+        <?php 
+            foreach ($outlet->agents as $agent) 
+            {             
+        ?>
+
+        <li class="table-view-cell media">
+        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl2','outlet_id'=>$outlet_id,'entity_id'=>$agent->agent_id, 'is_agent' => true]) ?>">
+        <img class="media-object pull-left" src="<?= (empty($agent->wechat) || empty($agent->wechat->headimgurl)) ? '../web/images/wxmpres/headimg-blank.png':$agent->wechat->headimgurl ?>" width="64" height="64">
+        <div class="media-body">
+          <!--粉丝昵称--> 
+          <?= $agent->name ?>
+          <p>
+            手机号码 <?= implode(",", $agent->mobiles) ?>
+            <br>
+            <!--
+            2015-05-20
+            <br>
+            -->
+            <?php if (!empty($agent->wechat) && $agent->wechat->subscribe != 1 ) { ?>
+            <span style="color:red">已取消关注</span><br/>
+            <?php } ?>
           </p>
         </div>
         </a>
@@ -122,6 +153,11 @@
       
 
     </ul>
+
+    &nbsp;
+    <br>
+    &nbsp;
+    <br>
 
     </div><!-- end of content -->
 
@@ -146,14 +182,19 @@
                 </div>
 
                 <div class="input-row">
-                  <label style="color:#777777">手机号码</label>
+                  <label style="color:#777777">手机</label>
                    <input type="text"  id="ygsjhm">
                 </div>
               
+                <div class="input-row">
+                  <label style="color:#777777">职位</label>
+                  <input type="text" id="ygzw">
+                </div>
+
                <p class="content-padded"> </p>
              
                 <div class="input-row">
-                  <label style="color:#777777">内部员工</label>
+                  <label style="color:#777777">联通员工</label>
                       <div class="toggle" id="myToggle">
                       <div class="toggle-handle"></div>
                       </div>
@@ -176,7 +217,7 @@
   //alert($("#ul-content").html());
   var count = 0;
   var yuangongFlag = 0;
-  var office_id = "<?= $office->office_id ?>";
+  var office_id = "<?= $outlet->outlet_id ?>";
 
 function load_data2(i, n)
 {
@@ -233,21 +274,21 @@ function load_data2(i, n)
   }
 
 
-  function zjygajax(ygxm,ygsjhm,yuangongFlag,office_id)
+  function zjygajax(ygxm,ygsjhm,ygzw,yuangongFlag,office_id)
   {
         $.ajax({
         url: "<?php echo Url::to(['wap/zjygajax'], true) ; ?>",
         type:"GET",
         cache:false,
         dataType:"json",
-        data: "ygxm="+ygxm+"&ygsjhm"+ygsjhm+"&office_id"+office_id+"&yuangongFlag"+yuangongFlag,
+        data: "ygxm="+ygxm+"&ygsjhm="+ygsjhm+"&ygzw="+ygzw+"&office_id="+office_id+"&yuangongFlag="+yuangongFlag,
         success: function(t){
 
                 if(t.code==0)
                 {
                     alert("员工已经成功加入。");
                     var url = "<?php echo Url::to(['yggl1'],true) ?>";
-                    location.href = url+'&staff_id=<?= $staff->staff_id ?>';
+                    location.href = url+'&staff_id=<?= $employee->employee_id ?>';
                 }
                 else
                 {
@@ -313,7 +354,8 @@ function load_data2(i, n)
           //alert("增加员工");
           var ygxm = $("#ygxm").val();
           var ygsjhm = $("#ygsjhm").val();
-
+          var ygzw = $("#ygzw").val();
+           
           if((ygxm == ""))
           {
             alert("员工姓名不能为空，\n请重新填写。");
@@ -327,12 +369,12 @@ function load_data2(i, n)
             return  false;
           }
 
-          alert("员工："+ ygxm + "手机："+ygsjhm + "联通员工" + (yuangongFlag==1)?"是":"否");
+          //alert("员工："+ ygxm + "手机："+ygsjhm + "联通员工 :" + yuangongFlag);
 
-          //if(!confirm("现在就申请充话费，确定?"))
+          //if(!confirm("现在就增加员工，确定?"))
           //  return false;
 
-          zjygajax(ygxm,ygsjhm,yuangongFlag,office_id);
+          zjygajax(ygxm,ygsjhm,ygzw,yuangongFlag,office_id);
           return false;
       });
 
