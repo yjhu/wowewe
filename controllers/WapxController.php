@@ -243,7 +243,7 @@ class WapxController extends Controller
 
         $outlet_id = $_GET['outlet_id'];
         $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
-        return $this->render('client-employee-list', ['wx_user' => $wx_user,'outlet' => $outlet]);
+        return $this->render('client-employee-list', ['wx_user' => $wx_user, 'gh_id' => $gh_id, 'openid' => $openid, 'outlet' => $outlet]);
     }
 
     //http://localhost/wx/web/index.php?r=wapx/clientemployee&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&outlet_id=777&entity_id=647
