@@ -22,11 +22,11 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
     <body>
         <header class="bar bar-nav">
             <?php if ($backwards) { ?>
-                <a  data-ignore="push" class="btn btn-link btn-nav pull-left" href="<?= \app\models\utils\BrowserHistory::previous() ?>">
+                <a  data-ignore="push" class="btn btn-link btn-nav pull-left" href="<?= \app\models\utils\BrowserHistory::previous($wx_user->gh_id, $wx_user->openid) ?>">
                     <span class="icon icon-left-nav"></span>
                 </a>
             <?php } ?>
-            <h1 class="title"><span class="badge badge-positive">代理商</span>&nbsp;<?= $agent->name ?>(<?= implode(",", $agent->mobiles) ?>)</hi>            
+            <h1 class="title"><span class="badge badge-positive">代理商</span>&nbsp;<?= $agent->name ?><?= !empty($agent->mobiles) ? $agent->mobiles[0]: '' ?></hi>            
         </header>
         <div class="content">
             <ul class="table-view">
@@ -46,7 +46,13 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
                 <li class="table-view-cell table-view-divider">门店列表</li>
                 <?php foreach ($agent->outlets as $outlet) { ?> 
                     <li class="table-view-cell media">
-                        <a class="navigate-right">
+                        <a data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+                            'client-outlet',
+                            'gh_id'     => $wx_user->gh_id,
+                            'openid'    => $wx_user->openid,
+                            'outlet_id' => $outlet->outlet_id,
+                            'backwards' => true,
+                        ]) ?>">
                             <span class="media-object pull-left icon icon-home"></span>
                             <div class="media-body">
                                 <?= $outlet->title ?>
