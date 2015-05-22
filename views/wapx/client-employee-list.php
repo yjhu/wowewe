@@ -69,7 +69,7 @@
 
     <p class="content-padded">
     所属营业厅 > <?= $outlet->title ?>
-    <span class="badge badge-positive pull-right">  <?= ($outlet->employeeCount + $outlet->agentCount) ?>人</span>
+    <span class="badge badge-primary pull-right">  <?= ($outlet->employeeCount + $outlet->agentCount) ?>人</span>
     </p>
     <ul class="table-view" id="ul-content">
 
@@ -82,7 +82,7 @@
         <div class="media-body">
           <!--粉丝昵称--> 
           <?= $employee->name ?>
-          &nbsp;<span class="badge pull-right"><?= $employee->getOutletPosition($outlet->outlet_id) ?></span>
+          &nbsp;<span class="badge badge-positive pull-right"><?= $employee->getOutletPosition($outlet->outlet_id) ?></span>
           <p>
             手机号码 <?= implode(",", $employee->mobiles) ?>
             <br>
