@@ -31,15 +31,22 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
         <div class="content">
             <ul class="table-view">
                 <li class="table-view-cell table-view-divider">微信信息</li>
-                <li class="table-view-cell">
+                
                     <?php if (!empty($agent->wechat)) { ?>
-                    <span class="pull-left"><img style='width:18px;' src="<?= $agent->wechat->headimgurl ?>"/>&nbsp;&nbsp;</span>
-                    <span><?= emoji_unified_to_html(emoji_softbank_to_unified($agent->wechat->nickname)) ?>&nbsp;</span>
-                    <span class="pull-right"><?= $agent->wechat->getBindMobileNumbersStr() ?></span>
+                    <li class="table-view-cell media">
+                            <img class="media-object pull-left" style="width:120px;" src="<?= $agent->wechat->headimgurl ?>"/>
+                            <div class="media-body">
+                            <?= emoji_unified_to_html(emoji_softbank_to_unified($agent->wechat->nickname)) ?>
+                            <p><?= $agent->wechat->country ?> <?= $agent->wechat->province ?> <?= $agent->wechat->city ?></p>
+                            <p><?= $agent->wechat->getBindMobileNumbersStr() ?></p>
+                            </div>
+                    </li>  
                     <?php } else { ?>
+                    <li class="table-view-cell">
                     <span>未关注或未绑定手机</span>
+                    </li>
                     <?php } ?>
-                </li>
+                
             </ul>
 
             <ul class="table-view">
