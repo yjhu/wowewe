@@ -247,7 +247,7 @@ class WapxController extends Controller
     public function actionClientemployee()
     {
         $this->layout = false;    
-
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
         $outlet_id = $_GET['outlet_id'];
 
         $employee_id = $_GET['entity_id'];
@@ -255,6 +255,7 @@ class WapxController extends Controller
         $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
         
         return $this->render('client-employee', [
+            'wx_user' => $wx_user,
             'entity'=>$entity, 
             'outlet' => $outlet,
         ]);
