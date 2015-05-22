@@ -73,8 +73,9 @@
     </p>
     <ul class="table-view" id="ul-content">
 
-        <?php foreach ($outlet->employees as $employee) 
-        } ?>
+        <?php 
+          foreach ($outlet->employees as $employee) { 
+        ?>
         <li class="table-view-cell media">
         <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['clientemployee']) ?>">
         <img class="media-object pull-left" src="<?= (empty($employee->wechat) || empty($employee->wechat->headimgurl)) ? '../web/images/wxmpres/headimg-blank.png':$employee->wechat->headimgurl ?>" width="64" height="64">

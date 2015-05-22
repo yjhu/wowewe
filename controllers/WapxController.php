@@ -236,14 +236,14 @@ class WapxController extends Controller
 
 
     //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&outlet_id=777
-    public function actionClientemployeelist($gh_id, $openid,)
+    public function actionClientemployeelist($gh_id, $openid,$outlet_id)
     {
         $this->layout = false;    
         $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
 
         $outlet_id = $_GET['outlet_id'];
-
-        return $this->render('client-employee-list', ['outlet_id' => $outlet_id]);
+        $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
+        return $this->render('client-employee-list', ['wx_user' => $wx_user,'outlet' => $outlet]);
     }
 
     //http://localhost/wx/web/index.php?r=wapx/clientemployee&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&outlet_id=777&entity_id=647
@@ -264,6 +264,8 @@ class WapxController extends Controller
         ]);
 
     }
+
+
 
 
 
