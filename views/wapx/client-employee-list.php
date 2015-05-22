@@ -69,7 +69,7 @@
 
     <p class="content-padded">
     所属营业厅 > <?= $outlet->title ?>
-    <span class="badge badge-positive pull-right">  <?= ($outlet->employeeCount + $outlet->agentCount) ?>人</span>
+    <span class="badge badge-primary pull-right">  <?= ($outlet->employeeCount + $outlet->agentCount) ?>人</span>
     </p>
     <ul class="table-view" id="ul-content">
 
@@ -77,11 +77,12 @@
           foreach ($outlet->employees as $employee) { 
         ?>
         <li class="table-view-cell media">
-        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['clientemployee']) ?>">
+        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['clientemployee', 'gh_id'=>$gh_id, 'openid'=>$openid, 'outlet_id'=>$outlet->outlet_id, 'entity_id'=>$employee->employee_id ]) ?>">
         <img class="media-object pull-left" src="<?= (empty($employee->wechat) || empty($employee->wechat->headimgurl)) ? '../web/images/wxmpres/headimg-blank.png':$employee->wechat->headimgurl ?>" width="64" height="64">
         <div class="media-body">
           <!--粉丝昵称--> 
-          小强&nbsp;<span class="badge pull-right"><?= $employee->getOutletPosition($outlet->outlet_id) ?></span>
+          <?= $employee->name ?>
+          &nbsp;<span class="badge badge-positive pull-right"><?= $employee->getOutletPosition($outlet->outlet_id) ?></span>
           <p>
             手机号码 <?= implode(",", $employee->mobiles) ?>
             <br>
