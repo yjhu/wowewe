@@ -101,6 +101,29 @@ class ClientEmployee extends \yii\db\ActiveRecord {
         else
             return $row['position'];
     }
+    
+    public function getClient()
+    {
+        return \app\models\WosoClient::findOne(['client_id' => $this->client_id]);
+    }
+    
+    public function getPromoter()
+    {
+        $promoter = \app\models\MStaff::find()->where([
+            'name'  => $this->name,
+        ])->andWhere([
+            'in', 'mobile', $this->mobiles
+        ])->one();
+        if (empty($promoter)) {
+            $promoter = new \app\models\MStaff();
+            $promoter->name = $this->name;
+            $promoter->mobile = !empty($this->mobiles) ? $this->mobiles[0] : '';
+            $promoter->gh_id = $this->client->wechats[0]->gh_id;
+            $promoter->cat   = \app\models\MStaff::SCENE_CAT_IN;
+            $promoter->save(false);
+        }
+        return $promoter;
+    }
 
     public static function findOneByWechatOpenid($gh_id, $openid) {
         $client_wechat = \app\models\ClientWechat::findOne([
@@ -129,6 +152,8 @@ class ClientEmployee extends \yii\db\ActiveRecord {
             'wx_user.gh_id = wx_openid_bind_mobile.gh_id and wx_user.openid = wx_openid_bind_mobile.openid'
         )->where([
             'in', 'wx_openid_bind_mobile.mobile', $this->mobiles
+        ])->andWhere([
+            'subscribe' => 1,
         ])->one();
     }
 

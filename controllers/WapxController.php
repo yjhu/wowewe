@@ -235,49 +235,99 @@ class WapxController extends Controller
     }
 
 
-    //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
-    public function actionClientemployeelist()
+    //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&outlet_id=777
+    public function actionClientemployeelist($gh_id, $openid,$outlet_id)
     {
         $this->layout = false;    
-
-        return $this->render('client-employee-list');
-    }
-
-    //http://localhost/wx/web/index.php?r=wapx/clientemployee&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&is_agent=0&outlet_id=777&entity_id=647
-    public function actionClientemployee()
-    {
-        $this->layout = false;    
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
 
         $outlet_id = $_GET['outlet_id'];
-
-        $employee_id = $_GET['entity_id'];
-        $entity = \app\models\ClientEmployee::findOne(['employee_id' => $employee_id]);
         $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
+        return $this->render('client-employee-list', ['wx_user' => $wx_user, 'gh_id' => $gh_id, 'openid' => $openid, 'outlet' => $outlet]);
+    }
+
+    //http://localhost/wx/web/index.php?r=wapx/client-employee&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&employee_id=647
+    public function actionClientEmployee($gh_id, $openid, $employee_id, $backwards = true, $pop = false)
+    {
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        }
+                  
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        $employee = \app\models\ClientEmployee::findOne(['employee_id' => $employee_id]);
         
+        $this->layout = false;  
         return $this->render('client-employee', [
-            'entity'=>$entity, 
-            'outlet' => $outlet,
+            'wx_user' => $wx_user,
+            'employee'=> $employee, 
+            'backwards' => $backwards,
         ]);
 
     }
-
-
-
     
-    //http://localhost/wosoprj/web/index.php?r=wapx/client-agent&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&agent_id=1
-    public function actionClientAgent($gh_id, $openid, $agent_id, $backwards = true) {
-        $this->layout = false;
+    //http://localhost/wx/web/index.php?r=wapx/client-outlet&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&outlet_id=777
+    public function actionClientOutlet($gh_id, $openid, $outlet_id, $backwards = true, $pop = false)
+    {
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        }
+                  
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
+        
+        $this->layout = false;  
+        return $this->render('client-outlet', [
+            'wx_user' => $wx_user,
+            'outlet'=> $outlet, 
+            'backwards' => $backwards,
+        ]);
+
+    }
+ 
+    //http://wosotech.com/wx/web/index.php?r=wapx/client-agent&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&agent_id=1470&backwards=0
+    public function actionClientAgent($gh_id, $openid, $agent_id, $backwards = true, $pop = false) {
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        }     
+        
         $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
         $agent   = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
+        
+        $this->layout = false;
         return $this->render('client-agent', ['wx_user' => $wx_user, 'agent' => $agent, 'backwards' => $backwards]);
     }
     
-    //http://localhost/wosoprj/web/index.php?r=wapx/client-agent&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&agent_id=1
-    public function actionClientOrganization($gh_id, $openid, $agent_id, $backwards = true) {
-        $this->layout = false;
+    //http://wosotech.com/wx/web/index.php?r=wapx/client-organization&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&organization_id=1&backwards=0    
+    public function actionClientOrganization($gh_id, $openid, $organization_id, $backwards = true, $pop = false) {
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        }  
+        
         $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
-        $agent   = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
-        return $this->render('client-agent', ['wx_user' => $wx_user, 'agent' => $agent, 'backwards' => $backwards]);
+        $organization   = \app\models\ClientOrganization::findOne(['organization_id' => $organization_id]);
+        
+        $this->layout = false;
+        return $this->render('client-organization', ['wx_user' => $wx_user, 'organization' => $organization, 'backwards' => $backwards]);
     }
 
 }

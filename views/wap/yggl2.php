@@ -72,7 +72,7 @@ include('../models/utils/emoji.php');
                             <?= $outlet->title ?>员工
                             <br>
                             <span style="font-size:48px;font-weight:bolder">
-                                <?= $entity->name ?>
+                                <?= $employee->name ?>
 
                                 <img src="../web/images/woke/qr.png" width=24px>
                             </span>
@@ -94,12 +94,12 @@ include('../models/utils/emoji.php');
 
             <div class="input-row">
                 <label style="color:#777777">手机号码</label>
-                <input type="text" value="<?= implode(',', $entity->mobiles) ?>"  id="ygsjhm">
+                <input type="text" value="<?= implode(',', $employee->mobiles) ?>"  id="ygsjhm">
             </div>
 
             <div class="input-row">
                 <label style="color:#777777">职位</label>
-                <input type="text" value="<?= $entity->getOutletPosition($outlet->outlet_id) ?>" id="ygzw">
+                <input type="text" value="<?= $employee->getOutletPosition($outlet->outlet_id) ?>" id="ygzw">
             </div>
 
             <!--
@@ -114,12 +114,12 @@ include('../models/utils/emoji.php');
             -->
     
             <?php
-              if (!empty($entity->wechat) && !empty($entity->wechat->headimgurl)) {
-                  $wx_nickname = $entity->wechat->nickname;
-                  $wx_mobile = $entity->wechat->getBindMobileNumbersStr();
-                  $wx_country = $entity->wechat->country;
-                  $wx_province = $entity->wechat->province;
-                  $wx_city = $entity->wechat->city;
+              if (!empty($employee->wechat) && !empty($employee->wechat->headimgurl)) {
+                  $wx_nickname = $employee->wechat->nickname;
+                  $wx_mobile = $employee->wechat->getBindMobileNumbersStr();
+                  $wx_country = $employee->wechat->country;
+                  $wx_province = $employee->wechat->province;
+                  $wx_city = $employee->wechat->city;
               } else {
                   $wx_nickname = "";
                   $wx_mobile = "";
@@ -146,11 +146,11 @@ include('../models/utils/emoji.php');
 
             <br>
             <?php if ($is_agent) { ?>
-                <button class="btn btn-positive btn-block" style="border-radius:3px" id="btnEdit" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->agent_id ?>">修改</button>
-                <button class="btn btn-negative btn-block" style="border-radius:3px" id="btnDel" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->agent_id ?>">删除</button>
+                <button class="btn btn-positive btn-block" style="border-radius:3px" id="btnEdit" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $employee->agent_id ?>">修改</button>
+                <button class="btn btn-negative btn-block" style="border-radius:3px" id="btnDel" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $employee->agent_id ?>">删除</button>
             <?php } else { ?>
-                <button class="btn btn-positive btn-block" style="border-radius:3px" id="btnEdit" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->employee_id ?>">修改</button>
-                <button class="btn btn-negative btn-block" style="border-radius:3px" id="btnDel" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->employee_id ?>">删除</button>
+                <button class="btn btn-positive btn-block" style="border-radius:3px" id="btnEdit" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $employee->employee_id ?>">修改</button>
+                <button class="btn btn-negative btn-block" style="border-radius:3px" id="btnDel" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $employee->employee_id ?>">删除</button>
             <?php } ?>
             <button class="btn btn-block" style="border-radius:3px" onclick="back2pre();">返回</button>
 
@@ -161,7 +161,7 @@ include('../models/utils/emoji.php');
     <div id="showQr" class="modal">
         <header class="bar bar-nav">
             <a class="icon icon-close pull-right" href="#showQr"></a>
-            <h1 class="title"><?= $entity->name ?>的推广二维码</h1>
+            <h1 class="title"><?= $employee->name ?>的推广二维码</h1>
         </header>
 
         <div class="content">
@@ -169,8 +169,8 @@ include('../models/utils/emoji.php');
             <center>
 
                 <?php
-                if (!empty($entity->wechat))
-                    echo Html::img($entity->wechat->getQrImageUrl(), ['style' => 'display: block;max-width:100%;height: auto;']);
+                if (!empty($employee->wechat))
+                    echo Html::img($employee->wechat->getQrImageUrl(), ['style' => 'display: block;max-width:100%;height: auto;']);
                 ?>
 
                 <br><br>
@@ -252,7 +252,7 @@ include('../models/utils/emoji.php');
 
         function back2pre()
         {
-            location.href = "<?php echo Url::to(['yggl1', 'outlet_id' => $entity->outlets[0]->outlet_id]) ?>";
+            location.href = "<?php echo Url::to(['yggl1', 'outlet_id' => $employee->outlets[0]->outlet_id]) ?>";
         }
 
 

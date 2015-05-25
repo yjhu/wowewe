@@ -72,6 +72,8 @@ class ClientAgent extends \yii\db\ActiveRecord
             'wx_user.gh_id = wx_openid_bind_mobile.gh_id and wx_user.openid = wx_openid_bind_mobile.openid'
         )->where([
             'in', 'wx_openid_bind_mobile.mobile', $this->mobiles
+        ])->andWhere([
+            'subscribe' => 1,
         ])->one();
     }
     

@@ -22,31 +22,44 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
     <body>
         <header class="bar bar-nav">
             <?php if ($backwards) { ?>
-                <button class="btn btn-link btn-nav pull-left">
+                <a  data-ignore="push" class="btn btn-link btn-nav pull-left" href="<?= \app\models\utils\BrowserHistory::previous($wx_user->gh_id, $wx_user->openid) ?>">
                     <span class="icon icon-left-nav"></span>
-                </button>
+                </a>
             <?php } ?>
-            <h1 class="title"><span class="badge badge-positive">代理商</span>&nbsp;<?= $agent->name ?>(<?= implode(",", $agent->mobiles) ?>)</hi>            
+            <h1 class="title"><span class="badge badge-positive">代理商</span>&nbsp;<?= $agent->name ?><?= !empty($agent->mobiles) ? $agent->mobiles[0]: '' ?></hi>            
         </header>
         <div class="content">
             <ul class="table-view">
                 <li class="table-view-cell table-view-divider">微信信息</li>
-                <li class="table-view-cell">
+                
                     <?php if (!empty($agent->wechat)) { ?>
-                    <span class="pull-left"><img style='width:18px;' src="<?= $agent->wechat->headimgurl ?>"/>&nbsp;&nbsp;</span>
-                    <span><?= emoji_unified_to_html(emoji_softbank_to_unified($agent->wechat->nickname)) ?>&nbsp;</span>
-                    <span class="pull-right"><?= $agent->wechat->getBindMobileNumbersStr() ?></span>
+                    <li class="table-view-cell media">
+                            <img class="media-object pull-left" style="width:120px;" src="<?= $agent->wechat->headimgurl ?>"/>
+                            <div class="media-body">
+                            <?= emoji_unified_to_html(emoji_softbank_to_unified($agent->wechat->nickname)) ?>
+                            <p><?= $agent->wechat->country ?> <?= $agent->wechat->province ?> <?= $agent->wechat->city ?></p>
+                            <p><?= $agent->wechat->getBindMobileNumbersStr() ?></p>
+                            </div>
+                    </li>  
                     <?php } else { ?>
+                    <li class="table-view-cell">
                     <span>未关注或未绑定手机</span>
+                    </li>
                     <?php } ?>
-                </li>
+                
             </ul>
 
             <ul class="table-view">
                 <li class="table-view-cell table-view-divider">门店列表</li>
                 <?php foreach ($agent->outlets as $outlet) { ?> 
                     <li class="table-view-cell media">
-                        <a class="navigate-right">
+                        <a data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+                            'client-outlet',
+                            'gh_id'     => $wx_user->gh_id,
+                            'openid'    => $wx_user->openid,
+                            'outlet_id' => $outlet->outlet_id,
+                            'backwards' => true,
+                        ]) ?>">
                             <span class="media-object pull-left icon icon-home"></span>
                             <div class="media-body">
                                 <?= $outlet->title ?>

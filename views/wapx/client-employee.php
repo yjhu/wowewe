@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\U;
+
 $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->client;
 ?>
 
@@ -54,147 +55,161 @@ include('../models/utils/emoji.php');
 
         <header class="bar bar-nav">
 
-      <!--
-      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre();"></a>
-      -->
+<?php if ($backwards) { ?>
+                <a  data-ignore="push" class="btn btn-link btn-nav pull-left" href="<?= \app\models\utils\BrowserHistory::previous($wx_user->gh_id, $wx_user->openid) ?>">
+                    <span class="icon icon-left-nav"></span>
+                </a>
+<?php } ?>
+            <a data-ignore="push" class="btn btn-link btn-nav pull-right" href="#showQr"><img src="../web/images/woke/qr.png" width=18px></a>
             <h1 class="title">
-                <span class="badge badge-positive">员工</span> <?= $entity->name ?> (<?= implode(',', $entity->mobiles) ?>)
+                <span class="badge badge-positive">员工</span> <?= $employee->name ?> <?= !empty($employee->mobiles) ? $employee->mobiles[0]:'' ?>
             </h1>
 
         </header>
 
         <?php
-          if (!empty($entity->wechat) && !empty($entity->wechat->headimgurl)) {
-              $wx_nickname = $entity->wechat->nickname;
-              $wx_mobile = $entity->wechat->getBindMobileNumbersStr();
-              $wx_country = $entity->wechat->country;
-              $wx_province = $entity->wechat->province;
-              $wx_city = $entity->wechat->city;
-          } else {
-              $wx_nickname = "";
-              $wx_mobile = "";
-              $wx_country = "";
-              $wx_province = "";
-              $wx_city = "";
-          }
+        if (!empty($employee->wechat) && !empty($employee->wechat->headimgurl)) {
+            $wx_nickname = $employee->wechat->nickname;
+            $wx_mobile = $employee->wechat->getBindMobileNumbersStr();
+            $wx_country = $employee->wechat->country;
+            $wx_province = $employee->wechat->province;
+            $wx_city = $employee->wechat->city;
+        } else {
+            $wx_nickname = "";
+            $wx_mobile = "";
+            $wx_country = "";
+            $wx_province = "";
+            $wx_city = "";
+        }
         ?>
 
 
         <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
         <div class="content">
-
-        <div class="input-group">
-
-            <p class="content-padded">&nbsp;</p>
-            <p class="content-padded">微信信息 </p>
-
-            <div class="input-row">
-                <label style="color:#777777">昵称</label>
-                <input type="text" value="<?= $wx_nickname ?>" readonly>
-            </div>
-            <div class="input-row">
-                <label style="color:#777777">地区</label>
-                <input type="text" value="<?= $wx_country ?> <?= $wx_province ?> <?= $wx_city ?>" readonly>
-            </div>
-            <div class="input-row">
-                <label style="color:#777777">绑定手机</label>
-                <input type="text" value="<?= $wx_mobile ?>" readonly>
-            </div>
-
-
-            <p class="content-padded">&nbsp;</p>
-    
             <ul class="table-view">
-                <li class="table-view-cell table-view-divider">所属营业厅</li>
-            
-                    <?php foreach ($entity->outlets as $outlet) { ?>
-                    <li class="table-view-cell media">
-                        <a data-ignore="push"  class="navigate-right" href="">
-                            <span class="media-object pull-left icon icon-home"></span>
+                <li class="table-view-cell table-view-divider">微信信息</li>                
+                    <?php if (!empty($employee->wechat)) { ?>
+                        <li class="table-view-cell media">
+                            <img class="media-object pull-left" style="width:120px;" src="<?= $employee->wechat->headimgurl ?>"/>
                             <div class="media-body">
-                                <?= $outlet->title ?>
-                                <span class="badge badge-positive pull-right">
-                                  <?= $entity->getOutletPosition($outlet->outlet_id) ?>
-                                </span>
+                            <?= emoji_unified_to_html(emoji_softbank_to_unified($wx_nickname)) ?>
+                            <p><?= $wx_country ?> <?= $wx_province ?> <?= $wx_city ?></p>
+                            <p><?= $wx_mobile ?></p>
                             </div>
-                        </a>
+                        </li>                    
+                    <?php } else { ?>
+                    <li class="table-view-cell">
+                        <span>未关注或未绑定手机</span>
                     </li>
                     <?php } ?>
+
             </ul>
 
-            <ul class="table-view">
-                <li class="table-view-cell table-view-divider">所属部门</li>
-                    
-                    
-                    <?php 
-                        $organizations = $entity->organizations;
-                        foreach ($organizations as $organization) { 
+            <?php if (!empty($employee->outlets)) { ?>
+
+                <ul class="table-view">
+                    <li class="table-view-cell table-view-divider">所属营业厅</li>
+
+                    <?php foreach ($employee->outlets as $outlet) { ?>
+                        <li class="table-view-cell media">
+                            <a data-ignore="push"  class="navigate-right" href="<?= \yii\helpers\Url::to([
+                                'client-outlet',
+                                'gh_id'     => $wx_user->gh_id,
+                                'openid'    => $wx_user->openid,
+                                'outlet_id' => $outlet->outlet_id,
+                                'backwards' => true,
+                            ]) ?>">
+                                <span class="media-object pull-left icon icon-home"></span>
+                                <div class="media-body">
+                                        <?= $outlet->title ?>
+                                    <span class="badge badge-positive pull-right">
+                                        <?= $employee->getOutletPosition($outlet->outlet_id) ?>
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+            <?php             
+                }
+                
+                $organizations = $employee->organizations;
+                if (!empty($organizations)) {
+            ?>
+                <ul class="table-view">
+                    <li class="table-view-cell table-view-divider">所属部门</li>
+                    <?php
+                    foreach ($organizations as $organization) {
                     ?>
 
-                    <li class="table-view-cell media">
-                        <a data-ignore="push"  class="navigate-right" href="">
-                            <span class="media-object pull-left"><img src="/wx/web/images/comm-icon/iconfont-bumenguanli.png"></span>
-                            <div class="media-body">
-                                <?= $organization->title ?>
-                                <span class="badge badge-positive pull-right">
-                                <?= $entity->getOrganizationPosition($organization->organization_id) ?>
-                                </span>
-                                </span>
-                            </div>
-                        </a>
-                    </li>
-                    <?php } ?>
+                        <li class="table-view-cell media">
+                            <a data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+                                'client-organization',
+                                'gh_id'             => $wx_user->gh_id,
+                                'openid'           => $wx_user->openid,
+                                'backwards'         => true,
+                                'organization_id'   => $organization->organization_id,
+                            ]) ?>">
+                                <span class="media-object pull-left"><img src="/wx/web/images/comm-icon/iconfont-bumenguanli.png"></span>
+                                <div class="media-body">
+                                        <?= $organization->title ?>
+                                    <span class="badge badge-positive pull-right">
+    <?= $employee->getOrganizationPosition($organization->organization_id) ?>
+                                    </span>
+                                    </span>
+                                </div>
+                            </a>
+                        </li>
+<?php } ?>
 
 
-            </ul>
+                </ul>
+                <?php } ?>
+
+                <br>
+
+            </div>
 
 
-            <br>
+        </div><!-- end of content -->
 
+        <div id="showQr" class="modal">
+            <header class="bar bar-nav">
+                <a class="icon icon-close pull-right" href="#showQr"></a>
+                <h1 class="title"><?= $employee->name ?>的推广二维码</h1>
+            </header>
+
+            <div class="content">
+
+                <center>
+
+                    <img src="<?= $employee->promoter->getQrImageUrl() ?>" width="100%">
+                    <br><br>
+
+                    &nbsp;
+                </center>
+
+            </div>
         </div>
 
 
-    </div><!-- end of content -->
 
-    <div id="showQr" class="modal">
-        <header class="bar bar-nav">
-            <a class="icon icon-close pull-right" href="#showQr"></a>
-            <h1 class="title">小强的推广二维码</h1>
-        </header>
+        <div class="bar bar-standard bar-footer">
+            <div class="content" style="font-size: 10px;color:#ccc;">
+                <center>
+                    <span><img style='width:18px;' src="<?= $wx_user->headimgurl ?>"/>&nbsp;&nbsp;</span>
+                    <span><?= emoji_unified_to_html(emoji_softbank_to_unified($wx_user->nickname)) ?>&nbsp;</span>
+                    <span><?= $wx_user->getBindMobileNumbersStr() ?></span>
 
-        <div class="content">
-
-            <center>
-
-                <img src="./web/images/woke/qr-demo.jpg" width="100%">
-                <br><br>
-
-                &nbsp;
-            </center>
-
-            <a class="btn btn-block" href="#showQr">返回</a>
+                    <br>
+                    <span><?= $client->title_abbrev ?>&copy;<?= date('Y') ?></span>
+                </center>
+            </div>
         </div>
-    </div>
 
+        <script type="text/javascript">
 
+        </script>
 
-    <div class="bar bar-standard bar-footer">
-        <div class="content" style="font-size: 10px;color:#ccc;">
-        <center>
-        <span><img style='width:18px;' src="<?= $wx_user->headimgurl ?>"/>&nbsp;&nbsp;</span>
-        <span><?= emoji_unified_to_html(emoji_softbank_to_unified($wx_user->nickname)) ?>&nbsp;</span>
-        <span><?= $wx_user->getBindMobileNumbersStr() ?></span>
-        <!--
-        <br>
-        <span><//?= $client->title_abbrev ?>&copy;<//?= date('Y') ?></span>
-        -->
-        </center>
-        </div>
-    </div>
-
-    <script type="text/javascript">
-
-    </script>
-
-</body>
+    </body>
 </html>

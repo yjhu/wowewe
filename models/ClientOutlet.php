@@ -36,7 +36,7 @@ class ClientOutlet extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['client_id', 'supervison_organization_id', 'category'], 'integer'],
+            [['client_id', 'supervision_organization_id', 'category'], 'integer'],
             [['longitude', 'latitude'], 'number'],
             [['title', 'address', 'telephone'], 'string', 'max' => 255]
         ];
@@ -50,7 +50,7 @@ class ClientOutlet extends \yii\db\ActiveRecord
         return [
             'outlet_id' => 'Outlet ID',
             'client_id' => 'Client ID',
-            'supervison_organization_id' => 'Supervison Organization ID',
+            'supervision_organization_id' => 'Supervision Organization ID',
             'title' => 'Title',
             'address' => 'Address',
             'telephone' => 'Telephone',
@@ -141,5 +141,9 @@ class ClientOutlet extends \yii\db\ActiveRecord
         return (new \yii\db\Query())->select('*')->from('client_agent_outlet')->where([
             'outlet_id' => $this->outlet_id,
         ])->count();
+    }
+    
+    public function getSupervisionOrganization() {
+        return $this->hasOne(\app\models\ClientOrganization::className(), ['organization_id' => 'supervision_organization_id']);
     }
 }

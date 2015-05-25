@@ -50,17 +50,37 @@ class ClientOrganization extends \yii\db\ActiveRecord
                 ->viaTable('client_employee_organization', ['organization_id' => 'organization_id']);
     }
     
+    public function getOutlets()
+    {
+        return $this->hasMany(\app\models\ClientOutlet::className(), ['supervision_organization_id' => 'organization_id']);
+    }
+    
     public function getDirectSuperiorOrganizations()
     {
-        return $this->hasMany(\app\models\ClientOrganization::className(), ['organization_id' => 'superior_id'])
-                ->viaTable('client_organization_chart', ['subordinate_id' => 'organization_id']);
+//        return $this->hasMany(\app\models\ClientOrganization::className(), ['organization_id' => 'superior_id'])
+//                ->viaTable('client_organization_chart', ['subordinate_id' => 'organization_id']);
+        $rows = (new \yii\db\Query())->select('*')->from('client_organization_chart')->where([
+            'subordinate_id'   => $this->organization_id,
+        ])->all();
+        $subordinates = [];
+        foreach ($rows as $row) {
+            $subordinates[] = self::findOne(['organization_id' => $row['superior_id']]);
+        }
+        return $subordinates;
         
     }
     
     public function getDirectSubordinateOrganizations()
     {
-        return $this->hasMany(\app\models\ClientOrganization::className(), ['organization_id' => 'subordinate_id'])
-                ->viaTable('client_organization_chart', ['superior_id' => 'organization_id']);
-        
+//        return $this->hasMany(\app\models\ClientOrganization::className(), ['organization_id' => 'subordinate_id'])
+//                ->viaTable('client_organization_chart', ['superior_id' => 'organization_id']);
+        $rows = (new \yii\db\Query())->select('*')->from('client_organization_chart')->where([
+            'superior_id'   => $this->organization_id,
+        ])->all();
+        $subordinates = [];
+        foreach ($rows as $row) {
+            $subordinates[] = self::findOne(['organization_id' => $row['subordinate_id']]);
+        }
+        return $subordinates;
     }
 }

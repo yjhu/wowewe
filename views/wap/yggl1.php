@@ -125,24 +125,24 @@
         <?php } ?>
         
         <?php 
-            foreach ($outlet->agents as $agent) 
+            foreach ($outlet->agents as $employee) 
             {             
         ?>
 
         <li class="table-view-cell media">
-        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl2','outlet_id'=>$outlet_id,'entity_id'=>$agent->agent_id, 'is_agent' => true]) ?>">
-        <img class="media-object pull-left" src="<?= (empty($agent->wechat) || empty($agent->wechat->headimgurl)) ? '../web/images/wxmpres/headimg-blank.png':$agent->wechat->headimgurl ?>" width="64" height="64">
+        <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl2','outlet_id'=>$outlet_id,'entity_id'=>$employee->agent_id, 'is_agent' => true]) ?>">
+        <img class="media-object pull-left" src="<?= (empty($employee->wechat) || empty($employee->wechat->headimgurl)) ? '../web/images/wxmpres/headimg-blank.png':$employee->wechat->headimgurl ?>" width="64" height="64">
         <div class="media-body">
           <!--粉丝昵称--> 
-          <?= $agent->name ?>
+          <?= $employee->name ?>
           <p>
-            手机号码 <?= implode(",", $agent->mobiles) ?>
+            手机号码 <?= implode(",", $employee->mobiles) ?>
             <br>
             <!--
             2015-05-20
             <br>
             -->
-            <?php if (!empty($agent->wechat) && $agent->wechat->subscribe != 1 ) { ?>
+            <?php if (!empty($employee->wechat) && $employee->wechat->subscribe != 1 ) { ?>
             <span style="color:red">已取消关注</span><br/>
             <?php } ?>
           </p>
