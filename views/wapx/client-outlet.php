@@ -1,6 +1,10 @@
 <?php
 include('../models/utils/emoji.php');
 $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->client;
+\Yii::$app->wx->setGhId($wx_user->gh_id);
+$gh = \Yii::$app->wx->getGh();
+$jssdk = new \app\models\JSSDK($gh['appid'], $gh['appsecret']);
+$signPackage = $jssdk->GetSignPackage();
 ?>
 <!DOCTYPE html>
 <html>
@@ -148,7 +152,7 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
                 </li>
                 <li class="table-view-cell table-view-divider">门店地址及电话</li>                
                 <li class="table-view-cell">                        
-                    地址：<?= $outlet->address ?>
+                    地址：<?= $outlet->address ?><a data-ignore="push" class="btn btn-link" id="getLocation"><span class="icon icon-search"></span></a>
                 </li>
                 <li class="table-view-cell">                        
                     电话：<?= $outlet->telephone ?>
@@ -216,6 +220,76 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
         <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
         <!-- Include the compiled Ratchet JS -->
         <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
+        <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+        <script>
+            alert("wx_config begins.");
+        wx.config({
+      debug: false,
+/*
+      appId: 'wxf8b4f85f3a794e77',
+      timestamp: 1427958791,
+      nonceStr: '0vCuuppVAquWN5C0',
+      signature: '07185778be0ca277f7a6d6440e80596b3c5b409c',
+*/
+        appId: '<?php echo $signPackage["appId"];?>',
+        timestamp: <?php echo $signPackage["timestamp"];?>,
+        nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+        signature: '<?php echo $signPackage["signature"];?>',
+
+      jsApiList: [
+        'checkJsApi',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage',
+        'onMenuShareQQ',
+        'onMenuShareWeibo',
+        'hideMenuItems',
+        'showMenuItems',
+        'hideAllNonBaseMenuItem',
+        'showAllNonBaseMenuItem',
+        'translateVoice',
+        'startRecord',
+        'stopRecord',
+        'onRecordEnd',
+        'playVoice',
+        'pauseVoice',
+        'stopVoice',
+        'uploadVoice',
+        'downloadVoice',
+        'chooseImage',
+        'previewImage',
+        'uploadImage',
+        'downloadImage',
+        'getNetworkType',
+        'openLocation',
+        'getLocation',
+        'hideOptionMenu',
+        'showOptionMenu',
+        'closeWindow',
+        'scanQRCode',
+        'chooseWXPay',
+        'openProductSpecificView',
+        'addCard',
+        'chooseCard',
+        'openCard'
+      ]
+  });
+  alert("wx_config ends.");
+</script>
+        <script>
+        wx.ready(function () {
+            alert("wx_ready!");
+            document.querySelector('#openLocation').onclick = function () {
+                wx.openLocation({
+                  latitude: <?= $outlet->latitude; ?>,
+                  longitude: <?= $outlet->longitude; ?>,
+                  name: '<?= $outlet->title; ?>'',
+                  address: '<?= $outlet->address; ?>',
+                  scale: 18,
+                  infoUrl: ''
+            });
+        };
+        });
+        </script>
     </body>
 </html>
 
