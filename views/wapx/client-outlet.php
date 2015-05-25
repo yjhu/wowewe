@@ -152,7 +152,7 @@ $signPackage = $jssdk->GetSignPackage();
                 </li>
                 <li class="table-view-cell table-view-divider">门店地址及电话</li>                
                 <li class="table-view-cell">                        
-                    地址：<?= $outlet->address ?><a data-ignore="push" class="btn btn-link" id="getLocation"><span class="icon icon-search"></span></a>
+                    地址：<?= $outlet->address ?><a data-ignore="push" class="btn btn-link" id="openLocation"><span class="icon icon-search"></span></a>
                 </li>
                 <li class="table-view-cell">                        
                     电话：<?= $outlet->telephone ?>
@@ -282,7 +282,7 @@ $signPackage = $jssdk->GetSignPackage();
                 wx.openLocation({
                   latitude: <?= $outlet->latitude; ?>,
                   longitude: <?= $outlet->longitude; ?>,
-                  name: '<?= $outlet->title; ?>'',
+                  name: '<?= $outlet->title; ?>',
                   address: '<?= $outlet->address; ?>',
                   scale: 18,
                   infoUrl: ''
