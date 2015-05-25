@@ -4414,7 +4414,28 @@ U::W('aaaaa......'.$user_founder->mobile);
 
         return $this->render('jssdksample', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'jssdk'=>$jssdk, 'myPoint'=>$myPoint]);
     }
- 
+
+     // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/jssdksample:gh_03a74ac96138
+     public function actionJssdksampleok()
+     {
+         //$this->layout = 'wap';    
+         $this->layout = false;    
+         $gh_id = U::getSessionParam('gh_id');
+         $openid = U::getSessionParam('openid');
+         $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);        
+         Yii::$app->wx->setGhId($gh_id);
+         $gh = Yii::$app->wx->getGh();
+         $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
+/*
+         $myPoints = HeatMap::find()->where(['gh_id'=>$gh_id, 'openid'=>$openid, 'status'=>0])->orderBy(['heat_map_id' => SORT_DESC])->all();        
+         if (!empty($myPoints)) {
+             $myPoint = $myPoints[0];
+         } else {
+             $myPoint = null;
+         }
+*/     
+         return $this->render('jssdksampleok', ['gh_id'=>$gh_id, 'openid'=>$openid, 'user'=>$model, 'jssdk'=>$jssdk]);
+     }
 
 
     // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/4gspeedpic:gh_03a74ac96138  

@@ -35,6 +35,8 @@ use app\models\VipLevel;
 use app\models\sm\ESms;
 use app\models\sm\ESmsGuodu;
 
+use app\models\ClientOrganization;
+
 class CmdController extends Controller
 {
     public function init()
@@ -53,6 +55,11 @@ class CmdController extends Controller
     public function actionIndex()
     {        
         echo 'Hello, world!!';
+        $clientOrganization = ClientOrganization::findOne(50);
+        U::W($clientOrganization);
+        
+        $directSubordinateOrganizations = $clientOrganization->directSubordinateOrganizations;
+        U::W($directSubordinateOrganizations);        
     }
 
 
