@@ -144,15 +144,23 @@ class ClientOutlet extends \yii\db\ActiveRecord
     }
     
     public function getPromoter($gh_id) {
+        if (empty($this->original_office_id)) {
+            $office = new \app\models\MOffice;
+            $office->title = $this->title;
+            $office->gh_id = $gh_id;
+            $office->save(false);
+            $this->updateAttributes(['original_office_id' => $office->office_id]);
+        } 
+        
         $promoter = \app\models\MStaff::find()->where([
-            'office_id'  => !empty($this->original_office_id) ? $this->original_office_id : $this->outlet_id + 100000,
+            'office_id'  => $this->original_office_id,
             'gh_id'      => $gh_id,
             'cat'        => \app\models\MStaff::SCENE_CAT_OFFICE,
         ])->one();
         if (empty($promoter)) {
             $promoter = new \app\models\MStaff();
             $promoter->name = $this->title;  
-            $promoter->office_id = !empty($this->original_office_id) ? $this->original_office_id : $this->outlet_id + 100000;
+            $promoter->office_id = $this->original_office_id;
             $promoter->gh_id = $gh_id;
             $promoter->cat   = \app\models\MStaff::SCENE_CAT_OFFICE;
             $promoter->save(false);
@@ -170,8 +178,11 @@ class ClientOutlet extends \yii\db\ActiveRecord
         return $this->save(false);
     }
     
-    public static function setOutletLocation($outlet_id, $latitude, $longitude) {
-        \app\models\U::W('setOutletLocation');
-        return self::findOne(['outlet_id' => $outlet_id])->setLocation($latitude, $longitude);
+    public static function setOutletLocationAjax($outlet_id, $latitude, $longitude) {
+        if (self::findOne(['outlet_id' => $outlet_id])->setLocation($latitude, $longitude)) {
+            return json_encode(['code' => 0, 'msg' => '门店位置已更新。']);
+        } else {
+            return json_encode(['code' => 0, 'msg' => '门店位置无法保存。']);
+        }
     }
 }

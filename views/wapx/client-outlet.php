@@ -284,27 +284,27 @@ use \yii\helpers\Url;
 <script>
 
 
-        function wapxajax(classname, funcname,params)
+        function wapxajax(args)
         {
-            //alert("funcname=" + funcname + "&params=" + JSON.stringify(params));
-            //alert("<?php echo Url::to(['wapx/wapxajax'], true) ; ?>");
+            //alert(JSON.stringify(args));
+            //alert("<//?php echo Url::to(['wapx/wapxajax'], true) ; ?>");
               $.ajax({
               url: "<?php echo Url::to(['wapx/wapxajax'], true) ; ?>",
               type:"GET",
               cache:false,
               dataType:"json",
-              data: "classname=" + classname + "&funcname=" + funcname +"&params=" + JSON.stringify(params),
+              data: "args=" + JSON.stringify(args),
               success: function(t){
 
                       if(t.code==0)
                       {
-                          alert("门店位置已更新。");
+                          alert(t.msg);
                           var url = "<?php echo \app\models\utils\BrowserHistory::current($wx_user->gh_id, $wx_user->openid); ?>";
                           location.href = url;
                       }
                       else
                       {
-                        alert('error');
+                        alert(t.msg);
                       }
                 },
                 error: function(){
@@ -344,14 +344,23 @@ use \yii\helpers\Url;
                 success: function (res) {
                   //alert(JSON.stringify(res));
                     //params = new Array();
-                    var params = {};                    
-                    params.outlet_id = '<?= $outlet->outlet_id; ?>';
-                    params.latitude = res.latitude;
-                    params.longitude = res.longitude;
-
-                    classname = 'ClientOutlet';
-                    funcname = 'setOutletLocation';              
-                    wapxajax(classname, funcname, params);
+//                    var params = {};                    
+//                    params.outlet_id = '<//?= $outlet->outlet_id; ?>';
+//                    params.latitude = res.latitude;
+//                    params.longitude = res.longitude;
+//
+//                    classname = 'ClientOutlet';
+//                    funcname = 'setOutletLocation';              
+//                    wapxajax(classname, funcname, params);
+                    wapxajax({
+                        'classname':    '\\app\\\models\\ClientOutlet',
+                        'funcname':     'setOutletLocationAjax',
+                        'params':       {
+                            'outlet_id':    '<?= $outlet->outlet_id; ?>',
+                            'latitude':     res.latitude,
+                            'longitude':    res.longitude
+                        }                           
+                    });
                     return false;
                 },
                 cancel: function (res) {

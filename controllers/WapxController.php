@@ -331,11 +331,9 @@ class WapxController extends Controller
     }
 
 
-    public function actionWapxajax($classname, $funcname, $params) {
-        $params = json_decode($params, true);       
-        $classname ="\\app\\models\\".$classname;
-        $ret = call_user_func_array(array($classname, $funcname), $params);
-        return json_encode(['code' => !$ret]);
+    public function actionWapxajax($args) {
+        $args = json_decode($args, true); 
+        return call_user_func_array(array($args['classname'], $args['funcname']), $args['params']);
     }
 
 
