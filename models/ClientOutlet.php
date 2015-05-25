@@ -145,14 +145,14 @@ class ClientOutlet extends \yii\db\ActiveRecord
     
     public function getPromoter($gh_id) {
         $promoter = \app\models\MStaff::find()->where([
-            'office_id'  => $this->original_office_id,
+            'office_id'  => !empty($this->original_office_id) ? $this->original_office_id : $this->outlet_id + 100000,
             'gh_id'      => $gh_id,
             'cat'        => \app\models\MStaff::SCENE_CAT_OFFICE,
         ])->one();
         if (empty($promoter)) {
             $promoter = new \app\models\MStaff();
             $promoter->name = $this->title;  
-            $promoter->office_id = $this->original_office_id;
+            $promoter->office_id = !empty($this->original_office_id) ? $this->original_office_id : $this->outlet_id + 100000;
             $promoter->gh_id = $gh_id;
             $promoter->cat   = \app\models\MStaff::SCENE_CAT_OFFICE;
             $promoter->save(false);
