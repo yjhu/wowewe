@@ -71,7 +71,7 @@ $signPackage = $jssdk->GetSignPackage();
 
                 <center>
 
-                    <img src="<?= $outlet->promoter->getQrImageUrl() ?>" width="100%">
+                    <img src="<?= $outlet->getPromoter($wx_user->gh_id)->getQrImageUrl() ?>" width="100%">
                     <br><br>
 
                     &nbsp;
@@ -152,10 +152,13 @@ $signPackage = $jssdk->GetSignPackage();
                 </li>
                 <li class="table-view-cell table-view-divider">门店地址及电话</li>                
                 <li class="table-view-cell">                        
-                    地址：<?= $outlet->address ?><a data-ignore="push" class="btn btn-link" id="getLocation"><span class="icon icon-search"></span></a>
+                    地址：<?= $outlet->address ?>
+                    <?php if (!empty($outlet->latitude) && !empty($outlet->longitude)) { ?>
+                    <a data-ignore="push" class="btn btn-link pull-right" id="openLocation"><img src="../web/images/comm-icon/iconfont-weizhi3.png" /></a>
+                    <?php  } ?>
                 </li>
                 <li class="table-view-cell">                        
-                    电话：<?= $outlet->telephone ?>
+                    电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right" id="getLocation"><img src="../web/images/comm-icon/iconfont-weizhi.png" /></a>
                 </li>
             </ul>
             
@@ -282,12 +285,24 @@ $signPackage = $jssdk->GetSignPackage();
                 wx.openLocation({
                   latitude: <?= $outlet->latitude; ?>,
                   longitude: <?= $outlet->longitude; ?>,
-                  name: '<?= $outlet->title; ?>'',
+                  name: '<?= $outlet->title; ?>',
                   address: '<?= $outlet->address; ?>',
-                  scale: 18,
+                  scale: 12,
                   infoUrl: ''
-            });
-        };
+                });
+            };
+            
+            // 7.2 获取当前地理位置
+            document.querySelector('#getLocation').onclick = function () {
+              wx.getLocation({
+                success: function (res) {
+                  alert(JSON.stringify(res));
+                },
+                cancel: function (res) {
+                  alert('用户拒绝授权获取地理位置');
+                }
+              });
+            };
         });
         </script>
     </body>

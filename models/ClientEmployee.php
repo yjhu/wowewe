@@ -107,10 +107,11 @@ class ClientEmployee extends \yii\db\ActiveRecord {
         return \app\models\WosoClient::findOne(['client_id' => $this->client_id]);
     }
     
-    public function getPromoter()
+    public function getPromoter($gh_id)
     {
         $promoter = \app\models\MStaff::find()->where([
             'name'  => $this->name,
+            'gh_id' => $gh_id,
         ])->andWhere([
             'in', 'mobile', $this->mobiles
         ])->one();
@@ -118,7 +119,7 @@ class ClientEmployee extends \yii\db\ActiveRecord {
             $promoter = new \app\models\MStaff();
             $promoter->name = $this->name;
             $promoter->mobile = !empty($this->mobiles) ? $this->mobiles[0] : '';
-            $promoter->gh_id = $this->client->wechats[0]->gh_id;
+            $promoter->gh_id = $gh_id;
             $promoter->cat   = \app\models\MStaff::SCENE_CAT_IN;
             $promoter->save(false);
         }

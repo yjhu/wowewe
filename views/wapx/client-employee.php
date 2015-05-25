@@ -183,7 +183,7 @@ include('../models/utils/emoji.php');
 
                 <center>
 
-                    <img src="<?= $employee->promoter->getQrImageUrl() ?>" width="100%">
+                    <img src="<?= $employee->getPromoter($wx_user->gh_id)->getQrImageUrl() ?>" width="100%">
                     <br><br>
 
                     &nbsp;
