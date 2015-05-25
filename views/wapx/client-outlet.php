@@ -5,6 +5,8 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
 $gh = \Yii::$app->wx->getGh();
 $jssdk = new \app\models\JSSDK($gh['appid'], $gh['appsecret']);
 $signPackage = $jssdk->GetSignPackage();
+
+use \yii\helpers\Url;
 ?>
 <!DOCTYPE html>
 <html>
@@ -225,7 +227,7 @@ $signPackage = $jssdk->GetSignPackage();
         <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
         <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
         <script>
-            alert("wx_config begins.");
+//            alert("wx_config begins.");
         wx.config({
       debug: false,
 /*
@@ -276,27 +278,29 @@ $signPackage = $jssdk->GetSignPackage();
         'openCard'
       ]
   });
-  alert("wx_config ends.");
+//  alert("wx_config ends.");
 </script>
 
 <script>
 
 
-        function wapxajax(uid,amount)
+        function wapxajax(classname, funcname,params)
         {
+            //alert("funcname=" + funcname + "&params=" + JSON.stringify(params));
+            //alert("<?php echo Url::to(['wapx/wapxajax'], true) ; ?>");
               $.ajax({
               url: "<?php echo Url::to(['wapx/wapxajax'], true) ; ?>",
               type:"GET",
               cache:false,
               dataType:"json",
-              //data: "uid="+uid,
+              data: "classname=" + classname + "&funcname=" + funcname +"&params=" + JSON.stringify(params),
               success: function(t){
 
                       if(t.code==0)
                       {
-                          alert("ok");
-                          //var url = "<?php echo Url::to(['hyzx1'],true) ?>";
-                          //location.href = url+'&gh_id=<?= $user->gh_id ?>&openid<?= $user->openid ?>';
+                          alert("门店位置已更新。");
+                          var url = "<?php echo \app\models\utils\BrowserHistory::current($wx_user->gh_id, $wx_user->openid); ?>";
+                          location.href = url;
                       }
                       else
                       {
@@ -313,7 +317,7 @@ $signPackage = $jssdk->GetSignPackage();
 
 
         wx.ready(function () {
-            alert("wx_ready!");
+            //alert("wx_ready!");
 
             try {
             document.querySelector('#openLocation').onclick = function () {
@@ -333,14 +337,21 @@ $signPackage = $jssdk->GetSignPackage();
             // 7.2 获取当前地理位置
             document.querySelector('#getLocation').onclick = function () {
 
-            if(!confirm("用当前位置设置为门店位置，确定?"))
+            if(!confirm("当前位置设为门店位置?"))
             return false;
 
               wx.getLocation({
                 success: function (res) {
                   //alert(JSON.stringify(res));
+                    //params = new Array();
+                    var params = {};                    
+                    params.outlet_id = '<?= $outlet->outlet_id; ?>';
+                    params.latitude = res.latitude;
+                    params.longitude = res.longitude;
 
-                    wapxajax('set', amount);
+                    classname = 'ClientOutlet';
+                    funcname = 'setOutletLocation';              
+                    wapxajax(classname, funcname, params);
                     return false;
                 },
                 cancel: function (res) {
