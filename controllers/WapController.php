@@ -3215,56 +3215,59 @@ EOD;
 
 
 
-    public function actionQdxcjspb1()
+    public function actionQdxcjspb1($backwards = true, $pop = false)
     {
-        //$this->layout = 'wap';    
         $this->layout = false;    
-        /*
-        $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
-        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);        
-        Yii::$app->wx->setGhId($gh_id);
-        $gh = Yii::$app->wx->getGh();
-        $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
-        */
 
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
 
+       if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } 
         //$models_mr = new MMarketingRegion();  
 
         $models_mr = MMarketingRegion::find()->all();
-        return $this->render('qdxcjspb1', ['gh_id'=>$gh_id, 'openid'=>$openid, 'models_mr'=>$models_mr]);
+
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+
+        return $this->render('qdxcjspb1', ['wx_user' => $wx_user, 'gh_id'=>$gh_id, 'openid'=>$openid, 'models_mr'=>$models_mr, 'backwards' => $backwards]);
     }
 
 
-    public function actionQdxcjspb2()
+    public function actionQdxcjspb2($backwards = true, $pop = false)
     {
-        //$this->layout = 'wap';    
         $this->layout = false;    
-        /*
-        $gh_id = U::getSessionParam('gh_id');
-        $openid = U::getSessionParam('openid');
-        $model = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);        
-        Yii::$app->wx->setGhId($gh_id);
-        $gh = Yii::$app->wx->getGh();
-        $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
-        */
 
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
 
-        //$models_mr = new MMarketingRegion();  
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        }     
 
         $mr_id = $_GET['mr_id'];
         $mr = MMarketingRegion::findOne(['id' => $mr_id]);
-        return $this->render('qdxcjspb2', ['gh_id' => $gh_id, 'openid' => $openid, 'mr' => $mr, 'models_msc' => $mr->mscs]);
+
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+
+        return $this->render('qdxcjspb2', ['wx_user' => $wx_user, 'gh_id' => $gh_id, 'openid' => $openid, 'mr' => $mr, 'models_msc' => $mr->mscs, 'backwards' => $backwards]);
     }
 
 
-    public function actionQdxcjspb3()
+    public function actionQdxcjspb3($backwards = true, $pop = false)
     {
         //$this->layout = 'wap';    
         $this->layout = false;    
@@ -3272,44 +3275,70 @@ EOD;
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
+
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        }   
 
         $msc_id = $_GET['msc_id'];
         $msc = MMarketingServiceCenter::findOne(['id' => $msc_id]);
 
-        return $this->render('qdxcjspb3', ['gh_id' => $gh_id, 'openid' => $openid, 'msc' => $msc, 'models_office' => $msc->offices]);
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+
+        return $this->render('qdxcjspb3', ['wx_user' => $wx_user, 'gh_id' => $gh_id, 'openid' => $openid, 'msc' => $msc, 'models_office' => $msc->offices, 'backwards' => $backwards]);
     }
 
   
-    public function actionQdxcjspb4()
+    public function actionQdxcjspb4($backwards = true, $pop = false)
     {
-        //$this->layout = 'wap';    
         $this->layout = false;    
-
-        //$msc_id = $_GET['msc_id'];
-        //$msc = MMarketingServiceCenter::findOne(['id' => $msc_id]);
 
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
 
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        }   
+        
         $office_id = $_GET['office_id'];
         $office = MOffice::findOne(['office_id' => $office_id]);
 
         $campaign_pic_categories = MOfficeCampaignPicCategory::find()->orderBy('sort_order')->all();
 
-        return $this->render('qdxcjspb4', ['gh_id' => $gh_id, 'openid' => $openid, 'office' => $office, 'models_categories' => $campaign_pic_categories]);
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+
+        return $this->render('qdxcjspb4', ['wx_user' => $wx_user, 'gh_id' => $gh_id, 'openid' => $openid, 'office' => $office, 'models_categories' => $campaign_pic_categories, 'backwards' => $backwards]);
     }
 
     /*评分页面*/
-    public function actionQdxcjspb5()
-    {
-        //$this->layout = 'wap';    
+    public function actionQdxcjspb5($backwards = true, $pop = false)
+    {  
         $this->layout = false;    
 
         //$gh_id = U::getSessionParam('gh_id');
         $gh_id = 'gh_03a74ac96138';
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
+
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } 
 
         $model_category_id = $_GET['model_category_id'];
         $model_ocpc = MOfficeCampaignPicCategory::findOne(['id' => $model_category_id]);
@@ -3324,20 +3353,32 @@ EOD;
         //office_campaign_detail
         $model_office_campaign_detail = MOfficeCampaignDetail::findOne(['pic_category' => $model_category_id, 'office_id' => $office_id]);
 
-        return $this->render('qdxcjspb5', ['gh_id' => $gh_id, 'openid' => $openid, 'office' => $office, 'staff' => $staff , 'model_office_campaign_detail' => $model_office_campaign_detail, 'supervisor' => $office->supervisor, 'model_ocpc' => $model_ocpc]);
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+
+        return $this->render('qdxcjspb5', ['wx_user' => $wx_user, 'gh_id' => $gh_id, 'openid' => $openid, 'office' => $office, 'staff' => $staff , 'model_office_campaign_detail' => $model_office_campaign_detail, 'supervisor' => $office->supervisor, 'model_ocpc' => $model_ocpc, 'backwards' => $backwards]);
     }
 
     /*排行榜页面*/
-    public function actionQdxcjspbpm()
-    {
-        //$this->layout = 'wap';    
+    public function actionQdxcjspbpm($backwards = true, $pop = false)
+    { 
         $this->layout = false;    
-        //$gh_id = U::getSessionParam('gh_id');
-        //$openid = U::getSessionParam('openid');
-        //Yii::$app->wx->setGhId($gh_id);
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } 
+
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
 
         //return $this->render('qdxcjspbpm', ['gh_id' => $gh_id, 'openid' => $openid]);
-        return $this->render('qdxcjspbpm');
+        return $this->render('qdxcjspbpm', ['wx_user' => $wx_user, 'backwards' => $backwards]);
     }
 
 

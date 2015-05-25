@@ -31,7 +31,12 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
+
+      <?php if ($backwards) { ?>
+          <a  data-ignore="push" class="btn btn-link btn-nav pull-left" href="<?= \app\models\utils\BrowserHistory::previous($wx_user->gh_id, $wx_user->openid) ?>">
+              <span class="icon icon-left-nav"></span>
+          </a>
+      <?php } ?>
 
       <!--
       <a class="icon icon-info pull-right" href="#myModalexample" class="btn"></a>

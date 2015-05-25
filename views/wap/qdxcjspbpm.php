@@ -32,7 +32,13 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
+
+      <?php if ($backwards) { ?>
+          <a  data-ignore="push" class="btn btn-link btn-nav pull-left" href="<?= \app\models\utils\BrowserHistory::previous($wx_user->gh_id, $wx_user->openid) ?>">
+              <span class="icon icon-left-nav"></span>
+          </a>
+      <?php } ?>
+
       <h1 class="title">
        <img src="../web/images/comm-icon/iconfont-paiming-blue.png">&nbsp;渠道宣传竞赛评选排行榜
       </h1>
@@ -74,7 +80,7 @@
                     <li class="table-view-cell media">
                       <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb4','office_id'=>$rank_item['office_id']],true) ?>">
                         <div class="pull-right">
-                          <span class="badge badge-primary"><?= printf("%.1f", $rank_item['score']); ?>分</span>
+                          <span class="badge badge-primary"><?= number_format($rank_item['score'], 2); ?>分</span>
                         </div>
                         <div class="media-body">
                           <?= $rank;?>&nbsp;&nbsp;<?= $office->title; ?>
@@ -109,7 +115,7 @@
                     <li class="table-view-cell media">
                       <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['qdxcjspb4','office_id'=>$rank_item['office_id']],true) ?>">
                         <div class="pull-right">
-                          <span class="badge badge-primary"><?= printf("%.1f", $rank_item['score']); ?>分</span>
+                          <span class="badge badge-primary"><?= number_format($rank_item['score'], 2); ?>分</span>
                         </div>
                         <div class="media-body">
                           <?= $rank;?>&nbsp;&nbsp;<?= $office->title; ?>

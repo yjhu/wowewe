@@ -121,7 +121,7 @@
 
         <?php  if((!empty($user->mobileStaff)) || ((!empty($user->staff)) && $user->staff->cat == \app\models\MStaff::SCENE_CAT_IN)) {?>
             <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['qdxcjspb1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+              <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['qdxcjspb1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'backwards' => false ]) ?>">
       
                 <span class="media-object pull-left">
                   <img src="../web/images/comm-icon/iconfont-paiming-blue.png">

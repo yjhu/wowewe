@@ -37,7 +37,13 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
+
+      <?php if ($backwards) { ?>
+          <a  data-ignore="push" class="btn btn-link btn-nav pull-left" href="<?= \app\models\utils\BrowserHistory::previous($wx_user->gh_id, $wx_user->openid) ?>">
+              <span class="icon icon-left-nav"></span>
+          </a>
+      <?php } ?>
+
       <h1 class="title">
        渠道宣传竞赛评选
       </h1>
@@ -147,7 +153,7 @@
             <li class="table-view-cell table-view-divider"><?= "评选内容：{$model_ocpc->name}" ?></li>
 
 
-            <li class="table-view-cell">平均得分：<span class="badge badge-primary pull-right"><?= $scores['count'] == 0 ? 0 : ($scores['count'] == 1 ? $scores['total'] : printf("%.1f", $scores['total']/$scores['count'])) ?></span></li>
+            <li class="table-view-cell">平均得分：<span class="badge badge-primary pull-right"><?= $scores['count'] == 0 ? 0 : ($scores['count'] == 1 ? $scores['total'] : number_format($scores['total']/$scores['count'], 2)) ?></span></li>
 
             <li class="table-view-cell">评分人数：<span class="badge badge-primary pull-right"><?= $scores['count'] ?></span></li>
             <?php if ($is_scorer) { ?>
@@ -235,7 +241,7 @@
             data: "office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+$('#myrange').val()+"&comment="+$('#comment').val(),
             success: function(t){
                     //var json_data = eval('('+msg+')');
-                    alert("感谢您的评分。");
+                    //alert("感谢您的评分。");
                     //alert(t.code)
                     location.href = "<?php echo Url::to(['qdxcjspb4', 'gh_id'=>$_GET['gh_id'], 'openid'=>$_GET['openid'], 'office_id'=>$office->office_id],true) ?>";
               },
