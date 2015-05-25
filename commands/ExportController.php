@@ -216,4 +216,108 @@ class ExportController extends \yii\console\Controller {
         }
         fclose($fh);
     }
+    
+    public function actionSelfOwnedOutlets($filename = 'self-owned-outlets.csv') {
+        $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
+
+        $offices = \app\models\MOffice::findAll(['is_selfOperated' => 1]);
+        
+        $lastmonth_start = \app\models\U::getFirstDayOfLastMonth();
+        $lastmonth_end = date('Y-m-d', strtotime('-1 month', strtotime('yesterday')))." 23:59:59";;
+        $thismonth_start = \app\models\U::getFirstDate(date('Y'), date('m'));
+        $thismonth_end = date('Y-m-d', strtotime('yesterday'))." 23:59:59";
+        
+        $fh = fopen($file, "w");
+        fprintf($fh, "自营厅名称,粉丝总数量,绑定手机粉丝总数量,上月（%s）同期发展粉丝数量,上月（%s）同期发展绑定手机粉丝数量,本月（%s）发展粉丝数量,本月（%s）发展绑定手机粉丝数量,归属客户总数量,已微信关联客户数量,上月（%s）同期关联客户数量,本月（%s）关联客户数量\n",
+                date('Y-m', strtotime($lastmonth_start)),
+                date('Y-m', strtotime($lastmonth_start)),
+                date('Y-m-d', strtotime($thismonth_start))."至".date('Y-m-d', strtotime($thismonth_end)),
+                date('Y-m-d', strtotime($thismonth_start))."至".date('Y-m-d', strtotime($thismonth_end)),
+                date('Y-m', strtotime($lastmonth_start)),
+                date('Y-m-d', strtotime($thismonth_start))."至".date('Y-m-d', strtotime($thismonth_end))
+                );
+        foreach ($offices as $office) {
+//            $wx_count = \app\models\MUser::find()->where(['scene_pid' => $office->getSceneids(), 'subscribe' => 1])->count();
+//            $wx_bound_count = \app\models\MUser::find()->joinWith('openidBindMobiles')
+//                    ->where(['scene_pid' => $office->getSceneids(), 'subscribe' => 1])
+//                    ->andWhere(['wx_openid_bind_mobile.mobile' => null])
+//                    ->count();
+            $wx_count = \app\models\MUser::find()->where(['belongto' => $office->office_id, 'subscribe' => 1])->count();
+            $wx_bound_count = \app\models\MUser::find()->joinWith('openidBindMobiles')
+                    ->where(['belongto' => $office->office_id, 'subscribe' => 1])
+                    ->andWhere(['wx_openid_bind_mobile.mobile' => null])
+                    ->count();
+            $wx_bound_count = $wx_count - $wx_bound_count;
+            
+//            $wx_lastmonth_count = \app\models\MUser::find()->andWhere(['scene_pid' => $office->getSceneids(), 'subscribe' => 1])
+//                    ->andWhere(['>=', 'create_time', $lastmonth_start])
+//                    ->andWhere(['<=', 'create_time', $lastmonth_end])
+//                    ->count();
+//            $wx_lastmonth_bound_count = \app\models\MUser::find()->joinWith('openidBindMobiles')
+//                    ->andWhere(['scene_pid' => $office->getSceneids(), 'subscribe' => 1])
+//                    ->andWhere(['>=', 'wx_user.create_time', $lastmonth_start])
+//                    ->andWhere(['<=', 'wx_user.create_time', $lastmonth_end])
+//                    ->andWhere(['wx_openid_bind_mobile.mobile' => null])
+//                    ->count();
+            $wx_lastmonth_count = \app\models\MUser::find()->andWhere(['belongto' => $office->office_id, 'subscribe' => 1])
+                    ->andWhere(['>=', 'create_time', $lastmonth_start])
+                    ->andWhere(['<=', 'create_time', $lastmonth_end])
+                    ->count();
+            $wx_lastmonth_bound_count = \app\models\MUser::find()->joinWith('openidBindMobiles')
+                    ->andWhere(['belongto' => $office->office_id, 'subscribe' => 1])
+                    ->andWhere(['>=', 'wx_user.create_time', $lastmonth_start])
+                    ->andWhere(['<=', 'wx_user.create_time', $lastmonth_end])
+                    ->andWhere(['wx_openid_bind_mobile.mobile' => null])
+                    ->count();
+            $wx_lastmonth_bound_count = $wx_lastmonth_count - $wx_lastmonth_bound_count;
+            
+//            $wx_lastweek_count = \app\models\MUser::find()->andWhere(['scene_pid' => $office->getSceneids(), 'subscribe' => 1])
+//                    ->andWhere(['>=', 'wx_user.create_time', $lastweek_start])
+//                    ->andWhere(['<=', 'wx_user.create_time', $lastweek_end])
+//                    ->count();
+//            $wx_lastweek_bound_count = \app\models\MUser::find()->joinWith('openidBindMobiles')
+//                    ->andWhere(['scene_pid' => $office->getSceneids(), 'subscribe' => 1])
+//                    ->andWhere(['>=', 'wx_user.create_time', $lastweek_start])
+//                    ->andWhere(['<=', 'wx_user.create_time', $lastweek_end])
+//                    ->andWhere(['wx_openid_bind_mobile.mobile' => null])
+//                    ->count();
+            $wx_lastweek_count = \app\models\MUser::find()->andWhere(['belongto' => $office->office_id, 'subscribe' => 1])
+                    ->andWhere(['>=', 'wx_user.create_time', $thismonth_start])
+                    ->andWhere(['<=', 'wx_user.create_time', $thismonth_end])
+                    ->count();
+            $wx_lastweek_bound_count = \app\models\MUser::find()->joinWith('openidBindMobiles')
+                    ->andWhere(['belongto' => $office->office_id, 'subscribe' => 1])
+                    ->andWhere(['>=', 'wx_user.create_time', $thismonth_start])
+                    ->andWhere(['<=', 'wx_user.create_time', $thismonth_end])
+                    ->andWhere(['wx_openid_bind_mobile.mobile' => null])
+                    ->count();
+            $wx_lastweek_bound_count = $wx_lastweek_count - $wx_lastweek_bound_count;
+            $customer_count = \app\models\Custom::find()->where(['office_id' => $office->office_id])->count();
+            $customer_bound_count = \app\models\Custom::find()->joinWith('openidBindMobile')
+                    ->where(['office_id' => $office->office_id])
+                    ->andWhere(['wx_openid_bind_mobile.mobile' => null])
+                    ->count();
+            $customer_bound_count = $customer_count - $customer_bound_count;
+            $customer_lastmonth_bound_count = \app\models\Custom::find()->joinWith('openidBindMobile.user')
+                    ->where(['office_id' => $office->office_id])
+                    ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                    ->andWhere(['>=', 'wx_user.create_time', $lastmonth_start])
+                    ->andWhere(['<=', 'wx_user.create_time', $lastmonth_end])
+                    ->count();
+            $customer_lastweek_bound_count = \app\models\Custom::find()->joinWith('openidBindMobile.user')
+                    ->where(['office_id' => $office->office_id])
+                    ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                    ->andWhere(['>=', 'wx_user.create_time', $thismonth_start])
+                    ->andWhere(['<=', 'wx_user.create_time', $thismonth_end])
+                    ->count();
+            fprintf($fh, "%s", $office->title . 
+                    ", ".$wx_count . ", " . $wx_bound_count . 
+                    ", ".$wx_lastmonth_count . ", " . $wx_lastmonth_bound_count . 
+                    ", ".$wx_lastweek_count . ", " . $wx_lastweek_bound_count . 
+                    ", ".$customer_count . ", " . $customer_bound_count . ", " . $customer_lastmonth_bound_count . ", " . $customer_lastweek_bound_count . 
+                    PHP_EOL);     
+        }
+        fclose($fh);
+    }
 }
+
