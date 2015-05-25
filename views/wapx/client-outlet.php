@@ -152,14 +152,12 @@ $signPackage = $jssdk->GetSignPackage();
                 </li>
                 <li class="table-view-cell table-view-divider">门店地址及电话</li>                
                 <li class="table-view-cell">                        
-<<<<<<< HEAD
+
                     地址：<?= $outlet->address ?>
                     <?php if (!empty($outlet->latitude) && !empty($outlet->longitude)) { ?>
                     <a data-ignore="push" class="btn btn-link pull-right" id="openLocation"><img src="../web/images/comm-icon/iconfont-weizhi3.png" /></a>
                     <?php  } ?>
-=======
-                    地址：<?= $outlet->address ?><a data-ignore="push" class="btn btn-link" id="openLocation"><span class="icon icon-search"></span></a>
->>>>>>> cc60fe9007c12b343323f3a276700c59f67f7063
+
                 </li>
                 <li class="table-view-cell">                        
                     电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right" id="getLocation"><img src="../web/images/comm-icon/iconfont-weizhi.png" /></a>
