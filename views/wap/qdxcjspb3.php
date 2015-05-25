@@ -31,7 +31,13 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
+    
+      <?php if ($backwards) { ?>
+          <a  data-ignore="push" class="btn btn-link btn-nav pull-left" href="<?= \app\models\utils\BrowserHistory::previous($wx_user->gh_id, $wx_user->openid) ?>">
+              <span class="icon icon-left-nav"></span>
+          </a>
+      <?php } ?>
+
       <h1 class="title">
        渠道宣传竞赛评选
       </h1>
@@ -69,7 +75,7 @@
               ?>
                     <span class="icon icon-info" style="color:red"></span>
                     <?php }} ?>
-                <span class="badge badge-positive"><?= printf("%.1F", $score); ?>分</span>
+                <span class="badge badge-positive"><?= number_format($score,2) ?>分</span>
               <?php 
                 } else { 
                   if (\app\models\MOfficeCampaignDetail::getDetailReadyStatus($model_office->office_id) != \app\models\MOfficeCampaignDetail::DETAIL_COMPLETE) {

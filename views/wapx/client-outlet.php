@@ -43,12 +43,6 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
             </li>
             <li class="table-view-cell">
                   <a class="navigate-right">
-                  <span class="badge badge-primary">50</span>
-                    员工管理
-                  </a>
-            </li>
-            <li class="table-view-cell">
-                  <a class="navigate-right">
                   <span class="badge badge-primary">320</span>
                     粉丝管理
                   </a>

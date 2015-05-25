@@ -142,12 +142,18 @@
   
             <br>
             <a class="btn btn-block" href="#exit">不退出，再看看。</a>
-            <a class="btn btn-negative btn-block" onclick="javascript:history.back();">退出</a>
+            <a class="btn btn-negative btn-block" onclick="back2pre();">退出</a>
             
      
         </div>
       </div>
 
+      <script type="text/javascript">
+        function back2pre()
+        {
+            location.href = "<?php echo Url::to(['hyzx2', 'gh_id'=>$gh_id, 'openid'=>$openid]) ?>";
+        }
+      </script>
 
   </body>
 </html>

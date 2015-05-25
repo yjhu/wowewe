@@ -33,7 +33,12 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-      <a class="icon icon-left-nav pull-left" id="btn_back" onclick="javascript:history.back();"></a>
+
+      <?php if ($backwards) { ?>
+          <a  data-ignore="push" class="btn btn-link btn-nav pull-left" href="<?= \app\models\utils\BrowserHistory::previous($wx_user->gh_id, $wx_user->openid) ?>">
+              <span class="icon icon-left-nav"></span>
+          </a>
+      <?php } ?>
 
       <h1 class="title">
        渠道宣传竞赛评选
@@ -56,7 +61,7 @@
         <?php } else { ?>
           <li class="table-view-cell table-view-divider">督导员：<?= $office->supervisor->name." ".$office->supervisor->mobile ?></li>
         <?php } ?>
-        <li class="table-view-cell table-view-divider">门店当前总分：<span class="badge badge-positive pull-left"><?= $officeScore?printf("%.1F",floatval($officeScore)):'未评分' ?></span></li>
+        <li class="table-view-cell table-view-divider">门店当前总分：<span class="badge badge-positive pull-left"><?= $officeScore?number_format(floatval($officeScore), 2):'未评分' ?></span></li>
 
         <?php } ?>
           <?php 
@@ -100,7 +105,7 @@
                       ?>
                               <span class="icon icon-info" style="color:red"></span>
                             <?php }}?>
-                        <span class="badge badge-positive"><?= $score['count'] == 1 ? $score['total'] : printf("%.1F", $score['total']/$score['count']); ?>分</span>
+                        <span class="badge badge-positive"><?= $score['count'] == 1 ? $score['total'] : number_format($score['total']/$score['count'], 2); ?>分</span>
                       <?php } else { ?>
                         <span class="badge badge-negative"><?= "未评分"; ?></span>    
                       <?php } ?> 
