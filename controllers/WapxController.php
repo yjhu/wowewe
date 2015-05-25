@@ -330,4 +330,16 @@ class WapxController extends Controller
         return $this->render('client-organization', ['wx_user' => $wx_user, 'organization' => $organization, 'backwards' => $backwards]);
     }
 
+
+    public function actionWapxajax($funcname, $params) {
+        \app\models\U::W('wapx/wapxajax');
+        \app\models\U::W($funcname, $params);
+        $params = json_decode($params, true);
+        \app\models\U::W($funcname, $params);
+        return call_user_func_array($funcname, $params);
+    }
+
+
+
+
 }

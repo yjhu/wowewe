@@ -5,6 +5,8 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
 $gh = \Yii::$app->wx->getGh();
 $jssdk = new \app\models\JSSDK($gh['appid'], $gh['appsecret']);
 $signPackage = $jssdk->GetSignPackage();
+
+use \yii\helpers\Url;
 ?>
 <!DOCTYPE html>
 <html>
@@ -282,21 +284,23 @@ $signPackage = $jssdk->GetSignPackage();
 <script>
 
 
-        function wapxajax(uid,amount)
+        function wapxajax(funcname,params)
         {
+            alert("funcname=" + funcname + "&params=" + JSON.stringify(params));
+            alert("<?php echo Url::to(['wapx/wapxajax'], true) ; ?>");
               $.ajax({
               url: "<?php echo Url::to(['wapx/wapxajax'], true) ; ?>",
               type:"GET",
               cache:false,
               dataType:"json",
-              //data: "uid="+uid,
+              data: "funcname=" + funcname + "&params=" + JSON.stringify(params),
               success: function(t){
 
                       if(t.code==0)
                       {
                           alert("ok");
-                          //var url = "<?php echo Url::to(['hyzx1'],true) ?>";
-                          //location.href = url+'&gh_id=<?= $user->gh_id ?>&openid<?= $user->openid ?>';
+                          //var url = "<//?php echo Url::to(['hyzx1'],true) ?>";
+                          //location.href = url+'&gh_id=<//?= $user->gh_id ?>&openid<//?= $user->openid ?>';
                       }
                       else
                       {
@@ -338,9 +342,13 @@ $signPackage = $jssdk->GetSignPackage();
 
               wx.getLocation({
                 success: function (res) {
-                  //alert(JSON.stringify(res));
-
-                    wapxajax('set', amount);
+                  alert(JSON.stringify(res));
+                    params = new Array();
+                    params[0] = '<?= $outlet->outlet_id; ?>';
+                    params[1] = res.latitude;
+                    params[2] = res.longitude;
+                    funcname = 'ClientOutlet::setOutletLocation';                
+                    wapxajax(funcname, params);
                     return false;
                 },
                 cancel: function (res) {
