@@ -163,4 +163,14 @@ class ClientOutlet extends \yii\db\ActiveRecord
     public function getSupervisionOrganization() {
         return $this->hasOne(\app\models\ClientOrganization::className(), ['organization_id' => 'supervision_organization_id']);
     }
+    
+    public function setLocation($latitude, $longtitude) {
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+        return $this->save(false);
+    }
+    
+    public static function setOutletLocation($outlet_id, $latitude, $longtitude) {
+        return self::findOne(['outlet_id' => $outlet_id])->setLocation($latitude, $longtitude);
+    }
 }
