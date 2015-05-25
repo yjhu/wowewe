@@ -337,7 +337,7 @@ use \yii\helpers\Url;
             // 7.2 获取当前地理位置
             document.querySelector('#getLocation').onclick = function () {
 
-            if(!confirm("用当前位置设置为门店位置，确定?"))
+            if(!confirm("当前位置设为门店位置?"))
             return false;
 
               wx.getLocation({
