@@ -28,9 +28,10 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
             <?php } ?>
 
             <a href="#outletMenuItems">
-                <h1 class="title"><span class="badge badge-positive">门店</span>&nbsp;<?= $outlet->title ?></h1>
-               <span class="icon icon-caret pull-right"></span>    
-            </a>        
+                <h1 class="title"><span class="icon icon-home"></span>&nbsp;<?= $outlet->title ?>&nbsp;<span class="icon icon-caret"></span></h1>        
+            </a>
+            
+            <a data-ignore="push" class="btn btn-link btn-nav pull-right" href="#showQr"><img src="../web/images/woke/qr.png" width=18px></a>
         </header>
 
         <div id="outletMenuItems" class="popover">
@@ -55,8 +56,91 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
             </li>
           </ul>          
         </div>
+        
+        <div id="showQr" class="modal">
+            <header class="bar bar-nav">
+                <a class="icon icon-close pull-right" href="#showQr"></a>
+                <h1 class="title"><?= $outlet->title ?>的推广二维码</h1>
+            </header>
 
-        <div class="content">            
+            <div class="content">
+
+                <center>
+
+                    <img src="<?= $outlet->promoter->getQrImageUrl() ?>" width="100%">
+                    <br><br>
+
+                    &nbsp;
+                </center>
+
+            </div>
+        </div>
+        
+        <div id="showPics" class="modal">
+            <header class="bar bar-nav">
+                <a class="icon icon-close pull-right" href="#showPics"></a>
+                <h1 class="title"><span class="icon icon-home">&nbsp;</span><?= $outlet->title ?></h1>
+            </header>
+
+            <div class="content">
+
+                            <?php 
+            if (!empty($outlet->pics)) { 
+                $pics = explode(",", $outlet->pics);
+            ?>
+                <div class="slider">
+                  <div  class="slide-group">
+                    <?php 
+                    foreach ($pics as $pic){ 
+                        $pic_url = \Yii::$app->request->getHostInfo() . 
+                                \Yii::$app->request->getBaseUrl() . 
+                                '/' . 
+                                'office_campaign_detail' . 
+                                '/' .
+                                "{$pic}";
+                    ?>  
+                    <div class="slide">
+                        <center>
+                                <img width=100% src="<?= $pic_url ?>">
+                        </center>
+                    </div>
+                    <?php } ?>  
+                  </div>
+                </div>
+                <?php } ?> 
+            </div>
+        </div>
+
+        <div class="content">
+            <?php 
+            if (!empty($outlet->pics)) { 
+                $pics = explode(",", $outlet->pics);
+            ?>
+                <div class="slider">
+                  <div  class="slide-group">
+                    <?php 
+                    foreach ($pics as $pic){ 
+                        $pic_url = \Yii::$app->request->getHostInfo() . 
+                                \Yii::$app->request->getBaseUrl() . 
+                                '/' . 
+                                'office_campaign_detail' . 
+                                '/' .
+                                "{$pic}";
+                    ?>  
+                    <div class="slide">
+                        <center>
+                            <a data-ignore="push" href="#showPics">
+                                <img height=50% src="<?= $pic_url ?>">
+                            </a>
+                        </center>
+                    </div>
+                    <?php } ?>  
+                  </div>
+                </div>
+            <?php             
+            } 
+            ?>
+            
             <ul class="table-view">
                 <li class="table-view-cell table-view-divider">门店管理归属</li>                
                 <li class="table-view-cell">                        

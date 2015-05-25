@@ -118,11 +118,33 @@ class CheckController extends \yii\console\Controller {
     }
     
     public function actionUserAccountBalance() {
-        Yii::$app->db->createCommand("update wx_user set user_account_balance = 0")->execute();
+        \Yii::$app->db->createCommand("update wx_user set user_account_balance = 0")->execute();
         $user_accounts = \app\models\MUserAccount::find()->all();
         foreach($user_accounts as $user_account) {
 //            if ($user_account->cat == \app\models\MUserAccount::CAT_DEBIT_FAN)
                 $user_account->user->updateCounters(['user_account_balance' => $user_account->amount]);
         }
+    }
+    
+    public function actionOutlets() {
+       $outlets = \app\models\ClientOutlet::find()->all();
+       foreach($outlets as $outlet) {
+           $office = \app\models\MOffice::find()->where([
+               'title'  => $outlet->title,
+           ])->one();
+           if (!empty($office)) {
+               echo "found {$outlet->title}".PHP_EOL;
+               $details = \app\models\MOfficeCampaignDetail::findAll(['office_id' => $office->office_id]);
+               $pics = [];
+               foreach($details as $detail) {
+                   $pics[] = $detail->pic_url;
+               }
+               $outlet->pics = implode(",", $pics);
+               $outlet->orginal_office_id = $office->office_id;
+               $outlet->latitude = $office->lat;
+               $outlet->longitude = $office->lon;
+               $outlet->save(false);
+           }
+       }
     }
 }

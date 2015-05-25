@@ -143,6 +143,14 @@ class ClientOutlet extends \yii\db\ActiveRecord
         ])->count();
     }
     
+    public function getPromoter() {
+        return $this->hasOne(\app\models\MStaff::className(), [
+            'office_id' => 'orginal_office_id',
+        ])->where([
+            'cat' => \app\models\MStaff::SCENE_CAT_OFFICE,
+        ]);
+    }
+    
     public function getSupervisionOrganization() {
         return $this->hasOne(\app\models\ClientOrganization::className(), ['organization_id' => 'supervision_organization_id']);
     }
