@@ -280,9 +280,44 @@ $signPackage = $jssdk->GetSignPackage();
   });
   alert("wx_config ends.");
 </script>
-        <script>
+
+<script>
+
+
+        function wapxajax(uid,amount)
+        {
+              $.ajax({
+              url: "<?php echo Url::to(['wapx/wapxajax'], true) ; ?>",
+              type:"GET",
+              cache:false,
+              dataType:"json",
+              //data: "uid="+uid,
+              success: function(t){
+
+                      if(t.code==0)
+                      {
+                          alert("ok");
+                          //var url = "<?php echo Url::to(['hyzx1'],true) ?>";
+                          //location.href = url+'&gh_id=<?= $user->gh_id ?>&openid<?= $user->openid ?>';
+                      }
+                      else
+                      {
+                        alert('error');
+                      }
+                },
+                error: function(){
+                  alert('error!');
+                }
+            });
+
+            return false;
+        }
+
+
         wx.ready(function () {
             alert("wx_ready!");
+
+            try {
             document.querySelector('#openLocation').onclick = function () {
                 wx.openLocation({
                   latitude: <?= $outlet->latitude; ?>,
@@ -293,18 +328,31 @@ $signPackage = $jssdk->GetSignPackage();
                   infoUrl: ''
                 });
             };
+            } catch(e) {
+                //alert("error!!!");
+            }
             
             // 7.2 获取当前地理位置
             document.querySelector('#getLocation').onclick = function () {
+
+            if(!confirm("用当前位置设置为门店位置，确定?"))
+            return false;
+
               wx.getLocation({
                 success: function (res) {
-                  alert(JSON.stringify(res));
+                  //alert(JSON.stringify(res));
+
+                    wapxajax('set', amount);
+                    return false;
                 },
                 cancel: function (res) {
                   alert('用户拒绝授权获取地理位置');
                 }
               });
             };
+     
+
+
         });
         </script>
     </body>
