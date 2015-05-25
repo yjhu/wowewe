@@ -227,7 +227,7 @@ use \yii\helpers\Url;
         <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
         <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
         <script>
-            alert("wx_config begins.");
+//            alert("wx_config begins.");
         wx.config({
       debug: false,
 /*
@@ -278,29 +278,29 @@ use \yii\helpers\Url;
         'openCard'
       ]
   });
-  alert("wx_config ends.");
+//  alert("wx_config ends.");
 </script>
 
 <script>
 
 
-        function wapxajax(funcname,params)
+        function wapxajax(classname, funcname,params)
         {
-            alert("funcname=" + funcname + "&params=" + JSON.stringify(params));
-            alert("<?php echo Url::to(['wapx/wapxajax'], true) ; ?>");
+            //alert("funcname=" + funcname + "&params=" + JSON.stringify(params));
+            //alert("<?php echo Url::to(['wapx/wapxajax'], true) ; ?>");
               $.ajax({
               url: "<?php echo Url::to(['wapx/wapxajax'], true) ; ?>",
               type:"GET",
               cache:false,
               dataType:"json",
-              data: "funcname=" + funcname + "&params=" + JSON.stringify(params),
+              data: "classname=" + classname + "&funcname=" + funcname +"&params=" + JSON.stringify(params),
               success: function(t){
 
                       if(t.code==0)
                       {
-                          alert("ok");
-                          //var url = "<//?php echo Url::to(['hyzx1'],true) ?>";
-                          //location.href = url+'&gh_id=<//?= $user->gh_id ?>&openid<//?= $user->openid ?>';
+                          alert("门店位置已更新。");
+                          var url = "<?php echo \app\models\utils\BrowserHistory::current($wx_user->gh_id, $wx_user->openid); ?>";
+                          location.href = url;
                       }
                       else
                       {
@@ -317,7 +317,7 @@ use \yii\helpers\Url;
 
 
         wx.ready(function () {
-            alert("wx_ready!");
+            //alert("wx_ready!");
 
             try {
             document.querySelector('#openLocation').onclick = function () {
@@ -342,13 +342,16 @@ use \yii\helpers\Url;
 
               wx.getLocation({
                 success: function (res) {
-                  alert(JSON.stringify(res));
-                    params = new Array();
-                    params[0] = '<?= $outlet->outlet_id; ?>';
-                    params[1] = res.latitude;
-                    params[2] = res.longitude;
-                    funcname = 'ClientOutlet::setOutletLocation';                
-                    wapxajax(funcname, params);
+                  //alert(JSON.stringify(res));
+                    //params = new Array();
+                    var params = {};                    
+                    params.outlet_id = '<?= $outlet->outlet_id; ?>';
+                    params.latitude = res.latitude;
+                    params.longitude = res.longitude;
+
+                    classname = 'ClientOutlet';
+                    funcname = 'setOutletLocation';              
+                    wapxajax(classname, funcname, params);
                     return false;
                 },
                 cancel: function (res) {

@@ -25,6 +25,16 @@ class BrowserHistory
         return $url; 
     }
     
+    public static function current($gh_id, $openid) {
+        $key = self::key($gh_id, $openid);
+        $history = \Yii::$app->cache->get($key);
+        if (false === $history) return false;                
+        $url = $history[count($history) - 1];
+        if (false === strpos($url, '&pop=1'))
+                $url .= '&pop=1';
+        return $url; 
+    }
+
     private static function url_isAlreadyTopOfStack($gh_id, $openid) {
         $key = self::key($gh_id, $openid);
         $history = \Yii::$app->cache->get($key);

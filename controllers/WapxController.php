@@ -331,12 +331,11 @@ class WapxController extends Controller
     }
 
 
-    public function actionWapxajax($funcname, $params) {
-        \app\models\U::W('wapx/wapxajax');
-        \app\models\U::W($funcname, $params);
-        $params = json_decode($params, true);
-        \app\models\U::W($funcname, $params);
-        return call_user_func_array($funcname, $params);
+    public function actionWapxajax($classname, $funcname, $params) {
+        $params = json_decode($params, true);       
+        $classname ="\\app\\models\\".$classname;
+        $ret = call_user_func_array(array($classname, $funcname), $params);
+        return json_encode(['code' => !$ret]);
     }
 
 
