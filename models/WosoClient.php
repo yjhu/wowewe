@@ -49,7 +49,7 @@ class WosoClient extends \yii\db\ActiveRecord
     
     public function getWechats() {
         return $this->hasMany(\app\models\ClientWechat::className(), [
-            'client_id' => $this->client_id,
+            'client_id' => 'client_id',
         ]);
     }
 }
