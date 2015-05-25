@@ -34,17 +34,32 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
         </header>
 
         <div id="outletMenuItems" class="popover">
-          <!--
-          <header class="bar bar-nav">
-            <h1 class="title">Popover title</h1>
-          </header>
-          -->
           <ul class="table-view">
-            <li class="table-view-cell">订单管理</li>
-            <li class="table-view-cell">员工管理</li>
-            <li class="table-view-cell">粉丝管理</li>
-            <li class="table-view-cell">用户管理</li>
-          </ul>
+            <li class="table-view-cell">
+                  <a class="navigate-right">
+                  <span class="badge badge-primary">5</span>
+                    订单管理
+                  </a>
+            </li>
+            <li class="table-view-cell">
+                  <a class="navigate-right">
+                  <span class="badge badge-primary">50</span>
+                    员工管理
+                  </a>
+            </li>
+            <li class="table-view-cell">
+                  <a class="navigate-right">
+                  <span class="badge badge-primary">320</span>
+                    粉丝管理
+                  </a>
+            </li>
+            <li class="table-view-cell">
+                  <a class="navigate-right">
+                  <span class="badge badge-primary">3000</span>
+                    用户管理
+                  </a>
+            </li>
+          </ul>          
         </div>
 
         <div class="content">            
