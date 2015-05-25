@@ -60,6 +60,7 @@ include('../models/utils/emoji.php');
                     <span class="icon icon-left-nav"></span>
                 </a>
 <?php } ?>
+            <a data-ignore="push" class="btn btn-link btn-nav pull-right" href="#showQr"><img src="../web/images/woke/qr.png" width=18px></a>
             <h1 class="title">
                 <span class="badge badge-positive">员工</span> <?= $employee->name ?> <?= !empty($employee->mobiles) ? $employee->mobiles[0]:'' ?>
             </h1>
@@ -175,20 +176,19 @@ include('../models/utils/emoji.php');
         <div id="showQr" class="modal">
             <header class="bar bar-nav">
                 <a class="icon icon-close pull-right" href="#showQr"></a>
-                <h1 class="title">小强的推广二维码</h1>
+                <h1 class="title"><?= $employee->name ?>的推广二维码</h1>
             </header>
 
             <div class="content">
 
                 <center>
 
-                    <img src="./web/images/woke/qr-demo.jpg" width="100%">
+                    <img src="<?= $employee->promoter->getQrImageUrl() ?>" width="100%">
                     <br><br>
 
                     &nbsp;
                 </center>
 
-                <a class="btn btn-block" href="#showQr">返回</a>
             </div>
         </div>
 
