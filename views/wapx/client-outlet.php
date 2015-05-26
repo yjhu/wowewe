@@ -165,7 +165,7 @@ use \yii\helpers\Url;
             </ul>
 
             <p class="content-padded">
-               <a href="#editClientOutlet" class="btn btn-positive btn-block">修改信息</a>
+               <a href="#editClientOutlet" class="btn btn-positive btn-block" id="editClientOutletInfo">修改信息</a>
             </p>
             
             <ul class="table-view">
@@ -231,7 +231,7 @@ use \yii\helpers\Url;
         <div id="editClientOutlet" class="modal">
           <header class="bar bar-nav">
             <a class="icon icon-close pull-right" href="#editClientOutlet"></a>
-            <h1 class="title">营业厅信息修改</h1>
+            <h1 class="title">门店信息修改</h1>
           </header>
 
           <div class="content">
@@ -271,8 +271,18 @@ use \yii\helpers\Url;
 
                                 <button class="btn-positive icon icon-edit">更换</button>
                                 &nbsp;&nbsp;
-                                <button class="btn-negative icon icon-close" id="delBtn" picname="aaa" onclick="delPic();">删除</button>
+                                <button class="btn-negative icon icon-close" picname="<?= basename($pic_url) ?>" onclick="delBtn($(this).attr('picname'));">删除</button>
+                        </li>
                         <?php } ?>  
+
+
+                        <li class="table-view-cell" id="addpic">
+                            <img class="media-object pull-left" src="/wx/web/images/comm-icon/upload-pic-64x64.png" width="64" height="64">
+
+                            <button class="btn-positive icon icon-plus pull-left">新增</button>
+                        </li>
+
+
                         </ul>
                 <?php             
                 } 
@@ -294,6 +304,7 @@ use \yii\helpers\Url;
         <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
         <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
         <script>
+        $("#editClientOutletInfo").hide();
 //            alert("wx_config begins.");
         wx.config({
       debug: false,
@@ -349,16 +360,6 @@ use \yii\helpers\Url;
 </script>
 
 <script>
-        function delPic()
-        {
-                picname = $(this).attr('picname');
-                
-                alert(picname);
-                $("#"+picname).remove();
-        }
-
-
-
 
         function wapxajax(args)
         {
@@ -392,8 +393,24 @@ use \yii\helpers\Url;
         }
 
 
+
+
+        function delBtn(a)
+        {
+           
+            //picname = $(this).attr('picname');
+            //alert(picname);
+            //$("#"+a).remove();
+
+            //alert(selector);
+
+            document.getElementById(a).style.display = 'none';
+
+        }
+  
         wx.ready(function () {
-            //alert("wx_ready!");
+        //alert("wx_ready!");
+        $("#editClientOutletInfo").show();
 
             try {
             document.querySelector('#openLocation').onclick = function () {
@@ -409,6 +426,27 @@ use \yii\helpers\Url;
             } catch(e) {
                 //alert("error!!!");
             }
+
+
+            /*门店信息修改*/
+            document.querySelector('#applyBtn').onclick = function () {
+
+                telephone = $("#telephoneClientOutlet").val();
+                address = $("#addressClientOutlet").val();
+
+                  wapxajax({
+                    'classname':    '\\app\\models\\ClientOutlet',
+                    'funcname':     'setOutletInfoAjax',
+                    'params':       {
+                        'outlet_id':    '<?= $outlet->outlet_id; ?>',
+                        'telephone':     telephone,
+                        'address':    address
+                    } 
+                });
+                return false;  
+            };
+
+
             
             // 7.2 获取当前地理位置
             document.querySelector('#getLocation').onclick = function () {
