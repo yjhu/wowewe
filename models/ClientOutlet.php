@@ -253,7 +253,12 @@ class ClientOutlet extends \yii\db\ActiveRecord
     }
     
     public static function setOutletPicsAjax($outlet_id, $gh_id, $media_ids, $action) {
-        \app\models\U::W(['setOutletPicsAjax--------------------',$media_ids]);
+//        \app\models\U::W(['setOutletPicsAjax--------------------',$media_ids]);
+        if (!is_array($media_ids)) {
+            if (is_string($media_ids)) {
+                $media_ids = json_decode($media_ids);
+            }
+        }
         $outlet = self::findOne(['outlet_id' => $outlet_id]);
         if (empty($outlet)) {
             return json_encode(['code' => -1, 'msg' => '该门店为空。']);
