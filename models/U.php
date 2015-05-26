@@ -591,9 +591,7 @@ class U
             } else {
                 $postFields = $params;
             }            
-            //U::W(array($requestUrl, $postFields));
             $resp = U::curl($requestUrl, $postFields);    
-            //U::W($resp);
         } catch (Exception $e) {
             U::W($e->getCode().':'.$e->getMessage());
             return ['errcode'=>$e->getCode(), 'errmsg'=>$e->getMessage()];
@@ -609,7 +607,6 @@ class U
                 return json_decode(json_encode($respObject), true);            
             }
         }
-        //U::W($resp);
         return ['errcode'=>90000, 'errmsg'=>'HTTP_RESPONSE_NOT_WELL_FORMED'];        
     }
 
