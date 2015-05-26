@@ -192,4 +192,19 @@ class ClientOutlet extends \yii\db\ActiveRecord
             return json_encode(['code' => -1, 'msg' => '门店位置无法保存。']);
         }
     }
+    
+    public static function setOutletInfoAjax($outlet_id, $telephone, $address) {
+        $outlet = self::findOne(['outlet_id' => $outlet_id]);
+        if (empty($outlet)) {
+            return json_encode(['code' => -1, 'msg' => '该门店为空。']);
+        } 
+        if (1 == $outlet->updateAttributes([
+            'telephone' => $telephone,
+            'address'   => $address,
+        ])) {
+            return json_encode(['code' => 0, 'msg' => '门店信息已更新。']);
+        } else {
+            return json_encode(['code' => -1, 'msg' => '门店信息保存错误。']);
+        }
+    }
 }
