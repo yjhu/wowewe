@@ -98,12 +98,7 @@ use \yii\helpers\Url;
                   <div  class="slide-group">
                     <?php 
                     foreach ($pics as $pic){ 
-                        $pic_url = \Yii::$app->request->getHostInfo() . 
-                                \Yii::$app->request->getBaseUrl() . 
-                                '/' . 
-                                'office_campaign_detail' . 
-                                '/' .
-                                "{$pic}";
+                        $pic_url = $outlet->getPicUrl($pic);
                     ?>  
                     <div class="slide">
                         <center>
@@ -126,12 +121,7 @@ use \yii\helpers\Url;
                   <div  class="slide-group">
                     <?php 
                     foreach ($pics as $pic){ 
-                        $pic_url = \Yii::$app->request->getHostInfo() . 
-                                \Yii::$app->request->getBaseUrl() . 
-                                '/' . 
-                                'office_campaign_detail' . 
-                                '/' .
-                                "{$pic}";
+                        $pic_url = $outlet->getPicUrl($pic);
                     ?>  
                     <div class="slide">
                         <center>
@@ -261,12 +251,7 @@ use \yii\helpers\Url;
                 ?>
                     <?php 
                     foreach ($pics as $pic){ 
-                        $pic_url = \Yii::$app->request->getHostInfo() . 
-                                \Yii::$app->request->getBaseUrl() . 
-                                '/' . 
-                                'office_campaign_detail' . 
-                                '/' .
-                                "{$pic}";
+                        $pic_url = $outlet->getPicUrl($pic);
                     ?>  
       
                     <li class="table-view-cell" id="<?= basename($pic_url) ?>">
@@ -397,8 +382,8 @@ use \yii\helpers\Url;
                             for(i=0; i<t.values.length; i++)
                             {
                                 pic = values[i];
-                                pic_url = "/wx/web/images/office_campaign_detail/"+pic+".jpg";
-                                
+                                pic_url = "/wx/web/images/outlets/"+pic+".jpg";
+
                                 var text = text+"<li class=\"table-view-cell\" id=\""+pic+"\">"+
                                 "<img class=\"media-object pull-left\" src=\""+pic_url+"\" width=\"64\" height=\"64\">"+
                                 "<button class=\"btn-negative icon icon-close\" picname=\""+pic+"\" onclick=\"delPicBtn($(this).attr('picname'));\">删除</button>"+
@@ -446,8 +431,8 @@ use \yii\helpers\Url;
                 'classname':    '\\app\\models\\ClientOutlet',
                 'funcname':     'setOutletPicsAjax',
                 'params':       {
-                    'gh_id':        '<?= $wx_user->gh_id; ?>',
                     'outlet_id':    '<?= $outlet->outlet_id; ?>',
+                    'gh_id':        '<?= $wx_user->gh_id; ?>',                   
                     'media_ids':     serverId,
                     'action':       'delete'
                 } 
@@ -556,8 +541,8 @@ use \yii\helpers\Url;
                         'classname':    '\\app\\models\\ClientOutlet',
                         'funcname':     'setOutletPicsAjax',
                         'params':       {
-                            'gh_id':        '<?= $wx_user->gh_id; ?>',
                             'outlet_id':    '<?= $outlet->outlet_id; ?>',
+                            'gh_id':        '<?= $wx_user->gh_id; ?>',                          
                             'media_ids':     serverId,
                             'action':       'add'
                         } 

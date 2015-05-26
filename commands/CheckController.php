@@ -142,7 +142,7 @@ class CheckController extends \yii\console\Controller {
                         $from = $detail->getPicFileByMedia($pic_url);
                         $media = str_replace('.jpg', '', $pic_url);
                         $to   = $outlet->getPicPathname($media);
-                        copy($from, dirname($to));
+                        copy($from, $to);
                         $pics[] = $media;
                     }
                }

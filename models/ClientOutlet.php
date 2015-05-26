@@ -191,7 +191,7 @@ class ClientOutlet extends \yii\db\ActiveRecord
     }
     
     public function addPics($gh_id, $media_ids) {
-        foreach ($media_id as $media) {
+        foreach ($media_ids as $media) {
             $pic_pathname = $this->getPicPathname($media);           
             \Yii::$app->wx->setGhId($gh_id);
             \Yii::$app->wx->WxMediaDownload($media, $pic_pathname);
@@ -253,20 +253,35 @@ class ClientOutlet extends \yii\db\ActiveRecord
     }
     
     public static function setOutletPicsAjax($outlet_id, $gh_id, $media_ids, $action) {
+        \app\models\U::W(['setOutletPicsAjax--------------------',$media_ids]);
         $outlet = self::findOne(['outlet_id' => $outlet_id]);
         if (empty($outlet)) {
             return json_encode(['code' => -1, 'msg' => '该门店为空。']);
         } 
         if ('add' == $action) {
             $outlet->addPics($gh_id, $media_ids);
-            return json_encode(['code' => 0, 'msg' => '图片添加成功。', 'values' => explode(',', $outlet->pics)]);
+            return json_encode([
+                'code' => 0, 
+                'msg' => '图片添加成功。', 
+                'values' => explode(',', $outlet->pics), 
+                'action' => $action]
+            );
         } else if ('delete' == $action) {
             foreach($media_ids as $media_id) {
                 $outlet->deletePic($media_id);
             }
-            return json_encode(['code' => 0, 'msg' => "图片删除成功。", 'values' => $media_ids]);
+            return json_encode([
+                'code' => 0, 
+                'msg' => "图片删除成功。", 
+                'values' => $media_ids, 
+                'action' => $action
+            ]);
         } else {
-            return json_encode(['code' => -1, 'msg' => "操作{$action}不支持！"]);
+            return json_encode([
+                'code' => -1, 
+                'msg' => "操作{$action}不支持！", 
+                'action' => $action
+            ]);
         }
     }
 }
