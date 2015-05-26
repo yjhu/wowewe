@@ -113,12 +113,13 @@ use \yii\helpers\Url;
         </div>
 
         <div class="content">
+            <div class="slider">
+            <div  class="slide-group">
             <?php 
             if (!empty($outlet->pics)) { 
                 $pics = explode(",", $outlet->pics);
             ?>
-                <div class="slider">
-                  <div  class="slide-group">
+
                     <?php 
                     foreach ($pics as $pic){ 
                         $pic_url = $outlet->getPicUrl($pic);
@@ -130,19 +131,33 @@ use \yii\helpers\Url;
                             </a>
                         </center>
                     </div>
-                    <?php } ?>  
-                  </div>
-                </div>
+                    <?php } ?>                     
             <?php             
             } 
             ?>
+                <div class="slide">
+                    <center>
+                    <a data-ignore='push' class='btn btn-link' id='uploadImages'>
+                    <img height=50% src="../web/images/comm-icon/iconfont-shangchuantupian.png">
+                    </a>
+                    </center>
+                </div>
+            </div>
+            </div>
             
             <ul class="table-view">
                 <li class="table-view-cell table-view-divider">门店管理归属</li>                
                 <li class="table-view-cell">                        
                     <?= $outlet->supervisionOrganization->title ?>
                 </li>
-                <li class="table-view-cell table-view-divider">门店地址及电话</li>                
+                <li class="table-view-cell table-view-divider">
+                    门店地址及电话<a class="btn btn-link pull-right" href="#composeOutletInfo" id="editClientOutletInfo"><img src="../web/images/comm-icon/iconfont-xiugai.png" /></span></a>
+                    <!--
+                    <a href="#editClientOutlet" id="editClientOutletInfo">
+                    <span class='icon icon-compose pull-right'></span>
+                    </a>
+                    -->
+                </li>                
                 <li class="table-view-cell">                        
                     地址：<?= $outlet->address ?>
                     <?php if (!empty($outlet->latitude) && !empty($outlet->longitude)) { ?>
@@ -152,11 +167,7 @@ use \yii\helpers\Url;
                 <li class="table-view-cell">                        
                     电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right" id="getLocation"><img src="../web/images/comm-icon/iconfont-tuding.png" /></a>
                 </li>
-            </ul>
-
-            <p class="content-padded">
-               <a href="#editClientOutlet" class="btn btn-positive btn-block" id="editClientOutletInfo">修改信息</a>
-            </p>
+            </ul>           
             
             <ul class="table-view">
                 <li class="table-view-cell table-view-divider">所属员工列表</li>                
@@ -216,7 +227,27 @@ use \yii\helpers\Url;
             </center>
             </div>
         </div>
-
+<!--- -->
+        <div id='composeOutletInfo' class='modal'>
+            <header class="bar bar-nav">
+            <a class="icon icon-close pull-right" href="#composeOutletInfo"></a>
+            <h1 class="title"><span class="icon icon-compose"></span><?= $outlet->title ?></h1>
+            </header>
+            <div class='content'>
+                <form class="input-group">
+                  <div class="input-row">
+                    <label>地址：</label>
+                    <input type="text" id='address' value='<?= $outlet->address ?>'>
+                  </div>
+                  <div class="input-row">
+                    <label>电话：</label>
+                    <input type="tel" id='telephone' value='<?= $outlet->telephone ?>'>
+                  </div>
+                </form>
+                <button class="btn btn-positive btn-block" style="border-radius:3px" id="confirmOutletInfo">确定</button>
+                <a class="btn btn-block" style="border-radius:3px" href="#composeOutletInfo"> 返回</a>
+            </div>
+        </div>
 
         <div id="editClientOutlet" class="modal">
           <header class="bar bar-nav">
@@ -291,6 +322,8 @@ use \yii\helpers\Url;
         <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
         <script>
         $("#editClientOutletInfo").hide();
+        $('#openLocation').hide();
+        $('#getLocation').hide();
 //            alert("wx_config begins.");
 
 
@@ -441,11 +474,11 @@ use \yii\helpers\Url;
         }
   
         wx.ready(function () {
-        //alert("wx_ready!");
-        $("#editClientOutletInfo").show();
+            $("#editClientOutletInfo").show();
+            $('#openLocation').show();
+            $('#getLocation').show();
 
-            try {
-            document.querySelector('#openLocation').onclick = function () {
+            $('#openLocation').click(function () {
                 wx.openLocation({
                   latitude: <?= $outlet->latitude; ?>,
                   longitude: <?= $outlet->longitude; ?>,
@@ -454,13 +487,100 @@ use \yii\helpers\Url;
                   scale: 12,
                   infoUrl: ''
                 });
-            };
-            } catch(e) {
-                //alert("error!!!");
-            }
+            });
+            
+            $('#getLocation').click(function () {
+                if ( !confirm("当前位置设为门店位置?") )
+                    return false;
 
-
-            /*门店信息修改*/
+                wx.getLocation({
+                    success: function (res) {
+                        wapxajax({
+                            'classname':    '\\app\\models\\ClientOutlet',
+                            'funcname':     'setOutletLocationAjax',
+                            'params':       {
+                                'outlet_id':    '<?= $outlet->outlet_id; ?>',
+                                'latitude':     res.latitude,
+                                'longitude':    res.longitude
+                            }                           
+                         });
+                         return false;
+                    },
+                    cancel: function (res) {
+                        alert('用户拒绝授权获取地理位置');
+                    }
+                });
+            });
+            
+            $('#confirmOutletInfo').click(function () {
+                var telephone = $('#telephone').val();
+                var address   = $('#address').val();
+//                alert(address);
+                wapxajax({
+                    'classname':    '\\app\\models\\ClientOutlet',
+                    'funcname':     'setOutletInfoAjax',
+                    'params':       {
+                        'outlet_id':    '<?= $outlet->outlet_id; ?>',
+                        'telephone':     telephone,
+                        'address':       address
+                    } 
+                });
+//                return false;
+            });
+            
+            $('#uploadImages').click(function() {
+                var uploadImages = {
+                    localIds:   [],
+                    serverIds:  []
+                };
+                
+                if ( !confirm("更新当前门店图片?") )
+                    return false;
+                
+                wx.chooseImage({
+                    success:    function (res) {
+                        if (res.localIds.length > 5) {
+                            alert('最多只能选择5张图片，请重新选择！');
+                            return false;
+                        }
+                        uploadImages.localIds = res.localIds;
+                        var i = 0;
+                        function uploadImage() {
+                            //alert("开始上传。");
+                            wx.uploadImage({
+                                localId:     uploadImages.localIds[i],
+                                success:    function (res) {
+                                    alert("成功上传"+(i + 1)+"张照片。");
+                                    uploadImages.serverIds[i] = res.serverId;
+                                    i++;
+                                    if (i < uploadImages.localIds.length) {
+                                        uploadImage();
+                                    } else {
+                                        wapxajax({
+                                            'classname':    '\\app\\models\\ClientOutlet',
+                                            'funcname':     'setOutletPicsAjax',
+                                            'params':       {
+                                                'outlet_id':    '<?= $outlet->outlet_id; ?>',
+                                                'gh_id':        '<?= $wx_user->gh_id; ?>',                          
+                                                'media_ids':     uploadImages.serverIds,
+                                                'action':       'replace'
+                                            } 
+                                        });
+                                        return false;
+                                    }
+                                },
+                                fail:       function (res) {
+                                    alert('wx.uploadImage failed: ' + JSON.stringify(res));
+                                    return false;
+                                }                
+                            });
+                        }
+                        alert("开始上传。");
+                        uploadImage();
+                    }
+                });
+            });
+            
             document.querySelector('#applyBtn').onclick = function () {
 
                 telephone = $("#telephoneClientOutlet").val();
@@ -562,45 +682,6 @@ use \yii\helpers\Url;
             });
             return false;
           };
-
-
-
-            
-            // 7.2 获取当前地理位置
-            document.querySelector('#getLocation').onclick = function () {
-
-            if(!confirm("当前位置设为门店位置?"))
-            return false;
-
-              wx.getLocation({
-                success: function (res) {
-                  //alert(JSON.stringify(res));
-                    //params = new Array();
-//                    var params = {};                    
-//                    params.outlet_id = '<//?= $outlet->outlet_id; ?>';
-//                    params.latitude = res.latitude;
-//                    params.longitude = res.longitude;
-//
-//                    classname = 'ClientOutlet';
-//                    funcname = 'setOutletLocation';              
-//                    wapxajax(classname, funcname, params);
-                    wapxajax({
-                        'classname':    '\\app\\models\\ClientOutlet',
-                        'funcname':     'setOutletLocationAjax',
-                        'params':       {
-                            'outlet_id':    '<?= $outlet->outlet_id; ?>',
-                            'latitude':     res.latitude,
-                            'longitude':    res.longitude
-                        }                           
-                    });
-                    return false;
-                },
-                cancel: function (res) {
-                  alert('用户拒绝授权获取地理位置');
-                }
-              });
-            };
-     
 
 
         });

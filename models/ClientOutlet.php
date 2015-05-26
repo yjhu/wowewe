@@ -197,8 +197,9 @@ class ClientOutlet extends \yii\db\ActiveRecord
             \Yii::$app->wx->WxMediaDownload($media, $pic_pathname);
             \app\models\U::compress_image_file($pic_pathname);
         }
-        $pics = explode(',', $this->pics);
-        $this->updateAttributes(['pics' => implode(',', array_merge($pics, $media_ids))]);
+        if (empty($this->pics)) $pics = implode(',', $media_ids);
+        else                    $pics = $this->pics .','.implode (',', $media_ids);
+        $this->updateAttributes(['pics' => $pics]);
     }
     
     public function getPicUrls() {        
@@ -210,12 +211,20 @@ class ClientOutlet extends \yii\db\ActiveRecord
          return $urls;
     }
     
-    public function deletePic($media_id) {
-        $media_ids = explode(',', $this->pics);
+    public function deleteAllPics() {
+        $media_ids = explode(',', $this->pics);        
         foreach($media_ids as $mediaid) {
+            @unlink($this->getPicPathname($mediaid));
+        }
+        $this->updateAttributes(['pics' => '']);
+    }
+    
+    public function deletePic($media_id) {
+        $media_ids = explode(',', $this->pics);        
+        foreach($media_ids as $index => $mediaid) {
             if ($media_id == $mediaid) {
-                unlink($this->getPicPathname($mediaid));
-                unset($mediaid);
+                @unlink($this->getPicPathname($mediaid));
+                unset($media_ids[$index]);
                 break;
             }
         }
@@ -268,7 +277,7 @@ class ClientOutlet extends \yii\db\ActiveRecord
             return json_encode([
                 'code' => 0, 
                 'msg' => '图片添加成功。', 
-                'values' => explode(',', $outlet->pics), 
+                'values' => $media_ids, 
                 'action' => $action]
             );
         } else if ('delete' == $action) {
@@ -281,6 +290,15 @@ class ClientOutlet extends \yii\db\ActiveRecord
                 'values' => $media_ids, 
                 'action' => $action
             ]);
+        } else if ('replace' == $action){
+            $outlet->deleteAllPics();
+            $outlet->addPics($gh_id, $media_ids);
+            return json_encode([
+                'code' => 0, 
+                'msg' => '图片添加成功。', 
+                'values' => $media_ids, 
+                'action' => $action]
+            );
         } else {
             return json_encode([
                 'code' => -1, 
