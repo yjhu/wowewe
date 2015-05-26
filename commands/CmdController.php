@@ -55,6 +55,17 @@ class CmdController extends Controller
     public function actionIndex()
     {        
         echo 'Hello, world!!';
+
+        //U::W(U::getQqAddress(114.253578, 30.585514));
+        $arr = U::getMobileLocation('13871407676');
+        if (!empty($arr['errcode'])) {
+            U::W(['err', $arr]);
+        } 
+        else {
+            U::W($arr);        
+        }
+        return;
+        
         $clientOrganization = ClientOrganization::findOne(50);
         U::W($clientOrganization);
         

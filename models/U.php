@@ -555,75 +555,62 @@ class U
         imagedestroy($new_image);
     }
 
+    public static function getQqAddress($lon, $lat)
+    {
+        $map = new \app\models\MMapApiQq;
+        return $map->getAddress($lon, $lat);
+    }
+
+    /*
+    Array
+    (
+        [Mobile] => 13871407676
+        [QueryResult] => True
+        [TO] => 中国移动
+        [Corp] => 中国移动
+        [Province] => 湖北
+        [City] => 武汉
+        [AreaCode] => 027
+        [PostCode] => 430000
+        [VNO] => 
+        [Card] => 
+    )
+    */
+    public static function getMobileLocation($mobile)
+    {
+        $method = 'GET';
+        $format = 'json';
+        $url = 'http://v.showji.com/Locating/showji.com20150416273007.aspx';
+        $params['m'] = $mobile;
+        $params['output'] = $format;
+        try {
+            $requestUrl = $url . '?';
+            if ($method == 'GET') {
+                $requestUrl .= http_build_query($params);
+                $postFields = null;                
+            } else {
+                $postFields = $params;
+            }            
+            $resp = U::curl($requestUrl, $postFields);    
+        } catch (Exception $e) {
+            U::W($e->getCode().':'.$e->getMessage());
+            return ['errcode'=>$e->getCode(), 'errmsg'=>$e->getMessage()];
+        }
+
+        if ("json" === $format) {
+            $arr = json_decode($resp, true);
+            if (null !== $arr)
+                return $arr;
+        } else if("xml" === $format) {
+            $respObject = @simplexml_load_string($resp);
+            if (false !== $respObject) {
+                return json_decode(json_encode($respObject), true);            
+            }
+        }
+        return ['errcode'=>90000, 'errmsg'=>'HTTP_RESPONSE_NOT_WELL_FORMED'];        
+    }
+
+
 }
 
-/*
-    public static function L($msg, $level=Logger::LEVEL_INFO, $category='application')
-    {
-        Yii::log(CVarDumper::dumpAsString($msg), $level, $category);
-    }
-
-    public static function T($msg, $category='application')
-    {
-        Yii::trace(CVarDumper::dumpAsString($msg), $category);
-    }
-
-            //$probability = 0.5    //        0.1/12*100;
-
-            $params = [
-                ['name'=>'item 0','value'=>0, 'start'=> 0, 'end'=> 30, 'probability'=> 50],
-                ['name'=>'item 1','value'=>1, 'start'=>30, 'end'=>60, 'probability'=>25],
-                ['name'=>'item 2','value'=>2, 'start'=>60, 'end'=>90, 'probability'=>25],
-                ['name'=>'item 3','value'=>3, 'start'=>90, 'end'=>120, 'probability'=>0],
-                ['name'=>'item 4','value'=>4, 'start'=>120, 'end'=>150, 'probability'=>0],
-                ['name'=>'item 5','value'=>5, 'start'=>150, 'end'=>180, 'probability'=>0],
-                ['name'=>'item 6','value'=>6, 'start'=>180, 'end'=>210, 'probability'=>0],
-                ['name'=>'item 7','value'=>7, 'start'=>210, 'end'=>240, 'probability'=>0],
-                ['name'=>'item 8','value'=>8, 'start'=>240, 'end'=>270, 'probability'=>0],
-                ['name'=>'item 9','value'=>9, 'start'=>270, 'end'=>300, 'probability'=>0],
-                ['name'=>'item 10','value'=>10, 'start'=>300, 'end'=>330, 'probability'=>0],
-                ['name'=>'item 11','value'=>11, 'start'=>330, 'end'=>360, 'probability'=>0],
-            ];
-
-    public static function getDataForWeixin($appId, $MsgImg, $url, $title, $desc)
-    {
-        $arr = [
-            'appId'=>$appId,
-            'MsgImg'=>$MsgImg,
-            'TLImg'=>$MsgImg,            
-            'url'=>$url,
-            'title'=>$title,            
-            'desc'=>$desc,
-            'fakeid'=>'',
-            'prepare' => function ($argv){},
-            'callback' => function($res) {},
-        ];
-        return json_encode($arr);
-    }
-
-    public static function getMobileLuck($pn)
-    {
-        $result = '';
-
-        //$loca = U::curl("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$pn."&output=json");
-        //$loca = json_decode($loca, true);    
-        //U::W($loca);
-
-        $loca = file_get_contents("http://api.showji.com/Locating/www.show.ji.c.o.m.aspx?m=".$pn."&output=json&callback=querycallback");
-        $loca = substr($loca, 14, -2);  
-        $loca = json_decode($loca, true);    
-        U::W($loca);
-
-        
-
-        $lucy_msg = file_get_contents("http://jixiong.showji.com/api.aspx?m=".$pn."&output=json&callback=querycallback");
-        $lucy_msg = substr($lucy_msg, 14, -2);  
-        $lucy_msg = json_decode($lucy_msg, true);    
-        U::W($lucy_msg);
-        $result .= "<b>vendor</b><br/>";
-
-        return $result;
-        
-    }
-*/
 
