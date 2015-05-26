@@ -68,7 +68,7 @@ include('../models/utils/emoji.php');
         </header>
 
         <?php
-        if (!empty($employee->wechat) && !empty($employee->wechat->headimgurl)) {
+        if (!empty($employee->wechat) && !empty($employee->wechat->headImgUrl)) {
             $wx_nickname = $employee->wechat->nickname;
             $wx_mobile = $employee->wechat->getBindMobileNumbersStr();
             $wx_country = $employee->wechat->country;
@@ -90,12 +90,14 @@ include('../models/utils/emoji.php');
                 <li class="table-view-cell table-view-divider">微信信息</li>                
                     <?php if (!empty($employee->wechat)) { ?>
                         <li class="table-view-cell media">
-                            <img class="media-object pull-left" style="width:120px;" src="<?= $employee->wechat->headimgurl ?>"/>
+                            <a data-ignore='push' href='#headImg'>
+                                <img class="media-object pull-left" style="width:120px;" src="<?= $employee->wechat->headImgUrl ?>"/>
                             <div class="media-body">
                             <?= emoji_unified_to_html(emoji_softbank_to_unified($wx_nickname)) ?>
                             <p><?= $wx_country ?> <?= $wx_province ?> <?= $wx_city ?></p>
                             <p><?= $wx_mobile ?></p>
                             </div>
+                            </a>
                         </li>                    
                     <?php } else { ?>
                     <li class="table-view-cell">
@@ -176,19 +178,26 @@ include('../models/utils/emoji.php');
         <div id="showQr" class="modal">
             <header class="bar bar-nav">
                 <a class="icon icon-close pull-right" href="#showQr"></a>
-                <h1 class="title"><?= $employee->name ?>的推广二维码</h1>
+                <h1 class="title">专属推广二维码</h1>
             </header>
-
             <div class="content">
-
                 <center>
-
                     <img src="<?= $employee->getPromoter($wx_user->gh_id)->getQrImageUrl() ?>" width="100%">
-                    <br><br>
-
+                    <p><?= $employee->name ?></p>
                     &nbsp;
                 </center>
-
+            </div>
+        </div>
+        
+        <div id="headImg" class="modal">
+            <header class="bar bar-nav">
+                <a class="icon icon-close pull-right" href="#headImg"></a>
+                <h1 class="title"><?= $employee->name ?></h1>
+            </header>
+            <div class="content">
+                <center>
+                    <img src="<?= !empty($employee->wechat) ? $employee->wechat->getHeadImgUrl() : ''; ?>" width="100%">
+                </center>
             </div>
         </div>
 
@@ -197,7 +206,7 @@ include('../models/utils/emoji.php');
         <div class="bar bar-standard bar-footer">
             <div class="content" style="font-size: 10px;color:#ccc;">
                 <center>
-                    <span><img style='width:18px;' src="<?= $wx_user->headimgurl ?>"/>&nbsp;&nbsp;</span>
+                    <span><img style='width:18px;' src="<?= $wx_user->headImgUrl ?>"/>&nbsp;&nbsp;</span>
                     <span><?= emoji_unified_to_html(emoji_softbank_to_unified($wx_user->nickname)) ?>&nbsp;</span>
                     <span><?= $wx_user->getBindMobileNumbersStr() ?></span>
 

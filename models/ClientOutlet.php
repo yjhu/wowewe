@@ -179,10 +179,17 @@ class ClientOutlet extends \yii\db\ActiveRecord
     }
     
     public static function setOutletLocationAjax($outlet_id, $latitude, $longitude) {
-        if (self::findOne(['outlet_id' => $outlet_id])->setLocation($latitude, $longitude)) {
+        $outlet = self::findOne(['outlet_id' => $outlet_id]);
+        if (empty($outlet)) {
+            return json_encode(['code' => -1, 'msg' => '该门店为空。']);
+        } 
+        if ($outlet->setLocation($latitude, $longitude)) {
+//            if (empty($outlet->address)) {
+                $outlet->updateAttributes(['address' => \app\models\U::getQqAddress($longitude, $latitude)]);
+//            }
             return json_encode(['code' => 0, 'msg' => '门店位置已更新。']);
         } else {
-            return json_encode(['code' => 0, 'msg' => '门店位置无法保存。']);
+            return json_encode(['code' => -1, 'msg' => '门店位置无法保存。']);
         }
     }
 }
