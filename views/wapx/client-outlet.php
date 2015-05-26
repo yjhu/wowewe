@@ -163,6 +163,10 @@ use \yii\helpers\Url;
                     电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right" id="getLocation"><img src="../web/images/comm-icon/iconfont-tuding.png" /></a>
                 </li>
             </ul>
+
+            <p class="content-padded">
+               <a href="#editClientOutlet" class="btn btn-positive btn-block">修改信息</a>
+            </p>
             
             <ul class="table-view">
                 <li class="table-view-cell table-view-divider">所属员工列表</li>                
@@ -222,6 +226,69 @@ use \yii\helpers\Url;
             </center>
             </div>
         </div>
+
+
+        <div id="editClientOutlet" class="modal">
+          <header class="bar bar-nav">
+            <a class="icon icon-close pull-right" href="#editClientOutlet"></a>
+            <h1 class="title">营业厅信息修改</h1>
+          </header>
+
+          <div class="content">
+              <center>
+                <div class="input-group">
+
+                  <div class="input-row">
+                      <label style="color:#777777">地址</label>
+                      <input type="text" id="addressClientOutlet" value="<?= $outlet->address ?>">
+                    </div>
+
+                    <div class="input-row">
+                      <label style="color:#777777">电话</label>
+                       <input type="text"  id="telephoneClientOutlet" value="<?= $outlet->telephone ?>">
+                    </div>
+                </div>
+
+                <p class="content-padded"></p>
+
+                 <?php 
+                if (!empty($outlet->pics)) { 
+                    $pics = explode(",", $outlet->pics);
+                ?>
+                        <ul class="table-view">
+                        <?php 
+                        foreach ($pics as $pic){ 
+                            $pic_url = \Yii::$app->request->getHostInfo() . 
+                                    \Yii::$app->request->getBaseUrl() . 
+                                    '/' . 
+                                    'office_campaign_detail' . 
+                                    '/' .
+                                    "{$pic}";
+                        ?>  
+          
+                        <li class="table-view-cell" id="<?= basename($pic_url) ?>">
+                            <img class="media-object pull-left" src="<?= $pic_url ?>" width="64" height="64">
+
+                                <button class="btn-positive icon icon-edit">更换</button>
+                                &nbsp;&nbsp;
+                                <button class="btn-negative icon icon-close" id="delBtn" picname="aaa" onclick="delPic();">删除</button>
+                        <?php } ?>  
+                        </ul>
+                <?php             
+                } 
+                ?>
+                            
+                <br>
+                  <button class="btn btn-positive btn-block" style="border-radius:3px" id="applyBtn">确定</button>
+
+                  <a class="btn btn-block" style="border-radius:3px" href="#editClientOutlet"> 返回</a>
+              </center>
+          </div>
+        </div>
+
+
+
+
         <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
         <!-- Include the compiled Ratchet JS -->
         <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
@@ -282,6 +349,15 @@ use \yii\helpers\Url;
 </script>
 
 <script>
+        function delPic()
+        {
+                picname = $(this).attr('picname');
+                
+                alert(picname);
+                $("#"+picname).remove();
+        }
+
+
 
 
         function wapxajax(args)
@@ -353,7 +429,7 @@ use \yii\helpers\Url;
 //                    funcname = 'setOutletLocation';              
 //                    wapxajax(classname, funcname, params);
                     wapxajax({
-                        'classname':    '\\app\\\models\\ClientOutlet',
+                        'classname':    '\\app\\models\\ClientOutlet',
                         'funcname':     'setOutletLocationAjax',
                         'params':       {
                             'outlet_id':    '<?= $outlet->outlet_id; ?>',
