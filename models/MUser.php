@@ -565,6 +565,32 @@ class MUser extends ActiveRecord implements IdentityInterface
             return $wx_user->belongto;
 //        return $wx_user->getBelongTo();
     }
+    
+    public function getWechatInfo() {
+        \Yii::$app->wx->setGhId($this->gh_id);            
+        $arr = Yii::$app->wx->WxGetUserInfo($this->openid);                                  
+        if ($arr['subscribe'] == 0) {
+            $this->updateAttributes(['subscribe' => 0]);              
+        } else {
+            $this->updateAttributes([
+                'nickname' => $arr['nickname'],                     
+                'headimgurl' => $arr['headimgurl'], 
+                'city' => empty($arr['city']) ? '' : $arr['city'],
+                'province' => empty($arr['province']) ? '' : $arr['province'],
+                'country' => empty($arr['country']) ? '' : $arr['country'],
+                'sex' => empty($arr['sex']) ? '' : $arr['sex'],
+                'subscribe' => empty($arr['subscribe']) ? '' : $arr['subscribe'],   
+            ]);                   
+        }
+    }
+    
+    public function getHeadImgUrl() {
+        if (time() - strtotime($this->update_time) > 2 * 24 * 60 * 60) {
+            $this->getWechatInfo();
+        }
+        return $this->headimgurl;
+    }
+            
 
 }
 
