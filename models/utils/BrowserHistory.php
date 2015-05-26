@@ -30,8 +30,8 @@ class BrowserHistory
         $history = \Yii::$app->cache->get($key);
         if (false === $history) return false;                
         $url = $history[count($history) - 1];
-        if (false === strpos($url, '&pop=1'))
-                $url .= '&pop=1';
+//        if (false === strpos($url, '&pop=1'))
+//                $url .= '&pop=1';
         return $url; 
     }
 

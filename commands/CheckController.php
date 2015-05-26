@@ -137,10 +137,17 @@ class CheckController extends \yii\console\Controller {
                $details = \app\models\MOfficeCampaignDetail::findAll(['office_id' => $office->office_id]);
                $pics = [];
                foreach($details as $detail) {
-                   $pics[] = $detail->pic_url;
+                    $pic_urls = explode(',', $detail->pic_url);
+                    foreach ($pic_urls as $pic_url) {
+                        $from = $detail->getPicFileByMedia($pic_url);
+                        $media = str_replace('.jpg', '', $pic_url);
+                        $to   = $outlet->getPicPathname($media);
+                        copy($from, dirname($to));
+                        $pics[] = $media;
+                    }
                }
                $outlet->pics = implode(",", $pics);
-               $outlet->orginal_office_id = $office->office_id;
+               $outlet->original_office_id = $office->office_id;
                $outlet->latitude = $office->lat;
                $outlet->longitude = $office->lon;
                $outlet->save(false);
