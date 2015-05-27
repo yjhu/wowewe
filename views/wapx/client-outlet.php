@@ -252,12 +252,13 @@ use \yii\helpers\Url;
                     <?php 
                     foreach ($pics as $pic){ 
                         $pic_url = $outlet->getPicUrl($pic);
+
                     ?>  
       
-                    <li class="table-view-cell" id="<?= basename($pic_url) ?>">
+                    <li class="table-view-cell" id="<?= $pic ?>">
                         <img class="media-object pull-left" src="<?= $pic_url ?>" width="64" height="64">
-
-                            <button class="btn-negative icon icon-close" picname="<?= basename($pic_url) ?>" onclick="delPicBtn($(this).attr('picname'));">删除</button>
+                        
+                        <button class="btn-negative icon icon-close" picname="<?= $pic ?>" onclick="delPicBtn('<?= $pic ?>');">删除</button>
                     </li>
                     <?php } ?>  
                 <?php             
@@ -369,43 +370,53 @@ use \yii\helpers\Url;
                       if(t.code==0)
                       {
                           alert(t.msg);
+                         // alert(t.action);
 
-                         if(!t.hasOwnProperty("refresh") || t.refresh==1)
+                         //if(!t.hasOwnProperty("refresh") || t.refresh==1)
+                         if(false)
                           {
                               var url = "<?php echo \app\models\utils\BrowserHistory::current($wx_user->gh_id, $wx_user->openid); ?>";
                               location.href = url;
                           }
                           else if(t.action=='add')
                           {
+                            //alert("add"+ t.values.length);
                             var text = "";
 
-                            for(i=0; i<t.values.length; i++)
+                            for(i=0; i < t.values.length; i++)
                             {
-                                pic = values[i];
+                                pic = t.values[i];
                                 pic_url = "/wx/web/images/outlets/"+pic+".jpg";
 
-                                var text = text+"<li class=\"table-view-cell\" id=\""+pic+"\">"+
+                                var text = "<li class=\"table-view-cell\" id=\""+pic+"\">"+
                                 "<img class=\"media-object pull-left\" src=\""+pic_url+"\" width=\"64\" height=\"64\">"+
                                 "<button class=\"btn-negative icon icon-close\" picname=\""+pic+"\" onclick=\"delPicBtn($(this).attr('picname'));\">删除</button>"+
                                 "</li>";
 
                                 $("#ext-pics").append(text);
-                                alert("门店图片新增成功。");
+                                //alert("门店图片新增成功。");
+                         
                             }
 
+                            return false;
                           }
                           else if(t.action=='delete')
                           {
-                                a = values[0];
+                                a = t.values[0];
+                                //alert("a="+a);
                                 document.getElementById(a).style.display = 'none';
-                                alert("门店图片删除成功。");
+                                //alert("门店图片删除成功。");
                           }
+
+                            images.localId = [];
+                            images.serverId = [];
 
                       }
                       else
                       {
                         alert(t.msg);
                       }
+
                 },
                 error: function(){
                   alert('error!');
@@ -419,13 +430,11 @@ use \yii\helpers\Url;
 
 
 
-        function delPicBtn(a)
+        function delPicBtn(picname)
         {
-            //picname = $(this).attr('picname');
-            //alert(picname);
-            //$("#"+a).remove();
-            //alert(selector);
-            serverId[0] = a;
+            myserverId= [];
+            myserverId.push(picname);
+            //alert(myserverId[0]);
 
               wapxajax({
                 'classname':    '\\app\\models\\ClientOutlet',
@@ -433,7 +442,7 @@ use \yii\helpers\Url;
                 'params':       {
                     'outlet_id':    '<?= $outlet->outlet_id; ?>',
                     'gh_id':        '<?= $wx_user->gh_id; ?>',                   
-                    'media_ids':     serverId,
+                    'media_ids':     myserverId,
                     'action':       'delete'
                 } 
             });
@@ -485,6 +494,7 @@ use \yii\helpers\Url;
           document.querySelector('#addPicBtn').onclick = function () {
             wx.chooseImage({
               success: function (res) {
+                //alert("up");
                 /*
                 if (res.localIds.length > 1) {
                   alert('只能选择一张图片，请重新选择！');
@@ -498,7 +508,7 @@ use \yii\helpers\Url;
                   return;
                   //return false;
                 }
-
+ //alert("up1");
                 images.localId = res.localIds;
                 //alert('已选择 ' + res.localIds.length + ' 张图片');
                 //alert(images.localId[0]);
@@ -510,7 +520,7 @@ use \yii\helpers\Url;
                 images.serverId = [];
 
                  //start upload function -----------------------------------------------
-                 alert("start upload");
+                 //alert("start upload");
 
                 function upload() {
                 wx.uploadImage({
@@ -527,7 +537,7 @@ use \yii\helpers\Url;
                   else {
 
                     //alert('localid=' + images.localId[0] + ', serverId=' + images.serverId[0]);
-                    alert('恭喜你，已成功上传！');
+                    //alert('恭喜你，已成功上传！');
                     //$("#serverId").val(JSON.stringify(images.serverId));
                     
                     //serverId = $("#serverId").val();
