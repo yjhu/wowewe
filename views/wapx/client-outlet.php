@@ -405,8 +405,7 @@ use \yii\helpers\Url;
                           alert(t.msg);
                          // alert(t.action);
 
-                         //if(!t.hasOwnProperty("refresh") || t.refresh==1)
-                         if(false)
+                         if(!t.hasOwnProperty("refresh") || t.refresh==1)
                           {
                               var url = "<?php echo \app\models\utils\BrowserHistory::current($wx_user->gh_id, $wx_user->openid); ?>";
                               location.href = url;
