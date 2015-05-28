@@ -205,8 +205,7 @@ use \yii\helpers\Url;
 
                 <?php } ?>
                 <?php foreach ($outlet->agents as $agent) { ?> 
-                    <li class="table-view-cell media">
-
+                    <li class="table-view-cell media outlet-staff">
                         <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
                             'client-agent', 
                             'gh_id' => $wx_user->gh_id, 
@@ -349,6 +348,17 @@ use \yii\helpers\Url;
         <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
         <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
         <script>
+            window.addEventListener('touchstart',   function (event) {
+//                alert(event);
+            });
+            window.addEventListener('touchmove',    function (event) {
+                alert(event.target);
+            });
+            window.addEventListener('touchend',     function (event) {
+//                alert(event);
+            });           
+        </script>
+        <script>           
         $("#editClientOutletInfo").hide();
         $('#openLocation').hide();
         $('#getLocation').hide();
@@ -731,7 +741,7 @@ use \yii\helpers\Url;
 
 
         });
-        </script>
+        </script>       
     </body>
 </html>
 

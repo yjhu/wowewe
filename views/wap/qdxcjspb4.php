@@ -40,6 +40,9 @@
           </a>
       <?php } ?>
 
+        <?php if ($wx_user->staff->isOfficeCampaignScorer()) { ?>
+        <a data-ignore='push' class='btn btn-link pull-right' href='#quick-scoring'><span class='icon icon-compose'></span></a> 
+        <?php } ?>
       <h1 class="title">
        渠道宣传竞赛评选
       </h1>
@@ -158,6 +161,114 @@
       </nav>
 
     </div>
-      
+    
+    <div id='quick-scoring' class='modal'>
+        <header class="bar bar-nav">
+            <a class="icon icon-close pull-right" id='quick-scoring-close' href='#quick-scoring'></a>
+            <h1 class='title'>快速评分</h1>
+        </header>
+        <div class="content">
+            <div class="slider" id="office-campaign-details">
+                <div class="slide-group">
+                <?php
+                    foreach($models_categories as $category) {
+                        if ((!$office->is_selfOperated) && ($category->sort_order == 6)) 
+                            continue;
+                        if (empty($staff)) {                           
+                            $staff = $wx_user->staff;
+                        }
+                        
+                        $myscore = \app\models\MOfficeCampaignScore::getScoreByScorerAndPicCategory($office->office_id, $staff->staff_id, $category->id);
+                        if ($myscore !== false) continue;
+                        
+                        $min_score = 0;
+                        if (!$office->is_selfOperated) {
+                            $max_score = 20;
+                        } else if ($category->sort_order == 6) {
+                            $max_score = 10;
+                        } else {
+                            $max_score = 18;
+                        }
+                            
+                        $detail = MOfficeCampaignDetail::getDetailByOfficeAndPicCategory($office->office_id, $category->id);
+                        if(!empty($detail)){
+                          $url = $detail->getImageUrl();
+                        } else {
+                          $url = '../web/images/comm-icon/upload-pic-64x64.png';
+                        }
+                ?>
+                    <div style='background-color:white;' class="slide campaign-slide" detail_id = <?= $detail->id ?>>
+                        <div>
+                        <ul class='table-view'>
+                            <li class='table-view-cell'>
+                                <span class='pull-left'><?= $office->title ?></span>
+                                <span class='pull-right'><?= $category->name ?></span>
+                            </li>
+                        </ul>
+                        </div>
+                        <div>
+                                <div class='input-row'>
+                                    <label>评分：</label>
+                                    <input class='campaign-score'type='number' min='<?= $min_score ?>' max='<?= $max_score ?>' placeholder="输入您的评分[<?= $min_score . '-' . $max_score ?>]">
+                                </div>
+                                <div class='input-row'>
+                                    <label>评语：</label>
+                                    <input class='campaign-comment' type='text' placeholder="输入您的评语">
+                                </div>
+                                <button class='btn btn-block btn-positive campaign-confirm'>确定</button>
+                        </div>
+                        
+                        <center>
+                        <img width=100% src='<?= $url ?>'/>
+                        </center>
+                        
+                        
+                    </div>
+                <?php } ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(window).bind('touchend', function (event) {
+            if ( event.target === $( '#quick-scoring-close' )[0] ){
+                location.href = "<?= \app\models\utils\BrowserHistory::current($wx_user->gh_id, $wx_user->openid); ?>";
+            }
+        });
+        
+        $( '.campaign-confirm' ).click( function(event) {
+            var slider          = $(this).parent().parent();
+            var input_score     = $(this).parent().parent().find('.campaign-score');           
+            var input_comment   = $(this).parent().parent().find('.campaign-comment');
+            
+            var office_campaign_id  = slider.attr('detail_id');
+            var staff_id            = <?= $wx_user->staff->staff_id ?>;
+            
+            var min_score   = input_score.attr('min');
+            var max_score   = input_score.attr('max');
+            var score       = parseInt(input_score.val());
+            var comment     = input_comment.val();
+            
+            if (isNaN(score) || (score < min_score) || (score > max_score)) {
+                alert("输入的评分不正确！必须是" + min_score + "到" + max_score + "的数值。");
+                return false;
+            }
+            
+            $.ajax({
+                url: "<?php echo Url::to(['wap/handleqdxcjspb','gh_id'=>$gh_id, 'openid'=>$openid], true) ; ?>",
+                type:"GET",
+                cache:false,
+                dataType:"json",
+                data: "office_campaign_id="+office_campaign_id+"&staff_id="+staff_id+"&score="+score+"&comment="+comment,
+                success: function(t){
+                    alert('评分成功');
+                    slider.hide();
+                },
+                error: function(){
+                    alert('error!');
+                }
+            });
+        });
+    </script>
   </body>
 </html>

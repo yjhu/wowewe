@@ -82,14 +82,6 @@
         </p>
       <?php } ?>
 
-      <?php if($wx_user->openid=='oKgUduNHzUQlGRIDAghiY7ywSeWk' ||
-              $wx_user->openid=='oKgUduJJFo9ocN8qO9k2N5xrKoGE' ||
-              $wx_user->openid=='oKgUduHLF-HAxvHYIwmm3qjfqNf0') { ?>
-
-        <a class="btn btn-negative" href="#edit">编辑</a>
-
-      <?php } ?>
-
        <?php 
         $model_office_campaign_detail = MOfficeCampaignDetail::findOne(['pic_category' => $model_ocpc->id, 'office_id' => $office->office_id]);
 
