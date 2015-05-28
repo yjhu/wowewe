@@ -21,7 +21,7 @@
 
     <!-- Include the compiled Ratchet CSS -->
     <link href="/wx/web/ratchet/dist/css/ratchet.css" rel="stylesheet">
-  
+    <link rel="stylesheet" href="http://libs.useso.com/js/font-awesome/4.2.0/css/font-awesome.min.css">
     <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
     <!-- Include the compiled Ratchet JS -->
     <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
@@ -104,7 +104,7 @@
 
       <div class="bar bar-standard bar-footer-secondary">
         <a class="btn btn-block btn-primary" style="color:#fff" href="<?php echo  Url::to(['qdxcjspbpm'],true) ?>">
-        <img src="../web/images/comm-icon/iconfont-paiming.png" height="16">
+        <i class="fa fa-trophy" style="color:#fff"></i>
         排行榜
         </a>
       </div>

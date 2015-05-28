@@ -163,11 +163,11 @@ use \yii\helpers\Url;
                 <li class="table-view-cell">                        
                     地址：<?= $outlet->address ?>
                     <?php if (!empty($outlet->latitude) && !empty($outlet->longitude)) { ?>
-                    <a data-ignore="push" class="btn btn-link pull-right" id="openLocation"><i class="fa fa-map-marker fa-2x" style="color:#56abe4"></i></a>
+                    <a data-ignore="push" class="btn btn-link pull-right" id="openLocation"><i class="fa fa-map-marker fa-2x" style="color:#ea8010"></i></a>
                     <?php  } ?>
                 </li>
                 <li class="table-view-cell">                        
-                    电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right" id="getLocation"><i class="fa fa-thumb-tack fa-2x" style="color:#ea8010"></i></a>
+                    电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right" id="getLocation"><i class="fa fa-thumb-tack fa-2x" style="color:#56abe4"></i></a>
                 </li>
             </ul>           
             

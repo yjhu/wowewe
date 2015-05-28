@@ -40,7 +40,7 @@
       <?php } ?>
 
       <h1 class="title">
-       <i class="fa fa-trophy" style="color:#56abe4"></i>&nbsp;渠道宣传竞赛评选排行榜
+       <i class="fa fa-trophy" style="color:#fff"></i>&nbsp;渠道宣传竞赛评选排行榜
       </h1>
     </header>
 

@@ -108,9 +108,9 @@
 
             <li class="table-view-cell media">
               <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['jssdksample', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
-                
+                 
                 <span class="media-object pull-left">
-                  <img src="../web/images/comm-icon/iconfont-kuaijie.png">
+                  <i class="fa fa-rocket" style="color:#56abe4"></i>
                 </span>
          
                 <div class="media-body">

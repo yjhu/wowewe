@@ -29,7 +29,7 @@
 
     <!-- Include the compiled Ratchet CSS -->
     <link href="/wx/web/ratchet/dist/css/ratchet.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="http://libs.useso.com/js/font-awesome/4.2.0/css/font-awesome.min.css">
     <link href="./php-emoji/emoji.css" rel="stylesheet">
     <style type="text/css">
     .btn {
@@ -140,7 +140,7 @@
                 <?php } ?>
 
                 <span class="media-object pull-left">
-                <img src="../web/images/comm-icon/iconfont-order.png" style="width:16px;height:16px">
+                <i class="fa fa-file-text-o" style="color:#56abe4"></i>
                 </span>
 
                 <div class="media-body">
@@ -153,7 +153,10 @@
               <a data-ignore="push"  class="navigate-right" href="<?php echo Url::to(['wdtg', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
                 
                 <span class="media-object pull-left">
+                 <!--
                   <img src="../web/images/comm-icon/iconfont-pengyouquan.png?v3" style="width:16px;height:16px">
+                  -->
+                  <i class="fa fa-share-alt" style="color:#56abe4"></i>
                 </span>
                 <div class="media-body">
                   我的推广
