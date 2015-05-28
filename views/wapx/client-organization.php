@@ -64,7 +64,7 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
                                     <span class="media-object pull-left"><img style="width:48px;" src="<?= $employee->wechat->headimgurl ?>"></span>
                                     <?php } else { ?>
                                     <span style="width:48px;" class="media-object pull-left">
-                                        <i class="fa fa-user fa-3x" style="color:#ccc"></i>
+                                        <i class="fa fa-user fa-spin fa-3x" style="color:#ccc"></i>
                                     </span>
                                     <?php } ?>
                                     <div class="media-body">

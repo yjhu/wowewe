@@ -188,7 +188,7 @@ use \yii\helpers\Url;
                             <span class="media-object pull-left"><img style="width:48px;" src="<?= $employee->wechat->headimgurl ?>"></span>
                             <?php } else { ?>
                             <span style="width:48px;" class="media-object pull-left">
-                                 <i class="fa fa-user fa-3x" style="color:#ccc"></i>
+                                 <i class="fa fa-user fa-spin fa-3x" style="color:#ccc"></i>
                             </span>
                             <?php } ?>
                         
@@ -222,7 +222,7 @@ use \yii\helpers\Url;
                         </span>
                         <?php } else { ?>
                         <span style="width:48px;" class="media-object pull-left">
-                             <i class="fa fa-user fa-3x" style="color:#ccc"></i>
+                             <i class="fa fa-user fa-spin fa-3x" style="color:#ccc"></i>
                         </span>
                         <?php } ?>
                         
