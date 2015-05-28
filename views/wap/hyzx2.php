@@ -22,7 +22,7 @@
 
     <!-- Include the compiled Ratchet CSS -->
     <link href="/wx/web/ratchet/dist/css/ratchet.css" rel="stylesheet">
-  
+    <link rel="stylesheet" href="http://libs.useso.com/js/font-awesome/4.2.0/css/font-awesome.min.css">
     <link href="./php-emoji/emoji.css" rel="stylesheet">
 
     <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
@@ -124,7 +124,7 @@
               <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['qdxcjspb1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'backwards' => false ]) ?>">
       
                 <span class="media-object pull-left">
-                  <img src="../web/images/comm-icon/iconfont-paiming-blue.png">
+                  <i class="fa fa-trophy" style="color:#56abe4"></i>
                 </span>
          
                 <div class="media-body">

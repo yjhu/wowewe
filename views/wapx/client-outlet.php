@@ -23,6 +23,8 @@ use \yii\helpers\Url;
 
         <!-- Include the compiled Ratchet CSS -->
         <link href="./ratchet/dist/css/ratchet.css" rel="stylesheet">
+        <link rel="stylesheet" href="http://libs.useso.com/js/font-awesome/4.2.0/css/font-awesome.min.css">
+
         <link href="./php-emoji/emoji.css" rel="stylesheet">    
     </head>
     <body>
@@ -151,7 +153,7 @@ use \yii\helpers\Url;
                     <?= $outlet->supervisionOrganization->title ?>
                 </li>
                 <li class="table-view-cell table-view-divider">
-                    门店地址及电话<a class="btn btn-link pull-right" href="#composeOutletInfo" id="editClientOutletInfo"><img src="../web/images/comm-icon/iconfont-xiugai.png" /></span></a>
+                    门店地址及电话<a class="btn btn-link pull-right" href="#composeOutletInfo" id="editClientOutletInfo"><i class="fa fa-pencil fa-2x" style="color:#56abe4"></i></span></a>
                     <!--
                     <a href="#editClientOutlet" id="editClientOutletInfo">
                     <span class='icon icon-compose pull-right'></span>
@@ -161,11 +163,11 @@ use \yii\helpers\Url;
                 <li class="table-view-cell">                        
                     地址：<?= $outlet->address ?>
                     <?php if (!empty($outlet->latitude) && !empty($outlet->longitude)) { ?>
-                    <a data-ignore="push" class="btn btn-link pull-right" id="openLocation"><img src="../web/images/comm-icon/iconfont-weizhi3.png" /></a>
+                    <a data-ignore="push" class="btn btn-link pull-right" id="openLocation"><i class="fa fa-map-marker fa-2x" style="color:#56abe4"></i></a>
                     <?php  } ?>
                 </li>
                 <li class="table-view-cell">                        
-                    电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right" id="getLocation"><img src="../web/images/comm-icon/iconfont-tuding.png" /></a>
+                    电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right" id="getLocation"><i class="fa fa-thumb-tack fa-2x" style="color:#ea8010"></i></a>
                 </li>
             </ul>           
             
@@ -173,45 +175,68 @@ use \yii\helpers\Url;
                 <li class="table-view-cell table-view-divider">所属员工列表</li>                
                 <?php foreach ($outlet->employees as $employee) { ?> 
                     <li class="table-view-cell media">
-                        <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+
+                            <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
                                 'client-employee', 
                                 'gh_id' => $wx_user->gh_id, 
                                 'openid' => $wx_user->openid, 
                                 'employee_id' => $employee->employee_id,
                                 'backwards' => 1,
-                            ]) ?>">
+                            ]) ?>"> 
+
                             <?php if (!empty($employee->wechat) && !empty($employee->wechat->headimgurl)) { ?>
                             <span class="media-object pull-left"><img style="width:48px;" src="<?= $employee->wechat->headimgurl ?>"></span>
                             <?php } else { ?>
                             <span style="width:48px;" class="media-object pull-left icon icon-person"></span>
                             <?php } ?>
+                        
                             <div class="media-body">
                                 <?= $employee->name ?><p><?= implode("<br>", $employee->mobiles) ?></p>
                                 <p><span class="badge badge-positive pull-right"><?= $employee->getOutletPosition($outlet->outlet_id) ?></span></p>
                             </div>
                         </a>
                     </li>
+
+                    <li class="table-view-cell media" style="height:64px">
+                        <button style="border-radius:3px;height:48px" class="btn btn-primary btn-block" onclick="editEmployee('<?= $outlet->outlet_id?>','<?= $employee->employee_id ?>',false)">
+                        修改
+                        </button>    
+                    </li>
+
                 <?php } ?>
                 <?php foreach ($outlet->agents as $agent) { ?> 
                     <li class="table-view-cell media outlet-staff">
                         <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
-                                'client-agent', 
-                                'gh_id' => $wx_user->gh_id, 
-                                'openid' => $wx_user->openid, 
-                                'agent_id' => $agent->agent_id,
-                                'backwards' => 1,
-                            ]) ?>">
-                            <?php if (!empty($agent->wechat) && !empty($agent->wechat->headimgurl)) { ?>
-                            <span class="media-object pull-left"><img style="width:48px;" src="<?= $agent->wechat->headimgurl ?>"></span>
-                            <?php } else { ?>
-                            <span style="width:48px;" class="media-object pull-left icon icon-person"></span>
-                            <?php } ?>
-                            <div class="media-body">
-                                <?= $agent->name ?><p><?= implode("<br>", $agent->mobiles) ?></p>
-                                <p><span class="badge badge-positive pull-right"><?= $agent->getOutletPosition($outlet->outlet_id) ?></span></p>
-                            </div>
+                            'client-agent', 
+                            'gh_id' => $wx_user->gh_id, 
+                            'openid' => $wx_user->openid, 
+                            'agent_id' => $agent->agent_id,
+                            'backwards' => 1,
+                        ]) ?>"> 
+                       
+                        <?php if (!empty($agent->wechat) && !empty($agent->wechat->headimgurl)) { ?>
+                        <span class="media-object pull-left">
+                        <img style="width:48px;" src="<?= $agent->wechat->headimgurl ?>">
+                        </span>
+                        <?php } else { ?>
+                        <span style="width:48px;" class="media-object pull-left icon icon-person"></span>
+                        <?php } ?>
+                        
+                         <div class="media-body">
+                        <?= $agent->name ?><p><?= implode("<br>", $agent->mobiles) ?></p>
+                        <p>
+                        <span class="badge badge-positive  pull-right"><?= $agent->getOutletPosition($outlet->outlet_id) ?></span>
+                        </p>
+                        </div>
                         </a>
                     </li>
+
+                    <li class="table-view-cell media" style="height:64px">
+                        <button style="border-radius:3px;height:48px" class="btn btn-primary btn-block" onclick="editEmployee('<?= $outlet->outlet_id?>','<?= $agent->agent_id ?>',true)">
+                        修改
+                        </button>    
+                    </li>
+
                 <?php } ?>     
             </ul>
             <div>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/></div>
@@ -249,6 +274,7 @@ use \yii\helpers\Url;
             </div>
         </div>
 
+
         <div id="editClientOutlet" class="modal">
           <header class="bar bar-nav">
             <a class="icon icon-close pull-right" href="#editClientOutlet"></a>
@@ -283,12 +309,13 @@ use \yii\helpers\Url;
                     <?php 
                     foreach ($pics as $pic){ 
                         $pic_url = $outlet->getPicUrl($pic);
-                    ?>  
-      
-                    <li class="table-view-cell" id="<?= basename($pic_url) ?>">
-                        <img class="media-object pull-left" src="<?= $pic_url ?>" width="64" height="64">
 
-                            <button class="btn-negative icon icon-close" picname="<?= basename($pic_url) ?>" onclick="delPicBtn($(this).attr('picname'));">删除</button>
+                    ?>
+      
+                    <li class="table-view-cell" id="<?= $pic ?>">
+                        <img class="media-object pull-left" src="<?= $pic_url ?>" width="64" height="64">
+                        
+                    <span class="btn-negative icon icon-close" picname="<?= $pic ?>" onclick="delPicBtn('<?= $pic ?>');">删除</span>
                     </li>
                     <?php } ?>  
                 <?php             
@@ -413,6 +440,7 @@ use \yii\helpers\Url;
                       if(t.code==0)
                       {
                           alert(t.msg);
+                         // alert(t.action);
 
                          if(!t.hasOwnProperty("refresh") || t.refresh==1)
                           {
@@ -421,35 +449,43 @@ use \yii\helpers\Url;
                           }
                           else if(t.action=='add')
                           {
+                            //alert("add"+ t.values.length);
                             var text = "";
 
-                            for(i=0; i<t.values.length; i++)
+                            for(i=0; i < t.values.length; i++)
                             {
-                                pic = values[i];
+                                pic = t.values[i];
                                 pic_url = "/wx/web/images/outlets/"+pic+".jpg";
 
-                                var text = text+"<li class=\"table-view-cell\" id=\""+pic+"\">"+
+                                var text = "<li class=\"table-view-cell\" id=\""+pic+"\">"+
                                 "<img class=\"media-object pull-left\" src=\""+pic_url+"\" width=\"64\" height=\"64\">"+
                                 "<button class=\"btn-negative icon icon-close\" picname=\""+pic+"\" onclick=\"delPicBtn($(this).attr('picname'));\">删除</button>"+
                                 "</li>";
 
                                 $("#ext-pics").append(text);
-                                alert("门店图片新增成功。");
+                                //alert("门店图片新增成功。");
+                         
                             }
 
+                            return false;
                           }
                           else if(t.action=='delete')
                           {
-                                a = values[0];
+                                a = t.values[0];
+                                //alert("a="+a);
                                 document.getElementById(a).style.display = 'none';
-                                alert("门店图片删除成功。");
+                                //alert("门店图片删除成功。");
                           }
+
+                            images.localId = [];
+                            images.serverId = [];
 
                       }
                       else
                       {
                         alert(t.msg);
                       }
+
                 },
                 error: function(){
                   alert('error!');
@@ -463,13 +499,11 @@ use \yii\helpers\Url;
 
 
 
-        function delPicBtn(a)
+        function delPicBtn(picname)
         {
-            //picname = $(this).attr('picname');
-            //alert(picname);
-            //$("#"+a).remove();
-            //alert(selector);
-            serverId[0] = a;
+            myserverId= [];
+            myserverId.push(picname);
+            //alert(myserverId[0]);
 
               wapxajax({
                 'classname':    '\\app\\models\\ClientOutlet',
@@ -477,11 +511,21 @@ use \yii\helpers\Url;
                 'params':       {
                     'outlet_id':    '<?= $outlet->outlet_id; ?>',
                     'gh_id':        '<?= $wx_user->gh_id; ?>',                   
-                    'media_ids':     serverId,
+                    'media_ids':     myserverId,
                     'action':       'delete'
                 } 
             });
 
+        }
+
+        function editEmployee(outlet_id,entity_id,is_agent)
+        {
+         
+            //alert("outlet_id:"+outlet_id+"entity_id:"+entity_id);
+            url = "<?php echo Url::to(['client-outlet-employee-edit', 'gh_id' => $wx_user->gh_id, 'openid' => $wx_user->openid]) ?>"+"&outlet_id="+outlet_id+"&entity_id="+entity_id+"&is_agent="+is_agent;
+
+            //alert(url);
+            location.href = url;
         }
   
         wx.ready(function () {
@@ -616,6 +660,7 @@ use \yii\helpers\Url;
           document.querySelector('#addPicBtn').onclick = function () {
             wx.chooseImage({
               success: function (res) {
+                //alert("up");
                 /*
                 if (res.localIds.length > 1) {
                   alert('只能选择一张图片，请重新选择！');
@@ -629,7 +674,7 @@ use \yii\helpers\Url;
                   return;
                   //return false;
                 }
-
+ //alert("up1");
                 images.localId = res.localIds;
                 //alert('已选择 ' + res.localIds.length + ' 张图片');
                 //alert(images.localId[0]);
@@ -641,7 +686,7 @@ use \yii\helpers\Url;
                 images.serverId = [];
 
                  //start upload function -----------------------------------------------
-                 alert("start upload");
+                 //alert("start upload");
 
                 function upload() {
                 wx.uploadImage({
@@ -658,7 +703,7 @@ use \yii\helpers\Url;
                   else {
 
                     //alert('localid=' + images.localId[0] + ', serverId=' + images.serverId[0]);
-                    alert('恭喜你，已成功上传！');
+                    //alert('恭喜你，已成功上传！');
                     //$("#serverId").val(JSON.stringify(images.serverId));
                     
                     //serverId = $("#serverId").val();
