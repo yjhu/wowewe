@@ -187,7 +187,9 @@ use \yii\helpers\Url;
                             <?php if (!empty($employee->wechat) && !empty($employee->wechat->headimgurl)) { ?>
                             <span class="media-object pull-left"><img style="width:48px;" src="<?= $employee->wechat->headimgurl ?>"></span>
                             <?php } else { ?>
-                            <span style="width:48px;" class="media-object pull-left icon icon-person"></span>
+                            <span style="width:48px;" class="media-object pull-left">
+                                 <i class="fa fa-user fa-3x" style="color:#ccc"></i>
+                            </span>
                             <?php } ?>
                         
                             <div class="media-body">
@@ -219,7 +221,9 @@ use \yii\helpers\Url;
                         <img style="width:48px;" src="<?= $agent->wechat->headimgurl ?>">
                         </span>
                         <?php } else { ?>
-                        <span style="width:48px;" class="media-object pull-left icon icon-person"></span>
+                        <span style="width:48px;" class="media-object pull-left">
+                             <i class="fa fa-user fa-3x" style="color:#ccc"></i>
+                        </span>
                         <?php } ?>
                         
                          <div class="media-body">
