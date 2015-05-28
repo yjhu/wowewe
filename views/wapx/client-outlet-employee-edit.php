@@ -93,13 +93,15 @@ include('../models/utils/emoji.php');
 -->
     
             <br>
+
             <?php if ($is_agent) { ?>
                 <button class="btn btn-positive btn-block" style="border-radius:3px" id="btnEdit" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->agent_id ?>">修改</button>
-
+                <button class="btn btn-negative btn-block" style="border-radius:3px" id="btnDel" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->agent_id ?>">删除</button>
             <?php } else { ?>
                 <button class="btn btn-positive btn-block" style="border-radius:3px" id="btnEdit" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->employee_id ?>">修改</button>
-
+                <button class="btn btn-negative btn-block" style="border-radius:3px" id="btnDel" outlet_id="<?= $outlet->outlet_id ?>" is_agent="<?= $is_agent ?>" entity_id="<?= $entity->employee_id ?>">删除</button>
             <?php } ?>
+
 
         </div>
 
@@ -109,6 +111,37 @@ include('../models/utils/emoji.php');
     <script type="text/javascript">
 
         var yuangongFlag = 1;
+
+        function ygglshanchuajax()
+        {
+            //alert('czhm'+czhm+'czje'+czje);
+            $.ajax({
+                url: "<?php echo Url::to(['wap/ygglshanchuajax'], true); ?>",
+                type: "GET",
+                cache: false,
+                dataType: "json",
+                data: "is_agent=" + is_agent + "&entity_id=" + entity_id + "&outlet_id=" + outlet_id,
+                success: function (t) {
+
+                    if (t.code == 0)
+                    {
+                        var url = "<?php echo \app\models\utils\BrowserHistory::previous($wx_user->gh_id, $wx_user->openid); ?>";
+                        location.href = url;  
+                    }
+                    else
+                    {
+                        alert('error');
+                    }
+
+                },
+                error: function () {
+                    alert('error!');
+                }
+            });
+
+            return false;
+        }
+
 
         function ygglxiugaiajax()
         {
@@ -151,6 +184,18 @@ include('../models/utils/emoji.php');
             {
               $("#myToggle").attr("class", "toggle pull-left");
             }
+
+
+            $('#btnDel').click(function () {
+                is_agent = $(this).attr('is_agent');
+                entity_id = $(this).attr('entity_id');
+                outlet_id = $(this).attr("outlet_id");
+                if (!confirm("删除这个员工，确定?"))
+                    return false;
+
+                ygglshanchuajax();
+                return false;
+            });
 
 
             $('#btnEdit').click(function () {

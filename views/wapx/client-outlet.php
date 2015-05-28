@@ -608,7 +608,7 @@ use \yii\helpers\Url;
             
             /*增加员工*/
             $("#addBtn").click(function(){
-                alert("增加员工");
+                //alert("增加员工");
                 var ygxm = $("#ygxm").val();
                 var ygsjhm = $("#ygsjhm").val();
                 var ygzw = $("#ygzw").val();
