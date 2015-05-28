@@ -161,11 +161,11 @@ use \yii\helpers\Url;
                 <li class="table-view-cell">                        
                     地址：<?= $outlet->address ?>
                     <?php if (!empty($outlet->latitude) && !empty($outlet->longitude)) { ?>
-                    <a data-ignore="push" class="btn btn-link pull-right" id="openLocation"><i class="fa fa-map-marker fa-2x" style="color:#56abe4"></i></a>
+                    <a data-ignore="push" class="btn btn-link pull-right" id="openLocation"><i class="fa fa-map-marker fa-2x" style="color:#ea8010"></i></a>
                     <?php  } ?>
                 </li>
                 <li class="table-view-cell">                        
-                    电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right" id="getLocation"><i class="fa fa-thumb-tack fa-2x" style="color:#ea8010"></i></a>
+                    电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right" id="getLocation"><i class="fa fa-thumb-tack fa-2x" style="color:#56abe4"></i></a>
                 </li>
             </ul>           
             
@@ -185,7 +185,9 @@ use \yii\helpers\Url;
                             <?php if (!empty($employee->wechat) && !empty($employee->wechat->headimgurl)) { ?>
                             <span class="media-object pull-left"><img style="width:48px;" src="<?= $employee->wechat->headimgurl ?>"></span>
                             <?php } else { ?>
-                            <span style="width:48px;" class="media-object pull-left icon icon-person"></span>
+                            <span style="width:48px;" class="media-object pull-left">
+                                 <i class="fa fa-user fa-spin fa-3x" style="color:#ccc"></i>
+                            </span>
                             <?php } ?>
                         
                             <div class="media-body">
@@ -210,7 +212,9 @@ use \yii\helpers\Url;
                         <img style="width:48px;" src="<?= $agent->wechat->headimgurl ?>">
                         </span>
                         <?php } else { ?>
-                        <span style="width:48px;" class="pull-left icon icon-person"></span>
+                        <span style="width:48px;" class="media-object pull-left">
+                             <i class="fa fa-user fa-spin fa-3x" style="color:#ccc"></i>
+                        </span>
                         <?php } ?>
                         
                          <div class="media-body">
