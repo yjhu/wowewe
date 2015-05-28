@@ -81,7 +81,7 @@ include('../models/utils/emoji.php');
                 <label style="color:#777777">职位</label>
                 <input type="text" value="<?= $entity->getOutletPosition($outlet->outlet_id) ?>" id="ygzw">
             </div>
-
+<!--
             <p class="content-padded"> </p>
             <div class="input-row">
               <label style="color:#777777">联通员工</label>
@@ -90,7 +90,7 @@ include('../models/utils/emoji.php');
                   <div class="toggle-handle"></div>
                   </div>
             </div>
-
+-->
     
             <br>
             <?php if ($is_agent) { ?>
@@ -122,8 +122,8 @@ include('../models/utils/emoji.php');
 
                     if (t.code == 0)
                     {
-                        var url = "<?php echo Url::to(['client-outlet-employee-edit'], true) ?>";
-                        location.href = url + '&is_agent=' + is_agent + '&entity_id=' + entity_id + '&outlet_id=' + outlet_id;                       
+                        var url = "<?php echo \app\models\utils\BrowserHistory::previous($wx_user->gh_id, $wx_user->openid); ?>";
+                        location.href = url;                       
                     }
                     else
                     {

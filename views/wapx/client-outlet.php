@@ -170,74 +170,78 @@ use \yii\helpers\Url;
             </ul>           
             
             <ul class="table-view" id="outlet-staff">
-                <li class="table-view-cell table-view-divider">所属员工列表</li>                
+                <li class="table-view-cell table-view-divider">
+                    所属员工列表
+                    <a class="btn btn-link pull-right" href="#xzyg"><i class="fa fa-plus-circle fa-2x" style="color:#56abe4"></i></a>
+                </li>                
                 <?php foreach ($outlet->employees as $employee) { ?> 
-                    <li class="table-view-cell media woso-slide">
-
-                            <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+                    <li class="table-view-cell">
+                            <div style="width:50px;" class="pull-left">                           
+                            <?php if (!empty($employee->wechat) && !empty($employee->wechat->headimgurl)) { ?>
+                            <img style="width:100%;" src="<?= $employee->wechat->headimgurl ?>"></span>
+                            <?php } else { ?>
+                            <span style="width:100%;">
+                                 <i class="fa fa-user fa-spin fa-3x" style="color:#ccc"></i>
+                            </span>
+                            <?php } ?>
+                            </div>
+                            <div style="padding:5px;">
+                                <p>
+                                    <?= $employee->name ?>&nbsp;
+                                    <span class="badge badge-positive"><?= $employee->getOutletPosition($outlet->outlet_id) ?></span>&nbsp;
+                                    <span class="icon icon-compose" onclick="editEmployee(
+                                       '<?= $outlet->outlet_id ?>',
+                                       '<?= $employee->employee_id ?>',
+                                       '<?= false ?>'
+                                    )"></span>
+                                </p>
+                                <p><?= implode("<br>", $employee->mobiles) ?></p>
+                            </div>
+                            <a  data-ignore="push" class="btn btn-link pull-right" href="<?= \yii\helpers\Url::to([
                                 'client-employee', 
                                 'gh_id' => $wx_user->gh_id, 
                                 'openid' => $wx_user->openid, 
                                 'employee_id' => $employee->employee_id,
                                 'backwards' => 1,
                             ]) ?>"> 
-
-                            <?php if (!empty($employee->wechat) && !empty($employee->wechat->headimgurl)) { ?>
-                            <span class="media-object pull-left"><img style="width:48px;" src="<?= $employee->wechat->headimgurl ?>"></span>
-                            <?php } else { ?>
-                            <span style="width:48px;" class="media-object pull-left">
-                                 <i class="fa fa-user fa-spin fa-3x" style="color:#ccc"></i>
-                            </span>
-                            <?php } ?>
-                        
-                            <div class="media-body">
-                                <?= $employee->name ?><p><?= implode("<br>", $employee->mobiles) ?></p>
-                                <p><span class="badge badge-positive pull-right"><?= $employee->getOutletPosition($outlet->outlet_id) ?></span></p>
-                            </div>
-                        </a>
+                                <i class="fa fa-chevron-right fa-2x" style="color:#ccc"></i>
+                            </a>
                     </li>
-
-                    <li class="table-view-cell media" style="height:64px">
-                        <button style="border-radius:3px;height:48px" class="btn btn-primary btn-block" onclick="editEmployee('<?= $outlet->outlet_id?>','<?= $employee->employee_id ?>',false)">
-                        修改
-                        </button>    
-                    </li>
-
                 <?php } ?>
                 <?php foreach ($outlet->agents as $agent) { ?> 
                     <li class="table-view-cell">
-                       
+                        <div style="width:50px;" class="pull-left">
                         <?php if (!empty($agent->wechat) && !empty($agent->wechat->headimgurl)) { ?>
-                        <span class="pull-left">
-                        <img style="width:48px;" src="<?= $agent->wechat->headimgurl ?>">
+                        <span>
+                        <img style="width:100%;" src="<?= $agent->wechat->headimgurl ?>">
                         </span>
                         <?php } else { ?>
-                        <span style="width:48px;" class="media-object pull-left">
+                        <span style="width:100%;">
                              <i class="fa fa-user fa-spin fa-3x" style="color:#ccc"></i>
                         </span>
                         <?php } ?>
-                        
-                         <div class="media-body">
-                        <?= $agent->name ?><p><?= implode("<br>", $agent->mobiles) ?></p>
-                        <p>
-                        <span class="badge badge-positive  pull-right"><?= $agent->getOutletPosition($outlet->outlet_id) ?></span>
-                        </p>
                         </div>
-                        <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+                         <div style="padding:5px;">
+                            <p>
+                                <?= $agent->name ?> &nbsp;
+                                <span class="badge badge-positive"><?= $agent->getOutletPosition($outlet->outlet_id) ?></span>&nbsp;
+                                <span class="icon icon-compose" onclick="editEmployee(
+                                       '<?= $outlet->outlet_id ?>',
+                                       '<?= $agent->agent_id ?>',
+                                       '<?= true ?>'
+                                    )"></span>
+                            </p>
+                            <p><?= implode("<br>", $agent->mobiles) ?></p>
+                        </div>                       
+                        <a  data-ignore="push" class="btn btn-link pull-right" href="<?= \yii\helpers\Url::to([
                             'client-agent', 
                             'gh_id' => $wx_user->gh_id, 
                             'openid' => $wx_user->openid, 
                             'agent_id' => $agent->agent_id,
                             'backwards' => 1,
                         ]) ?>"> 
-                            <span class="icon icon-right-nav"></span>
+                            <i class="fa fa-chevron-right fa-2x" style="color:#ccc"></i>
                         </a>
-                    </li>
-
-                    <li class="table-view-cell media" style="height:64px">
-                        <button style="border-radius:3px;height:48px" class="btn btn-primary btn-block" onclick="editEmployee('<?= $outlet->outlet_id?>','<?= $agent->agent_id ?>',true)">
-                        修改
-                        </button>    
                     </li>
 
                 <?php } ?>     
@@ -343,7 +347,41 @@ use \yii\helpers\Url;
           </div>
         </div>
 
+        <div id="xzyg" class="modal">
+          <header class="bar bar-nav">
+            <a class="icon icon-close pull-right" href="#xzyg"></a>
+            <h1 class="title">新增员工</h1>
+          </header>
 
+          <div class="content">
+
+              <center>
+                <div class="input-group">
+
+                    <div class="input-row">
+                      <label style="color:#777777">姓名</label>
+                      <input type="text" id="ygxm">
+                    </div>
+
+                    <div class="input-row">
+                      <label style="color:#777777">手机</label>
+                       <input type="text"  id="ygsjhm">
+                    </div>
+
+                    <div class="input-row">
+                      <label style="color:#777777">职位</label>
+                      <input type="text" id="ygzw">
+                    </div>                  
+                    <br> <br>
+                  <button class="btn btn-positive btn-block" style="border-radius:3px" id="addBtn">确定</button>
+
+                  <a class="btn btn-block" style="border-radius:3px" href="#xzyg"> 返回</a>
+                </div>
+              </center>
+
+
+          </div>
+        </div>
 
 
         <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
@@ -361,6 +399,9 @@ use \yii\helpers\Url;
         localId: [],
         serverId: []
       };
+      
+      var office_id = '<?= $outlet->outlet_id ?>';
+      var yuangongFlag = '<?= $outlet->category == \app\models\ClientOutlet::CATEGORY_COOPERATED ? false : true; ?>';
 
     wx.config({
       debug: false,
@@ -509,6 +550,35 @@ use \yii\helpers\Url;
             });
 
         }
+        
+        function zjygajax(ygxm,ygsjhm,ygzw,yuangongFlag,office_id){
+              $.ajax({
+              url: "<?php echo Url::to(['wap/zjygajax'], true) ; ?>",
+              type:"GET",
+              cache:false,
+              dataType:"json",
+              data: "ygxm="+ygxm+"&ygsjhm="+ygsjhm+"&ygzw="+ygzw+"&office_id="+office_id+"&yuangongFlag="+yuangongFlag,
+              success: function(t){
+                      if(t.code==0)
+                      {
+                          alert("员工已经成功加入。");
+                          var url = "<?php echo \app\models\utils\BrowserHistory::current($wx_user->gh_id, $wx_user->openid) ?>";
+                          location.href = url;
+                      }
+                      else
+                      {
+                        alert(t.errMsg);
+                      }
+                },
+                error: function(){
+                  alert('error!');
+                }
+            });
+
+            return false;
+        }
+
+
 
         function editEmployee(outlet_id,entity_id,is_agent)
         {
@@ -534,6 +604,30 @@ use \yii\helpers\Url;
                   scale: 12,
                   infoUrl: ''
                 });
+            });
+            
+            /*增加员工*/
+            $("#addBtn").click(function(){
+                alert("增加员工");
+                var ygxm = $("#ygxm").val();
+                var ygsjhm = $("#ygsjhm").val();
+                var ygzw = $("#ygzw").val();
+
+                if((ygxm == ""))
+                {
+                  alert("员工姓名不能为空，\n请重新填写。");
+                  return  false;
+                }
+
+                var usermobileReg = /(^(1)\d{10}$)/;
+                if((usermobileReg.test(ygsjhm) === false) || (ygsjhm == ""))
+                {
+                  alert("手机号码不正确，\n请重新填写。");
+                  return  false;
+                }
+
+                zjygajax(ygxm,ygsjhm,ygzw,yuangongFlag,office_id);
+                return false;
             });
             
             $('#getLocation').click(function () {
