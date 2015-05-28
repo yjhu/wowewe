@@ -293,6 +293,41 @@ class WapxController extends Controller
         ]);
 
     }
+
+
+    public function actionClientOutletEmployeeEdit($gh_id, $openid, $backwards = true, $pop = false)
+    {
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        }
+                  
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+
+        $this->layout = false;   
+        $is_agent = $_GET['is_agent']; 
+        $outlet_id = $_GET['outlet_id'];
+        if ($is_agent) {
+            $agent_id = $_GET['entity_id'];
+            $entity = \app\models\ClientAgent::findOne(['agent_id' => $agent_id]);
+        } else {
+            $employee_id = $_GET['entity_id'];
+            $entity = \app\models\ClientEmployee::findOne(['employee_id' => $employee_id]);
+        }
+        $outlet = \app\models\ClientOutlet::findOne(['outlet_id' => $outlet_id]);
+        
+        return $this->render('client-outlet-employee-edit', [
+            'wx_user'=>$wx_user, 
+            'entity'=>$entity, 
+            'is_agent'=>$is_agent,
+            'outlet' => $outlet,
+            'backwards' => $backwards,
+        ]);
+    }
  
     //http://wosotech.com/wx/web/index.php?r=wapx/client-agent&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&agent_id=1470&backwards=0
     public function actionClientAgent($gh_id, $openid, $agent_id, $backwards = true, $pop = false) {
@@ -312,6 +347,8 @@ class WapxController extends Controller
         return $this->render('client-agent', ['wx_user' => $wx_user, 'agent' => $agent, 'backwards' => $backwards]);
     }
     
+
+
     //http://wosotech.com/wx/web/index.php?r=wapx/client-organization&gh_id=gh_03a74ac96138&openid=oKgUduHLF-HAxvHYIwmm3qjfqNf0&organization_id=1&backwards=0    
     public function actionClientOrganization($gh_id, $openid, $organization_id, $backwards = true, $pop = false) {
         if (!$backwards) {

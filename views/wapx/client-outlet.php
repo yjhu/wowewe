@@ -173,45 +173,69 @@ use \yii\helpers\Url;
                 <li class="table-view-cell table-view-divider">所属员工列表</li>                
                 <?php foreach ($outlet->employees as $employee) { ?> 
                     <li class="table-view-cell media">
-                        <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+
+                            <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
                                 'client-employee', 
                                 'gh_id' => $wx_user->gh_id, 
                                 'openid' => $wx_user->openid, 
                                 'employee_id' => $employee->employee_id,
                                 'backwards' => 1,
-                            ]) ?>">
+                            ]) ?>"> 
+
                             <?php if (!empty($employee->wechat) && !empty($employee->wechat->headimgurl)) { ?>
                             <span class="media-object pull-left"><img style="width:48px;" src="<?= $employee->wechat->headimgurl ?>"></span>
                             <?php } else { ?>
                             <span style="width:48px;" class="media-object pull-left icon icon-person"></span>
                             <?php } ?>
+                        
                             <div class="media-body">
                                 <?= $employee->name ?><p><?= implode("<br>", $employee->mobiles) ?></p>
                                 <p><span class="badge badge-positive pull-right"><?= $employee->getOutletPosition($outlet->outlet_id) ?></span></p>
                             </div>
                         </a>
                     </li>
+
+                    <li class="table-view-cell media" style="height:64px">
+                        <button style="border-radius:3px;height:48px" class="btn btn-primary btn-block" onclick="editEmployee('<?= $outlet->outlet_id?>','<?= $employee->employee_id ?>',false)">
+                        修改
+                        </button>    
+                    </li>
+
                 <?php } ?>
                 <?php foreach ($outlet->agents as $agent) { ?> 
                     <li class="table-view-cell media">
+
                         <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
-                                'client-agent', 
-                                'gh_id' => $wx_user->gh_id, 
-                                'openid' => $wx_user->openid, 
-                                'agent_id' => $agent->agent_id,
-                                'backwards' => 1,
-                            ]) ?>">
-                            <?php if (!empty($agent->wechat) && !empty($agent->wechat->headimgurl)) { ?>
-                            <span class="media-object pull-left"><img style="width:48px;" src="<?= $agent->wechat->headimgurl ?>"></span>
-                            <?php } else { ?>
-                            <span style="width:48px;" class="media-object pull-left icon icon-person"></span>
-                            <?php } ?>
-                            <div class="media-body">
-                                <?= $agent->name ?><p><?= implode("<br>", $agent->mobiles) ?></p>
-                                <p><span class="badge badge-positive pull-right"><?= $agent->getOutletPosition($outlet->outlet_id) ?></span></p>
-                            </div>
+                            'client-agent', 
+                            'gh_id' => $wx_user->gh_id, 
+                            'openid' => $wx_user->openid, 
+                            'agent_id' => $agent->agent_id,
+                            'backwards' => 1,
+                        ]) ?>"> 
+                       
+                        <?php if (!empty($agent->wechat) && !empty($agent->wechat->headimgurl)) { ?>
+                        <span class="media-object pull-left">
+                        <img style="width:48px;" src="<?= $agent->wechat->headimgurl ?>">
+                        </span>
+                        <?php } else { ?>
+                        <span style="width:48px;" class="media-object pull-left icon icon-person"></span>
+                        <?php } ?>
+                        
+                         <div class="media-body">
+                        <?= $agent->name ?><p><?= implode("<br>", $agent->mobiles) ?></p>
+                        <p>
+                        <span class="badge badge-positive  pull-right"><?= $agent->getOutletPosition($outlet->outlet_id) ?></span>
+                        </p>
+                        </div>
                         </a>
                     </li>
+
+                    <li class="table-view-cell media" style="height:64px">
+                        <button style="border-radius:3px;height:48px" class="btn btn-primary btn-block" onclick="editEmployee('<?= $outlet->outlet_id?>','<?= $agent->agent_id ?>',true)">
+                        修改
+                        </button>    
+                    </li>
+
                 <?php } ?>     
             </ul>
             <div>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/>&nbsp;<br/></div>
@@ -249,6 +273,7 @@ use \yii\helpers\Url;
             </div>
         </div>
 
+
         <div id="editClientOutlet" class="modal">
           <header class="bar bar-nav">
             <a class="icon icon-close pull-right" href="#editClientOutlet"></a>
@@ -284,12 +309,12 @@ use \yii\helpers\Url;
                     foreach ($pics as $pic){ 
                         $pic_url = $outlet->getPicUrl($pic);
 
-                    ?>  
+                    ?>
       
                     <li class="table-view-cell" id="<?= $pic ?>">
                         <img class="media-object pull-left" src="<?= $pic_url ?>" width="64" height="64">
                         
-                        <button class="btn-negative icon icon-close" picname="<?= $pic ?>" onclick="delPicBtn('<?= $pic ?>');">删除</button>
+                    <span class="btn-negative icon icon-close" picname="<?= $pic ?>" onclick="delPicBtn('<?= $pic ?>');">删除</span>
                     </li>
                     <?php } ?>  
                 <?php             
@@ -479,6 +504,16 @@ use \yii\helpers\Url;
                 } 
             });
 
+        }
+
+        function editEmployee(outlet_id,entity_id,is_agent)
+        {
+         
+            //alert("outlet_id:"+outlet_id+"entity_id:"+entity_id);
+            url = "<?php echo Url::to(['client-outlet-employee-edit', 'gh_id' => $wx_user->gh_id, 'openid' => $wx_user->openid]) ?>"+"&outlet_id="+outlet_id+"&entity_id="+entity_id+"&is_agent="+is_agent;
+
+            //alert(url);
+            location.href = url;
         }
   
         wx.ready(function () {
