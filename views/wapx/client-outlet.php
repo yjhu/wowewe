@@ -153,12 +153,10 @@ use \yii\helpers\Url;
                     <?= $outlet->supervisionOrganization->title ?>
                 </li>
                 <li class="table-view-cell table-view-divider">
-                    门店地址及电话<a class="btn btn-link pull-right" href="#composeOutletInfo" id="editClientOutletInfo"><i class="fa fa-pencil fa-2x" style="color:#56abe4"></i></span></a>
-                    <!--
-                    <a href="#editClientOutlet" id="editClientOutletInfo">
-                    <span class='icon icon-compose pull-right'></span>
+                    门店地址及电话
+                    <a class="btn btn-link pull-right" href="#composeOutletInfo" id="editClientOutletInfo">
+                        <i class="fa fa-pencil fa-2x" style="color:#56abe4"></i>
                     </a>
-                    -->
                 </li>                
                 <li class="table-view-cell">                        
                     地址：<?= $outlet->address ?>
@@ -171,10 +169,10 @@ use \yii\helpers\Url;
                 </li>
             </ul>           
             
-            <ul class="table-view">
+            <ul class="table-view" id="outlet-staff">
                 <li class="table-view-cell table-view-divider">所属员工列表</li>                
                 <?php foreach ($outlet->employees as $employee) { ?> 
-                    <li class="table-view-cell media">
+                    <li class="table-view-cell media woso-slide">
 
                             <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
                                 'client-employee', 
@@ -205,21 +203,14 @@ use \yii\helpers\Url;
 
                 <?php } ?>
                 <?php foreach ($outlet->agents as $agent) { ?> 
-                    <li class="table-view-cell media outlet-staff">
-                        <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
-                            'client-agent', 
-                            'gh_id' => $wx_user->gh_id, 
-                            'openid' => $wx_user->openid, 
-                            'agent_id' => $agent->agent_id,
-                            'backwards' => 1,
-                        ]) ?>"> 
+                    <li class="table-view-cell">
                        
                         <?php if (!empty($agent->wechat) && !empty($agent->wechat->headimgurl)) { ?>
-                        <span class="media-object pull-left">
+                        <span class="pull-left">
                         <img style="width:48px;" src="<?= $agent->wechat->headimgurl ?>">
                         </span>
                         <?php } else { ?>
-                        <span style="width:48px;" class="media-object pull-left icon icon-person"></span>
+                        <span style="width:48px;" class="pull-left icon icon-person"></span>
                         <?php } ?>
                         
                          <div class="media-body">
@@ -228,6 +219,14 @@ use \yii\helpers\Url;
                         <span class="badge badge-positive  pull-right"><?= $agent->getOutletPosition($outlet->outlet_id) ?></span>
                         </p>
                         </div>
+                        <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+                            'client-agent', 
+                            'gh_id' => $wx_user->gh_id, 
+                            'openid' => $wx_user->openid, 
+                            'agent_id' => $agent->agent_id,
+                            'backwards' => 1,
+                        ]) ?>"> 
+                            <span class="icon icon-right-nav"></span>
                         </a>
                     </li>
 
@@ -347,17 +346,6 @@ use \yii\helpers\Url;
         <!-- Include the compiled Ratchet JS -->
         <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
         <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-        <script>
-            window.addEventListener('touchstart',   function (event) {
-//                alert(event);
-            });
-            window.addEventListener('touchmove',    function (event) {
-                alert(event.target);
-            });
-            window.addEventListener('touchend',     function (event) {
-//                alert(event);
-            });           
-        </script>
         <script>           
         $("#editClientOutletInfo").hide();
         $('#openLocation').hide();
