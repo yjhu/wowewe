@@ -17,6 +17,8 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
 
         <!-- Include the compiled Ratchet CSS -->
         <link href="./ratchet/dist/css/ratchet.css" rel="stylesheet">
+        <link rel="stylesheet" href="http://libs.useso.com/js/font-awesome/4.2.0/css/font-awesome.min.css">
+
         <link href="./php-emoji/emoji.css" rel="stylesheet">    
     </head>
     <body>
@@ -89,7 +91,7 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
                                         'backwards' => 1,
                                     ]) ?>">
                                     <span class="media-object pull-left">
-                                        <img style='width:24px;' src="/wx/web/images/comm-icon/iconfont-bumenguanli.png">
+                                       <i class="fa fa-sitemap fa-2x"></i>
                                     </span>
                                     <div class="media-body">
                                         <?= $direct_subordinate_organization->title ?>

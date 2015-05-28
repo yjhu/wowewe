@@ -26,7 +26,7 @@ include('../models/utils/emoji.php');
 
         <!-- Include the compiled Ratchet CSS -->
         <link href="/wx/web/ratchet/dist/css/ratchet.css?v12" rel="stylesheet">
-
+        <link rel="stylesheet" href="http://libs.useso.com/js/font-awesome/4.2.0/css/font-awesome.min.css">
         <link href="./php-emoji/emoji.css" rel="stylesheet">
 
 
@@ -152,7 +152,7 @@ include('../models/utils/emoji.php');
                                 'backwards'         => true,
                                 'organization_id'   => $organization->organization_id,
                             ]) ?>">
-                                <span class="media-object pull-left"><img src="/wx/web/images/comm-icon/iconfont-bumenguanli.png"></span>
+                                <span class="media-object pull-left"><i class="fa fa-sitemap fa-2x"></i></span>
                                 <div class="media-body">
                                         <?= $organization->title ?>
                                     <span class="badge badge-positive pull-right">

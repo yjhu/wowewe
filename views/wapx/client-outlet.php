@@ -23,6 +23,8 @@ use \yii\helpers\Url;
 
         <!-- Include the compiled Ratchet CSS -->
         <link href="./ratchet/dist/css/ratchet.css" rel="stylesheet">
+        <link rel="stylesheet" href="http://libs.useso.com/js/font-awesome/4.2.0/css/font-awesome.min.css">
+
         <link href="./php-emoji/emoji.css" rel="stylesheet">    
     </head>
     <body>
@@ -151,7 +153,7 @@ use \yii\helpers\Url;
                     <?= $outlet->supervisionOrganization->title ?>
                 </li>
                 <li class="table-view-cell table-view-divider">
-                    门店地址及电话<a class="btn btn-link pull-right" href="#composeOutletInfo" id="editClientOutletInfo"><img src="../web/images/comm-icon/iconfont-xiugai.png" /></span></a>
+                    门店地址及电话<a class="btn btn-link pull-right" href="#composeOutletInfo" id="editClientOutletInfo"><i class="fa fa-pencil fa-2x" style="color:#56abe4"></i></span></a>
                     <!--
                     <a href="#editClientOutlet" id="editClientOutletInfo">
                     <span class='icon icon-compose pull-right'></span>
@@ -161,11 +163,11 @@ use \yii\helpers\Url;
                 <li class="table-view-cell">                        
                     地址：<?= $outlet->address ?>
                     <?php if (!empty($outlet->latitude) && !empty($outlet->longitude)) { ?>
-                    <a data-ignore="push" class="btn btn-link pull-right" id="openLocation"><img src="../web/images/comm-icon/iconfont-weizhi3.png" /></a>
+                    <a data-ignore="push" class="btn btn-link pull-right" id="openLocation"><i class="fa fa-map-marker fa-2x" style="color:#56abe4"></i></a>
                     <?php  } ?>
                 </li>
                 <li class="table-view-cell">                        
-                    电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right" id="getLocation"><img src="../web/images/comm-icon/iconfont-tuding.png" /></a>
+                    电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right" id="getLocation"><i class="fa fa-thumb-tack fa-2x" style="color:#ea8010"></i></a>
                 </li>
             </ul>           
             

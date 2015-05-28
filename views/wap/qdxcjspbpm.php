@@ -22,7 +22,7 @@
 
     <!-- Include the compiled Ratchet CSS -->
     <link href="/wx/web/ratchet/dist/css/ratchet.css" rel="stylesheet">
-  
+    <link rel="stylesheet" href="http://libs.useso.com/js/font-awesome/4.2.0/css/font-awesome.min.css">
     <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
     <!-- Include the compiled Ratchet JS -->
     <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
@@ -40,7 +40,7 @@
       <?php } ?>
 
       <h1 class="title">
-       <img src="../web/images/comm-icon/iconfont-paiming-blue.png">&nbsp;渠道宣传竞赛评选排行榜
+       <i class="fa fa-trophy" style="color:#56abe4"></i>&nbsp;渠道宣传竞赛评选排行榜
       </h1>
     </header>
 
