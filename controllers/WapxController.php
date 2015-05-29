@@ -193,28 +193,6 @@ class WapxController extends Controller
     }
 
 
-
-    //http://127.0.0.1/wx/web/index.php?r=wapx/officeorder&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE
-    public function actionOfficeorder($gh_id, $openid)
-    {        
-        $this->layout = 'wapx';
-        $user = MUser::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        $model = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
-        if ($model === null) 
-        {
-            U::W(['Invalid openid.', __METHOD__, $gh_id, $openid]);    
-            return $this->redirect(['staffsearch', 'gh_id'=>$gh_id, 'openid'=>$openid]);
-        }
-        if (empty($model->office_id))
-        {
-            U::W(['Invalid office_id.', __METHOD__, $gh_id, $openid]);    
-            return $this->redirect(['staffbind', 'gh_id'=>$gh_id, 'openid'=>$openid, 'mobile'=>$model->mobile]);                
-        }
-        $office = MOffice::findOne($model->office_id);
-        return $this->render('officeorder', ['model' => $model, 'office'=>$office, 'user'=>$user]);
-
-    }
-
     //http://127.0.0.1/wx/web/index.php?r=wapx/nearestmap&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&office_id=1&lon=114.361676377&lat=30.5824773524
     public function actionNearestmap($gh_id, $openid, $office_id, $lon, $lat)
     {        
