@@ -183,10 +183,10 @@ class ClientEmployee extends \yii\db\ActiveRecord {
             'mobile'    => $employee_mobile,
         ])->one();
         if (!empty($employee)) {
-            return json_encode([
-                'code'      => -1, 
-                'errMsg'    => "{$employee_name}({$employee_mobile})已存在！",
-            ]);
+//            return json_encode([
+//                'code'      => -1, 
+//                'errMsg'    => "{$employee_name}({$employee_mobile})已存在！",
+//            ]);
         } else {
             $employee = new self();
             $employee->name = $employee_name;
@@ -196,25 +196,25 @@ class ClientEmployee extends \yii\db\ActiveRecord {
                 'employee_id'  => $employee->employee_id,
                 'mobile'       => $employee_mobile,
             ])->execute();
+        }
             
-            $row = (new \yii\db\Query())->select('*')->from('client_employee_outlet')->where([
+        $row = (new \yii\db\Query())->select('*')->from('client_employee_outlet')->where([
+            'employee_id'  => $employee->employee_id,
+            'outlet_id'    => $outlet->outlet_id,
+        ])->one();
+        if (false === $row) {
+            \Yii::$app->db->createCommand()->insert('client_employee_outlet', [
                 'employee_id'  => $employee->employee_id,
                 'outlet_id'    => $outlet->outlet_id,
-            ])->one();
-            if (false === $row) {
-                \Yii::$app->db->createCommand()->insert('client_employee_outlet', [
-                    'employee_id'  => $employee->employee_id,
-                    'outlet_id'    => $outlet->outlet_id,
-                    'position'     => $employee_position,
-                ])->execute();
-            } else {
-                return json_encode([
-                    'code'      => -1, 
-                    'errMsg'    => "{$employee_name}({$employee_mobile})已存在门店{$outlet_id}中！",
-                ]);
-            }
-            
-            return json_encode(['code' => 0]);
+                'position'     => $employee_position,
+            ])->execute();
+        } else {
+            return json_encode([
+                'code'      => -1, 
+                'errMsg'    => "{$employee_name}({$employee_mobile})已存在门店{$outlet->title}中！",
+            ]);
         }
+
+        return json_encode(['code' => 0]);
     }
 }

@@ -2498,10 +2498,14 @@ EOD;
         $this->layout = false;
     //    $gh_id = U::getSessionParam('gh_id');
     //    $openid = U::getSessionParam('openid');
-        $staff_id = $_GET['staff_id'];
+        $staff_id = $_GET['staff_id'];        
 
-        $staff = MStaff::findOne(['staff_id'=>$staff_id]);  
-        $office = $staff->office;  
+        $staff = MStaff::findOne(['staff_id'=>$staff_id]); 
+        if (isset($_GET['office_id']))
+            $office = MOffice::findOne(['office_id' => $_GET['office_id']]);            
+        else 
+            $office = $staff->office;
+            
 //        $orders = MOrder::findBySql('select * from wx_order where office_id = :office_id and status != :status and create_time > DATE_SUB(NOW(), INTERVAL 7 day)', 
 //            [':office_id' => $office->office_id, ':status' => MOrder::STATUS_DRAFT])
 //            ->all();

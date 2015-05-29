@@ -5,7 +5,7 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
 $gh = \Yii::$app->wx->getGh();
 $jssdk = new \app\models\JSSDK($gh['appid'], $gh['appsecret']);
 $signPackage = $jssdk->GetSignPackage();
-
+$is_wosoAdmin = true;
 use \yii\helpers\Url;
 ?>
 <!DOCTYPE html>
@@ -45,7 +45,11 @@ use \yii\helpers\Url;
         <div id="outletMenuItems" class="popover">
           <ul class="table-view">
             <li class="table-view-cell">
-                  <a class="navigate-right">
+                <a class="navigate-right" data-ignore="push" href="<?= \yii\helpers\Url::to([
+                    'wap/officeorder',
+                    'staff_id'     => $wx_user->staff->staff_id,
+                    'office_id'    => $outlet->original_office_id,
+                ]); ?>">
                   <span class="badge badge-primary">5</span>
                     订单管理
                   </a>
@@ -137,7 +141,7 @@ use \yii\helpers\Url;
             <?php             
             } 
             ?>
-                <div class="slide">
+                <div class="slide woso-admin">
                     <center>
                     <a data-ignore='push' class='btn btn-link' id='uploadImages'>
                     <img height=50% src="../web/images/comm-icon/iconfont-shangchuantupian.png">
@@ -154,7 +158,7 @@ use \yii\helpers\Url;
                 </li>
                 <li class="table-view-cell table-view-divider">
                     门店地址及电话
-                    <a class="btn btn-link pull-right" href="#composeOutletInfo" id="editClientOutletInfo">
+                    <a class="btn btn-link pull-right woso-admin" href="#composeOutletInfo" id="editClientOutletInfo">
                         <i class="fa fa-pencil fa-2x" style="color:#56abe4"></i>
                     </a>
                 </li>                
@@ -165,14 +169,14 @@ use \yii\helpers\Url;
                     <?php  } ?>
                 </li>
                 <li class="table-view-cell">                        
-                    电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right" id="getLocation"><i class="fa fa-thumb-tack fa-2x" style="color:#56abe4"></i></a>
+                    电话：<?= $outlet->telephone ?><a data-ignore="push" class="btn btn-link pull-right woso-admin" id="getLocation"><i class="fa fa-thumb-tack fa-2x" style="color:#56abe4"></i></a>
                 </li>
             </ul>           
             
             <ul class="table-view" id="outlet-staff">
                 <li class="table-view-cell table-view-divider">
                     所属员工列表
-                    <a class="btn btn-link pull-right" href="#xzyg"><i class="fa fa-plus-circle fa-2x" style="color:#56abe4"></i></a>
+                    <a class="btn btn-link pull-right woso-admin" href="#xzyg"><i class="fa fa-plus-circle fa-2x" style="color:#56abe4"></i></a>
                 </li>                
                 <?php foreach ($outlet->employees as $employee) { ?> 
                     <li class="table-view-cell">
@@ -189,7 +193,7 @@ use \yii\helpers\Url;
                                 <p>
                                     <?= $employee->name ?>&nbsp;
                                     <span class="badge badge-positive"><?= $employee->getOutletPosition($outlet->outlet_id) ?></span>&nbsp;
-                                    <span class="icon icon-compose" onclick="editEmployee(
+                                    <span class="icon icon-compose woso-admin" onclick="editEmployee(
                                        '<?= $outlet->outlet_id ?>',
                                        '<?= $employee->employee_id ?>',
                                        '<?= false ?>'
@@ -225,7 +229,7 @@ use \yii\helpers\Url;
                             <p>
                                 <?= $agent->name ?> &nbsp;
                                 <span class="badge badge-positive"><?= $agent->getOutletPosition($outlet->outlet_id) ?></span>&nbsp;
-                                <span class="icon icon-compose" onclick="editEmployee(
+                                <span class="icon icon-compose woso-admin" onclick="editEmployee(
                                        '<?= $outlet->outlet_id ?>',
                                        '<?= $agent->agent_id ?>',
                                        '<?= true ?>'
@@ -388,10 +392,15 @@ use \yii\helpers\Url;
         <!-- Include the compiled Ratchet JS -->
         <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
         <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-        <script>           
-        $("#editClientOutletInfo").hide();
-        $('#openLocation').hide();
-        $('#getLocation').hide();
+        <script>
+            var is_wosoAdmin = '<?= $is_wosoAdmin ?>';
+            $('.woso-admin').hide();
+            if (is_wosoAdmin)
+                $('.woso-admin').show();
+            
+//        $("#editClientOutletInfo").hide();
+//        $('#openLocation').hide();
+//        $('#getLocation').hide();
 //            alert("wx_config begins.");
 
 
@@ -591,9 +600,9 @@ use \yii\helpers\Url;
         }
   
         wx.ready(function () {
-            $("#editClientOutletInfo").show();
-            $('#openLocation').show();
-            $('#getLocation').show();
+//            $("#editClientOutletInfo").show();
+//            $('#openLocation').show();
+//            $('#getLocation').show();
 
             $('#openLocation').click(function () {
                 wx.openLocation({

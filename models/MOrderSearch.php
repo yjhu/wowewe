@@ -70,6 +70,7 @@ class MOrderSearch extends Model
         ]);
 
         $this->gh_id = Yii::$app->user->getGhid();
+//        $this->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM;
         $this->addCondition($query, 'gh_id');        
         if (!Yii::$app->user->getIsAdmin()) {
             $this->office_id = Yii::$app->user->identity->office_id;

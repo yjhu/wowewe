@@ -106,10 +106,10 @@ class ClientAgent extends \yii\db\ActiveRecord
             'mobile'    => $agent_mobile,
         ])->one();
         if (!empty($agent)) {
-            return json_encode([
-                'code'      => -1, 
-                'errMsg'    => "{$agent_name}({$agent_mobile})已存在！",
-            ]);
+//            return json_encode([
+//                'code'      => -1, 
+//                'errMsg'    => "{$agent_name}({$agent_mobile})已存在！",
+//            ]);
         } else {
             $agent = new self();
             $agent->name = $agent_name;
@@ -119,26 +119,25 @@ class ClientAgent extends \yii\db\ActiveRecord
                 'agent_id'  => $agent->agent_id,
                 'mobile'    => $agent_mobile,
             ])->execute();
-            
-            $row = (new \yii\db\Query())->select('*')->from('client_agent_outlet')->where([
-                'agent_id'  => $agent->agent_id,
-                'outlet_id' => $outlet->outlet_id,
-            ])->one();
-            if (false === $row) {
-                \Yii::$app->db->createCommand()->insert('client_agent_outlet', [
-                    'agent_id'     => $agent->agent_id,
-                    'outlet_id'    => $outlet->outlet_id,
-                    'position'     => $agent_position,
-                ])->execute();
-            } else {
-                return json_encode([
-                    'code'      => -1, 
-                    'errMsg'    => "{$agent_name}({$agent_mobile})已存在门店{$outlet_id}中！",
-                ]);
-            }
-            
-            return json_encode(['code' => 0]);
         }
         
+        $row = (new \yii\db\Query())->select('*')->from('client_agent_outlet')->where([
+            'agent_id'  => $agent->agent_id,
+            'outlet_id' => $outlet->outlet_id,
+        ])->one();
+        if (false === $row) {
+            \Yii::$app->db->createCommand()->insert('client_agent_outlet', [
+                'agent_id'     => $agent->agent_id,
+                'outlet_id'    => $outlet->outlet_id,
+                'position'     => $agent_position,
+            ])->execute();
+        } else {
+            return json_encode([
+                'code'      => -1, 
+                'errMsg'    => "{$agent_name}({$agent_mobile})已存在门店{$outlet->title}中！",
+            ]);
+        }
+
+        return json_encode(['code' => 0]);        
     }
 }
