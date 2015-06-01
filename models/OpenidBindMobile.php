@@ -47,6 +47,16 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
     {
         return 'wx_openid_bind_mobile';
     }
+    
+    public function behaviors() {
+        return [
+            [
+                'class' => \yii\behaviors\TimestampBehavior::className(),
+                'updatedAtAttribute' => 'update_time',
+                'value' => new \yii\db\Expression('NOW()'),
+            ],
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -64,6 +74,7 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
             ['mobile', 'match', 'pattern' => '/((\d{11})|^((\d{7,8})|(\d{4}|\d{3})-(\d{7,8})|(\d{4}|\d{3})-(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1})|(\d{7,8})-(\d{4}|\d{3}|\d{2}|\d{1}))$)/' ],
 
             ['verifyCode', 'captcha', 'captchaAction'=>'site/smcaptcha', 'on'=>'bind_mobile'],
+            [['carrier', 'province', 'city'], 'safe'],
         
         ];
     }
@@ -87,6 +98,48 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
     {
         $mobiles = OpenidBindMobile::find()->select(['mobile'])->column();
         return $mobiles;
+    }
+    
+    public function getCarrier() {
+        if (empty($this->carrier) || (strtotime($this->update_time) < strtotime('-1 month'))) {
+            $resp = \app\models\U::getMobileLocation($this->mobile);
+            if (empty($resp['errcode'])) {
+                $this->updateAttributes([
+                    'carrier'   => $resp['Corp'],
+                    'province'  => $resp['Province'],
+                    'city'      => $resp['City'],
+                ]);
+            }
+        }
+        return $this->carrier;
+    }
+    
+    public function getProvince() {
+        if (empty($this->province) || (strtotime($this->update_time) < strtotime('-1 month'))) {
+            $resp = \app\models\U::getMobileLocation($this->mobile);
+            if (empty($resp['errcode'])) {
+                $this->updateAttributes([
+                    'carrier'   => $resp['Corp'],
+                    'province'  => $resp['Province'],
+                    'city'      => $resp['City'],
+                ]);
+            }
+        }
+        return $this->province;
+    }
+    
+    public function getCity() {
+        if (empty($this->city) || (strtotime($this->update_time) < strtotime('-1 month'))) {
+            $resp = \app\models\U::getMobileLocation($this->mobile);
+            if (empty($resp['errcode'])) {
+                $this->updateAttributes([
+                    'carrier'   => $resp['Corp'],
+                    'province'  => $resp['Province'],
+                    'city'      => $resp['City'],
+                ]);
+            }
+        }
+        return $this->city;
     }
 
     public function attributeLabels()

@@ -66,8 +66,8 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
     
     public static function getScoreByPicCategory($office_id, $pic_category, $date = null)
     {
-        $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate();
-        $end_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate();
+        $start_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignBeginDate($date);
+        $end_date = \app\models\utils\OfficeCampaignUtils::getOfficeCampaignEndDate($date);
         
         $scores = self::find()->joinWith('campaignDetail')
                     ->andWhere(['wx_office_campaign_detail.office_id' => $office_id])
@@ -174,10 +174,11 @@ class MOfficeCampaignScore extends \yii\db\ActiveRecord
             return $ranking;
         }
 
+        $scores = [];
         foreach($ranking as $key => $row) {
-            $score[$key] = $row['score'];
+            $scores[$key] = $row['score'];
         }        
-        array_multisort($score, SORT_DESC, $ranking);
+        array_multisort($scores, SORT_DESC, $ranking);
         //return arsort($ranking);
         return $ranking;
     }

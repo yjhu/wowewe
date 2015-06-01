@@ -330,8 +330,10 @@
                   ?>
                   <button id="qxsq" class="btn btn-negative btn-outlined pull-right" uid="<?= $user_account->id ?>"  amount="<?= $user_account->amount ?>"><span class="icon icon-close">取消申请</span></button>
                   <?php 
-                    }
+                    } else {
                   ?>
+                  <span class="badge badge-positive pull-right"><?= $user_account->getStatusDesc(); ?></span>
+                  <?php } ?>
                   </p>
             </li>
             <?php } ?>

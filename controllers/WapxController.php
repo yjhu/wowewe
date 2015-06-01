@@ -361,8 +361,8 @@ class WapxController extends Controller
         }  
         
         $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
-        $searchModel = new \app\models\MOrderSearch;
-        $dataProvider = $searchModel->search(Yii::$app->request->get());
+        $searchModel = new \app\models\ClientOrderSearch;
+        $dataProvider = $searchModel->search(\Yii::$app->request->get());
         
         $this->layout = false;
         return $this->render('client-order-list', [
@@ -373,6 +373,51 @@ class WapxController extends Controller
         ]);
     }
 
+    public function actionClientWechatFanList($gh_id, $openid, $backwards = true, $pop = false) {
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        }  
+        
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        $searchModel = new \app\models\ClientWechatFanSearch;
+        $dataProvider = $searchModel->search(\Yii::$app->request->get());
+        
+        $this->layout = false;
+        return $this->render('client-wechat-fan-list', [
+            'wx_user'       => $wx_user, 
+            'backwards'     => $backwards,
+            'searchModel'   => $searchModel,
+            'dataProvider'  => $dataProvider,
+        ]);
+    }
+    
+    public function actionClientCustomerList($gh_id, $openid, $backwards = true, $pop = false) {
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        }  
+        
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        $searchModel = new \app\models\ClientCustomerSearch;
+        $dataProvider = $searchModel->search(\Yii::$app->request->get());
+        
+        $this->layout = false;
+        return $this->render('client-customer-list', [
+            'wx_user'       => $wx_user, 
+            'backwards'     => $backwards,
+            'searchModel'   => $searchModel,
+            'dataProvider'  => $dataProvider,
+        ]);
+    }
 
 
 

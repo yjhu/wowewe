@@ -106,7 +106,7 @@ class NightController extends Controller {
             $start_date = '2015-04-01';
             $end_date = date("Y-m-d", strtotime("-1 month"));
             U::W("NightController::addRecommendFanAmount runs [".$start_date.", ".$end_date.']');
-            self::addRecommendFanAmount($theFirstDayOfLastMonth, $theLastDayOfLastMonth);
+            self::addRecommendFanAmount($start_date, $end_date);
         }
 
         self::checkSmBalance();

@@ -1,9 +1,7 @@
 <?php
 include('../models/utils/emoji.php');
 $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->client;
-$orders = $dataProvider->getModels();
-
-use app\models\MOrder;
+$wechats = $dataProvider->getModels();
 ?>
 <!DOCTYPE html>
 <html>
@@ -36,53 +34,31 @@ use app\models\MOrder;
                 </a>
             <?php } ?>
             <h1 class="title">
-                订单列表<?= count($orders) ?>
+                粉丝列表<?= count($wechats) ?>
             </h1>
         </header>
         <!------------------- END OF HEADER ----------------------------------->
 
         <!------------------- BEGIN OF CONTENT -------------------------------->
         <div class="content">
-            <input type="datetime-local">
             <ul class="table-view">
-                <?php foreach ($orders as $order) { ?>
+                <?php foreach ($wechats as $wechat) { ?>
                     <li class="table-view-cell media">
                         <a data-ignore="push" class="navigate-right">
 
-                            <img class="media-object pull-left" src="<?php echo $order->item->pic_url . '-120x120.jpg' ?>" width="80" height="80">
+                            <img class="media-object pull-left" src="<?php echo $wechat->getHeadImgUrl(); ?>" width="80" height="80">
 
                             <div class="media-body">
-                                <p><span class="orderitem">订单编号</span>&nbsp;&nbsp;<?= $order->oid ?></p>
-                                <p><span class="orderitem">下单时间</span>&nbsp;&nbsp;<?= $order->create_time ?></p>
-                                <p><span class="orderitem">商品名称</span>&nbsp;&nbsp;<?= $order->title ?></p>
-                                <p><span class="orderitem">商品价格</span>&nbsp;&nbsp;￥<?= ($order->feesum) / 100 ?>元</p>
-                                <p><span class="orderitem">支付方式</span>&nbsp;&nbsp;
-                                    <?= MOrder::getOrderPayKindOption($order->pay_kind) ?>
+                                <p><?= emoji_unified_to_html(emoji_softbank_to_unified($wechat->nickname)) ?></p>
+                                <p><?= $wechat->create_time ?></p>
+                                <?php foreach($wechat->openidBindMobiles as $openidBindMobile ) { ?>
+                                <p>
+                                    <?= $openidBindMobile->mobile ?>&nbsp;
+                                    <?= $openidBindMobile->getCarrier(); ?>&nbsp;
+                                    <?= $openidBindMobile->getProvince(); ?>&nbsp;
+                                    <?= $openidBindMobile->getCity(); ?>&nbsp;
                                 </p>
-
-                                <p><span class="orderitem">订单状态</span>&nbsp;&nbsp;
-                                    <?php
-                                    //需处理的状态
-                                    if ($order->status == MOrder::STATUS_PAID ||
-                                            $order->status == MOrder::STATUS_SUBMITTED ||
-                                            $order->status == MOrder::STATUS_FULFILLED) {
-                                        $csstagbegin = "<span class='badge  badge-primary'>";
-                                        $csstagend = "</span>";
-                                    } else if ($order->status == MOrder::STATUS_SUCCEEDED ||
-                                            $order->status == MOrder::STATUS_SYSTEM_SUCCEEDED) {
-                                        $csstagbegin = "<span class='badge  badge-positive'>";
-                                        $csstagend = "</span>";
-                                    } else {
-                                        $csstagbegin = "";
-                                        $csstagend = "";
-                                    }
-                                    ?>
-
-                                    <?= $csstagbegin ?>
-                                    <?php echo MOrder::getOrderStatusName($order->status) ?>
-                                    <?= $csstagend ?>
-                                </p>
-
+                                <?php } ?>
                             </div> 
                         </a>
                     </li>

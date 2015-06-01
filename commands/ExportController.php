@@ -59,27 +59,24 @@ class ExportController extends \yii\console\Controller {
         $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
 
         $useraccount_records = \app\models\MUserAccount::find()
+                ->where(['cat' => \app\models\MUserAccount::CAT_CREDIT_CHARGE_MOBILE])
+                ->andWhere(['status' => \app\models\MUserAccount::STATUS_CHARGE_REQUEST])
                 ->all();
 
         $fh = fopen($file, "w");
-        fprintf($fh, "用户微信昵称,用户手机号,是否员工,类型,金额,充值手机号码,时间\n");
-        foreach ($useraccount_records as $useraccount_record) {
-            $user = $useraccount_record->user;
-            $staff = $user->staff;
-            if (!empty($staff) && $staff->cat == \app\models\MStaff::SCENE_CAT_IN);
-            else $staff = $user->mobileStaff;
-            
-            fprintf($fh, "%s,%s,%s,%s,%s,%s,%s\n", 
-                    $user->nickname, 
-                    "[" . $user->getBindMobileNumbersStr() . "]", 
-                    (!empty($staff)) ? "员工：{$staff->name}" : "否", 
-                    \app\models\MUserAccount::getCatOptionName($useraccount_record->cat),
+        fprintf($fh, "充值手机号码,充值金额,申请时间\n");
+        foreach ($useraccount_records as $useraccount_record) {            
+            fprintf($fh, "%s,%s,%s\n", 
+                    $useraccount_record->charge_mobile,
                     intval($useraccount_record->amount/100),
-                    $user->user_account_charge_mobile,
                     $useraccount_record->create_time
                     );
+            $useraccount_record->updateAttributes([
+                'status'    => \app\models\MUserAccount::STATUS_CHARGE_PROCESSING,
+            ]);
         }
         fclose($fh);
+        echo "总共".count($useraccount_records)."条充值申请！".PHP_EOL;
     }
     
     /**
@@ -217,15 +214,38 @@ class ExportController extends \yii\console\Controller {
         fclose($fh);
     }
     
-    public function actionSelfOwnedOutlets($filename = 'self-owned-outlets.csv') {
+    public function actionOfficeCampaignRanking( $date = null, $is_selfOpearted = 1, $filename = 'office-campaign-results.csv' ) {
+        $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
+        if ($date == null) {
+            $date = date('Y-m-d');
+        }
+        $results = \app\models\MOfficeCampaignScore::getScoreRanking($is_selfOpearted, $date);
+        $fh = fopen($file, "w");
+        foreach ($results as $result) {
+            $office = \app\models\MOffice::findOne(['office_id' => $result['office_id']]);
+            fprintf($fh, "%s, %.2f".PHP_EOL, $office->title, $result['score']);
+        }
+        fclose($fh);
+    }
+    
+    public function actionSelfOwnedOutlets( $date = null, $filename = 'self-owned-outlets.csv' ) {
         $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
 
         $offices = \app\models\MOffice::findAll(['is_selfOperated' => 1]);
         
-        $lastmonth_start = \app\models\U::getFirstDayOfLastMonth();
-        $lastmonth_end = date('Y-m-d', strtotime('-1 month', strtotime('yesterday')))." 23:59:59";;
-        $thismonth_start = \app\models\U::getFirstDate(date('Y'), date('m'));
-        $thismonth_end = date('Y-m-d', strtotime('yesterday'))." 23:59:59";
+        if ($date == null) {
+            $date = date('Y-m-d');
+        }
+        
+        $lastmonth_start    = date('Y-m-01', strtotime('-1 month', strtotime($date)))." 00:00:00";
+        $lastmonth_end      = date('Y-m-d', strtotime('-1 month', strtotime($date)))." 23:59:59";
+        $thismonth_start    = date('Y-m-01', strtotime($date))." 00:00:00";
+        $thismonth_end      = date('Y-m-d', strtotime($date))." 23:59:59";;        
+        
+//        $lastmonth_start = \app\models\U::getFirstDayOfLastMonth();
+//        $lastmonth_end = date('Y-m-d', strtotime('-1 month', strtotime('yesterday')))." 23:59:59";;
+//        $thismonth_start = \app\models\U::getFirstDate(date('Y'), date('m'));
+//        $thismonth_end = date('Y-m-d', strtotime('yesterday'))." 23:59:59";
         
         $fh = fopen($file, "w");
         fprintf($fh, "自营厅名称,粉丝总数量,绑定手机粉丝总数量,上月（%s）同期发展粉丝数量,上月（%s）同期发展绑定手机粉丝数量,本月（%s）发展粉丝数量,本月（%s）发展绑定手机粉丝数量,归属客户总数量,已微信关联客户数量,上月（%s）同期关联客户数量,本月（%s）关联客户数量\n",

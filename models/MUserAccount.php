@@ -48,6 +48,7 @@ class MUserAccount extends ActiveRecord
     
     const STATUS_CHARGE_COMPLETE = 0;
     const STATUS_CHARGE_REQUEST = 1;
+    const STATUS_CHARGE_PROCESSING = 2;
 
     public function rules()
     {
@@ -57,6 +58,16 @@ class MUserAccount extends ActiveRecord
             [['gh_id', 'openid', 'oid', 'charge_mobile'], 'string', 'max' => 32],
             [['memo'], 'string', 'max' => 512]
         ];
+    }
+    
+    public function getStatusDesc()
+    {
+        $arr = array(
+            self::STATUS_CHARGE_COMPLETE => '充值完成',
+            self::STATUS_CHARGE_PROCESSING => '充值处理中',
+            self::STATUS_CHARGE_REQUEST => '充值申请 ',
+        );        
+        return (isset($arr[$this->status]) ? $arr[$this->status] : '');
     }
 
     public static function getCatOptionName($key=null)

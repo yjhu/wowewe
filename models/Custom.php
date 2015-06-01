@@ -113,6 +113,16 @@ class Custom extends ActiveRecord
     {
         return substr($this->vip_join_time, 0, 10);
     }
+    
+    public static function getBoundCustomerCount($gh_id, $office_id) {
+        return self::find()
+                ->join('INNER JOIN', 'wx_openid_bind_mobile', 'wx_openid_bind_mobile.mobile=wx_custom.mobile')
+                ->join('INNER JOIN', 'wx_user', 'wx_openid_bind_mobile.gh_id = wx_user.gh_id and wx_openid_bind_mobile.openid = wx_user.openid')
+                ->where(['wx_user.subscribe' => 1])
+                ->andWhere(['wx_custom.office_id' => $office_id])
+                ->andWhere(['wx_user.gh_id' => $gh_id])
+                ->count();
+    }
 
     public static function getBindVipCustoms($in_office)
     {
