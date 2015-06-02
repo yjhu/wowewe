@@ -91,7 +91,13 @@ $page_count = $dataProvider->pagination->pageCount;
                             'backwards'     => true,
                         ]); ?>">
                         <?php } else { ?>
-                        <a data-ignore="push" class="navigate-right">
+                        <a data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+                            'client-wechat-fan',
+                            'gh_id'         => $wx_user->gh_id,
+                            'openid'        => $wx_user->openid,
+                            'wechat_id'     => $wechat->id,
+                            'backwards'     => true,
+                        ]); ?>">
                         <?php } ?>
                             <img class="media-object pull-left" src="<?php echo $wechat->getHeadImgUrl(); ?>" width="80" height="80">
 
@@ -170,5 +176,31 @@ $page_count = $dataProvider->pagination->pageCount;
             </div>
         </div>
         <!------------------- END OF FOOTER ----------------------------------->
+        <script>
+            $(document).ready(function () {
+                'use strict';
+//                alert('document ready');
+                $('#searchStr').keydown(function (e) {
+                    if (e.keyCode === 13) {
+//                        alert('keydown');
+                        var search_str = $('#searchStr').val();
+                        var url = "<?= \yii\helpers\Url::to([
+                            'client-wechat-fan-list',
+                            'gh_id' => $wx_user->gh_id,
+                            'openid' => $wx_user->openid,
+                            'backwards' => true,
+                            'ClientWechatFanSearch' => [
+                                'gh_id' => $wx_user->gh_id,
+                                'office_id' => $searchModel->office_id,
+                            ],
+                        ]);
+                        ?>";
+                        url += encodeURI("&ClientWechatFanSearch[searchStr]=" + search_str);
+//                        alert(url);
+                        location.href = url;
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
