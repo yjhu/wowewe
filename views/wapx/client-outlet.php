@@ -162,7 +162,7 @@ use \yii\helpers\Url;
                     <div class="slide">
                         <center>
                             <a data-ignore="push" href="#showPics">
-                                <img height=50% src="<?= $pic_url ?>">
+                                <img style="height:240px" src="<?= $pic_url ?>">
                             </a>
                         </center>
                     </div>
@@ -173,7 +173,7 @@ use \yii\helpers\Url;
                 <div class="slide woso-admin">
                     <center>
                     <a data-ignore='push' class='btn btn-link' id='uploadImages'>
-                    <img height=50% src="../web/images/comm-icon/iconfont-shangchuantupian.png">
+                    <img style="height:240px" src="../web/images/comm-icon/iconfont-shangchuantupian.png">
                     </a>
                     </center>
                 </div>
