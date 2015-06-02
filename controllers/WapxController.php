@@ -419,6 +419,25 @@ class WapxController extends Controller
         ]);
     }
 
-
+    public function actionClientCustomer($gh_id, $openid, $customer_id, $backwards = true, $pop = false) {
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        }  
+        
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        $customer = \app\models\Custom::findOne(['custom_id'=> $customer_id]);
+        
+        $this->layout = false;
+        return $this->render('client-customer', [
+            'wx_user'       => $wx_user, 
+            'backwards'     => $backwards,
+            'customer'      => $customer,
+        ]);
+    }
 
 }

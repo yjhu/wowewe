@@ -88,6 +88,11 @@ class Custom extends ActiveRecord
 //        return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
         return empty($this->openidBindMobile->user) ? null : $this->openidBindMobile->user;
     }
+    
+    public function getWechat() {
+        return $this->getUser();
+    }
+            
 
     public function getCustomManager()
     {
