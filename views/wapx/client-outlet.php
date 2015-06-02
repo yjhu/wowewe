@@ -55,7 +55,13 @@ use \yii\helpers\Url;
                         'create_time'   => date('Y-m-d', strtotime("-14 days")),
                     ],                    
                 ]); ?>">
-                    <span class="badge badge-negative"><?= \app\models\MOrder::getOfficeOrderInfoCount($outlet->original_office_id)?></span>
+                    <span class="badge badge-negative">
+                    <?php if(empty($outlet->original_office_id)) { ?>
+                            0
+                    <?php } else { ?>
+                        <?= \app\models\MOrder::getOfficeOrderInfoCount($outlet->original_office_id)?>
+                    <?php } ?>
+                    </span>
                     门店订单
                 </a>
             </li>
