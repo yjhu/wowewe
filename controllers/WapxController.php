@@ -373,6 +373,42 @@ class WapxController extends Controller
         ]);
     }
 
+
+    public function actionClientOrder($gh_id, $openid, $backwards = true, $pop = false) {
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        }  
+        
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        
+        $this->layout = false;
+
+
+        $office_id = $_GET['office_id'];
+        $office = MOffice::findOne(['office_id'=>$office_id]);
+
+        $staff_id = $_GET['staff_id'];
+        $staff = MStaff::findOne(['staff_id'=>$staff_id]);
+
+        $oid = $_GET['oid'];
+        $order = MOrder::findOne(['oid'=>$oid]);
+
+        return $this->render('client-order', [
+            'wx_user'       => $wx_user, 
+            'backwards'     => $backwards,
+            'office'        => $office, 
+            'staff'         => $staff, 
+            'order'         => $order,
+        ]);
+    }
+
+
+
     public function actionClientWechatFanList($gh_id, $openid, $backwards = true, $pop = false) {
         if (!$backwards) {
             \app\models\utils\BrowserHistory::delete($gh_id, $openid);

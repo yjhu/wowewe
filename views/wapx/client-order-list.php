@@ -1,4 +1,8 @@
 <?php
+use yii\helpers\Html;
+use yii\helpers\Url;
+use app\models\U;
+
 include('../models/utils/emoji.php');
 $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->client;
 $orders = $dataProvider->getModels();
@@ -47,7 +51,15 @@ use app\models\MOrder;
             <ul class="table-view">
                 <?php foreach ($orders as $order) { ?>
                     <li class="table-view-cell media">
-                        <a data-ignore="push" class="navigate-right">
+  
+                        <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['client-order', 
+                            'office_id' =>  $order->office_id, 
+                            'oid'       =>  $order->oid,
+                            'staff_id'  =>  $wx_user->staff->staff_id,
+                            'gh_id'     =>  $wx_user->gh_id,
+                            'openid'    =>  $wx_user->openid,
+                            'backwards' =>  true,
+                            ],true) ?>">
 
                             <img class="media-object pull-left" src="<?php echo $order->item->pic_url . '-120x120.jpg' ?>" width="80" height="80">
 
