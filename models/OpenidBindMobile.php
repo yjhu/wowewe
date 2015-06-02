@@ -52,6 +52,7 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
         return [
             [
                 'class' => \yii\behaviors\TimestampBehavior::className(),
+                'createdAtAttribute' => false,
                 'updatedAtAttribute' => 'update_time',
                 'value' => new \yii\db\Expression('NOW()'),
             ],

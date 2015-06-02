@@ -36,76 +36,119 @@ $page_count = $dataProvider->pagination->pageCount;
                 </a>
             <?php } ?>
             <h1 class="title">
-                存量用户列表(第<?= $current_page + 1; ?>/<?=  $page_count; ?>页)
+                存量用户列表(第<?= $current_page + 1; ?>/<?= $page_count; ?>页)
             </h1>
         </header>
         <!------------------- END OF HEADER ----------------------------------->
 
         <!------------------- BEGIN OF CONTENT -------------------------------->
         <div class="content">
+            <br>
+            <input type="search" id="searchStr" placeholder="按客户姓名或手机号码进行搜索">
             <ul class="table-view">
-                <li class="table-view-cell">
-                    <?php  if ($current_page > 0) { ?>
-                    <div class="pull-left"><a data-ignore="push" class="btn btn-link" href="<?= \yii\helpers\Url::to([
-                        'client-customer-list',
-                        'gh_id'     => $wx_user->gh_id,
-                        'openid'    => $wx_user->openid,
-                        'backwards' => true,
-                        'ClientCustomerSearch' => [
-                            'gh_id'         => $wx_user->gh_id,
-                            'office_id'     => $searchModel->office_id,  
-                            'page'          => $current_page - 1,
-                        ],
-                        
-                    ]); ?>"><span class="icon icon-left-nav"></span>上一页</a></div>
+                <?php if ($page_count > 1) { ?>
+                    <li class="table-view-cell">
+                        <?php if ($current_page > 0) { ?>
+                            <div class="pull-left"><a data-ignore="push" class="btn btn-link" href="<?=
+                                \yii\helpers\Url::to([
+                                    'client-customer-list',
+                                    'gh_id' => $wx_user->gh_id,
+                                    'openid' => $wx_user->openid,
+                                    'backwards' => true,
+                                    'ClientCustomerSearch' => [
+                                        'gh_id' => $wx_user->gh_id,
+                                        'office_id' => $searchModel->office_id,
+                                        'page' => $current_page - 1,
+                                    ],
+                                ]);
+                                ?>"><span class="icon icon-left-nav"></span>上一页</a></div>
+                                                  <?php } ?>
+                            <?php if ($current_page < $page_count - 1) { ?>
+                            <div class="pull-right"><a data-ignore="push" class="btn btn-link" href="<?=
+                                \yii\helpers\Url::to([
+                                    'client-customer-list',
+                                    'gh_id' => $wx_user->gh_id,
+                                    'openid' => $wx_user->openid,
+                                    'backwards' => true,
+                                    'ClientCustomerSearch' => [
+                                        'gh_id' => $wx_user->gh_id,
+                                        'office_id' => $searchModel->office_id,
+                                        'page' => $current_page + 1,
+                                    ],
+                                ]);
+                                ?>">下一页<span class="icon icon-right-nav"></span></a></div>
                     <?php } ?>
-                    <?php  if ($current_page < $page_count - 1) { ?>
-                    <div class="pull-right"><a data-ignore="push" class="btn btn-link" href="<?= \yii\helpers\Url::to([
-                        'client-customer-list',
-                        'gh_id'     => $wx_user->gh_id,
-                        'openid'    => $wx_user->openid,
-                        'backwards' => true,
-                        'ClientCustomerSearch' => [
-                            'gh_id'         => $wx_user->gh_id,
-                            'office_id'     => $searchModel->office_id,
-                            'page'          => $current_page + 1,
-                        ],                        
-                    ]); ?>">下一页<span class="icon icon-right-nav"></span></a></div>
-                    <?php } ?>
-                </li>
-                <?php 
-                foreach ($customers as $customer) { 
+                    </li>
+                <?php } ?>
+                <?php
+                foreach ($customers as $customer) {
                     $wechat = $customer->user;
-                ?>
+                    ?>
                     <li class="table-view-cell media">
-                        <a data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+                        <a data-ignore="push" class="navigate-right" href="<?=
+                        \yii\helpers\Url::to([
                             'client-customer',
-                            'gh_id'         => $wx_user->gh_id,
-                            'openid'        => $wx_user->openid,
-                            'customer_id'   => $customer->custom_id,
-                            'backwards'     => true,
-                        ]) ?>">
+                            'gh_id' => $wx_user->gh_id,
+                            'openid' => $wx_user->openid,
+                            'customer_id' => $customer->custom_id,
+                            'backwards' => true,
+                        ])
+                        ?>">
 
                             <img class="media-object pull-left" src="<?php echo $wechat->getHeadImgUrl(); ?>" width="80" height="80">
 
                             <div class="media-body">
-                                <?= $customer->name ?>
+                                    <?= $customer->name ?>
                                 <p>微信昵称：<?= emoji_unified_to_html(emoji_softbank_to_unified($wechat->nickname)) ?></p>
                                 <p><?= $wechat->create_time ?></p>
-                                <?php foreach($wechat->openidBindMobiles as $openidBindMobile ) { ?>
-                                <p>
-                                    <?= $openidBindMobile->mobile ?>
-                                </p>
-                                <p>
-                                    <?= $openidBindMobile->getCarrier(); ?>&nbsp;
-                                    <?= $openidBindMobile->getProvince(); ?>&nbsp;
-                                    <?= $openidBindMobile->getCity(); ?>&nbsp;
-                                </p>
-                                <?php } ?>
+                                    <?php foreach ($wechat->openidBindMobiles as $openidBindMobile) { ?>
+                                    <p>
+                                        <?= $openidBindMobile->mobile ?>
+                                    </p>
+                                    <p>
+        <?= $openidBindMobile->getCarrier(); ?>&nbsp;
+        <?= $openidBindMobile->getProvince(); ?>&nbsp;
+                        <?= $openidBindMobile->getCity(); ?>&nbsp;
+                                    </p>
+                    <?php } ?>
                             </div> 
                         </a>
                     </li>
-                <?php } ?>
+                        <?php } ?>
+                        <?php if ($page_count > 1) { ?>
+                    <li class="table-view-cell">
+                            <?php if ($current_page > 0) { ?>
+                            <div class="pull-left"><a data-ignore="push" class="btn btn-link" href="<?=
+                                \yii\helpers\Url::to([
+                                    'client-customer-list',
+                                    'gh_id' => $wx_user->gh_id,
+                                    'openid' => $wx_user->openid,
+                                    'backwards' => true,
+                                    'ClientCustomerSearch' => [
+                                        'gh_id' => $wx_user->gh_id,
+                                        'office_id' => $searchModel->office_id,
+                                        'page' => $current_page - 1,
+                                    ],
+                                ]);
+                                ?>"><span class="icon icon-left-nav"></span>上一页</a></div>
+                            <?php } ?>
+                            <?php if ($current_page < $page_count - 1) { ?>
+                            <div class="pull-right"><a data-ignore="push" class="btn btn-link" href="<?=
+                                \yii\helpers\Url::to([
+                                    'client-customer-list',
+                                    'gh_id' => $wx_user->gh_id,
+                                    'openid' => $wx_user->openid,
+                                    'backwards' => true,
+                                    'ClientCustomerSearch' => [
+                                        'gh_id' => $wx_user->gh_id,
+                                        'office_id' => $searchModel->office_id,
+                                        'page' => $current_page + 1,
+                                    ],
+                                ]);
+                                ?>">下一页<span class="icon icon-right-nav"></span></a></div>
+    <?php } ?>
+                    </li>
+<?php } ?>
             </ul>
             <div>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br></div>
         </div>
@@ -125,5 +168,31 @@ $page_count = $dataProvider->pagination->pageCount;
             </div>
         </div>
         <!------------------- END OF FOOTER ----------------------------------->
+        <script>
+            $(document).ready(function () {
+                'use strict';
+//                alert('document ready');
+                $('#searchStr').keydown(function (e) {
+                    if (e.keyCode === 13) {
+//                        alert('keydown');
+                        var search_str = $('#searchStr').val();
+                        var url = "<?= \yii\helpers\Url::to([
+                            'client-customer-list',
+                            'gh_id' => $wx_user->gh_id,
+                            'openid' => $wx_user->openid,
+                            'backwards' => true,
+                            'ClientCustomerSearch' => [
+                                'gh_id' => $wx_user->gh_id,
+                                'office_id' => $searchModel->office_id,
+                            ],
+                        ]);
+                        ?>";
+                        url += encodeURI("&ClientCustomerSearch[searchStr]=" + search_str);
+//                        alert(url);
+                        location.href = url;
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

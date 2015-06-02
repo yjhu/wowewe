@@ -92,7 +92,13 @@ class Custom extends ActiveRecord
     public function getWechat() {
         return $this->getUser();
     }
-            
+    
+    public function getManageOutlet() {
+        return $this->hasOne(\app\models\ClientOutlet::className(), [
+            'original_office_id' => 'office_id',
+            'client_id' => 'client_id',
+        ]);
+    }                
 
     public function getCustomManager()
     {

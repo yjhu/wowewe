@@ -8,6 +8,7 @@ class ClientCustomerSearch extends \yii\base\Model
     public $customer_mobile;  
     public $gh_id;
     public $page;
+    public $searchStr;
 
     /**
      * @inheritdoc
@@ -15,7 +16,7 @@ class ClientCustomerSearch extends \yii\base\Model
     public function rules()
     {
         return [
-            [['customer_mobile', 'customer_name', 'office_id', 'gh_id', 'page'], 'safe'],
+            [['customer_mobile', 'customer_name', 'office_id', 'gh_id', 'page', 'searchStr'], 'safe'],
         ];
     }
 
@@ -52,7 +53,11 @@ class ClientCustomerSearch extends \yii\base\Model
         if (trim($this->gh_id) !== '') {
             $query->andWhere(['wx_user.gh_id'   => $this->gh_id]);
         }
-        $this->addCondition($query, 'office_id');         
+        $this->addCondition($query, 'office_id');      
+        
+        if (!empty($this->searchStr)) {
+            $query->andWhere(['or', ['like', 'wx_custom.mobile', $this->searchStr], ['like', 'wx_custom.name', $this->searchStr]]);
+        }
         return $dataProvider;
     }
     

@@ -602,6 +602,12 @@ class MUser extends ActiveRecord implements IdentityInterface
         }
         return $this->headimgurl;
     }
+    
+    public function getPromoteOutlet() {
+        return $this->hasOne(\app\models\ClientOutlet::className(), [
+            'original_office_id'    => 'belongto',
+        ]);
+    }
             
 
 }

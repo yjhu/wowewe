@@ -42,6 +42,25 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
         <div class="content">
             <ul class="table-view">
                 <li class="table-view-cell table-view-divider">
+                    用户信息
+                </li>
+                <li class="table-view-cell">
+                    <p>姓名：<?= $customer->name ?></p>
+                    <p>号码：<?= $customer->mobile ?></p>
+                </li>                
+                <?php if ($customer->is_vip) { ?>
+                <li class="table-view-cell table-view-divider">
+                    VIP信息
+                </li>
+                <li class="table-view-cell">
+                    <p>VIP级别：<?= $customer->vipLevel->title ?></p>
+                    <p>VIP有效期起：<?= $customer->vip_start_time ?></p>
+                    <p>VIP有效期止：<?= $customer->vip_end_time ?></p>
+                    <p>入网时间：<?= $customer->vip_join_time ?></p>
+                </li>
+                <?php } ?>
+                
+                <li class="table-view-cell table-view-divider">
                     微信信息
                 </li>
                 <?php if (!empty($customer->wechat)) { ?>
@@ -53,7 +72,9 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
                             <p><?= $customer->wechat->create_time ?></p>
                                 <?php foreach($customer->wechat->openidBindMobiles as $openidBindMobile ) { ?>
                                 <p>
-                                    <?= $openidBindMobile->mobile ?>&nbsp;
+                                    <?= $openidBindMobile->mobile ?>
+                                </p>
+                                <p>
                                     <?= $openidBindMobile->getCarrier(); ?>&nbsp;
                                     <?= $openidBindMobile->getProvince(); ?>&nbsp;
                                     <?= $openidBindMobile->getCity(); ?>&nbsp;
@@ -64,6 +85,37 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
                 <?php } else { ?>
                     <li class="table-view-cell">未关注或未绑定手机</li>
                 <?php } ?>
+                <li class="table-view-cell table-view-divider">
+                    维系归属
+                </li>
+                <li class="table-view-cell">
+                    <a class="navigate-right" data-ignore="push" href="<?= \yii\helpers\Url::to([
+                        'client-outlet',
+                        'gh_id'     => $wx_user->gh_id,
+                        'openid'    => $wx_user->openid,
+                        'outlet_id' => $customer->manageOutlet->outlet_id,
+                        'backwards' => true,
+                    ]) ?>">
+                        <span class="icon icon-home"></span><?= $customer->manageOutlet->title ?>
+                    </a>
+                </li>
+                <?php if (!empty($customer->user) && !empty($customer->user->promoteOutlet)) {?>
+                <li class="table-view-cell table-view-divider">
+                    发展归属
+                </li>
+                <li class="table-view-cell">
+                    <a class="navigate-right" data-ignore="push" href="<?= \yii\helpers\Url::to([
+                        'client-outlet',
+                        'gh_id'     => $wx_user->gh_id,
+                        'openid'    => $wx_user->openid,
+                        'outlet_id' => $customer->user->promoteOutlet->outlet_id,
+                        'backwards' => true,
+                    ]) ?>">
+                        <span class="icon icon-home"></span><?= $customer->user->promoteOutlet->title ?>
+                    </a>
+                </li>
+                <?php } ?>
+                
             </ul>
             <div>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br></div>
         </div>

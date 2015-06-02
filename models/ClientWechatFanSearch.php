@@ -12,15 +12,16 @@ class ClientWechatFanSearch extends \yii\base\Model
     public $create_time_end;  
     public $gh_id;
     public $office_id;
-    public $subscribe;
     public $scene_pid;
+    public $searchStr;
+    public $page;
     
     public function rules() {
         return [
             [[
                 'gh_id', 'nickname', 'mobile', 'carrier', 'province', 'city', 
-                'create_time_start', 'create_time_end', 'office_id', 'subscribe',
-                'scene_pid',
+                'create_time_start', 'create_time_end', 'office_id', 'searchStr',
+                'scene_pid','page',
             ], 'safe'],            
         ];
     }
@@ -33,13 +34,19 @@ class ClientWechatFanSearch extends \yii\base\Model
 
         $dataProvider = new \yii\data\ActiveDataProvider([
             'query'         => $query,   
-            'pagination'    => false,
+            'pagination'    => [
+                'pageSize'  => 10,
+            ],
         ]);                 
         
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
-                
+            
+        if (!empty($this->page)) {
+            $dataProvider->pagination->page = $this->page;            
+        }
+        
         $this->addCondition($query, 'nickname', true);
         if (!empty($this->gh_id)) {
             $query->andWhere(['wx_user.gh_id' => $this->gh_id]);
