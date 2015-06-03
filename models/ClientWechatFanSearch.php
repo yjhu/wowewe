@@ -47,6 +47,14 @@ class ClientWechatFanSearch extends \yii\base\Model
             $dataProvider->pagination->page = $this->page;            
         }
         
+        if (!empty($this->searchStr)) {
+            $query->andWhere([
+                'or',
+                ['like', 'wx_user.nickname', $this->searchStr],
+                ['like', 'wx_openid_bind_mobile.mobile', $this->searchStr],
+            ]);
+        }
+        
         $this->addCondition($query, 'nickname', true);
         if (!empty($this->gh_id)) {
             $query->andWhere(['wx_user.gh_id' => $this->gh_id]);
