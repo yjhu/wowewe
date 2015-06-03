@@ -568,7 +568,6 @@ text-decoration: line-through;
             <p id='end_month_return'><span class='title_comm'>合约期末月返还金额:</span></p>
         <?php } else { ?>
             <p id='month_return'><span class='title_comm'>分月返还金额:</span> </p>
-        }
         <?php } ?>
 
         <p>
