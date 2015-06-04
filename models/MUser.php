@@ -595,7 +595,7 @@ class MUser extends ActiveRecord implements IdentityInterface
     }
     
     public function getHeadImgUrl() {
-        if (time() - strtotime($this->update_time) > 2 * 24 * 60 * 60) {
+        if (empty($this->headimgurl) || time() - strtotime($this->update_time) > 2 * 24 * 60 * 60) {
             try {
                 $this->getWechatInfo();
             } catch (\yii\base\Exception $e) {}

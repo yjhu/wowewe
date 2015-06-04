@@ -85,6 +85,7 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
                 <?php } else { ?>
                     <li class="table-view-cell">未关注或未绑定手机</li>
                 <?php } ?>
+                <?php if (!empty($customer->manageOutlet)) { ?>
                 <li class="table-view-cell table-view-divider">
                     维系归属
                 </li>
@@ -99,6 +100,7 @@ $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->clien
                         <span class="icon icon-home"></span><?= $customer->manageOutlet->title ?>
                     </a>
                 </li>
+                <?php } ?>
                 <?php if (!empty($customer->user) && !empty($customer->user->promoteOutlet)) {?>
                 <li class="table-view-cell table-view-divider">
                     发展归属

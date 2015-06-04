@@ -87,7 +87,24 @@ include('../models/utils/emoji.php');
         <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
         <div class="content">
             <ul class="table-view">
-                <li class="table-view-cell table-view-divider">微信信息</li>                
+                <li class="table-view-cell table-view-divider">
+                    微信信息
+                    <span class='pull-right'>
+                        <?php if (!empty($employee->wechat)) { ?>
+                        <a data-ignore="push" href="<?= \yii\helpers\Url::to([
+                            'wechat-messaging',
+                            'gh_id'     => $wx_user->gh_id,
+                            'openid'    => $wx_user->openid,
+                            'reciever_id'   => $employee->wechat->id,
+                            'backwards' => true,
+                        ]) ?>">
+                        <i class='fa fa-weixin' style='height:24px;color:#23c300;'></i>
+                        </a>
+                        <?php } else { ?>
+                        <i class='fa fa-weixin' style='height:24px;color:#cccccc;'></i>
+                        <?php } ?>
+                    </span>
+                </li>                
                     <?php if (!empty($employee->wechat)) { ?>
                         <li class="table-view-cell media">
                             <a data-ignore='push' href='#headImg'>

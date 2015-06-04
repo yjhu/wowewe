@@ -30,6 +30,7 @@ class Wechat extends \yii\base\Component
     const MSGTYPE_NEWS = 'news';
     const MSGTYPE_VOICE = 'voice';
     const MSGTYPE_VIDEO = 'video';
+    const MSGTYPE_SHORTVIDEO = 'shortvideo';
 
     const EVENT_SUBSCRIBE = 'subscribe';
     const EVENT_UNSUBSCRIBE = 'unsubscribe';

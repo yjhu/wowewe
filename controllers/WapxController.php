@@ -496,5 +496,26 @@ class WapxController extends Controller
             'wechat'        => $wechat,
         ]);
     }
+    
+    public function actionWechatMessaging($gh_id, $openid, $reciever_id, $backwards = true, $pop = false) {
+        if (!$backwards) {
+            \app\models\utils\BrowserHistory::delete($gh_id, $openid);
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        } else if ($pop) {
+            \app\models\utils\BrowserHistory::pop($gh_id, $openid);
+        } else {
+            \app\models\utils\BrowserHistory::push($gh_id, $openid);
+        }  
+        
+        $wx_user = \app\models\MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        $reciever = \app\models\MUser::findOne(['id' => $reciever_id]);
+        
+        $this->layout = false;
+        return $this->render('wechat-messaging', [
+            'wx_user'       => $wx_user, 
+            'reciever'      => $reciever,
+            'backwards'     => $backwards,
+        ]);
+    }
 
 }
