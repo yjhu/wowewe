@@ -3,8 +3,10 @@ include('../models/utils/emoji.php');
 $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->client;
 $messages = \app\models\WechatMessage::find()
         ->where(['sender_id' => $wx_user->id])
+        ->orWhere(['reciever_id' => $wx_user->id])
         ->orderBy(['send_time'=>SORT_DESC])
-        ->limit(20)
+        ->limit(50)
+        ->orderBy(['send_time' => SORT_ASC])
         ->all();
 ?>
 <!DOCTYPE html>
@@ -70,7 +72,7 @@ $messages = \app\models\WechatMessage::find()
             <ul class="table-view">
             <?php 
             foreach($messages as $message) { 
-                $message_sender = $wx_user;
+                $message_sender = \app\models\MUser::findOne(['id' => $message->sender_id]);
                 $message_reciever = \app\models\MUser::findOne(['id' => $message->reciever_id]);
             ?>
                 <li class="table-view-cell">
