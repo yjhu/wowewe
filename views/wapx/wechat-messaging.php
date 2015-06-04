@@ -30,6 +30,19 @@ $messages = \app\models\WechatMessage::find()
             .bar-footer {
                 border-top: 0;
             }
+
+            .table-view-cell {
+              position: relative;
+              padding: 1px 11px 1px 15px;
+              overflow: hidden;
+              border-bottom: 0px solid #ddd;
+            }
+
+            .table-view {
+
+              border-top: 0px solid #ddd;
+              border-bottom: 0px solid #ddd;
+            }
         </style>
         <link rel="stylesheet" href="http://libs.useso.com/js/font-awesome/4.2.0/css/font-awesome.min.css">
         <link href="./php-emoji/emoji.css" rel="stylesheet">
@@ -60,14 +73,34 @@ $messages = \app\models\WechatMessage::find()
                 $message_sender = $wx_user;
                 $message_reciever = \app\models\MUser::findOne(['id' => $message->reciever_id]);
             ?>
-                <li class="table-view-cell media">
-                    <img class="media-object pull-right" width=24px src="<?= $message_sender->headImgUrl ?>">
-                    <div class="media-body">
-                    TO: <?= emoji_unified_to_html(emoji_softbank_to_unified($message_reciever->nickname)); ?>  
-                    <p>发送时间：<?= $message->send_time ?></p>
-                    <p><?= emoji_unified_to_html(emoji_softbank_to_unified($message->content->content))?></p>
-                    <p>接受时间：<?= $message->recieve_time ?></p>
-                    </div>                    
+                <li class="table-view-cell">
+  
+                          <fieldset style="margin: 0.1em 0px; padding: 0px; border: 0px; font-family: 微软雅黑; font-size: 13px; white-space: normal; box-sizing: border-box; min-width: 0px; max-width: 100%; color: rgb(62, 62, 62); line-height: 25px; text-align: right; word-wrap: break-word !important; background-color: rgb(255, 255, 255);">
+
+                          <span style="margin: 11px 0px 0px; padding: 0px; border: 0px; display: inline-block; box-sizing: border-box; max-width: 100%; width: 300px; border-radius: 0px; text-align: left; word-wrap: break-word !important; color:#ccc">                    
+                            <?= emoji_unified_to_html(emoji_softbank_to_unified($message_reciever->nickname)); ?>
+                            &nbsp;
+                            <?= $message->send_time ?>
+                        </span>
+
+                            <section style="margin: 0px; padding: 0px; border: 0px rgb(180, 235, 124); display: inline-block; box-sizing: border-box; max-width: 100%; width: 256px; font-size: 1em; font-family: inherit; text-align: inherit; text-decoration: inherit; word-wrap: break-word !important; ">
+                                <section style="margin: 1px 0px 0px; padding: 16px; border: 0px; display: inline-block; box-sizing: border-box; max-width: 100%; width: 234.59px; border-radius: 16px; text-align: left; word-wrap: break-word !important; background-color: rgb(180, 235, 124);">
+                                    <section style="margin: 0px; padding: 0px; border: 0px; box-sizing: border-box; max-width: 100%; word-wrap: break-word !important;">
+                                        <div class="media-body">
+                    
+                                        <p style="color:#000"><?= emoji_unified_to_html(emoji_softbank_to_unified($message->content->content))?></p>
+                                        </div>   
+                                    </section>
+                                </section><img src="http://img.yead.net/201506/a5b060a038.png" style="margin: 29px 0px 0px; padding: 0px; border: 0px; box-sizing: border-box; vertical-align: top; max-width: 100%; word-wrap: break-word !important; background-color: rgb(180, 235, 124);"/>
+                            </section>
+                            <section style="margin: 0px; padding: 0px; border: 0px; display: inline-block; box-sizing: border-box; max-width: 100%; vertical-align: top; width: 48px; word-wrap: break-word !important;">
+                                <section style="margin: 5px 0px 0px 1px; padding: 0px; border: 0px; box-sizing: border-box; max-width: 100%; width: 48px; height: 48px; border-radius: 40px; word-wrap: break-word !important; background-image: url('<?= $message_sender->headImgUrl ?>'); background-size: cover; background-position: 50% 50%; background-repeat: no-repeat;"></section>
+                                <section style="margin: 0px; padding: 0px; border: 0px; box-sizing: border-box; max-width: 100%; font-size: 0.8em; font-family: inherit; text-align: center; text-decoration: inherit; color: inherit; word-wrap: break-word !important;">
+                                &nbsp;&nbsp;
+                                </section>
+                            </section>
+                        </fieldset>
+
                 </li>
             <?php } ?>
             </ul>
