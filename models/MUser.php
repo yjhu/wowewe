@@ -141,6 +141,25 @@ class MUser extends ActiveRecord implements IdentityInterface
             ],
         ];
     }
+    
+    public function afterSave($insert, $changedAttributes) {
+        if (!$insert && isset($changedAttributes['msg_time'])) {
+//            U::W(['MUser::afterSave', $insert, $changedAttributes]);
+            $messages = WechatMessage::find()->where([
+                'reciever_id'   => $this->id,
+                'recieve_time' => '0000-00-00 00:00:00',
+            ])->all();
+            foreach($messages as $message) {
+                $sender = MUser::findOne(['id' => $message->sender_id]);
+                $content = $message->content->content;
+                $content = $sender->nickname . "说：" . PHP_EOL . PHP_EOL . $content; 
+                if ($this->sendWxm($content)) {
+                    $message->updateAttributes(['recieve_time' => date('Y-m-d H:i:s')]);
+                }
+            }
+        }
+        parent::afterSave($insert, $changedAttributes);
+    }
 
     public static function tableName()
     {

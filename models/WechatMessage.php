@@ -23,6 +23,17 @@ class WechatMessage extends \yii\db\ActiveRecord
     {
         return 'wechat_message';
     }
+    
+    public function behaviors() {
+        return [
+            [
+                'class' => \yii\behaviors\TimestampBehavior::className(),
+                'createdAtAttribute' => 'send_time',
+                'updatedAtAttribute' => false,
+                'value' => new \yii\db\Expression('NOW()'),
+            ],
+        ];
+    }
 
     /**
      * @inheritdoc
@@ -62,7 +73,7 @@ class WechatMessage extends \yii\db\ActiveRecord
             $sender = MUser::findOne(['id' => $this->sender_id]);
             $reciever = MUser::findOne(['id' => $this->reciever_id]);
             $content = $this->content->content;
-            $content = "FROM: " . $sender->nickname . PHP_EOL . PHP_EOL . $content;
+            $content = $sender->nickname . "说：" . PHP_EOL . PHP_EOL . $content;
             if (strtotime($reciever->msg_time) > strtotime('-2 days')) {
                 if ($reciever->sendWxm($content)) {
                     $this->updateAttributes(['recieve_time' => date('Y-m-d H:i:s')]);
