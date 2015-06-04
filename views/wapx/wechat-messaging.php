@@ -6,8 +6,8 @@ $messages = \app\models\WechatMessage::find()
         ->orWhere(['reciever_id' => $wx_user->id])
         ->orderBy(['send_time'=>SORT_DESC])
         ->limit(50)
-        ->orderBy(['send_time' => SORT_ASC])
         ->all();
+$messages = array_reverse($messages);
 ?>
 <!DOCTYPE html>
 <html>
@@ -179,7 +179,7 @@ $messages = \app\models\WechatMessage::find()
 
             <?php } ?>
             </ul>
-            <div>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br></div>
+            <div id="bottom">&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br></div>
         </div>
         <!-- ######################END OF CONTENT###################### -->
 
@@ -196,10 +196,11 @@ $messages = \app\models\WechatMessage::find()
  
         $(document).ready(function() {
             'use strict';           
-            
-            alert("ready");
+                        
+//            alert("ready");
+            $('#bottom').focus();
             $('#message-submit').click(function() {
-                 alert("click");
+//                 alert("click");
                 var content = $('#message-content').val();
                 if ('' !== content) {
                     var args = {
