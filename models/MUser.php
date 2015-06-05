@@ -150,10 +150,10 @@ class MUser extends ActiveRecord implements IdentityInterface
                 'recieve_time' => '0000-00-00 00:00:00',
             ])->all();
             foreach($messages as $message) {
-                $sender = MUser::findOne(['id' => $message->sender_id]);
-                $content = $message->content->content;
-                $content = $sender->nickname . "说：" . PHP_EOL . PHP_EOL . $content; 
-                if ($this->sendWxm($content)) {
+//                $sender = MUser::findOne(['id' => $message->sender_id]);
+//                $content = $message->content->content;
+//                $content = $sender->nickname . "说：" . PHP_EOL . PHP_EOL . $content; 
+                if ($this->sendWechatMessage($message)) {
                     $message->updateAttributes(['recieve_time' => date('Y-m-d H:i:s')]);
                 }
             }
@@ -345,6 +345,29 @@ class MUser extends ActiveRecord implements IdentityInterface
         return empty($last7days) ? 0 : $last7days;
     }
 
+    public function sendWechatMessage($message) {
+        if (empty($this->gh_id) || empty($this->openid)) {
+            return false;
+        }
+        
+        try {
+            Yii::$app->wx->setGhId($this->gh_id);
+            $url = \yii\helpers\Url::to([
+                        'wapx/wechat-messaging',
+                        'gh_id' => $this->gh_id,
+                        'openid' =>  $this->openid,
+                        'reciever_id'   => $message->sender->id,
+                    ], true);
+            $content = $message->sender->nickname . " 说：". PHP_EOL . PHP_EOL;
+            $content .= $message->content->content . PHP_EOL . PHP_EOL;
+            $content .= "<a href='{$url}'>点这里直接与Ta聊天</a>";
+            $arr = Yii::$app->wx->WxMessageCustomSendText($this->openid, $content);
+        } catch (\Exception $e) {
+            return false;
+        }
+        return true;
+    }
+    
     public function sendWxm($content)
     {
         if (empty($this->gh_id) || empty($this->openid))

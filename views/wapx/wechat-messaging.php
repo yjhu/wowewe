@@ -1,13 +1,8 @@
 <?php
 include('../models/utils/emoji.php');
 $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->client;
-$messages = \app\models\WechatMessage::find()
-        ->where(['sender_id' => $wx_user->id])
-        ->orWhere(['reciever_id' => $wx_user->id])
-        ->orderBy(['send_time'=>SORT_DESC])
-        ->limit(50)
-        ->all();
-$messages = array_reverse($messages);
+$messages = \app\models\WechatMessage::getRecentMessages($wx_user->id, $reciever->id);
+$communicatee_ids = \app\models\WechatMessage::getUniqueCommunicateeIds($wx_user->id);
 ?>
 <!DOCTYPE html>
 <html>
@@ -32,7 +27,7 @@ $messages = array_reverse($messages);
             .bar-footer {
                 border-top: 0;
             }
-
+/*
             .table-view-cell {
               position: relative;
               padding: 1px 11px 1px 15px;
@@ -45,7 +40,7 @@ $messages = array_reverse($messages);
               border-top: 0px solid #ddd;
               border-bottom: 0px solid #ddd;
             }
-
+*/
             .s1{
                 margin: 0.1em 0px; padding: 0px; border: 0px; font-family: 微软雅黑; font-size: 13px; white-space: normal; box-sizing: border-box; color: rgb(62, 62, 62); line-height: 25px; text-align: right; word-wrap: break-word !important; background-color: rgb(255, 255, 255);
             }
@@ -97,6 +92,31 @@ $messages = array_reverse($messages);
                 margin: 0px; padding: 0px; border: 0px; box-sizing: border-box; max-width: 100%; word-wrap: break-word !important;
             }
 
+            .table-view-wechat-message {
+                border-top: 0px;
+                border-bottom: 0px;
+            }
+            .table-view-cell-wechat-message {
+                padding-right: 15px;
+                border: 0px;
+            }
+            .message-time {
+                font-size: 0.5em;
+                color: #ccc;
+            }
+            .message-content {
+                padding: 5px;
+                border-radius: 5px; 
+                max-width: 230px;
+            }
+            .message-content-send {
+                color: black;
+                background-color: #ade870;
+            }
+            .message-content-recieve {
+                color: black;
+                background-color: #ddd;
+            }
         </style>
         <link rel="stylesheet" href="http://libs.useso.com/js/font-awesome/4.2.0/css/font-awesome.min.css">
         <link href="./php-emoji/emoji.css" rel="stylesheet">
@@ -113,6 +133,7 @@ $messages = array_reverse($messages);
                     <span class="icon icon-left-nav"></span>
                 </a>
             <?php } ?>
+            <a data-ignore="push" class="btn btn-link pull-right" href="#show-communicatee"><i class="fa fa-bars" style="width:24px;"></i></a>
             <h1 class="title">
                 <?= emoji_unified_to_html(emoji_softbank_to_unified($reciever->nickname)) ?>
             </h1>
@@ -121,26 +142,35 @@ $messages = array_reverse($messages);
 
         <!------------------- BEGIN OF CONTENT -------------------------------->
         <div class="content">
-            <ul class="table-view" id='ul-body'>
+            <ul class="table-view table-view-wechat-message" id='ul-body'>
             <?php 
             foreach($messages as $message) { 
                 $message_sender = \app\models\MUser::findOne(['id' => $message->sender_id]);
                 $message_reciever = \app\models\MUser::findOne(['id' => $message->reciever_id]);
             ?>
-                <?php if($wx_user->id == $message_sender->id) {?>
+                <?php if($wx_user->id == $message_sender->id) { ?>
+                <li class="table-view-cell table-view-cell-wechat-message wechat-message-send media" id="<?= 'message-'."{$message->message_id}" ?>">
+                    <img class="media-object pull-right" style="width:48px;" src="<?= $message_sender->headImgUrl ?>">
+                    <div class="media-body pull-right">
+                        <p class="message-content message-content-send"><?= emoji_unified_to_html(emoji_softbank_to_unified($message->content->content)) ?></p>
+                        <p><span class="message-time"><?= $message->send_time ?></span></p>
+                    </div>
+                </li>
+                
+<!--                
                 <li class="table-view-cell">
                     <fieldset class='s1'>
                         <span class='s2'>                    
-                        <?= emoji_unified_to_html(emoji_softbank_to_unified($message_reciever->nickname)); ?>
+                        <//?= emoji_unified_to_html(emoji_softbank_to_unified($message_reciever->nickname)); ?>
                         &nbsp;
-                        <?= $message->send_time ?>
+                        <//?= $message->send_time ?>
                         </span>
 
                         <section class='s3'>
                             <section class='s4'>
                                 <section class='s5'>
                                     <div class="media-body">
-                                        <p style="color:#000"><?= emoji_unified_to_html(emoji_softbank_to_unified($message->content->content))?></p>
+                                        <p style="color:#000"><//?= emoji_unified_to_html(emoji_softbank_to_unified($message->content->content))?></p>
                                     </div>
                                     </section>
                                 </section><img src="http://img.yead.net/201506/a5b060a038.png" class='s6'>
@@ -150,11 +180,21 @@ $messages = array_reverse($messages);
                             </section>
                         </fieldset>
                 </li>
+-->
                 <?php } else { ?>
+                <li class="table-view-cell table-view-cell-wechat-message wechat-message-recieve media" id="<?= 'message-'."{$message->message_id}" ?>">
+                    <img class="media-object pull-left" style="width:48px;" src="<?= $message_sender->headImgUrl ?>">
+                    <div class="media-body pull-left">                        
+                        <p class="message-content message-content-recieve"><?= emoji_unified_to_html(emoji_softbank_to_unified($message->content->content)) ?></p>
+                        <p><span class="message-time"><?= $message->send_time ?></span></p>
+                    </div>
+                </li>
+
+<!--
                  <li class="table-view-cell">
                     <fieldset class='r1'>
                     <span class='r2'>        
-                        <?= $message->send_time ?>
+                        <//?= $message->send_time ?>
                     </span>
 
                     <section style="" class='r3'>
@@ -165,23 +205,54 @@ $messages = array_reverse($messages);
                         <section class='r6'>
                             <section style="" class='r7'>
                                   <div class="media-body">
-                                 <p style="color:#000"><?= emoji_unified_to_html(emoji_softbank_to_unified($message->content->content))?></p>
+                                 <p style="color:#000"><//?= emoji_unified_to_html(emoji_softbank_to_unified($message->content->content))?></p>
                                 </div> 
                             </section>
                         </section>
                     </section>
                 </fieldset>
                 </li>
+-->
                 <?php } ?>
-
-
-
-
             <?php } ?>
+            <li id="ul-body-bottom"> 
+                <br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;
+            </li>
             </ul>
             <div id="bottom">&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br></div>
         </div>
         <!-- ######################END OF CONTENT###################### -->
+        
+        <div id="show-communicatee" class="modal">
+            <header class="bar bar-nav">
+                <a class="icon icon-close pull-right" href="#show-communicatee"></a>
+                <h1 class="title">选择聊天对象</h1>
+            </header>
+            <div class="content">
+                <ul class="table-view">
+                <?php 
+                    foreach($communicatee_ids as $communicatee_id) { 
+                        $communicatee = \app\models\Muser::findOne(['id' => $communicatee_id]);
+                ?>
+                    <li class="table-view-cell media">
+                        <a data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+                            'wechat-messaging',
+                            'gh_id'     => $wx_user->gh_id,
+                            'openid'    => $wx_user->openid,
+                            'reciever_id'   => $communicatee_id,
+                            'backwards' => true,
+                        ]); ?>">
+                            <img class="media-object pull-left" src="<?= $communicatee->headImgUrl; ?>" style="width:48px;">
+                            <div class="media-body">
+                                <?= emoji_unified_to_html(emoji_softbank_to_unified($communicatee->nickname)) ?>
+                            </div>
+                        </a>
+                    </li>
+                   
+                <?php } ?>
+                </ul>
+            </div>
+        </div>
 
         <!-- ######################BEGIN OF FOOTER###################### -->
         <div class="bar bar-footer-secondary">
@@ -195,12 +266,36 @@ $messages = array_reverse($messages);
     <script>
  
         $(document).ready(function() {
-            'use strict';           
+            'use strict';        
+            
+            var senderHeadImgUrl = "<?= $wx_user->headImgUrl; ?>";
+            var receiverHeadImgUrl = "<?= $reciever->headImgUrl; ?>";
+            
+            var appendSendMessage = function (msgid, send_time, content) {
+                var elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-send media" id="message-'
+                                + msgid +'"><img class="media-object pull-right" style="width:48px;" src="' 
+                                + senderHeadImgUrl + '"><div class="media-body pull-right"><p class="message-content message-content-send">' 
+                                + content + '</p><p><span class="message-time">' 
+                                + send_time + '</span></p></div></li>';
+                        
+                return $(elementHtml).insertBefore('#ul-body-bottom');                           
+            };
+            
+            var appendRecieveMessage = function (msgid, send_time, content) {
+                var elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-recieve media" id="message-'
+                                + msgid +'"><img class="media-object pull-left" style="width:48px;" src="' 
+                                + receiverHeadImgUrl + '"><div class="media-body pull-left"><p class="message-content message-content-recieve">' 
+                                + content + '</p><p><span class="message-time">' 
+                                + send_time + '</span></p></div></li>';
+                            
+                return $(elementHtml).insertBefore('#ul-body-bottom'); 
+            };
                         
 //            alert("ready");
-            $('#bottom').focus();
+            $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 300);
+
             $('#message-submit').click(function() {
-//                 alert("click");
+//                alert("click");
                 var content = $('#message-content').val();
                 if ('' !== content) {
                     var args = {
@@ -221,38 +316,11 @@ $messages = array_reverse($messages);
                         cache:      false,
                         dataType:   "json",
                         data:       "args=" + JSON.stringify(args),
-                        success:    function() {
-                            alert('发送成功。');
-                            /*
-                            var now = new Date();
-                          
-                            var sendMsgStr= "<li class='table-view-cell'>"+
-                                "<fieldset class='s1'>"+
-                                "<span class='s2'>"+                    
-                   
-                                "&nbsp;"+
-                                now.getYear()+"-"+now.getMonth()+"-"+now.getDate() + " " + now.getHours()+":"+now.getMinutes()+
-                                "</span>"+
-                                "<section class='s3'>"+
-                                "<section class='s4'>"+
-                                "<section class='s5'>"+
-                                "<div class='media-body'>"+
-                                "<p style='color:#000'>"+$('#message-content').val()+"</p>"+
-                                "</div>"+
-                                "</section>"+
-                                "</section><img src='http://img.yead.net/201506/a5b060a038.png' class='s6'>"+
-                                "</section>"+
-                                "</fieldset>"+
-                                "</li>";
-
-                                $("#ul-body").append(sendMsgStr);
-                                */
-
-                                $('#message-content').val('');
-
-                                location.reload();
-                            /**/
-
+                        success:    function(ret) {
+//                            alert('发送成功。');
+                            $('#message-content').val('');  
+                            appendSendMessage(ret.msgid, ret.send_time, ret.content); 
+                            $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 0);
                         },                        
                         error:      function(){
                             alert('发送失败。');
@@ -260,6 +328,46 @@ $messages = array_reverse($messages);
                     });
                 }
             });
+            
+            setInterval(function () {
+                var args = {
+                    'classname':    '\\app\\models\\WechatMessage',
+                    'funcname':     'getRecentMessagesAjax',
+                    'params':       {
+                        'sender_id':    '<?= $wx_user->id; ?>',
+                        'receiver_id':  '<?= $reciever->id; ?>',                   
+                    } 
+                };
+                
+//                alert('refreshing...');
+                    
+                $.ajax({
+                    url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
+                    type:       "GET",
+                    cache:      false,
+                    dataType:   "json",
+                    data:       "args=" + JSON.stringify(args),
+                    success:    function(ret) {
+//                        alert('refreshing recieved.');
+                        for (var i = 0, changed = 0; i < ret.length; i++) {
+                            var msgid = '#message-' + ret[i].msgid;
+                            if ($(msgid).length > 0) continue;
+                            changed++;
+                            if (ret[i].sending) {
+                                appendSendMessage(ret[i].msgid, ret[i].send_time, ret[i].content);
+                            } else {
+                                appendRecieveMessage(ret[i].msgid, ret[i].send_time, ret[i].content);
+                            }
+                        }
+                        if (changed > 0) {
+                            $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 0); 
+                        }
+                    },                        
+                    error:      function(){
+                        alert('发送失败。');
+                    }
+                });
+            }, 1000 * 5);
         });
     </script>
 </html>
