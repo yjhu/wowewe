@@ -992,7 +992,44 @@ class CmdController extends Controller
     
         
 
-    }    
+    }
+
+
+    //http://www.juhe.cn/my/info
+    //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/show-mobile-info
+    public function actionShowMobileInfo($id = null)
+    {        
+        $postFields = null;
+        $appkey = '5d4a589b32d70ad6378c8c69cba63524';
+        //$appkey = ' -H apikey:3d9a61582849efccd65f77f34db064a8';
+        $mobilenumber = '15071087608';
+
+        $requestUrl = 'http://apis.juhe.cn/mobile/get?phone='.$mobilenumber.'&key='.$appkey;
+        //$requestUrl = 'http://appyun.sinaapp.com/index.php?app=mobile&controller=index&action=api&outfmt=json&mobile='.$mobilenumber;
+
+        try
+        {
+            //U::W($requestUrl);
+            $resp = U::curl($requestUrl, $postFields);
+            //U::W($resp);
+        }
+        catch (Exception $e)
+        {
+            U::W($e->getCode().':'.$e->getMessage());
+            return ['errcode'=>$e->getCode(), 'errmsg'=>$e->getMessage()];
+        }
+
+        $arr = json_decode($resp, true);
+        if (null !== $arr)
+        {
+            U::W("--------------actionShowMobileInfo----------------");
+            U::W($arr);
+            //return $arr;
+        }
+
+    }
+
+
 
 
 
