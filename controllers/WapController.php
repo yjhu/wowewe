@@ -3121,7 +3121,8 @@ EOD;
             return $this->render('lyhzxyhhint', ['gh_id'=>$gh_id, 'openid'=>$openid]);    
         } 
 
-        $models = MItem::find()->where(['kind'=>$kind, 'cid'=>$cats])->orderBy(['price'=>SORT_ASC])->all();
+        //$models = MItem::find()->where(['kind'=>$kind, 'cid'=>$cats])->orderBy(['price'=>SORT_ASC])->all();
+        $models = MItem::find()->where(['kind'=>$kind])->orderBy(['price'=>SORT_ASC])->all();
 
         U::W("$$$$$$$$$$$$$$$$$$$$$$$$$");
         U::W($models);
