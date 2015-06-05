@@ -55,12 +55,14 @@ class MIphone6Sub extends ActiveRecord
 
     const CAT_IPHONE6 = 0;
     const CAT_MI = 1;
+    const CAT_LESHI = 2;
 
     static function getCatName($key=null)
     {
         $arr = array(
             self::CAT_IPHONE6 => 'iPhone6',
             self::CAT_MI => '小米4',
+            self::CAT_LESHI => '乐视手机',
         );        
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }

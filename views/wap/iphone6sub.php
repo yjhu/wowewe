@@ -41,9 +41,10 @@ $this->title = \app\models\MIphone6Sub::getCatName($model->cat).' 预订';
 	</div>
 </div>
 
+<!--
 <hr />
-<?php echo Html::img(Url::to('images/wx-tuiguang2.jpg'), ['class'=>'img-responsive']); ?>
-
+<//?//php echo Html::img(Url::to('images/wx-tuiguang2.jpg'), ['class'=>'img-responsive']); ?>
+-->
 
 <?php
 /*
