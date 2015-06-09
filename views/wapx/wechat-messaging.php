@@ -122,6 +122,7 @@ $signPackage = $jssdk->GetSignPackage();
                 color: black;
                 background-color: #ddd;
             }
+
         </style>
         <link rel="stylesheet" href="http://libs.useso.com/js/font-awesome/4.2.0/css/font-awesome.min.css">
         <link href="./php-emoji/emoji.css" rel="stylesheet">
@@ -288,14 +289,18 @@ $signPackage = $jssdk->GetSignPackage();
             </div>
         </div>
 
+
         <!-- ######################BEGIN OF FOOTER###################### -->
-        <div class="bar bar-footer">
+        <div class="bar bar-tab">
             <div>
-                <input id="message-content" style="max-width:80%;" type="text" class="pull-left" placeholder="请输入消息文本，最多500字。">
-                <button id="message-submit" class="btn btn-positive"><i class="fa fa-weixin fa-2x"></button></i>
-            </div>
-            <button id="voice-start" class="btn btn-block btn-positive"><i class="fa fa-volume-up"></i></i>&nbsp;录音</button>
-            <button id="voice-stop" class="btn btn-block btn-positive" style="display:none;"><i class="fa fa-volume-up"></i></i>&nbsp;结束录音</button>
+                <button id="voice-start" class="btn" style="border-radius: 65px;"><i class="fa fa-volume-up"></i></button>
+                <button id="voice-stop" class="btn btn-negative" style="border-radius: 65px;display:none;"><i class="fa fa-volume-off"></i></button>
+
+                <input id="message-content" style="max-width:72%; border-top:0px; border-left:0px; border-right:0px; height:40px" type="text" placeholder="">
+                
+                <button id="message-submit" class="btn btn-positive"><i class="fa">发送</i></button>
+            <div>
+
         </div>
         <!-- ######################END OF FOOTER###################### -->
     <script> 
@@ -305,7 +310,7 @@ $signPackage = $jssdk->GetSignPackage();
             // confingure WeiXin JS SDK
             !(function(){
                 wx.config({
-                    debug: true,
+                    debug: false,
                     appId: '<?php echo $signPackage["appId"];?>',
                     timestamp: <?php echo $signPackage["timestamp"];?>,
                     nonceStr: '<?php echo $signPackage["nonceStr"];?>',
