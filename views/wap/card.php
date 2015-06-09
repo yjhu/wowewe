@@ -126,7 +126,7 @@
 	<form id="productForm">	
 	<div data-role="content" data-theme="c">	
 	<p  align=center id="imgURL">
-	    <img width="100%" src="<?php echo  $item->pic_url; ?>?v1" alt=""/>
+	    <img width="100%" src="<?php echo  $item->pic_url; ?>?v2" alt=""/>
 	</p>
 
     <p id="desc">
