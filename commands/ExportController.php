@@ -339,5 +339,17 @@ class ExportController extends \yii\console\Controller {
         }
         fclose($fh);
     }
+    
+    public function actionOpenidBindMobiles( $filename = 'openid-bind-mobiles.csv' ) {
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, 'w');
+        $openidBindMobiles = \app\models\OpenidBindMobile::find()->all();
+        foreach($openidBindMobiles as $mobile) {
+            fprintf($fh, "%s, %s, %s, %s", $mobile->mobile, $mobile->province, $mobile->city, $mobile->carrier);
+            fprintf($fh, ", %s", $mobile->user->nickname);
+            fprintf($fh, PHP_EOL);
+        }
+        fclose($fh);
+    }
 }
 

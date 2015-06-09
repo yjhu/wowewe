@@ -49,8 +49,8 @@ class ImportController extends Controller {
             $region_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $region_name);
             $supervisor_name = trim($fields[3]);
             $supervisor_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $supervisor_name);
-            $supervisor_mobile = trim($fields[4]);
-            $comment = trim($fields[5]);
+            $supervisor_mobile = trim(isset($fields[4]) ? $fields[4] : '');
+            $comment = trim(isset($fields[5]) ? $fields[5] : '');
             $comment_utf8 = iconv('GBK', 'UTF-8//IGNORE', $comment);
 //            echo "comment = ".$comment.", comment_utf8 = ".$comment_utf8.PHP_EOL;
             $need2delete = false;
@@ -88,28 +88,34 @@ class ImportController extends Controller {
             if (empty($region_name_utf8) || $region_name_utf8 == '') continue;
             $region = MMarketingRegion::findOne(['name' => $region_name_utf8]);
             if (empty($region)) {
-                $region = new MMarketingRegion;
-                $region->name = $region_name_utf8;
-                $region->save(false);
+//                $region = new MMarketingRegion;
+//                $region->name = $region_name_utf8;
+//                $region->save(false);
+                echo "{$region_name_utf8} 不存在。".PHP_EOL;
+                continue;
             }
 
             if (empty($msc_name_utf8) || $msc_name_utf8 == '') continue;
             $msc = MMarketingServiceCenter::findOne(['name' => $msc_name_utf8]);
             if (empty($msc)) {
-                $msc = new MMarketingServiceCenter;
-                $msc->name = $msc_name_utf8;
-                $msc->region_id = $region->id;
-                $msc->save(false);
+//                $msc = new MMarketingServiceCenter;
+//                $msc->name = $msc_name_utf8;
+//                $msc->region_id = $region->id;
+//                $msc->save(false);
+                echo "{$msc_name_utf8} 不存在。".PHP_EOL;
+                continue;
             }
 
             if (empty($office_name_utf8) || $office_name_utf8 == '') continue;
             $office = MOffice::findOne(['title' => $office_name_utf8]);
             if (empty($office)) {
-                $office = new MOffice;
-                $office->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM; // 襄阳联通公共ID
-                $office->title = $office_name_utf8;
-                $office->is_jingxiaoshang = 1;
-                $office->save(false);
+//                $office = new MOffice;
+//                $office->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM; // 襄阳联通公共ID
+//                $office->title = $office_name_utf8;
+//                $office->is_jingxiaoshang = 1;
+//                $office->save(false);
+                echo "{$office_name_utf8} 不存在。".PHP_EOL;
+                continue;
             }
             if (empty($office->msc)) {
                 yii::$app->db->createCommand()->insert('wx_rel_office_msc', [
@@ -122,16 +128,20 @@ class ImportController extends Controller {
 
             if (empty($supervisor_name_utf8) || $supervisor_name_utf8 == '') continue;
             $staff = MStaff::findOne(['name' => $supervisor_name_utf8, 'gh_id' => \app\models\MGh::GH_XIANGYANGUNICOM]);
+//            if (empty($staff)) {
+//                $staff = new MStaff;
+//                $staff->office_id = 25;
+//                $staff->name = $supervisor_name_utf8;
+//                $staff->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM; // 襄阳联通公共ID
+//                $staff->mobile = $supervisor_mobile;
+//                $staff->cat = 0;
+//                $staff->save(false);
+//            } else if ($staff->mobile != $supervisor_mobile) {
+//                $staff->updateAttributes(['mobile' => $supervisor_mobile]); // 修改员工电话
+//            }
             if (empty($staff)) {
-                $staff = new MStaff;
-                $staff->office_id = 25;
-                $staff->name = $supervisor_name_utf8;
-                $staff->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM; // 襄阳联通公共ID
-                $staff->mobile = $supervisor_mobile;
-                $staff->cat = 0;
-                $staff->save(false);
-            } else if ($staff->mobile != $supervisor_mobile) {
-                $staff->updateAttributes(['mobile' => $supervisor_mobile]); // 修改员工电话
+                echo "{$supervisor_name_utf8} 不在数据库中。".PHP_EOL;
+                continue;
             }
             
             if (empty($staff->supervisedOffices) || empty($office->supervisor)) {
