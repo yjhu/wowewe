@@ -293,12 +293,19 @@ $signPackage = $jssdk->GetSignPackage();
         <!-- ######################BEGIN OF FOOTER###################### -->
         <div class="bar bar-tab">
             <div>
-                <button id="voice-start" class="btn" style="border-radius: 65px;"><i class="fa fa-microphone"></i></button>
-                <button id="voice-stop" class="btn btn-negative" style="border-radius: 65px;display:none;"><i class="fa fa-microphone-slash"></i></button>
+                <button id="voice-start" class="btn" style="border-radius: 65px;"><i class="fa fa-microphone fa-2x"></i></button>
+                <button id="voice-stop" class="btn btn-negative" style="border-radius: 65px;display:none;"><i class="fa fa-microphone-slash fa-2x"></i></button>
 
-                <input id="message-content" style="max-width:72%; border-top:0px; border-left:0px; border-right:0px; height:40px" type="text" placeholder="">
+                <input id="message-content" style="max-width:70%; border-top:0px; border-left:0px; border-right:0px; height:44px" type="text" placeholder="">
                 
-                <button id="message-submit" class="btn btn-positive"><i class="fa">发送</i></button>
+                <!--
+                <button id="message-submit" class="btn btn-positive"><i class="fa fa-2x">发送</i></button>
+                -->
+
+
+                <button id="message-submit" class="btn" style="border-radius: 45px;"><i class="fa fa-comment-o fa-2x"></i></button>
+
+
             <div>
 
         </div>
