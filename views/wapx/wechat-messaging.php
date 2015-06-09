@@ -3,6 +3,10 @@ include('../models/utils/emoji.php');
 $client = \app\models\ClientWechat::findOne(['gh_id' => $wx_user->gh_id])->client;
 $messages = \app\models\WechatMessage::getRecentMessages($wx_user->id, $reciever->id);
 $communicatee_ids = \app\models\WechatMessage::getUniqueCommunicateeIds($wx_user->id);
+\Yii::$app->wx->setGhId($wx_user->gh_id);
+$gh = \Yii::$app->wx->getGh();
+$jssdk = new \app\models\JSSDK($gh['appid'], $gh['appsecret']);
+$signPackage = $jssdk->GetSignPackage();
 ?>
 <!DOCTYPE html>
 <html>
@@ -26,6 +30,7 @@ $communicatee_ids = \app\models\WechatMessage::getUniqueCommunicateeIds($wx_user
             }
             .bar-footer {
                 border-top: 0;
+                height: 88px;
             }
 /*
             .table-view-cell {
@@ -124,6 +129,7 @@ $communicatee_ids = \app\models\WechatMessage::getUniqueCommunicateeIds($wx_user
         <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
         <!-- Include the compiled Ratchet JS -->
         <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
+        <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
     </head>
     <body>
         <!------------------- BEGIN OF HEADER --------------------------------->
@@ -148,7 +154,10 @@ $communicatee_ids = \app\models\WechatMessage::getUniqueCommunicateeIds($wx_user
                 $message_sender = \app\models\MUser::findOne(['id' => $message->sender_id]);
                 $message_reciever = \app\models\MUser::findOne(['id' => $message->reciever_id]);
             ?>
-                <?php if($wx_user->id == $message_sender->id) { ?>
+                <?php 
+                if($wx_user->id == $message_sender->id) { 
+                    if (\app\models\WechatMessageContent::MSGTYPE_TEXT == $message->content->content_type) {
+                ?>
                 <li class="table-view-cell table-view-cell-wechat-message wechat-message-send media" id="<?= 'message-'."{$message->message_id}" ?>">
                     <img class="media-object pull-right" style="width:48px;" src="<?= $message_sender->headImgUrl ?>">
                     <div class="media-body pull-right">
@@ -156,6 +165,17 @@ $communicatee_ids = \app\models\WechatMessage::getUniqueCommunicateeIds($wx_user
                         <p><span class="message-time"><?= $message->send_time ?></span></p>
                     </div>
                 </li>
+                <?php } else if (\app\models\WechatMessageContent::MSGTYPE_VOICE == $message->content->content_type) { ?>
+                <li class="table-view-cell table-view-cell-wechat-message wechat-message-send media" id="<?= 'message-'."{$message->message_id}" ?>">
+                    <img class="media-object pull-right" style="width:48px;" src="<?= $message_sender->headImgUrl ?>">
+                    <div class="media-body pull-right">
+                        <p class="message-content message-content-send">
+                            <i  style="color:#666;" class="fa fa-volume-up fa-2x voice-playback" serverId="<?= $message->content->content; ?>"></i>
+                        </p>
+                        <p><span class="message-time"><?= $message->send_time ?></span></p>
+                    </div>
+                </li>
+                <?php } ?>
                 
 <!--                
                 <li class="table-view-cell">
@@ -181,7 +201,10 @@ $communicatee_ids = \app\models\WechatMessage::getUniqueCommunicateeIds($wx_user
                         </fieldset>
                 </li>
 -->
-                <?php } else { ?>
+                <?php                 
+                } else { 
+                    if (\app\models\WechatMessageContent::MSGTYPE_TEXT == $message->content->content_type) {
+                ?>
                 <li class="table-view-cell table-view-cell-wechat-message wechat-message-recieve media" id="<?= 'message-'."{$message->message_id}" ?>">
                     <img class="media-object pull-left" style="width:48px;" src="<?= $message_sender->headImgUrl ?>">
                     <div class="media-body pull-left">                        
@@ -189,6 +212,17 @@ $communicatee_ids = \app\models\WechatMessage::getUniqueCommunicateeIds($wx_user
                         <p><span class="message-time"><?= $message->send_time ?></span></p>
                     </div>
                 </li>
+                <?php } else if (\app\models\WechatMessageContent::MSGTYPE_VOICE == $message->content->content_type) { ?>
+                <li class="table-view-cell table-view-cell-wechat-message wechat-message-recieve media" id="<?= 'message-'."{$message->message_id}" ?>">
+                    <img class="media-object pull-left" style="width:48px;" src="<?= $message_sender->headImgUrl ?>">
+                    <div class="media-body pull-left">                        
+                        <p class="message-content message-content-recieve">
+                            <i style="color:#666;" class="fa fa-volume-up fa-2x voice-playback" serverId="<?= $message->content->content ?>"></i>
+                        </p>
+                        <p><span class="message-time"><?= $message->send_time ?></span></p>
+                    </div>
+                </li>                
+                <?php } ?>
 
 <!--
                  <li class="table-view-cell">
@@ -255,44 +289,150 @@ $communicatee_ids = \app\models\WechatMessage::getUniqueCommunicateeIds($wx_user
         </div>
 
         <!-- ######################BEGIN OF FOOTER###################### -->
-        <div class="bar bar-footer-secondary">
-            <textarea id="message-content" rows="3" placeholder="请输入消息文本，最多500字。"></textarea>
-        </div>
         <div class="bar bar-footer">
-            <button id="message-submit" class="btn btn-block btn-positive"><i class="fa fa-weixin"></i>&nbsp;发送</button>
+            <div>
+                <input id="message-content" style="max-width:80%;" type="text" class="pull-left" placeholder="请输入消息文本，最多500字。">
+                <button id="message-submit" class="btn btn-positive"><i class="fa fa-weixin fa-2x"></button></i>
+            </div>
+            <button id="voice-start" class="btn btn-block btn-positive"><i class="fa fa-volume-up"></i></i>&nbsp;录音</button>
+            <button id="voice-stop" class="btn btn-block btn-positive" style="display:none;"><i class="fa fa-volume-up"></i></i>&nbsp;结束录音</button>
         </div>
         <!-- ######################END OF FOOTER###################### -->
-    </body>
-    <script>
- 
+    <script> 
         $(document).ready(function() {
-            'use strict';        
+            'use strict';   
             
+            // confingure WeiXin JS SDK
+            !(function(){
+                wx.config({
+                    debug: true,
+                    appId: '<?php echo $signPackage["appId"];?>',
+                    timestamp: <?php echo $signPackage["timestamp"];?>,
+                    nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+                    signature: '<?php echo $signPackage["signature"];?>',
+                    jsApiList: [
+                        'checkJsApi',
+                        'onMenuShareTimeline',
+                        'onMenuShareAppMessage',
+                        'onMenuShareQQ',
+                        'onMenuShareWeibo',
+                        'hideMenuItems',
+                        'showMenuItems',
+                        'hideAllNonBaseMenuItem',
+                        'showAllNonBaseMenuItem',
+                        'translateVoice',
+                        'startRecord',
+                        'stopRecord',
+                        'onRecordEnd',
+                        'playVoice',
+                        'pauseVoice',
+                        'stopVoice',
+                        'uploadVoice',
+                        'downloadVoice',
+                        'chooseImage',
+                        'previewImage',
+                        'uploadImage',
+                        'downloadImage',
+                        'getNetworkType',
+                        'openLocation',
+                        'getLocation',
+                        'hideOptionMenu',
+                        'showOptionMenu',
+                        'closeWindow',
+                        'scanQRCode',
+                        'chooseWXPay',
+                        'openProductSpecificView',
+                        'addCard',
+                        'chooseCard',
+                        'openCard'
+                    ]
+                });
+            })();
+                                   
             var senderHeadImgUrl = "<?= $wx_user->headImgUrl; ?>";
             var receiverHeadImgUrl = "<?= $reciever->headImgUrl; ?>";
             
-            var appendSendMessage = function (msgid, send_time, content) {
-                var elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-send media" id="message-'
+            var appendSendMessage = function (msgid, send_time, content_type, content) {
+                var elementHtml;
+                if (1 === content_type) {
+                    elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-send media" id="message-'
                                 + msgid +'"><img class="media-object pull-right" style="width:48px;" src="' 
                                 + senderHeadImgUrl + '"><div class="media-body pull-right"><p class="message-content message-content-send">' 
                                 + content + '</p><p><span class="message-time">' 
                                 + send_time + '</span></p></div></li>';
+                } else if (3 === content_type){
+                    elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-send media" id="message-'
+                                + msgid +'"><img class="media-object pull-right" style="width:48px;" src="' 
+                                + senderHeadImgUrl + '"><div class="media-body pull-right"><p class="message-content message-content-send">' 
+                                + '<i class="fa fa-volume-up fa-2x voice-playback" serverId="'
+                                + content +'"></i>' + '</p><p><span class="message-time">' 
+                                + send_time + '</span></p></div></li>';
+                }
                         
                 return $(elementHtml).insertBefore('#ul-body-bottom');                           
             };
             
-            var appendRecieveMessage = function (msgid, send_time, content) {
-                var elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-recieve media" id="message-'
+            var appendRecieveMessage = function (msgid, send_time, content_type, content) {
+                var elementHtml; 
+                if (1 === content_type) {
+                    elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-recieve media" id="message-'
                                 + msgid +'"><img class="media-object pull-left" style="width:48px;" src="' 
                                 + receiverHeadImgUrl + '"><div class="media-body pull-left"><p class="message-content message-content-recieve">' 
                                 + content + '</p><p><span class="message-time">' 
                                 + send_time + '</span></p></div></li>';
+                } else if ( 3 === content_type ) {
+                    elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-recieve media" id="message-'
+                                + msgid +'"><img class="media-object pull-left" style="width:48px;" src="' 
+                                + receiverHeadImgUrl + '"><div class="media-body pull-left"><p class="message-content message-content-recieve">' 
+                                + '<i class="fa fa-volume-up fa-2x voice-playback" serverId="'
+                                + content + '"></i>' + '</p><p><span class="message-time">' 
+                                + send_time + '</span></p></div></li>';
+                }
                             
                 return $(elementHtml).insertBefore('#ul-body-bottom'); 
             };
                         
 //            alert("ready");
             $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 300);
+            
+            var playback_voice = {
+                localId: undefined,
+                serverId: undefined,
+                state: 'stopped'
+            };
+            wx.onVoicePlayEnd({
+                success: function (res) {
+                    playback_voice.state = 'stopped';
+                }
+            });
+            $('#ul-body').on('click', '.voice-playback', function (e) {
+//            $('.voice-playback').click( function (e) {
+                var serverId = $(e.target).attr('serverId');
+                alert(serverId);
+                if ('playing' === playback_voice.state && serverId === playback_voice.serverId) {
+                    wx.stopVoice({localId: playback_voice.localId});
+                    playback_voice.state = 'stopped';
+                    return;
+                }
+                if (serverId === playback_voice.serverId) { 
+                    wx.playVoice({localId: playback_voice.localId});
+                    return;
+                }
+                
+                if ('playing' === playback_voice.state) {
+                    wx.stopVoice({localId: playback_voice.localId});
+                    playback_voice.state = 'stopped';
+                }
+                playback_voice.serverId = serverId;
+                wx.downloadVoice({
+                    serverId:   playback_voice.serverId,
+                    success:    function (res) {
+                        playback_voice.localId = res.localId;
+                        wx.playVoice({localId: playback_voice.localId});
+                        playback_voice.state = 'playing';                       
+                    }
+                });
+            });
 
             $('#message-submit').click(function() {
 //                alert("click");
@@ -319,7 +459,7 @@ $communicatee_ids = \app\models\WechatMessage::getUniqueCommunicateeIds($wx_user
                         success:    function(ret) {
 //                            alert('发送成功。');
                             $('#message-content').val('');  
-                            appendSendMessage(ret.msgid, ret.send_time, ret.content); 
+                            appendSendMessage(ret.msgid, ret.send_time, <?= \app\models\WechatMessageContent::MSGTYPE_TEXT ?>, ret.content); 
                             $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 0);
                         },                        
                         error:      function(){
@@ -354,9 +494,9 @@ $communicatee_ids = \app\models\WechatMessage::getUniqueCommunicateeIds($wx_user
                             if ($(msgid).length > 0) continue;
                             changed++;
                             if (ret[i].sending) {
-                                appendSendMessage(ret[i].msgid, ret[i].send_time, ret[i].content);
+                                appendSendMessage(ret[i].msgid, ret[i].send_time, ret[i].content_type, ret[i].content);
                             } else {
-                                appendRecieveMessage(ret[i].msgid, ret[i].send_time, ret[i].content);
+                                appendRecieveMessage(ret[i].msgid, ret[i].send_time, ret[i].content_type, ret[i].content);
                             }
                         }
                         if (changed > 0) {
@@ -369,5 +509,59 @@ $communicatee_ids = \app\models\WechatMessage::getUniqueCommunicateeIds($wx_user
                 });
             }, 1000 * 5);
         });
+        
+        $('#voice-start').click(function () {
+            $('#voice-start').hide();
+            $('#voice-stop').show();
+            wx.startRecord({
+                cancel: function () {
+                    alert('用户拒绝授权录音');
+                }
+            });
+        });
+        
+        $('#voice-stop').click( function () {           
+            wx.stopRecord({
+                success: function (res) {
+                    var voice_localid = res.localId;
+                    wx.uploadVoice({
+                        localId: voice_localid,
+                        success: function (res) {
+                            var voice_serverid = res.serverId;
+                            var args = {
+                                'classname':    '\\app\\models\\WechatMessage',
+                                'funcname':     'sendMessageAjax',
+                                'params':       {
+                                    'sender_id':    '<?= $wx_user->id; ?>',
+                                    'receiver_id':  '<?= $reciever->id; ?>',                   
+                                    'content_type':  '<?= \app\models\WechatMessageContent::MSGTYPE_VOICE ?>',
+                                    'content':       voice_serverid
+                                } 
+                            };
+                    
+                            $.ajax({
+                                url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
+                                type:       "GET",
+                                cache:      false,
+                                dataType:   "json",
+                                data:       "args=" + JSON.stringify(args),
+                                success:    function(ret) {                                   
+                                    appendSendMessage(ret.msgid, ret.send_time, ret.content_type, ret.content); 
+                                    $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 0);
+                                },                        
+                                error:      function(){
+                                    alert('发送失败。');
+                                }
+                            });
+                            
+                        }
+                    });
+                    $('#voice-start').show();
+                    $('#voice-stop').hide();
+                }
+            });            
+
+        });
     </script>
+    </body>
 </html>

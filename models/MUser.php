@@ -351,17 +351,32 @@ class MUser extends ActiveRecord implements IdentityInterface
         }
         
         try {
-            Yii::$app->wx->setGhId($this->gh_id);
-            $url = \yii\helpers\Url::to([
-                        'wapx/wechat-messaging',
-                        'gh_id' => $this->gh_id,
-                        'openid' =>  $this->openid,
-                        'reciever_id'   => $message->sender->id,
-                    ], true);
-            $content = $message->sender->nickname . " 说：". PHP_EOL . PHP_EOL;
-            $content .= $message->content->content . PHP_EOL . PHP_EOL;
-            $content .= "<a href='{$url}'>点这里直接与Ta聊天</a>";
-            $arr = Yii::$app->wx->WxMessageCustomSendText($this->openid, $content);
+            if (WechatMessageContent::MSGTYPE_TEXT == $message->content->content_type) {
+                \Yii::$app->wx->setGhId($this->gh_id);
+                $url = \yii\helpers\Url::to([
+                            'wapx/wechat-messaging',
+                            'gh_id' => $this->gh_id,
+                            'openid' =>  $this->openid,
+                            'reciever_id'   => $message->sender->id,
+                        ], true);
+                $content = $message->sender->nickname . " 说：". PHP_EOL . PHP_EOL;
+                $content .= $message->content->content . PHP_EOL . PHP_EOL;
+                $content .= "<a href='{$url}'>点这里直接与Ta聊天</a>";
+                $arr = Yii::$app->wx->WxMessageCustomSendText($this->openid, $content);
+            } else if (WechatMessageContent::MSGTYPE_VOICE == $message->content->content_type) {
+                \Yii::$app->wx->setGhId($this->gh_id);
+                $url = \yii\helpers\Url::to([
+                            'wapx/wechat-messaging',
+                            'gh_id' => $this->gh_id,
+                            'openid' =>  $this->openid,
+                            'reciever_id'   => $message->sender->id,
+                        ], true);
+                $content = $message->sender->nickname . " 向你喊话".PHP_EOL;
+                $content .= "<a href='{$url}'>点这里直接与Ta聊天</a>";
+                $arr = Yii::$app->wx->WxMessageCustomSendText($this->openid, $content);
+                $media_id = $message->content->content;
+                $arr = \Yii::$app->wx->WxMessageCustomSendVoice($this->openid, $media_id);
+            }
         } catch (\Exception $e) {
             return false;
         }

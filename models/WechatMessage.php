@@ -168,7 +168,10 @@ class WechatMessage extends \yii\db\ActiveRecord
             }
             $resp['msgid'] = $message->message_id;
             $resp['send_time'] = $message->send_time;
-            $resp['content'] = emoji_unified_to_html(emoji_softbank_to_unified($message->content->content));
+            $resp['content_type'] = $message->content->content_type;
+            $resp['content'] = WechatMessageContent::MSGTYPE_TEXT == $message->content->content_type ? 
+                    emoji_unified_to_html(emoji_softbank_to_unified($message->content->content)) :
+                    $message->content->content;
             $json_resps[] = $resp;
         }
         return json_encode($json_resps);
@@ -186,11 +189,27 @@ class WechatMessage extends \yii\db\ActiveRecord
         $messaging->content_id = $message_content->content_id;
         $messaging->save(false);
         
-        return json_encode([
-            'code' => 0, 
-            'msgid' => $messaging->message_id,
-            'send_time' => date('Y-m-d H:i:s'),
-            'content'   => emoji_unified_to_html(emoji_softbank_to_unified($content)),
-        ]);
+        if (WechatMessageContent::MSGTYPE_TEXT == $content_type) {
+            return json_encode([
+                'code' => 0, 
+                'msgid' => $messaging->message_id,
+                'send_time' => date('Y-m-d H:i:s'),
+                'content_type' => $messaging->content->content_type,
+                'content'   => emoji_unified_to_html(emoji_softbank_to_unified($content)),
+            ]);
+        } else if (WechatMessageContent::MSGTYPE_VOICE == $content_type) {
+            return json_encode([
+                'code' => 0, 
+                'msgid' => $messaging->message_id,
+                'send_time' => date('Y-m-d H:i:s'),
+                'content_type' => $messaging->content->content_type,
+                'content'   => $content,
+            ]);
+        } else {
+            return json_encode([
+                'code' => -1,
+            ]);
+            
+        }
     }
 }
