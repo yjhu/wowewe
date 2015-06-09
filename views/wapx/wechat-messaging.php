@@ -413,7 +413,7 @@ $signPackage = $jssdk->GetSignPackage();
             $('#ul-body').on('click', '.voice-playback', function (e) {
 //            $('.voice-playback').click( function (e) {
                 var serverId = $(e.target).attr('serverId');
-                alert(serverId);
+               // alert(serverId);
                 if ('playing' === playback_voice.state && serverId === playback_voice.serverId) {
                     wx.stopVoice({localId: playback_voice.localId});
                     playback_voice.state = 'stopped';
