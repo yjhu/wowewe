@@ -293,8 +293,8 @@ $signPackage = $jssdk->GetSignPackage();
         <!-- ######################BEGIN OF FOOTER###################### -->
         <div class="bar bar-tab">
             <div>
-                <button id="voice-start" class="btn" style="border-radius: 65px;"><i class="fa fa-volume-up"></i></button>
-                <button id="voice-stop" class="btn btn-negative" style="border-radius: 65px;display:none;"><i class="fa fa-volume-off"></i></button>
+                <button id="voice-start" class="btn" style="border-radius: 65px;"><i class="fa fa-microphone"></i></button>
+                <button id="voice-stop" class="btn btn-negative" style="border-radius: 65px;display:none;"><i class="fa fa-microphone-slash"></i></button>
 
                 <input id="message-content" style="max-width:72%; border-top:0px; border-left:0px; border-right:0px; height:40px" type="text" placeholder="">
                 
