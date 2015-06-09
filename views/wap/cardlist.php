@@ -71,7 +71,7 @@
                 $model->cid==718 || $model->cid==717) 
             {?>
                 <li><a data-ajax="false" href="<?php echo  Url::to(['wap/card', 'cid'=>$model->cid],true) ?>">
-                        <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg?v1' ?>">
+                        <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg?v2' ?>">
                         <h2><?= $model->title ?></h2>
                         <p><?= $model->title_hint ?></p>
           
@@ -89,7 +89,7 @@
         <?php } else {?>
             <?php foreach($models as $model) { ?>
                 <li><a data-ajax="false" href="<?php echo  Url::to(['wap/card', 'cid'=>$model->cid],true) ?>">
-                        <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg?v1' ?>">
+                        <img style='padding-top:20px' src="<?php echo $model->pic_url.'-120x120.jpg?v2' ?>">
                         <h2><?= $model->title ?></h2>
                         <p><?= $model->title_hint ?></p>
                         
