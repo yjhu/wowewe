@@ -317,7 +317,7 @@ $signPackage = $jssdk->GetSignPackage();
             // confingure WeiXin JS SDK
             !(function(){
                 wx.config({
-                    debug: false,
+                    debug: true,
                     appId: '<?php echo $signPackage["appId"];?>',
                     timestamp: <?php echo $signPackage["timestamp"];?>,
                     nonceStr: '<?php echo $signPackage["nonceStr"];?>',
@@ -531,44 +531,47 @@ $signPackage = $jssdk->GetSignPackage();
                 }
             });
         });
+        var uploadVoiceAndAddDom = function ( res ) {
+            var voice_localid = res.localId;
+            wx.uploadVoice({
+                localId: voice_localid,
+                success: function (res) {
+                    var voice_serverid = res.serverId;
+                    var args = {
+                        'classname':    '\\app\\models\\WechatMessage',
+                        'funcname':     'sendMessageAjax',
+                        'params':       {
+                            'sender_id':    '<?= $wx_user->id; ?>',
+                            'receiver_id':  '<?= $reciever->id; ?>',                   
+                            'content_type':  '<?= \app\models\WechatMessageContent::MSGTYPE_VOICE ?>',
+                            'content':       voice_serverid
+                        } 
+                    };
+
+                    $.ajax({
+                        url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
+                        type:       "GET",
+                        cache:      false,
+                        dataType:   "json",
+                        data:       "args=" + JSON.stringify(args),
+                        success:    function(ret) {                                   
+                            appendSendMessage(ret.msgid, ret.send_time, ret.content_type, ret.content); 
+                            $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 0);
+                        },                        
+                        error:      function(){
+                            alert('发送失败。');
+                        }
+                    });
+
+                }
+            });
+            $('#voice-start').show();
+            $('#voice-stop').hide();
+        };
         wx.onVoiceRecordEnd({
             // 录音时间超过一分钟没有停止的时候会执行 complete 回调
             complete: function (res) {
-                var voice_localid = res.localId;
-                wx.uploadVoice({
-                    localId: voice_localid,
-                    success: function (res) {
-                        var voice_serverid = res.serverId;
-                        var args = {
-                            'classname':    '\\app\\models\\WechatMessage',
-                            'funcname':     'sendMessageAjax',
-                            'params':       {
-                                'sender_id':    '<?= $wx_user->id; ?>',
-                                'receiver_id':  '<?= $reciever->id; ?>',                   
-                                'content_type':  '<?= \app\models\WechatMessageContent::MSGTYPE_VOICE ?>',
-                                'content':       voice_serverid
-                            } 
-                        };
-
-                        $.ajax({
-                            url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
-                            type:       "GET",
-                            cache:      false,
-                            dataType:   "json",
-                            data:       "args=" + JSON.stringify(args),
-                            success:    function(ret) {                                   
-                                appendSendMessage(ret.msgid, ret.send_time, ret.content_type, ret.content); 
-                                $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 0);
-                            },                        
-                            error:      function(){
-                                alert('发送失败。');
-                            }
-                        });
-
-                    }
-                });
-                $('#voice-start').show();
-                $('#voice-stop').hide();
+                
             }
         });
         
