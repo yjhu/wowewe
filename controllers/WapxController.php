@@ -213,6 +213,16 @@ class WapxController extends Controller
     }
 
 
+    //http://127.0.0.1/wx/web/index.php?r=wapx/wechatzhushou&gh_id=gh_03a74ac96138
+    //http://wosotech.com/wx/web/index.php?r=wapx/wechatzhushou&gh_id=gh_03a74ac96138
+    public function actionWechatzhushou()
+    {        
+        $this->layout = false;
+
+        return $this->render('wechat-zhushou');        
+    }
+
+
     //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&outlet_id=777
     public function actionClientemployeelist($gh_id, $openid,$outlet_id)
     {
