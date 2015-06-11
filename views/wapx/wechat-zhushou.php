@@ -51,42 +51,18 @@
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
-        <br>
-        <p>
-          
-        </p>
-
        <ul class="table-view">
    
-
-
             <li class="table-view-cell media">
               <a data-ignore="push" class="navigate-right" href="http://m.kuaidi100.com">
     
                <span class="media-object pull-left fa-stack fa-lg" style="color:blue">
-
                 <i class="fa fa-square fa-stack-2x"></i>
                 <i class="fa fa-truck fa-stack-1x fa-inverse"></i>
               </span>
 
                 <div class="media-body">
                   <span class="orderitem">快递查询</span>
-                </div> 
-              </a>
-            </li>
-
-
-            <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="http://m.46644.com/tool/tel/?tpltype=qq">
-    
-               <span class="media-object pull-left fa-stack fa-lg" style="color:#ffc90e">
-
-                <i class="fa fa-square fa-stack-2x"></i>
-                <i class="fa fa-phone fa-stack-1x fa-inverse"></i>
-              </span>
-
-                <div class="media-body">
-                  <span class="orderitem">常用电话</span>
                 </div> 
               </a>
             </li>
@@ -106,6 +82,20 @@
             </li>
 
             <li class="table-view-cell media">
+              <a data-ignore="push" class="navigate-right" href="http://m.familydoctor.com.cn/">
+    
+              <span class="media-object pull-left fa-stack fa-lg" style="color:#00a2e8">
+                <i class="fa fa-square fa-stack-2x"></i>
+                <i class="fa fa-user-md fa-stack-1x fa-inverse"></i>
+              </span>
+
+                <div class="media-body">
+                  <span class="orderitem">家庭医生</span>
+                </div> 
+              </a>
+            </li>
+
+            <li class="table-view-cell media">
               <a data-ignore="push" class="navigate-right" href="http://app.gupiao123.cn/?c=103#security/000001.SH">
     
               <span class="media-object pull-left fa-stack fa-lg" style="color:red">
@@ -119,6 +109,21 @@
               </a>
             </li>
 
+            <li class="table-view-cell media">
+              <a data-ignore="push" class="navigate-right" href="http://m.46644.com/tool/tel/?tpltype=qq">
+    
+               <span class="media-object pull-left fa-stack fa-lg" style="color:#ffc90e">
+
+                <i class="fa fa-square fa-stack-2x"></i>
+                <i class="fa fa-phone fa-stack-1x fa-inverse"></i>
+              </span>
+
+                <div class="media-body">
+                  <span class="orderitem">常用电话</span>
+                </div> 
+              </a>
+            </li>
+            
             <li class="table-view-cell media">
               <a data-ignore="push" class="navigate-right" href="http://m.lnka.cn/">
     
@@ -147,9 +152,9 @@
               </a>
             </li>
 
-
         </ul>
 
+       <p>&nbsp;</p>
     </div>
 
 
