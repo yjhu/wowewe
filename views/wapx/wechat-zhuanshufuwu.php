@@ -53,19 +53,33 @@
             <li class="table-view-cell media">
               <a data-ignore="push" class="navigate-right" href="http://wap.10010.com/t/query/queryRealTimeFeeInfo.htm?menuId=000200010001">
 
-               <span class="media-object pull-left fa-stack fa-lg" style="color:#ffc90e">
+               <span class="media-object pull-left fa-stack fa-lg" style="color:red">
                 <i class="fa fa-square fa-stack-2x"></i>
-                <i class="fa fa-area-chart fa-stack-1x fa-inverse"></i>
+                <i class="fa fa-pie-chart fa-stack-1x fa-inverse"></i>
               </span>
 
                 <div class="media-body">
-                  <span class="orderitem">话费流量查询</span>
+                  <span class="orderitem">话费查询</span>
                 </div>
               </a>
             </li>
 
             <li class="table-view-cell media">
               <a data-ignore="push" class="navigate-right" href="http://wap.10010.com/t/query/queryRealTimeFeeInfo.htm?menuId=000200010001">
+
+               <span class="media-object pull-left fa-stack fa-lg" style="color:#ffc90e">
+                <i class="fa fa-square fa-stack-2x"></i>
+                <i class="fa fa-area-chart fa-stack-1x fa-inverse"></i>
+              </span>
+
+                <div class="media-body">
+                  <span class="orderitem">流量查询</span>
+                </div>
+              </a>
+            </li>
+
+            <li class="table-view-cell media">
+              <a data-ignore="push" class="navigate-right" href="http://upay.10010.com/npfwap/npfMobWap/bankcharge/index.html?version=null&desmobile=8E2104B024B5116C9EA24F8EE55A29A8#/bankcharge">
 
               <span class="media-object pull-left fa-stack fa-lg" style="color:#4db849">
                 <i class="fa fa-square fa-stack-2x"></i>
@@ -79,7 +93,7 @@
             </li>
 
             <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="#">
+              <a data-ignore="push" class="navigate-right" href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/nearestoutlets:gh_03a74ac96138#wechat_redirect">
 
               <span class="media-object pull-left fa-stack fa-lg" style="color:#00a2e8">
                 <i class="fa fa-square fa-stack-2x"></i>

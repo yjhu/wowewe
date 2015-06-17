@@ -1,7 +1,7 @@
 <?php
 
 namespace app\controllers;
-
+use app\models\JSSDK;
 use app\models\MOffice;
 use app\models\MOrder;
 use app\models\MStaff;
@@ -195,6 +195,26 @@ class WapxController extends Controller {
 
         return $this->render('wechat-zhuanshufuwu');
     }
+
+    //http://wosotech.com/wx/web/index.php?r=wapx/nearestoutlets&gh_id=gh_03a74ac96138
+    public function actionNearestoutlets() {
+        $this->layout = false;
+
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+
+        $gh = Yii::$app->wx->getGh();
+        $jssdk = new JSSDK($gh['appid'], $gh['appsecret']);
+
+        $clientWechat = \app\models\ClientWechat::findOne(['gh_id' => $gh_id]);
+        $outlets = \app\models\ClientOutlet::find()->where(['client_id' => $clientWechat->client_id])
+        ->where(['<>', 'longitude', 0])->all();
+
+        return $this->render('nearestoutlets', ['gh_id' => $gh_id, 'openid' => $openid, 'outlets' => $outlets, 'jssdk' => $jssdk]);
+    }
+
+
 
     //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&outlet_id=777
     public function actionClientemployeelist($gh_id, $openid, $outlet_id) {

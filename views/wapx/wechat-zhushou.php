@@ -107,6 +107,21 @@
             </li>
 
             <li class="table-view-cell media">
+              <a data-ignore="push" class="navigate-right" href=" http://kc.kxapps.com/Flight">
+
+               <span class="media-object pull-left fa-stack fa-lg" style="color:#00a2e8">
+
+                <i class="fa fa-square fa-stack-2x"></i>
+                <i class="fa fa-plane fa-stack-1x fa-inverse"></i>
+              </span>
+
+                <div class="media-body">
+                  <span class="orderitem">航班查询</span>
+                </div>
+              </a>
+            </li>
+
+            <li class="table-view-cell media">
               <a data-ignore="push" class="navigate-right" href="http://m.46644.com/tool/tel/?tpltype=qq">
 
                <span class="media-object pull-left fa-stack fa-lg" style="color:#ffc90e">
