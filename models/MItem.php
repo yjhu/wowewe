@@ -200,7 +200,8 @@ class MItem extends ActiveRecord {
     const ITEM_CAT_MOBILE_LYH_XIAOMI4_4G = 880;
     const ITEM_CAT_MOBILE_LYH_HONGMI2_4G = 881;
     const ITEM_CAT_MOBILE_LYH_HONGMINOTE_4G = 882;
-    const ITEM_CAT_MOBILE_LYH_CFSF_CFSYW = 883;
+    const ITEM_CAT_MOBILE_LYH_CFSF = 883;
+    const ITEM_CAT_MOBILE_LYH_CFSYW = 884;
 
     //流量包 国内
     const ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI = 902;
@@ -359,7 +360,9 @@ class MItem extends ActiveRecord {
             self::ITEM_CAT_MOBILE_LYH_HONGMI2_4G => '红米手机2 联通4G双卡版',
             self::ITEM_CAT_MOBILE_LYH_HONGMINOTE_4G => '红米NOTE 4G双卡双待',
             //存费送费/业务5折优惠
-            self::ITEM_CAT_MOBILE_LYH_CFSF_CFSYW => '存费送费送业务 5折优惠',
+            self::ITEM_CAT_MOBILE_LYH_CFSF => '存费送费 5折优惠',
+            self::ITEM_CAT_MOBILE_LYH_CFSYW => '存费送业务 5折优惠',
+
 
             //流量包 国内
             self::ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI => '10元包100M 3G国内流量包',

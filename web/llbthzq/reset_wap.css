@@ -1,0 +1,116 @@
+@charset "gb2312";
+/* Reset */
+body,div,p,a,table,textarea,form,input,img,ul,li{ margin:0; padding:0;}
+body {font:13px 'Helvetica Neue','Helvetica','sans-serif'; font-style: normal;background:#FFF;padding:0;margin:0;-webkit-text-size-adjust:none;overflow-x:hidden;}
+ui,li,dl,dd,form {margin:0;padding:0;list-style:none; text-indent:0;}
+i,em{ font-style:normal;}
+table {border-collapse:collapse; border:0px; padding:0; margin:0;}
+em{ font-style:normal;}
+img,a img{ border:0;}
+a{text-decoration:none;color:#3E3E3E}
+.clearx {clear:both;}
+.fl {float:left;}
+.fr {float:right;}
+.hid {display:none;}
+body .show {display:block;}
+/*布局*/
+body{ background:#F6F7F9;  }
+.wapper{ width:100%; margin:0 auto; padding:0; overflow:hidden; background:#F6F7F9;  font-family:\5FAE\8F6F\96C5\9ED1;}
+.header{ height:90px; text-align:center; overflow:hidden; background:#FFC706}
+.center{ padding:0; overflow:hidden;}
+.footer{padding:10px 0 15px; text-align:center; overflow:hidden; background:#E5E7EF;}
+.footer p{ padding:0; margin:0; line-height:22px; color:#000; font-size:13px;}
+/*基础框架*/
+.linkBox{ height:26px; line-height:26px; padding:0 15px; text-align:center; color:#000; font-size:12px;}
+.linkBoxB{ height:34px; line-height:34px; padding:0 15px; color:#000; font-size:12px; background:#FFEC9E;}
+.swiper-tabs{ height:295px;}
+
+.swiper-wrapper {
+	position:relative;
+	width:100%;
+	-webkit-transition-property:-webkit-transform, left, top;
+	-webkit-transition-duration:0s;
+	-webkit-transform:translate3d(0px,0,0);
+	-webkit-transition-timing-function:ease;
+	
+	-moz-transition-property:-moz-transform, left, top;
+	-moz-transition-duration:0s;
+	-moz-transform:translate3d(0px,0,0);
+	-moz-transition-timing-function:ease;
+	
+	-o-transition-property:-o-transform, left, top;
+	-o-transition-duration:0s;
+	-o-transform:translate3d(0px,0,0);
+	-o-transition-timing-function:ease;
+	-o-transform:translate(0px,0px);
+	
+	-ms-transition-property:-ms-transform, left, top;
+	-ms-transition-duration:0s;
+	-ms-transform:translate3d(0px,0,0);
+	-ms-transition-timing-function:ease;
+	
+	transition-property:transform, left, top;
+	transition-duration:0s;
+	transform:translate3d(0px,0,0);
+	transition-timing-function:ease;
+	
+}
+.swiper-slide {
+	float: left;
+	width: 100%;
+}
+.swiper-tabs .cont-list li{border-radius:5px; -moz-border-radius:5px; -webkit-border-radius:5px; border:1px solid #EEEFF1; height:76px; overflow:hidden; margin-bottom:8px; display:table; width:99.9%;}
+.swiper-tabs .cont-list li i{ display:table-cell; height:76px; text-align:center; vertical-align:middle;}
+.swiper-tabs .cont-list li i.iTit{ width:80px; background:#F7BA5B url(./line_bgs1.png) no-repeat right 0; font-size:14px; color:#FFF; line-height:22px; padding:0 12px 0 5px;}
+.swiper-tabs .cont-list li i.iTxt{ line-height:22px; color:#6e6e6e; font-weight:600;}
+.swiper-tabs .cont-list li i.iTxt em{ color:#fe5f5b}
+.swiper-tabs .cont-list li i.iLink{ width:80px; text-align:left;}
+.swiper-tabs .cont-list li i.iLink a{ display:block; height:30px; line-height:30px; width:70px; text-align:center; border-radius:3px; -moz-border-radius:3px; -webkit-border-radius:3px; color:#FFF; font-weight:600; font-size:14px; background:#fe5f5b;}
+.swiper-tabs .cont-list li:nth-child(2) i.iTit{background:#F28E74 url(./line_bgs2.png) no-repeat right 0;}
+.swiper-tabs .cont-list li:nth-child(2) i.iTxt{ background:#EEEEEE}
+.swiper-tabs .cont-list li:nth-child(2) i.iLink{ background:#EEEEEE}
+.swiper-tabs .cont-list li:last-child i.iTit{background:#89C46B url(./line_bgs3.png) no-repeat right 0;}
+.mod .mt{ height:43px; background:url(./tit_bgs2.png) repeat-x;}
+.mod .mt .mt_v{ padding:0 0 10px 15px; background:url(./tit_bgs1.png) no-repeat; height:33px;}
+.mod .mt td{ height:33px; vertical-align:middle;}
+.mod .mt span{ color:#FFF; font-size:12px; line-height:16px;}
+.mod .md{ padding:10px 0; overflow:hidden;}
+.txt{ padding:15px 0px 5px; overflow:hidden; text-indent:2em; color:#cc0008; font-size:12px; line-height:18px;}
+/*个别*/
+.part1{ width:318px; overflow:hidden; margin:0 auto;}
+.part1 td{ width:106px; text-align:center; height:180px; vertical-align:top;}
+.part1 td img{ vertical-align:text-top; width:101px; height:148px; margin-bottom:6px;}
+.part1 td p{ padding:0; height:22px; width:79px; margin: 0 auto;}
+.part1 td p a{ display:block; cursor:pointer; text-align:center; width:79px; height:22px; line-height:22px; color:#fff; font-weight:600; background:url(./but_imgs1.png) no-repeat;}
+.part1 td p a{ display:block; cursor:pointer; text-align:center; width:79px; height:22px; line-height:22px; color:#fff; font-weight:600; background:url(./but_imgs1.png) no-repeat;}
+
+.part2{ padding:0 10px 15px; overflow:hidden;}
+.part2 td{ vertical-align:top;}
+.part2 .td1{ width:120px; height:82px;}
+.part2 p{ color:#242323; font-size:12px; line-height:16px;}
+.part2 .em1{ color:#ec0505}
+.part2 .em2{ color:#d43c25}
+
+.part3{ padding:0 5px 0; overflow:hidden;}
+.part3 .txt{ padding:15px 5px 5px;}
+
+.boxA,.boxB{margin-bottom:8px;}
+.boxA td{ height:58px; vertical-align:middle;}
+.boxA .tda{ width:12px; font-size:0px;}
+.boxA .tdc{ width:12px; font-size:0px;}
+.boxA .tdb{ background:url(./boxA_c.png) repeat-x;}
+.boxA .tdb strong{ font-size:14px; line-height:20px; color:#911800; font-weight:bolder; display:block; margin-left:8px;}
+.boxA .tdb a{float:right; margin:6px 0 0 0; width:68px; height:33px; line-height:33px; text-align:center; color:#FFF; font-weight:600; cursor:pointer; background:url(./but_imgs3.png) no-repeat;}
+.boxB td{ height:58px; vertical-align:middle;}
+.boxB .tda{ width:12px; font-size:0px;}
+.boxB .tdc{ width:12px; font-size:0px;}
+.boxB .tdb{ background:url(./boxB_c.png) repeat-x;}
+.boxB .tdb strong{ font-size:14px; line-height:20px; color:#911800; font-weight:bolder; display:block; margin-left:8px;}
+.boxB .tdb a{float:right; margin:6px 0 0 0; width:68px; height:33px; line-height:33px; text-align:center; color:#FFF; font-weight:600; cursor:pointer; background:url(./but_imgs4.png) no-repeat;}
+
+
+.part4{ padding:0 10px 0; overflow:hidden;}
+.part4 td{ vertical-align:top;}
+.part4 .td1{ width:120px; height:107px;}
+.part4 td p{ padding:0; margin:0; line-height:18px; display:block; color:#242323; font-size:12px;}
+.part4 .td2 a{ float:left; margin:6px 0 0 0; width:68px; height:33px; line-height:33px; text-align:center; color:#FFF; font-weight:600; cursor:pointer; background:url(./but_imgs2.png) no-repeat;}

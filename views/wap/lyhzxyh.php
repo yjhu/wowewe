@@ -32,6 +32,12 @@ use yii\helpers\Url;
     <div data-role="content">
         <ul data-role="listview" data-inset="false" data-filter="true" data-filter-placeholder="搜索..." class="ui-nodisc-icon ui-alt-icon">
 
+        <li><a data-ajax="false" href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wap/querybymobile1:gh_03a74ac96138#wechat_redirect">
+                <img style='padding-top:20px' src="/wx/web/images/womei-hint-120x120.jpg">
+                <h2 style="color:red !important;">老用户身份验证</h2>
+                <p></p>
+            </a>
+        </li>
 
         <!-- 4月第4周老用户活动 -->
         <?php if ($flag2 == 1) {
@@ -66,25 +72,18 @@ use yii\helpers\Url;
 ?>
 
 
-
-
-
-
-
-        <?php if ($flag1 == 1) {
-    ?>
-
         <?php foreach ($models as $model) {
-        //6.18
-        if ($model->cid == 878 ||
+        //6.18 
+        if ($model->cid == 869 ||
             $model->cid == 879 ||
             $model->cid == 880 ||
             $model->cid == 881 ||
             $model->cid == 882 ||
-            $model->cid == 883) {
+            $model->cid == 883 ||
+            $model->cid == 884) {
             ?>
             <li><a data-ajax="false" href="<?php echo Url::to(['wap/mobile', 'cid' => $model->cid], true)?>">
-                    <img style='padding-top:20px' src="<?php echo $model->pic_url . '-120x120.jpg'?>">
+                    <img style='padding-top:20px' src="<?php echo $model->pic_url . '-120x120.jpg?v1'?>">
                     <h2><?=$model->title?></h2>
                     <p><?=$model->title_hint?></p>
 
@@ -97,6 +96,11 @@ use yii\helpers\Url;
 }
     }
     ?>
+
+
+        <?php if ($flag1 == 1) {
+    ?>
+
 
         <?php foreach ($models as $model) {
         if ($model->cid == 874) {

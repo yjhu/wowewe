@@ -703,6 +703,35 @@ class CmdController extends Controller
         fclose($fh);    
     }
 
+
+    public function actionTcustomers($filename = 't.txt')
+    {
+
+        $tableName = 'wx_oldcustomers';      
+        $n = Yii::$app->db->createCommand("TRUNCATE TABLE {$tableName}")->execute();        
+        
+        //$file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'t3.txt';        
+        $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR  . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($file, "r");
+
+        $i = 0;
+        $sm_valid_cids = array();
+        while (!feof($fh)) 
+        {
+            $line = fgets($fh);
+            if (empty($line))
+                continue;
+            $mobile = trim($line);
+            $n = Yii::$app->db->createCommand("INSERT INTO $tableName (mobile) VALUES (:mobile)", [':mobile' => $mobile])->execute();
+            $i++;
+        }
+        fclose($fh);    
+    }
+
+
+
+
+
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/wxmanager
      public function actionWxmanager()
     {

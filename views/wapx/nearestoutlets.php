@@ -24,6 +24,7 @@ $signPackage = $jssdk->GetSignPackage();
 
     <!-- Include the compiled Ratchet CSS -->
     <link href="/wx/web/ratchet/dist/css/ratchet.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://libs.useso.com/js/font-awesome/4.2.0/css/font-awesome.min.css">
 
     <style type="text/css">
       .orderitem{
@@ -47,11 +48,15 @@ $signPackage = $jssdk->GetSignPackage();
       <h1 class="title">
        附近营业厅
       </h1>
+      <a class="icon icon-refresh pull-right" onclick="javascript:location.reload();"></a>
     </header>
+
+
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
-      <p class="content-padded">
+      <p class="content-padded" align="center">
+          <i  id="loading" class="fa fa-refresh fa-spin fa-3x" style="color: #ccc"></i>
       </p>
 
         <ul class="table-view" id="ul-body">
@@ -70,7 +75,8 @@ $signPackage = $jssdk->GetSignPackage();
         </ul>
 
       <br>
-        <button class="btn btn-positive btn-block">刷新</button>
+
+        <!--<button class="btn btn-positive btn-block">刷新</button>-->
       <br>
 
 
@@ -214,6 +220,7 @@ $signPackage = $jssdk->GetSignPackage();
 
 wx.ready(function () {
    //alert('ready');
+   $("#loading").hide();
 
     wx.getLocation({
       success: function (res) {

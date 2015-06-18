@@ -214,6 +214,22 @@ class WapxController extends Controller {
         return $this->render('nearestoutlets', ['gh_id' => $gh_id, 'openid' => $openid, 'outlets' => $outlets, 'jssdk' => $jssdk]);
     }
 
+    //http://wosotech.com/wx/web/index.php?r=wapx/llbthzq&gh_id=gh_03a74ac96138
+    public function actionLlbthzq() {
+        $this->layout = false;
+
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+
+        $gh = Yii::$app->wx->getGh();
+     
+        return $this->render('llbthzq', ['gh_id' => $gh_id, 'openid' => $openid ]);
+    }
+
+
+
+
 
 
     //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&outlet_id=777

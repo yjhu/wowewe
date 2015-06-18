@@ -1835,8 +1835,13 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->attr = "{$_GET['cardType']}";
                 break;
 
-            case MItem::ITEM_CAT_MOBILE_LYH_CFSF_CFSYW:
-                $order->title = '存费送费送业务 5折优惠';
+            case MItem::ITEM_CAT_MOBILE_LYH_CFSF:
+                $order->title = '存费送费 5折优惠';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_MOBILE_LYH_CFSYW:
+                $order->title = '存费送业务 5折优惠';
                 $order->attr = "{$_GET['cardType']}";
                 break;
             //老用户户专享 6.18 end
@@ -2924,6 +2929,13 @@ $url2 = $result["code_url"];
             $flag2 = 1;
         }
 
+       /*6月第3周老用户活动*/
+       /*
+        if ($model->bindMobileIsInside('wx_oldcustomers150618')) {
+            $flag2 = 1;
+        }
+        */
+        
         return $this->render('lyhzxyh', ['gh_id' => $gh_id, 'openid' => $openid, 'models' => $models, 'flag1' => $flag1, 'flag2' => $flag2]);
 
         //return $this->render('lyhzxyhhint', ['gh_id'=>$gh_id, 'openid'=>$openid]);

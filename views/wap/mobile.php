@@ -187,7 +187,7 @@ text-decoration: line-through;
 
         <?php if($item->ctrl_picurls == 0) { ?>
         	<p  align=center id="imgURL">
-        	    <img id='transparent' width="100%" src="<?php echo  $item->pic_url; ?>" alt=""/>
+        	    <img id='transparent' width="100%" src="<?php echo  $item->pic_url; ?>?v2" alt=""/>
         	</p>
 
         <?php } else { ?>
