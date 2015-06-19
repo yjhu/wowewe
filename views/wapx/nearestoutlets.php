@@ -153,8 +153,10 @@ $signPackage = $jssdk->GetSignPackage();
 
    var objectList = new Array();
 
-   function Persion(title,url,dist,telephone,address){
+   function Persion(title,latitude,longitude,url,dist,telephone,address){
       this.title=title;
+      this.latitude=latitude;
+      this.longitude=longitude;
       this.url=url;
       this.dist=dist;
       this.telephone=telephone;
@@ -190,7 +192,7 @@ $signPackage = $jssdk->GetSignPackage();
 
           d = GetDistanceNum(lat,lng,'<?=$outlet->latitude?>','<?=$outlet->longitude?>');
           //ds = '<li class="table-view-cell media"><a data-ignore="push" class="navigate-right" href="#"><img class="media-object pull-left" src="http://placehold.it/80x80"><div class="media-body"><p><span class="orderitem"><?= $outlet->title; ?></span></p><p><span class="orderitem">距离</span>&nbsp;&nbsp;'+ d +'米</p><p><span class="orderitem">电话</span>&nbsp;&nbsp;<?= empty($outlet->telephone)?"":$outlet->telephone ; ?></p><p><span class="orderitem">地址</span>&nbsp;&nbsp;<?= empty($outlet->address)?"":$outlet->address; ?></p></div></a></li>';          
-          objectList.push(new Persion("<?=$outlet->title?>", url, d, "<?=$outlet->telephone?>", "<?=$outlet->address?>"));
+          objectList.push(new Persion("<?=$outlet->title?>", "<?=$outlet->latitude?>", "<?=$outlet->longitude?>", url, d, "<?=$outlet->telephone?>", "<?=$outlet->address?>"));
 
         <?php
           $n = $n + 1;
@@ -203,8 +205,10 @@ $signPackage = $jssdk->GetSignPackage();
 
         for(var i=0;i<objectList.length;i++){
               
+              mapurl = '<a data-ignore="push" class="btn btn-link pull-right" id="openLocation"><i class="fa fa-map-marker li-body fa-2x" style="color:#ea8010" latitude="'+ objectList[i].latitude +'" longitude="'+ objectList[i].longitude +'" title="'+ objectList[i].title+'" address="'+ objectList[i].address+'"></i></a>';
+
               //ds = '<li class="table-view-cell media"><a data-ignore="push" class="navigate-right" href="'+ objectList[i].url +'"><img class="media-object pull-left" src="http://placehold.it/80x80"><div class="media-body"><p><span class="orderitem">'+ objectList[i].title +'</span></p><p><span class="orderitem">距离</span>&nbsp;&nbsp;'+ objectList[i].dist +'米</p><p><span class="orderitem">电话</span>&nbsp;&nbsp;'+ objectList[i].telephone +'</p><p><span class="orderitem">地址</span>&nbsp;&nbsp;'+ objectList[i].address +'</p></div></a></li>';
-              ds = '<li class="table-view-cell media"><a data-ignore="push" class="navigate-right" href="'+ objectList[i].url +'"><div class="media-body"><h5>'+ objectList[i].title +'</h5><p><span class="orderitem">距离</span>&nbsp;&nbsp;'+ objectList[i].dist +'米</p><p><span class="orderitem">电话</span>&nbsp;&nbsp;'+ objectList[i].telephone +'</p><p><span class="orderitem">地址</span>&nbsp;&nbsp;'+ objectList[i].address +'</p></div></a></li>';
+              ds = '<li class="table-view-cell"><div class="media-body"><h5>'+ objectList[i].title +'</h5><p><span class="orderitem">距离</span>&nbsp;&nbsp;'+ objectList[i].dist +'米</p><p><span class="orderitem">电话</span>&nbsp;&nbsp;'+ objectList[i].telephone +'</p><p><span class="orderitem">地址</span>&nbsp;&nbsp;'+ objectList[i].address +'</p></div>'+mapurl+'</li>';
               ds_tmp = ds + ds_tmp;
             }
 
@@ -221,6 +225,25 @@ $signPackage = $jssdk->GetSignPackage();
 wx.ready(function () {
    //alert('ready');
    $("#loading").hide();
+
+
+    $('#ul-body').on('click', '.li-body', function (e) {
+        var latitude = $(e.target).attr('latitude');
+        var longitude = $(e.target).attr('longitude');
+        var title = $(e.target).attr('title');
+        var address = $(e.target).attr('address');
+        //alert(title);
+
+       // alert(serverId);
+        wx.openLocation({
+        latitude: latitude,
+        longitude: longitude,
+        name: title,
+        address: address,
+        scale: 12,
+        infoUrl: ''
+      });
+    });
 
     wx.getLocation({
       success: function (res) {

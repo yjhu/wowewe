@@ -202,6 +202,8 @@ class MItem extends ActiveRecord {
     const ITEM_CAT_MOBILE_LYH_HONGMINOTE_4G = 882;
     const ITEM_CAT_MOBILE_LYH_CFSF = 883;
     const ITEM_CAT_MOBILE_LYH_CFSYW = 884;
+    //双4G 618 新增乐视手机
+    const ITEM_CAT_MOBILE_LESHI1 = 885;
 
     //流量包 国内
     const ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI = 902;
@@ -340,6 +342,8 @@ class MItem extends ActiveRecord {
             self::ITEM_CAT_MOBILE_4G_HTC_820U => 'HTC 820U',
             self::ITEM_CAT_MOBILE_4G_IPHONE6_16G => 'iPhone6 (16G)',
 
+
+
             //老用户户专享 参与机型及优惠合约
             self::ITEM_CAT_MOBILE_SANXIN_SM_G9006VW => '三星SM-G9006V/W',
             self::ITEM_CAT_MOBILE_HTC_ONE => 'HTC One',
@@ -362,6 +366,8 @@ class MItem extends ActiveRecord {
             //存费送费/业务5折优惠
             self::ITEM_CAT_MOBILE_LYH_CFSF => '存费送费 5折优惠',
             self::ITEM_CAT_MOBILE_LYH_CFSYW => '存费送业务 5折优惠',
+			//双4G 618 新增乐视手机
+			self::ITEM_CAT_MOBILE_LESHI1 => '乐视（Letv）乐1',
 
 
             //流量包 国内

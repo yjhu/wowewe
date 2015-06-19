@@ -1844,6 +1844,11 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->title = '存费送业务 5折优惠';
                 $order->attr = "{$_GET['cardType']}";
                 break;
+
+            case MItem::ITEM_CAT_MOBILE_LESHI1:
+                $order->title = '乐视（Letv）乐1';
+                $order->attr = "{$_GET['cardType']}";
+                break;
             //老用户户专享 6.18 end
 
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI:
