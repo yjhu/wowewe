@@ -231,16 +231,15 @@ class WapxController extends Controller {
     //http://wosotech.com/wx/web/index.php?r=wapx/zhideguangzhu&gh_id=gh_03a74ac96138
     public function actionZhideguangzhu() {
         $this->layout = false;
-        /*
+ 
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
 
         $gh = Yii::$app->wx->getGh();
-        */
-     
-        //return $this->render('zhideguangzhu', ['gh_id' => $gh_id, 'openid' => $openid ]);
-        return $this->render('zhideguangzhu');
+  
+        return $this->render('zhideguangzhu', ['gh_id' => $gh_id, 'openid' => $openid ]);
+       // return $this->render('zhideguangzhu');
     }
 
 
