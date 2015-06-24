@@ -118,22 +118,25 @@
     const GH_XIANGYANGUNICOM_OPENID_GTSUN = 'oKgUduNaK7mfojofz2qnSxa_FTMs';
     const GH_XIANGYANGUNICOM_OPENID_YJHU = 'oKgUduHLF-HAxvHYIwmm3qjfqNf0';
  -->
+
+           <li class="table-view-cell media">
+            <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
+              <!--
+              <span class="badge badge-negative">
+              1000
+              </span>
+              -->
+              <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
+              <div class="media-body">
+                员工管理
+              </div>
+            </a>
+          </li>
+            
             <?php if($user->openid=='oKgUduNHzUQlGRIDAghiY7ywSeWk' ||
                     $user->openid=='oKgUduJJFo9ocN8qO9k2N5xrKoGE' ||
                     $user->openid=='oKgUduHLF-HAxvHYIwmm3qjfqNf0') { ?>
-            <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right" href="<?php echo Url::to(['yggl1', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid]) ?>">
-                <!--
-                <span class="badge badge-negative">
-                1000
-                </span>
-                -->
-                <span class="media-object pull-left icon icon-list" style="color:#428bca"></span>
-                <div class="media-body">
-                  员工管理
-                </div>
-              </a>
-            </li>
+
 
 
             <li class="table-view-cell media">
