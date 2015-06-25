@@ -243,6 +243,13 @@ class WapxController extends Controller {
     }
 
 
+    //http://wosotech.com/wx/web/index.php?r=wapx/yaoyiyao&gh_id=gh_03a74ac96138
+    public function actionYaoyiyao() {
+        $this->layout = false;
+ 
+        return $this->render('yaoyiyao');
+    }
+
 
 
 
