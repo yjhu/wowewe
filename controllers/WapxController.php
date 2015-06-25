@@ -253,6 +253,9 @@ class WapxController extends Controller {
             'gh_id' => $gh_id,
             'openid' => $openid,
         ]);
+        if (empty($wx_user) || $wx_user->subscribe === 0) {
+            return $this->render('need_subscribe');
+        }
         
         $giftbox_id = \Yii::$app->request->get('giftbox_id');
         if (empty($giftbox_id)) {

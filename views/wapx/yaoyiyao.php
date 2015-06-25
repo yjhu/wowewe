@@ -3,6 +3,19 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\U;
 
+include('../models/utils/emoji.php');
+
+$claimer = $giftbox->claimer;
+if ($claimer->id === $observer->id) {
+    $isSelf = true;
+} else {
+    $isSelf = false;
+}
+
+\Yii::$app->wx->setGhId($observer->gh_id);
+$gh = \Yii::$app->wx->getGh();
+$jssdk = new \app\models\JSSDK($gh['appid'], $gh['appsecret']);
+$signPackage = $jssdk->GetSignPackage();
 ?>
 
 <!DOCTYPE html>
@@ -20,11 +33,12 @@ use app\models\U;
 
     <!-- Include the compiled Ratchet CSS -->
     <link href="/wx/web/ratchet/dist/css/ratchet.css" rel="stylesheet">
+    <link href="./php-emoji/emoji.css" rel="stylesheet">    
     <link rel="stylesheet" href="http://libs.useso.com/js/font-awesome/4.2.0/css/font-awesome.min.css">
     <style type="text/css">
         .num{
             color:black;
-            font-size: 16px;
+            font-size: 2em;
         }
 
         .modal {
@@ -60,19 +74,9 @@ use app\models\U;
     <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
     <!-- Include the compiled Ratchet JS -->
     <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
   </head>
   <body>
-
-    <!-- Make sure all your bars are the first things in your <body> -->
-
-    <!--
-    <header class="bar bar-nav">
-
-      <h1 class="title">
-       清凉一夏，邀你共享微信好礼
-      </h1>
-    </header>
-    -->
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <!--<div class="content" style="background-color: #401080">-->
@@ -80,9 +84,14 @@ use app\models\U;
         <img width=100% height=100 src="/wx/web/images/gift-bar1.jpg">
 
         <p align="center">
-        有<span class='num'><a href="#fans">15</a></span>位好友为你拆礼盒，还差<span class='num'>5</span>位<br>
+            <img src="<?= $claimer->headImgUrl; ?>" style="width:24px">&nbsp;
+            <?= emoji_unified_to_html(emoji_softbank_to_unified($claimer->nickname)) ?> &nbsp;
+            的礼盒<br>
+        已有<span class='num'><a href="#fans"><?= $giftbox->getHelpersNumber(); ?></a></span>位好友为
+        <?= $isSelf ? '我' : 'Ta'?>
+        抢了礼盒，还差<span class='num'><?= $giftbox->getHelpersNeeded();?></span>位<br>
 
-        <img width=100% style="width: 250px;height:200px" src="/wx/web/images/gift1.png?v6">
+        <img width=100% style="width: 250px;height:200px" src="/wx/web/images/gift1.png?v12">
 
         <!--
         <i class="fa fa-gift" style="color:red;font-size: 20em;"></i>
@@ -94,7 +103,7 @@ use app\models\U;
 
         <!-- 我 -->
         <p align="center">
-        <a class="btn btn-primary btn-block" style="width: 300px" href="#zrbm">找人帮忙</a>
+        <a class="btn btn-primary btn-block" style="width: 300px" href="#zrbm">找人帮忙抢</a>
         </p>
         <!-- -->
         <p align="center">
@@ -106,7 +115,7 @@ use app\models\U;
 
         <!-- 非我 -->
         <p align="center">
-        <a class="btn btn-block" style="width: 300px">帮Ta拆礼盒</a>
+        <a class="btn btn-block" style="width: 300px">帮Ta抢礼盒</a>
         </p>
         <p align="center">
         <a class="btn btn-block" style="width: 300px">我也要</a>
@@ -167,58 +176,30 @@ use app\models\U;
     <div id='fans'  class='modal'>
         <header class="bar bar-nav">
             <a class="icon icon-close pull-right" href="#fans"></a>
-            <h1 class='title'>给我帮忙的小伙伴们</h1>
+            <h1 class='title'>给<?= $isSelf ? '我' : 'Ta'?>帮忙的小伙伴们</h1>
         </header>
         <div class="content">
 
 
     <ul class="table-view">
-
+        <?php 
+        $helpers = $giftbox->helpers;
+        foreach ($helpers as $helper) {
+        ?>
         <li class="table-view-cell media">
-        <img class="media-object pull-left" src="\wx\web\images\woke\0.jpg" width="64" height="64">
+            <img class="media-object pull-left" src="<?= $helper->helper->headImgUrl ?>" width="64" height="64">
 
         <div class="media-body">
           <!--粉丝昵称--> 
-          明明
+          <?= emoji_unified_to_html(emoji_softbank_to_unified($helper->helper->nickname)) ?>
           <p>
-            绑定手机 13545296480
-            <br>
-            2015-05-10
-            <br>
+              帮抢时间：<?= date('Y-m-d H:i:s', $helper->helping_time); ?>
           </p>
         </div>
         </li>
-
-        <li class="table-view-cell media">
-        <img class="media-object pull-left" src="\wx\web\images\woke\0.jpg" width="64" height="64">
-
-        <div class="media-body">
-          <!--粉丝昵称--> 
-          明明
-          <p>
-            绑定手机 13545296480
-            <br>
-            2015-05-10
-            <br>
-          </p>
-        </div>
-        </li>
-
-            <li class="table-view-cell media">
-        <img class="media-object pull-left" src="\wx\web\images\woke\0.jpg" width="64" height="64">
-
-        <div class="media-body">
-          <!--粉丝昵称--> 
-          明明
-          <p>
-            绑定手机 13545296480
-            <br>
-            2015-05-10
-            <br>
-          </p>
-        </div>
-        </li>       
-
+        <?php 
+        }
+        ?>
     </ul>
 
         </div>
@@ -226,9 +207,86 @@ use app\models\U;
 
 
 
-      <script type="text/javascript">
-
-      </script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        'use strict'; 
+        
+        wx.config({
+            debug: true,
+            appId: '<?php echo $signPackage["appId"];?>',
+            timestamp: <?php echo $signPackage["timestamp"];?>,
+            nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+            signature: '<?php echo $signPackage["signature"];?>',
+            jsApiList: [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'hideMenuItems',
+                'showMenuItems',
+                'hideAllNonBaseMenuItem',
+                'showAllNonBaseMenuItem',
+                'translateVoice',
+                'startRecord',
+                'stopRecord',
+                'onRecordEnd',
+                'playVoice',
+                'pauseVoice',
+                'stopVoice',
+                'uploadVoice',
+                'downloadVoice',
+                'chooseImage',
+                'previewImage',
+                'uploadImage',
+                'downloadImage',
+                'getNetworkType',
+                'openLocation',
+                'getLocation',
+                'hideOptionMenu',
+                'showOptionMenu',
+                'closeWindow',
+                'scanQRCode',
+                'chooseWXPay',
+                'openProductSpecificView',
+                'addCard',
+                'chooseCard',
+                'openCard'
+            ]
+        });
+        
+        wx.ready(function () {
+            wx.onMenuShareAppMessage({
+                title: '帮<?= $claimer->nickname ?>来襄阳联通抢礼盒', // 分享标题
+                desc: '已有<?= $giftbox->getHelpersNumber() ?>好友帮<?= $claimer->nickname ?>抢了礼盒，还差<?= $giftbox->getHelpersNeeded();?>位，快来帮忙！', // 分享描述
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/yaoyiyao:gh_03a74ac96138:giftbox_id=<?= $giftbox->id ?>#wechat_redirect', // 分享链接
+                imgUrl: '<?= Url::to('/wx/web/images/gift1.png', true); ?>', // 分享图标
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () { 
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () { 
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            
+            wx.onMenuShareTimeline({
+                title: '<?= $claimer->nickname ?>正在参与襄阳联通清凉一夏抢礼盒活动，已有<?= $giftbox->getHelpersNumber() ?>好友帮<?= $claimer->nickname ?>抢了礼盒，还差<?= $giftbox->getHelpersNeeded();?>位，快来帮忙！', // 分享标题
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/yaoyiyao:gh_03a74ac96138:giftbox_id=<?= $giftbox->id ?>#wechat_redirect', // 分享链接
+                imgUrl: '<?= Url::to('/wx/web/images/gift1.png', true); ?>', // 分享图标
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () { 
+                    // 用户确认分享后执行的回调函数
+                },
+                cancel: function () { 
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+        });
+    });
+    </script>
 
   </body>
 

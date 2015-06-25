@@ -21,6 +21,7 @@ class GiftboxClaimed extends \yii\db\ActiveRecord
     const STATUS_COMPLETED = 2;
     const STATUS_REWARDED = 3;
     
+    const NEED_HELPERS_NUM = 20;
     /**
      * @inheritdoc
      */
@@ -70,5 +71,17 @@ class GiftboxClaimed extends \yii\db\ActiveRecord
         return $this->hasMany(GiftboxHelped::className(), [
             'giftbox_id' => 'id',
         ]);
+    }
+    
+    public function getHelpersNumber() 
+    {
+        return GiftboxHelped::find()->where([
+            'giftbox_id' => $this->id,
+        ])->count();
+    }
+    
+    public function getHelpersNeeded() 
+    {
+        return self::NEED_HELPERS_NUM - $this->getHelpersNumber();
     }
 }
