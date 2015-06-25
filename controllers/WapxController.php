@@ -243,10 +243,51 @@ class WapxController extends Controller {
     }
 
     //http://wosotech.com/wx/web/index.php?r=wapx/yaoyiyao&gh_id=gh_03a74ac96138
+    // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/yaoyiyao:gh_03a74ac96138#wechat_redirect
     public function actionYaoyiyao() {
         $this->layout = false;
- 
-        return $this->render('yaoyiyao');
+        
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        $wx_user = \app\models\MUser::findOne([
+            'gh_id' => $gh_id,
+            'openid' => $openid,
+        ]);
+        
+        $giftbox_id = \Yii::$app->request->get('giftbox_id');
+        if (empty($giftbox_id)) {
+            $giftbox = \app\models\GiftboxClaimed::findOne([
+                'claimer_ghid' => $gh_id,
+                'claimer_openid' => $openid,
+            ]);
+            if (empty($giftbox)) {
+                if (empty($wx_user->openidBindMobiles)) {
+                    $url = Url::to();
+                    Yii::$app->getSession()->set('RETURN_URL', $url);
+                    return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+                } else {
+                    $giftbox = new \app\models\GiftboxClaimed;
+                    $giftbox->claimer_ghid = $gh_id;
+                    $giftbox->claimer_openid = $openid;
+                    $giftbox->claiming_time = time();
+                    $giftbox->status = \app\models\GiftboxClaimed::STATUS_UNDERWAY;
+                    $giftbox->save(false);
+                    
+                    $giftbox_helping = new \app\models\GiftboxHelped;
+                    $giftbox_helping->giftbox_id = $giftbox->id;                    
+                    $giftbox_helping->helper_ghid = $gh_id;
+                    $giftbox_helping->helper_openid = $openid;
+                    $giftbox_helping->helping_time = time();
+                    $giftbox_helping->save(false);
+                }
+            }
+        } else {
+            $giftbox = \app\models\GiftboxClaimed::findOne(['id' => $giftbox_id]);
+        }
+        return $this->render('yaoyiyao', [
+            'observer' => $wx_user,
+            'giftbox' => $giftbox,
+        ]);
     }
 
     //http://wosotech.com/wx/web/index.php?r=wapx/qingliangyixia&gh_id=gh_03a74ac96138

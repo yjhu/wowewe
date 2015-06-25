@@ -139,9 +139,17 @@ class ImportController extends Controller {
 //            } else if ($staff->mobile != $supervisor_mobile) {
 //                $staff->updateAttributes(['mobile' => $supervisor_mobile]); // 修改员工电话
 //            }
-            if (empty($staff)) {
+            if (empty($staff) && empty($supervisor_mobile)) {
                 echo "{$supervisor_name_utf8} 不在数据库中。".PHP_EOL;
                 continue;
+            } else if (empty($staff)) {
+                $staff = new MStaff;
+                $staff->office_id = 25;
+                $staff->name = $supervisor_name_utf8;
+                $staff->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM; // 襄阳联通公共ID
+                $staff->mobile = $supervisor_mobile;
+                $staff->cat = 0;
+                $staff->save(false);
             }
             
             if (empty($staff->supervisedOffices) || empty($office->supervisor)) {

@@ -340,14 +340,47 @@ class ExportController extends \yii\console\Controller {
         fclose($fh);
     }
     
-    public function actionOpenidBindMobiles( $filename = 'openid-bind-mobiles.csv' ) {
+    public function actionOpenidBindMobiles( $filename = 'openid-bind-mobiles.csv', $date = null ) {
         $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
         $fh = fopen($filepathname, 'w');
-        $openidBindMobiles = \app\models\OpenidBindMobile::find()->all();
+        if (null === $date) {
+            $date = \app\models\U::getFirstDate(date('Y'), date('m'));
+        }
+        $openidBindMobiles = \app\models\OpenidBindMobile::find()->where([
+            '>', 'create_time', $date
+        ])->orderBy([
+            'create_time' => SORT_ASC,
+        ])->all();
         foreach($openidBindMobiles as $mobile) {
-            fprintf($fh, "%s, %s, %s, %s", $mobile->mobile, $mobile->province, $mobile->city, $mobile->carrier);
+            fprintf($fh, "%s, %s, %s, %s, %s", $mobile->mobile, $mobile->create_time, $mobile->province, $mobile->city, $mobile->carrier);
             fprintf($fh, ", %s", $mobile->user->nickname);
             fprintf($fh, PHP_EOL);
+        }
+        fclose($fh);
+    }
+    
+    public function actionJfdh( $filename = 'jfdh.csv', $date = null ) {
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, 'w');
+        if (null === $date) {
+            $date = \app\models\U::getFirstDate(date('Y'), date('m'));
+        }
+        $jfdhLogs = \app\models\MAccessLogAll::find()->where([
+            '>', 'create_time', $date
+        ])->andWhere([
+            'MsgType' =>    'event',
+            'Event'   =>    'VIEW',
+            'EventKey'  =>  'http://jf.10010.com',
+        ])->orderBy([
+            'create_time' => SORT_ASC,
+        ])->all();
+        
+        foreach ($jfdhLogs as $log) {
+            $fan = \app\models\MUser::findOne([
+                'gh_id'     => $log->ToUserName,
+                'openid'    => $log->FromUserName,
+            ]);
+            fprintf($fh, "%s, %s, %s\n", $fan->nickname, implode(';', $fan->bindMobileNumbers), $log->create_time);
         }
         fclose($fh);
     }
