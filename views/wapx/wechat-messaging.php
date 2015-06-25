@@ -314,6 +314,47 @@ $signPackage = $jssdk->GetSignPackage();
         $(document).ready(function() {
             'use strict';   
             
+            $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 300);
+            setInterval(function () {
+                var args = {
+                    'classname':    '\\app\\models\\WechatMessage',
+                    'funcname':     'getRecentMessagesAjax',
+                    'params':       {
+                        'sender_id':    '<?= $wx_user->id; ?>',
+                        'receiver_id':  '<?= $reciever->id; ?>',                   
+                    } 
+                };
+                
+//                alert('refreshing...');
+                    
+                $.ajax({
+                    url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
+                    type:       "GET",
+                    cache:      false,
+                    dataType:   "json",
+                    data:       "args=" + JSON.stringify(args),
+                    success:    function(ret) {
+//                        alert('refreshing recieved.');
+                        for (var i = 0, changed = 0; i < ret.length; i++) {
+                            var msgid = '#message-' + ret[i].msgid;
+                            if ($(msgid).length > 0) continue;
+                            changed++;
+                            if (ret[i].sending) {
+                                appendSendMessage(ret[i].msgid, ret[i].send_time, ret[i].content_type, ret[i].content);
+                            } else {
+                                appendRecieveMessage(ret[i].msgid, ret[i].send_time, ret[i].content_type, ret[i].content);
+                            }
+                        }
+                        if (changed > 0) {
+                            $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 0); 
+                        }
+                    },                        
+                    error:      function(){
+                        alert('发送失败。');
+                    }
+                });
+            }, 1000 * 5);
+            
             // confingure WeiXin JS SDK
             !(function(){
                 wx.config({
@@ -360,224 +401,192 @@ $signPackage = $jssdk->GetSignPackage();
                     ]
                 });
             })();
-                                   
-            var senderHeadImgUrl = "<?= $wx_user->headImgUrl; ?>";
-            var receiverHeadImgUrl = "<?= $reciever->headImgUrl; ?>";
             
-            var appendSendMessage = function (msgid, send_time, content_type, content) {
-                var elementHtml;
-                if (1 === content_type) {
-                    elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-send media" id="message-'
-                                + msgid +'"><img class="media-object pull-right" style="width:48px;" src="' 
-                                + senderHeadImgUrl + '"><div class="media-body pull-right"><p class="message-content message-content-send">' 
-                                + content + '</p><p><span class="message-time">' 
-                                + send_time + '</span></p></div></li>';
-                } else if (3 === content_type){
-                    elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-send media" id="message-'
-                                + msgid +'"><img class="media-object pull-right" style="width:48px;" src="' 
-                                + senderHeadImgUrl + '"><div class="media-body pull-right"><p class="message-content message-content-send">' 
-                                + '<i class="fa fa-volume-up fa-2x voice-playback" serverId="'
-                                + content +'"></i>' + '</p><p><span class="message-time">' 
-                                + send_time + '</span></p></div></li>';
-                }
-                        
-                return $(elementHtml).insertBefore('#ul-body-bottom');                           
-            };
+            // when WeiXin JS Ready
+            wx.ready( function () {
+                var senderHeadImgUrl = "<?= $wx_user->headImgUrl; ?>";
+                var receiverHeadImgUrl = "<?= $reciever->headImgUrl; ?>";
             
-            var appendRecieveMessage = function (msgid, send_time, content_type, content) {
-                var elementHtml; 
-                if (1 === content_type) {
-                    elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-recieve media" id="message-'
-                                + msgid +'"><img class="media-object pull-left" style="width:48px;" src="' 
-                                + receiverHeadImgUrl + '"><div class="media-body pull-left"><p class="message-content message-content-recieve">' 
-                                + content + '</p><p><span class="message-time">' 
-                                + send_time + '</span></p></div></li>';
-                } else if ( 3 === content_type ) {
-                    elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-recieve media" id="message-'
-                                + msgid +'"><img class="media-object pull-left" style="width:48px;" src="' 
-                                + receiverHeadImgUrl + '"><div class="media-body pull-left"><p class="message-content message-content-recieve">' 
-                                + '<i class="fa fa-volume-up fa-2x voice-playback" serverId="'
-                                + content + '"></i>' + '</p><p><span class="message-time">' 
-                                + send_time + '</span></p></div></li>';
-                }
-                            
-                return $(elementHtml).insertBefore('#ul-body-bottom'); 
-            };
-                        
-//            alert("ready");
-            $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 300);
-            
-            var playback_voice = {
-                localId: undefined,
-                serverId: undefined,
-                state: 'stopped'
-            };
-            wx.onVoicePlayEnd({
-                success: function (res) {
-                    playback_voice.state = 'stopped';
-                }
-            });
-            $('#ul-body').on('click', '.voice-playback', function (e) {
-//            $('.voice-playback').click( function (e) {
-                var serverId = $(e.target).attr('serverId');
-               // alert(serverId);
-                if ('playing' === playback_voice.state && serverId === playback_voice.serverId) {
-                    wx.stopVoice({localId: playback_voice.localId});
-                    playback_voice.state = 'stopped';
-                    return;
-                }
-                if (serverId === playback_voice.serverId) { 
-                    wx.playVoice({localId: playback_voice.localId});
-                    return;
-                }
-                
-                if ('playing' === playback_voice.state) {
-                    wx.stopVoice({localId: playback_voice.localId});
-                    playback_voice.state = 'stopped';
-                }
-                playback_voice.serverId = serverId;
-                wx.downloadVoice({
-                    serverId:   playback_voice.serverId,
-                    success:    function (res) {
-                        playback_voice.localId = res.localId;
-                        wx.playVoice({localId: playback_voice.localId});
-                        playback_voice.state = 'playing';                       
+                var appendSendMessage = function (msgid, send_time, content_type, content) {
+                    var elementHtml;
+                    if (1 === content_type) {
+                        elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-send media" id="message-'
+                                    + msgid +'"><img class="media-object pull-right" style="width:48px;" src="' 
+                                    + senderHeadImgUrl + '"><div class="media-body pull-right"><p class="message-content message-content-send">' 
+                                    + content + '</p><p><span class="message-time">' 
+                                    + send_time + '</span></p></div></li>';
+                    } else if (3 === content_type){
+                        elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-send media" id="message-'
+                                    + msgid +'"><img class="media-object pull-right" style="width:48px;" src="' 
+                                    + senderHeadImgUrl + '"><div class="media-body pull-right"><p class="message-content message-content-send">' 
+                                    + '<i class="fa fa-volume-up fa-2x voice-playback" serverId="'
+                                    + content +'"></i>' + '</p><p><span class="message-time">' 
+                                    + send_time + '</span></p></div></li>';
                     }
-                });
-            });
 
-            $('#message-submit').click(function() {
-//                alert("click");
-                var content = $('#message-content').val();
-                if ('' !== content) {
-                    var args = {
-                        'classname':    '\\app\\models\\WechatMessage',
-                        'funcname':     'sendMessageAjax',
-                        'params':       {
-                            'sender_id':    '<?= $wx_user->id; ?>',
-                            'receiver_id':  '<?= $reciever->id; ?>',                   
-                            'content_type':  '<?= \app\models\WechatMessageContent::MSGTYPE_TEXT ?>',
-                            'content':       content
-                        } 
-                    };
-                    
-//                    alert('AJAX sending message.');
-                    $.ajax({
-                        url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
-                        type:       "GET",
-                        cache:      false,
-                        dataType:   "json",
-                        data:       "args=" + JSON.stringify(args),
-                        success:    function(ret) {
-//                            alert('发送成功。');
-                            $('#message-content').val('');  
-                            appendSendMessage(ret.msgid, ret.send_time, <?= \app\models\WechatMessageContent::MSGTYPE_TEXT ?>, ret.content); 
-                            $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 0);
-                        },                        
-                        error:      function(){
-                            alert('发送失败。');
-                        }
-                    });
-                }
-            });
-            
-            setInterval(function () {
-                var args = {
-                    'classname':    '\\app\\models\\WechatMessage',
-                    'funcname':     'getRecentMessagesAjax',
-                    'params':       {
-                        'sender_id':    '<?= $wx_user->id; ?>',
-                        'receiver_id':  '<?= $reciever->id; ?>',                   
-                    } 
+                    return $(elementHtml).insertBefore('#ul-body-bottom');                           
                 };
-                
-//                alert('refreshing...');
-                    
-                $.ajax({
-                    url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
-                    type:       "GET",
-                    cache:      false,
-                    dataType:   "json",
-                    data:       "args=" + JSON.stringify(args),
-                    success:    function(ret) {
-//                        alert('refreshing recieved.');
-                        for (var i = 0, changed = 0; i < ret.length; i++) {
-                            var msgid = '#message-' + ret[i].msgid;
-                            if ($(msgid).length > 0) continue;
-                            changed++;
-                            if (ret[i].sending) {
-                                appendSendMessage(ret[i].msgid, ret[i].send_time, ret[i].content_type, ret[i].content);
-                            } else {
-                                appendRecieveMessage(ret[i].msgid, ret[i].send_time, ret[i].content_type, ret[i].content);
-                            }
-                        }
-                        if (changed > 0) {
-                            $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 0); 
-                        }
-                    },                        
-                    error:      function(){
-                        alert('发送失败。');
-                    }
-                });
-            }, 1000 * 5);
-        });
-        
-        $('#voice-start').click(function () {
-            $('#voice-start').hide();
-            $('#voice-stop').show();
-            wx.startRecord({
-                cancel: function () {
-                    alert('用户拒绝授权录音');
-                }
-            });
-        });
-        var uploadVoiceAndAddDom = function ( res ) {
-            var voice_localid = res.localId;
-            wx.uploadVoice({
-                localId: voice_localid,
-                success: function (res) {
-                    var voice_serverid = res.serverId;
-                    var args = {
-                        'classname':    '\\app\\models\\WechatMessage',
-                        'funcname':     'sendMessageAjax',
-                        'params':       {
-                            'sender_id':    '<?= $wx_user->id; ?>',
-                            'receiver_id':  '<?= $reciever->id; ?>',                   
-                            'content_type':  '<?= \app\models\WechatMessageContent::MSGTYPE_VOICE ?>',
-                            'content':       voice_serverid
-                        } 
-                    };
 
-                    $.ajax({
-                        url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
-                        type:       "GET",
-                        cache:      false,
-                        dataType:   "json",
-                        data:       "args=" + JSON.stringify(args),
-                        success:    function(ret) {                                   
-                            appendSendMessage(ret.msgid, ret.send_time, ret.content_type, ret.content); 
-                            $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 0);
-                        },                        
-                        error:      function(){
-                            alert('发送失败。');
+                var appendRecieveMessage = function (msgid, send_time, content_type, content) {
+                    var elementHtml; 
+                    if (1 === content_type) {
+                        elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-recieve media" id="message-'
+                                    + msgid +'"><img class="media-object pull-left" style="width:48px;" src="' 
+                                    + receiverHeadImgUrl + '"><div class="media-body pull-left"><p class="message-content message-content-recieve">' 
+                                    + content + '</p><p><span class="message-time">' 
+                                    + send_time + '</span></p></div></li>';
+                    } else if ( 3 === content_type ) {
+                        elementHtml = '<li class="table-view-cell table-view-cell-wechat-message wechat-message-recieve media" id="message-'
+                                    + msgid +'"><img class="media-object pull-left" style="width:48px;" src="' 
+                                    + receiverHeadImgUrl + '"><div class="media-body pull-left"><p class="message-content message-content-recieve">' 
+                                    + '<i class="fa fa-volume-up fa-2x voice-playback" serverId="'
+                                    + content + '"></i>' + '</p><p><span class="message-time">' 
+                                    + send_time + '</span></p></div></li>';
+                    }
+
+                    return $(elementHtml).insertBefore('#ul-body-bottom'); 
+                };
+            
+//                var playback_voice = {
+//                    localId: undefined,
+//                    serverId: undefined,
+//                    state: 'stopped'
+//                };
+//                wx.onVoicePlayEnd({
+//                    success: function (res) {
+//                        playback_voice.state = 'stopped';
+//                    }
+//                });
+                $('#ul-body').on('click', '.voice-playback', function (e) {
+                    var serverId = $(e.target).attr('serverId');
+                    alert(serverId);
+                    wx.downloadVoice({
+                        serverId:    serverId,
+                        isShowProgressTips: 1,
+                        success:    function (res) { 
+                            alert(res.localId);
+//                            wx.playVoice({localId: res.localId});                      
                         }
                     });
+                });
+    //                if ('playing' === playback_voice.state && serverId === playback_voice.serverId) {
+    //                    wx.stopVoice({localId: playback_voice.localId});
+    //                    playback_voice.state = 'stopped';
+    //                    return;
+    //                }
+    //                if (serverId === playback_voice.serverId) { 
+    //                    wx.playVoice({localId: playback_voice.localId});
+    //                    return;
+    //                }
+    //                
+    //                if ('playing' === playback_voice.state) {
+    //                    wx.stopVoice({localId: playback_voice.localId});
+    //                    playback_voice.state = 'stopped';
+    //                }
+    //                playback_voice.serverId = serverId;
+    //                wx.downloadVoice({
+    //                    serverId:   playback_voice.serverId,
+    //                    success:    function (res) {
+    //                        playback_voice.localId = res.localId;
+    //                        wx.playVoice({localId: playback_voice.localId});
+    //                        playback_voice.state = 'playing';                       
+    //                    }
+    //                });
+//                });
 
-                }
-            });
-            $('#voice-start').show();
-            $('#voice-stop').hide();
-        };
-        wx.onVoiceRecordEnd({
-            // 录音时间超过一分钟没有停止的时候会执行 complete 回调
-            complete: uploadVoiceAndAddDom
-        });
+                $('#message-submit').click(function() {
+    //                alert("click");
+                    var content = $('#message-content').val();
+                    if ('' !== content) {
+                        var args = {
+                            'classname':    '\\app\\models\\WechatMessage',
+                            'funcname':     'sendMessageAjax',
+                            'params':       {
+                                'sender_id':    '<?= $wx_user->id; ?>',
+                                'receiver_id':  '<?= $reciever->id; ?>',                   
+                                'content_type':  '<?= \app\models\WechatMessageContent::MSGTYPE_TEXT ?>',
+                                'content':       content
+                            } 
+                        };
+
+    //                    alert('AJAX sending message.');
+                        $.ajax({
+                            url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
+                            type:       "GET",
+                            cache:      false,
+                            dataType:   "json",
+                            data:       "args=" + JSON.stringify(args),
+                            success:    function(ret) {
+    //                            alert('发送成功。');
+                                $('#message-content').val('');  
+                                appendSendMessage(ret.msgid, ret.send_time, <?= \app\models\WechatMessageContent::MSGTYPE_TEXT ?>, ret.content); 
+                                $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 0);
+                            },                        
+                            error:      function(){
+                                alert('发送失败。');
+                            }
+                        });
+                    }
+                });                        
         
-        $('#voice-stop').click( function () {           
-            wx.stopRecord({
-                success: uploadVoiceAndAddDom               
-            });            
+                $('#voice-start').click(function () {
+                    $('#voice-start').hide();
+                    $('#voice-stop').show();
+                    wx.startRecord({
+                        cancel: function () {
+                            alert('用户拒绝授权录音');
+                        }
+                    });
+                });
+                var uploadVoiceAndAddDom = function ( res ) {
+                    var voice_localid = res.localId;
+                    wx.uploadVoice({
+                        localId: voice_localid,
+                        success: function (res) {
+                            var voice_serverid = res.serverId;
+                            var args = {
+                                'classname':    '\\app\\models\\WechatMessage',
+                                'funcname':     'sendMessageAjax',
+                                'params':       {
+                                    'sender_id':    '<?= $wx_user->id; ?>',
+                                    'receiver_id':  '<?= $reciever->id; ?>',                   
+                                    'content_type':  '<?= \app\models\WechatMessageContent::MSGTYPE_VOICE ?>',
+                                    'content':       voice_serverid
+                                } 
+                            };
 
+                            $.ajax({
+                                url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
+                                type:       "GET",
+                                cache:      false,
+                                dataType:   "json",
+                                data:       "args=" + JSON.stringify(args),
+                                success:    function(ret) {                                   
+                                    appendSendMessage(ret.msgid, ret.send_time, ret.content_type, ret.content); 
+                                    $('html, body, .content').animate({scrollTop: $('#ul-body').height()}, 0);
+                                },                        
+                                error:      function(){
+                                    alert('发送失败。');
+                                }
+                            });
+
+                        }
+                    });
+                    $('#voice-start').show();
+                    $('#voice-stop').hide();
+                };
+                wx.onVoiceRecordEnd({
+                    // 录音时间超过一分钟没有停止的时候会执行 complete 回调
+                    complete: uploadVoiceAndAddDom
+                });
+
+                $('#voice-stop').click( function () {           
+                    wx.stopRecord({
+                        success: uploadVoiceAndAddDom               
+                    });            
+
+                });
+            });
         });
     </script>
     </body>
