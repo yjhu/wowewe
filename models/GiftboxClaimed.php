@@ -67,6 +67,13 @@ class GiftboxClaimed extends \yii\db\ActiveRecord
         ]);
     }
     
+    public function getGiftboxCategory()
+    {
+        return $this->hasOne(GiftboxCategory::className(), [
+            'id' => 'category_id',
+        ]);
+    }
+    
     public function getHelpers() 
     {
         return $this->hasMany(GiftboxHelped::className(), [
@@ -89,5 +96,23 @@ class GiftboxClaimed extends \yii\db\ActiveRecord
     public function isCompleted()
     {
         return $this->getHelpersNumber() == self::NEED_HELPERS_NUM;
+    }
+    
+    public static function thatsitAjax($giftbox_id, $giftbox_catid)
+    {
+        $giftbox = self::findOne(['id' => $giftbox_id]);
+        $giftbox->category_id = $giftbox_catid;
+        $giftbox->status = self::STATUS_REWARDING;
+        $giftbox->save(false);
+        return \yii\helpers\Json::encode(['code' => 0]);
+    }
+    
+    public static function ivegetitAjax($giftbox_id)
+    {
+        $giftbox = self::findOne(['id' => $giftbox_id]);
+        $giftbox->getting_time = time();
+        $giftbox->status = self::STATUS_REWARDED;
+        $giftbox->save(false);
+        return \yii\helpers\Json::encode(['code' => 0]);
     }
 }

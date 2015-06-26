@@ -76,7 +76,9 @@ class GiftboxHelped extends \yii\db\ActiveRecord
         if (empty($helping) || 
                 MGh::GH_XIANGYANGUNICOM_OPENID_YJHU == $openid ||
                 MGh::GH_XIANGYANGUNICOM_OPENID_KZENG == $openid) {
-//        if (empty($helping)) {
+            $giftbox = GiftboxClaimed::findOne(['id' => $giftbox_id]);
+            if (GiftboxClaimed::STATUS_COMPLETED == $giftbox->status)
+                return \yii\helpers\Json::encode(['code' => 0]); 
             $helping = new self;
             $helping->giftbox_id = $giftbox_id;
             $helping->helper_ghid = $gh_id;
