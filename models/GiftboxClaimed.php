@@ -19,7 +19,8 @@ class GiftboxClaimed extends \yii\db\ActiveRecord
 {
     const STATUS_UNDERWAY = 1;
     const STATUS_COMPLETED = 2;
-    const STATUS_REWARDED = 3;
+    const STATUS_REWARDING = 3;
+    const STATUS_REWARDED = 4;
     
     const NEED_HELPERS_NUM = 20;
     /**

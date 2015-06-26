@@ -127,9 +127,14 @@ $signPackage = $jssdk->GetSignPackage();
         <a class="btn btn-primary btn-block" style="width: 300px">就选它了</a>
         </p>
         <?php } ?>
+        <?php if ($isSelf && \app\models\GiftboxClaimed::STATUS_REWARDING === $giftbox->status) { ?>
+        <p align="center">
+        <a class="btn btn-primary btn-block" style="width: 300px">领取礼盒</a>
+        </p>
+        <?php } ?>
         <?php if ($isSelf && \app\models\GiftboxClaimed::STATUS_REWARDED === $giftbox->status) { ?>
         <p align="center">
-        <a class="btn btn-primary btn-block" style="width: 300px">已领取</a>
+        <a class="btn btn-block" style="width: 300px">已领取</a>
         </p>
         <?php } ?>
         
