@@ -84,4 +84,9 @@ class GiftboxClaimed extends \yii\db\ActiveRecord
     {
         return self::NEED_HELPERS_NUM - $this->getHelpersNumber();
     }
+    
+    public function isCompleted()
+    {
+        return $this->getHelpersNumber() == self::NEED_HELPERS_NUM;
+    }
 }
