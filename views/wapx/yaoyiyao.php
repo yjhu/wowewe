@@ -82,6 +82,7 @@ $signPackage = $jssdk->GetSignPackage();
     <!--<div class="content" style="background-color: #401080">-->
     <div class="content">
         <img width=100% height=100 src="/wx/web/images/gift-bar1.jpg">
+        <audio style="display:hiden" id="musicBox" preload="metadata" autoplay="false"></audio>  
 
         <p align="center">
             <img src="<?= $claimer->headImgUrl; ?>" style="width:24px">&nbsp;
@@ -96,8 +97,11 @@ $signPackage = $jssdk->GetSignPackage();
         <?= $isSelf ? '我' : 'Ta'?>
         抢了礼盒，还差<span class='num'><?= $giftbox->getHelpersNeeded();?></span>位<br>
             <?php } ?>
-        <img width=100% style="width: 250px;height:200px" src="/wx/web/images/gift1.png?v12">
 
+
+        <img id="gift1" width=100% style="width: 250px;height:200px" src="/wx/web/images/gift1.png?v12">
+        <img id="gift2" width=100% style="width: 250px;height:200px; display: none" src="/wx/web/images/gift2.png?v12">
+        <img id="gift3" width=100% style="width: 250px;height:200px; display: none" src="/wx/web/images/gift3.png?v12">
         <!--
         <i class="fa fa-gift" style="color:red;font-size: 20em;"></i>
         -->
@@ -114,9 +118,11 @@ $signPackage = $jssdk->GetSignPackage();
         <?php } ?>
         <!-- -->
         <?php if ($isSelf && \app\models\GiftboxClaimed::STATUS_COMPLETED === $giftbox->status) { ?>
+        <!--
         <p align="center">
-        <a class="btn btn-primary btn-block" style="width: 300px">换个礼盒</a>
+        <a class="btn btn-primary btn-block" style="width: 300px" id="changeBoxBtn">换个礼盒</a>
         </p>
+        -->
         <p align="center">
         <a class="btn btn-primary btn-block" style="width: 300px">就选它了</a>
         </p>
@@ -275,11 +281,62 @@ $signPackage = $jssdk->GetSignPackage();
 
 
     <script type="text/javascript">
+    var SHAKE_THRESHOLD = 1200;  
+    var last_update = 0;  
+    var x = y = z = last_x = last_y = last_z = 0;   
+
+    function yaoyiyao() {  
+        if (window.DeviceMotionEvent) {  
+            window.addEventListener('devicemotion', deviceMotionHandler, false);  
+        } else {  
+            alert('not support mobile event');  
+        }  
+    }  
+
+    function deviceMotionHandler(eventData) {  
+        var acceleration = eventData.accelerationIncludingGravity;  
+        var curTime = new Date().getTime();  
+        if ((curTime - last_update) > 100) {  
+            var diffTime = curTime - last_update;  
+            last_update = curTime;  
+            x = acceleration.x;  
+            y = acceleration.y;  
+            z = acceleration.z;  
+            var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;  
+
+            if (speed > SHAKE_THRESHOLD) {  
+                //alert("摇动了");  
+                var numbers = [1,2,3,1,2,3,1,2,3,3,2];
+                var n = numbers[Math.floor(Math.random()*10) + 1].toString();
+                //播放声音
+                musicBox.setAttribute("src", "http://wosotech.com/wx/web/images/au"+n+".mp3");  
+                musicBox.load();  
+                musicBox.play();
+
+                //更换礼盒
+                $("#gift1").hide();
+                $("#gift2").hide();
+                $("#gift3").hide();
+               
+                $("#gift"+n).show();
+
+            }  
+            last_x = x;  
+            last_y = y;  
+            last_z = z;  
+        }  
+    }  
+
     $(document).ready(function() {
         'use strict'; 
-        
+
+        $("#gift2").hide();
+        $("#gift3").hide();
+
+        yaoyiyao();
+
         wx.config({
-            debug: true,
+            debug: false,
             appId: '<?php echo $signPackage["appId"];?>',
             timestamp: <?php echo $signPackage["timestamp"];?>,
             nonceStr: '<?php echo $signPackage["nonceStr"];?>',
@@ -386,6 +443,27 @@ $signPackage = $jssdk->GetSignPackage();
                     // 用户取消分享后执行的回调函数
                 }
             });
+
+
+            $('#changeBoxBtn').click(function (e) {
+                //alert('changeBoxBtn');
+                var numbers = [1,2,3,1,2,3,1,2,3,3,2];
+                var n = numbers[Math.floor(Math.random()*10) + 1].toString();
+                //播放声音
+                //musicBox.setAttribute("src", "http://wosotech.com/wx/web/images/au"+n+".mp3");  
+                //musicBox.load();  
+                //musicBox.play();
+
+                //更换礼盒
+                $("#gift1").hide();
+                $("#gift2").hide();
+                $("#gift3").hide();
+               
+                $("#gift"+n).show();
+
+            });
+
+
             
             $('#helpBtn').click(function (e) {
 //                alert('helpBtn');
@@ -417,10 +495,12 @@ $signPackage = $jssdk->GetSignPackage();
                     }
                 });
             });
+
+
         });
     });
     </script>
 
-  </body>
+
 
 </html>
