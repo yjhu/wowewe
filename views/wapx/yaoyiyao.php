@@ -192,7 +192,25 @@ $signPackage = $jssdk->GetSignPackage();
             <h1 class='title'>活动规则</h1>
         </header>
         <div class="content">
+        <div class="card" style="border:0">
+          <p></p>
+          
+            <p>活动主题：清凉一夏 邀你共享微信好礼</p>
+            <p>活动时间：2015年7月1日-2015年8月31日</p>
+            <p>活动内容：邀请好友拆礼盒，送消暑大礼——自拍器/电影票/U盘</p>
 
+            <p>活动详情：邀请20名好友帮拆礼盒，即可获赠礼品一份(每人仅限领取一次)，关注才能参与领取。
+            </p>
+
+            <p>领奖说明：用户带上手机到当地自有营业厅出示兑奖页面领取相应礼品。</p>
+
+
+            <p>
+            <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/nearestoutlets:gh_03a74ac96138#wechat_redirect">附近营业厅</a>
+            </p>
+
+          <br>
+          <a class="btn btn-block" href="#hdgz">返回</a>
         </div>
     </div>
 
