@@ -99,9 +99,9 @@ $signPackage = $jssdk->GetSignPackage();
             <?php } ?>
 
 
-        <img id="gift1" width=100% style="width: 250px;height:200px" src="/wx/web/images/gift1.png?v13">
-        <img id="gift2" width=100% style="width: 250px;height:200px; display: none" src="/wx/web/images/gift2.png?v13">
-        <img id="gift3" width=100% style="width: 250px;height:200px; display: none" src="/wx/web/images/gift3.png?v13">
+        <img id="gift1" width=100% style="width: 250px;height:200px" class='giftbox' giftbox_type=1 src="/wx/web/images/gift1.png?v13">
+        <img id="gift2" width=100% style="width: 250px;height:200px; display: none" class='giftbox' giftbox_type=2 src="/wx/web/images/gift2.png?v13">
+        <img id="gift3" width=100% style="width: 250px;height:200px; display: none" class='giftbox' giftbox_type=3 src="/wx/web/images/gift3.png?v13">
         <!--
         <i class="fa fa-gift" style="color:red;font-size: 20em;"></i>
         -->
@@ -117,12 +117,7 @@ $signPackage = $jssdk->GetSignPackage();
         </p>
         <?php } ?>
         <!-- -->
-        <?php if ($isSelf && \app\models\GiftboxClaimed::STATUS_COMPLETED === $giftbox->status) { ?>
-        <!--
-        <p align="center">
-        <a class="btn btn-primary btn-block" style="width: 300px" id="changeBoxBtn">换个礼盒</a>
-        </p>
-        -->
+        <?php if ($isSelf && \app\models\GiftboxClaimed::STATUS_COMPLETED === $giftbox->status) { ?> 
         <p align="center">
         <a class="btn btn-primary btn-block" style="width: 300px">就选它了</a>
         </p>
@@ -294,7 +289,7 @@ $signPackage = $jssdk->GetSignPackage();
             alert('not support mobile event');  
         }  
     }  
-
+    
     function deviceMotionHandler(eventData) {  
         var acceleration = eventData.accelerationIncludingGravity;  
         var curTime = new Date().getTime();  
@@ -311,9 +306,9 @@ $signPackage = $jssdk->GetSignPackage();
                 select_giftbox = (select_giftbox + 1) % giftbox_categories.length;
                 var n = giftbox_categories[select_giftbox];
                 //播放声音
-                musicBox.setAttribute("src", "http://wosotech.com/wx/web/images/au"+n+".mp3");  
-                musicBox.load();  
-                musicBox.play();
+//                musicBox.setAttribute("src", "http://wosotech.com/wx/web/images/au"+n+".mp3");  
+//                musicBox.load();  
+//                musicBox.play();
 
                 //更换礼盒
                 $("#gift1").hide();
@@ -339,6 +334,16 @@ $signPackage = $jssdk->GetSignPackage();
         $("#gift"+giftbox_categories[select_giftbox]).show();
 
         yaoyiyao();
+        
+        $('.giftbox').click ( function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var giftbox_type = $(e.target).attr('giftbox_type');
+            musicBox.setAttribute("src", "http://wosotech.com/wx/web/images/au"+giftbox_type+".mp3");  
+            musicBox.load();  
+            musicBox.play();
+            //alert(giftbox_type);
+        });
 
         wx.config({
             debug: true,
@@ -450,23 +455,22 @@ $signPackage = $jssdk->GetSignPackage();
             });
 
 
-            $('#changeBoxBtn').click(function (e) {
-                //alert('changeBoxBtn');
-                var numbers = [1,2,3,1,2,3,1,2,3,3,2];
-                var n = numbers[Math.floor(Math.random()*10) + 1].toString();
-                //播放声音
-                //musicBox.setAttribute("src", "http://wosotech.com/wx/web/images/au"+n+".mp3");  
-                //musicBox.load();  
-                //musicBox.play();
-
-                //更换礼盒
-                $("#gift1").hide();
-                $("#gift2").hide();
-                $("#gift3").hide();
-               
-                $("#gift"+n).show();
-
-            });
+//            $('#changeBoxBtn').click(function (e) {
+//                //alert('changeBoxBtn');
+//                var n = giftbox_categories[select_giftbox];
+//                //播放声音
+//                musicBox.setAttribute("src", "http://wosotech.com/wx/web/images/au"+n+".mp3");  
+//                musicBox.load();  
+//                musicBox.play();
+//
+//                //更换礼盒
+//                $("#gift1").hide();
+//                $("#gift2").hide();
+//                $("#gift3").hide();
+//               
+//                $("#gift"+n).show();
+//
+//            });
 
 
             
