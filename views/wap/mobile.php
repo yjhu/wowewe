@@ -567,6 +567,11 @@ text-decoration: line-through;
             <p id='first_month_return'><span class='title_comm'>首月一次性到账金额:</span> </p>
             <p id='end_month_return'><span class='title_comm'>合约期末月返还金额:</span></p>
         <?php } else { ?>
+
+            <?php if($_GET['cid'] != 869) { ?>
+            <p id='income_return'><span class='title_comm'>入网返还金额:</span> </p>
+            <?php } ?>
+
             <p id='month_return'><span class='title_comm'>分月返还金额:</span> </p>
         <?php } ?>
 
@@ -779,7 +784,7 @@ function loadData2(i, n)
     $("#pkg_price").html("<span class='title_comm'>产品包价格:</span>"+n.pkg_price+"元");
     $("#prom_price").html("<span class='title_comm'>优惠购机款:</span>"+n.prom_price+"元");
     $("#yck").html("<span class='title_comm'>预存款:</span>"+n.yck+"元");
-    //$("#income_return").html("<span class='title_comm'>income_return:</span>"+n.income_return+"元");
+    $("#income_return").html("<span class='title_comm'>入网返还金额:</span>"+n.income_return+"元");
     $("#month_return").html("<span class='title_comm'>分月返还金额:</span>"+n.month_return+"元");
 
     $("#first_month_return").html("<span class='title_comm'>首月一次性到账金额:</span>"+ (n.yck-n.month_return) +"元");
