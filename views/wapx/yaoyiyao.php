@@ -213,7 +213,7 @@ $signPackage = $jssdk->GetSignPackage();
           <a class="btn btn-block" href="#hdgz">返回</a>
         </div>
     </div>
-
+ </div>
 
     <div id='zrbm'  class='modal'>
         <div class="content" style="opacity : 1">
