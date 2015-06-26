@@ -21,45 +21,45 @@
 <table id="__01" width="100%" height="1136" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_01.jpg?v3"  alt=""></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_01.jpg?v4"  alt=""></td>
 		<td>
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_02.jpg?v3"  alt=""></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_02.jpg?v4"  alt=""></td>
 		<td>
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_03.jpg?v3"  alt=""></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_03.jpg?v4"  alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_04.jpg?v3"  alt=""></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_04.jpg?v4"  alt=""></td>
 		<td>
 			<a href="javascript:alert('抢个礼盒!')">
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_05.jpg?v3"  alt=""></a></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_05.jpg?v4"  alt=""></a></td>
 		<td>
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_06.jpg?v3"  alt=""></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_06.jpg?v4"  alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_07.jpg?v3"  alt=""></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_07.jpg?v4"  alt=""></td>
 		<td>
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_08.jpg?v3"  alt=""></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_08.jpg?v4"  alt=""></td>
 		<td>
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_09.jpg?v3"  alt=""></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_09.jpg?v4"  alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_10.jpg?v3"  alt=""></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_10.jpg?v4"  alt=""></td>
 		<td>
 			<a href="javascript:alert('去抽奖!')">
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_11.jpg?v3" alt=""></a></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_11.jpg?v4" alt=""></a></td>
 		<td>
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_12.jpg?v3"  alt=""></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_12.jpg?v4"  alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_13.jpg?v3"  alt=""></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_13.jpg?v4"  alt=""></td>
 		<td>
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_14.jpg?v3"  alt=""></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_14.jpg?v4"  alt=""></td>
 		<td>
-			<img src="\wx\web\images\qingliangyixia\qingliangyixia_15.jpg?v3"  alt=""></td>
+			<img src="\wx\web\images\qingliangyixia\qingliangyixia_15.jpg?v4"  alt=""></td>
 	</tr>
 </table>
 <!-- End Save for Web Slices -->

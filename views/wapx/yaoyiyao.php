@@ -99,9 +99,9 @@ $signPackage = $jssdk->GetSignPackage();
             <?php } ?>
 
 
-        <img id="gift1" width=100% style="width: 250px;height:200px" class='giftbox' giftbox_type=1 src="/wx/web/images/gift1.png?v13">
-        <img id="gift2" width=100% style="width: 250px;height:200px; display: none" class='giftbox' giftbox_type=2 src="/wx/web/images/gift2.png?v13">
-        <img id="gift3" width=100% style="width: 250px;height:200px; display: none" class='giftbox' giftbox_type=3 src="/wx/web/images/gift3.png?v13">
+        <img id="gift1" width=100% style="width: 250px;height:200px" class='giftbox' giftbox_type=1 src="/wx/web/images/gift1.jpg?v14">
+        <img id="gift2" width=100% style="width: 250px;height:200px; display: none" class='giftbox' giftbox_type=2 src="/wx/web/images/gift2.jpg?v14">
+        <img id="gift3" width=100% style="width: 250px;height:200px; display: none" class='giftbox' giftbox_type=3 src="/wx/web/images/gift3.jpg?v14">
         <!--
         <i class="fa fa-gift" style="color:red;font-size: 20em;"></i>
         -->
@@ -437,7 +437,7 @@ $signPackage = $jssdk->GetSignPackage();
                 title: '帮<?= $claimer->nickname ?>来襄阳联通抢礼盒', // 分享标题
                 desc: '已有<?= $giftbox->getHelpersNumber() ?>位好友帮<?= $claimer->nickname ?>抢了礼盒，还差<?= $giftbox->getHelpersNeeded();?>位，快来帮忙！', // 分享描述
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/yaoyiyao:gh_03a74ac96138:giftbox_id=<?= $giftbox->id ?>#wechat_redirect', // 分享链接
-                imgUrl: '<?= Url::to('/wx/web/images/gift1.png', true); ?>', // 分享图标
+                imgUrl: '<?= Url::to('/wx/web/images/gift1.jpg', true); ?>', // 分享图标
                 type: '', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                 success: function () { 
@@ -456,7 +456,7 @@ $signPackage = $jssdk->GetSignPackage();
             wx.onMenuShareTimeline({
                 title: '<?= $claimer->nickname ?>正在参与襄阳联通清凉一夏抢礼盒活动，已有<?= $giftbox->getHelpersNumber() ?>位好友帮<?= $claimer->nickname ?>抢了礼盒，还差<?= $giftbox->getHelpersNeeded();?>位，快来帮忙！', // 分享标题
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/yaoyiyao:gh_03a74ac96138:giftbox_id=<?= $giftbox->id ?>#wechat_redirect', // 分享链接
-                imgUrl: '<?= Url::to('/wx/web/images/gift1.png', true); ?>', // 分享图标
+                imgUrl: '<?= Url::to('/wx/web/images/gift1.jpg', true); ?>', // 分享图标
                 type: '', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                 success: function () { 
