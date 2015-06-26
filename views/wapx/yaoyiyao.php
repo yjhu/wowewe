@@ -99,9 +99,9 @@ $signPackage = $jssdk->GetSignPackage();
             <?php } ?>
 
 
-        <img id="gift1" width=100% style="width: 250px;height:200px" src="/wx/web/images/gift1.png?v12">
-        <img id="gift2" width=100% style="width: 250px;height:200px; display: none" src="/wx/web/images/gift2.png?v12">
-        <img id="gift3" width=100% style="width: 250px;height:200px; display: none" src="/wx/web/images/gift3.png?v12">
+        <img id="gift1" width=100% style="width: 250px;height:200px" src="/wx/web/images/gift1.png?v14">
+        <img id="gift2" width=100% style="width: 250px;height:200px; display: none" src="/wx/web/images/gift2.png?v14">
+        <img id="gift3" width=100% style="width: 250px;height:200px; display: none" src="/wx/web/images/gift3.png?v14">
         <!--
         <i class="fa fa-gift" style="color:red;font-size: 20em;"></i>
         -->
@@ -281,8 +281,10 @@ $signPackage = $jssdk->GetSignPackage();
 
 
     <script type="text/javascript">
-    var SHAKE_THRESHOLD = 1200;  
-    var last_update = 0;  
+    var SHAKE_THRESHOLD = 800;  
+    var last_update = 0;
+    var giftbox_categories = [<?= implode(',', \app\models\GiftboxCategory::getRemainingList()); ?>];
+    var select_giftbox = 0;
     var x = y = z = last_x = last_y = last_z = 0;   
 
     function yaoyiyao() {  
@@ -296,7 +298,7 @@ $signPackage = $jssdk->GetSignPackage();
     function deviceMotionHandler(eventData) {  
         var acceleration = eventData.accelerationIncludingGravity;  
         var curTime = new Date().getTime();  
-        if ((curTime - last_update) > 100) {  
+        if ((curTime - last_update) > 200) {  
             var diffTime = curTime - last_update;  
             last_update = curTime;  
             x = acceleration.x;  
@@ -306,8 +308,8 @@ $signPackage = $jssdk->GetSignPackage();
 
             if (speed > SHAKE_THRESHOLD) {  
                 //alert("摇动了");  
-                var numbers = [1,2,3,1,2,3,1,2,3,3,2];
-                var n = numbers[Math.floor(Math.random()*10) + 1].toString();
+                select_giftbox = (select_giftbox + 1) % giftbox_categories.length;
+                var n = giftbox_categories[select_giftbox];
                 //播放声音
                 musicBox.setAttribute("src", "http://wosotech.com/wx/web/images/au"+n+".mp3");  
                 musicBox.load();  
@@ -330,13 +332,16 @@ $signPackage = $jssdk->GetSignPackage();
     $(document).ready(function() {
         'use strict'; 
 
+        $("#gift1").hide();
         $("#gift2").hide();
         $("#gift3").hide();
+
+        $("#gift"+giftbox_categories[select_giftbox]).show();
 
         yaoyiyao();
 
         wx.config({
-            debug: false,
+            debug: true,
             appId: '<?php echo $signPackage["appId"];?>',
             timestamp: <?php echo $signPackage["timestamp"];?>,
             nonceStr: '<?php echo $signPackage["nonceStr"];?>',

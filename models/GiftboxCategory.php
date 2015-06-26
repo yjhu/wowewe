@@ -45,4 +45,15 @@ class GiftboxCategory extends \yii\db\ActiveRecord
             'remaining' => 'Remaining',
         ];
     }
+    
+    public static function getRemainingList() {
+        $ids = [];
+        $categories = self::find()->all();
+        foreach ($categories as $category) {
+            if ($category->quantity - $category->remaining > 0) {
+                $ids[] = $category->id;
+            }
+        }
+        return $ids;
+    }
 }
