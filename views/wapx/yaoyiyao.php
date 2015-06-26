@@ -22,7 +22,7 @@ $signPackage = $jssdk->GetSignPackage();
 <html>
   <head>
     <meta charset="utf-8">
-    <title>清凉一夏，邀你共享微信好礼</title>
+    <title>缤纷盛夏邀你共享微信好礼</title>
 
     <!-- Sets initial viewport load and disables zooming  -->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -81,7 +81,7 @@ $signPackage = $jssdk->GetSignPackage();
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <!--<div class="content" style="background-color: #401080">-->
     <div class="content">
-        <img width=100% height=100 src="/wx/web/images/gift-bar1.jpg">
+        <img width=100% height=100 src="/wx/web/images/gift-bar1.jpg?v1">
         <audio style="display:hiden" id="musicBox" preload="metadata" autoplay="false"></audio>  
 
         <p align="center">
@@ -98,13 +98,13 @@ $signPackage = $jssdk->GetSignPackage();
         抢了礼盒，还差<span class='num'><?= $giftbox->getHelpersNeeded();?></span>位<br>
             <?php } ?>
 
-
+        <?php if ($giftbox->status < \app\models\GiftboxClaimed::STATUS_REWARDING) { ?>
         <img id="gift1" width=100% style="width: 250px;height:200px" class='giftbox' giftbox_type=1 src="/wx/web/images/gift1.jpg?v14">
         <img id="gift2" width=100% style="width: 250px;height:200px; display: none" class='giftbox' giftbox_type=2 src="/wx/web/images/gift2.jpg?v14">
         <img id="gift3" width=100% style="width: 250px;height:200px; display: none" class='giftbox' giftbox_type=3 src="/wx/web/images/gift3.jpg?v14">
-        <!--
-        <i class="fa fa-gift" style="color:red;font-size: 20em;"></i>
-        -->
+        <?php } else { ?>
+        <img width=100% style="width: 250px;height:200px" src="/wx/web/images/gift<?= $giftbox->category_id ?>a.jpg?v14">
+        <?php } ?>
         </p>
 
 
@@ -119,17 +119,20 @@ $signPackage = $jssdk->GetSignPackage();
         <!-- -->
         <?php if ($isSelf && \app\models\GiftboxClaimed::STATUS_COMPLETED === $giftbox->status) { ?> 
         <p align="center">
-        <a class="btn btn-primary btn-block" style="width: 300px">就选它了</a>
+        <a class="btn btn-primary btn-block" style="width: 300px" id='thatsit'>就选它了</a>
         </p>
         <?php } ?>
         <?php if ($isSelf && \app\models\GiftboxClaimed::STATUS_REWARDING === $giftbox->status) { ?>
         <p align="center">
-        <a class="btn btn-primary btn-block" style="width: 300px">领取礼盒</a>
+            <span style='font-size:0.8em;'><i class='fa fa-exclamation-triangle' style='color:red;'></i>您需要到<a href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/nearestoutlets:gh_03a74ac96138#wechat_redirect'>附近营业厅</a>领取奖品后才点击此按钮！<i class='fa fa-exclamation-triangle'  style='color:red;'></i></span>
+            <a class="btn btn-primary btn-block" style="width: 300px" id='ivegetit'>领取礼盒</a>
         </p>
         <?php } ?>
         <?php if ($isSelf && \app\models\GiftboxClaimed::STATUS_REWARDED === $giftbox->status) { ?>
         <p align="center">
+            
         <a class="btn btn-block" style="width: 300px">已领取</a>
+        领取时间：<?= date('Y-m-d H:i:s', $giftbox->getting_time); ?>
         </p>
         <?php } ?>
         
@@ -177,7 +180,41 @@ $signPackage = $jssdk->GetSignPackage();
             <h1 class='title'>获奖名单</h1>
         </header>
         <div class="content">
+            <?php 
+            $total_rewards_count = \app\models\GiftboxClaimed::find()->where(['>', 'status', \app\models\GiftboxClaimed::STATUS_COMPLETED])->count();
+            if (20 > $total_rewards_count) {
+                $total_rewards = \app\models\GiftboxClaimed::find()->where(['>', 'status', \app\models\GiftboxClaimed::STATUS_COMPLETED])->orderBy(['claiming_time' => SORT_DESC])->all();
+            } else {
+                $total_rewards = \app\models\GiftboxClaimed::find()->where(['>', 'status', \app\models\GiftboxClaimed::STATUS_COMPLETED])->orderBy(['claiming_time' => SORT_DESC])->limit(20)->all();
+            }
+            ?>
+<ul class="table-view">
+    <li class='table-view-cell'>已有<?= $total_rewards_count ?>位领取了礼盒</li>
+        <?php 
+        foreach ($total_rewards as $reward) {
+        ?>
+        <li class="table-view-cell media">
+            <a data-ignore='push' class="navigate-right" href="<?= Url::to([
+                'yaoyiyao',
+                'giftbox_id' => $reward->id,
+                'gh_id' => $observer->gh_id,
+                'openid' => $observer->openid,
+            ]);?>">
+            <img class="media-object pull-left" src="<?= $reward->claimer->headImgUrl ?>" width="64" height="64">
 
+        <div class="media-body">
+          <!--粉丝昵称--> 
+          <?= emoji_unified_to_html(emoji_softbank_to_unified($reward->claimer->nickname)) ?>
+          <p>
+              抢礼盒时间：<?= date('Y-m-d H:i:s', $reward->claiming_time); ?>
+          </p>
+        </div>
+            </a>
+        </li>
+        <?php 
+        }
+        ?>
+    </ul>
         </div>
     </div>
 
@@ -190,7 +227,7 @@ $signPackage = $jssdk->GetSignPackage();
         <div class="card" style="border:0">
           <p></p>
           
-            <p>活动主题：清凉一夏 邀你共享微信好礼</p>
+            <p>活动主题：缤纷盛夏 邀你共享微信好礼</p>
             <p>活动时间：2015年7月1日-2015年8月31日</p>
             <p>活动内容：邀请好友拆礼盒，送消暑大礼——自拍器/电影票/U盘</p>
 
@@ -352,19 +389,9 @@ $signPackage = $jssdk->GetSignPackage();
         $("#gift"+giftbox_categories[select_giftbox]).show();
 
         yaoyiyao();
-        
-        $('.giftbox').click ( function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            var giftbox_type = $(e.target).attr('giftbox_type');
-            musicBox.setAttribute("src", "http://wosotech.com/wx/web/images/au"+giftbox_type+".mp3");  
-            musicBox.load();  
-            musicBox.play();
-            //alert(giftbox_type);
-        });
-
+               
         wx.config({
-            debug: true,
+            debug: false,
             appId: '<?php echo $signPackage["appId"];?>',
             timestamp: <?php echo $signPackage["timestamp"];?>,
             nonceStr: '<?php echo $signPackage["nonceStr"];?>',
@@ -408,6 +435,70 @@ $signPackage = $jssdk->GetSignPackage();
         });
         
         wx.ready(function () {
+            $('.giftbox').click ( function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var giftbox_type = $(e.target).attr('giftbox_type');
+                musicBox.setAttribute("src", "http://wosotech.com/wx/web/images/au"+giftbox_type+".mp3");  
+                musicBox.load();  
+                musicBox.play();
+                //alert(giftbox_type);
+            });
+            
+            $('#thatsit').click (function () {
+                var args = {
+                    'classname':    '\\app\\models\\GiftboxClaimed',
+                    'funcname':     'thatsitAjax',
+                    'params':       {
+                        'giftbox_id':   <?= $giftbox->id ?>,
+                        'giftbox_catid':   giftbox_categories[select_giftbox]                          
+                    } 
+                };
+                $.ajax({
+                    url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
+                    type:       "GET",
+                    cache:      false,
+                    dataType:   "json",
+                    data:       "args=" + JSON.stringify(args),
+                    success:    function(ret) { 
+                        if (0 === ret['code']) {
+                            location.href = '<?= Url::to() ?>';
+                        }
+                    },                        
+                    error:      function(){
+                        alert('发送失败。');
+                    }
+                });
+            });
+            
+            $('#ivegetit').click (function () {
+                if (!confirm('您需要到营业厅领取奖品后才点击此按钮！'))
+                    return;
+                
+                var args = {
+                    'classname':    '\\app\\models\\GiftboxClaimed',
+                    'funcname':     'ivegetitAjax',
+                    'params':       {
+                        'giftbox_id':   <?= $giftbox->id ?>                         
+                    } 
+                };
+                $.ajax({
+                    url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
+                    type:       "GET",
+                    cache:      false,
+                    dataType:   "json",
+                    data:       "args=" + JSON.stringify(args),
+                    success:    function(ret) { 
+                        if (0 === ret['code']) {
+                            location.href = '<?= Url::to() ?>';
+                        }
+                    },                        
+                    error:      function(){
+                        alert('发送失败。');
+                    }
+                });
+            });
+            
             function shareSuccessCallback(giftbox_id, gh_id, openid, share_to) {
                 var args = {
                     'classname':    '\\app\\models\\GiftboxShareLog',
@@ -433,11 +524,28 @@ $signPackage = $jssdk->GetSignPackage();
                 });
             }
             
+            <?php if (\app\models\GiftboxClaimed::STATUS_COMPLETED > $giftbox->status) { ?>
+            var share2friendTitle = '帮<?= $claimer->nickname ?>来襄阳联通抢礼盒';
+            var share2friendDesc = '已有<?= $giftbox->getHelpersNumber() ?>位好友帮<?= $claimer->nickname ?>抢了礼盒，还差<?= $giftbox->getHelpersNeeded();?>位，快来帮忙！';
+            var share2timelineTitle = '<?= $claimer->nickname ?>正在参与襄阳联通清凉一夏抢礼盒活动，已有<?= $giftbox->getHelpersNumber() ?>位好友帮<?= $claimer->nickname ?>抢了礼盒，还差<?= $giftbox->getHelpersNeeded();?>位，快来帮忙！';
+            var shareImgUrl = '<?= Url::to('/wx/web/images/gift1.jpg', true); ?>';
+            <?php } else if (\app\models\GiftboxClaimed::STATUS_REWARDING > $giftbox->status) { ?>
+            var share2friendTitle = '<?= $claimer->nickname ?>在襄阳联通抢到了礼盒';
+            var share2friendDesc = '礼盒多多，绞尽脑汁，不足选啥，汗流如雨，快去围观！';
+            var share2timelineTitle = '快来围观！<?= $claimer->nickname ?>在襄阳联通抢到了礼盒，绞尽脑汁，不足选啥，汗流如雨......';
+            var shareImgUrl = '<?= Url::to('/wx/web/images/gift1.jpg', true); ?>';    
+            <?php } else { ?>
+            var share2friendTitle = '<?= $claimer->nickname ?>在襄阳联通抢到了<?= $giftbox->giftboxCategory->content ?>！';
+            var share2friendDesc = '缤纷盛夏邀你共享微信好礼活动，快来围观并参与！';
+            var share2timelineTitle = '<?= $claimer->nickname ?>在襄阳联通抢到了<?= $giftbox->giftboxCategory->content ?>！快来围观并参与缤纷盛夏邀你共享微信好礼活动！';
+            var shareImgUrl = '<?= Url::to('/wx/web/images/gift'.$giftbox->category_id.'a.jpg', true); ?>';
+            <?php } ?>
+            
             wx.onMenuShareAppMessage({
-                title: '帮<?= $claimer->nickname ?>来襄阳联通抢礼盒', // 分享标题
-                desc: '已有<?= $giftbox->getHelpersNumber() ?>位好友帮<?= $claimer->nickname ?>抢了礼盒，还差<?= $giftbox->getHelpersNeeded();?>位，快来帮忙！', // 分享描述
+                title: share2friendTitle, // 分享标题
+                desc: share2friendDesc, // 分享描述
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/yaoyiyao:gh_03a74ac96138:giftbox_id=<?= $giftbox->id ?>#wechat_redirect', // 分享链接
-                imgUrl: '<?= Url::to('/wx/web/images/gift1.jpg', true); ?>', // 分享图标
+                imgUrl: shareImgUrl, // 分享图标
                 type: '', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                 success: function () { 
@@ -454,9 +562,9 @@ $signPackage = $jssdk->GetSignPackage();
             });
             
             wx.onMenuShareTimeline({
-                title: '<?= $claimer->nickname ?>正在参与襄阳联通清凉一夏抢礼盒活动，已有<?= $giftbox->getHelpersNumber() ?>位好友帮<?= $claimer->nickname ?>抢了礼盒，还差<?= $giftbox->getHelpersNeeded();?>位，快来帮忙！', // 分享标题
+                title: share2timelineTitle, // 分享标题
                 link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/yaoyiyao:gh_03a74ac96138:giftbox_id=<?= $giftbox->id ?>#wechat_redirect', // 分享链接
-                imgUrl: '<?= Url::to('/wx/web/images/gift1.jpg', true); ?>', // 分享图标
+                imgUrl: shareImgUrl, // 分享图标
                 type: '', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                 success: function () { 
