@@ -265,9 +265,9 @@ class WapxController extends Controller {
             ]);
             if (empty($giftbox)) {
                 if (empty($wx_user->openidBindMobiles)) {
-                    $url = Url::to();
-                    Yii::$app->getSession()->set('RETURN_URL', $url);
-                    return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+                    $url = \yii\helpers\Url::to();
+                    \Yii::$app->getSession()->set('RETURN_URL', $url);
+                    return $this->redirect(['wap/addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
                 } else {
                     $giftbox = new \app\models\GiftboxClaimed;
                     $giftbox->claimer_ghid = $gh_id;
