@@ -99,9 +99,9 @@ $signPackage = $jssdk->GetSignPackage();
             <?php } ?>
 
 
-        <img id="gift1" width=100% style="width: 250px;height:200px" src="/wx/web/images/gift1.png?v12">
-        <img id="gift2" width=100% style="width: 250px;height:200px; display: none" src="/wx/web/images/gift2.png?v12">
-        <img id="gift3" width=100% style="width: 250px;height:200px; display: none" src="/wx/web/images/gift3.png?v12">
+        <img id="gift1" width=100% style="width: 250px;height:200px" src="/wx/web/images/gift1.png?v13">
+        <img id="gift2" width=100% style="width: 250px;height:200px; display: none" src="/wx/web/images/gift2.png?v13">
+        <img id="gift3" width=100% style="width: 250px;height:200px; display: none" src="/wx/web/images/gift3.png?v13">
         <!--
         <i class="fa fa-gift" style="color:red;font-size: 20em;"></i>
         -->
