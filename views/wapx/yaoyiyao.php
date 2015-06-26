@@ -318,6 +318,31 @@ $signPackage = $jssdk->GetSignPackage();
         });
         
         wx.ready(function () {
+            function shareSuccessCallback(giftbox_id, gh_id, openid, share_to) {
+                var args = {
+                    'classname':    '\\app\\models\\GiftboxShareLog',
+                    'funcname':     'loggingAjax',
+                    'params':       {
+                        'giftbox_id':   giftbox_id,
+                        'gh_id':        gh_id,  
+                        'openid':       openid,
+                        'shareTo':      share_to
+                    } 
+                };
+                $.ajax({
+                    url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
+                    type:       "GET",
+                    cache:      false,
+                    dataType:   "json",
+                    data:       "args=" + JSON.stringify(args),
+                    success:    function() {                    
+                    },                        
+                    error:      function(){
+                        alert('发送失败。');
+                    }
+                });
+            }
+            
             wx.onMenuShareAppMessage({
                 title: '帮<?= $claimer->nickname ?>来襄阳联通抢礼盒', // 分享标题
                 desc: '已有<?= $giftbox->getHelpersNumber() ?>位好友帮<?= $claimer->nickname ?>抢了礼盒，还差<?= $giftbox->getHelpersNeeded();?>位，快来帮忙！', // 分享描述
@@ -326,7 +351,12 @@ $signPackage = $jssdk->GetSignPackage();
                 type: '', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                 success: function () { 
-                    // 用户确认分享后执行的回调函数
+                    shareSuccessCallback(
+                        <?= $giftbox->id ?>, 
+                        '<?= $observer->gh_id ?>', 
+                        '<?= $observer->openid ?>',
+                        'friend'
+                    );
                 },
                 cancel: function () { 
                     // 用户取消分享后执行的回调函数
@@ -340,7 +370,12 @@ $signPackage = $jssdk->GetSignPackage();
                 type: '', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
                 success: function () { 
-                    // 用户确认分享后执行的回调函数
+                    shareSuccessCallback(
+                        <?= $giftbox->id ?>, 
+                        '<?= $observer->gh_id ?>', 
+                        '<?= $observer->openid ?>',
+                        'timeline'
+                    );
                 },
                 cancel: function () { 
                     // 用户取消分享后执行的回调函数
