@@ -88,7 +88,7 @@ $signPackage = $jssdk->GetSignPackage();
             <img src="<?= $claimer->headImgUrl; ?>" style="width:24px">&nbsp;
             <?= emoji_unified_to_html(emoji_softbank_to_unified($claimer->nickname)) ?> &nbsp;
             的礼盒<br>
-            <?php if ($giftbox->isCompleted()) { ?>
+            <?php if ($giftbox->status >= \app\models\GiftboxClaimed::STATUS_COMPLETED) { ?>
             已有<span class='num'><a href="#fans"><?= $giftbox->getHelpersNumber(); ?></a></span>位好友为
         <?= $isSelf ? '我' : 'Ta'?>
             抢了礼盒<br>
@@ -531,8 +531,8 @@ $signPackage = $jssdk->GetSignPackage();
             var shareImgUrl = '<?= Url::to('/wx/web/images/gift1.jpg', true); ?>';
             <?php } else if (\app\models\GiftboxClaimed::STATUS_REWARDING > $giftbox->status) { ?>
             var share2friendTitle = '<?= $claimer->nickname ?>在襄阳联通抢到了礼盒';
-            var share2friendDesc = '礼盒多多，绞尽脑汁，不足选啥，汗流如雨，快去围观！';
-            var share2timelineTitle = '快来围观！<?= $claimer->nickname ?>在襄阳联通抢到了礼盒，绞尽脑汁，不足选啥，汗流如雨......';
+            var share2friendDesc = '礼盒多多，绞尽脑汁，不知选啥，汗流如雨，快去围观！';
+            var share2timelineTitle = '快来围观！<?= $claimer->nickname ?>在襄阳联通抢到了礼盒，绞尽脑汁，不知选啥，汗流如雨......';
             var shareImgUrl = '<?= Url::to('/wx/web/images/gift1.jpg', true); ?>';    
             <?php } else { ?>
             var share2friendTitle = '<?= $claimer->nickname ?>在襄阳联通抢到了<?= $giftbox->giftboxCategory->content ?>！';
