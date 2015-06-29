@@ -54,4 +54,15 @@ class NewfanReward extends \yii\db\ActiveRecord
             'openid' => 'newfan_openid',
         ]);
     }
+
+
+    public static function rewardconfirmAjax($newfan_openid)
+    {
+        U::W("=============ivegetit===============");
+        U::W($newfan_openid);
+        $newfan_reward = self::findOne(['newfan_openid' => $newfan_openid]);
+        $newfan_reward->getting_time = time();
+        $newfan_reward->save(false);
+        return \yii\helpers\Json::encode(['code' => 0]);
+    }    
 }
