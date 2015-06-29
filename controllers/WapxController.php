@@ -292,6 +292,37 @@ class WapxController extends Controller {
             'giftbox' => $giftbox,
         ]);
     }
+    
+    //https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/newfan-rewarding:gh_03a74ac96138#wechat_redirect
+    public function actionNewfanRewarding() {
+        $this->layout = false;
+        
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        $wx_user = \app\models\MUser::findOne([
+            'gh_id' => $gh_id,
+            'openid' => $openid,
+        ]);
+        if (empty($wx_user) || $wx_user->subscribe === 0) {
+            return $this->render('need_subscribe');
+        }
+        
+        $newfan_reward = \app\models\NewfanReward::findOne([
+            'newfan_ghid' => $gh_id,
+            'newfan_openid' => $openid,
+        ]);
+        if (empty($newfan_reward)) {
+            $newfan_reward = new \app\models\NewfanReward;
+            $newfan_reward->newfan_ghid = $gh_id;
+            $newfan_reward->newfan_openid = $openid;
+            $newfan_reward->save(false);
+        }
+        
+        return $this->render('newfan-rewarding', [
+            'newfan' => $wx_user,
+            'rewarding' => $newfan_reward,
+        ]);
+    }
 
     //http://wosotech.com/wx/web/index.php?r=wapx/qingliangyixia&gh_id=gh_03a74ac96138
     public function actionQingliangyixia() {

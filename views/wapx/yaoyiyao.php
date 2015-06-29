@@ -59,7 +59,7 @@ $signPackage = $jssdk->GetSignPackage();
         }
         .modal.active {
           height: 100%;
-          opacity: 0.8;
+          opacity: 0.9;
           -webkit-transition: -webkit-transform .25s;
              -moz-transition:    -moz-transform .25s;
                   transition:         transform .25s;
