@@ -326,11 +326,17 @@ class WapxController extends Controller {
 
     //http://wosotech.com/wx/web/index.php?r=wapx/qingliangyixia&gh_id=gh_03a74ac96138
     public function actionQingliangyixia() {
-        $this->layout = false;
- 
-        return $this->render('qingliangyixia');
-    }
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        //$model = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        //if (empty($model->openidBindMobiles)) {
+        //    Yii::$app->getSession()->set('RETURN_URL', Url::to());
+        //    return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        //}
 
+        return $this->render('qingliangyixia', ['gh_id' => $gh_id, 'openid' => $openid]);
+    }
 
 
 
