@@ -312,6 +312,11 @@ class WapxController extends Controller {
             'newfan_openid' => $openid,
         ]);
         if (empty($newfan_reward)) {
+            if (empty($wx_user->openidBindMobiles)) {
+                $url = \yii\helpers\Url::to();
+                \Yii::$app->getSession()->set('RETURN_URL', $url);
+                return $this->redirect(['wap/addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+            }
             $newfan_reward = new \app\models\NewfanReward;
             $newfan_reward->newfan_ghid = $gh_id;
             $newfan_reward->newfan_openid = $openid;
