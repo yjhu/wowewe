@@ -34,6 +34,9 @@
         </header>
         <div class="content">
 
+            <img width=100% src="/wx/web/images/huodong71.png?v2">
+
+            <br>
             <?php if (empty($rewarding->getting_time)) { ?>
                 <br>
                 
