@@ -204,6 +204,14 @@ class MItem extends ActiveRecord {
     const ITEM_CAT_MOBILE_LYH_CFSYW = 884;
     //双4G 618 新增乐视手机
     const ITEM_CAT_MOBILE_LESHI1 = 885;
+    //6.30
+     const ITEM_CAT_MOBILE_LYH_KUPAI_K1 = 886;
+     const ITEM_CAT_MOBILE_LYH_HUAWEI_MT7 = 887;
+     const ITEM_CAT_MOBILE_LYH_LESHI1 = 888;
+     const ITEM_CAT_MOBILE_LYH_RONGYAO_4X_HI = 889;
+     const ITEM_CAT_MOBILE_LYH_RONGYAO_4X_ST = 890;
+
+
 
     //流量包 国内
     const ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI = 902;
@@ -368,6 +376,13 @@ class MItem extends ActiveRecord {
             self::ITEM_CAT_MOBILE_LYH_CFSYW => '存费送业务 5折优惠',
 			//双4G 618 新增乐视手机
 			self::ITEM_CAT_MOBILE_LESHI1 => '乐视（Letv）乐1',
+
+            //6.30
+             self::ITEM_CAT_MOBILE_LYH_KUPAI_K1 => '酷派K1 （7260）',
+             self::ITEM_CAT_MOBILE_LYH_HUAWEI_MT7 => '华为MT7',
+             self::ITEM_CAT_MOBILE_LYH_LESHI1 => '乐视乐1',
+             self::ITEM_CAT_MOBILE_LYH_RONGYAO_4X_HI => '荣耀4X（高配版）',
+             self::ITEM_CAT_MOBILE_LYH_RONGYAO_4X_ST => '荣耀4X（标配版）',
 
 
             //流量包 国内

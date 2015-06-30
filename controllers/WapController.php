@@ -1850,6 +1850,32 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->attr = "{$_GET['cardType']}";
                 break;
             //老用户户专享 6.18 end
+            //6.30 
+            case MItem::ITEM_CAT_MOBILE_LYH_KUPAI_K1:
+                $order->title = '酷派K1 （7260）';
+                $order->attr = "{$_GET['cardType']}";
+                break;   
+
+            case MItem::ITEM_CAT_MOBILE_LYH_HUAWEI_MT7:
+                $order->title = '华为MT7';
+                $order->attr = "{$_GET['cardType']}";
+                break;                 
+
+            case MItem::ITEM_CAT_MOBILE_LYH_LESHI1:
+                $order->title = '乐视乐1';
+                $order->attr = "{$_GET['cardType']}";
+                break;  
+
+            case MItem::ITEM_CAT_MOBILE_LYH_RONGYAO_4X_HI:
+                $order->title = '荣耀4X（高配版）';
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+
+            case MItem::ITEM_CAT_MOBILE_LYH_RONGYAO_4X_ST:
+                $order->title = '荣耀4X（标配版）';
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+            //6.30 end
 
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI:
                 $order->title = '10元包100M 3G国内流量包';
