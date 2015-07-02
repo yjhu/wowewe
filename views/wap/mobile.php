@@ -187,7 +187,7 @@ text-decoration: line-through;
 
         <?php if($item->ctrl_picurls == 0) { ?>
         	<p  align=center id="imgURL">
-        	    <img id='transparent' width="100%" src="<?php echo  $item->pic_url; ?>?v3" alt=""/>
+        	    <img id='transparent' width="100%" src="<?php echo  $item->pic_url; ?>?v4" alt=""/>
         	</p>
 
         <?php } else { ?>
@@ -562,7 +562,8 @@ text-decoration: line-through;
                 $_GET['cid']== 873 ||
                 $_GET['cid']== 874 ||
                 $_GET['cid']== 870 ||
-                $_GET['cid']== 871 ){
+                $_GET['cid']== 871 ||
+                $_GET['cid']== 886 ){
         ?>
             <p id='first_month_return'><span class='title_comm'>首月一次性到账金额:</span> </p>
             <p id='end_month_return'><span class='title_comm'>合约期末月返还金额:</span></p>

@@ -80,10 +80,15 @@ use yii\helpers\Url;
             $model->cid == 881 ||
             $model->cid == 882 ||
             $model->cid == 883 ||
-            $model->cid == 884) {
+            $model->cid == 884 ||
+            $model->cid == 886 ||
+            $model->cid == 887 ||
+            $model->cid == 888 ||
+            $model->cid == 889 ||
+            $model->cid == 890) {
             ?>
             <li><a data-ajax="false" href="<?php echo Url::to(['wap/mobile', 'cid' => $model->cid], true)?>">
-                    <img style='padding-top:20px' src="<?php echo $model->pic_url . '-120x120.jpg?v2'?>">
+                    <img style='padding-top:20px' src="<?php echo $model->pic_url . '-120x120.jpg?v3'?>">
                     <h2><?=$model->title?></h2>
                     <p><?=$model->title_hint?></p>
 
@@ -93,8 +98,10 @@ use yii\helpers\Url;
                 </a>
             </li>
         <?php
-}
+        }
     }
+
+
     ?>
 
 

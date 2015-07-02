@@ -248,7 +248,8 @@ class ExportController extends \yii\console\Controller {
 //        $thismonth_end = date('Y-m-d', strtotime('yesterday'))." 23:59:59";
         
         $fh = fopen($file, "w");
-        fprintf($fh, "自营厅名称,粉丝总数量,绑定手机粉丝总数量,上月（%s）同期发展粉丝数量,上月（%s）同期发展绑定手机粉丝数量,本月（%s）发展粉丝数量,本月（%s）发展绑定手机粉丝数量,归属客户总数量,已微信关联客户数量,上月（%s）同期关联客户数量,本月（%s）关联客户数量\n",
+        //fprintf($fh, "自营厅名称,粉丝总数量,绑定手机粉丝总数量,上月（%s）同期发展粉丝数量,上月（%s）同期发展绑定手机粉丝数量,本月（%s）发展粉丝数量,本月（%s）发展绑定手机粉丝数量,归属客户总数量,已微信关联客户数量,上月（%s）同期关联客户数量,本月（%s）关联客户数量\n",
+        fprintf($fh, "自营厅名称,累计粉丝量（从发展到现在）,绑定手机粉丝总数量,上月（%s）同期发展粉丝数量,(%s)新用户发展同比,%s月新增粉丝量,(%s)月新用户发展量,归属客户总数量,已微信关联客户数量,(%s)维系用户同比,%s月维系用户发展量\n",
                 date('Y-m', strtotime($lastmonth_start)),
                 date('Y-m', strtotime($lastmonth_start)),
                 date('Y-m-d', strtotime($thismonth_start))."至".date('Y-m-d', strtotime($thismonth_end)),
@@ -352,8 +353,12 @@ class ExportController extends \yii\console\Controller {
             'create_time' => SORT_ASC,
         ])->all();
         foreach($openidBindMobiles as $mobile) {
-            fprintf($fh, "%s, %s, %s, %s, %s", $mobile->mobile, $mobile->create_time, $mobile->province, $mobile->city, $mobile->carrier);
-            fprintf($fh, ", %s", $mobile->user->nickname);
+        	//微信昵称	绑定手机号	关注时间
+
+            //fprintf($fh, "%s, %s, %s, %s, %s", $mobile->mobile, $mobile->create_time, $mobile->province, $mobile->city, $mobile->carrier);
+            //fprintf($fh, ", %s", $mobile->user->nickname);
+
+            fprintf($fh, "%s, %s, %s, %s, %s, %s", $mobile->user->nickname, $mobile->mobile, $mobile->create_time, $mobile->province, $mobile->city, $mobile->carrier);
             fprintf($fh, PHP_EOL);
         }
         fclose($fh);
