@@ -211,9 +211,9 @@ class MStaff extends ActiveRecord
             if ($insert) {
                 $this->scene_id = MStaff::newSceneId($this->gh_id);
             }
-            if ($this->cat == static::SCENE_CAT_OFFICE && $this->office->hasOfficeStaff()) {
-                throw new \yii\web\HttpException(500, 'this office has already owned one scene_id!');    
-            }                
+//            if ($this->cat == static::SCENE_CAT_OFFICE && $this->office->hasOfficeStaff()) {
+//                throw new \yii\web\HttpException(500, 'this office has already owned one scene_id!');    
+//            }                
             return true;
         }
         return false;
