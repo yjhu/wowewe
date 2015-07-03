@@ -3609,10 +3609,11 @@ $url2 = $result["code_url"];
 
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
-
+//        \Yii::warning(\yii\helpers\Json::encode([$gh_id, $openid]));
         $employee = \app\models\ClientEmployee::findOneByWechatOpenid($gh_id, $openid);
-//        \Yii::trace($employee);
+//        \Yii::warning(\yii\helpers\Json::encode($employee));
         $outlets = $employee->outlets;
+//        \Yii::warning(\yii\helpers\Json::encode($outlets));
 
         return $this->render('yggl1', ['outlet_id' => $outlets[0]->outlet_id]);
     }
