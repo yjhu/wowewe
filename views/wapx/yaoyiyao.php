@@ -527,7 +527,7 @@ $signPackage = $jssdk->GetSignPackage();
             <?php if (\app\models\GiftboxClaimed::STATUS_COMPLETED > $giftbox->status) { ?>
             var share2friendTitle = '帮<?= $claimer->nickname ?>来襄阳联通抢礼盒';
             var share2friendDesc = '已有<?= $giftbox->getHelpersNumber() ?>位好友帮<?= $claimer->nickname ?>抢了礼盒，还差<?= $giftbox->getHelpersNeeded();?>位，快来帮忙！';
-            var share2timelineTitle = '<?= $claimer->nickname ?>正在参与襄阳联通清凉一夏抢礼盒活动，已有<?= $giftbox->getHelpersNumber() ?>位好友帮<?= $claimer->nickname ?>抢了礼盒，还差<?= $giftbox->getHelpersNeeded();?>位，快来帮忙！';
+            var share2timelineTitle = '<?= $claimer->nickname ?>正在参与襄阳联通缤纷盛夏抢礼盒活动，已有<?= $giftbox->getHelpersNumber() ?>位好友帮<?= $claimer->nickname ?>抢了礼盒，还差<?= $giftbox->getHelpersNeeded();?>位，快来帮忙！';
             var shareImgUrl = '<?= Url::to('/wx/web/images/gift1.jpg', true); ?>';
             <?php } else if (\app\models\GiftboxClaimed::STATUS_REWARDING > $giftbox->status) { ?>
             var share2friendTitle = '<?= $claimer->nickname ?>在襄阳联通抢到了礼盒';
