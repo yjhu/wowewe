@@ -299,7 +299,7 @@ $signPackage = $jssdk->GetSignPackage();
 
     <ul class="table-view">
         <?php 
-        $claimed_giftboxes = \app\models\GiftboxClaimed::find()->all();
+        $claimed_giftboxes = \app\models\GiftboxClaimed::find()->orderBy(['claiming_time' => SORT_DESC])->limit(20)->all();
         foreach ($claimed_giftboxes as $claimed_giftbox) {
         ?>
         <li class="table-view-cell media">
