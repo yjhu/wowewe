@@ -189,7 +189,15 @@ $signPackage = $jssdk->GetSignPackage();
             }
             ?>
 <ul class="table-view">
-    <li class='table-view-cell'>已有<?= $total_rewards_count ?>位领取了礼盒</li>
+    <li class='table-view-cell'>
+    
+        <?php if($total_rewards_count < 400) { ?>
+                已有<?= $total_rewards_count ?>位领取了礼盒
+        <?php } else { ?>
+                <span style="color:red">亲~ 本期活动奖品已抢完，下期再来吧！</span>
+        <?php } ?>
+
+    </li>
         <?php 
         foreach ($total_rewards as $reward) {
         ?>
@@ -472,6 +480,14 @@ $signPackage = $jssdk->GetSignPackage();
             });
             
             $('#ivegetit').click (function () {
+
+                var gifNum = "<?= $total_rewards_count ?>";
+                if (parseInt(gifNum) >= 400)
+                {
+                    alert("亲~ 本期活动奖品已经抢完。下期活动更加精彩，敬请关注！");
+                    return;
+                }
+
                 if (!confirm('您需要到营业厅领取奖品后才点击此按钮！'))
                     return;
                 

@@ -228,10 +228,10 @@ class ExportController extends \yii\console\Controller {
         fclose($fh);
     }
     
-    public function actionSelfOwnedOutlets( $date = null, $filename = 'self-owned-outlets.csv' ) {
+    public function actionSelfOwnedOutlets( $date = null, $is_selfOperated = 1, $filename = 'self-owned-outlets.csv' ) {
         $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
 
-        $offices = \app\models\MOffice::findAll(['is_selfOperated' => 1]);
+        $offices = \app\models\MOffice::findAll(['is_selfOperated' => $is_selfOperated]);
         
         if ($date == null) {
             $date = date('Y-m-d');
