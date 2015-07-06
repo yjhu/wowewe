@@ -366,7 +366,14 @@ $signPackage = $jssdk->GetSignPackage();
 
             if (speed > SHAKE_THRESHOLD) {  
                 //alert("摇动了");  
-                select_giftbox = (select_giftbox + 1) % giftbox_categories.length;
+                var r = Math.random();
+                if (r > 0.4) 
+                    select_giftbox = 0;
+                else if (r > 0.2)
+                    select_giftbox = 1;
+                else
+                    select_giftbox = 2;
+//                select_giftbox = (select_giftbox + 1) % giftbox_categories.length;
                 var n = giftbox_categories[select_giftbox];
                 //播放声音
 //                musicBox.setAttribute("src", "http://wosotech.com/wx/web/images/au"+n+".mp3");  
