@@ -23,7 +23,7 @@ $this->title = 'Login';
         ],
     ]); ?>
 
-	<?= $form->field($model, 'username')->textInput(['maxlength' => 11, 'placeholder'=>'请输入用户名', 'class'=>'form-control input-lg'])->label(false); ?>
+	<?= $form->field($model, 'username')->textInput(['maxlength' => 36, 'placeholder'=>'请输入用户名', 'class'=>'form-control input-lg'])->label(false); ?>
 
     <?= $form->field($model, 'password')->passwordInput(['placeholder'=>'请输入密码', 'class'=>'form-control input-lg'])->label(false); ?>
 

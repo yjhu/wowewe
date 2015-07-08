@@ -99,11 +99,11 @@ $signPackage = $jssdk->GetSignPackage();
             <?php } ?>
 
         <?php if ($giftbox->status < \app\models\GiftboxClaimed::STATUS_REWARDING) { ?>
-        <img id="gift1" width=100% style="width: 250px;height:200px" class='giftbox' giftbox_type=1 src="/wx/web/images/gift1.jpg?v14">
-        <img id="gift2" width=100% style="width: 250px;height:200px; display: none" class='giftbox' giftbox_type=2 src="/wx/web/images/gift2.jpg?v14">
-        <img id="gift3" width=100% style="width: 250px;height:200px; display: none" class='giftbox' giftbox_type=3 src="/wx/web/images/gift3.jpg?v14">
+        <img id="gift1" width=100% style="width: 250px;height:200px" class='giftbox' giftbox_type=1 src="/wx/web/images/gift1.jpg?v15">
+        <img id="gift2" width=100% style="width: 250px;height:200px; display: none" class='giftbox' giftbox_type=2 src="/wx/web/images/gift2.jpg?v15">
+        <img id="gift3" width=100% style="width: 250px;height:200px; display: none" class='giftbox' giftbox_type=3 src="/wx/web/images/gift3.jpg?v15">
         <?php } else { ?>
-        <img width=100% style="width: 250px;height:200px" src="/wx/web/images/gift<?= $giftbox->category_id ?>a.jpg?v14">
+        <img width=100% style="width: 250px;height:200px" src="/wx/web/images/gift<?= $giftbox->category_id ?>a.jpg?v15">
         <?php } ?>
         </p>
 
