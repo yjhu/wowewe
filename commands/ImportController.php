@@ -713,4 +713,40 @@ class ImportController extends Controller {
         }
         fclose($fh);
     }
+    
+    const FAQ_QUESTION = 'Q:';
+    const FAQ_ANSWER = 'A:';
+    public function actionFaq( $filename = 'faq.txt' ) {
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $content = file_get_contents($filepathname);
+        $offset = 0;
+        $q_pos = 0;
+        $a_pos = 0;
+        $q = '';
+        $a = '';
+        while (($q_pos = strpos($content, self::FAQ_QUESTION, $offset)) !== false) {
+            $a_pos = stripos($content, self::FAQ_ANSWER, $q_pos);
+            if (false !== $a_pos) {
+                $q = trim(substr($content, $q_pos + strlen(self::FAQ_QUESTION), $a_pos - $q_pos - strlen(self::FAQ_QUESTION)));
+                echo $q.PHP_EOL;
+                $q_pos = stripos($content, self::FAQ_QUESTION, $a_pos);
+                if (false !== $q_pos) {
+                    $a = trim(substr($content, $a_pos + strlen(self::FAQ_ANSWER), $q_pos - $a_pos - strlen(self::FAQ_ANSWER)));
+                } else {
+                    $a = trim(substr($content, $a_pos + strlen(self::FAQ_ANSWER)));
+                }
+                echo $a.PHP_EOL;
+            } else {
+                $q = trim(substr($content, $q_pos + strlen(self::FAQ_QUESTION)));
+                $a = '';
+            }  
+            $faq = new \app\models\UnicomFaq;
+            $faq->question = $q;
+            $faq->answer = $a;
+            $faq->created_at = time();
+            $faq->updated_at = time();
+            $faq->save(false);
+            $offset = $q_pos + strlen(self::FAQ_QUESTION);
+        }        
+    }
 }

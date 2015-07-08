@@ -160,7 +160,11 @@ $signPackage = $jssdk->GetSignPackage();
             <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动规则</a>
         </p>
        <hr width=60%>
-       <p align="center">已有<a href="#claimers"><span class="num"><?= \app\models\GiftboxClaimed::find()->count() ?></span></a>人抢了礼盒</p>
+       <p align="center">已有<a href="#claimers"><span class="num"><?= \app\models\GiftboxClaimed::find()->count() ?></span></a>人抢了礼盒
+           <br><br><br>
+           本礼盒已被转发<?= \app\models\GiftboxShareLog::find()->where(['giftbox_id' => $giftbox->id])->count();
+                ?>次；本活动已被转发<?= \app\models\GiftboxShareLog::find()->count(); ?>次。
+       </p>
 
        <P>&nbsp;</P>
        <br>&nbsp;

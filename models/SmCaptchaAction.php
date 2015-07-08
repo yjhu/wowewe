@@ -27,6 +27,7 @@ use app\models\SmCaptcha;
 
 class SmCaptchaAction extends Action
 {
+    const DEBUG = false;
     const REFRESH_GET_VAR='refresh';
 
     const SESSION_VAR_PREFIX='Yii.SmCaptchaAction.';
@@ -129,7 +130,7 @@ class SmCaptchaAction extends Action
                     throw new HttpException(404,"今日校验次数满!!");    
                 }
 
-                if (!YII_DEBUG)
+                if (!self::DEBUG)
                 {
                     $s = Yii::$app->sm->S($mobile,  "【沃手科技】短信验证码:{$session[$name]}", '', null, true);
                     if ($s->isSendOk())

@@ -18,6 +18,9 @@ defined('STDOUT') or define('STDOUT', fopen('php://stdout', 'w'));
 require(__DIR__ . '/vendor/autoload.php');
 require(__DIR__ . '/vendor/yiisoft/yii2/Yii.php');
 
+\Yii::$classMap['XS'] = __DIR__ . '/vendor/hightman/xunsearch/sdk/php/lib/XS.php';
+\Yii::$classMap['XSDocument'] = __DIR__ . '/vendor/hightman/xunsearch/sdk/php/lib/XS.php';
+
 $config = require(__DIR__ . '/config/console.php');
 
 $application = new yii\console\Application($config);
