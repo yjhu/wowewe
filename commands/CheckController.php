@@ -154,4 +154,9 @@ class CheckController extends \yii\console\Controller {
            }
        }
     }
+    
+    public function actionSm()
+    {
+        \app\models\sm\ESmsGuodu::S_test2();
+    }
 }

@@ -138,6 +138,25 @@ class WechatXiangYangUnicom extends Wechat
 		}
 		return $model->getResp($this);
 	}
+        
+    protected function enterAAM($content)
+    { 
+        $xs = new \XS('unicom'); 
+        $search = $xs->search;
+//        \Yii::warning(__METHOD__);
+//        \Yii::warning(date('Y-m-d H:i:s'));
+        $docs = $search->setQuery($content)->setLimit(5)->search();
+//        \Yii::warning(date('Y-m-d H:i:s'));
+        if (empty($docs)) return false;
+        $respText = '';
+        foreach ($docs as $doc) {
+            $respText .= '问题：'.$doc->question . PHP_EOL;
+            $respText .= '回答：'.$doc->answer . PHP_EOL;
+            $respText .= PHP_EOL;
+        }
+        \Yii::warning($respText);
+        return $this->responseText($respText);
+    }
 
     protected function onText() 
     { 
@@ -149,6 +168,9 @@ class WechatXiangYangUnicom extends Wechat
         if (($resp = $this->handleKeyword($Content)) !== false) {
             return $resp;
         }
+        if (($resp = $this->enterAAM($Content)) !== false) {
+            return $resp;
+        } 
         if (($resp = $this->handleKeyword('.default')) !== false) {
             return $resp;
         }        

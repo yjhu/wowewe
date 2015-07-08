@@ -20,7 +20,8 @@
 		"yiisoft/yii2-swiftmailer": "*",
 	        "vova07/yii2-fileapi-widget": "*",
 		"vova07/yii2-imperavi-widget": "*",
-		"callmez/yii2-wechat": "dev-master"
+		"callmez/yii2-wechat": "dev-master",
+		"hightman/xunsearch": "*"
 	},
 	"require-dev": {
 		"yiisoft/yii2-codeception": "*",

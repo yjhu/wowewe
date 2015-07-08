@@ -139,7 +139,7 @@ class ESmsGuodu extends ESms
 	{
 		U::W('before='.self::B());
 		$s = new ESmsGuodu;	
-		$s->mobiles_str = '13871407676';
+		$s->mobiles_str = '18971288549';
 		$s->message = '壹贰叁肆伍陆柒捌玖拾0123456789壹贰叁肆伍陆柒捌玖拾0123456789壹贰叁肆伍陆柒捌玖拾0123456789壹贰叁肆伍陆柒1';
 		$s->sendtime = ESmsGuodu::getNewSendTime(date("Y-m-d H:i:s"));		
 		$s->send();
