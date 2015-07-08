@@ -389,5 +389,29 @@ class ExportController extends \yii\console\Controller {
         }
         fclose($fh);
     }
+
+    public function actionFans( $filename = 'fans.csv') {
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, 'w');
+       // if (null === $date) {
+       //     $date = \app\models\U::getFirstDate(date('Y'), date('m'));
+       // }
+        $total_count = \app\models\MUser::find()->count();
+        $step = 3000;
+        $start = 0;
+
+        while ($start < $total_count) {
+        	$fans = \app\models\MUser::find()->offset($start)->limit($step)->all();
+        
+	        foreach ($fans as $fan) {
+
+	            fprintf($fh, "%s, %s, %s, %s, %s, %s\n", $fan->nickname, $fan->country, $fan->province, $fan->city, implode(';', $fan->bindMobileNumbers), date('Y-m-d H:i:s', $fan->subscribe_time));
+	        }
+
+        	$start += $step;
+        }
+        
+        fclose($fh);
+    }    
 }
 
