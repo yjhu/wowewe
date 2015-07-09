@@ -86,7 +86,7 @@ var olduser = ["18671070431","18671085976","13277106838","18608676969","18696219
 
 -->
 
-<p><a href="javascript:history.back();">返回>></a></p>
+<p>了解活动详情请点击<a href="javascript:history.back();">返回>></a></p>
 </div>
 
 

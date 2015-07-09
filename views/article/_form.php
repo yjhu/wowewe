@@ -29,8 +29,9 @@ use vova07\imperavi\Widget;
 
     <?= $form->field($model, 'digest')->textInput(['maxlength' => 256]) ?>
 
-    <iframe align=middle marginwidth=0 marginheight=0 src="./wxedit/index.html" frameborder=no scrolling=yes width=640 height=600></iframe>
-
+    <!--
+    <iframe align=middle marginwidth=0 marginheight=0 src="./wosotech-edit/index.html" frameborder=no scrolling=yes width=960 height=600></iframe>
+    -->
 
     <?php echo $form->field($model, 'content')->widget(Widget::className(), [
         'settings' => [
@@ -44,6 +45,15 @@ use vova07\imperavi\Widget;
                 'clips',
                 'fullscreen',
                 'fontcolor',
+                'fontfamily',
+                'fontsize',
+                'limiter',
+                'table',
+                'textexpander',
+                'textdirection',
+                'video',
+                'definedlinks',
+                'filemanager',
                 'imagemanager',
             ],
             'imageManagerJson' => Url::to(['/article/imagesget']),
