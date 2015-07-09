@@ -51,48 +51,38 @@
     <div class="content">
         <br>
 
-       <ul class="table-view">
-  
-
+       <ul class="table-view" id="ul-body">
+      
             <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right">
+           
                 <div class="media-body">
                   <p><span class="orderitem">标题</span>&nbsp;&nbsp;渠道竞赛评比打分开始了</p>
                   <p><span class="orderitem">作者</span>&nbsp;&nbsp;市场部</p>
                   <p><span class="orderitem">时间</span>&nbsp;&nbsp;2015-7-8 12:00:00</p>
                 </div> 
-              </a>
+                <a data-ignore="push" class="btn btn-link pull-right" id="messageItem"><i class="fa fa-map-marker li-body fa-2x" style="color:#ea8010" msg_id="1"></i></a>
             </li>
 
             <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right">
+           
                 <div class="media-body">
                   <p><span class="orderitem">标题</span>&nbsp;&nbsp;渠道竞赛评比打分开始了</p>
                   <p><span class="orderitem">作者</span>&nbsp;&nbsp;市场部</p>
                   <p><span class="orderitem">时间</span>&nbsp;&nbsp;2015-7-8 12:00:00</p>
                 </div> 
-              </a>
+                <a data-ignore="push" class="btn btn-link pull-right" id="messageItem"><i class="fa fa-map-marker li-body fa-2x" style="color:#ea8010" msg_id="2"></i></a>
             </li>
 
             <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right">
+           
                 <div class="media-body">
                   <p><span class="orderitem">标题</span>&nbsp;&nbsp;渠道竞赛评比打分开始了</p>
                   <p><span class="orderitem">作者</span>&nbsp;&nbsp;市场部</p>
                   <p><span class="orderitem">时间</span>&nbsp;&nbsp;2015-7-8 12:00:00</p>
                 </div> 
-              </a>
+                <a data-ignore="push" class="btn btn-link pull-right" id="messageItem"><i class="fa fa-map-marker li-body fa-2x" style="color:#ea8010" msg_id="3"></i></a>
             </li>
-
-            <li class="table-view-cell media">
-              <a data-ignore="push" class="navigate-right">
-                <div class="media-body">
-                  <p><span class="orderitem">标题</span>&nbsp;&nbsp;渠道竞赛评比打分开始了</p>
-                  <p><span class="orderitem">作者</span>&nbsp;&nbsp;市场部</p>
-                  <p><span class="orderitem">时间</span>&nbsp;&nbsp;2015-7-8 12:00:00</p>
-                </div> 
-              </a>
-            </li>                      
+          
         </ul>
         &nbsp;<br>&nbsp;<br>&nbsp;<br> 
 
@@ -105,6 +95,19 @@
           //alert("back!");
           //location.href = "<//?php echo Url::to(['hyzx3', 'gh_id'=>$staff->gh_id, 'openid'=>$staff->openid]) ?>";
         }
+
+
+        $(document).ready(function () {
+
+            $('#ul-body').on('click', '.li-body', function (e) {
+                var msg_id = $(e.target).attr('msg_id');
+
+                alert(msg_id);
+
+            });
+
+        });
+
     </script>
   </body>
 </html>
