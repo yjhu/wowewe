@@ -53,7 +53,7 @@
        <ul class="table-view" id="ul-body">
       
             <li class="table-view-cell media">
-                <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['messageboxdetail', 'msg_id'=>1],true) ?>">
+
                 <div class="media-body">
                   <p><span class="orderitem">标题</span>&nbsp;&nbsp;渠道竞赛评比打分开始了</p>
                   <p><span class="orderitem">作者</span>&nbsp;&nbsp;市场部</p>
@@ -63,11 +63,7 @@
 
                   <p><span class="orderitem">详情</span>&nbsp;&nbsp;...</p>
                 </div> 
-                </a>
 
-                <!--
-                <a data-ignore="push" class="btn btn-link pull-right" id="messageItem"><i class="fa fa-eye li-body fa-2x" style="color:#629BD2" msg_id="1"></i></a>
-                -->
             </li>
 
         </ul>
