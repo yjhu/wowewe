@@ -163,6 +163,19 @@
                 </div>
               </a>
             </li>
+
+            <li class="table-view-cell media">
+              <a data-ignore="push"  class="navigate-right" href="<?php echo Url::to(['wapx/messagebox', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'backwards' => false]) ?>">
+      
+                <span class="media-object pull-left">
+                  <i class="fa fa fa-inbox" style="color:#56abe4"></i>
+                </span>
+                <div class="media-body">
+                  消息中心
+                </div>
+              </a>
+            </li>
+
             <?php if (!empty($user->outlet)) { ?>
             <li class="table-view-cell media">
               <a data-ignore="push"  class="navigate-right" href="<?php echo Url::to(['wapx/client-outlet', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'outlet_id' => $user->outlet->outlet_id, 'backwards' => false]) ?>">
@@ -179,6 +192,9 @@
               </a>
             </li>
             <?php } ?>
+
+
+
 
             <!--
             <li class="table-view-cell">Item 3 <button class="btn btn-positive">Button</button></li>

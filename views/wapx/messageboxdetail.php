@@ -7,7 +7,6 @@
 
 ?>
     
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -59,6 +58,10 @@
                   <p><span class="orderitem">标题</span>&nbsp;&nbsp;渠道竞赛评比打分开始了</p>
                   <p><span class="orderitem">作者</span>&nbsp;&nbsp;市场部</p>
                   <p><span class="orderitem">时间</span>&nbsp;&nbsp;2015-7-8 12:00:00</p>
+
+                  <p>&nbsp;</p>
+
+                  <p><span class="orderitem">详情</span>&nbsp;&nbsp;...</p>
                 </div> 
                 </a>
 
@@ -67,47 +70,13 @@
                 -->
             </li>
 
-            <li class="table-view-cell media">
-           
-                <div class="media-body">
-                  <p><span class="orderitem">标题</span>&nbsp;&nbsp;渠道竞赛评比打分开始了</p>
-                  <p><span class="orderitem">作者</span>&nbsp;&nbsp;市场部</p>
-                  <p><span class="orderitem">时间</span>&nbsp;&nbsp;2015-7-8 12:00:00</p>
-                </div> 
-
-                <!--
-                <a data-ignore="push" class="btn btn-link pull-right" id="messageItem"><i class="fa fa-eye li-body fa-2x" style="color:#629BD2" msg_id="2"></i></a>
-                -->
-            </li>
-
-            <li class="table-view-cell media">
-           
-                <div class="media-body">
-                  <p><span class="orderitem">标题</span>&nbsp;&nbsp;渠道竞赛评比打分开始了</p>
-                  <p><span class="orderitem">作者</span>&nbsp;&nbsp;市场部</p>
-                  <p><span class="orderitem">时间</span>&nbsp;&nbsp;2015-7-8 12:00:00</p>
-                </div> 
-
-                <!--
-                <a data-ignore="push" class="btn btn-link pull-right" id="messageItem"><i class="fa fa-eye li-body fa-2x" style="color:#629BD2" msg_id="3"></i></a>
-                -->
-            </li>
-          
         </ul>
-        &nbsp;<br>&nbsp;<br>&nbsp;<br> 
+
+          <a class="btn btn-block" href="javascript:history.back();">返回</a>
+          &nbsp;<br>&nbsp;<br> 
 
     </div>
 
-    <div id='messagedetail'  class='modal'>
-        <header class="bar bar-nav">
-            <a class="icon icon-close pull-right" href="#messagedetail"></a>
-            <h1 class='title'>消息详情</h1>
-        </header>
-        <div class="content">
-         hello
-
-        </div>
-    </div>
 
 
     <script type="text/javascript">

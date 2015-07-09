@@ -254,7 +254,18 @@ class WapxController extends Controller {
         $gh = Yii::$app->wx->getGh();
   
         return $this->render('messagebox', ['gh_id' => $gh_id, 'openid' => $openid ]);
-       // return $this->render('zhideguangzhu');
+    }
+
+    public function actionMessageboxdetail() {
+        $this->layout = false;
+ 
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+
+        $gh = Yii::$app->wx->getGh();
+  
+        return $this->render('messageboxdetail', ['gh_id' => $gh_id, 'openid' => $openid ]);
     }
 
 
