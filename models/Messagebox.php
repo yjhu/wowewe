@@ -29,8 +29,9 @@ class Messagebox extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'content', 'author', 'receiver'], 'required'],
+            [['title', 'content', 'author', 'receiver_type', 'receiver'], 'required'],
             [['content'], 'string'],
+            [['receiver_type'], 'integer'],
             [['receiver'], 'integer'],
             [['title'], 'string', 'max' => 256],
             [['author'], 'string', 'max' => 64]
