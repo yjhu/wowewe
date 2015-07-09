@@ -44,7 +44,11 @@ $this->params['breadcrumbs'][] = $this->title;
             
             'digest',
             
-            'content:ntext',
+            [
+                'label' => '内容',
+                'attribute' => 'content',
+                'format'=>'html',                      
+	    ],
             
             'content_source_url:url',
             

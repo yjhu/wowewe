@@ -654,5 +654,9 @@ class WapxController extends Controller {
             'backwards' => $backwards,
         ]);
     }
-
+    
+    public function actionMetronic() {
+        $this->layout = 'metronic';
+        return $this->render('blank');
+    }
 }

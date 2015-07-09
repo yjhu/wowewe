@@ -285,6 +285,10 @@ class MOffice extends ActiveRecord implements IdentityInterface {
         return $this->hasOne(MMarketingServiceCenter::className(), ['id' => 'msc_id'])
                         ->viaTable('wx_rel_office_msc', ['office_id' => 'office_id']);
     }
+    
+    public function getOutlet() {
+        return $this->hasOne(ClientOutlet::className(), ['original_office_id' => 'office_id']);
+    }
 
     public function getSceneids() {
         $staffs = $this->staffs;

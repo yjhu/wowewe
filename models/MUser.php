@@ -633,6 +633,12 @@ class MUser extends ActiveRecord implements IdentityInterface
 //        return $wx_user->getBelongTo();
     }
     
+    public function getOutlet() {
+        if ($this->belongto === 0) return null;
+        $office = MOffice::findOne(['office_id' => $this->belongto]);
+        return $office->outlet;
+    }
+    
     public function getWechatInfo() {
         \Yii::$app->wx->setGhId($this->gh_id);            
         $arr = Yii::$app->wx->WxGetUserInfo($this->openid);                                  
