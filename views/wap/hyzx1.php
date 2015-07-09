@@ -163,6 +163,22 @@
                 </div>
               </a>
             </li>
+            <?php if (!empty($user->outlet)) { ?>
+            <li class="table-view-cell media">
+              <a data-ignore="push"  class="navigate-right" href="<?php echo Url::to(['wapx/client-outlet', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'outlet_id' => $user->outlet->outlet_id, 'backwards' => false]) ?>">
+                
+                <span class="media-object pull-left">
+                 <!--
+                  <img src="../web/images/comm-icon/iconfont-pengyouquan.png?v3" style="width:16px;height:16px">
+                  -->
+                  <i class="fa fa fa-home" style="color:#56abe4"></i>
+                </span>
+                <div class="media-body">
+                  我的归属门店
+                </div>
+              </a>
+            </li>
+            <?php } ?>
 
             <!--
             <li class="table-view-cell">Item 3 <button class="btn btn-positive">Button</button></li>
