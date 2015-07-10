@@ -44,11 +44,12 @@ class Messagebox extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'msg_id' => 'Msg ID',
-            'title' => 'Title',
-            'content' => 'Content',
-            'author' => 'Author',
-            'receiver' => 'Receiver',
+            'msg_id' => '消息编号',
+            'title' => '标题',
+            'content' => '内容',
+            'author' => '作者',
+            'receiver_type' => '接受者类型',
+            'receiver' => '接受者',
         ];
     }
 }

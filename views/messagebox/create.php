@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\Messagebox */
 
-$this->title = 'Create Messagebox';
-$this->params['breadcrumbs'][] = ['label' => 'Messageboxes', 'url' => ['index']];
+$this->title = '新增消息';
+$this->params['breadcrumbs'][] = ['label' => '消息中心', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="messagebox-create">

@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model app\models\Messagebox */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => 'Messageboxes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '消息中心', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="messagebox-view">
@@ -15,11 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->msg_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->msg_id], [
+        <?= Html::a('Update', ['修改', 'id' => $model->msg_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['删除', 'id' => $model->msg_id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '删除本条消息，确定?',
                 'method' => 'post',
             ],
         ]) ?>

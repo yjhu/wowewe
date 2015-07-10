@@ -424,7 +424,6 @@ class ExportController extends \yii\console\Controller {
         $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
         $fh1 = fopen($filepathname, 'w');
 
-        $i=0;
         while (!feof($fh)) 
         {
             $line = fgets($fh);
