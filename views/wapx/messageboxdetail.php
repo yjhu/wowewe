@@ -39,11 +39,9 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-      <a data-ignore="push" class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre()"></a>
       <h1 class="title">
        消息中心
       </h1>
-
     </header>
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
@@ -55,13 +53,13 @@
             <li class="table-view-cell media">
 
                 <div class="media-body">
-                  <p><span class="orderitem">标题</span>&nbsp;&nbsp;渠道竞赛评比打分开始了</p>
-                  <p><span class="orderitem">作者</span>&nbsp;&nbsp;市场部</p>
-                  <p><span class="orderitem">时间</span>&nbsp;&nbsp;2015-7-8 12:00:00</p>
+                  <p><span class="orderitem">标题</span>&nbsp;&nbsp;<?= $messagebox->title; ?></p>
+                  <p><span class="orderitem">作者</span>&nbsp;&nbsp;<?= $messagebox->author; ?></p>
+                  <p><span class="orderitem">时间</span>&nbsp;&nbsp;<?= $messagebox->create_time; ?></p>
 
                   <p>&nbsp;</p>
 
-                  <p><span class="orderitem">详情</span>&nbsp;&nbsp;...</p>
+                  <p><span class="orderitem">详情</span>&nbsp;&nbsp;<?= $messagebox->content; ?></p>
                 </div> 
 
             </li>
@@ -77,23 +75,7 @@
 
     <script type="text/javascript">
 
-        function back2pre()
-        {
-          //alert("back!");
-          //location.href = "<//?php echo Url::to(['hyzx3', 'gh_id'=>$staff->gh_id, 'openid'=>$staff->openid]) ?>";
-        }
-
-
         $(document).ready(function () {
-
-            /*
-            $('#ul-body').on('click', '.li-body', function (e) {
-                var msg_id = $(e.target).attr('msg_id');
-                alert(msg_id);
-                //$("#messagedetail").open();
-                location.href="#messagedetail";
-            });
-            */
 
 
         });

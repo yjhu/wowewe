@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
+use app\models\Messagebox;
+use app\models\MOffice;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\MessageboxSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -29,8 +32,27 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             //'content:ntext',
             'author',
-            'receiver_type',
-            'receiver',
+
+            [
+                'attribute' => 'receiver_type',
+                'value'=>function ($model, $key, $index, $column) { return Messagebox::getReceiverTypeOptionName($model->receiver_type); },
+                'filter'=> Messagebox::getReceiverTypeOptionName(),
+                //'visible'=>false,
+            ],
+
+            [
+                'attribute' => 'receiver',
+                'value'=>function ($model, $key, $index, $column) { 
+                    $office = MOffice::findOne(['office_id'=>$model->receiver]);
+                    if($model->receiver_type == 0) /*经销商*/
+                        return '--';
+                    else
+                        return $office->title;
+                },
+                //'filter'=> Messagebox::getReceiverTypeOptionName(),
+                //'visible'=>false,
+            ],
+
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

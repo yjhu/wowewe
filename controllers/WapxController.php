@@ -6,6 +6,9 @@ use app\models\MOffice;
 use app\models\MOrder;
 use app\models\MStaff;
 use app\models\MUser;
+use app\models\Messagebox;
+
+
 use app\models\U;
 use Yii;
 use yii\web\Controller;
@@ -252,9 +255,24 @@ class WapxController extends Controller {
         Yii::$app->wx->setGhId($gh_id);
 
         $gh = Yii::$app->wx->getGh();
-  
-        return $this->render('messagebox', ['gh_id' => $gh_id, 'openid' => $openid ]);
+
+
+        $model = MStaff::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        if ($model === null) {
+            U::W(['Invalid openid.', __METHOD__, $gh_id, $openid]);
+            return $this->redirect(['staffsearch', 'gh_id' => $gh_id, 'openid' => $openid]);
+        }
+
+        if (empty($model->office_id)) {
+            U::W(['Invalid office_id.', __METHOD__, $gh_id, $openid]);
+            return $this->redirect(['staffbind', 'gh_id' => $gh_id, 'openid' => $openid, 'mobile' => $model->mobile]);
+        }
+
+        $messageboxs = Messagebox::find()->where(['receiver' => $model->office_id])->orderBy(['msg_id' => SORT_DESC])->all();
+
+        return $this->render('messagebox', ['gh_id' => $gh_id, 'openid' => $openid, 'messageboxs' => $messageboxs ]);
     }
+
 
     public function actionMessageboxdetail() {
         $this->layout = false;
@@ -264,8 +282,11 @@ class WapxController extends Controller {
         Yii::$app->wx->setGhId($gh_id);
 
         $gh = Yii::$app->wx->getGh();
-  
-        return $this->render('messageboxdetail', ['gh_id' => $gh_id, 'openid' => $openid ]);
+
+        $msg_id = $_GET['msg_id'];
+
+        $messagebox = Messagebox::findOne(['msg_id' => $msg_id]);
+        return $this->render('messageboxdetail', ['gh_id' => $gh_id, 'openid' => $openid, 'messagebox' => $messagebox ]);
     }
 
 

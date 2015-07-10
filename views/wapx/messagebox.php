@@ -53,62 +53,23 @@
 
        <ul class="table-view" id="ul-body">
       
-            <li class="table-view-cell media">
-                <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['messageboxdetail', 'msg_id'=>1],true) ?>">
-                <div class="media-body">
-                  <p><span class="orderitem">标题</span>&nbsp;&nbsp;渠道竞赛评比打分开始了</p>
-                  <p><span class="orderitem">作者</span>&nbsp;&nbsp;市场部</p>
-                  <p><span class="orderitem">时间</span>&nbsp;&nbsp;2015-7-8 12:00:00</p>
-                </div> 
-                </a>
+            <?php foreach($messageboxs as $messagebox) {  ?>
 
-                <!--
-                <a data-ignore="push" class="btn btn-link pull-right" id="messageItem"><i class="fa fa-eye li-body fa-2x" style="color:#629BD2" msg_id="1"></i></a>
-                -->
-            </li>
+              <li class="table-view-cell media">
+                  <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['messageboxdetail', 'msg_id'=>$messagebox->msg_id],true) ?>">
+                  <div class="media-body">
+                    <p><span class="orderitem">标题</span>&nbsp;&nbsp;<?= $messagebox->title; ?></p>
+                    <p><span class="orderitem">作者</span>&nbsp;&nbsp;<?= $messagebox->author; ?></p>
+                    <p><span class="orderitem">时间</span>&nbsp;&nbsp;<?= $messagebox->create_time; ?></p>
+                  </div> 
+                  </a>
 
-            <li class="table-view-cell media">
-                <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['messageboxdetail', 'msg_id'=>1],true) ?>">
-                <div class="media-body">
-                  <p><span class="orderitem">标题</span>&nbsp;&nbsp;渠道竞赛评比打分开始了</p>
-                  <p><span class="orderitem">作者</span>&nbsp;&nbsp;市场部</p>
-                  <p><span class="orderitem">时间</span>&nbsp;&nbsp;2015-7-8 12:00:00</p>
-                </div> 
-                </a>
+              </li>
+            <?php } ?>
 
-                <!--
-                <a data-ignore="push" class="btn btn-link pull-right" id="messageItem"><i class="fa fa-eye li-body fa-2x" style="color:#629BD2" msg_id="1"></i></a>
-                -->
-            </li>
-
-            <li class="table-view-cell media">
-                <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['messageboxdetail', 'msg_id'=>1],true) ?>">
-                <div class="media-body">
-                  <p><span class="orderitem">标题</span>&nbsp;&nbsp;渠道竞赛评比打分开始了</p>
-                  <p><span class="orderitem">作者</span>&nbsp;&nbsp;市场部</p>
-                  <p><span class="orderitem">时间</span>&nbsp;&nbsp;2015-7-8 12:00:00</p>
-                </div> 
-                </a>
-
-                <!--
-                <a data-ignore="push" class="btn btn-link pull-right" id="messageItem"><i class="fa fa-eye li-body fa-2x" style="color:#629BD2" msg_id="1"></i></a>
-                -->
-            </li>            
-          
         </ul>
         &nbsp;<br>&nbsp;<br>&nbsp;<br> 
 
-    </div>
-
-    <div id='messagedetail'  class='modal'>
-        <header class="bar bar-nav">
-            <a class="icon icon-close pull-right" href="#messagedetail"></a>
-            <h1 class='title'>消息详情</h1>
-        </header>
-        <div class="content">
-         hello
-
-        </div>
     </div>
 
 
@@ -116,8 +77,7 @@
 
         function back2pre()
         {
-          //alert("back!");
-          //location.href = "<//?php echo Url::to(['hyzx3', 'gh_id'=>$staff->gh_id, 'openid'=>$staff->openid]) ?>";
+          history.back();
         }
 
 
@@ -131,7 +91,6 @@
                 location.href="#messagedetail";
             });
             */
-
 
         });
 
