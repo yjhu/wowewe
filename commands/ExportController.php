@@ -412,6 +412,41 @@ class ExportController extends \yii\console\Controller {
         }
         
         fclose($fh);
-    }    
+    }
+
+
+    //《关于公司员工及代理商关注微平台情况通报0514.xlsx》导出最新绑定情况
+    public function actionEmployeebind($filename = 'employeebind.csv')
+    {
+        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'employeebind.txt';
+        $fh = fopen($file, "r");
+
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh1 = fopen($filepathname, 'w');
+
+        $i=0;
+        while (!feof($fh)) 
+        {
+            $line = fgets($fh);
+            if (empty($line))
+                continue;
+            $arr = explode("\t", $line);     
+            $custom_mobile = trim($arr[0]);
+           
+            $custom = \app\models\OpenidBindMobile::findOne(['mobile'=>$custom_mobile]);
+            if (!empty($custom)) {
+				fprintf($fh1, "%s, %s \n", $custom_mobile, '是');
+            }
+            else 
+            {
+                fprintf($fh1, "%s, %s \n", $custom_mobile, '否');
+            }
+        }
+        fclose($fh1);
+        fclose($fh);    
+    }
+
+
+    
 }
 

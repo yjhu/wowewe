@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'msg_id',
             'title',
-            'content:ntext',
+            //'content:ntext',
             'author',
             'receiver_type',
             'receiver',
