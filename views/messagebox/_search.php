@@ -19,6 +19,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'title') ?>
 
+    <?= $form->field($model, 'digest') ?>
+
     <?= $form->field($model, 'content') ?>
 
     <?= $form->field($model, 'author') ?>
