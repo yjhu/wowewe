@@ -521,6 +521,20 @@ class MUser extends ActiveRecord implements IdentityInterface
     {
         return Yii::$app->formatter->asCurrency($this->user_account_balance/100);    
     } 
+    
+    public static function getTotalFans()
+    {
+        return self::find()->where(['subscribe' => 1])->count();
+    }
+    
+    public static function getTotalMembers()
+    {
+        return self::find()
+                ->joinWith('openidBindMobiles')
+                ->where(['subscribe' => 1])
+                ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                ->count();
+    }
 
     public function getUserAccounts()
     {
@@ -654,6 +668,20 @@ class MUser extends ActiveRecord implements IdentityInterface
                 'sex' => empty($arr['sex']) ? '' : $arr['sex'],
                 'subscribe' => empty($arr['subscribe']) ? '' : $arr['subscribe'],   
             ]);                   
+        }
+    }
+    
+    public static function getValidRecvFans($cat) {
+        if (0 === $cat) {
+            return self::find()->where(['subscribe' => 1])->andWhere([
+                '>', 'msg_time', date('Y-m-d H:i:s', strtotime('-2 days'))
+            ])->all();
+        } else {
+            return self::find()->where(['subscribe' => 1])->andWhere([
+                '>', 'msg_time', date('Y-m-d H:i:s', strtotime('-2 days'))
+            ])->andWhere([
+                'belongto' => $cat
+            ])->all();
         }
     }
     

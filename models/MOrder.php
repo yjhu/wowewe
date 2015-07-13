@@ -672,6 +672,18 @@ EOD;
         $parameters = json_encode($jsapi->GetValues());
         return $parameters;
     }
+    
+    public static function getTotalSucceedOrders() {
+        return self::find()->where([
+            'status' => [self::STATUS_SUCCEEDED, self::STATUS_SYSTEM_SUCCEEDED],
+        ])->count();
+    }
+    
+    public static function getTotalSucceedOrderSum() {
+        return self::find()->where([
+            'status' => [self::STATUS_SUCCEEDED, self::STATUS_SYSTEM_SUCCEEDED],
+        ])->sum('feesum') / 100;
+    }
 
     public function GetOrderJsApiParameters()
     {

@@ -84,12 +84,13 @@ class SiteController extends Controller
 */            
                 $office = Yii::$app->user->identity;
                 $username = $office->username;
+                return $this->render('index', ['username'=>$username, 'office'=>$office]);
         }
         else
         {
-            $username = '';
+            $this->redirect(\yii\helpers\Url::to(['login']));
         }
-        return $this->render('index', ['username'=>$username, 'office'=>$office]);
+        
     }
     
     public function actionLogin()
@@ -106,6 +107,7 @@ class SiteController extends Controller
         } 
         else 
         {
+            $this->layout = false;
             return $this->render('login', [
                 'model' => $model,
             ]);

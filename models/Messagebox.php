@@ -63,6 +63,26 @@ class Messagebox extends \yii\db\ActiveRecord
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
 
+    const PICURL = 'https://mmbiz.qlogo.cn/mmbiz/UoUa8K14mcDycwfU7TaJTYms2PWsXfPrqQBXRRYHIo7B1wlr2PAtMHIyPcQegMHbsT1FR5FwicYgVMia2ia1eVfIg/0?wx_fmt=jpeg';
+    public function afterSave($insert, $changedAttributes) {  
+        \Yii::warning('yjhu:'.__METHOD__);
+        \Yii::warning(\yii\helpers\Json::encode($this));
+        if (1 == $this->receiver_type) {
+            $wechat = \Yii::$app->user->getWechat();
+            \Yii::warning(\yii\helpers\Json::encode($wechat));
+            $articles = [
+                ['title'=>$this->title, 'description'=>$this->content, 'url'=>'', 'picurl'=>self::PICURL]
+            ]; 
+            $receivers = MUser::getValidRecvFans($this->receiver);
+            \Yii::warning(\yii\helpers\Json::encode($receivers));
+            foreach ($receivers as $recvr) {
+//                $wechat->WxMessageCustomSendNews($recvr->openid, $articles);
+                $ret = $wechat->WxMessageCustomSendNews(MGh::GH_XIANGYANGUNICOM_OPENID_KZENG, $articles);
+                \Yii::warning(\yii\helpers\Json::encode($ret));
+            }
+        }
+        parent::afterSave($insert, $changedAttributes);
+    }
 
     public static function getOfficeNameOptionAll($gh_id, $json = true, $need_prompt = true) {
         $offices = \app\models\MOffice::find()->where("gh_id = :gh_id", [':gh_id' => $gh_id])->asArray()->orderBy(['title' => SORT_ASC])->all();
