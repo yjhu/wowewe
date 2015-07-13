@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'msg_id',
             'title',
+            'digest',
             'content:ntext',
             'author',
             

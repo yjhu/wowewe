@@ -22,6 +22,8 @@ use app\models\U;
 
     <?= $form->field($model, 'title')->textInput(['maxlength' => 256]) ?>
 
+	<?= $form->field($model, 'digest')->textInput(['maxlength' => 256]) ?>
+
     <?php echo $form->field($model, 'content')->widget(Widget::className(), [
         'settings' => [
             'lang' => 'zh_cn',

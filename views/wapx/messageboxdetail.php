@@ -55,6 +55,7 @@
                 <div class="media-body">
                   <p><span class="orderitem">标题</span>&nbsp;&nbsp;<?= $messagebox->title; ?></p>
                   <p><span class="orderitem">作者</span>&nbsp;&nbsp;<?= $messagebox->author; ?></p>
+                  <p><span class="orderitem">摘要</span>&nbsp;&nbsp;<?= $messagebox->digest; ?></p>
                   <p><span class="orderitem">时间</span>&nbsp;&nbsp;<?= $messagebox->create_time; ?></p>
 
                   <p>&nbsp;</p>
@@ -66,7 +67,7 @@
 
         </ul>
 
-          <a class="btn btn-block" href="javascript:history.back();">返回</a>
+          <a class="btn btn-block" onclick="goback();">返回</a>
           &nbsp;<br>&nbsp;<br> 
 
     </div>
@@ -74,6 +75,12 @@
 
 
     <script type="text/javascript">
+
+        var url = "<?= Url::to(['wapx/messagebox'], true) ?>";
+        function goback()
+        {
+          location.href=url;
+        }
 
         $(document).ready(function () {
 

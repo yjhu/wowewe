@@ -40,7 +40,7 @@
     <!-- Make sure all your bars are the first things in your <body> -->
 
     <header class="bar bar-nav">
-      <a data-ignore="push" class="icon icon-left-nav pull-left" id="btn_back" onclick="back2pre()"></a>
+      <a data-ignore="push" class="icon icon-left-nav pull-left" id="btn_back" onclick="goback()"></a>
       <h1 class="title">
        消息中心
       </h1>
@@ -75,11 +75,11 @@
 
     <script type="text/javascript">
 
-        function back2pre()
+        var url = "<?= Url::to(['wap/hyzx1'], true) ?>";
+        function goback()
         {
-          history.back();
+          location.href=url;
         }
-
 
         $(document).ready(function () {
 

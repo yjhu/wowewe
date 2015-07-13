@@ -13,6 +13,11 @@ use Yii;
  * @property string $author
  * @property integer $receiver
  */
+
+/*
+ALTER TABLE `wx_messagebox` ADD `digest` VARCHAR(256) NOT NULL AFTER `title`;
+*/
+
 class Messagebox extends \yii\db\ActiveRecord
 {
     /**
@@ -29,11 +34,12 @@ class Messagebox extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'content', 'author', 'receiver_type', 'receiver'], 'required'],
+            [['title', 'digest', 'content', 'author', 'receiver_type', 'receiver'], 'required'],
             [['content'], 'string'],
             [['receiver_type'], 'integer'],
             [['receiver'], 'integer'],
             [['title'], 'string', 'max' => 256],
+            [['digest'], 'string', 'max' => 256],
             [['author'], 'string', 'max' => 64]
         ];
     }
@@ -46,6 +52,7 @@ class Messagebox extends \yii\db\ActiveRecord
         return [
             'msg_id' => '消息编号',
             'title' => '标题',
+            'digest' => '摘要',
             'content' => '内容',
             'author' => '作者',
             'receiver_type' => '接受者类型',
@@ -63,22 +70,28 @@ class Messagebox extends \yii\db\ActiveRecord
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
 
-    const PICURL = 'https://mmbiz.qlogo.cn/mmbiz/UoUa8K14mcDycwfU7TaJTYms2PWsXfPrqQBXRRYHIo7B1wlr2PAtMHIyPcQegMHbsT1FR5FwicYgVMia2ia1eVfIg/0?wx_fmt=jpeg';
+    const PICURL = 'https://mmbiz.qlogo.cn/mmbiz/UoUa8K14mcCFPTcBFB2KxgsrqAz4vxhmfC04mCbUFrSSjNibxlPA1Rvxiaibib8t8ONkicm4zOuMbFIv3k2SV6AwVZw/0?wx_fmt=jpeg';
+
     public function afterSave($insert, $changedAttributes) {  
-        \Yii::warning('yjhu:'.__METHOD__);
-        \Yii::warning(\yii\helpers\Json::encode($this));
+       // \Yii::warning('yjhu:'.__METHOD__);
+       // \Yii::warning(\yii\helpers\Json::encode($this));
         if (1 == $this->receiver_type) {
             $wechat = \Yii::$app->user->getWechat();
-            \Yii::warning(\yii\helpers\Json::encode($wechat));
+         //   \Yii::warning(\yii\helpers\Json::encode($wechat));
             $articles = [
-                ['title'=>$this->title, 'description'=>$this->content, 'url'=>'', 'picurl'=>self::PICURL]
+                [
+                    'title'=>$this->title, 
+                    'description'=>$this->digest, 
+                    'url'=> \yii\helpers\Url::to(['wapx/messageboxdetail', 'msg_id' => $this->msg_id],true),
+                    'picurl'=>self::PICURL
+                 ]
             ]; 
             $receivers = MUser::getValidRecvFans($this->receiver);
-            \Yii::warning(\yii\helpers\Json::encode($receivers));
+           // \Yii::warning(\yii\helpers\Json::encode($receivers));
             foreach ($receivers as $recvr) {
 //                $wechat->WxMessageCustomSendNews($recvr->openid, $articles);
                 $ret = $wechat->WxMessageCustomSendNews(MGh::GH_XIANGYANGUNICOM_OPENID_KZENG, $articles);
-                \Yii::warning(\yii\helpers\Json::encode($ret));
+              //  \Yii::warning(\yii\helpers\Json::encode($ret));
             }
         }
         parent::afterSave($insert, $changedAttributes);
