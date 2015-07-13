@@ -66,7 +66,7 @@ class Messagebox extends \yii\db\ActiveRecord
 
     public static function getOfficeNameOptionAll($gh_id, $json = true, $need_prompt = true) {
         $offices = \app\models\MOffice::find()->where("gh_id = :gh_id", [':gh_id' => $gh_id])->asArray()->orderBy(['title' => SORT_ASC])->all();
-        $listData = $need_prompt ? ['0' => '请选择营业厅'] : [];
+        $listData = $need_prompt ? ['0' => '全部'] : [];
         foreach ($offices as $office) {
             $value = $office['office_id'];
             $text = $office['title'];
