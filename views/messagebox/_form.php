@@ -64,7 +64,7 @@ use app\models\U;
     -->
 
     <span id="receiver-block">
-	<?= $form->field($model, 'receiver')->dropDownList(Messagebox::getOfficeNameOptionAll('gh_03a74ac96138', false, false)) ?>
+	<?= $form->field($model, 'receiver')->dropDownList(Messagebox::getOfficeNameOptionAll('gh_03a74ac96138', false, true)) ?>
 	</span>
     
     <div class="form-group">

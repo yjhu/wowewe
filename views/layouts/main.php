@@ -68,6 +68,7 @@ AppAsset::register($this);
 							['label' => '客户管理','url' => ['/custom/index'],'linkOptions' => ['data-method' => 'post']],
                                                         ['label' => '客户常见问题','url' => ['/unicom-faq/index'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '客户统计','url' => ['/order/officecustomstat'],'linkOptions' => ['data-method' => 'post']],
+							['label' => '消息中心','url' => ['/messagebox/index'],'linkOptions' => ['data-method' => 'post']],
 							'<li class="divider"></li>',
 							//['label' => '渠道管理','url' => ['/order/channellist'],'linkOptions' => ['data-method' => 'post']],
 							['label' => '促销活动管理','url' => ['/activity/index'],'linkOptions' => ['data-method' => 'post']],
