@@ -221,6 +221,18 @@
 	<!-- BEGIN CONTENT -->
 	<div class="page-content-wrapper">
 		<div class="page-content">
+                    <div class="page-bar">                    
+                    <?= \yii\widgets\Breadcrumbs::widget([
+                        'options' => ['class' => 'page-breadcrumb'],
+                        'itemTemplate' => "<li>{link}<i class='fa fa-angle-right'></i></li>\n",
+                        'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                        'homeLink' => [
+                            'label' => '首页',
+                            'url' => \Yii::$app->homeUrl,
+                            'template' => "<li><i class='fa fa-home'></i>{link}<i class='fa fa-angle-right'></i></li>\n",
+                        ],
+                    ]) ?>
+                    </div>
 			<?= $content; ?>
 		</div>
 	</div>
