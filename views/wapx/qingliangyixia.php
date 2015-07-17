@@ -68,7 +68,9 @@
 		<td>
 			<img src="\wx\web\images\qingliangyixia\qingliangyixia_16.jpg?v2"  alt=""></td>
 		<td>
-			<a href="javascript:chailihe();">
+	
+			<!--<a href="javascript:chailihe();">-->
+			<a href="javascript:alert('礼品已经抢完啦！月末大抽奖即将开始，礼品更丰厚哦！')">
 			<img src="\wx\web\images\qingliangyixia\qingliangyixia_17.jpg?v2"  alt="">
 			</a>
 		</td>

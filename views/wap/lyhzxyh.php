@@ -56,7 +56,7 @@ use yii\helpers\Url;
         if ($model->cid == 875 || $model->cid == 876) {
             ?>
                 <li><a data-ajax="false" href="<?php echo Url::to(['wap/mobile', 'cid' => $model->cid], true)?>">
-                        <img style='padding-top:20px' src="<?php echo $model->pic_url . '-120x120.jpg'?>">
+                        <img style='padding-top:20px' src="<?php echo $model->pic_url . '-120x120.jpg?v5'?>">
                         <h2><?=$model->title?></h2>
                         <p><?=$model->title_hint?></p>
 
@@ -88,7 +88,7 @@ use yii\helpers\Url;
             $model->cid == 890) {
             ?>
             <li><a data-ajax="false" href="<?php echo Url::to(['wap/mobile', 'cid' => $model->cid], true)?>">
-                    <img style='padding-top:20px' src="<?php echo $model->pic_url . '-120x120.jpg?v4'?>">
+                    <img style='padding-top:20px' src="<?php echo $model->pic_url . '-120x120.jpg?v5'?>">
                     <h2><?=$model->title?></h2>
                     <p><?=$model->title_hint?></p>
 
