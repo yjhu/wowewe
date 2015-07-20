@@ -76,6 +76,12 @@
 					<i class="fa fa-angle-down"></i>
 					</a>
 					<ul class="dropdown-menu dropdown-menu-default">
+                                                <?php if ( \Yii::$app->user->isOffice && !\Yii::$app->user->isAdmin ) { ?>
+                                                <li>
+                                                        <a href="#qrcode-modal" data-toggle="modal">
+							<i class="fa fa-qrcode"></i> 二维码 </a>
+						</li>
+                                                <?php } ?>
 						<li>
                                                         <a href="<?= \yii\helpers\Url::to(['/site/profile']); ?>">
 							<i class="icon-lock"></i> 修改密码 </a>
@@ -111,110 +117,106 @@
 		<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
 		<!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
 		<div class="page-sidebar navbar-collapse collapse">
-			<!-- BEGIN SIDEBAR MENU -->
-			<!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
-			<!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
-			<!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
-			<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-			<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
-			<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-			<ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-				<!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
-				<li class="sidebar-toggler-wrapper">
-					<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-					<div class="sidebar-toggler">
-					</div>
-					<!-- END SIDEBAR TOGGLER BUTTON -->
-				</li> 
-                            <?php if (!\Yii::$app->user->isGuest) { ?>
-                                <li class="start active open">
-                                        <a href="javascript:;">
-					<i class="fa fa-tachometer"></i>
-					<span class="title">概况</span>
-					<span class="arrow "></span>
-					</a>
-                                </li>
-                                <li>
-					<a href="javascript:;">
-					<i class="fa fa-weixin"></i>
-					<span class="title">微信管理</span>
-					<span class="arrow "></span>
-					</a>
-                                        <ul class="sub-menu">
-                                                <li>
-							<a href="">
-							<i class="fa fa-bars"></i>
-							自定义菜单</a>
-						</li>
-                                                <li>
-							<a href="">
-							<i class="fa fa-comments"></i>
-							自动回复</a>
-						</li>
-                                                <li>
-							<a href="">
-							<i class="fa fa-users"></i>
-							粉丝管理</a>
-						</li>
-                                                <li>
-							<a href="">
-							<i class="fa fa-soundcloud"></i>
-							素材管理</a>
-						</li>                                                
-                                        </ul>
-				</li>
-                                <li>
-					<a href="javascript:;">
-					<i class="fa fa-building"></i>
-					<span class="title">运营管理</span>
-					<span class="arrow "></span>
-					</a>
-                                        <ul class="sub-menu">
-                                                <li>
-							<a href="">
-							<i class="fa fa-sitemap"></i>
-							部门</a>
-						</li>
-                                                <li>
-							<a href="">
-							<i class="fa fa-home"></i>
-							营业厅</a>
-						</li>
-                                                <li>
-							<a href="">
-							<i class="fa fa-user"></i>
-							员工</a>
-						</li>
-                                                <li>
-							<a href="">
-							<i class="fa fa-users"></i>
-							客户</a>
-						</li>
-                                                <li>
-							<a href="">
-							<i class="fa fa-user"></i>
-							经销商</a>
-						</li>
-                                                <li>
-							<a href="">
-							<i class="fa fa-mobile"></i>
-							商品</a>
-						</li>
-                                                <li>
-							<a href="">
-							<i class="fa fa-shopping-cart"></i>
-							订单</a>
-						</li>
-                                                <li>
-							<a href="">
-							<i class="fa fa-soundcloud"></i>
-							活动</a>
-						</li>
-                                        </ul>
-				</li>
-                            <?php } ?>
-			</ul>
-			<!-- END SIDEBAR MENU -->
+                    <!-- BEGIN SIDEBAR MENU -->
+                    <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+                    <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+                    <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+                    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+                    <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+                    <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+                    <?php 
+                    if (\Yii::$app->user->isAdmin) {
+                        echo \yii\widgets\Menu::widget([
+                            'firstItemCssClass' => 'start',
+                            'encodeLabels' => false,
+                            'activateParents' => true,
+                            'items' => [ 
+                                [
+                                    'label' => '<i class="fa fa-home"></i><span class="title">首页</span><span class="arrow "></span>', 
+                                    'url' => ['/wapx/metronic']
+                                ],
+                                [
+                                    'label' => '<i class="fa fa-users"></i><span class="title">客户</span><span class="arrow "></span>',
+                                    'url' => '',
+                                    'items' => [
+                                        ['label' => '客户管理','url' => ['/custom/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '客户常见问题','url' => ['/unicom-faq/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '客户统计','url' => ['/order/officecustomstat'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '粉丝管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '用户账户管理','url' => ['/useraccount/index'],'linkOptions' => ['data-method' => 'post']],
+                                    ],
+                                ],
+                                [
+                                    'label' => '<i class="fa fa-users"></i><span class="title">员工</span><span class="arrow "></span>',
+                                    'url' => '',
+                                    'items' => [
+                                        ['label' => '员工管理','url' => ['/order/stafflist'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '员工推广成绩排行','url' => ['/order/stafftop'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '推广查询','url' => ['/accesslog/index'],'linkOptions' => ['data-method' => 'post']],
+                                    ],
+                                ],
+                                [
+                                    'label' => '<i class="fa fa-home"></i><span class="title">渠道</span><span class="arrow "></span>',
+                                    'url' => '',
+                                    'items' => [
+                                        ['label' => '营业厅管理','url' => ['/order/officelist'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '营业厅推广成绩排行','url' => ['/order/officetop'],'linkOptions' => ['data-method' => 'post']],
+                                    ],
+                                ],
+                                [
+                                    'label' => '<i class="fa fa-shopping-cart"></i><span class="title">商品与订单</span><span class="arrow "></span>',
+                                    'url' => '',
+                                    'items' => [
+                                        ['label' => '订单管理','url' => ['/order/index'],'linkOptions' => ['data-method' => 'post']],                                                               
+                                        ['label' => '消息中心','url' => ['/messagebox/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '促销活动管理','url' => ['/activity/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '商品管理','url' => ['/admin/itemlist'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '商品套餐管理','url' => ['/admin/pkglist'],'linkOptions' => ['data-method' => 'post']],
+                                    ],
+                                ],
+                                [
+                                    'label' => '<i class="fa fa-weixin"></i><span class="title">微信</span><span class="arrow "></span>',
+                                    'url' => '',
+                                    'items' => [
+                                        ['label' => '微信菜单配置','url' => ['/wxmenu/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '菜单动作设置','url' => ['/wxaction/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '图片管理','url' => ['/photo/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '单图文','url' => ['/article/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '多图文','url' => ['/articlemult/index'],'linkOptions' => ['data-method' => 'post']],
+                                    ],
+                                ],      
+                            ],
+                            'options' => [
+                                'class' => 'page-sidebar-menu',
+                            ],
+                            'submenuTemplate' => "\n<ul class='sub-menu'>\n{items}\n</ul>\n",
+                        ]);
+                    } else if (\Yii::$app->user->isOffice) {
+                        echo \yii\widgets\Menu::widget([
+                            'firstItemCssClass' => 'start',
+                            'encodeLabels' => false,
+                            'activateParents' => true,
+                            'options' => [
+                                'class' => 'page-sidebar-menu',
+                            ],
+                            'submenuTemplate' => "\n<ul class='sub-menu'>\n{items}\n</ul>\n",
+                            'items' => [ 
+                                [
+                                    'label' => '<i class="fa fa-home"></i><span class="title">首页</span><span class="arrow "></span>', 
+                                    'url' => ['/wapx/metronic']
+                                ],
+                                ['label' => '<i class="fa fa-shopping-cart"></i><span class="title">订单管理</span><span class="arrow "></span>','url' => ['/order/index'],'linkOptions' => ['data-method' => 'post']],
+                                ['label' => '<i class="fa fa-users"></i><span class="title">员工管理</span><span class="arrow "></span>','url' => ['/order/stafflist'],'linkOptions' => ['data-method' => 'post']],
+                                ['label' => '<i class="fa fa-users"></i><span class="title">粉丝管理</span><span class="arrow "></span>','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post']],
+                                ['label' => '<i class="fa fa-users"></i><span class="title">客户管理</span><span class="arrow "></span>','url' => ['/custom/index'],'linkOptions' => ['data-method' => 'post']],
+                                ['label' => '<i class="fa fa-search"></i><span class="title">推广查询</span><span class="arrow "></span>','url' => ['/accesslog/index'],'linkOptions' => ['data-method' => 'post']],
+                            ],
+                            
+                        ]);
+                    }
+                    ?>		
+                    <!-- END SIDEBAR MENU -->
+                    
 		</div>
 	</div>
 	<!-- END SIDEBAR -->
@@ -236,7 +238,27 @@
 			<?= $content; ?>
 		</div>
 	</div>
-	<!-- END CONTENT -->	
+	<!-- END CONTENT -->
+        <?php if ( \Yii::$app->user->isOffice && !\Yii::$app->user->isAdmin ) { ?>
+        <div class="modal fade in" id="qrcode-modal"  style="display: none;">
+                <div class="modal-dialog">
+                        <div class="modal-content">
+                                <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                        <h4 class="modal-title"><?= \Yii::$app->user->identity->username ?>的二维码</h4>
+                                </div>
+                                <div class="modal-body">
+                                         <?php echo \yii\helpers\Html::img(\Yii::$app->user->identity->getQrImageUrl(), ['class'=>'img-responsive center-block']); ?>
+                                </div>
+                                <div class="modal-footer">
+                                        <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+                                </div>
+                        </div>
+                        <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+        </div>
+        <?php } ?>
 </div>
 <!-- END CONTAINER -->
 <!-- BEGIN FOOTER -->

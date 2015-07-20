@@ -16,44 +16,40 @@ $this->title = '客户管理';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="custom-index">
-
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <!--
-    <h1><?= Html::encode($this->title) ?></h1>
--->
-    <p>
-		<?php echo Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', U::current(['download' => 1]), ['class' => 'btn btn-success', 'data-pjax' => '0',]); ?>
-<!--
-		<?php echo Html::a("非营业厅VIP会员绑定列表", ['vipbind', 'in_office'=>0], ['class' => 'btn btn-success']) ?>
--->
-    </p>
-
-<!--
-<button type="button" class="btn btn-lg btn-danger" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?">点我弹出/隐藏弹出框</button>
--->
-
-
-    <?= GridView::widget([
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <?= Html::encode($this->title) ?>
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse" data-original-title="" title="">
+								</a>
+                        <a href="javascript:;" class="remove" data-original-title="" title="">
+								</a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <p><?php echo Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', U::current(['download' => 1]), ['class' => 'btn btn-success', 'data-pjax' => '0',]); ?>
+                    </p>
+                    
+    <?php
+    
+    echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
-        'options' => ['class' => 'table-responsive'],
-        'tableOptions' => ['class' => 'table table-striped'],   
+//        'options' => ['class' => 'table-responsive'],
+//        'tableOptions' => ['class' => 'table table-striped'],   
         'columns' => [
-            //['class' => 'yii\grid\SerialColumn'],
-            //'custom_id',
 
             [
                 'attribute' => 'mobile',
-                //'format'=>'html',
                 'value'=>function ($model, $key, $index, $column) { 
                     return $model->mobile;
                 },
-                'headerOptions' => array('style'=>'width:10%;'),    
+//                'headerOptions' => array('style'=>'width:10%;'),    
             ],
-
-            //'name',
             [
                 'attribute' => 'name',
                 'format'=>'raw',
@@ -73,21 +69,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $model->name;
 
                 },
-                'headerOptions' => array('style'=>'width:10%;'),    
+//                'headerOptions' => array('style'=>'width:10%;'),    
             ],
 
 
-            //'is_vip',
 
             [
                 'label' => '微信信息',
                 'format'=>'html',
                 'value'=>function ($model, $key, $index, $column) { 
 
-//                    if(empty($model->openid))
                     if(empty($model->user))
                     {
-                        //$wxbind_info = "微信未绑定";
                         return "<img width=48 src='/wx/web/images/wxmpres/headimg-nowx-blank.png' title='微信未绑定'>";
                     }
                     else
@@ -108,7 +101,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'attribute'=>'is_bind',
                 'filter'=> ['1'=>'绑定', '0'=>'未绑定'],
-                'headerOptions' => array('style'=>'width:20%;'),
+//                'headerOptions' => array('style'=>'width:20%;'),
             ],
 
             [
@@ -127,93 +120,64 @@ $this->params['breadcrumbs'][] = $this->title;
                         'language'=>'zh-CN',
                     ]
                 ],
-                'headerOptions' => array('style'=>'width:35%;'),	
+//                'headerOptions' => array('style'=>'width:35%;'),	
             ],
 
             [
                 'label' => '部门名称',
                 'attribute' => 'office_id',
-                //'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
                 'value'=>function ($model, $key, $index, $column) { return empty($model->office->title) ? '' : $model->office->title; },
-                //'filter'=> MOffice::getOfficeNameOptionSimple2('gh_03a74ac96138',false,false),
                 'filter'=> \yii\helpers\ArrayHelper::merge(['0'=>'非营业厅'], MOffice::getOfficeNameOptionSimple2('gh_03a74ac96138',false,false)),
-                //'headerOptions' => array('style'=>'width:200px;'),      
-                //'visible'=>Yii::$app->user->identity->openid == 'admin',
                 'visible'=>Yii::$app->user->getIsAdmin(),
-                'headerOptions' => array('style'=>'width:15%;'),    
+//                'headerOptions' => array('style'=>'width:15%;'),    
             ],            
 
 
             [
                 'attribute' => 'is_vip',
-                //'label' => '',
                 'format'=>'html',
                 'value'=>function ($model, $key, $index, $column) { 
                     return $model->isVip() ? "是" : "否";
                 },
     			'filter'=> ['0'=>'否', '1'=>'是'],
-                'headerOptions' => array('style'=>'width:5%;'),    
+//                'headerOptions' => array('style'=>'width:5%;'),    
             ],
 
 
-            //'vip_level_id',
-            [
-                'attribute' => 'vip_level_id',
-                'value'=>function ($model, $key, $index, $column) { return \app\models\VipLevel::items($model->vip_level_id); },
-                'filter'=> \app\models\VipLevel::items(),
-                'headerOptions' => array('style'=>'width:10%;'),    
-            ],            
-
-            [
-                'attribute' => 'vip_join_time',
-                'value'=>function ($model, $key, $index, $column) { return $model->isVip() ? $model->getVipJoinTime() : '' ; },
-                'headerOptions' => array('style'=>'width:10%;'),    
-            ],            
-            [
-                'attribute' => 'vip_start_time',
-                'value'=>function ($model, $key, $index, $column) { return $model->isVip() ? $model->getVipStartTime() : '' ; },
-                'headerOptions' => array('style'=>'width:10%;'),    
-            ],            
-            [
-                'attribute' => 'vip_end_time',
-                'value'=>function ($model, $key, $index, $column) { return $model->isVip() ? $model->getVipEndTime() : '' ; },
-                'headerOptions' => array('style'=>'width:10%;'),    
-            ],
+//            [
+//                'attribute' => 'vip_level_id',
+//                'value'=>function ($model, $key, $index, $column) { return \app\models\VipLevel::items($model->vip_level_id); },
+//                'filter'=> \app\models\VipLevel::items(),
+////                'headerOptions' => array('style'=>'width:10%;'),    
+//            ],            
+//
+//            [
+//                'attribute' => 'vip_join_time',
+//                'value'=>function ($model, $key, $index, $column) { return $model->isVip() ? $model->getVipJoinTime() : '' ; },
+////                'headerOptions' => array('style'=>'width:10%;'),    
+//            ],            
+//            [
+//                'attribute' => 'vip_start_time',
+//                'value'=>function ($model, $key, $index, $column) { return $model->isVip() ? $model->getVipStartTime() : '' ; },
+////                'headerOptions' => array('style'=>'width:10%;'),    
+//            ],            
+//            [
+//                'attribute' => 'vip_end_time',
+//                'value'=>function ($model, $key, $index, $column) { return $model->isVip() ? $model->getVipEndTime() : '' ; },
+////                'headerOptions' => array('style'=>'width:10%;'),    
+//            ],
       
-
-            /*
-            [
-                //'attribute' => 'vip_bind',
-                'label' => '是否绑定',
-                'value'=>function ($model, $key, $index, $column) { return empty($model->openidBindMobile) ? '否' : '是';},
-                //'filter'=> \app\models\VipLevel::items(),
-            ],
-            */       
-
-/*
-            [
-                'label' => '微信昵称',
-                'value'=>function ($model, $key, $index, $column) { return empty($model->openidBindMobile->user->nickname) ? '' : $model->openidBindMobile->user->nickname;},
-            ],       
-
-*/
-
-/*
-            //['class' => 'yii\grid\ActionColumn'],
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template' => '{update}',
-            ],
-*/
         ],
-    ]); ?>
+    ]); 
+    
+    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+
 
 </div>
-<script type="text/javascript">
-
-    $(function () {
-      $('[data-toggle="popover"]').popover({html : true })
-      //alert('hi');
-    })
-
-</script>

@@ -17,6 +17,7 @@ use app\models\MActfollowerSearch;
  */
 class ActivityController extends Controller
 {
+    public $layout = 'metronic';
     public function behaviors()
     {
         return [

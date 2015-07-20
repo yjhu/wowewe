@@ -14,6 +14,8 @@ use yii\filters\VerbFilter;
  */
 class MessageboxController extends Controller
 {
+    public $layout = 'metronic';
+    
     public function behaviors()
     {
         return [

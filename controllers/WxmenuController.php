@@ -21,6 +21,7 @@ use app\models\MGh;
 
 class WxmenuController extends Controller
 {
+    public $layout = 'metronic';
     public function behaviors()
     {
         return [

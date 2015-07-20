@@ -22,7 +22,7 @@ use app\models\MPkgSearch;
 
 class AdminController extends Controller
 {
-    public $layout = 'main';
+    public $layout = 'metronic';
 
     public $enableCsrfValidation = false;
     

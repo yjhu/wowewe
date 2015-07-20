@@ -16,6 +16,7 @@ use yii\filters\VerbFilter;
 class AccesslogController extends Controller
 {
     public $enableCsrfValidation = false;
+    public $layout = 'metronic';
 
     public function behaviors()
     {

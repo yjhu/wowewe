@@ -23,6 +23,7 @@ use vova07\fileapi\actions\UploadAction;
 
 class WxactionController extends Controller
 {
+    public $layout = 'metronic';
     public function behaviors()
     {
         return [

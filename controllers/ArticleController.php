@@ -18,6 +18,7 @@ use app\models\MPhoto;
  */
 class ArticleController extends Controller
 {
+    public $layout = 'metronic';
     public function actions()
     {
         return [
