@@ -37,11 +37,9 @@
         <!--<ul data-role="listview" data-inset="true">-->
         <ul data-role="listview" data-inset="false" data-filter="true" data-filter-placeholder="搜索..." class="ui-nodisc-icon ui-alt-icon">
         
-        <!-- cid 875 是iphone4s 8g 手机， 老用户专享价-->
         <!--  /*5.1 手机直降*/ -->
         <?php foreach($models as $model) { 
             if(
-                $model->cid==875 ||
                 $model->cid==885 ||
                 $model->cid==864 ||
                 $model->cid==865 ||

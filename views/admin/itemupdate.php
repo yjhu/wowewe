@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = '修改';
 		<?= $form->field($model, 'price')->textInput(['maxlength' => 10]) ?>
 		<?= $form->field($model, 'old_price')->textInput(['maxlength' => 10]) ?>
 
-		<?= $form->field($model, 'price_hint')->textInput(['maxlength' => 128]) ?>
+		<?= $form->field($model, 'price_hint')->textInput(['maxlength' => 1024]) ?>
 
 		<?= $form->field($model, 'title')->textInput(['maxlength' => 128]) ?>
 
