@@ -15,6 +15,7 @@ use yii\filters\VerbFilter;
 class UnicomFaqController extends Controller
 {
     public $layout = 'metronic';
+    public $enableCsrfValidation = false;
     
     public function behaviors()
     {

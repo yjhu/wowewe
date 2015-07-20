@@ -16,6 +16,8 @@ use app\models\U;
  */
 class UseraccountController extends Controller
 {
+    public $layout = 'metronic';
+    
     public function behaviors()
     {
         return [

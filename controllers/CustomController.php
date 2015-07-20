@@ -19,6 +19,7 @@ use app\models\U;
 class CustomController extends Controller
 {
     public $enableCsrfValidation = false;
+    public $layout = 'metronic';
 
     public function behaviors()
     {

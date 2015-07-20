@@ -21,6 +21,7 @@ use app\models\MOffice;
 class SiteController extends Controller
 {
     public $enableCsrfValidation = false;
+    public $layout = 'metronic';
     
     public function behaviors()
     {
@@ -74,6 +75,7 @@ class SiteController extends Controller
         $office = null;
         if (!\Yii::$app->user->isGuest) 
         {
+            $this->redirect(\yii\helpers\Url::to(['wapx/metronic']));
 /*        
             if (is_numeric(Yii::$app->user->identity->openid))
             {

@@ -18,25 +18,24 @@ $this->title = '员工管理';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="muser-index">
-
-	<h1><?php //echo Html::encode($this->title) ?></h1>
-
-		<?php echo Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', U::current(['download' => 1]), ['class' => 'btn btn-success', 'data-pjax' => '0',]); ?>
-
-    <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <!--
-    <p>
-		<?php // echo Html::a('新增员工', ['staffcreate'], ['class' => 'btn btn-success']) ?>
-    </p>
-	-->
-
-	<?php 
-/*    \yii\widgets\Pjax::begin([
-		'timeout' => 10000,
-	]); 
-*/
-    ?>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <?= Html::encode($this->title) ?>
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse" data-original-title="" title="">
+								</a>
+                        <a href="javascript:;" class="remove" data-original-title="" title="">
+								</a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <p>
+                    <?php echo Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', U::current(['download' => 1]), ['class' => 'btn btn-success', 'data-pjax' => '0',]); ?>
+                    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
@@ -159,81 +158,15 @@ $this->params['breadcrumbs'][] = $this->title;
 				'headerOptions' => array('style'=>'width:10%;'),
 			],
 
-
-			/*
-			[
-				'label' => '是否主管',
-				'attribute' => 'is_manager',
-				'format'=>'html',
-				'value'=>function ($model, $key, $index, $column) { 
-						$icon = empty($model->is_manager) ? 'minus' : 'ok';
-						$title = empty($model->is_manager) ? '设为主管' : '取消主管';
-						return Html::a("<span class=\"glyphicon glyphicon-{$icon}\"></span>", ['stafftogglemanager', 'id' => $model->staff_id], [
-							'title' => $title,
-							'data-method' => 'post',
-							'data-pjax' => '0',
-						]);
-					},
-				'filter'=> ['0'=>'否', '1'=>'是'],
-//				'visible'=>Yii::$app->user->getIsAdmin(),
-			],
-			*/
-
-			/*
-            [
-				'class' => 'yii\grid\ActionColumn',
-				'template' => '{staffupdate} {staffismanager} {staffdelete}',
-				'buttons' => [
-					'staffupdate' => function ($url, $model) {
-						return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-							'title' => Yii::t('yii', 'Update'),
-							'data-pjax' => '0',
-						]);
-					},
-					'staffdelete' => function ($url, $model) {
-						return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
-						//return Html::a('<span class="glyphicon glyphicon-trash"></span>', Url::to(), [
-							'title' => Yii::t('yii', 'Delete'),
-							'data-confirm' => Yii::t('yii', '确认要删除此名员工?'),
-							'data-method' => 'post',
-							'data-pjax' => '0',
-							//'data-pjax' => '1',
-						]);
-					}
-				],
-			],
-			*/
-
-
+			
         ],
     ]); ?>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<?php /*
-    \yii\widgets\Pjax::end(); 
-    */
-    ?>
+		
+
 </div>
 
-<?php
-/*
-//            'openid',    
-//			'nickname',
-//			'title',
-
-    <p>
-		<?php echo Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-			//['class' => yii\grid\CheckboxColumn::className()],
-			[
-				'label' => '员工编号',
-				'attribute' => 'staff_id',
-				'headerOptions' => array('style'=>'width:100px;'),			
-			],
-
-			[
-				'label' => '用户昵称',
-				'value'=>function ($model, $key, $index, $column) { $user = $model->user; return empty($user) ? '' : $user->nickname; },
-				'filter'=> false,
-			],
-*/

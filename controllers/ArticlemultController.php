@@ -15,6 +15,7 @@ use yii\filters\VerbFilter;
  */
 class ArticlemultController extends Controller
 {
+    public $layout = 'metronic';
     public function behaviors()
     {
         return [

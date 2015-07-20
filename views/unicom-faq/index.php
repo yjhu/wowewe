@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -11,26 +12,51 @@ $this->title = '客户常见问题';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="unicom-faq-index">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <?= Html::encode($this->title) ?>
+                    </div>
+                    <div class="tools">
+                        <a href="javascript:;" class="collapse" data-original-title="" title="">
+								</a>
+                        <a href="javascript:;" class="remove" data-original-title="" title="">
+								</a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <p>
+                        <a href="<?= Url::to(['create']);?>" class="btn btn-success">新增&nbsp;<i class="fa fa-plus"></i></a>
+                    </p>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+                    <?= GridView::widget([
+                        'dataProvider' => $dataProvider,
+                        'filterModel' => $searchModel,
+                        'columns' => [
+                            [
+                                'class' => 'yii\grid\SerialColumn',
+//                                'contentOptions' => [
+//                                    'class' => 'col-md-1',
+//                                ],
+                            ],
 
-    <p>
-        <?= Html::a('创建新的常见问题及回答', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+                //            'id',
+                            'question',
+                            'answer:ntext',
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+                            [
+                                'class' => 'yii\grid\ActionColumn',
+                                'contentOptions' => [
+                                    'class' => 'col-md-1',
+                                ],
+                            ],
+                        ],
+                    ]); ?>
 
-//            'id',
-            'question',
-            'answer:ntext',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-
+                </div>
+            </div>
+        </div>
+    </div>   
 </div>

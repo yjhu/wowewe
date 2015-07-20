@@ -18,6 +18,7 @@ use app\models\U;
 
 class PhotoController extends Controller
 {
+    public $layout = 'metronic';
     public function behaviors()
     {
         return [
