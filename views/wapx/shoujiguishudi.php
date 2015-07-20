@@ -11,27 +11,28 @@
 <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
 <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<title></title>
+<title>手机号码归属地查询</title>
 
 <script type="text/javascript">
 
 function get_jsonp() {
 	$('#result_tele').html('<span>正在查询中……' + '</span>');
+
 	$.getJSON("http://apis.juhe.cn/mobile/get?callback=?", {
 		"phone" : $("#textt").val(),
 		"dtype" : "jsonp",
 		"key" : "b4b88a8ffc09e2fd3f24251ee19fa168"
 	}, function(data) {
 		if(data.result.company){
-			$('#result_tele').html('归属地：' + data.result.province + data.result.city + ' &nbsp; &nbsp;'
-			+ " 区号：" + data.result.areacode + ' &nbsp; &nbsp;' 
+			$('#result_tele').html('归属地：' + data.result.province + data.result.city + '<br>'
+			+ " 区号：" + data.result.areacode + '<br>' 
 			+ "邮编：" + data.result.zip + '<br />' 
-			+ "运营商：" + data.result.company + ' &nbsp; &nbsp;' 
+			+ "运营商：" + data.result.company + '<br>' 
 			+ "卡类型：" + data.result.card);
-			$('#result_tele').css('border','1px solid #ccc');
+			//$('#result_tele').css('border','1px solid #ccc');
 		}else{
 			$('#result_tele').html('请输入正确的手机号码！');
-			$('#result_tele').css('border','1px solid #ccc');
+			//$('#result_tele').css('border','1px solid #ccc');
 		}
 	});
 	return false;
@@ -76,20 +77,23 @@ textChange = function(obj,str){
 <!--
 <img src='./swiper/olduser1.jpg' width='100%' class="img-rounded">
 -->
-<img src='/wx/web/images/olduser1.jpg' width='100%' class="img-rounded">
+<img src='/wx/web/images/shoujiguishudi.jpg' width='100%' class="img-rounded">
 <br><br>
-<h3>手机号码归属地查询</h3>
-
-<br />
 
 <div class="form-group field-olduser-mobile">
 	<form onsubmit="return get_jsonp();">
 		  <input type="tel" id="textt" class="form-control input-lg" maxlength="64" placeholder="请输入手机号码前七位">
+		  <br>
+
+		  <input type="submit" class="btn btn-block btn-lg btn-primary" value="查询">
   </form>
 </div>
 
+<br>
 
-<div id="result_tele"></div>
+<div class="bg-success" id="result_tele">
+	
+</div>
 
 </body>
 

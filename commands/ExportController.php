@@ -372,12 +372,168 @@ class ExportController extends \yii\console\Controller {
             	$office = \app\models\MOffice::findOne(['office_id' => $user->belongto]);
         	}
 
-            fprintf($fh, "%s, %s, %s, %s, %s, %s, %s", $mobile->user->nickname, $mobile->mobile, $mobile->create_time, $mobile->province, $mobile->city, $mobile->carrier, empty($office) ? "主号" : $office->title);
+			if ($user->bindMobileIsInside('wx_t1')) {
+				$customerFlag = '老';
+				//$flag1 = 1;
+			} elseif ($user->bindMobileIsInside('wx_t2')) {
+				$customerFlag = '老';
+			}elseif ($user->bindMobileIsInside('wx_t3')) {
+				$customerFlag = '老';
+			} else {
+				//$flag1 = 0;
+				$customerFlag = '新';
+			}
+
+			//微信昵称	绑定手机号	关注时间	姓名	营业厅名称	新/老用户	客户经理	
+            fprintf($fh, "%s, %s, %s, %s, %s, %s, %s",
+				$mobile->user->nickname, 
+				$mobile->mobile, 
+				$mobile->create_time, 
+				'', 
+				$customerFlag,
+				empty($office) ? "主号" : $office->title,
+				''
+             );
+
             fprintf($fh, PHP_EOL);
         }
         fclose($fh);
     }
     
+
+
+	/*
+	    ***请求接口，返回JSON数据
+	    ***@url:接口地址
+	    ***@params:传递的参数
+	    ***@ispost:是否以POST提交，默认GET
+	*/
+	public function juhecurl($url,$params=false,$ispost=0){
+	    $httpInfo = array();
+		$ch = curl_init();
+
+		curl_setopt( $ch, CURLOPT_HTTP_VERSION , CURL_HTTP_VERSION_1_0 );
+		curl_setopt( $ch, CURLOPT_USERAGENT , 'Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22' );
+		curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT , 30 );
+		curl_setopt( $ch, CURLOPT_TIMEOUT , 30);
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER , true );
+		if( $ispost )
+		{
+			curl_setopt( $ch , CURLOPT_POST , true );
+			curl_setopt( $ch , CURLOPT_POSTFIELDS , $params );
+			curl_setopt( $ch , CURLOPT_URL , $url );
+		}
+		else
+		{
+			if($params){
+				curl_setopt( $ch , CURLOPT_URL , $url.'?'.$params );
+			}else{
+				curl_setopt( $ch , CURLOPT_URL , $url);
+			}
+		}
+		$response = curl_exec( $ch );
+		if ($response === FALSE) {
+			#echo "cURL Error: " . curl_error($ch);
+			return false;
+		}
+		$httpCode = curl_getinfo( $ch , CURLINFO_HTTP_CODE );
+		$httpInfo = array_merge( $httpInfo , curl_getinfo( $ch ) );
+		curl_close( $ch );
+		return $response;
+	}
+
+    public function actionOpenidBindMobilesWithLocation( $filename = 'openid-bind-mobiles-with-location.csv', $date = null ) {
+		
+		header('content-type:text/html;charset=utf-8');
+		$appkey ='5d4a589b32d70ad6378c8c69cba63524'; #通过聚合申请到数据的appkey
+		$url ='http://apis.juhe.cn/mobile/get'; #请求的数据接口URL
+
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, 'w');
+        if (null === $date) {
+            $date = \app\models\U::getFirstDate(date('Y'), date('m'));
+        }
+
+        $total_count = \app\models\OpenidBindMobile::find()->where(['>', 'create_time', $date])->count();
+
+        $step = 3000;
+        $start = 0;
+
+        while ($start < $total_count) {
+        	//$fans = \app\models\MUser::find()->offset($start)->limit($step)->all();
+        
+			$openidBindMobiles = \app\models\OpenidBindMobile::find()->offset($start)->limit($step)->where([
+				'>', 'create_time', $date
+			])->orderBy([
+				'create_time' => SORT_ASC,
+			])->all();
+
+	        foreach($openidBindMobiles as $mobile) {
+
+	        	//微信昵称	绑定手机号	关注时间
+
+	            //fprintf($fh, "%s, %s, %s, %s, %s", $mobile->mobile, $mobile->create_time, $mobile->province, $mobile->city, $mobile->carrier);
+	            //fprintf($fh, ", %s", $mobile->user->nickname);
+
+	            $user = \app\models\MUser::findOne(['openid' => $mobile->openid]);
+	            if (empty($user)) {
+	            	printf(\yii\helpers\Json::encode($mobile));
+	            	continue;
+	            } else {
+	            	$office = \app\models\MOffice::findOne(['office_id' => $user->belongto]);
+	        	}
+
+				$params ='phone='.$mobile->mobile.'&key='.$appkey;
+				$content = \app\commands\ExportController::juhecurl($url,$params,0);
+
+				if($content){
+				    $result =json_decode($content,true);
+				    #print_r($result);
+					
+					#错误码判断
+					$error_code = $result['error_code'];
+					if($error_code ==0){
+						#根据所需读取相应数据
+						$data = $result['result'];
+						//echo '结果为：'.$data['area'].' '.$data['location'];
+						$location = $data['province'].$data['city'];
+						$areacode = $data['areacode'];
+						$zip = $data['zip'];
+						$company = $data['company'];
+						$card = $data['card'];
+					}else{
+						//echo $error_code.':'.$result['reason'];
+						$location = '--';
+						$areacode = '--';
+						$zip = '--';
+						$company = '--';
+						$card = '--';
+					}
+				}
+
+	            fprintf($fh, "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", 
+	            	$mobile->user->nickname, 
+	            	$mobile->mobile, 
+	            	$mobile->create_time, 
+	            	$mobile->province, 
+	            	$mobile->city, 
+	            	$mobile->carrier, 
+	            	empty($office) ? "主号" : $office->title, 
+	            	$location,
+	            	$areacode,
+	            	$zip,
+	            	$company,
+	            	$card);
+	            fprintf($fh, PHP_EOL);
+	        }
+
+        	$start += $step;
+        }
+
+        fclose($fh);
+    }
+    
+
     public function actionJfdh( $filename = 'jfdh.csv', $date = null ) {
         $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
         $fh = fopen($filepathname, 'w');

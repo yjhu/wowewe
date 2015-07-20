@@ -2946,8 +2946,9 @@ $url2 = $result["code_url"];
         $flag1 = 0;
         $flag2 = 0;
 
+        //王珊珊加到测试用户中
         //if ($model->bindMobileIsInside('wx_t1')) {
-        if ($model->bindMobileIsInside('wx_t1') || ($openid == \app\models\MGh::GH_XIANGYANGUNICOM_OPENID_KZENG)) {
+        if ($model->bindMobileIsInside('wx_t1') || ($openid == \app\models\MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || ($openid == 'oKgUduA4LGHA1E-W-wOnqy6egGJQ'))) {
             $flag1 = 1;
         } elseif ($model->bindMobileIsInside('wx_t2')) {
             $flag1 = 1;

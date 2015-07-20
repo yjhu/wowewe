@@ -126,6 +126,29 @@ $this->params['breadcrumbs'][] = $this->title;
 				'label' => '开通',
 				'attribute' => 'kaitong',	
 			],
+
+			[
+				'label' => '新/老用户',
+				'value'=>function ($model, $key, $index, $column) {  
+
+					if($model->user->bindMobileIsInside('wx_t1'))
+					{
+						return '老';
+					}
+					else if($model->user->bindMobileIsInside('wx_t2'))
+					{
+						return '老';
+					}
+					else if($model->user->bindMobileIsInside('wx_t3'))
+					{
+						return '老';
+					}
+					else
+						return '新';
+				},
+				//'filter'=> false,
+				//'headerOptions' => array('style'=>'width:80px;'),			
+			],
 /*            
 			[
 				'attribute' => 'wlgs',

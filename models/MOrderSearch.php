@@ -87,7 +87,7 @@ class MOrderSearch extends Model
         $this->addCondition($query, 'detail', true);
         $this->addCondition($query, 'feesum');
         $this->addCondition($query, 'cid');        
-        $this->addCondition($query, 'pay_kind');        
+        $this->addCondition($query, 'pay_kind');            
         $this->addCondition($query, 'memo', true);      
         //$this->addCondition($query, 'wldh');   
 

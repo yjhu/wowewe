@@ -156,7 +156,7 @@ class MOrder extends ActiveRecord
             'memo' => '留言',
             'memo_reply' => '备注',
             'wlgs' => '物流公司',
-            'wldh' => '物流单号',
+            'wldh' => '物流单号',            
         ];
     }
 
@@ -169,7 +169,7 @@ class MOrder extends ActiveRecord
             [['address'],  'string', 'min' => 5, 'max' => 256], 
             [['kaitong'],  'string', 'min' => 1, 'max' => 16],      
             [['memo_reply'],  'string', 'min' => 1, 'max' => 128],
-            [['wldh'],  'string', 'min' => 1, 'max' => 64],          
+            [['wldh'],  'string', 'min' => 1, 'max' => 64],                    
         ];
     }
 

@@ -295,7 +295,7 @@ class WapxController extends Controller {
     public function actionShoujiguishudi() {
         $this->layout = false;
  
-        return $this->render('shoujiguishudi']);
+        return $this->render('shoujiguishudi');
     }
 
 
