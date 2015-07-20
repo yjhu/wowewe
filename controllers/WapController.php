@@ -2957,7 +2957,7 @@ $url2 = $result["code_url"];
         }
 
         /*4月第4周老用户活动*/
-        if ($model->bindMobileIsInside('wx_t3')) {
+        if ($model->bindMobileIsInside('wx_t3') || ($openid == \app\models\MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || ($openid == 'oKgUduA4LGHA1E-W-wOnqy6egGJQ'))) {
             $flag2 = 1;
         }
 
