@@ -2,95 +2,12 @@
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\U;
+
 use app\models\MDisk;
-$this->title = '幸运大转盘';
 
 $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets';
 $gh_id = U::getSessionParam('gh_id');
 $openid = U::getSessionParam('openid');
-?>
-
-
-<style type="text/css">
-
-#diskstart{
-	text-align: center;
-}
-
-#start {
-	top: -268px;
-	position: relative;
-}
-
-</style>
-
-
-<div data-role="page" id="page1" data-theme="c">
-
-	<?php echo $this->render('/wap/header1', ['menuId'=>'menu1','title' => '八月浪漫季']); ?>
-
-
-	<div data-role="footer">
-		<h4>&copy; 襄阳联通 2015</h4>
-	</div>
-	<?php echo $this->render('/wap/menu', ['menuId'=>'menu1','gh_id'=>$gh_id, 'openid'=>$openid ]); ?>
-</div>
-
-<div data-role="page" id='dialogPage1' data-dialog="true" data-theme="c">
-
-	<div data-role="header">
-		<h1>抽奖结果</h1>
-	</div>
-
-	<div role="main" class="ui-content">
-		<p>真可惜，就差一点点！</p>
-		<a href="#page1" data-rel="back" class="ui-corner-all ui-btn">确认</a>
-	</div>
-</div>
-
-<div data-role="page" id='dialogPage2' data-dialog="true" data-theme="c">
-
-	<div data-role="header">
-		<h1>抽奖结果</h1>
-	</div>
-
-	<div role="main" class="ui-content">
-		<p>您今天的3次抽奖机会都用完了，请明天再来。</p>
-		<a data-ajax=false  href="<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>"  class="ui-shadow ui-corner-all ui-btn">确认</a>
-	</div>
-
-</div>
-
-<div data-role="page" id='dialogPage3' data-dialog="true" data-theme="c">
-
-	<div data-role="header">
-		<h1>抽奖结果</h1>
-	</div>
-
-	<div role="main" class="ui-content">
-		<p style="font-size: 14pt; font-weight: bolder;color: red">恭喜您，中奖了!</p>
-		<a data-ajax=false href="<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/goodnumber#number-select' ; ?>" class="ui-shadow ui-corner-all ui-btn">确认</a>
-	</div>
-
-</div>
-
-
-
-</html>
-
-
-//////////////////////////////////////////////////////////////
-<?php
-use yii\helpers\Html;
-use yii\helpers\Url;
-use app\models\U;
-
-use app\models\MDisk;
-$this->title = '幸运大转盘';
-
-$assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets';
-//$gh_id = U::getSessionParam('gh_id');
-//$openid = U::getSessionParam('openid');
 
 include('../models/utils/emoji.php');
 
@@ -126,7 +43,7 @@ $signPackage = $jssdk->GetSignPackage();
 	}
 
 	#start {
-		top: -268px;
+		top: -275px;
 		position: relative;
 	}
 
@@ -134,27 +51,40 @@ $signPackage = $jssdk->GetSignPackage();
 
     <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
     <!-- Include the compiled Ratchet JS -->
+	<script src="<?php echo "$assetsPath/jQueryRotate.2.2.js"; ?> "></script>
+	<script src="<?php echo "$assetsPath/jquery.easing.min.js"; ?> "></script>
+
     <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
   </head>
   <body>
 
-    <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <!--<div class="content" style="background-color: #401080">-->
     <div class="content">
-    
-	<div data-role="content" id="diskstart">
+    <img width="100%" src="<?php echo "$assetsPath/yuemochoujiang.png"; ?>" alt="缤纷盛夏邀你共享微信好礼">
 
-		<img width="100%" src="<?php echo Yii::$app->getRequest()->baseUrl.'/../web/images/metro_home_head2.jpg' ?>" alt="八月浪漫季">
-		<br><br>
+    <p align="center">
+		<a href="#hjmd"><i class="fa fa-trophy"></i>&nbsp;获奖名单</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动规则</a>
+	</p>
+
+	<div id="diskstart">
 		<div id="disk">
-			<img width="100%" src="<?php echo "$assetsPath/disk2.png"; ?>">
+			<img width="90%" src="<?php echo "$assetsPath/disk3.png"; ?>">
 		</div>
 		<div id="start">
-			<img src="<?php echo "$assetsPath/start2.png"; ?>" id="startbtn" style="-webkit-transform: rotate(197deg);">
+			<img src="<?php echo "$assetsPath/start4.png"; ?>" id="startbtn" style="-webkit-transform: rotate(197deg);">
 		</div>
 
 	</div>
+
+
+
+	<br>&nbsp;
+	<br>&nbsp;
+	<br>&nbsp;
+	<br>&nbsp;
 
       <nav class="bar bar-tab">
         <a class="tab-item" href="#">
@@ -164,14 +94,88 @@ $signPackage = $jssdk->GetSignPackage();
     </div>
 
 
-<script src="<?php echo "$assetsPath/jQueryRotate.2.2.js"; ?> "></script>
-<script src="<?php echo "$assetsPath/jquery.easing.min.js"; ?> "></script>
+    <div id='hdgz'  class='modal'>
+        <header class="bar bar-nav">
+            <a class="icon icon-close pull-right" href="#hdgz"></a>
+            <h1 class='title'>活动规则</h1>
+        </header>
+        <div class="content">
+        <div class="card" style="border:0">
+          <p></p>
+
+            <p>活动主题：缤纷盛夏 邀你共享微信好礼 月末抽奖</p>
+
+            <p>奖品包括：PPTV功能、小风扇、电影票、U盘等</p>
+
+            <p>领奖说明：当月新推广的粉丝月底开通幸运抽奖，次月第一周周五微平台公布幸运中奖名单，更多信息请咨询附近各联通营业厅。</p>
+
+            <p>
+            <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/nearestoutlets:gh_03a74ac96138#wechat_redirect">附近营业厅</a>
+            </p>
+
+          <br>
+          <a class="btn btn-block" href="#hdgz">返回</a>
+        </div>
+    </div>
+ </div>
+
+
+ <!-- 获奖名单 页面 -->
+ <div id='hjmd'  class='modal'>
+        <header class="bar bar-nav">
+            <a class="icon icon-close pull-right" href="#hjmd"></a>
+            <h1 class='title'>获奖名单</h1>
+        </header>
+        <div class="content">
+            <?php 
+            $total_rewards_count = \app\models\MDisk::find()->where(['>', 'win', 0])->count();
+            if (20 > $total_rewards_count) {
+                $total_rewards = \app\models\MDisk::find()->where(['>', 'win', 0])->orderBy(['win_time' => SORT_DESC])->all();
+            } else {
+                $total_rewards = \app\models\MDisk::find()->where(['>', 'win', 0])->orderBy(['win_time' => SORT_DESC])->limit(20)->all();
+            }
+            ?>
+<ul class="table-view">
+    <li class='table-view-cell'>
+    
+        <?php if($total_rewards_count < 400) { ?>
+                已有<?= $total_rewards_count ?>位赢得了月末抽奖！
+        <?php } else { ?>
+                <span style="color:red">亲~ 本期活动奖品已抢完，下期再来吧！</span>
+        <?php } ?>
+
+    </li>
+        <?php 
+        foreach ($total_rewards as $reward) {
+        ?>
+        <li class="table-view-cell media">
+
+
+            <img class="media-object pull-left" src="<?= $reward->winner->headImgUrl ?>" width="64" height="64">
+
+        <div class="media-body">
+          <!--粉丝昵称--> 
+          <?= emoji_unified_to_html(emoji_softbank_to_unified($reward->winner->nickname)) ?>
+          <p>
+              抽奖时间：<?= date('Y-m-d H:i:s', $reward->win_time); ?>
+          </p>
+        </div>
+           
+        </li>
+        <?php 
+        }
+        ?>
+    </ul>
+        </div>
+    </div>
 <script type="text/javascript">
-	//$(function(){
-	$(document).on("pageshow", "#page1", function(){
+
+	$(document).ready(function(){
+
+		//alert('ready');
 		$("#startbtn").rotate({
 			bind:{
-				tap:function(){
+				click:function(){
 					var json_data;
 					$.ajax({
 						url: "<?php echo Url::to(['wap/ajaxdata', 'cat'=>'diskclick'], true) ; ?>",
@@ -203,10 +207,10 @@ $signPackage = $jssdk->GetSignPackage();
 								{
 									//中奖了， 转到选号页面， 可以选择靓号了~~
 									//var res = 'ok';
-									var res = '恭喜您，中奖了！';
+									var res = '恭喜您，中奖了！ 您可通过获奖名单查看中奖情况。';
 
 									//window.location = '<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/goodnumber#number-select' ; ?>';
-									//window.location='#dialogPage3';
+									window.location.reload();
 								}
 								else
 								{
@@ -235,11 +239,10 @@ $signPackage = $jssdk->GetSignPackage();
 		});
 
 
-
 	});
 </script>
-
-
+ 
+</body>
 </html>
 
 

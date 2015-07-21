@@ -41,6 +41,14 @@ class MDisk extends ActiveRecord
 		return $model;
 	}
 	
+	
+    public function getWinner() 
+    {
+        return $this->hasOne(MUser::className(), [
+            'gh_id' => 'gh_id',
+            'openid' => 'openid',
+        ]);
+    }	
 /*
 	public function haveChanceToRotate()
 	{

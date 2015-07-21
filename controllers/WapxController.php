@@ -299,6 +299,15 @@ class WapxController extends Controller {
     }
 
 
+    //only demo show 
+    //http://wosotech.com/wx/web/index.php?r=wapx/demoshow1&gh_id=gh_03a74ac96138
+    public function actionDemoshow1() {
+        $this->layout = false;
+ 
+        return $this->render('demoshow1');
+    }
+
+
 
     //http://wosotech.com/wx/web/index.php?r=wapx/yaoyiyao&gh_id=gh_03a74ac96138
     // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/yaoyiyao:gh_03a74ac96138#wechat_redirect
