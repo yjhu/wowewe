@@ -130,21 +130,25 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'label' => '新/老用户',
 				'value'=>function ($model, $key, $index, $column) {  
+					if(!empty($model->user))
+					{
+						if($model->user->bindMobileIsInside('wx_t1'))
+						{
+							return '老';
+						}
+						else if($model->user->bindMobileIsInside('wx_t2'))
+						{
+							return '老';
+						}
+						else if($model->user->bindMobileIsInside('wx_t3'))
+						{
+							return '老';
+						}
+						else
+							return '新';
+					}
 
-					if($model->user->bindMobileIsInside('wx_t1'))
-					{
-						return '老';
-					}
-					else if($model->user->bindMobileIsInside('wx_t2'))
-					{
-						return '老';
-					}
-					else if($model->user->bindMobileIsInside('wx_t3'))
-					{
-						return '老';
-					}
-					else
-						return '新';
+					return '--';
 				},
 				//'filter'=> false,
 				//'headerOptions' => array('style'=>'width:80px;'),			

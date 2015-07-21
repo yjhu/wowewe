@@ -350,6 +350,29 @@ class MOrder extends ActiveRecord
         return $model;
     }
 
+    public function getCustomerflag()
+    {
+        $user = MUser::findOne(['openid'=>$this->openid]);
+        $customerFlag = '--';
+
+        //U::W($user);
+        if(!empty($user))
+        {
+            if ($user->bindMobileIsInside('wx_t1')) {
+                $customerFlag = '老';
+            } elseif ($user->bindMobileIsInside('wx_t2')) {
+                $customerFlag = '老';
+            }elseif ($user->bindMobileIsInside('wx_t3')) {
+                $customerFlag = '老';
+            } else {
+                $customerFlag = '新';
+            }
+        }
+
+        return $customerFlag;
+    }
+
+
     public function getItem()
     {
         $model = MItem::findOne(['gh_id'=>$this->gh_id, 'cid'=>$this->cid]);
@@ -360,6 +383,8 @@ class MOrder extends ActiveRecord
     {
         return $this->hasOne(MOffice::className(), ['office_id' => 'office_id']);
     }
+
+    
 
     public static function getCardTypeName($json=true)
     {

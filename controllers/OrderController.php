@@ -40,7 +40,7 @@ use app\models\Custom;
 
 class OrderController extends Controller
 {
-    public $layout = 'metronic';
+    public $layout = 'main';
 
     public $enableCsrfValidation = false;
 
@@ -88,9 +88,13 @@ class OrderController extends Controller
             $filename = Yii::$app->getRuntimePath()."/order-{$date}.csv";
             $csv = new \app\models\ECSVExport($data);
             //$attributes = ['oid', 'office_id', 'office.title', 'detail', 'gh_id', 'select_mobnum', 'create_time', 'appid_recv', 'username', 'usermobile', 'status', 'partner', 'pay_kind', 'memo', 'openid_recv'];        
-            $attributes = ['oid', 'office_id', 'office.title', 'detail', 'gh_id', 'select_mobnum', 'create_time', 'appid_recv', 'username', 'usermobile', 'partner', 'memo', 'openid_recv'];        
+            $attributes = ['oid', 'office_id', 'office.title', 'detail', 'gh_id', 'select_mobnum', 'create_time', 'appid_recv', 'username', 'usermobile', 'partner', 'memo', 'openid_recv', 'customerflag'];        
+            //$attributes = ['oid', 'office_id', 'office.title', 'detail', 'gh_id', 'select_mobnum', 'create_time', 'appid_recv', 'username', 'usermobile', 'partner', 'memo', 'openid_recv'];        
+            
             $csv->setInclude($attributes);                
-            $csv->setHeaders(['Gh Id'=>'金额', 'Appid Recv'=>'身份证', 'Partner'=>'订单状态', 'Openid Recv'=>'支付方式']);
+            $csv->setHeaders(['Gh Id'=>'金额', 'Customerflag'=>'新老用户', 'Appid Recv'=>'身份证', 'Partner'=>'订单状态', 'Openid Recv'=>'支付方式']);
+            //$csv->setHeaders(['Gh Id'=>'金额', 'Appid Recv'=>'身份证', 'Partner'=>'订单状态', 'Openid Recv'=>'支付方式']);
+            
             $csv->toCSV($filename); 
             Yii::$app->response->sendFile($filename);
             return;        
