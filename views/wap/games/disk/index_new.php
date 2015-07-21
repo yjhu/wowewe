@@ -222,10 +222,7 @@ $signPackage = $jssdk->GetSignPackage();
             var share2friendTitle = '缤纷盛夏邀你共享微信好礼';
             var share2friendDesc = '当月新推广的粉丝月底开通幸运抽奖，奖品包括PPTV功能、小风扇、电影票、U盘等。';
             var share2timelineTitle = '缤纷盛夏邀你共享微信好礼';
-
             var shareImgUrl = "<?= Url::to($assetsPath.'/disk3.png', true); ?>";
-
-            alert(shareImgUrl);
 
             wx.onMenuShareAppMessage({
                 title: share2friendTitle, // 分享标题
