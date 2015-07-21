@@ -172,6 +172,93 @@ $signPackage = $jssdk->GetSignPackage();
 
 	$(document).ready(function(){
 
+        wx.config({
+            debug: false,
+            appId: '<?php echo $signPackage["appId"];?>',
+            timestamp: <?php echo $signPackage["timestamp"];?>,
+            nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+            signature: '<?php echo $signPackage["signature"];?>',
+            jsApiList: [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'hideMenuItems',
+                'showMenuItems',
+                'hideAllNonBaseMenuItem',
+                'showAllNonBaseMenuItem',
+                'translateVoice',
+                'startRecord',
+                'stopRecord',
+                'onRecordEnd',
+                'playVoice',
+                'pauseVoice',
+                'stopVoice',
+                'uploadVoice',
+                'downloadVoice',
+                'chooseImage',
+                'previewImage',
+                'uploadImage',
+                'downloadImage',
+                'getNetworkType',
+                'openLocation',
+                'getLocation',
+                'hideOptionMenu',
+                'showOptionMenu',
+                'closeWindow',
+                'scanQRCode',
+                'chooseWXPay',
+                'openProductSpecificView',
+                'addCard',
+                'chooseCard',
+                'openCard'
+            ]
+        });
+
+
+        wx.ready(function () {
+
+            var share2friendTitle = '缤纷盛夏邀你共享微信好礼';
+            var share2friendDesc = '当月新推广的粉丝月底开通幸运抽奖，奖品包括PPTV功能、小风扇、电影票、U盘等。';
+            var share2timelineTitle = '缤纷盛夏邀你共享微信好礼';
+
+            var shareImgUrl = "<?= Url::to($assetsPath.'/disk3.png', true); ?>";
+
+            alert(shareImgUrl);
+
+            wx.onMenuShareAppMessage({
+                title: share2friendTitle, // 分享标题
+                desc: share2friendDesc, // 分享描述
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wap/disk1:gh_03a74ac96138#wechat_redirect', // 分享链接
+                imgUrl: shareImgUrl, // 分享图标
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () { 
+
+                },
+                cancel: function () { 
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            
+            wx.onMenuShareTimeline({
+                title: share2timelineTitle, // 分享标题
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wap/disk1:gh_03a74ac96138#wechat_redirect', // 分享链接
+                imgUrl: shareImgUrl, // 分享图标
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () { 
+
+                },
+                cancel: function () { 
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+        });//end of wx.ready
+
+
+
 		//alert('ready');
 		$("#startbtn").rotate({
 			bind:{
