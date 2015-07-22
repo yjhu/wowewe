@@ -43,7 +43,7 @@ $signPackage = $jssdk->GetSignPackage();
 	}
 
 	#start {
-		top: -275px;
+		top: -270px;
 		position: relative;
 	}
 
@@ -71,7 +71,7 @@ $signPackage = $jssdk->GetSignPackage();
 
 	<div id="diskstart">
 		<div id="disk">
-			<img width="90%" src="<?php echo "$assetsPath/disk3.png"; ?>">
+			<img width="85%" src="<?php echo "$assetsPath/disk3.png"; ?>">
 		</div>
 		<div id="start">
 			<img src="<?php echo "$assetsPath/start4.png"; ?>" id="startbtn" style="-webkit-transform: rotate(197deg);">
@@ -107,13 +107,14 @@ $signPackage = $jssdk->GetSignPackage();
 
             <p>奖品包括：PPTV功能、小风扇、电影票、U盘等</p>
 
-            <p>领奖说明：当月新推广的粉丝月底开通幸运抽奖，次月第一周周五微平台公布幸运中奖名单，更多信息请咨询附近各联通营业厅。</p>
+            <p>领奖说明：当月新推广的粉丝月底开通幸运抽奖，次月第一周周五微平台公布幸运中奖名单，用户务必在7月31日之前至营业厅领取，逾期奖励作废。更多信息请咨询附近各联通营业厅。</p>
 
+            <br>
             <p>
             <a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/nearestoutlets:gh_03a74ac96138#wechat_redirect">附近营业厅</a>
             </p>
 
-          <br>
+          <br><br>
           <a class="btn btn-block" href="#hdgz">返回</a>
         </div>
     </div>
@@ -139,7 +140,7 @@ $signPackage = $jssdk->GetSignPackage();
     <li class='table-view-cell'>
     
         <?php if($total_rewards_count < 400) { ?>
-                已有<?= $total_rewards_count ?>位赢得了月末抽奖！
+                月末抽奖已有<?= $total_rewards_count ?>位中奖，恭喜！
         <?php } else { ?>
                 <span style="color:red">亲~ 本期活动奖品已抢完，下期再来吧！</span>
         <?php } ?>
