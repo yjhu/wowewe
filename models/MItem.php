@@ -182,6 +182,15 @@ class MItem extends ActiveRecord {
     const ITEM_CAT_MOBILE_4G_XIAOMI_4G = 867;
     const ITEM_CAT_MOBILE_4G_HTC_820U = 868;
     const ITEM_CAT_MOBILE_4G_IPHONE6_16G = 869;
+    //双4G双百兆手机 7.22 cid from 4000
+    const ITEM_CAT_MOBILE_4G_KAMEIOU_C6 = 4000;
+    const ITEM_CAT_MOBILE_4G_FEIXUN_C630LW = 4001;
+    const ITEM_CAT_MOBILE_4G_TCL_P502U = 4002;
+    const ITEM_CAT_MOBILE_4G_FEIXUN_E653 = 4003;
+    const ITEM_CAT_MOBILE_4G_XIAOLAJIAO_LA2S = 4004;
+
+
+
 
     //老用户户专享 参与机型及优惠合约
     const ITEM_CAT_MOBILE_SANXIN_SM_G9006VW = 870;
@@ -349,7 +358,12 @@ class MItem extends ActiveRecord {
             self::ITEM_CAT_MOBILE_4G_XIAOMI_4G => '小米4（4G）',
             self::ITEM_CAT_MOBILE_4G_HTC_820U => 'HTC 820U',
             self::ITEM_CAT_MOBILE_4G_IPHONE6_16G => 'iPhone6 (16G)',
-
+            //双4G双百兆手机 7.22 cid from 4000
+            self::ITEM_CAT_MOBILE_4G_KAMEIOU_C6 => '卡美欧C6',
+            self::ITEM_CAT_MOBILE_4G_FEIXUN_C630LW => '斐讯C630Lw',
+            self::ITEM_CAT_MOBILE_4G_TCL_P502U => 'TCL P502U',
+            self::ITEM_CAT_MOBILE_4G_FEIXUN_E653 => '斐讯 E653',
+            self::ITEM_CAT_MOBILE_4G_XIAOLAJIAO_LA2S => '小辣椒 LA2S',
 
 
             //老用户户专享 参与机型及优惠合约

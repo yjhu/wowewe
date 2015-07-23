@@ -40,6 +40,12 @@
         <!--  /*5.1 手机直降*/ -->
         <?php foreach($models as $model) { 
             if(
+                $model->cid==4000 ||
+                $model->cid==4001 ||
+                $model->cid==4002 ||
+                $model->cid==4003 ||
+                $model->cid==4004 ||
+
                 $model->cid==885 ||
                 $model->cid==864 ||
                 $model->cid==865 ||

@@ -1786,6 +1786,27 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->title = '三星N9106W';
                 $order->attr = "{$_GET['cardType']}";
                 break;
+            //双4G双百兆手机 7.22 cid from 4000
+            case MItem::ITEM_CAT_MOBILE_4G_KAMEIOU_C6:
+                $order->title = '卡美欧 C6';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_MOBILE_4G_FEIXUN_C630LW:
+                $order->title = '斐讯 C630Lw';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_MOBILE_4G_TCL_P502U:
+                $order->title = 'TCL P502U';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_MOBILE_4G_FEIXUN_E653:
+                $order->title = '斐讯 E653';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_MOBILE_4G_XIAOLAJIAO_LA2S:
+                $order->title = '小辣椒 LA2S';
+                $order->attr = "{$_GET['cardType']}";
+                break;
 
             //老用户户专享 参与机型及优惠合约
             case MItem::ITEM_CAT_MOBILE_SANXIN_SM_G9006VW:
