@@ -533,7 +533,63 @@ class MUser extends ActiveRecord implements IdentityInterface
                 ->joinWith('openidBindMobiles')
                 ->where(['subscribe' => 1])
                 ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                ->groupBy(['gh_id', 'openid'])
                 ->count();
+    }
+    
+    public static function getMemberTimeline($startDate, $endDate, $accumulatedFlag) {
+        \Yii::warning(__METHOD__ . '(' .\yii\helpers\Json::encode([$startDate, $endDate, $accumulatedFlag]) .')');
+        $results = [];
+        $startTimestamp = strtotime($startDate .' 00:00:00');
+        $endTimestamp = strtotime($endDate . ' 23:59:59');
+        $start = 0;
+        $n = 0; 
+        $start_fans = 0;
+        
+        if ($accumulatedFlag) {
+            $start = self::find()
+                ->joinWith('openidBindMobiles')
+                ->where(['subscribe' => 1])
+                ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                ->andWhere(['<', 'subscribe_time', $startTimestamp])
+                ->groupBy(['gh_id', 'openid'])
+                ->count();
+            $start_fans = self::find()
+                ->where(['subscribe' => 1])
+                ->andWhere(['<', 'subscribe_time', $startTimestamp])
+                ->count();
+        }
+
+        while ($startTimestamp < $endTimestamp) {
+            $daySum = self::find()
+                ->joinWith('openidBindMobiles')
+                ->where(['subscribe' => 1])
+                ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                ->andWhere(['>', 'subscribe_time', $startTimestamp])
+                ->andWhere(['<', 'subscribe_time', $startTimestamp + 24 * 3600])
+                ->groupBy(['gh_id', 'openid'])
+                ->count();
+            $dayFans = self::find()
+                ->where(['subscribe' => 1])
+                ->andWhere(['>', 'subscribe_time', $startTimestamp])
+                ->andWhere(['<', 'subscribe_time', $startTimestamp + 24 * 3600])
+                ->count();
+            if ($accumulatedFlag) {
+                $results['data'][] = [$startTimestamp * 1000, $start + $daySum];
+                $results['data1'][] = [$startTimestamp * 1000, $start_fans + $dayFans];
+            } else {
+                $results['data'][] = [$startTimestamp * 1000, $daySum];
+                $results['data1'][] = [$startTimestamp * 1000, $dayFans];
+            }
+            $n += 1;
+            $startTimestamp += 24 * 3600;
+            if ($accumulatedFlag) {
+                $start += $daySum;
+                $start_fans += $dayFans;
+            }
+        }
+        $results['length'] = $n;
+        return \yii\helpers\Json::encode($results);        
     }
 
     public function getUserAccounts()
@@ -700,7 +756,7 @@ class MUser extends ActiveRecord implements IdentityInterface
         ]);
     }
             
-
+    
 }
 
 /*

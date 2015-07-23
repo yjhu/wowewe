@@ -159,4 +159,14 @@ class CheckController extends \yii\console\Controller {
     {
         \app\models\sm\ESmsGuodu::S_test2();
     }
+    
+    public function actionMember()
+    {
+        $startDate = date('Y-m-d 00:00:00', strtotime('-1 month'));
+        $endDate = date('Y-m-d 23:59:59');
+        echo "daily:\n";
+        echo \app\models\MUser::getMemberTimeline($startDate, $endDate, 0) . PHP_EOL;
+        echo "accumulated:\n";
+        echo \app\models\MUser::getMemberTimeline($startDate, $endDate, 1) . PHP_EOL;
+    }
 }
