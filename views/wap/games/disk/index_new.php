@@ -9,6 +9,10 @@ $assetsPath = Yii::$app->getRequest()->baseUrl.'/../views/wap/games/disk/assets'
 $gh_id = U::getSessionParam('gh_id');
 $openid = U::getSessionParam('openid');
 
+$disk = \app\models\MDisk::findOne([
+            'openid' => $openid
+        ]);
+
 include('../models/utils/emoji.php');
 
 
@@ -43,7 +47,7 @@ $signPackage = $jssdk->GetSignPackage();
 	}
 
 	#start {
-		top: -270px;
+		top: -265px;
 		position: relative;
 	}
 
@@ -67,11 +71,28 @@ $signPackage = $jssdk->GetSignPackage();
 		<a href="#hjmd"><i class="fa fa-trophy"></i>&nbsp;获奖名单</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		<a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动规则</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="#mzj">没中奖的看这里!</a>
 	</p>
+
+        <?php if ($disk->win == 1) { ?>
+        <p align="center">
+            <span style='font-size:0.8em;'><i class='fa fa-exclamation-triangle' style='color:red;'></i>您需要到<a href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/nearestoutlets:gh_03a74ac96138#wechat_redirect'>附近营业厅</a>领取奖品后才点击此按钮！<i class='fa fa-exclamation-triangle'  style='color:red;'></i></span>
+            <a class="btn btn-primary btn-block" style="width: 300px" id='ivegetit'>领取奖品</a>
+        </p>
+        <?php } ?>
+
+        <?php if ($disk->win == 2) { ?>
+        <p align="center">
+            
+        <a class="btn btn-block" style="width: 300px">已领取</a>
+        领取时间：<?= date('Y-m-d H:i:s', $disk->win_time); ?>
+        </p>
+        <?php } ?>
 
 	<div id="diskstart">
 		<div id="disk">
-			<img width="85%" src="<?php echo "$assetsPath/disk3.png"; ?>">
+			<img width="85%" src="<?php echo "$assetsPath/disk5.png"; ?>">
 		</div>
 		<div id="start">
 			<img src="<?php echo "$assetsPath/start4.png"; ?>" id="startbtn" style="-webkit-transform: rotate(197deg);">
@@ -105,9 +126,11 @@ $signPackage = $jssdk->GetSignPackage();
 
             <p>活动主题：缤纷盛夏 邀你共享微信好礼 月末抽奖</p>
 
-            <p>奖品包括：PPTV功能、小风扇、电影票、U盘等</p>
+            <p>奖品包括：PPTV功能、小风扇、电影票、U盘等、自拍神器</p>
 
             <p>领奖说明：当月新推广的粉丝月底开通幸运抽奖，次月第一周周五微平台公布幸运中奖名单，用户务必在7月31日之前至营业厅领取，逾期奖励作废。更多信息请咨询附近各联通营业厅。</p>
+
+            <p>活动最终解释权归襄阳联通。</p>
 
             <br>
             <p>
@@ -121,6 +144,30 @@ $signPackage = $jssdk->GetSignPackage();
  </div>
 
 
+
+    <div id='mzj'  class='modal'>
+        <header class="bar bar-nav">
+            <a class="icon icon-close pull-right" href="#mzj"></a>
+            <h1 class='title'>推广赢话费</h1>
+        </header>
+        <div class="content">
+        <div class="card" style="border:0">
+          <p></p>
+            <p >没有中奖的小伙伴也不用担心。</p>
+
+            <p style="color:red">每推荐一个好友关注“襄阳联通”的微信，就能得到5块钱话费哦~ </p>
+
+            <p style="color:red">每个月最高可得100元话费！</p>
+            <br>
+
+            <img width="100%" src="<?php echo "$assetsPath/tg.png"; ?>">
+
+          <br><br>
+          <a class="btn btn-block" href="#mzj">返回</a>
+        </div>
+    </div>
+ </div>
+
  <!-- 获奖名单 页面 -->
  <div id='hjmd'  class='modal'>
         <header class="bar bar-nav">
@@ -129,18 +176,18 @@ $signPackage = $jssdk->GetSignPackage();
         </header>
         <div class="content">
             <?php 
-            $total_rewards_count = \app\models\MDisk::find()->where(['>', 'win', 0])->count();
-            if (20 > $total_rewards_count) {
-                $total_rewards = \app\models\MDisk::find()->where(['>', 'win', 0])->orderBy(['win_time' => SORT_DESC])->all();
-            } else {
-                $total_rewards = \app\models\MDisk::find()->where(['>', 'win', 0])->orderBy(['win_time' => SORT_DESC])->limit(20)->all();
-            }
+                $total_rewards_count = \app\models\MDisk::find()->where(['>', 'win', 0])->count();
+                //if (20 > $total_rewards_count) {
+                    $total_rewards = \app\models\MDisk::find()->where(['>', 'win', 0])->orderBy(['win_time' => SORT_DESC])->all();
+                //} else {
+                 //   $total_rewards = \app\models\MDisk::find()->where(['>', 'win', 0])->orderBy(['win_time' => SORT_DESC])->limit(20)->all();
+                //}
             ?>
 <ul class="table-view">
     <li class='table-view-cell'>
     
         <?php if($total_rewards_count < 400) { ?>
-                月末抽奖已有<?= $total_rewards_count ?>位中奖，恭喜！
+                月末抽奖已有<?= $total_rewards_count ?>位中奖
         <?php } else { ?>
                 <span style="color:red">亲~ 本期活动奖品已抢完，下期再来吧！</span>
         <?php } ?>
@@ -223,7 +270,7 @@ $signPackage = $jssdk->GetSignPackage();
             var share2friendTitle = '缤纷盛夏邀你共享微信好礼';
             var share2friendDesc = '当月新推广的粉丝月底开通幸运抽奖，奖品包括PPTV功能、小风扇、电影票、U盘等。';
             var share2timelineTitle = '缤纷盛夏邀你共享微信好礼';
-            var shareImgUrl = "<?= Url::to($assetsPath.'/disk3.png', true); ?>";
+            var shareImgUrl = "<?= Url::to($assetsPath.'/disk4.png', true); ?>";
 
             wx.onMenuShareAppMessage({
                 title: share2friendTitle, // 分享标题
@@ -253,6 +300,49 @@ $signPackage = $jssdk->GetSignPackage();
                     // 用户取消分享后执行的回调函数
                 }
             });
+
+
+            $('#ivegetit').click (function () {
+
+                //var gifNum = "<?= $total_rewards_count ?>";
+                //if (parseInt(gifNum) >= 400)
+               // {
+                //   alert("亲~ 本期活动奖品已经抢完。下期活动更加精彩，敬请关注！");
+                 //   return;
+                //}
+
+                //alert('<?php echo $openid; ?>');
+
+                if (!confirm('您需要到营业厅领取奖品后才点击此按钮！'))
+                    return;
+                
+                var args = {
+                    'classname':    '\\app\\models\\MDisk',
+                    'funcname':     'diskwinnerAjax',
+                    'params':       {
+                        'openid':   '<?php echo $openid; ?>'
+                    } 
+                };
+                
+                $.ajax({
+                    url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
+                    type:       "GET",
+                    cache:      false,
+                    dataType:   "json",
+                    data:       "args=" + JSON.stringify(args),
+                    success:    function(ret) { 
+                        if (0 === ret['code']) {
+                            location.href = '<?= Url::to() ?>';
+                        }
+                    },                        
+                    error:      function(){
+                        alert('发送失败。');
+                    }
+                });
+            });
+            
+
+
         });//end of wx.ready
 
 

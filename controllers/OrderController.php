@@ -231,6 +231,7 @@ class OrderController extends Controller
         ]);
     }
 
+
     public function actionDownloadqr($staff_id)
     {
         $staff = MStaff::findOne($staff_id);

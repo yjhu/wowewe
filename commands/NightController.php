@@ -77,9 +77,9 @@ class NightController extends Controller {
         self::statSceneDay($yesterday);
 
         //MDisk::updateAll(['cnt' => 3]);
-        $tableName = MDisk::tableName();
-        $n = MDisk::deleteAll();
-        U::W("DELETE $tableName, $n");
+        ///$tableName = MDisk::tableName();
+        ///$n = MDisk::deleteAll();
+        ///U::W("DELETE $tableName, $n");
 
         if (date('N') == 1) {
             U::W("Begin Weekly ...");

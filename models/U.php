@@ -227,6 +227,7 @@ class U
     {
         if ($type == 0)
         {
+            /*
             $params = [
                 ['name'=>'item 0','value'=>0, 'start'=> 0, 'end'=> 15, 'probability'=> 0.83],
                 ['name'=>'item 1','value'=>1, 'start'=>15, 'end'=>30, 'probability'=>7.5],
@@ -253,6 +254,21 @@ class U
                 ['name'=>'item 22','value'=>22, 'start'=>330, 'end'=>330, 'probability'=>0.87],
                 ['name'=>'item 23','value'=>23, 'start'=>345, 'end'=>360, 'probability'=>7.5]
                 
+            ];
+            */
+            $params = [
+                ['name'=>'item 0','value'=>0, 'start'=> 0, 'end'=> 30, 'probability'=>2],
+                ['name'=>'item 1','value'=>1, 'start'=>30, 'end'=>60, 'probability'=>15],
+                ['name'=>'item 2','value'=>2, 'start'=>60, 'end'=>90, 'probability'=>2],
+                ['name'=>'item 3','value'=>3, 'start'=>90, 'end'=>120, 'probability'=>15],
+                ['name'=>'item 4','value'=>4, 'start'=>120, 'end'=>150, 'probability'=>1.5],
+                ['name'=>'item 5','value'=>5, 'start'=>150, 'end'=>180, 'probability'=>15],
+                ['name'=>'item 6','value'=>6, 'start'=>180, 'end'=>210, 'probability'=>1.5],
+                ['name'=>'item 7','value'=>7, 'start'=>210, 'end'=>240, 'probability'=>15],
+                ['name'=>'item 8','value'=>8, 'start'=>240, 'end'=>270, 'probability'=>1.5],
+                ['name'=>'item 9','value'=>9, 'start'=>270, 'end'=>300, 'probability'=>15],
+                ['name'=>'item 10','value'=>10, 'start'=>300, 'end'=>330, 'probability'=>1.5],
+                ['name'=>'item 11','value'=>11, 'start'=>330, 'end'=>360, 'probability'=>15]
             ];
         }
         $par = U::array_field_assoc($params, 'value', 'probability');

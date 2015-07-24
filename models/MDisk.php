@@ -1,6 +1,8 @@
 <?php
 namespace app\models;
 
+use app\models\U;
+
 /*
 DROP TABLE IF EXISTS wx_disk;
 CREATE TABLE wx_disk (
@@ -49,6 +51,20 @@ class MDisk extends ActiveRecord
             'openid' => 'openid',
         ]);
     }	
+
+	public static function diskwinnerAjax($openid)
+	{
+		U::W("-------------------------diskwinnerAjax-------------------------------");
+
+	    $disk = self::findOne(['openid' => $openid]);
+	    U::W($disk);
+	    $disk->win_time = time();
+	    $disk->win = 2;
+	    $disk->save(false);
+	    return \yii\helpers\Json::encode(['code' => 0]);
+	}
+
+
 /*
 	public function haveChanceToRotate()
 	{

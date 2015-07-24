@@ -2428,11 +2428,16 @@ $arr = $order->sendTemplateNoticeToCustom();
         if (empty($wx_user) || $wx_user->subscribe === 0) {
             return $this->render('need_subscribe');
         }
+
+        if (empty($wx_user->openidBindMobiles)) {
+            $url = Url::to();
+            Yii::$app->getSession()->set('RETURN_URL', $url);
+            return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        }
         
         return $this->render('games/disk/index_new', [
             'observer' => $wx_user
         ]);
-
 
     }
 
@@ -4160,7 +4165,7 @@ $url2 = $result["code_url"];
         $model->setScenario('bind_mobile');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             Yii::$app->wx->setGhId($gh_id);
-            $url = Url::to(['hyzx', 'gh_id' => $gh_id, 'openid' => $openid], true);
+            $url = Url::to(['hyzx1', 'gh_id' => $gh_id, 'openid' => $openid], true);
             Yii::$app->wx->WxTemplateSend(Wechat::getTemplateBindSuccessNotify($openid, $url, "{$model->user->nickname}，您的手机号码已成功绑定襄阳联通官方微信营业厅", "您已成为襄阳联通的会员，可随时查询话费余额，办理业务，参与更多专享优惠！", $model->mobile, date('Y-m-d')));
             $url = Yii::$app->getSession()->get('RETURN_URL');
             if (!empty($url)) {
