@@ -706,8 +706,14 @@ class WapxController extends Controller {
         ]);
     }
     
-    public function actionMetronic() {
+    public function actionMetronic($office_id = 0) {
         $this->layout = 'metronic';
-        return $this->render('blank');
+        
+        if (0 !== $office_id) {
+            $office = \app\models\MOffice::findOne(['office_id' => $office_id]);
+        } else {
+            $office = null;
+        }
+        return $this->render('blank', ['target_office' => $office]);
     }
 }

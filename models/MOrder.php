@@ -698,16 +698,30 @@ EOD;
         return $parameters;
     }
     
-    public static function getTotalSucceedOrders() {
-        return self::find()->where([
-            'status' => [self::STATUS_SUCCEEDED, self::STATUS_SYSTEM_SUCCEEDED],
-        ])->count();
+    public static function getTotalSucceedOrders(MOffice $target=null) {
+        if (null === $target) {
+            return self::find()->where([
+                'status' => [self::STATUS_SUCCEEDED, self::STATUS_SYSTEM_SUCCEEDED],
+            ])->count();
+        } else {
+            return self::find()->where([
+                'status' => [self::STATUS_SUCCEEDED, self::STATUS_SYSTEM_SUCCEEDED],
+                'office_id' => $target->office_id,
+            ])->count();
+        }
     }
     
-    public static function getTotalSucceedOrderSum() {
-        return self::find()->where([
-            'status' => [self::STATUS_SUCCEEDED, self::STATUS_SYSTEM_SUCCEEDED],
-        ])->sum('feesum') / 100;
+    public static function getTotalSucceedOrderSum(MOffice $target=null) {
+        if (null === $target) {
+            return self::find()->where([
+                'status' => [self::STATUS_SUCCEEDED, self::STATUS_SYSTEM_SUCCEEDED],
+            ])->sum('feesum') / 100;
+        } else {
+            return self::find()->where([
+                'status' => [self::STATUS_SUCCEEDED, self::STATUS_SYSTEM_SUCCEEDED],
+                'office_id' => $target->office_id,
+            ])->sum('feesum') / 100;
+        }
     }
 
     public function GetOrderJsApiParameters()
