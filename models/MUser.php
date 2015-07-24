@@ -522,22 +522,48 @@ class MUser extends ActiveRecord implements IdentityInterface
         return Yii::$app->formatter->asCurrency($this->user_account_balance/100);    
     } 
     
-    public static function getTotalFans()
+    public static function getTotalFans(MOffice $target = null)
     {
-        return self::find()->where(['subscribe' => 1])->count();
+        if (null === $target) {
+            return self::find()->where(['subscribe' => 1])->count();
+        } else {
+            return self::find()->where([
+                'subscribe' => 1,
+                'belongto' => $target->office_id,
+            ])->count();
+        }
     }
     
-    public static function getTotalMembers()
+    public static function getTotalMembers(MOffice $target = null)
     {
-        return self::find()
-                ->joinWith('openidBindMobiles')
-                ->where(['subscribe' => 1])
-                ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
-                ->groupBy(['gh_id', 'openid'])
-                ->count();
+        if (null === $target) {
+            return self::find()
+                    ->joinWith('openidBindMobiles')
+                    ->where(['subscribe' => 1])
+                    ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                    ->groupBy(['gh_id', 'openid'])
+                    ->count();
+        } else {
+            return self::find()
+                    ->joinWith('openidBindMobiles')
+                    ->where(['subscribe' => 1])
+                    ->andWhere(['belongto' => $target->office_id])
+                    ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                    ->groupBy(['gh_id', 'openid'])
+                    ->count();
+            
+        }
     }
     
-    public static function getMemberTimeline($startDate, $endDate, $accumulatedFlag) {
+    public static function getTotalOffices() 
+    {
+        $office_ids = (new \yii\db\Query())->select('belongto')->distinct()->from('wx_user')->where('subscribe=1')->column();
+        $office_ids = array_diff($office_ids, array_merge([0, 491], range(25,48)));
+        $offices = MOffice::find()->where(['office_id' => $office_ids])->orderBy('title')->all();
+        return $offices;
+    }
+    
+    public static function getMemberTimeline($startDate, $endDate, $accumulatedFlag, $targetOfficeId = 0) {
         \Yii::warning(__METHOD__ . '(' .\yii\helpers\Json::encode([$startDate, $endDate, $accumulatedFlag]) .')');
         $results = [];
         $startTimestamp = strtotime($startDate .' 00:00:00');
@@ -547,33 +573,67 @@ class MUser extends ActiveRecord implements IdentityInterface
         $start_fans = 0;
         
         if ($accumulatedFlag) {
-            $start = self::find()
-                ->joinWith('openidBindMobiles')
-                ->where(['subscribe' => 1])
-                ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
-                ->andWhere(['<', 'subscribe_time', $startTimestamp])
-                ->groupBy(['gh_id', 'openid'])
-                ->count();
-            $start_fans = self::find()
-                ->where(['subscribe' => 1])
-                ->andWhere(['<', 'subscribe_time', $startTimestamp])
-                ->count();
+            if (0 === $targetOfficeId) {
+                $start = self::find()
+                    ->joinWith('openidBindMobiles')
+                    ->where(['subscribe' => 1])
+                    ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                    ->andWhere(['<', 'subscribe_time', $startTimestamp])
+                    ->groupBy(['gh_id', 'openid'])
+                    ->count();
+                $start_fans = self::find()
+                    ->where(['subscribe' => 1])
+                    ->andWhere(['<', 'subscribe_time', $startTimestamp])
+                    ->count();
+            } else {
+                $start = self::find()
+                    ->joinWith('openidBindMobiles')
+                    ->where(['subscribe' => 1])
+                    ->andWhere(['belongto' => $targetOfficeId])
+                    ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                    ->andWhere(['<', 'subscribe_time', $startTimestamp])
+                    ->groupBy(['gh_id', 'openid'])
+                    ->count();
+                $start_fans = self::find()
+                    ->where(['subscribe' => 1])
+                    ->andWhere(['belongto' => $targetOfficeId])
+                    ->andWhere(['<', 'subscribe_time', $startTimestamp])
+                    ->count();
+            }
         }
 
         while ($startTimestamp < $endTimestamp) {
-            $daySum = self::find()
-                ->joinWith('openidBindMobiles')
-                ->where(['subscribe' => 1])
-                ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
-                ->andWhere(['>', 'subscribe_time', $startTimestamp])
-                ->andWhere(['<', 'subscribe_time', $startTimestamp + 24 * 3600])
-                ->groupBy(['gh_id', 'openid'])
-                ->count();
-            $dayFans = self::find()
-                ->where(['subscribe' => 1])
-                ->andWhere(['>', 'subscribe_time', $startTimestamp])
-                ->andWhere(['<', 'subscribe_time', $startTimestamp + 24 * 3600])
-                ->count();
+            if ( 0 === $targetOfficeId ) {
+                $daySum = self::find()
+                    ->joinWith('openidBindMobiles')
+                    ->where(['subscribe' => 1])                    
+                    ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                    ->andWhere(['>', 'subscribe_time', $startTimestamp])
+                    ->andWhere(['<', 'subscribe_time', $startTimestamp + 24 * 3600])
+                    ->groupBy(['gh_id', 'openid'])
+                    ->count();
+                $dayFans = self::find()
+                    ->where(['subscribe' => 1])
+                    ->andWhere(['>', 'subscribe_time', $startTimestamp])
+                    ->andWhere(['<', 'subscribe_time', $startTimestamp + 24 * 3600])
+                    ->count();
+            } else {
+                $daySum = self::find()
+                    ->joinWith('openidBindMobiles')
+                    ->where(['subscribe' => 1])
+                    ->andWhere(['belongto' => $targetOfficeId])
+                    ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                    ->andWhere(['>', 'subscribe_time', $startTimestamp])
+                    ->andWhere(['<', 'subscribe_time', $startTimestamp + 24 * 3600])
+                    ->groupBy(['gh_id', 'openid'])
+                    ->count();
+                $dayFans = self::find()
+                    ->where(['subscribe' => 1])
+                    ->andWhere(['belongto' => $targetOfficeId])
+                    ->andWhere(['>', 'subscribe_time', $startTimestamp])
+                    ->andWhere(['<', 'subscribe_time', $startTimestamp + 24 * 3600])
+                    ->count();
+            }
             if ($accumulatedFlag) {
                 $results['data'][] = [$startTimestamp * 1000, $start + $daySum];
                 $results['data1'][] = [$startTimestamp * 1000, $start_fans + $dayFans];

@@ -117,6 +117,7 @@ $(document).ready(function () {
                 'startDate':  startDate.getFullYear() + '-' + (startDate.getMonth() + 1) + '-' + startDate.getDate() ,
                 'endDate':   endDate.getFullYear() + '-' + (endDate.getMonth() + 1) + '-' + endDate.getDate(),
                 'accumulatedFlag': accumulatedFlag,
+                'targetOfficeId': target_office_id,
             } 
         };
         var el = $('#member-flot').closest(".portlet").children(".portlet-body");
@@ -162,6 +163,12 @@ $(document).ready(function () {
         }
         memberFlotAjax();
     })
+    
+    $('#outlet-selection').change(function () {
+        alert($(this).val());
+        target_office_id = $(this).val();
+        redirectTo();
+    });
     
     $(function() {
         moment.locale('zh-CN', {
@@ -227,7 +234,6 @@ $(document).ready(function () {
 
     });
     
-//    memberFlotAjax();
     
 });
 
