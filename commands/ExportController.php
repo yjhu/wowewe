@@ -445,10 +445,6 @@ class ExportController extends \yii\console\Controller {
 
     public function actionOpenidBindMobilesWithLocation( $filename = 'openid-bind-mobiles-with-location.csv', $date = null ) {
 		
-		header('content-type:text/html;charset=utf-8');
-		$appkey ='5d4a589b32d70ad6378c8c69cba63524'; #通过聚合申请到数据的appkey
-		$url ='http://apis.juhe.cn/mobile/get'; #请求的数据接口URL
-
         $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
         $fh = fopen($filepathname, 'w');
         if (null === $date) {
@@ -462,20 +458,15 @@ class ExportController extends \yii\console\Controller {
 
         while ($start < $total_count) {
         	//$fans = \app\models\MUser::find()->offset($start)->limit($step)->all();
-        
-			$openidBindMobiles = \app\models\OpenidBindMobile::find()->offset($start)->limit($step)->where([
+            
+        	$openidBindMobiles = \app\models\OpenidBindMobile::find()->offset($start)->limit($step)->where([
 				'>', 'create_time', $date
 			])->orderBy([
 				'create_time' => SORT_ASC,
 			])->all();
 
 	        foreach($openidBindMobiles as $mobile) {
-
 	        	//微信昵称	绑定手机号	关注时间
-
-	            //fprintf($fh, "%s, %s, %s, %s, %s", $mobile->mobile, $mobile->create_time, $mobile->province, $mobile->city, $mobile->carrier);
-	            //fprintf($fh, ", %s", $mobile->user->nickname);
-
 	            $user = \app\models\MUser::findOne(['openid' => $mobile->openid]);
 	            if (empty($user)) {
 	            	printf(\yii\helpers\Json::encode($mobile));
@@ -484,53 +475,21 @@ class ExportController extends \yii\console\Controller {
 	            	$office = \app\models\MOffice::findOne(['office_id' => $user->belongto]);
 	        	}
 
-				$params ='phone='.$mobile->mobile.'&key='.$appkey;
-				$content = \app\commands\ExportController::juhecurl($url,$params,0);
-
-				if($content){
-				    $result =json_decode($content,true);
-				    #print_r($result);
-					
-					#错误码判断
-					$error_code = $result['error_code'];
-					if($error_code ==0){
-						#根据所需读取相应数据
-						$data = $result['result'];
-						//echo '结果为：'.$data['area'].' '.$data['location'];
-						$location = $data['province'].$data['city'];
-						$areacode = $data['areacode'];
-						$zip = $data['zip'];
-						$company = $data['company'];
-						$card = $data['card'];
-					}else{
-						//echo $error_code.':'.$result['reason'];
-						$location = '--';
-						$areacode = '--';
-						$zip = '--';
-						$company = '--';
-						$card = '--';
-					}
-				}
-
-	            fprintf($fh, "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s", 
-	            	$mobile->user->nickname, 
-	            	$mobile->mobile, 
-	            	$mobile->create_time, 
-	            	$mobile->province, 
-	            	$mobile->city, 
-	            	$mobile->carrier, 
-	            	empty($office) ? "主号" : $office->title, 
-	            	$location,
-	            	$areacode,
-	            	$zip,
-	            	$company,
-	            	$card);
-	            fprintf($fh, PHP_EOL);
+                fprintf($fh, "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s", 
+                $mobile->user->nickname, 
+                $mobile->mobile, 
+                $mobile->create_time, 
+                empty($office) ? "主号" : $office->title,
+                $mobile->province,
+                $mobile->city,
+                $mobile->areacode,
+                $mobile->zip,
+                $mobile->carrier,
+                $mobile->cardtype);
+                fprintf($fh, PHP_EOL);
 	        }
-
         	$start += $step;
         }
-
         fclose($fh);
     }
     

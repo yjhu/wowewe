@@ -75,20 +75,29 @@ $signPackage = $jssdk->GetSignPackage();
         <a href="#mzj">没中奖的看这里!</a>
 	</p>
 
-        <?php if ($disk->win == 1) { ?>
-        <p align="center">
-            <span style='font-size:0.8em;'><i class='fa fa-exclamation-triangle' style='color:red;'></i>您需要到<a href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/nearestoutlets:gh_03a74ac96138#wechat_redirect'>附近营业厅</a>领取奖品后才点击此按钮！<i class='fa fa-exclamation-triangle'  style='color:red;'></i></span>
-            <a class="btn btn-primary btn-block" style="width: 300px" id='ivegetit'>领取奖品</a>
-        </p>
-        <?php } ?>
+        <?php 
+            if(!empty($disk)) {
+        ?>
 
-        <?php if ($disk->win == 2) { ?>
-        <p align="center">
-            
-        <a class="btn btn-block" style="width: 300px">已领取</a>
-        领取时间：<?= date('Y-m-d H:i:s', $disk->win_time); ?>
-        </p>
-        <?php } ?>
+            <?php if ($disk->win == 1) { ?>
+            <p align="center">
+                <span style='font-size:0.8em;'><i class='fa fa-exclamation-triangle' style='color:red;'></i>您需要到<a href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/nearestoutlets:gh_03a74ac96138#wechat_redirect'>附近营业厅</a>领取奖品后才点击此按钮！<i class='fa fa-exclamation-triangle'  style='color:red;'></i></span>
+                <a class="btn btn-primary btn-block" style="width: 300px" id='ivegetit'>领取奖品</a>
+            </p>
+            <?php } ?>
+
+            <?php if ($disk->win == 2) { ?>
+            <p align="center">
+                
+            <a class="btn btn-block" style="width: 300px">已领取</a>
+            领取时间：<?= date('Y-m-d H:i:s', $disk->win_time); ?>
+            </p>
+            <?php } ?>
+
+        <?php
+        }
+        ?>
+
 
 	<div id="diskstart">
 		<div id="disk">
@@ -180,7 +189,7 @@ $signPackage = $jssdk->GetSignPackage();
                 //if (20 > $total_rewards_count) {
                     $total_rewards = \app\models\MDisk::find()->where(['>', 'win', 0])->orderBy(['win_time' => SORT_DESC])->all();
                 //} else {
-                 //   $total_rewards = \app\models\MDisk::find()->where(['>', 'win', 0])->orderBy(['win_time' => SORT_DESC])->limit(20)->all();
+                //    $total_rewards = \app\models\MDisk::find()->where(['>', 'win', 0])->orderBy(['win_time' => SORT_DESC])->limit(20)->all();
                 //}
             ?>
 <ul class="table-view">

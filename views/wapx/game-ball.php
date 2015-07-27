@@ -66,7 +66,7 @@ canvas{background-color:#aaa;vertical-align:middle;opacity:1;border-top:solid 1p
 </div>
 <script>document.getElementById('stage').style.height = (480 - Math.max(0, 568 - screen.height)) + 'px';</script>
 
-    <script src="/wx/web/js/game-ball.js"></script>
+    <script src="/wx/web/js/game-ball.js?v2"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 
 <script type="text/javascript">
@@ -79,10 +79,13 @@ canvas{background-color:#aaa;vertical-align:middle;opacity:1;border-top:solid 1p
     function level3366Fn(F){
         //alert(F);
         S = F; //kzeng add
-        alert(S);
-        share2friendTitle = "我到第"+S+"关，世界上只有6个人能玩到十七关！";
-        document.title =  "我到第"+S+"关，世界上只有6个人能玩到十七关！";
+
         try{
+            share2friendTitle = "我到第"+S+"关，世界上只有6个人能玩到十七关！";
+            alert(share2friendTitle);
+
+            document.title =  "我到第"+S+"关，世界上只有6个人能玩到十七关！";
+
             ////document.title = window.shareData.desc = "我到第"+F+"关，世界上只有6个人能玩到十七关！"
             //document.title = shareData.tTitle = "我过了"+F+"关，全世界只有4个人能过17关！！";
             //submit_3366(F)
