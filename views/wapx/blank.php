@@ -95,8 +95,11 @@
         <div class="portlet light">
             <div class="portlet-title">
                 <div class="caption">
-                    <span class="caption-subject">粉丝及会员</span>
-                    <span class="caption-helper">发展趋势</span>
+                    <span class="caption-subject">
+                        <i class="fa fa-line-chart"></i>
+                        粉丝及会员
+                    </span>
+                    <span class="caption-helper">发展</span>
                 </div>
                 
                 <div class="actions">  
@@ -128,6 +131,46 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <span class="caption-subject">
+                        <i class="fa fa-pie-chart"></i>
+                        会员
+                    </span>
+                    <span class="caption-helper">
+                        运营商分布
+                    </span>
+                </div>
+                <div class="actions"></div>
+            </div>
+            <div class="portlet-body">
+                <div id="member-carrier-pie" style="height:300px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <span class="caption-subject">
+                        <i class="fa fa-pie-chart"></i>
+                        会员
+                    </span>
+                    <span class="caption-helper">
+                        地域分布
+                    </span>
+                </div>
+                <div class="actions"></div>
+            </div>
+            <div class="portlet-body">
+                <div id="member-region-pie" style="height:300px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <?php
 $this->registerCssFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css' ); 
 $this->registerJsFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/moment.min.js' );
@@ -135,6 +178,7 @@ $this->registerJsFile( '@web/metronic/theme/assets/global/plugins/bootstrap-date
 $this->registerJsFile( '@web/metronic/theme/assets/global/plugins/flot/jquery.flot.min.js' );
 $this->registerJsFile( '@web/metronic/theme/assets/global/plugins/flot/jquery.flot.resize.min.js' );
 $this->registerJsFile( '@web/metronic/theme/assets/global/plugins/flot/jquery.flot.time.min.js' );
+$this->registerJsFile( '@web/metronic/theme/assets/global/plugins/flot/jquery.flot.pie.min.js' );
 $this->registerJsFile( '@web/js/yjhu/member-flot.js' );
 
 

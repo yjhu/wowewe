@@ -144,6 +144,137 @@ $(document).ready(function () {
         
     }
     
+    function memberCarrierPieDraw( data ) {                
+        if ($('#member-carrier-pie').size() !== 0) {
+                $.plot($("#member-carrier-pie"), data, {
+                    series: {
+                        pie: {
+                            show: true,
+                            radius: 1,
+                            label: {
+                                show: true,
+                                radius: 3/4,
+                                formatter: function(label, series) {
+                                    return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '</div>';
+                                },
+                                background: {
+                                    opacity: 0.5
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        labelFormatter: function ( label, series ) {
+                            return '<span style="width:50px;">' + label + '<br/>' + Math.round(series.percent) + '%('+series.data[0][1]+')</span>';
+                        },
+                        position: 'nw',
+                    },
+                    grid: {
+                        hoverable: true,
+                    }
+                });
+            }
+    }
+
+    function memberCarrierPieAjax() {
+        var args = {
+            'classname':    '\\app\\models\\OpenidBindMobile',
+            'funcname':     'getMemberCarrierPieDataAjax',
+            'params':       {
+                'targetOfficeId': target_office_id,
+            } 
+        };
+        var el = $('#member-carrier-pie').closest(".portlet").children(".portlet-body");
+        Metronic.blockUI({
+            target: el,
+            animate: true,
+            overlayColor: 'none'
+        });
+        $.ajax({
+            url:        "/wx/web/index.php?r=wapx/wapxajax",
+            type:       "GET",
+            cache:      false,
+            dataType:   "json",
+            data:       "args=" + JSON.stringify(args),
+            success:    function(ret) { 
+//                alert(JSON.stringify(ret));
+                Metronic.unblockUI(el);
+                memberCarrierPieDraw(ret);
+            },                        
+            error:      function(){
+                alert('发送失败。');
+            }
+        });        
+    }
+    
+    function memberRegionPieDraw( data ) {                
+        if ($('#member-region-pie').size() !== 0) {
+            $.plot($("#member-region-pie"), data, {
+                series: {
+                    pie: {
+                        show: true,  
+                        radius: 1,
+                        label: {
+                            show: true,
+                            radius: 3/4,
+                            formatter: function(label, series) {
+                                return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '</div>';
+                            },
+                            background: {
+                                opacity: 0.5
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    show: true,
+                    labelFormatter: function ( label, series ) {
+                        return '<span style="width:50px;">' + label + '<br/>' + Math.round(series.percent) + '%('+series.data[0][1]+')</span>';
+                    },
+                    position: 'nw',
+                },
+                grid: {
+                    hoverable: true,
+                }
+            });
+        }
+    }
+
+    function memberRegionPieAjax() {
+        var args = {
+            'classname':    '\\app\\models\\OpenidBindMobile',
+            'funcname':     'getMemberRegionPieDataAjax',
+            'params':       {
+                'targetOfficeId': target_office_id,
+            } 
+        };
+        var el = $('#member-region-pie').closest(".portlet").children(".portlet-body");
+        Metronic.blockUI({
+            target: el,
+            animate: true,
+            overlayColor: 'none'
+        });
+        $.ajax({
+            url:        "/wx/web/index.php?r=wapx/wapxajax",
+            type:       "GET",
+            cache:      false,
+            dataType:   "json",
+            data:       "args=" + JSON.stringify(args),
+            success:    function(ret) { 
+//                alert(JSON.stringify(ret));
+                Metronic.unblockUI(el);
+                memberRegionPieDraw(ret);
+            },                        
+            error:      function(){
+                alert('发送失败。');
+            }
+        });        
+    }
+    
+    memberCarrierPieAjax();
+    memberRegionPieAjax();
+    
     $('input[name="member-flot-accumulated"]').change( function() {
         if ($(this).attr('id') === 'member-flot-accumulated-off') {
             accumulatedFlag = 0;
