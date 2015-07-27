@@ -43,7 +43,7 @@
 <!-- DOC: Apply "page-footer-fixed" class to the body element to have fixed footer -->
 <!-- DOC: Apply "page-sidebar-reversed" class to put the sidebar on the right side -->
 <!-- DOC: Apply "page-full-width" class to the body element to have full width page without the sidebar menu -->
-<body class="page-header-fixed page-quick-sidebar-over-content">
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-fixed">
 <!-- BEGIN HEADER -->
 <div class="page-header navbar navbar-fixed-top">
 	<!-- BEGIN HEADER INNER -->
@@ -53,7 +53,7 @@
                     <a href=<?= \Yii::$app->homeUrl; ?>>
 			<img src="./xyunicom.png" alt="logo" class="logo-default" style="height:38px;margin-top:4px;"/>
 			</a>
-			<div class="sidebar-toggler">
+			<div class="menu-toggler sidebar-toggler hide">
 				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
 			</div>
 		</div>
@@ -188,6 +188,9 @@
                             ],
                             'options' => [
                                 'class' => 'page-sidebar-menu',
+                                'data-keep-expanded' => "false", 
+                                'data-auto-scroll' => "true",
+                                'data-slide-speed' => "200",
                             ],
                             'submenuTemplate' => "\n<ul class='sub-menu'>\n{items}\n</ul>\n",
                         ]);
@@ -198,6 +201,9 @@
                             'activateParents' => true,
                             'options' => [
                                 'class' => 'page-sidebar-menu',
+                                'data-keep-expanded' => "false", 
+                                'data-auto-scroll' => "true",
+                                'data-slide-speed' => "200",
                             ],
                             'submenuTemplate' => "\n<ul class='sub-menu'>\n{items}\n</ul>\n",
                             'items' => [ 

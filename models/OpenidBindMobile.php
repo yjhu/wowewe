@@ -118,7 +118,30 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
         return $this->carrier;
     }
     
-
+    public static function getMemberCarrierPieDataAjax($targetOfficeId = 0) {
+        $results = [];
+        $query = (new \yii\db\Query())
+                ->select('carrier, count(*) as c')
+                ->from(self::tableName());
+        if (0 === $targetOfficeId) {
+            $query = $query->where(['not', ['carrier' => null]]);
+        } else {
+            $query = $query->join('left join', 'wx_user', 'wx_openid_bind_mobile.gh_id = wx_user.gh_id and wx_openid_bind_mobile.openid = wx_user.openid')
+                    ->where(['wx_user.belongto' => $targetOfficeId])
+                    ->andWhere(['not', ['carrier' => null]]);
+        }
+        $query = $query->groupBy('carrier')
+                ->orderBy('c desc');
+        $rows = $query->all();
+        foreach ($rows as $row) {
+            $results[] = [
+                'label' => $row['carrier'],
+                'data' => $row['c'],
+            ];
+        }
+        return \yii\helpers\Json::encode($results);
+    }
+    
     public function getProvince() {
         if (empty($this->province) || (strtotime($this->update_time) < strtotime('-1 month'))) {
             $resp = \app\models\U::getMobileLocation($this->mobile);
@@ -151,6 +174,33 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
             }
         }
         return $this->city;
+    }
+    
+    public static function getMemberRegionPieDataAjax($targetOfficeId = 0) {
+        $results = [];
+        $query = (new \yii\db\Query())
+                ->select('wx_openid_bind_mobile.province as province, wx_openid_bind_mobile.city as city, count(*) as c')
+                ->from(self::tableName());
+        if (0 === $targetOfficeId) {
+            $query = $query->where(['not', ['wx_openid_bind_mobile.province' => null]])
+                ->andWhere(['not', ['wx_openid_bind_mobile.city' => null]]);
+        } else {
+            $query = $query->join('left join', 'wx_user', 'wx_openid_bind_mobile.gh_id = wx_user.gh_id and wx_openid_bind_mobile.openid = wx_user.openid')
+                    ->where(['wx_user.belongto' => $targetOfficeId])
+                    ->andWhere(['not', ['wx_openid_bind_mobile.province' => null]])
+                    ->andWhere(['not', ['wx_openid_bind_mobile.city' => null]]);
+        }
+        $query = $query->groupBy('wx_openid_bind_mobile.province, wx_openid_bind_mobile.city')
+                ->orderBy('c desc')
+                ->limit(10);
+        $rows = $query->all();
+        foreach ($rows as $row) {
+            $results[] = [
+                'label' => $row['province'] . $row['city'],
+                'data' => $row['c'],
+            ];
+        }
+        return \yii\helpers\Json::encode($results);
     }
 
     public function getZip() {
