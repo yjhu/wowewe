@@ -308,6 +308,28 @@ class WapxController extends Controller {
     }
 
 
+//http://wosotech.com/wx/web/index.php?r=wapx/game-ball&gh_id=gh_03a74ac96138
+//https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/game-ball:gh_03a74ac96138#wechat_redirect
+    public function actionGameBall() {
+        $this->layout = false;
+ 
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        $wx_user = \app\models\MUser::findOne([
+            'gh_id' => $gh_id,
+            'openid' => $openid,
+        ]);
+        if (empty($wx_user) || $wx_user->subscribe === 0) {
+            return $this->render('need_subscribe');
+        }
+
+
+        return $this->render('game-ball', [
+            'observer' => $wx_user,
+        ]);
+    }
+
+
 
     //http://wosotech.com/wx/web/index.php?r=wapx/yaoyiyao&gh_id=gh_03a74ac96138
     // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/yaoyiyao:gh_03a74ac96138#wechat_redirect
