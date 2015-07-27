@@ -165,7 +165,7 @@ $(document).ready(function () {
     })
     
     $('#outlet-selection').change(function () {
-        alert($(this).val());
+//        alert($(this).val());
         target_office_id = $(this).val();
         redirectTo();
     });

@@ -709,10 +709,14 @@ class WapxController extends Controller {
     public function actionMetronic($office_id = 0) {
         $this->layout = 'metronic';
         
-        if (0 !== $office_id) {
-            $office = \app\models\MOffice::findOne(['office_id' => $office_id]);
-        } else {
-            $office = null;
+        if (\Yii::$app->user->isAdmin) {
+            if (0 !== $office_id) {
+                $office = \app\models\MOffice::findOne(['office_id' => $office_id]);
+            } else {
+                $office = null;
+            }
+        } else if (\Yii::$app->user->isOffice) {
+            $office = \Yii::$app->user->identity;
         }
         return $this->render('blank', ['target_office' => $office]);
     }

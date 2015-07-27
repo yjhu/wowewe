@@ -1,6 +1,8 @@
+
 <div class="page-bar">
     <div class="pull-right">
-        <label class=''>渠道选择：</label>
+        <label>渠道选择：</label>
+        <?php if (\Yii::$app->user->isAdmin) { ?>
         <select id='outlet-selection' class='form-control input-large' style="display:inline;">
             <option value='0'>所有</option>
             <?php 
@@ -13,8 +15,12 @@
             <option value='<?= $office->office_id ?>'><?= $office->title ?></option>
             <?php }} ?>
         </select>
+        <?php } else if (\Yii::$app->user->isOffice){ ?>
+        <label><?= \Yii::$app->user->identity->title; ?></label>
+        <?php } ?>
     </div>
 </div>
+
 <div class="row">
     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
             <a class="dashboard-stat dashboard-stat-light blue-soft" href="javascript:;">
