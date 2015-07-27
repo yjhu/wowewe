@@ -594,6 +594,7 @@ class U
     */
     public static function getMobileLocation($mobile)
     {
+        /*
         $method = 'GET';
         $format = 'json';
         $url = 'http://v.showji.com/Locating/showji.com20150416273007.aspx';
@@ -623,8 +624,33 @@ class U
                 return json_decode(json_encode($respObject), true);            
             }
         }
-        return ['errcode'=>90000, 'errmsg'=>'HTTP_RESPONSE_NOT_WELL_FORMED'];        
+        return ['errcode'=>90000, 'errmsg'=>'HTTP_RESPONSE_NOT_WELL_FORMED'];     
+*/
+ 
+        header('content-type:text/html;charset=utf-8');
+        $appkey ='5d4a589b32d70ad6378c8c69cba63524'; #通过聚合申请到数据的appkey
+        $url ='http://apis.juhe.cn/mobile/get'; #请求的数据接口URL
+
+        $params ='phone='.$mobile.'&key='.$appkey;
+        $content = \app\commands\ExportController::juhecurl($url,$params,0);
+
+        if($content){
+            $result =json_decode($content,true);
+ 
+            if (null !== $result)
+                return $result;
+        }
+        
+        return ['errcode'=>90000, 'errmsg'=>'HTTP_RESPONSE_NOT_WELL_FORMED'];   
     }
+
+
+
+
+
+
+
+
 
 
 }
