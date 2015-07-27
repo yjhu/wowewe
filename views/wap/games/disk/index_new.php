@@ -406,7 +406,7 @@ $signPackage = $jssdk->GetSignPackage();
 						//alert('您今天的3次抽奖机会都用完了，请明天再来。');
 						//window.location = '<//?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/home' ; ?>';
 						//window.location='#dialogPage2';
-						alert('您今天的3次抽奖机会都用完了，请明天再来。');
+						alert('您3次抽奖机会都用完了哟。');
 					}
 
 				}
