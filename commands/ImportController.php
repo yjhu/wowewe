@@ -749,4 +749,86 @@ class ImportController extends Controller {
             $offset = $q_pos + strlen(self::FAQ_QUESTION);
         }        
     }
+
+
+
+    public function actionOpenidBindMobilesWithLocation() {
+        header('content-type:text/html;charset=utf-8');
+        $appkey ='5d4a589b32d70ad6378c8c69cba63524'; #通过聚合申请到数据的appkey
+        $url ='http://apis.juhe.cn/mobile/get'; #请求的数据接口URL
+
+        $total_count = \app\models\OpenidBindMobile::find()->count();
+
+        $step = 3000;
+        $start = 0;
+        $n=0;
+
+        while ($start < $total_count) {
+            //$fans = \app\models\MUser::find()->offset($start)->limit($step)->all();
+        
+            $openidBindMobiles = \app\models\OpenidBindMobile::find()->offset($start)->limit($step)->orderBy([
+                'create_time' => SORT_ASC,
+            ])->all();
+
+            foreach($openidBindMobiles as $mobile) {
+
+                //$n = $n + 1;
+
+                //微信昵称  绑定手机号   关注时间
+                $user = \app\models\MUser::findOne(['openid' => $mobile->openid]);
+                if (empty($user)) {
+                    printf(\yii\helpers\Json::encode($mobile));
+                    continue;
+                } else {
+                    $office = \app\models\MOffice::findOne(['office_id' => $user->belongto]);
+                }
+
+                if(empty($mobile->carrier))
+                {
+                    $params ='phone='.$mobile->mobile.'&key='.$appkey;
+                    $content = \app\commands\ExportController::juhecurl($url,$params,0);
+
+                    if($content){
+                        $result =json_decode($content,true);
+                        #print_r($result);
+                        
+                        #错误码判断
+                        $error_code = $result['error_code'];
+                        if($error_code ==0){
+                            #根据所需读取相应数据
+                            $data = $result['result'];
+                            //echo '结果为：'.$data['area'].' '.$data['location'];
+                            $province = $data['province'];
+                            $city = $data['city'];
+                            $areacode = $data['areacode'];
+                            $zip = $data['zip'];
+                            $company = $data['company'];
+                            $card = $data['card'];
+                        }else{
+                            //echo $error_code.':'.$result['reason'];
+                            $province = '--';
+                            $city = '--';
+                            $areacode = '--';
+                            $zip = '--';
+                            $company = '--';
+                            $card = '--';
+                        }
+                    }
+
+                    $mobile->carrier = $data['company'];
+                    $mobile->province = $data['province'];
+                    $mobile->city = $data['city'];
+                    $mobile->areacode = $data['areacode'];
+                    $mobile->zip = $data['zip'];
+                    $mobile->cardtype = $data['card'];
+                    $mobile->save(false);
+                }
+
+                //if($n > 10) break;
+            }
+            $start += $step;
+        }
+    }
+
+
 }
