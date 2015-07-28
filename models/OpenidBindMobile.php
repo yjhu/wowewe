@@ -83,6 +83,10 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
+        
+        if ($insert) {
+           $this->getProvince();
+        }      
     }
 
     public function getUser()
@@ -145,16 +149,17 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
     public function getProvince() {
         if (empty($this->province) || (strtotime($this->update_time) < strtotime('-1 month'))) {
             $resp = \app\models\U::getMobileLocation($this->mobile);
-            if (empty($resp['errcode'])) {
+                        
+            //if (empty($resp['errcode'])) {
                 $this->updateAttributes([
-                    'carrier'   => $resp['Corp'],
-                    'province'  => $resp['Province'],
-                    'city'      => $resp['City'],
+                    'carrier'   => $resp['company'],
+                    'province'  => $resp['province'],
+                    'city'      => $resp['city'],
                     'zip'      => $resp['zip'],
                     'areacode'      => $resp['areacode'],
-                    'cardtype'      => $resp['cardtype'],
+                    'cardtype'      => $resp['card'],
                 ]);
-            }
+           // }
         }
         return $this->province;
     }
