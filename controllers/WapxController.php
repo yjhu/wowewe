@@ -434,6 +434,48 @@ class WapxController extends Controller {
 
 
 
+
+
+
+    //http://wosotech.com/wx/web/index.php?r=wapx/qingshi-author&gh_id=gh_03a74ac96138
+    // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/qingshi-author:gh_03a74ac96138#wechat_redirect
+    public function actionQingshiAuthor() {
+        $this->layout = false;
+        
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        $wx_user = \app\models\MUser::findOne([
+            'gh_id' => $gh_id,
+            'openid' => $openid,
+        ]);
+        if (empty($wx_user) || $wx_user->subscribe === 0) {
+            return $this->render('need_subscribe');
+        }
+
+        $qingshi_author = \app\models\MQingshiAuthor::findOne([
+            'gh_id' => $gh_id,
+            'author_openid' => $openid,
+        ]);
+
+        if (empty($qingshi_author)) {
+            if (empty($wx_user->openidBindMobiles)) {
+                $url = \yii\helpers\Url::to();
+                \Yii::$app->getSession()->set('RETURN_URL', $url);
+                return $this->redirect(['wap/addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+            } else {
+                $qingshi_author = new \app\models\MQingshiAuthor;
+                $qingshi_author->author_ghid = $gh_id;
+                $qingshi_author->author_openid = $openid;
+                $qingshi_author->save(false);
+            }
+        }
+       
+        return $this->render('qingshi-author', [
+            'observer' => $wx_user,
+            'qingshi_author' => $qingshi_author,
+        ]);
+    }
+
     //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&outlet_id=777
     public function actionClientemployeelist($gh_id, $openid, $outlet_id) {
         $this->layout = false;
