@@ -206,6 +206,8 @@ class ClientOutlet extends \yii\db\ActiveRecord
          $media_ids = explode(',', $this->pics);
          $urls = [];
          foreach($media_ids as $media_id) {
+             $media_id = trim($media_id);
+             if ('' == $media_id) continue;
              $urls[] = $this->getPicUrl($media_id);
          }
          return $urls;

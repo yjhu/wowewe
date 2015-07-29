@@ -40,7 +40,7 @@ use app\models\Custom;
 
 class OrderController extends Controller
 {
-    public $layout = 'main';
+    public $layout = 'metronic';
 
     public $enableCsrfValidation = false;
 

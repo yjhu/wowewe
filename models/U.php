@@ -635,10 +635,11 @@ class U
         $content = \app\commands\ExportController::juhecurl($url,$params,0);
 
         if($content){
-            $result =json_decode($content,true);
- 
-            if (null !== $result)
-                return $result;
+            $result =json_decode($content,true); 
+            $resp = $result['result'];
+                
+            if ( $result['error_code'] == 0)
+                return $resp;
         }
         
         return ['errcode'=>90000, 'errmsg'=>'HTTP_RESPONSE_NOT_WELL_FORMED'];   

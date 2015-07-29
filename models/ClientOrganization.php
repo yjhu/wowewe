@@ -50,6 +50,29 @@ class ClientOrganization extends \yii\db\ActiveRecord
                 ->viaTable('client_employee_organization', ['organization_id' => 'organization_id']);
     }
     
+    public function isMsc()
+    {
+        if (!empty($this->outlets)) return true;
+        foreach($this->getDirectSubordinateOrganizations() as $sub) {
+            if ($sub->isMsc()) return true;
+        }
+        return false;
+    }
+    
+    public function getMscIdArray() {
+        $result = [];
+        if ($this->isMsc()) {
+            if (!empty($this->outlets)) {
+                $result = array_merge ($result, [$this->organization_id]);
+            } else {
+                foreach($this->getDirectSubordinateOrganizations() as $sub) {
+                    $result = array_merge($result, $sub->getMscIdArray());
+                }
+            }
+        }
+        return $result;
+    }
+    
     public function getOutlets()
     {
         return $this->hasMany(\app\models\ClientOutlet::className(), ['supervision_organization_id' => 'organization_id']);

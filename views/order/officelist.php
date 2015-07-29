@@ -14,7 +14,7 @@ use app\models\MOffice;
  * @var app\models\MUserSearch $searchModel
  */
 
-$this->title = '营业厅管理';
+$this->title = '渠道管理';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="muser-index">

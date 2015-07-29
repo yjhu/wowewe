@@ -159,7 +159,7 @@
                                     'label' => '<i class="fa fa-home"></i><span class="title">渠道</span><span class="arrow "></span>',
                                     'url' => '',
                                     'items' => [
-                                        ['label' => '营业厅管理','url' => ['/order/officelist'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '渠道管理','url' => ['/client-outlet/index'],'linkOptions' => ['data-method' => 'post']],
                                         ['label' => '营业厅推广成绩排行','url' => ['/order/officetop'],'linkOptions' => ['data-method' => 'post']],
                                     ],
                                 ],

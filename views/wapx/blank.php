@@ -144,7 +144,10 @@
                         运营商分布
                     </span>
                 </div>
-                <div class="actions"></div>
+                <div class="actions">
+                    <a href="javascript:;" class="btn btn-sm btn-circle btn-default" id="member-carrier-pie-reload">
+                    <i class="fa fa-repeat"></i> 重载 </a>
+                </div>
             </div>
             <div class="portlet-body">
                 <div id="member-carrier-pie" style="height:300px;"></div>
@@ -163,7 +166,10 @@
                         地域分布
                     </span>
                 </div>
-                <div class="actions"></div>
+                <div class="actions">
+                    <a href="javascript:;" class="btn btn-sm btn-circle btn-default"  id="member-region-pie-reload">
+                    <i class="fa fa-repeat"></i> 重载 </a>
+                </div>
             </div>
             <div class="portlet-body">
                 <div id="member-region-pie" style="height:300px;"></div>
