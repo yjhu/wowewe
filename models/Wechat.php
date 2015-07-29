@@ -46,7 +46,9 @@ class Wechat extends \yii\base\Component
     const EVENT_PIC_WEIXIN = 'pic_weixin';
     const EVENT_LOCATION_SELECT = 'location_select';
     const EVENT_MASSSENDJOBFINISH = 'MASSSENDJOBFINISH';
-    const EVENT_TEMPLATESENDJOBFINISH = 'TEMPLATESENDJOBFINISH';    
+    const EVENT_TEMPLATESENDJOBFINISH = 'TEMPLATESENDJOBFINISH';   
+    const EVENT_KF_CREATE_SESSION = 'kf_create_session';
+
     
     const NO_RESP = '';
     const SIGNTYPE = 'sha1';
@@ -357,6 +359,11 @@ class Wechat extends \yii\base\Component
 
     protected function onTemplateSendJobFinish() { return $this->responseText($this->getRequestString()); }
     
+   protected function onKfCreateSession() { return $this->responseText($this->getRequestString()); }
+    
+    
+
+    
     protected function onUnknown()
     {
         throw new \Exception(U::toString(['Invalid MsgType or Event', __METHOD__, $this->getRequest()]));    
@@ -437,8 +444,12 @@ class Wechat extends \yii\base\Component
 
                         case Wechat::EVENT_TEMPLATESENDJOBFINISH:
                             $resp =$this->onTemplateSendJobFinish();
-                            break;                            
+                            break;    
 
+                        case Wechat::EVENT_KF_CREATE_SESSION:
+                            $resp =$this->onKfCreateSession();
+                            break;
+                                                    
                         default:
                             $resp = $this->onUnknown();
                             break;

@@ -134,19 +134,19 @@ use yii\helpers\Url;
         </tr>
         <tr>
           <th scope="row">4</th>
-          <td>享受自营厅免费充电/免费饮水/免费下载手机软件等服务;</td>
+          <td>享受自营厅免费充电、饮水、下载手机软件等服务;</td>
         </tr>
         <tr class="info">
           <th scope="row">5</th>
-          <td>享受免费停车位,购机免费送货上门(仅限市区)服务;</td>
-        </tr>
-         <tr>
-          <th scope="row">6</th>
-          <td>可参与襄阳联通微信举办的各种微信活动;</td>
+          <td>享受免费停车位,购机免费送货上门【仅限市区】服务;</td>
         </tr>
         <tr class="success">
-          <th scope="row">7</th>
+          <th scope="row">6</th>
           <td>微信平台每周会推出微信会员特价机;</td>
+        </tr>
+        <tr>
+          <th scope="row">7</th>
+          <td>尊享一对一人工客服;</td>
         </tr>
 </table>
 <?php

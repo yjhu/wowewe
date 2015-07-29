@@ -131,31 +131,55 @@ class WechatXiangYangUnicom extends Wechat
 
 	protected function handleKeyword($keyword)
 	{
+        //U::W("-------------------------------handleKeyword----------------------------------------");
 		$gh_id = $this->getRequest('ToUserName');
+        $openid = $this->getRequest('FromUserName');
+
 		$model = MWxAction::findOne(['gh_id'=>$gh_id, 'keyword'=>$keyword]);
 
         if($keyword == "客服")
         {
+            /*如果不是会员就跳转到手机绑定页面，先绑定手机成为会员*/
+            //U::W("-------------------------------先绑定手机成为会员----------------------------------------");
+            $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+            if (empty($user->openidBindMobiles)) {
+                //Yii::$app->getSession()->set('RETURN_URL', Url::to());
+                //return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+
+                $respText = "<a href=\"".Url::to(['wap/addbindmobile', 'gh_id'=>$gh_id, 'openid'=>$openid], true)."\">立即成为会员</a>\n\n尊享一对一人工客服！";
+       
+                return $this->responseText($respText);
+            }
+
+
             $arr = $this->WxGetOnlineKfList();
 
-            //if (count($arr) > 0)
-            //    return $this->responseTransfer();
+            //auto_accept 客服设置的最大自动接入数
+            //accepted_case   客服当前正在接待的会话数
+            //U::W("------------------------------------------------------------------------------------");
+            //U::W($arr);
 
             $auto_accept = 0;
             $accepted_case = 0;
 
             foreach ($arr as $a1) {
-            U::W($a1);
-            $auto_accept = $auto_accept + (int)$a1["auto_accept"];
-            $accepted_case = $accepted_case + (int)$a1["accepted_case"];
+                //U::W($a1);
+                $auto_accept = $auto_accept + (int)$a1["auto_accept"];
+                $accepted_case = $accepted_case + (int)$a1["accepted_case"];
             }
 
-            U::W($auto_accept."-----------\n");
-            U::W($accepted_case."-----------\n");
+            //U::W("+++++++++++++++++++++++++++++++++KF FULL+++++++++++++++++++++++++++++++++++++++++++++");
+            //U::W($auto_accept."-----------\n");
+            //U::W($accepted_case."-----------\n");
 
             if(($auto_accept-$accepted_case)>0)
-                return $this->responseTransfer();         
+                return $this->responseTransfer(); 
+
+            //U::W("--------------------------------KF FULL--------------------------------------------");
+            $respText = "亲~ 客服忙，请稍候再试。\n或直接输入您的问题，将自动进入自动回复。";
+            return $this->responseText($respText);    
         }
+
 
 
 		if ($model === null) {
