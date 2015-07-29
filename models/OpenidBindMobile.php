@@ -108,16 +108,16 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
     public function getCarrier() {
         if (empty($this->carrier) || (strtotime($this->update_time) < strtotime('-1 month'))) {
             $resp = \app\models\U::getMobileLocation($this->mobile);
-            if (empty($resp['errcode'])) {
+            //if (empty($resp['errcode'])) {
                 $this->updateAttributes([
-                    'carrier'   => $resp['Corp'],
-                    'province'  => $resp['Province'],
-                    'city'      => $resp['City'],
+                    'carrier'   => $resp['company'],
+                    'province'  => $resp['province'],
+                    'city'      => $resp['city'],
                     'zip'      => $resp['zip'],
                     'areacode'      => $resp['areacode'],
-                    'cardtype'      => $resp['cardtype'],
+                    'cardtype'      => $resp['card'],
                 ]);
-            }
+           // }
         }
         return $this->carrier;
     }
@@ -167,16 +167,16 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
     public function getCity() {
         if (empty($this->city) || (strtotime($this->update_time) < strtotime('-1 month'))) {
             $resp = \app\models\U::getMobileLocation($this->mobile);
-            if (empty($resp['errcode'])) {
+            //if (empty($resp['errcode'])) {
                 $this->updateAttributes([
-                    'carrier'   => $resp['Corp'],
-                    'province'  => $resp['Province'],
-                    'city'      => $resp['City'],
+                    'carrier'   => $resp['company'],
+                    'province'  => $resp['province'],
+                    'city'      => $resp['city'],
                     'zip'      => $resp['zip'],
                     'areacode'      => $resp['areacode'],
-                    'cardtype'      => $resp['cardtype'],
+                    'cardtype'      => $resp['card'],
                 ]);
-            }
+           // }
         }
         return $this->city;
     }
@@ -206,57 +206,6 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
             ];
         }
         return \yii\helpers\Json::encode($results);
-    }
-
-    public function getZip() {
-        if (empty($this->zip) || (strtotime($this->update_time) < strtotime('-1 month'))) {
-            $resp = \app\models\U::getMobileLocation($this->mobile);
-            if (empty($resp['errcode'])) {
-                $this->updateAttributes([
-                    'carrier'   => $resp['Corp'],
-                    'province'  => $resp['Province'],
-                    'city'      => $resp['City'],
-                    'zip'      => $resp['zip'],
-                    'areacode'      => $resp['areacode'],
-                    'cardtype'      => $resp['cardtype'],
-                ]);
-            }
-        }
-        return $this->city;
-    }
-
-    public function getAreacode() {
-        if (empty($this->areacode) || (strtotime($this->update_time) < strtotime('-1 month'))) {
-            $resp = \app\models\U::getMobileLocation($this->mobile);
-            if (empty($resp['errcode'])) {
-                $this->updateAttributes([
-                    'carrier'   => $resp['Corp'],
-                    'province'  => $resp['Province'],
-                    'city'      => $resp['City'],
-                    'zip'      => $resp['zip'],
-                    'areacode'      => $resp['areacode'],
-                    'cardtype'      => $resp['cardtype'],
-                ]);
-            }
-        }
-        return $this->city;
-    }
-
-    public function getCardtype() {
-        if (empty($this->cardtype) || (strtotime($this->update_time) < strtotime('-1 month'))) {
-            $resp = \app\models\U::getMobileLocation($this->mobile);
-            if (empty($resp['errcode'])) {
-                $this->updateAttributes([
-                    'carrier'   => $resp['Corp'],
-                    'province'  => $resp['Province'],
-                    'city'      => $resp['City'],
-                    'zip'      => $resp['zip'],
-                    'areacode'      => $resp['areacode'],
-                    'cardtype'      => $resp['cardtype'],
-                ]);
-            }
-        }
-        return $this->city;
     }
 
 
