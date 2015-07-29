@@ -83,6 +83,9 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
+        if ($insert) {
+//            $this->getCarrier();
+        }
     }
 
     public function getUser()
@@ -192,7 +195,7 @@ class OpenidBindMobile extends \yii\db\ActiveRecord
         }
         $query = $query->groupBy('wx_openid_bind_mobile.province, wx_openid_bind_mobile.city')
                 ->orderBy('c desc')
-                ->limit(10);
+                ->limit(8);
         $rows = $query->all();
         foreach ($rows as $row) {
             $results[] = [
