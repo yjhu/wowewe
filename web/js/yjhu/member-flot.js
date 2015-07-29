@@ -365,7 +365,13 @@ $(document).ready(function () {
 
     });
     
+    $('#member-region-pie-reload').click(function (e) {
+        memberRegionPieAjax();
+    });
     
+    $('#member-carrier-pie-reload').click(function (e) {
+        memberCarrierPieAjax();
+    });
 });
 
 
