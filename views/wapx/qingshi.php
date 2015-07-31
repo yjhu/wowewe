@@ -43,10 +43,16 @@ $signPackage = $jssdk->GetSignPackage();
     <!--<div class="content" style="background-color: #401080">-->
     <div class="content">
 
+        <img width=100% height=100 src="/wx/web/images/quanchengrelian1.jpg?v1">
+
         <p align="center">
             <a href="#tppm"><i class="fa fa-trophy"></i>&nbsp;投票排名</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动内容</a>
+
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#shqs"><i class="fa fa-heart" style="color:red"></i>&nbsp;三行情诗</a>
+    
         </p>
         <br>
 
@@ -106,19 +112,21 @@ $signPackage = $jssdk->GetSignPackage();
         </header>
         <div class="content">
             <p><b>参加活动</b></p>
-            <p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;
             用户通过阅读文章或点击活动菜单进入活动页面，提交“你的他/她为你做过最浪漫的事”或者“你最想为他/她说的话”，或者“三行情诗”的文字内容，审核通过后即可在手机上展示和发起投票。每人仅能提交一次。</p>
             </p>
             <br><hr>
             <p><b>参与投票</b></p>
-            <p>用户在关注“襄阳联通”微信号且绑定手机后，可以通过文章或活动菜单或朋友圈、微信群分享进入活动页面，参与投票。每人只能有1次投票机会,可无限转发给好友拉票。</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;
+            用户在关注“襄阳联通”微信号且绑定手机后，可以通过文章或活动菜单或朋友圈、微信群分享进入活动页面，参与投票。每人只能有1次投票机会,可无限转发给好友拉票。
+            </p>
             <br><hr>
             <p><b>奖品设置</b></p>
             <p>一等奖（一名）：送情侣手机一对+情侣号一对（红米note*2）</p>
             <p>二等奖（两名）：拉杆箱+电台黄金时段告白一次</p>
             <p> 三等奖（三名）：送电影票一对</p>
         </div>
- </div>
+    </div>
 
 
     <div id='xieqingshi'  class='modal'>
@@ -139,6 +147,28 @@ $signPackage = $jssdk->GetSignPackage();
 
             </form>
 
+        </div>
+    </div>
+
+    <div id='shqs'  class='modal'>
+        <header class="bar bar-nav">
+            <a class="icon icon-close pull-right" href="#shqs"></a>
+            <h1 class='title'>三行情诗起源</h1>
+        </header>
+        <div class="content">
+            <br><br>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;
+            “三行情书”来源于日本汉字协会为推广汉字教育而发起的一项诗歌体裁，往往以某事物为主题，要求作者以60字以内、排列成三句的诗歌形式表现出来。
+            </p>
+            <br>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;
+            其实三行诗并不是日本人的原创，这种题材的诗历史上见诸各诗人手笔。其中文艺复兴时期的诗人但丁的名著《神曲》便是应用最多三行韵律的诗歌。《神曲》全书一百歌一律用“三行韵律”或“三行连锁押韵法”写成。每个歌都是由三行诗节一环扣一环，连锁接成的长链条。
+            </p>
+
+            <br>
+            <p align="center">
+            <a class="btn btn-block" href="#shqs" style="width: 300px" >返回</a>
+            </p>
         </div>
     </div>
 
