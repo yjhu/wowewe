@@ -60,10 +60,17 @@ class MQingshiAuthor extends \yii\db\ActiveRecord
     public static function xiehaoleAjax($id,$p1,$p2,$p3)
     {
         $qingshi_author = self::findOne(['id' => $id]);
+     
+        if(!empty($qingshi_author))
+        {
+            //已经写了诗，提示用户不能再写了，每人一次投稿机会
+            return \yii\helpers\Json::encode(['code' => 11]);
+        }
+
         $qingshi_author->p1 = $p1;
         $qingshi_author->p2 = $p2;
         $qingshi_author->p3 = $p3;
-        $qingshi_author->status = 1;
+        $qingshi_author->status = 0;
         $qingshi_author->save(false);
         
         return \yii\helpers\Json::encode(['code' => 0]);

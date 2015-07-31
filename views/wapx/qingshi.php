@@ -43,7 +43,7 @@ $signPackage = $jssdk->GetSignPackage();
     <!--<div class="content" style="background-color: #401080">-->
     <div class="content">
 
-        <img width=100% height=100 src="/wx/web/images/quanchengrelian1.jpg?v1">
+        <img width=100% src="/wx/web/images/quanchengrelian1.jpg?v1">
 
         <p align="center">
             <a href="#tppm"><i class="fa fa-trophy"></i>&nbsp;投票排名</a>
@@ -72,7 +72,13 @@ $signPackage = $jssdk->GetSignPackage();
                         echo $vote_count;
                   ?>
               </span>
-              <img width=32 src="<?= $qa->user->headimgurl ?>" class="pull-left">
+
+                <?php if(!empty($qa->user->headimgurl)) { ?>
+                    <img width="32" src='<?= $qa->user->headimgurl ?>' class="pull-left">
+                <?php } else { ?>
+                    <img width="32" src='/wx/web/images/wxmpres/headimg-blank.png' class="pull-left">
+                <?php } ?>
+
               &nbsp;&nbsp;
               <span style="color:#ccc">
               <?= $qa->p1 ?>
@@ -84,7 +90,7 @@ $signPackage = $jssdk->GetSignPackage();
 
 
     <div class="bar bar-standard bar-footer-secondary" style="height:52px">
-       <a class="btn btn-primary btn-lg btn-block"  href="#xieqingshi">我也写情诗</a>
+       <a class="btn btn-primary btn-block"  href="#xieqingshi">我也写情诗</a>
     </div>
 
       <nav class="bar bar-tab">
@@ -125,6 +131,12 @@ $signPackage = $jssdk->GetSignPackage();
             <p>一等奖（一名）：送情侣手机一对+情侣号一对（红米note*2）</p>
             <p>二等奖（两名）：拉杆箱+电台黄金时段告白一次</p>
             <p> 三等奖（三名）：送电影票一对</p>
+
+
+            <br>
+            <p align="center">
+            <a class="btn btn-block" href="#hdgz" style="width: 300px" >返回</a>
+            </p>
         </div>
     </div>
 
@@ -137,9 +149,9 @@ $signPackage = $jssdk->GetSignPackage();
         <div class="content">
 
             <form class="input-group">
-                <input type="text" placeholder="第一行" id="p1"><br>
-                <input type="text" placeholder="第二行" id="p2"><br>
-                <input type="text" placeholder="第三行" id="p3"><br>
+                <input type="text" placeholder="第一行, 小于60个字符" id="p1" maxlength="60"><br>
+                <input type="text" placeholder="第二行, 小于60个字符" id="p2" maxlength="60"><br>
+                <input type="text" placeholder="第三行, 小于60个字符" id="p3" maxlength="60"><br>
                 <br><br>
                 <p align="center">
                     <a class="btn btn-positive btn-block" style="width: 300px" id="xiehaole">写好了</a>
@@ -268,6 +280,15 @@ $signPackage = $jssdk->GetSignPackage();
 
                 //alert($("#p3").val());
                 // alert('<?= $qingshi_author->id ?>');
+                if(
+                    ($("#p1").val() == "") || 
+                    ($("#p2").val() == "") || 
+                    ($("#p3").val() == "") 
+                )
+                {
+                    alert("3行情诗的每一行都需要写哟 ~~");
+                    return false;
+                }
 
                 var args = {
                     'classname':    '\\app\\models\\MQingshiAuthor',
@@ -289,6 +310,11 @@ $signPackage = $jssdk->GetSignPackage();
                         if (0 === ret['code']) {
                             //alert("refresh");
                             alert("您以成功提交。审核通过后就可以呼朋唤友投票啦~");
+                            location.href = '<?= Url::to() ?>';
+                        }
+                        else if(11 === ret['code'])
+                        {
+                            alert("您已经投稿一次, 每人一次机会哟。审核通过后就可以呼朋唤友投票啦~");
                             location.href = '<?= Url::to() ?>';
                         }
                     },                        

@@ -86,12 +86,19 @@ $signPackage = $jssdk->GetSignPackage();
             <a href="#tppm"><i class="fa fa-trophy"></i>&nbsp;投票排名</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动内容</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#tp_friends"><i class="fa fa-users"></i>&nbsp;帮忙投票的小伙伴们</a>
         </p>
         <br>
         
         <p align="center">
-            <img width="64" src='<?= $qingshi_author->user->headimgurl ?>' ><br>
-            <?= emoji_unified_to_html(emoji_softbank_to_unified($qingshi_author->user->nickname)) ?>
+            <?php if(!empty($qingshi_author->user->headimgurl)) { ?>
+                <img width="64" src='<?= $qingshi_author->user->headimgurl ?>' ><br>
+                <?= emoji_unified_to_html(emoji_softbank_to_unified($qingshi_author->user->nickname)) ?>
+            <?php } else { ?>
+                <img width="64" src='/wx/web/images/wxmpres/headimg-blank.png' ><br>
+                <?= emoji_unified_to_html(emoji_softbank_to_unified($qingshi_author->user->nickname)) ?>
+            <?php } ?>
         </p>
 
         <center>
@@ -124,7 +131,7 @@ $signPackage = $jssdk->GetSignPackage();
         <p align="center">
             <a class="btn btn-negative btn-block" style="width: 300px" id="toupiao">投票</a>
           
-            <a class="btn btn-block" style="width: 300px"  id="kankan" href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/qingshi-author:gh_03a74ac96138#wechat_redirect">
+            <a class="btn btn-block" style="width: 300px"  id="kankan">
             随便看看
             </a>
         </p>
@@ -158,6 +165,12 @@ $signPackage = $jssdk->GetSignPackage();
             <p>一等奖（一名）：送情侣手机一对+情侣号一对（红米note*2）</p>
             <p>二等奖（两名）：拉杆箱+电台黄金时段告白一次</p>
             <p> 三等奖（三名）：送电影票一对</p>
+
+
+            <br>
+            <p align="center">
+            <a class="btn btn-block" href="#hdgz" style="width: 300px" >返回</a>
+            </p>
         </div>
     </div>
 
@@ -169,6 +182,53 @@ $signPackage = $jssdk->GetSignPackage();
         </header>
         <div class="content">
 
+        </div>
+    </div>
+
+
+    <div id='tp_friends'  class='modal'>
+        <header class="bar bar-nav">
+            <a class="icon icon-close pull-right" href="#tp_friends"></a>
+            <h1 class='title'>帮忙投票的小伙伴们</h1>
+        </header>
+        <div class="content">
+            <?php
+
+               $tp_friends = \app\models\MQingshiVote::find()
+                ->where(['author_openid' => $qingshi_author->author_openid])
+                ->all();
+
+            ?>
+            <ul class="table-view">
+                <li class='table-view-cell'>
+                
+                </li>
+                    <?php 
+                        foreach ($tp_friends as $tp_friend) {
+                        $friend = \app\models\MUser::findOne(['openid' => $tp_friend->vote_openid]);
+                    ?>
+                    <li class="table-view-cell media">
+  
+                    <img class="media-object pull-left" src="<?= $friend->headImgUrl ?>" width="64" height="64">
+
+                    <div class="media-body">
+                      <!--粉丝昵称--> 
+                      <?= emoji_unified_to_html(emoji_softbank_to_unified($friend->nickname)) ?>
+                      <p>
+                          投票时间：<?= $tp_friend->vote_time ?>
+                      </p>
+                    </div>
+                        
+                    </li>
+                    <?php 
+                        }
+                    ?>
+                </ul>
+
+            <br>
+            <p align="center">
+            <a class="btn btn-block" href="#tp_friends" style="width: 300px" >返回</a>
+            </p>
         </div>
     </div>
 
@@ -232,6 +292,12 @@ $signPackage = $jssdk->GetSignPackage();
             //alert('wx ready');
             $("#toupiao").show();
             $("#kankan").show();
+
+            $('#kankan').click (function () {
+                location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/qingshi-author:gh_03a74ac96138#wechat_redirect";
+
+            })
+
 
             $('#toupiao').click (function () {
 
