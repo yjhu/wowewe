@@ -5,8 +5,6 @@ use app\models\U;
 
 include('../models/utils/emoji.php');
 
- $qas = \app\models\MQingshiAuthor::find()->where(['=', 'status', \app\models\MQingshiAuthor::AUDIT_PASS])->orderBy(['create_time' => SORT_DESC])->all();
-
 \Yii::$app->wx->setGhId($observer->gh_id);
 $gh = \Yii::$app->wx->getGh();
 $jssdk = new \app\models\JSSDK($gh['appid'], $gh['appsecret']);
@@ -36,50 +34,101 @@ $signPackage = $jssdk->GetSignPackage();
     <!-- Include the compiled Ratchet JS -->
     <script src="/wx/web/ratchet/dist/js/ratchet.js"></script>
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+
+
+    <style type="text/css">
+        .pc{
+            color:#000;
+            font-size: 12pt;
+        }
+
+        .ht{
+            color:#aaa;
+            font-size: 10pt;
+        }
+
+        .vv{
+            color:#aaa;
+            font-size: 28pt;
+            font-weight: bolder;
+        }
+        
+        .vt{
+            color:#aaa;
+            font-size: 10pt;
+        }
+
+        .content {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          overflow: auto;
+          -webkit-overflow-scrolling: touch;
+          background-image: url("/wx/web/images/beijing2.jpg");
+          background-position: center top;
+          z-index: 1
+        }
+    </style>
+
   </head>
   <body>
+
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <!--<div class="content" style="background-color: #401080">-->
     <div class="content">
-
+        <!--
+        <img border='0' src='/wx/web/images/beijing2.jpg'>
+        -->
         <p align="center">
             <a href="#tppm"><i class="fa fa-trophy"></i>&nbsp;投票排名</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动内容</a>
         </p>
         <br>
+        
+        <p align="center">
+            <img width="64" src='<?= $qingshi_author->user->headimgurl ?>' ><br>
+            <?= emoji_unified_to_html(emoji_softbank_to_unified($qingshi_author->user->nickname)) ?>
+        </p>
 
-        <ul class="table-view">
-         <?php foreach ($qas as $qa) {?>
-          <li class="table-view-cell">
-
-                <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
-                    'qingshi-vote', 
-                    'id' => $qa->id,
-                ]) ?>">
-              <span class="badge badge-negative">
-                  <?php
+        <center>
+            <span class="vv">
+                <?php
                         $vote_count = \app\models\MQingshiVote::find()
-                        ->where(['author_openid' => $qa->author_openid])
+                        ->where(['author_openid' => $qingshi_author->author_openid])
                         ->count();
                         echo $vote_count;
-                  ?>
-              </span>
-              <img width=32 src="<?= $qa->user->headimgurl ?>" class="pull-left">
-              &nbsp;&nbsp;
-              <span style="color:#ccc">
-              <?= $qa->p1 ?>
-              </span>
+                ?>
+            </span>
+            <span class="vt">票</span>
+            <br> <br> <br>
+
+            <span class="ht">三行情诗</span>
+            <br><br>
+
+            <p class="pc">
+            <?= $qingshi_author->p1 ?>
+            </p>
+            <p class="pc">
+            <?= $qingshi_author->p2 ?>
+            </p>
+            <p class="pc">
+            <?= $qingshi_author->p3 ?>
+            </p>
+        </center>
+
+        <br>
+        <p align="center">
+            <a class="btn btn-negative btn-block" style="width: 300px" id="toupiao">投票</a>
+          
+            <a class="btn btn-block" style="width: 300px"  id="kankan" href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/qingshi-author:gh_03a74ac96138#wechat_redirect">
+            随便看看
             </a>
-          </li>
-        <?php } ?>
-        </ul>
+        </p>
 
-
-    <div class="bar bar-standard bar-footer-secondary" style="height:52px">
-       <a class="btn btn-primary btn-lg btn-block"  href="#xieqingshi">我也写情诗</a>
-    </div>
 
       <nav class="bar bar-tab">
         <a class="tab-item" href="#">
@@ -88,16 +137,6 @@ $signPackage = $jssdk->GetSignPackage();
       </nav>
     </div>
 
-
-    <div id='tppm'  class='modal'>
-        <header class="bar bar-nav">
-            <a class="icon icon-close pull-right" href="#tppm"></a>
-            <h1 class='title'>投票排名</h1>
-        </header>
-        <div class="content">
-
-        </div>
-    </div>
 
     <div id='hdgz'  class='modal'>
         <header class="bar bar-nav">
@@ -118,37 +157,25 @@ $signPackage = $jssdk->GetSignPackage();
             <p>二等奖（两名）：拉杆箱+电台黄金时段告白一次</p>
             <p> 三等奖（三名）：送电影票一对</p>
         </div>
- </div>
+    </div>
 
-
-    <div id='xieqingshi'  class='modal'>
+    <div id='tppm'  class='modal'>
         <header class="bar bar-nav">
-            <a class="icon icon-close pull-right" href="#xieqingshi"></a>
-            <h1 class='title'>我也写情诗</h1>
+            <a class="icon icon-close pull-right" href="#tppm"></a>
+            <h1 class='title'>投票排名</h1>
         </header>
         <div class="content">
 
-            <form class="input-group">
-                <input type="text" placeholder="第一行" id="p1"><br>
-                <input type="text" placeholder="第二行" id="p2"><br>
-                <input type="text" placeholder="第三行" id="p3"><br>
-                <br><br>
-                <p align="center">
-                    <a class="btn btn-positive btn-block" style="width: 300px" id="xiehaole">写好了</a>
-                </p>
-
-            </form>
-
         </div>
     </div>
-
 
 
     <script type="text/javascript">
 
     $(document).ready(function() {
         'use strict'; 
-    
+        $("#toupiao").hide();
+        $("#kankan").hide();
 
         wx.config({
             debug: false,
@@ -194,9 +221,51 @@ $signPackage = $jssdk->GetSignPackage();
             ]
         });
         
+
+
+
+
         wx.ready(function () {
             //alert('wx ready');
+            $("#toupiao").show();
+            $("#kankan").show();
 
+            $('#toupiao').click (function () {
+
+                //alert('toupiaoAjax');
+
+                var args = {
+                    'classname':    '\\app\\models\\MQingshiVote',
+                    'funcname':     'toupiaoAjax',
+                    'params':       {
+                        'author_openid': '<?= $qingshi_author->author_openid ?>',    
+                        'vote_openid':   '<?= $observer->openid ?>',
+                    } 
+                };
+                $.ajax({
+                    url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
+                    type:       "GET",
+                    cache:      false,
+                    dataType:   "json",
+                    data:       "args=" + JSON.stringify(args),
+                    success:    function(ret) { 
+                        if (0 === ret['code']) {
+                            alert("投票成功！");
+                            location.href = '<?= Url::to() ?>';
+                        }
+                        else if(11 === ret['code'])
+                        {
+                            alert("您已投过一次票了，每人一票哟。可分享到朋友圈帮你拉票 ~~");
+                            //location.href = '<?= Url::to() ?>';
+                        }
+                    },                        
+                    error:      function(){
+                        alert('发送失败。');
+                    }
+                });
+            });
+
+            
             var share2friendTitle = '<?= $observer->nickname ?>在襄阳联通参加三行情诗比赛和投票！';
             var share2friendDesc = '全城热恋·浪漫情话说出来，快来参与和投票，大奖等你拿！';
             var share2timelineTitle = '全城热恋·浪漫情话说出来，快来参与和投票，大奖等你拿！';
@@ -205,7 +274,7 @@ $signPackage = $jssdk->GetSignPackage();
             wx.onMenuShareAppMessage({
                 title: share2friendTitle, // 分享标题
                 desc: share2friendDesc, // 分享描述
-                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/qingshi-author:gh_03a74ac96138#wechat_redirect', // 分享链接
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/qingshi-vote:gh_03a74ac96138:id=<?= $qingshi_author->id ?>#wechat_redirect', // 分享链接
                 imgUrl: shareImgUrl, // 分享图标
                 type: '', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -220,7 +289,7 @@ $signPackage = $jssdk->GetSignPackage();
             
             wx.onMenuShareTimeline({
                 title: share2timelineTitle, // 分享标题
-                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/qingshi-author:gh_03a74ac96138#wechat_redirect', // 分享链接
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/qingshi-vote:gh_03a74ac96138:id=<?= $qingshi_author->id ?>#wechat_redirect', // 分享链接
                 imgUrl: shareImgUrl, // 分享图标
                 type: '', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -234,39 +303,6 @@ $signPackage = $jssdk->GetSignPackage();
             });
 
 
-            $('#xiehaole').click (function () {
-
-                //alert($("#p3").val());
-                // alert('<?= $qingshi_author->id ?>');
-
-                var args = {
-                    'classname':    '\\app\\models\\MQingshiAuthor',
-                    'funcname':     'xiehaoleAjax',
-                    'params':       {
-                        'id':   <?= $qingshi_author->id ?>,
-                        'p1':   $("#p1").val(),  
-                        'p2':   $("#p2").val(),
-                        'p3':   $("#p3").val()            
-                    } 
-                };
-                $.ajax({
-                    url:        "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>",
-                    type:       "GET",
-                    cache:      false,
-                    dataType:   "json",
-                    data:       "args=" + JSON.stringify(args),
-                    success:    function(ret) { 
-                        if (0 === ret['code']) {
-                            //alert("refresh");
-                            alert("您以成功提交。审核通过后就可以呼朋唤友投票啦~");
-                            location.href = '<?= Url::to() ?>';
-                        }
-                    },                        
-                    error:      function(){
-                        alert('发送失败。');
-                    }
-                });
-            });
 
 
         });//end of wx  ready

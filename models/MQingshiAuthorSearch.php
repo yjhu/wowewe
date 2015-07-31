@@ -18,7 +18,7 @@ class MQingshiAuthorSearch extends MQingshiAuthor
     public function rules()
     {
         return [
-            [['id', 'ststus'], 'integer'],
+            [['id', 'status'], 'integer'],
             [['gh_id', 'author_openid', 'p1', 'p2', 'p3', 'create_time'], 'safe'],
         ];
     }
@@ -54,7 +54,7 @@ class MQingshiAuthorSearch extends MQingshiAuthor
         $query->andFilterWhere([
             'id' => $this->id,
             'create_time' => $this->create_time,
-            'ststus' => $this->ststus,
+            'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'gh_id', $this->gh_id])

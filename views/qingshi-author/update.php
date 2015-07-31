@@ -5,10 +5,12 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\MQingshiAuthor */
 
-$this->title = 'Update Mqingshi Author: ' . ' ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Mqingshi Authors', 'url' => ['index']];
+//$this->title = 'Update Mqingshi Author: ' . ' ' . $model->id;
+$this->title = '审核';
+
+$this->params['breadcrumbs'][] = ['label' => '三行情诗投票', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = '审核';
 ?>
 <div class="mqingshi-author-update">
 
@@ -17,5 +19,6 @@ $this->params['breadcrumbs'][] = 'Update';
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
+    
 
 </div>
