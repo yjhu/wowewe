@@ -5,7 +5,9 @@ use app\models\U;
 
 include('../models/utils/emoji.php');
 
- $qas = \app\models\MQingshiAuthor::find()->where(['=', 'status', \app\models\MQingshiAuthor::AUDIT_PASS])->orderBy(['create_time' => SORT_DESC])->all();
+$me = false;
+
+$qas = \app\models\MQingshiAuthor::find()->where(['=', 'status', \app\models\MQingshiAuthor::AUDIT_PASS])->orderBy(['create_time' => SORT_DESC])->all();
 
 \Yii::$app->wx->setGhId($observer->gh_id);
 $gh = \Yii::$app->wx->getGh();
@@ -46,9 +48,32 @@ $signPackage = $jssdk->GetSignPackage();
         <img width=100% src="/wx/web/images/quanchengrelian1.jpg?v1">
 
         <p align="center">
+
+            <?php 
+                foreach ($qas as $qa)
+                {
+                    if($qa->author_openid == $observer->openid)
+                    {
+                        $me = true;
+                        $me_id = $qa->id;
+                        break;
+                    }
+                }
+            ?>
+
+            <?php if($me) { ?>
+                <a data-ignore="push" href="<?= \yii\helpers\Url::to([
+                    'qingshi-vote', 
+                    'id' => $me_id,
+                ]) ?>">
+                    <i class="fa fa-star"></i>&nbsp;我</a>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+
+            <?php } ?>
+
             <a href="#tppm"><i class="fa fa-trophy"></i>&nbsp;投票排名</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动内容</a>
+            <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动</a>
 
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#shqs"><i class="fa fa-heart" style="color:red"></i>&nbsp;三行情诗</a>
@@ -183,7 +208,7 @@ $signPackage = $jssdk->GetSignPackage();
     <div id='hdgz'  class='modal'>
         <header class="bar bar-nav">
             <a class="icon icon-close pull-right" href="#hdgz"></a>
-            <h1 class='title'>活动内容</h1>
+            <h1 class='title'>活动</h1>
         </header>
         <div class="content">
             <p><b>参加活动</b></p>

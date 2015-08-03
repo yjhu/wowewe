@@ -114,7 +114,7 @@ foreach ($votes as $vote) {
         <p align="center">
             <a href="#tppm"><i class="fa fa-trophy"></i>&nbsp;投票排名</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动内容</a>
+            <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#tp_friends"><i class="fa fa-users"></i>&nbsp;帮忙投票的小伙伴们</a>
         </p>
@@ -189,7 +189,7 @@ foreach ($votes as $vote) {
     <div id='hdgz'  class='modal'>
         <header class="bar bar-nav">
             <a class="icon icon-close pull-right" href="#hdgz"></a>
-            <h1 class='title'>活动内容</h1>
+            <h1 class='title'>活动</h1>
         </header>
         <div class="content">
             <p><b>参加活动</b></p>
