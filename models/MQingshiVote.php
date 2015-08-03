@@ -34,6 +34,13 @@ class MQingshiVote extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getUser()
+    {
+        $model = MUser::findOne(['openid'=>$this->author_openid]);
+        return $model;
+    }
+
+
     public static function toupiaoAjax($author_openid, $vote_openid)
     {
         $qingshi_vote = self::findOne(['vote_openid' => $vote_openid]);

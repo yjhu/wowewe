@@ -354,49 +354,61 @@ class ExportController extends \yii\console\Controller {
         if (null === $date) {
             $date = \app\models\U::getFirstDate(date('Y'), date('m'));
         }
-        $openidBindMobiles = \app\models\OpenidBindMobile::find()->where([
-            '>', 'create_time', $date
-        ])->orderBy([
-            'create_time' => SORT_ASC,
-        ])->all();
-        foreach($openidBindMobiles as $mobile) {
-        	//微信昵称	绑定手机号	关注时间
 
-            //fprintf($fh, "%s, %s, %s, %s, %s", $mobile->mobile, $mobile->create_time, $mobile->province, $mobile->city, $mobile->carrier);
-            //fprintf($fh, ", %s", $mobile->user->nickname);
+        $total_count = \app\models\OpenidBindMobile::find()->where(['>', 'create_time', $date])->count();
 
-            $user = \app\models\MUser::findOne(['openid' => $mobile->openid]);
-            if (empty($user)) {
-            	printf(\yii\helpers\Json::encode($mobile));
-            	continue;
-            } else {
-            	$office = \app\models\MOffice::findOne(['office_id' => $user->belongto]);
-        	}
+        $step = 3000;
+        $start = 0;
 
-			if ($user->bindMobileIsInside('wx_t1')) {
-				$customerFlag = '老';
-				//$flag1 = 1;
-			} elseif ($user->bindMobileIsInside('wx_t2')) {
-				$customerFlag = '老';
-			}elseif ($user->bindMobileIsInside('wx_t3')) {
-				$customerFlag = '老';
-			} else {
-				//$flag1 = 0;
-				$customerFlag = '新';
-			}
+        while ($start < $total_count) {
 
-			//微信昵称	绑定手机号	关注时间	姓名	营业厅名称	新/老用户	客户经理	
-            fprintf($fh, "%s, %s, %s, %s, %s, %s, %s",
-				$mobile->user->nickname, 
-				$mobile->mobile, 
-				$mobile->create_time, 
-				'', 
-				$customerFlag,
-				empty($office) ? "主号" : $office->title,
-				''
-             );
+            $openidBindMobiles = \app\models\OpenidBindMobile::find()->offset($start)->limit($step)->where([
+                '>', 'create_time', $date
+            ])->orderBy([
+                'create_time' => SORT_ASC,
+            ])->all();
 
-            fprintf($fh, PHP_EOL);
+            foreach($openidBindMobiles as $mobile) {
+            	//微信昵称	绑定手机号	关注时间
+
+                //fprintf($fh, "%s, %s, %s, %s, %s", $mobile->mobile, $mobile->create_time, $mobile->province, $mobile->city, $mobile->carrier);
+                //fprintf($fh, ", %s", $mobile->user->nickname);
+
+                $user = \app\models\MUser::findOne(['openid' => $mobile->openid]);
+                if (empty($user)) {
+                	printf(\yii\helpers\Json::encode($mobile));
+                	continue;
+                } else {
+                	$office = \app\models\MOffice::findOne(['office_id' => $user->belongto]);
+            	}
+
+    			if ($user->bindMobileIsInside('wx_t1')) {
+    				$customerFlag = '老';
+    				//$flag1 = 1;
+    			} elseif ($user->bindMobileIsInside('wx_t2')) {
+    				$customerFlag = '老';
+    			}elseif ($user->bindMobileIsInside('wx_t3')) {
+    				$customerFlag = '老';
+    			} else {
+    				//$flag1 = 0;
+    				$customerFlag = '新';
+    			}
+
+    			//微信昵称	绑定手机号	关注时间	姓名	营业厅名称	新/老用户	客户经理	
+                fprintf($fh, "%s, %s, %s, %s, %s, %s, %s",
+    				$mobile->user->nickname, 
+    				$mobile->mobile, 
+    				$mobile->create_time, 
+    				'', 
+    				$customerFlag,
+    				empty($office) ? "主号" : $office->title,
+    				''
+                 );
+
+                fprintf($fh, PHP_EOL);
+            }
+
+            $start += $step;
         }
         fclose($fh);
     }

@@ -102,7 +102,7 @@ $signPackage = $jssdk->GetSignPackage();
         </p>
 
         <center>
-            <span class="vv">
+            <span class="badge badge-negative" style="font-size: 24pt">
                 <?php
                         $vote_count = \app\models\MQingshiVote::find()
                         ->where(['author_openid' => $qingshi_author->author_openid])
@@ -111,6 +111,7 @@ $signPackage = $jssdk->GetSignPackage();
                 ?>
             </span>
             <span class="vt">票</span>
+
             <br> <br> <br>
 
             <span class="ht">三行情诗</span>
@@ -181,7 +182,37 @@ $signPackage = $jssdk->GetSignPackage();
             <h1 class='title'>投票排名</h1>
         </header>
         <div class="content">
+            <?php
+                // $votes = \app\models\MQingshiVote::find()              
+                //    ->groupBy(['author_openid'])
+                //   ->all();
+                $votes = \app\models\MQingshiVote::find()->select('*, count(*) as c')->groupBy(['author_openid'])->orderBy('c DESC')->limit(50)->all(); 
+            ?>
 
+            <ul class="table-view">
+            <?php foreach ($votes as $vote) {?>
+              <li class="table-view-cell media">
+
+                <?php if(!empty($vote->user->headimgurl)) { ?>
+                    <img width="42" src='<?= $vote->user->headimgurl ?>' class="media-object pull-left">
+                <?php } else { ?>
+                    <img width="42" src='/wx/web/images/wxmpres/headimg-blank.png' class="media-object pull-left">
+                <?php } ?>
+
+                <div class="media-body">
+                    <?= emoji_unified_to_html(emoji_softbank_to_unified($vote->user->nickname)) ?>
+                </div>
+
+                <span class="badge badge-negative" style="font-size: 18pt">
+                   <?php
+                        echo \app\models\MQingshiVote::find()->where(['author_openid' => $vote->author_openid])->count();
+                        //echo $vote->c;
+                   ?>
+                </span>
+
+              </li>
+            <?php } ?>
+            </ul>
         </div>
     </div>
 
