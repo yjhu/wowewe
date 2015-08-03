@@ -184,7 +184,18 @@
                                         ['label' => '单图文','url' => ['/article/index'],'linkOptions' => ['data-method' => 'post']],
                                         ['label' => '多图文','url' => ['/articlemult/index'],'linkOptions' => ['data-method' => 'post']],
                                     ],
-                                ],      
+                                ],  
+                                /*投票活动需要，临时入口*/
+                                [
+                                    'label' => '<i class="fa fa-signal"></i><span class="title">活动投票</span><span class="arrow "></span>',
+                                    'url' => '',
+                                    'items' => [
+                                        ['label' => '情诗审核','url' => ['/qingshi-author/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '投票排行','url' => ['/qingshi-score/index'],'linkOptions' => ['data-method' => 'post']],
+                                    ],
+                                ],  
+
+
                             ],
                             'options' => [
                                 'class' => 'page-sidebar-menu',
