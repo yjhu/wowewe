@@ -483,7 +483,8 @@ class WapxController extends Controller {
         $this->layout = false;
         $id = $_GET["id"];
 
-        $gh_id = U::getSessionParam('gh_id');
+        //$gh_id = U::getSessionParam('gh_id');
+        $gh_id = 'gh_03a74ac96138';
         $openid = U::getSessionParam('openid');
         $wx_user = \app\models\MUser::findOne([
             'gh_id' => $gh_id,

@@ -128,13 +128,35 @@ $signPackage = $jssdk->GetSignPackage();
                 // $votes = \app\models\MQingshiVote::find()              
                 //    ->groupBy(['author_openid'])
                 //   ->all();
-                $votes = \app\models\MQingshiVote::find()->select('*, count(*) as c')->groupBy(['author_openid'])->orderBy('c DESC')->limit(50)->all(); 
+                $top = 0;
+                //$votes = \app\models\MQingshiVote::find()->select('*, count(*) as c')->groupBy(['author_openid'])->orderBy('c DESC')->limit(50)->all(); 
+                $votes = \app\models\MQingshiScore::find()->orderBy(['score' => SORT_DESC])->limit(50)->all(); 
             ?>
 
-            <ul class="table-view">
-            <?php foreach ($votes as $vote) {?>
-              <li class="table-view-cell media">
 
+
+            <ul class="table-view">
+
+            <li class="table-view-cell media">
+                <div class="media-body">
+                    名次
+                </div>
+
+                <span class="badge badge-negative" style="font-size: 12pt">
+                    所得票数
+                </span>
+            </li>
+
+            <?php foreach ($votes as $vote) 
+                {
+                    $top ++ ;
+            ?>
+              <li class="table-view-cell media">
+                <sapn class="pull-left" style="font-size: 24pt; font-weight: bolder;color:green;">
+                    <?= $top ?>.
+                    &nbsp;&nbsp;
+                </sapn>
+                
                 <?php if(!empty($vote->user->headimgurl)) { ?>
                     <img width="42" src='<?= $vote->user->headimgurl ?>' class="media-object pull-left">
                 <?php } else { ?>
@@ -360,12 +382,12 @@ $signPackage = $jssdk->GetSignPackage();
                     success:    function(ret) { 
                         if (0 === ret['code']) {
                             //alert("refresh");
-                            alert("您以成功提交。审核通过后就可以呼朋唤友投票啦~");
+                            alert("恭喜！您以成功提交。\n审核通过后就可以呼朋唤友投票啦~");
                             location.href = '<?= Url::to() ?>';
                         }
                         else if(11 === ret['code'])
                         {
-                            alert("您已经投稿一次, 每人一次机会哟。审核通过后就可以呼朋唤友投票啦~");
+                            alert("您已经投稿一次, 每人一次机会哟。\n审核通过后就可以呼朋唤友投票啦~");
                             location.href = '<?= Url::to() ?>';
                         }
                     },                        

@@ -61,7 +61,7 @@ class MQingshiAuthor extends \yii\db\ActiveRecord
     {
         $qingshi_author = self::findOne(['id' => $id]);
      
-        if(!empty($qingshi_author))
+        if(!empty($qingshi_author->p1))
         {
             //已经写了诗，提示用户不能再写了，每人一次投稿机会
             return \yii\helpers\Json::encode(['code' => 11]);

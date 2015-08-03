@@ -10,20 +10,32 @@ $gh = \Yii::$app->wx->getGh();
 $jssdk = new \app\models\JSSDK($gh['appid'], $gh['appsecret']);
 $signPackage = $jssdk->GetSignPackage();
 
-
+/*
 $votes = \app\models\MQingshiVote::find()->select('*, count(*) as c')
 ->groupBy(['author_openid'])
 ->orderBy(['c'=>SORT_DESC, 'vote_time'=>SORT_ASC])
 ->limit(50)
 ->all(); 
+*/
 
-$top_num = 0;
+/*
+
 foreach ($votes as $vote) {
     $top_num ++;
 
     if($vote->author_openid == $qingshi_author->author_openid)
         break;
 }
+*/
+    $top_num = 0;
+    $top = 0;
+    $votes = \app\models\MQingshiScore::find()->orderBy(['score' => SORT_DESC])->limit(50)->all(); 
+    foreach ($votes as $vote) {
+        $top_num ++;
+
+        if($vote->author_openid == $qingshi_author->author_openid)
+            break;
+    }
 
 ?>
 
@@ -119,18 +131,26 @@ foreach ($votes as $vote) {
         </p>
 
         <center>
-            <span class="vt">得</span>
-            <span class="badge badge-negative" style="font-size: 24pt">
-                <?php
-                        $vote_count = \app\models\MQingshiVote::find()
-                        ->where(['author_openid' => $qingshi_author->author_openid])
-                        ->count();
-                        echo $vote_count;
-                ?>
-            </span>
-            <span class="vt">票&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第</span>
-            <sapn class="badge badge-positive" style="font-size: 24pt"><?= $top_num ?></sapn>
-            <span class="vt">名</span>
+
+            <?php
+                $vote_count = \app\models\MQingshiScore::findOne(['author_openid' => $qingshi_author->author_openid]);
+                if(empty($vote_count))
+                {
+            ?>
+                <span class="vt">得</span>
+                <span class="badge badge-negative" style="font-size: 24pt">
+                    0
+                </span>
+                <span class="vt">票</span>
+            <?php } else { ?>
+                <span class="vt">得</span>
+                <span class="badge badge-negative" style="font-size: 24pt">
+                    <?= $vote_count->score; ?>
+                </span>
+                <span class="vt">票&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第</span>
+                <sapn class="badge badge-positive" style="font-size: 24pt"><?= $top_num ?></sapn>
+                <span class="vt">名</span>
+            <?php } ?>
 
            <br> <br> <br>
 
@@ -204,8 +224,27 @@ foreach ($votes as $vote) {
         <div class="content">
 
             <ul class="table-view">
-            <?php foreach ($votes as $vote) {?>
+            <li class="table-view-cell media">
+                <div class="media-body">
+                    名次
+                </div>
+
+                <span class="badge badge-negative" style="font-size: 12pt">
+                    所得票数
+                </span>
+            </li>
+
+
+            <?php foreach ($votes as $vote) 
+                {
+                    $top ++;    
+            ?>
               <li class="table-view-cell media">
+
+                <sapn class="pull-left" style="font-size: 24pt; font-weight: bolder;color:green;">
+                    <?= $top ?>.
+                    &nbsp;&nbsp;
+                </sapn>
 
                 <?php if(!empty($vote->user->headimgurl)) { ?>
                     <img width="42" src='<?= $vote->user->headimgurl ?>' class="media-object pull-left">
