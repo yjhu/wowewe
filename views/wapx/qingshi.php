@@ -57,6 +57,16 @@ $signPackage = $jssdk->GetSignPackage();
         <br>
 
         <ul class="table-view">
+          <li class="table-view-cell media">
+                <div class="media-body">
+                    参赛诗人
+                </div>
+
+                <span class="badge badge-negative" style="font-size: 12pt">
+                    所得票数
+                </span>
+          </li>
+
          <?php foreach ($qas as $qa) {?>
           <li class="table-view-cell media">
 
@@ -90,16 +100,20 @@ $signPackage = $jssdk->GetSignPackage();
           </li>
         <?php } ?>
         </ul>
-
-
-    <div class="bar bar-standard bar-footer-secondary" style="height:52px">
-       <a class="btn btn-primary btn-block"  href="#xieqingshi">我也写情诗</a>
-    </div>
+        <br>
+        &nbsp;
+        <br>
+        &nbsp;
+        <br>
+        &nbsp;
+        <br>
+        &nbsp;
+        <br>
 
       <nav class="bar bar-tab">
-        <a class="tab-item" href="#">
-          襄阳联通&copy;2015
-        </a>
+            <center>
+            <a class="btn btn-positive"  href="#xieqingshi" style="height:39px; width:210px; font-size:18px" >我也写情诗</a>
+            </center>
       </nav>
     </div>
 
@@ -190,6 +204,10 @@ $signPackage = $jssdk->GetSignPackage();
                     <a class="btn btn-positive btn-block" style="width: 300px" id="xiehaole">写好了</a>
                 </p>
 
+                <br>
+                <p align="center">
+                <a class="btn btn-block" href="#xieqingshi" style="width: 300px" >再想想，返回</a>
+                </p>
             </form>
 
         </div>

@@ -9,7 +9,24 @@ include('../models/utils/emoji.php');
 $gh = \Yii::$app->wx->getGh();
 $jssdk = new \app\models\JSSDK($gh['appid'], $gh['appsecret']);
 $signPackage = $jssdk->GetSignPackage();
+
+
+$votes = \app\models\MQingshiVote::find()->select('*, count(*) as c')
+->groupBy(['author_openid'])
+->orderBy(['c'=>SORT_DESC, 'vote_time'=>SORT_ASC])
+->limit(50)
+->all(); 
+
+$top_num = 0;
+foreach ($votes as $vote) {
+    $top_num ++;
+
+    if($vote->author_openid == $qingshi_author->author_openid)
+        break;
+}
+
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -102,6 +119,7 @@ $signPackage = $jssdk->GetSignPackage();
         </p>
 
         <center>
+            <span class="vt">得</span>
             <span class="badge badge-negative" style="font-size: 24pt">
                 <?php
                         $vote_count = \app\models\MQingshiVote::find()
@@ -110,9 +128,11 @@ $signPackage = $jssdk->GetSignPackage();
                         echo $vote_count;
                 ?>
             </span>
-            <span class="vt">票</span>
+            <span class="vt">票&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第</span>
+            <sapn class="badge badge-positive" style="font-size: 24pt"><?= $top_num ?></sapn>
+            <span class="vt">名</span>
 
-            <br> <br> <br>
+           <br> <br> <br>
 
             <span class="ht">三行情诗</span>
             <br><br>
@@ -182,12 +202,6 @@ $signPackage = $jssdk->GetSignPackage();
             <h1 class='title'>投票排名</h1>
         </header>
         <div class="content">
-            <?php
-                // $votes = \app\models\MQingshiVote::find()              
-                //    ->groupBy(['author_openid'])
-                //   ->all();
-                $votes = \app\models\MQingshiVote::find()->select('*, count(*) as c')->groupBy(['author_openid'])->orderBy('c DESC')->limit(50)->all(); 
-            ?>
 
             <ul class="table-view">
             <?php foreach ($votes as $vote) {?>
