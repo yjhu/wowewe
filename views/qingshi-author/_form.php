@@ -9,6 +9,13 @@ use app\models\MQingshiAuthor;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
+<link href="./php-emoji/emoji.css" rel="stylesheet">
+
+<?php
+  include('../models/utils/emoji.php');
+?>
+
+
 <div class="mqingshi-author-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -22,7 +29,7 @@ use app\models\MQingshiAuthor;
 
     <?php
         echo "<img width=48 src=".$model->user->headimgurl.">";
-        echo $model->user->nickname."<br>";
+        echo emoji_unified_to_html(emoji_softbank_to_unified($model->user->nickname))."<br>";
         echo $model->create_time;
     ?>
 

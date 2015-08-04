@@ -8,6 +8,11 @@ use app\models\MQingshiScore;
 /* @var $model app\models\MQingshiScore */
 /* @var $form yii\widgets\ActiveForm */
 ?>
+<link href="./php-emoji/emoji.css" rel="stylesheet">
+
+<?php
+  include('../models/utils/emoji.php');
+?>
 
 <div class="mqingshi-score-form">
 
@@ -21,7 +26,7 @@ use app\models\MQingshiScore;
 
     <?php
         echo "<img width=128 src=".$model->user->headimgurl.">";
-        echo '<h1>'.$model->user->nickname."</h1><br>";
+        echo '<h1>'.emoji_unified_to_html(emoji_softbank_to_unified($model->user->nickname))."</h1><br>";
         echo '<h1>'.$model->score."票</h1>";
     ?>
 
