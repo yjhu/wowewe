@@ -45,7 +45,7 @@ $signPackage = $jssdk->GetSignPackage();
     <!--<div class="content" style="background-color: #401080">-->
     <div class="content">
 
-        <img width=100% src="/wx/web/images/quanchengrelian1.jpg?v1">
+        <img width=100% src="/wx/web/images/quanchengrelian2.jpg?v1">
 
         <p align="center">
 
@@ -241,6 +241,15 @@ $signPackage = $jssdk->GetSignPackage();
             <h1 class='title'>我也写情诗</h1>
         </header>
         <div class="content">
+            <!--
+            <p>
+                提交“你的他/她为你做过最浪漫的事” 或者 “你最想为他/她说的话” 或者 “三行情诗” 的文字内容。
+            </p>
+
+            <p>
+                要三行哟 :-)
+            </p>
+            -->
 
             <form class="input-group">
                 <input type="text" placeholder="第一行, 小于60个字符" id="p1" maxlength="60"><br>

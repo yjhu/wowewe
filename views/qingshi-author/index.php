@@ -12,6 +12,12 @@ use app\models\MQingshiAuthor;
 $this->title = '三行情诗投票';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<link href="./php-emoji/emoji.css" rel="stylesheet">
+
+<?php
+  include('../models/utils/emoji.php');
+?>
+
 <div class="mqingshi-author-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -22,6 +28,10 @@ $this->params['breadcrumbs'][] = $this->title;
         <//?= Html::a('Create Mqingshi Author', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     -->
+
+    <p>
+        <?= Html::a('投票排行', ['qingshi-score/index'], ['class' => 'btn btn-success']) ?>
+    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -37,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format'=>'html',
                 'value'=>function ($model, $key, $index, $column) { 
 
-                    $user = $model->user; return empty($user) ? '' : "<img width=48 src=".$model->user->headimgurl."><br>".$user->nickname; 
+                    $user = $model->user; return empty($user) ? '' : "<img width=48 src=".$model->user->headimgurl."><br>".emoji_unified_to_html(emoji_softbank_to_unified($user->nickname)); 
 
                 },
                 'filter'=> false,

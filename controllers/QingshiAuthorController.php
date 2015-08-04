@@ -14,6 +14,7 @@ use yii\filters\VerbFilter;
  */
 class QingshiAuthorController extends Controller
 {
+
     public function behaviors()
     {
         return [
