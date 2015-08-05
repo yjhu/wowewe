@@ -66,6 +66,10 @@ foreach ($votes as $vote) {
 
 
     <style type="text/css">
+        .p1{
+            font-size: 12pt;
+        }
+
         .pc{
             color:#000;
             font-size: 12pt;
@@ -114,7 +118,7 @@ foreach ($votes as $vote) {
         <p align="center">
             <a href="#tppm"><i class="fa fa-trophy"></i>&nbsp;投票排名</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动</a>
+            <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动说明</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#tp_friends"><i class="fa fa-users"></i>&nbsp;帮忙投票的小伙伴们</a>
         </p>
@@ -200,24 +204,29 @@ foreach ($votes as $vote) {
     <div id='hdgz'  class='modal'>
         <header class="bar bar-nav">
             <a class="icon icon-close pull-right" href="#hdgz"></a>
-            <h1 class='title'>活动</h1>
+            <h1 class='title'>活动说明</h1>
         </header>
         <div class="content">
             <p><b>参加活动</b></p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;
-            用户通过阅读文章或点击活动菜单进入活动页面，提交“你的他/她为你做过最浪漫的事”或者“你最想为他/她说的话”，或者“三行情诗”的文字内容，审核通过后即可在手机上展示和发起投票。每人仅能提交一次。</p>
+            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
+            用户通过阅读文章或点击活动菜单进入活动页面，提交“你的他/她为你做过最浪漫的事”或者“你最想为他/她说的话”，或者“三行情诗”的文字内容，审核通过后即可在手机上展示和发起投票。每人仅能投稿一次。</p>
             </p>
             <br><hr>
             <p><b>参与投票</b></p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;
-            用户在关注“襄阳联通”微信号且绑定手机后，可以通过文章或活动菜单或朋友圈、微信群分享进入活动页面，参与投票。每人只能有1次投票机会,可无限转发给好友拉票。
+            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
+            用户在关注“襄阳联通”微信号且绑定手机后，可以通过文章或活动菜单或朋友圈、微信群分享进入活动页面，参与投票。每人只能有1次投票机会。
+            </p>
+            <br><hr>
+            <p><b>怎么拉票？</b></p>
+            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
+            把“我的情诗”或者“心仪的情诗”转发给好友或朋友圈，叫小伙伴们帮忙投票吧~ 可无限转发给好友拉票哟。
             </p>
             <br><hr>
             <p><b>奖品设置</b></p>
-            <p> 至8月20日24:00，按所得票数对作品进行排名，由上至下分配获奖名额，赠送用户相应积分，积分可兑换奖品如下： </p>
-            <p> 一等奖（一名）：积分10000分，可兑换送情侣手机一对+情侣号一对（红米note）。 </p>
-            <p> 二等奖（两名）：积分5000分，可兑换拉杆箱一个+电台黄金时段告白一次。 </p>
-            <p> 三等奖（三名）：积分500分，可兑换电影票二张。 </p>
+            <p class='p1'> 至8月20日24:00，按所得票数对作品进行排名，由上至下分配获奖名额，赠送用户相应积分，积分可兑换奖品如下： </p>
+            <p class='p1'> 一等奖（一名）：积分10000分，可兑换送情侣手机一对+情侣号一对(红米note)。</p>
+            <p class='p1'> 二等奖（两名）：积分5000分，可兑换拉杆箱一个+电台黄金时段告白一次。 </p>
+            <p class='p1'> 三等奖（三名）：积分500分，可兑换电影票二张。 </p>
             <br>
             <p align="center">
             <a class="btn btn-block" href="#hdgz" style="width: 300px" >返回</a>
@@ -428,8 +437,7 @@ foreach ($votes as $vote) {
                 });
             });
 
-            
-            var share2friendTitle = '<?= $observer->nickname ?>在襄阳联通参加三行情诗比赛和投票！';
+            var share2friendTitle = '快来帮 <?= $observer->nickname ?> 赢情侣手机和电台浪漫告白！点击投票';
             var share2friendDesc = '全城热恋·浪漫情话说出来，快来参与和投票，大奖等你拿！';
             var share2timelineTitle = '全城热恋·浪漫情话说出来，快来参与和投票，大奖等你拿！';
             var shareImgUrl = '<?= Url::to($observer->headimgurl, true); ?>';
