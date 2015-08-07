@@ -57,6 +57,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => array('style'=>'width:450px;'),           
             ],
 
+            'create_time',
+
             'score',
             [
                 'attribute' => 'status',

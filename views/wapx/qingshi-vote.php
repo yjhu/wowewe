@@ -29,7 +29,7 @@ foreach ($votes as $vote) {
 */
     $top_num = 0;
     $top = 0;
-    $votes = \app\models\MQingshiScore::find()->orderBy(['score' => SORT_DESC])->limit(50)->all(); 
+    $votes = \app\models\MQingshiScore::find()->orderBy(['score' => SORT_DESC, 'create_time' => SORT_ASC])->limit(50)->all(); 
     foreach ($votes as $vote) {
         $top_num ++;
 
@@ -44,7 +44,7 @@ foreach ($votes as $vote) {
 <html>
   <head>
     <meta charset="utf-8">
-    <title>三行情诗投票</title>
+    <title>襄阳联通七夕活动投票</title>
 
     <!-- Sets initial viewport load and disables zooming  -->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -99,7 +99,7 @@ foreach ($votes as $vote) {
           left: 0;
           overflow: auto;
           -webkit-overflow-scrolling: touch;
-          background-image: url("/wx/web/images/beijing2.jpg");
+          background-image: url("/wx/web/images/beijing4.jpg?v3");
           background-position: center top;
           z-index: 1
         }
@@ -120,7 +120,7 @@ foreach ($votes as $vote) {
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动说明</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#tp_friends"><i class="fa fa-users"></i>&nbsp;帮忙投票的小伙伴们</a>
+            <a href="#tp_friends"><i class="fa fa-users"></i>&nbsp;看看有谁帮我</a>
         </p>
         <br>
         
@@ -142,23 +142,23 @@ foreach ($votes as $vote) {
                 {
             ?>
                 <span class="vt">得</span>
-                <span class="badge badge-negative" style="font-size: 24pt">
+                <span class="badge" style="color:#bbb6d4; font-size: 14pt">
                     0
                 </span>
                 <span class="vt">票</span>
             <?php } else { ?>
                 <span class="vt">得</span>
-                <span class="badge badge-negative" style="font-size: 24pt">
+                <span class="badge" style="font-size: 14pt">
                     <?= $vote_count->score; ?>
                 </span>
                 <span class="vt">票&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第</span>
-                <sapn class="badge badge-positive" style="font-size: 24pt"><?= $top_num ?></sapn>
+                <sapn class="badge" style="font-size: 24pt"><?= $top_num ?></sapn>
                 <span class="vt">名</span>
             <?php } ?>
 
            <br> <br> <br>
 
-            <span class="ht">三行情诗</span>
+            <span class="ht">参赛情诗</span>
             <br><br>
 
             <p class="pc">
@@ -174,10 +174,14 @@ foreach ($votes as $vote) {
 
         <br>
         <p align="center">
-            <a class="btn btn-negative btn-block" style="width: 300px" id="toupiao">投票</a>
+            <a class="btn btn-positive btn-block" style="width: 300px" id="toupiao">投票</a>
           
-            <a class="btn btn-block" style="width: 300px"  id="kankan">
-            随便看看
+            <a class="btn btn-positive btn-block" style="width: 300px"  id="kankan">
+            我也来抢七夕礼品
+            </a>
+
+            <a class="btn btn-block btn-primary" style="width: 300px"  href="#lapiao">
+            怎么拉票？
             </a>
         </p>
         <br>
@@ -193,11 +197,7 @@ foreach ($votes as $vote) {
         <br>
         &nbsp;
         <br>
-      <nav class="bar bar-tab">
-        <a class="tab-item" href="#">
-          襄阳联通&copy;2015
-        </a>
-      </nav>
+
     </div>
 
 
@@ -235,6 +235,19 @@ foreach ($votes as $vote) {
     </div>
 
 
+    <div id='lapiao'  class='modal'>
+
+        <div class="content">
+            <img width=100% src="/wx/web/images/toupiao.jpg?v1">
+
+            <br>
+            <p align="center">
+            <a class="btn btn-block" href="#lapiao" style="width: 300px" >返回</a>
+            </p>
+        </div>
+    </div>
+
+
     <div id='tppm'  class='modal'>
         <header class="bar bar-nav">
             <a class="icon icon-close pull-right" href="#tppm"></a>
@@ -248,7 +261,7 @@ foreach ($votes as $vote) {
                     名次
                 </div>
 
-                <span class="badge badge-negative" style="font-size: 12pt">
+                <span class="badge" style="font-size: 12pt">
                     所得票数
                 </span>
             </li>
@@ -260,7 +273,7 @@ foreach ($votes as $vote) {
             ?>
               <li class="table-view-cell media">
 
-                <sapn class="pull-left" style="font-size: 24pt; font-weight: bolder;color:green;">
+                <sapn class="pull-left" style="font-size: 24pt; font-weight: bolder;color:red;">
                     <?= $top ?>.
                     &nbsp;&nbsp;
                 </sapn>
@@ -273,9 +286,10 @@ foreach ($votes as $vote) {
 
                 <div class="media-body">
                     <?= emoji_unified_to_html(emoji_softbank_to_unified($vote->user->nickname)) ?>
+                    <p><?= $vote->create_time; ?></p>
                 </div>
 
-                <span class="badge badge-negative" style="font-size: 18pt">
+                <span class="badge badge-primary" style="font-size: 14pt">
                    <?php
                         echo \app\models\MQingshiVote::find()->where(['author_openid' => $vote->author_openid])->count();
                         //echo $vote->c;
@@ -285,6 +299,11 @@ foreach ($votes as $vote) {
               </li>
             <?php } ?>
             </ul>
+
+            <br>
+            <p align="center">
+            <a class="btn btn-block" href="#tppm" style="width: 300px" >返回</a>
+            </p>
         </div>
     </div>
 
@@ -340,8 +359,8 @@ foreach ($votes as $vote) {
 
     $(document).ready(function() {
         'use strict'; 
-        $("#toupiao").hide();
-        $("#kankan").hide();
+        //$("#toupiao").hide();
+        //$("#kankan").hide();
 
         wx.config({
             debug: false,
@@ -393,8 +412,8 @@ foreach ($votes as $vote) {
 
         wx.ready(function () {
             //alert('wx ready');
-            $("#toupiao").show();
-            $("#kankan").show();
+            //$("#toupiao").show();
+            //$("#kankan").show();
 
             $('#kankan').click (function () {
                 location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/qingshi-author:gh_03a74ac96138#wechat_redirect";

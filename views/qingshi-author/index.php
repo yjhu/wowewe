@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'class' => 'yii\grid\ActionColumn',
                 //'template' => '{update} {delete}',
-                'template' => '{update}',
+                'template' => '{update} {delete}',
                 'buttons' => [
                     'update' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
@@ -81,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-pjax' => '0',
                         ]);
                     },
-                    /*
+             
                     'delete' => function ($url, $model) {
                         return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, [
                             'title' => Yii::t('yii', 'Delete'),
@@ -90,7 +90,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-pjax' => '0',
                         ]);
                     }
-                    */
+              
 
                 ],
             ],
