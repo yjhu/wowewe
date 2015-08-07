@@ -123,6 +123,7 @@ $outlets = $dataProvider->getModels();
                     ?>
                 </div>
             </div>
+            
         </div>
     </div>
 </div>
