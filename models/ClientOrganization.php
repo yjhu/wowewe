@@ -73,6 +73,14 @@ class ClientOrganization extends \yii\db\ActiveRecord
         return $result;
     }
     
+    public function getSubordinateIdArray() {
+        $result = [$this->organization_id];
+        foreach($this->getDirectSubordinateOrganizations() as $sub) {
+            $result = array_merge($result, $sub->getSubordinateIdArray());
+        }        
+        return $result;
+    }
+    
     public function getOutlets()
     {
         return $this->hasMany(\app\models\ClientOutlet::className(), ['supervision_organization_id' => 'organization_id']);
