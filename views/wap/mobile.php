@@ -28,6 +28,11 @@
     background-color: yellow;
 }
 
+.jiang {
+    color: red;
+    font-weight: bolder;
+}
+
 .highlight1
 {
     color: red;
@@ -226,7 +231,12 @@ text-decoration: line-through;
                 $_GET['cid']==874 ) {
         ?>
             <p id="price" class="title_comm">
-                <span class="line"><small>原价￥<?php echo  ($item->old_price)/100; ?></small></span>
+                
+                <?php if($item->old_price != 0){ ?>
+                    <span class="line"><small>原价￥<?php echo  ($item->old_price)/100; ?></small></span><br>
+                    <span class='jiang'>直降&#8595;: ￥<?= round($item->old_price / 100)-round($item->price / 100)  ?></span>
+                <?php } ?>
+
                 <br>
                 老用户专享价  <!--<span class="fee">￥<//?php echo  ($item->price)/100; ?></span>-->
                 <span class="fee">￥<?php echo round($item->price/100); ?></span>
@@ -234,7 +244,12 @@ text-decoration: line-through;
             </p>
         <?php } else { ?>
             <p id="price" class="title_comm">
-                价格  <!--<span class="fee">￥<//?php echo  ($item->price)/100; ?></span>-->
+                <?php if($item->old_price != 0){ ?>
+                    <span class="line"><small>原价￥<?php echo  ($item->old_price)/100; ?></small></span><br>
+                    <span class='jiang'>直降&#8595;: ￥<?= round($item->old_price / 100)-round($item->price / 100)  ?></span>
+                <?php } ?>
+                <br>
+                老用户专享价  <!--<span class="fee">￥<//?php echo  ($item->price)/100; ?></span>-->
                 <span class="fee">￥<?php echo round($item->price/100); ?></span>
                 <span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
             </p>
