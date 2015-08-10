@@ -411,6 +411,21 @@ class MOffice extends ActiveRecord implements IdentityInterface {
         return $officeStaff->getQrImageUrl();
     }
 
+    //导出所有渠道二维码
+    public function getQrImageUrl2() {
+        $officeStaff = $this->officeStaff;
+        if (empty($officeStaff)) {
+            $officeStaff = new MStaff;
+            $officeStaff->gh_id = $this->gh_id;
+            $officeStaff->office_id = $this->office_id;
+            $officeStaff->cat = MStaff::SCENE_CAT_OFFICE;
+            $officeStaff->name = $this->title;
+            $officeStaff->save(false);
+//            return false;
+        }
+        return $officeStaff->getQrImageUrl2();
+    }
+
     public function hasOfficeStaff() {
         return !empty($this->officeStaff);
     }

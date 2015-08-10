@@ -596,6 +596,29 @@ class ExportController extends \yii\console\Controller {
         fclose($fh);    
     }
 
+    //导出所有渠道二维码
+    public function actionQrAllOffices()
+    {
+        $gh_id = 'gh_03a74ac96138';
+        $total_count = \app\models\MOffice::find()->where(['gh_id' => $gh_id])->count();
+        $step = 300;
+        $start = 0;
+
+        while ($start < $total_count) {
+            $offices = \app\models\MOffice::find()->where(['gh_id' => $gh_id])->offset($start)->limit($step)->all();
+        
+            foreach ($offices as $office) {
+                $office->getQrImageUrl2();
+            }
+
+            $start += $step;
+        }
+
+        echo "导出所有渠道二维码,ok.";
+    }
+
+
+
 
     
 }

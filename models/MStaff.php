@@ -196,6 +196,35 @@ class MStaff extends ActiveRecord
         return $url;
     }
 
+    //导出所有渠道二维码
+    public function getQrImageUrl2()
+    {
+        $gh_id = $this->gh_id;
+        if (empty($this->scene_id)) {
+            $this->scene_id = MStaff::newSceneId($this->gh_id);
+            $this->save(false);
+        }        
+        $scene_id = $this->scene_id;
+        $office_id = $this->office_id;
+
+        $office = MOffice::findOne(['office_id' => $office_id]);
+        $office_title = $office->title;
+
+        //$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
+        $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr-all-offices'.DIRECTORY_SEPARATOR."{$office_title}_{$scene_id}.jpg";
+        if ((!file_exists($log_file_path)) || filesize($log_file_path) == 0)
+        {
+            Yii::$app->wx->setGhId($gh_id);    
+            $arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
+            $url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
+            Wechat::downloadFile($url, $log_file_path);
+        }         
+        //$url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
+        //return $url;
+    }
+
+
+
     public function getQrImageFilePath()
     {
         $gh_id = $this->gh_id;

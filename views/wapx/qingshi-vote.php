@@ -273,7 +273,7 @@ foreach ($votes as $vote) {
             ?>
               <li class="table-view-cell media">
 
-                <sapn class="pull-left" style="font-size: 24pt; font-weight: bolder;color:red;">
+                <sapn class="pull-left" style="font-size: 24pt; font-weight: bolder;color:green;">
                     <?= $top ?>.
                     &nbsp;&nbsp;
                 </sapn>

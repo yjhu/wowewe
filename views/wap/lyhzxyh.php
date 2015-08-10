@@ -15,6 +15,11 @@ use yii\helpers\Url;
         text-decoration: line-through;
     }
 
+    .jiang {
+        color: red;
+        font-weight: bolder;
+    }
+
     .activity {
         color: red;
         font-size:14px;
@@ -59,8 +64,11 @@ use yii\helpers\Url;
                         <img style='padding-top:20px' src="<?php echo $model->pic_url . '-120x120.jpg?v5'?>">
                         <h2><?=$model->title?></h2>
                         <p><?=$model->title_hint?></p>
-
-                        <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                        
+                        <?php if($model->old_price != 0){ ?>
+                            <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                            <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?></p>
+                        <?php } ?>
 
                         <p>老用户专享价: ￥<?=round($model->price / 100)?></p>
                     </a>
@@ -74,7 +82,13 @@ use yii\helpers\Url;
 
         <?php foreach ($models as $model) {
         //6.18 
-        if ($model->cid == 869 ||
+        if (
+            $model->cid == 311 ||
+            $model->cid == 853 ||
+            $model->cid == 864 ||
+            $model->cid == 865 ||
+            $model->cid == 868 ||
+            $model->cid == 869 ||
             $model->cid == 879 ||
             $model->cid == 880 ||
             $model->cid == 881 ||
@@ -92,7 +106,10 @@ use yii\helpers\Url;
                     <h2><?=$model->title?></h2>
                     <p><?=$model->title_hint?></p>
 
-                    <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                    <?php if($model->old_price != 0){ ?>
+                        <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?></p>
+                    <?php } ?>
 
                     <p>老用户专享价: ￥<?=round($model->price / 100)?></p>
                 </a>
@@ -117,7 +134,10 @@ use yii\helpers\Url;
                     <h2><?=$model->title?></h2>
                     <p><?=$model->title_hint?></p>
 
-                    <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                    <?php if($model->old_price != 0){ ?>
+                        <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?></p>
+                    <?php } ?>
 
                     <p>老用户专享价: ￥<?=round($model->price / 100)?></p>
                 </a>
@@ -135,7 +155,10 @@ break;}
                     <h2><?=$model->title?></h2>
                     <p><?=$model->title_hint?></p>
 
-                    <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                    <?php if($model->old_price != 0){ ?>
+                        <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?></p>
+                    <?php } ?>
 
                     <p>老用户专享价: ￥<?=round($model->price / 100)?></p>
                 </a>
@@ -154,7 +177,10 @@ break;}
                     <h2><?=$model->title?></h2>
                     <p><?=$model->title_hint?></p>
 
-                    <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                    <?php if($model->old_price != 0){ ?>
+                        <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?></p>
+                    <?php } ?>
 
                     <p>老用户专享价: ￥<?=round($model->price / 100)?></p>
                 </a>
@@ -172,7 +198,10 @@ break;}
                     <h2><?=$model->title?></h2>
                     <p><?=$model->title_hint?></p>
 
-                    <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                    <?php if($model->old_price != 0){ ?>
+                        <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?></p>
+                    <?php } ?>
 
                     <p>老用户专享价: ￥<?=round($model->price / 100)?></p>
                 </a>
@@ -190,7 +219,10 @@ break;}
                     <h2><?=$model->title?></h2>
                     <p><?=$model->title_hint?></p>
 
-                    <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                    <?php if($model->old_price != 0){ ?>
+                        <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?></p>
+                    <?php } ?>
 
                     <p>老用户专享价: ￥<?=round($model->price / 100)?></p>
                 </a>

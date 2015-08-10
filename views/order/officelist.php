@@ -23,9 +23,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
+	<!--
     <p>
-		<?php echo Html::a('新增营业厅', ['officecreate'], ['class' => 'btn btn-success']) ?>
+		<//?php echo Html::a('新增营业厅', ['officecreate'], ['class' => 'btn btn-success']) ?>
     </p>
+    -->
 
 	<?php \yii\widgets\Pjax::begin([
 		'timeout' => 10000,
@@ -44,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //				'visible'=>false,
 			],
 
+			/*
 			[
 				'label' => '类别',
 				'attribute' => 'is_jingxiaoshang',
@@ -53,6 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
 					},
 				'filter'=> ['0'=>'自营厅', '1'=>'经销商'],
 			],
+			*/
 
 			[
 				'label' => '部门名称',
@@ -82,6 +86,8 @@ $this->params['breadcrumbs'][] = $this->title;
 				'filter'=> false,
 			],
 */
+
+			/*
 			[
                 'label' => '推广Id',
 				'value'=>function ($model, $key, $index, $column) { 
@@ -89,16 +95,18 @@ $this->params['breadcrumbs'][] = $this->title;
                     return empty($officeStaff) ? '-' : $officeStaff->scene_id;
 				},
 			],
+			*/
 			[
 				'label' => '推广二维码',
                 'format'=>'html',
 				'value'=>function ($model, $key, $index, $column) { 
                     $officeStaff = $model->getOfficeStaff();
-                    return empty($officeStaff) ? '-' : Html::img($officeStaff->getQrImageUrl(), ['width'=>'64']);
+                    return empty($officeStaff) ? '-' : Html::img($officeStaff->getQrImageUrl(), ['width'=>'128']);
 				},
 				'filter'=> false,
 			],
 
+			/*
             [
 				'class' => 'yii\grid\ActionColumn',
 				'template' => '{officeupdate} {officedelete}',
@@ -121,6 +129,8 @@ $this->params['breadcrumbs'][] = $this->title;
 					}
 				],
 			],
+			*/
+
 
         ],
     ]); ?>
