@@ -15,7 +15,7 @@
 <meta content="" name="description"/>
 <meta content="" name="author"/>
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
-<link href="./metronic/theme/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="./metronic/theme/assets/global/plugins/font-awesome/css/font-awesome.min.css" type="text/css"/>
 <link href="./metronic/theme/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
 <link href="./metronic/theme/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 <link href="./metronic/theme/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
@@ -150,7 +150,7 @@
                                     'label' => '<i class="fa fa-users"></i><span class="title">员工</span><span class="arrow "></span>',
                                     'url' => '',
                                     'items' => [
-                                        ['label' => '员工管理','url' => ['/order/stafflist'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '员工管理','url' => ['/client-employee/index'],'linkOptions' => ['data-method' => 'post']],
                                         ['label' => '员工推广成绩排行','url' => ['/order/stafftop'],'linkOptions' => ['data-method' => 'post']],
                                         ['label' => '推广查询','url' => ['/accesslog/index'],'linkOptions' => ['data-method' => 'post']],
                                     ],
