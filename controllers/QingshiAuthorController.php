@@ -8,6 +8,7 @@ use app\models\MQingshiAuthorSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\U;
 
 /**
  * QingshiAuthorController implements the CRUD actions for MQingshiAuthor model.
@@ -84,7 +85,34 @@ class QingshiAuthorController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             //return $this->redirect(['view', 'id' => $model->id]);
+
+            /*
+            const AUDIT_NONE = 0;
+            const AUDIT_FAIL = 1;
+            const AUDIT_PASS = 2;
+            */
+
+            if($model->status == 1)
+            {
+                $msg = ":-( 你的投稿没有审核通过。没关系啦，还可以为小伙伴们拉票哟~";
+                if (!$model->user->sendWxm($msg))                  
+                {    
+                    U::W("wx send failed");
+                }
+            }
+            else if($model->status == 2)
+            {
+                $msg = "恭喜！您的投稿已通过审核，快号召小伙伴们来投票吧~";
+                if (!$model->user->sendWxm($msg))                  
+                {    
+                    U::W("wx send failed");
+                }
+            }
+
+            //return $this->redirect(['memberlist']);            
             return $this->redirect(['index', 'model' => $model]);
+     
+
         } else {
             return $this->render('update', [
                 'model' => $model,
