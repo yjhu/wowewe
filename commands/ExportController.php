@@ -250,7 +250,7 @@ class ExportController extends \yii\console\Controller {
         $fh = fopen($file, "w");
         //fprintf($fh, "自营厅名称,粉丝总数量,绑定手机粉丝总数量,上月（%s）同期发展粉丝数量,上月（%s）同期发展绑定手机粉丝数量,本月（%s）发展粉丝数量,本月（%s）发展绑定手机粉丝数量,归属客户总数量,已微信关联客户数量,上月（%s）同期关联客户数量,本月（%s）关联客户数量\n",
         //绑定手机粉丝总数量 == 会员总数量
-        fprintf($fh, "自营厅名称,累计粉丝量（从发展到现在）,会员总数量, 本月会员数, 上月（%s）同期发展粉丝数量,(%s)新用户发展同比,%s月新增粉丝量,(%s)新用户发展量,归属客户总数量,已微信关联客户数量,(%s)维系用户同比,%s维系用户发展量, 发展业务量\n",
+        fprintf($fh, "自营厅名称,累计粉丝量（从发展到现在）,会员总数量, 本月新增会员, 上月（%s）同期发展粉丝数量,(%s)新用户发展同比,%s月新增粉丝量,(%s)新用户发展量,归属客户总数量,已微信关联客户数量,(%s)维系用户同比,%s维系用户发展量, 发展业务量\n",
                 date('Y-m', strtotime($lastmonth_start)),
                 date('Y-m', strtotime($lastmonth_start)),
                 date('Y-m-d', strtotime($thismonth_start))."至".date('Y-m-d', strtotime($thismonth_end)),

@@ -69,9 +69,13 @@ class MQingshiVote extends \yii\db\ActiveRecord
             $qingshi_score = new \app\models\MQingshiScore;
         }
 
+        $qa = \app\models\MQingshiAuthor::findOne(['author_openid' => $author_openid]);
+
         $qingshi_score->author_openid = $author_openid;
         $qingshi_score->score = $qingshi_score->score + 1;
         $qingshi_score->status = 0;
+        
+        $qingshi_score->create_time = $qa->create_time;
         $qingshi_score->save(false);
 
         return \yii\helpers\Json::encode(['code' => 0]);

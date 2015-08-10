@@ -19,7 +19,7 @@ $signPackage = $jssdk->GetSignPackage();
 <html>
   <head>
     <meta charset="utf-8">
-    <title>三行情诗投票</title>
+    <title>襄阳联通七夕活动投票</title>
 
     <!-- Sets initial viewport load and disables zooming  -->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -94,10 +94,12 @@ $signPackage = $jssdk->GetSignPackage();
         <ul class="table-view">
           <li class="table-view-cell media">
                 <div class="media-body">
+                 <span class="badge" style="font-size: 12pt">
                     参赛诗人
+                </span>
                 </div>
 
-                <span class="badge badge-negative" style="font-size: 12pt">
+                <span class="badge" style="font-size: 12pt">
                     所得票数
                 </span>
           </li>
@@ -119,11 +121,14 @@ $signPackage = $jssdk->GetSignPackage();
                 <div class="media-body">
                     <?= emoji_unified_to_html(emoji_softbank_to_unified($qa->user->nickname)) ?>
                     <p>
-                        <?= $qa->p1 ?> &nbsp;&nbsp;...
+                        <?php
+                            $p1 = mb_substr($qa->p1, 0, 12, 'utf-8');
+                            echo $p1;
+                        ?> &nbsp;&nbsp;...
                     </p>
                 </div>
 
-                <span class="badge badge-negative" style="font-size: 18pt">
+                <span class="badge badge-primary" style="font-size: 12pt">
                   <?php
                         $vote_count = \app\models\MQingshiVote::find()
                         ->where(['author_openid' => $qa->author_openid])
@@ -165,7 +170,7 @@ $signPackage = $jssdk->GetSignPackage();
                 //   ->all();
                 $top = 0;
                 //$votes = \app\models\MQingshiVote::find()->select('*, count(*) as c')->groupBy(['author_openid'])->orderBy('c DESC')->limit(50)->all(); 
-                $votes = \app\models\MQingshiScore::find()->orderBy(['score' => SORT_DESC])->limit(50)->all(); 
+                $votes = \app\models\MQingshiScore::find()->orderBy(['score' => SORT_DESC, 'create_time' => SORT_ASC])->limit(50)->all(); 
             ?>
 
 
@@ -177,7 +182,7 @@ $signPackage = $jssdk->GetSignPackage();
                     名次
                 </div>
 
-                <span class="badge badge-negative" style="font-size: 12pt">
+                <span class="badge" style="font-size: 12pt">
                     所得票数
                 </span>
             </li>
@@ -200,9 +205,10 @@ $signPackage = $jssdk->GetSignPackage();
 
                 <div class="media-body">
                     <?= emoji_unified_to_html(emoji_softbank_to_unified($vote->user->nickname)) ?>
+                    <p><?= $vote->create_time; ?></p>
                 </div>
 
-                <span class="badge badge-negative" style="font-size: 18pt">
+                <span class="badge badge-primary" style="font-size: 14pt">
                    <?php
                         echo \app\models\MQingshiVote::find()->where(['author_openid' => $vote->author_openid])->count();
                         //echo $vote->c;
@@ -212,8 +218,14 @@ $signPackage = $jssdk->GetSignPackage();
               </li>
             <?php } ?>
             </ul>
+
+            <br>
+            <p align="center">
+            <a class="btn btn-block" href="#tppm" style="width: 300px" >返回</a>
+            </p>
         </div>
     </div>
+
 
     <div id='hdgz'  class='modal'>
         <header class="bar bar-nav">
@@ -444,7 +456,7 @@ $signPackage = $jssdk->GetSignPackage();
                     success:    function(ret) { 
                         if (0 === ret['code']) {
                             //alert("refresh");
-                            alert("恭喜！您以成功提交。\n审核通过后就可以呼朋唤友投票啦~");
+                            alert("恭喜！您已经成功提交。\n审核通过后就可以呼朋唤友投票啦~");
                             location.href = '<?= Url::to() ?>';
                         }
                         else if(11 === ret['code'])

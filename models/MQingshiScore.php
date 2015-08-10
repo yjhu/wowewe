@@ -65,6 +65,8 @@ class MQingshiScore extends \yii\db\ActiveRecord
             'author_openid' => 'Author Openid',
             'score' => '获得票数',
             'status' => '是否领奖',
+            'create_time' => '投稿时间',
+            
         ];
     }
 }

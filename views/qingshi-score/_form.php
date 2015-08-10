@@ -23,6 +23,7 @@ use app\models\MQingshiScore;
 
     <//?= $form->field($model, 'score')->textInput() ?>
     -->
+	
 
     <?php
         echo "<img width=128 src=".$model->user->headimgurl.">";
