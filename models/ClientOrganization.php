@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\helpers\Json;
 
 /**
  * This is the model class for table "client_organization".
@@ -113,5 +114,42 @@ class ClientOrganization extends \yii\db\ActiveRecord
             $subordinates[] = self::findOne(['organization_id' => $row['subordinate_id']]);
         }
         return $subordinates;
+    }
+    
+    public static function createAjax($client_id, $superior_id, $orgnazation_title) {
+        $organization = new self;
+        $organization->title = $orgnazation_title;
+        $organization->client_id = $client_id;
+        $organization->save(false);
+        
+        \Yii::$app->db->createCommand()->insert('client_organization_chart', [
+            'subordinate_id' => $organization->organization_id,
+            'superior_id' => $superior_id,
+        ])->execute();
+        
+        return Json::encode(['ret_code' => 0, 'organization_id' => $organization->organization_id]);
+    }
+    
+    public static function renameAjax($organization_id, $orgnazation_title) {
+        $organization = self::findOne(['organization_id' => $organization_id]);
+        $organization->title = $orgnazation_title;
+        $organization->save(false);              
+        return Json::encode(['ret_code' => 0]);
+    }
+    
+    public static function deleteAjax($organization_id) {
+        $organization = self::findOne(['organization_id' => $organization_id]);
+        if (!empty($organization->directSubordinateOrganizations) ||
+                !empty($organization->employees) ||
+                !empty($organization->outlets)) {
+            return Json::encode(['ret_code' => -1]);
+        } else {
+            \Yii::$app->db->createCommand()
+                    ->delete('client_organization_chart', [
+                        'subordinate_id' => $organization->organization_id
+                    ])->execute();
+            $organization->delete();
+            return Json::encode(['ret_code' => 0]);
+        }
     }
 }

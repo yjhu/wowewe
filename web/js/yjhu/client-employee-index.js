@@ -5,17 +5,103 @@ $(document).ready( function () {
         "core" : {
             "themes" : {
                 "responsive": false
-            }            
+            },
+            "check_callback" : true
         },
         "types" : {
             "default" : {
-                "icon" : "fa fa-folder icon-state-warning icon-lg"
+                "icon" : "fa fa-sitemap icon-state-warning icon-lg"
             },
             "file" : {
                 "icon" : "fa fa-file icon-state-warning icon-lg"
             }
         },
-        "plugins": ["types"]
+        "plugins": [ "contextmenu", "dnd", "types"],
+        'contextmenu': {
+            'select_node': false,
+            'items' : { 
+                "create" : {
+                    "label"             : "新建",
+                    "action"            : function (data) {
+                        var inst = $.jstree.reference(data.reference),
+                                obj = inst.get_node(data.reference);
+                        var args = {
+                            'classname':    '\\app\\models\\ClientOrganization',
+                            'funcname':     'createAjax',
+                            'params':       {
+                                'client_id': 1,
+                                'superior_id': obj.li_attr.organization_id,
+                                'organization_title': '新建部门'
+                            } 
+                        };
+                        $.ajax({
+                            url:        ajax_url,
+                            type:       "GET",
+                            cache:      false,
+                            dataType:   "json",
+                            data:       "args=" + JSON.stringify(args),
+                            success:    function(ret) { 
+                                if (0 === ret['ret_code']) {
+                                    inst.create_node(obj, {}, "first", function (new_node) {
+                                        new_node.text = '新建部门';
+                                        new_node.li_attr = {'organization_id': ret['organization_id']};
+                                        //setTimeout(function () { inst.edit(new_node); },0);
+                                    });
+                                }
+                            },                        
+                            error:      function(){
+                                alert('发送失败。');
+                            }
+                        });                       
+                    }
+                },
+                "rename" : {
+                    "label"             : "更名",
+                    "action"            : function (data) {
+                        var inst = $.jstree.reference(data.reference),
+                                obj = inst.get_node(data.reference);
+                        inst.edit(obj);
+                    }
+                },
+                "remove" : {
+                    "label"             : "删除",
+                    "action"            : function (data) {
+                        var inst = $.jstree.reference(data.reference),
+                                obj = inst.get_node(data.reference);
+                        if (obj.parent == '#') {
+                            return;
+                        }
+                        var args = {
+                            'classname':    '\\app\\models\\ClientOrganization',
+                            'funcname':     'deleteAjax',
+                            'params':       {
+                                'organization_id': obj.li_attr.organization_id
+                            } 
+                        };
+                        $.ajax({
+                            url:        ajax_url,
+                            type:       "GET",
+                            cache:      false,
+                            dataType:   "json",
+                            data:       "args=" + JSON.stringify(args),
+                            success:    function(ret) { 
+                                if (0 === ret['ret_code']) {
+                                    if(inst.is_selected(obj)) {
+                                        inst.delete_node(inst.get_selected());
+                                    }
+                                    else {
+                                        inst.delete_node(obj);
+                                    }
+                                }
+                            },                        
+                            error:      function(){
+                                alert('发送失败。');
+                            }
+                        });                                              
+                    }
+                }                
+            }
+        }
     });
     
     $('#organization_tree').on("changed.jstree", function (e, data) {

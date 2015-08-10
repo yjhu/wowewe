@@ -36,6 +36,7 @@ $employees = $dataProvider->getModels();
 ?>
 <script>
     var target_organization = <?= $searchModel->organization_id ?>;
+    var ajax_url = "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>";
     function redirectTo() {
         location.href = '<?= Url::to(['client-employee/index']) ?>' + '&ClientEmployeeSearch[organization_id]=' + target_organization;
     }
@@ -43,8 +44,8 @@ $employees = $dataProvider->getModels();
         location.href = '<?= Url::to(['client-employee/index']) ?>' + '&ClientEmployeeSearch[search_keyword]=' + keyword;
     }
 </script>
-<div class="row">
-<div class="input-group input-medium pull-right" style="margin-bottom: 20px;">
+<div class="page-bar">
+<div class="input-group input-medium pull-right">
         <input type="text" id='search-key' class="form-control" placeholder="请输入姓名或电话进行查找">
         <span class="input-group-btn">
         <button type="submit" id='search' class="btn green"><i class="fa fa-search"></i></button>
