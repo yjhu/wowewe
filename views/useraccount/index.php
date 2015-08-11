@@ -10,14 +10,16 @@ use app\models\MUserAccount;
 /* @var $searchModel app\models\search\MUserAccountSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'User Accounts');
+$this->title = Yii::t('app', '用户账户管理');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="muser-account-index">
 
+	<!--
     <p>
-        <?= Html::a(Yii::t('app', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
+        <//?= Html::a(Yii::t('app', 'Create'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    -->
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -50,7 +52,7 @@ $this->params['breadcrumbs'][] = $this->title;
             
             'create_time',
             
-            'amount',
+            //'amount',
           
             
 			[
@@ -60,7 +62,14 @@ $this->params['breadcrumbs'][] = $this->title;
 					},
 			],            
 
-//            'status',
+           //'status',
+            [
+                'attribute' => 'status',
+                'label' => '状态',
+                'value'=>function ($model, $key, $index, $column) { return MUserAccount::getStatusDesc($model->status); },
+                'filter'=> MUserAccount::getStatusDesc(),
+                'headerOptions' => array('style'=>'width:120px;'),           
+            ],
             
 //            'memo',
             
@@ -80,8 +89,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'scene_id',
             
-            'oid',
-            
+           // 'oid',
+  
             'charge_mobile',
 
             ['class' => 'yii\grid\ActionColumn', 'template' => '{update} {delete}'],
