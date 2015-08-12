@@ -145,7 +145,7 @@ $employees = $dataProvider->getModels();
 <?php
 $this->registerCssFile( '@web/metronic/theme/assets/global/plugins/jstree/dist/themes/default/style.min.css' );
 $this->registerCssFile( '@web/php-emoji/emoji.css' );
-$this->registerJsFile( '@web/metronic/theme/assets/global/plugins/jstree/dist/jstree.min.js' );
+$this->registerJsFile( '@web/metronic/theme/assets/global/plugins/jstree/dist/jstree.js' );
 $this->registerJsFile( '@web/js/yjhu/client-employee-index.js' );
 
 $this->registerCss('
