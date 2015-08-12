@@ -42,9 +42,10 @@ $(document).ready( function () {
                             data:       "args=" + JSON.stringify(args),
                             success:    function(ret) { 
                                 if (0 === ret['ret_code']) {
-                                    inst.create_node(obj, {}, "first", function (new_node) {
-                                        new_node.text = '新建部门';
+                                    inst.create_node(obj, {'text': '新建部门'}, "last", function (new_node) {
+//                                        new_node.text = '新建部门';
                                         new_node.li_attr = {'organization_id': ret['organization_id']};
+                                        inst.refresh_node(new_node);
                                         //setTimeout(function () { inst.edit(new_node); },0);
                                     });
                                 }
@@ -69,6 +70,7 @@ $(document).ready( function () {
                         var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
                         if (obj.parent == '#') {
+                            alert('根部门，不能删除！');
                             return;
                         }
                         var args = {
@@ -92,6 +94,8 @@ $(document).ready( function () {
                                     else {
                                         inst.delete_node(obj);
                                     }
+                                } else {
+                                    alert('该部门有下属部门，或员工，或门店，不能删除！');
                                 }
                             },                        
                             error:      function(){

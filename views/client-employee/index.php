@@ -44,7 +44,7 @@ $employees = $dataProvider->getModels();
         location.href = '<?= Url::to(['client-employee/index']) ?>' + '&ClientEmployeeSearch[search_keyword]=' + keyword;
     }
 </script>
-<div class="page-bar">
+<div class="page-bar" style="background-color: #f1f3fa;">
 <div class="input-group input-medium pull-right">
         <input type="text" id='search-key' class="form-control" placeholder="请输入姓名或电话进行查找">
         <span class="input-group-btn">
