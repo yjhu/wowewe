@@ -1807,6 +1807,11 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->title = '小辣椒 LA2S';
                 $order->attr = "{$_GET['cardType']}";
                 break;
+            case MItem::ITEM_CAT_MOBILE_4G_IPHONE6PLUS_16G:
+                $order->title = 'iPhone6 Plus 16G';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
 
             //老用户户专享 参与机型及优惠合约
             case MItem::ITEM_CAT_MOBILE_SANXIN_SM_G9006VW:

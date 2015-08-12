@@ -122,14 +122,13 @@ foreach ($votes as $vote) {
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#tp_friends"><i class="fa fa-users"></i>&nbsp;看看有谁帮我</a>
         </p>
-        <br>
         
         <p align="center">
             <?php if(!empty($qingshi_author->user->headimgurl)) { ?>
-                <img width="64" src='<?= $qingshi_author->user->headimgurl ?>' ><br>
+                <img width="128" src='<?= $qingshi_author->user->headimgurl ?>' ><br>
                 <?= emoji_unified_to_html(emoji_softbank_to_unified($qingshi_author->user->nickname)) ?>
             <?php } else { ?>
-                <img width="64" src='/wx/web/images/wxmpres/headimg-blank.png' ><br>
+                <img width="128" src='/wx/web/images/wxmpres/headimg-blank.png' ><br>
                 <?= emoji_unified_to_html(emoji_softbank_to_unified($qingshi_author->user->nickname)) ?>
             <?php } ?>
         </p>
@@ -156,7 +155,7 @@ foreach ($votes as $vote) {
                 <span class="vt">名</span>
             <?php } ?>
 
-           <br> <br> <br>
+           <br> <br> 
 
             <span class="ht">参赛情诗</span>
             <br><br>
@@ -269,11 +268,17 @@ foreach ($votes as $vote) {
 
             <?php foreach ($votes as $vote) 
                 {
-                    $top ++;    
+                    $top ++ ;
+                    $author = \app\models\MQingshiAuthor::findOne(['author_openid' => $vote->author_openid]);
             ?>
               <li class="table-view-cell media">
 
-                <sapn class="pull-left" style="font-size: 24pt; font-weight: bolder;color:green;">
+                <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+                    'qingshi-vote', 
+                    'id' => $author->id,
+                ]) ?>">
+
+                <sapn class="pull-left" style="font-size: 18pt; font-weight: bolder;color:green;">
                     <?= $top ?>.
                     &nbsp;&nbsp;
                 </sapn>
@@ -289,12 +294,13 @@ foreach ($votes as $vote) {
                     <p><?= $vote->create_time; ?></p>
                 </div>
 
-                <span class="badge badge-primary" style="font-size: 14pt">
+                <span class="badge badge-primary" style="font-size: 12pt">
                    <?php
                         echo \app\models\MQingshiVote::find()->where(['author_openid' => $vote->author_openid])->count();
                         //echo $vote->c;
                    ?>
                 </span>
+                </a>
 
               </li>
             <?php } ?>

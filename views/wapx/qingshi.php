@@ -90,7 +90,11 @@ $signPackage = $jssdk->GetSignPackage();
     
         </p>
         <br>
+        <marquee direction=left style="color:red" scrollamount=3>
+       七夕全城热恋活动火热进行时，丰厚大奖等你拿...  赶紧把你的大作发送给朋友，让ta帮你投上决胜的一票吧~ 
+        </marquee>
 
+        
         <ul class="table-view">
           <li class="table-view-cell media">
                 <div class="media-body">
@@ -190,9 +194,16 @@ $signPackage = $jssdk->GetSignPackage();
             <?php foreach ($votes as $vote) 
                 {
                     $top ++ ;
+                    $author = \app\models\MQingshiAuthor::findOne(['author_openid' => $vote->author_openid]);
             ?>
+
               <li class="table-view-cell media">
-                <sapn class="pull-left" style="font-size: 24pt; font-weight: bolder;color:green;">
+                <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
+                    'qingshi-vote', 
+                    'id' => $author->id,
+                ]) ?>">
+
+                <sapn class="pull-left" style="font-size: 18pt; font-weight: bolder;color:green;">
                     <?= $top ?>.
                     &nbsp;&nbsp;
                 </sapn>
@@ -208,14 +219,17 @@ $signPackage = $jssdk->GetSignPackage();
                     <p><?= $vote->create_time; ?></p>
                 </div>
 
-                <span class="badge badge-primary" style="font-size: 14pt">
+                <span class="badge badge-primary" style="font-size: 12pt">
                    <?php
                         echo \app\models\MQingshiVote::find()->where(['author_openid' => $vote->author_openid])->count();
                         //echo $vote->c;
                    ?>
                 </span>
 
+                </a>
               </li>
+
+             
             <?php } ?>
             </ul>
 

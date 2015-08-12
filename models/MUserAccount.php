@@ -60,15 +60,16 @@ class MUserAccount extends ActiveRecord
         ];
     }
     
-    public function getStatusDesc()
+    public function getStatusDesc($key=null)
     {
         $arr = array(
             self::STATUS_CHARGE_COMPLETE => '充值完成',
             self::STATUS_CHARGE_PROCESSING => '充值处理中',
             self::STATUS_CHARGE_REQUEST => '充值申请 ',
         );        
-        return (isset($arr[$this->status]) ? $arr[$this->status] : '');
+        return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
+
 
     public static function getCatOptionName($key=null)
     {
@@ -91,6 +92,7 @@ class MUserAccount extends ActiveRecord
             'memo'=>'备注',
             'oid'=>'交易ID',
             'cat'=>'类型',
+            'Status'=>'状态',
         ];
     }
 

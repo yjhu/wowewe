@@ -18,7 +18,7 @@ class MUserAccountSearch extends MUserAccount
     public function rules()
     {
         return [
-            [['id', 'amount', 'balance', 'status', 'cat', 'scene_id'], 'integer'],
+            [['id', 'amount', 'status', 'cat', 'scene_id'], 'integer'],
             [['gh_id', 'openid', 'create_time', 'memo', 'oid', 'charge_mobile'], 'safe'],
         ];
     }
@@ -55,7 +55,6 @@ class MUserAccountSearch extends MUserAccount
             'id' => $this->id,
             'create_time' => $this->create_time,
             'amount' => $this->amount,
-            'balance' => $this->balance,
             'status' => $this->status,
             'cat' => $this->cat,
             'scene_id' => $this->scene_id,

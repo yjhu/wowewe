@@ -18,6 +18,10 @@
         text-decoration: line-through;
     }
 
+    .jiang {
+        color: red;
+        font-weight: bolder;
+    }
     .activity {
         color: red;
         font-size:14px;
@@ -64,6 +68,12 @@
                     <p class='line'>原价: ￥<//?= round($model->old_price/100) ?></p>
                     <p>惊爆价: ￥<//?= round($model->price/100) ?></p>
                     -->
+
+                    <?php if( ($model->old_price != 0) && ($model->old_price > $model->price) ){ ?>
+                        <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?></p>
+                    <?php } ?>
+
                     <p>价格: ￥<?= round($model->price/100) ?></p>
                 </a>
             </li>
@@ -89,6 +99,11 @@
                     <p class='line'>原价: ￥<//?= round($model->old_price/100) ?></p>
                     <p>惊爆价: ￥<//?= round($model->price/100) ?></p>
                     -->
+                    <?php if( ($model->old_price != 0) && ($model->old_price > $model->price) ){ ?>
+                        <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?></p>
+                    <?php } ?>
+
                     <p>价格: ￥<?= round($model->price/100) ?></p>
                 </a>
             </li>
@@ -99,7 +114,7 @@
             if($model->cid==850 || 
                 $model->cid==851 ||
                 /*$model->cid==852 ||*/
-                $model->cid==853 ||
+                $model->cid==4005 ||
                 $model->cid==854 ||
                 $model->cid==855 ||
                 $model->cid==856 ||
@@ -115,6 +130,12 @@
                     <p class='line'>原价: ￥<//?= round($model->old_price/100) ?></p>
                     <p>惊爆价: ￥<//?= round($model->price/100) ?></p>
                     -->
+
+                    <?php if( ($model->old_price != 0) && ($model->old_price > $model->price) ){ ?>
+                        <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?></p>
+                    <?php } ?>
+
                     <p>价格: ￥<?= round($model->price/100) ?></p>
                 </a>
             </li>
