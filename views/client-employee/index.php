@@ -45,12 +45,15 @@ $employees = $dataProvider->getModels();
     }
 </script>
 <div class="page-bar" style="background-color: #f1f3fa;">
-<div class="input-group input-medium pull-right">
+    <div class='pull-left'>
+        <a href="<?= Url::to(['client-employee/create']); ?>" class='btn bg-green'><i class='fa fa-plus'></i>&nbsp;新增员工</a>
+    </div>
+    <div class="input-group input-medium pull-right">
         <input type="text" id='search-key' class="form-control" placeholder="请输入姓名或电话进行查找">
         <span class="input-group-btn">
         <button type="submit" id='search' class="btn green"><i class="fa fa-search"></i></button>
         </span>
-</div>
+    </div>
 </div>
 <div class="row">
     <div class="col-md-3">

@@ -21,7 +21,8 @@
 	        "vova07/yii2-fileapi-widget": "*",
 		"vova07/yii2-imperavi-widget": "*",
 		"callmez/yii2-wechat": "dev-master",
-		"hightman/xunsearch": "*"
+		"hightman/xunsearch": "*",
+		"wbraganca/yii2-dynamicform": "*"
 	},
 	"require-dev": {
 		"yiisoft/yii2-codeception": "*",

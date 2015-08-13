@@ -497,6 +497,14 @@ class MUser extends ActiveRecord implements IdentityInterface
         }
         return false;
     }
+    
+    public function getPromotees() {
+        $staff = MStaff::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
+        if (empty($staff)) {
+            return NULL;
+        }
+        return $staff->getPromotees();
+    }
 
     public function getScore()
     {
@@ -505,6 +513,14 @@ class MUser extends ActiveRecord implements IdentityInterface
             return 0;
         }
         return $staff->getScore(); 
+    }
+    
+    public function getMemberScore() {
+        $staff = MStaff::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
+        if (empty($staff)) {
+            return 0;
+        }
+        return $staff->getMemberScore();
     }
     
     public function getFans()

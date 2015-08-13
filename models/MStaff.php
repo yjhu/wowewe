@@ -151,6 +151,33 @@ class MStaff extends ActiveRecord
             $count = MUser::find()->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])->count();                        
         return $count;    
     }
+    
+    public function getMemberScore()
+    {
+        if (empty($this->scene_id))
+            $count = 0;
+        else {                    
+            $count = MUser::find()
+                    ->joinWith('openidBindMobiles')
+                    ->where(['wx_user.gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])
+                    ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                    ->groupBy(['wx_user.gh_id', 'wx_user.openid'])
+                    ->count();
+        }
+        return $count;    
+    }
+    
+    public function getPromotees()
+    {
+        if (empty($this->scene_id))
+            return NULL;
+        else {                    
+            return MUser::find()
+                    ->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])
+                    ->orderBy('create_time DESC')
+                    ->all();
+        }
+    }
 
     public function getFans()
     {
