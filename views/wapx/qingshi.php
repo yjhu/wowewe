@@ -77,11 +77,11 @@ $signPackage = $jssdk->GetSignPackage();
 
             <?php } ?>
 
-            <a href="#tppm"><i class="fa fa-trophy"></i>&nbsp;投票排名</a>
+            <a href="#tppm"><i class="fa fa-trophy fa-2x" style="color:#ed6d00"></i>&nbsp;投票排名</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动说明</a>
+            <a href="#hdgz"><i class="fa fa-list" style="color:green"></i>&nbsp;活动说明</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="#jp"><i class="fa fa-gift" style="color:red"></i>&nbsp;奖品</a>
+            <a href="#jp"><i class="fa fa-gift fa-2x" style="color:red"></i>&nbsp;奖品</a>
 
             <!--
             &nbsp;&nbsp;&nbsp;&nbsp;

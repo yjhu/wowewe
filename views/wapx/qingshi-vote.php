@@ -116,7 +116,7 @@ foreach ($votes as $vote) {
         <img border='0' src='/wx/web/images/beijing2.jpg'>
         -->
         <p align="center">
-            <a href="#tppm"><i class="fa fa-trophy"></i>&nbsp;投票排名</a>
+            <a href="#tppm"><i class="fa fa-trophy fa-2x" style="color:#ed6d00"></i>&nbsp;投票排名</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动说明</a>
             &nbsp;&nbsp;&nbsp;&nbsp;

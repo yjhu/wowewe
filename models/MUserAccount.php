@@ -59,7 +59,18 @@ class MUserAccount extends ActiveRecord
             [['memo'], 'string', 'max' => 512]
         ];
     }
-    
+ 
+    public function getStatusDescOld()
+    {
+        $arr = array(
+            self::STATUS_CHARGE_COMPLETE => '充值完成',
+            self::STATUS_CHARGE_PROCESSING => '充值处理中',
+            self::STATUS_CHARGE_REQUEST => '充值申请 ',
+        );        
+        return (isset($arr[$this->status]) ? $arr[$this->status] : '');
+    }
+   
+
     public function getStatusDesc($key=null)
     {
         $arr = array(
