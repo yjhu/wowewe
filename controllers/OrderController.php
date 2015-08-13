@@ -342,21 +342,8 @@ class OrderController extends Controller
             ],            
         ]);
 
+        $dataProvider->setSort(false);
 
-//        $query = MSceneDay::find()->joinWith('staff');
-        $query = MSceneDay::find();
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-            'sort' => [
-                'defaultOrder' => [
-                    'sum_score' => SORT_DESC,
-                ]
-            ],
-            'pagination' => [
-                'pageSize' => 20,
-            ],            
-        ]);
 /*
         $query->select(['sum(score) as sum_score']);
         $query->andWhere(['wx_scene_day.gh_id' => Yii::$app->user->getGhid()]);

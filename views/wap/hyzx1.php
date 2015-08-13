@@ -67,6 +67,13 @@
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content">
+    <p align="center" style="padding: 0;margin: 0">
+      <img src="<?= $user->getQrImageUrl(); ?>" width="240">
+    </p>
+    <p align="center" style="padding: 0;margin: 0">
+      我的推广二维码&nbsp;&nbsp;&nbsp;&nbsp; <a href="#rhtg">如何推广?</a>
+    </p>
+    <hr width="100%">
       <p class="content-padded">
          <span style="float:left">
             <img id="myphoto" src="<?php echo $user->headimgurl; ?>" width="64" height="64">
@@ -99,32 +106,37 @@
             <?php } ?>
           </span>
 
+          <!--
           <span style="float:right"><br>
               <a href="#showQr"><img src='../web/images/woke/qr.png' width=24></a>
           </span>
+          -->
       </p>
 
-      <br><br><br><br><br>
+      <br><br><br><br>
 
         <span>
           <ul class="table-view">
-
+            <!--
             <li class="table-view-cell table-view-divider">我的账户</li>
+            -->
             <li class="table-view-cell">余额 
-            <a class="btn btn-positive" style="width:150px;size:18px" href="#zhmx">
+            <a class="btn" style="width:150px;size:18px" href="#zhmx">
             <?= $user->getUserAccountBalanceInfo() ?>
             </a>
             </li>
 
             <li class="table-view-cell">总收入
-            <a class="btn btn-primary" style="width:150px;size:18px" href="#zhmx">
+            <a class="btn" style="width:150px;size:18px" href="#zhmx">
             <?= $user->getUserAccountDepositTotal() ?>
             </a>
             </li>
 
             </ul>
             <?php if ($user->user_account_balance > 0) { ?>
-              <a class="btn btn-positive btn-block"  href="#txcz">我要提现充话费</a>
+            <p align="center">
+              <a class="btn btn-positive btn-block"  style="width: 240px" href="#txcz">我要提现充话费</a>
+            </p>
             <?php } ?>
 
             <ul class="table-view">
@@ -364,7 +376,7 @@
                   <?php 
                     } else {
                   ?>
-                  <span class="badge badge-positive pull-right"><?= $user_account->getStatusDesc(); ?></span>
+                  <span class="badge badge-positive pull-right"><?= $user_account->getStatusDescOld(); ?></span>
                   <?php } ?>
                   </p>
             </li>

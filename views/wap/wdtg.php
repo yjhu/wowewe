@@ -99,7 +99,13 @@
           <!--粉丝昵称--> 
           <?= emoji_unified_to_html(emoji_softbank_to_unified($fan->nickname)) ?>
           <p>
-            绑定手机 <?= $fan->getBindMobileNumbersStr() ?>
+            绑定手机 
+              <?php 
+                  if($fan->getBindMobileNumbersStr() == '') 
+                    echo "--"; 
+                  else 
+                    echo $fan->getBindMobileNumbersStr();
+              ?>
             <?php if (count($fan->getBindMobileNumbers()) > 0) { ?>
             <span class="badge badge-positive pull-right">会员</span>
             <?php } ?>

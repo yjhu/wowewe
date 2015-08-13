@@ -29,7 +29,14 @@ foreach ($votes as $vote) {
 */
     $top_num = 0;
     $top = 0;
-    $votes = \app\models\MQingshiScore::find()->orderBy(['score' => SORT_DESC, 'create_time' => SORT_ASC])->limit(50)->all(); 
+
+    //至少获得10票 才能上榜
+    $votes = \app\models\MQingshiScore::find()
+        ->where(['>' , 'score' , 9])
+        ->orderBy(['score' => SORT_DESC, 'create_time' => SORT_ASC])
+        ->limit(50)
+        ->all(); 
+        
     foreach ($votes as $vote) {
         $top_num ++;
 
@@ -116,7 +123,7 @@ foreach ($votes as $vote) {
         <img border='0' src='/wx/web/images/beijing2.jpg'>
         -->
         <p align="center">
-            <a href="#tppm"><i class="fa fa-trophy"></i>&nbsp;投票排名</a>
+            <a href="#tppm"><i class="fa fa-trophy fa-2x" style="color:#ed6d00"></i>&nbsp;投票排名</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动说明</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
@@ -306,6 +313,7 @@ foreach ($votes as $vote) {
             <?php } ?>
             </ul>
 
+            <span style="color:red">榜单长度有限，得票10票以上才能上榜哟~</span>
             <br>
             <p align="center">
             <a class="btn btn-block" href="#tppm" style="width: 300px" >返回</a>
@@ -324,15 +332,24 @@ foreach ($votes as $vote) {
 
                $tp_friends = \app\models\MQingshiVote::find()
                 ->where(['author_openid' => $qingshi_author->author_openid])
+                ->orderBy(['vote_time' => SORT_DESC])
                 ->all();
 
+               $vote_cnt = 0;
+
             ?>
+
             <ul class="table-view">
                 <li class='table-view-cell'>
-                
+        
                 </li>
                     <?php 
+
                         foreach ($tp_friends as $tp_friend) {
+                        $vote_cnt ++;
+
+                        if($vote_cnt > 20) break;
+
                         $friend = \app\models\MUser::findOne(['openid' => $tp_friend->vote_openid]);
                     ?>
                     <li class="table-view-cell media">
@@ -352,8 +369,27 @@ foreach ($votes as $vote) {
                         }
                     ?>
                 </ul>
+            
 
-            <br>
+            <?php 
+                if(!empty($vote_count->score))
+                {
+                    if($vote_count->score > 20) 
+                    { 
+            ?>
+                    <span style="color:black">小伙伴们太给力了,名单太长加载会很慢,忍痛只显示最近20个！见谅, 多谢大家的帮忙！</span>
+            <?php   
+                    } 
+                }
+                else
+                {
+            ?>
+                    <span style="color:black">暂时还没人为你投票。<br>没关系，赶快分享转发给你的小伙伴为你投票吧！</span>
+            <?php
+                }
+            ?>
+
+            <br><br>
             <p align="center">
             <a class="btn btn-block" href="#tp_friends" style="width: 300px" >返回</a>
             </p>
