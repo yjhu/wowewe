@@ -174,10 +174,13 @@ $signPackage = $jssdk->GetSignPackage();
                 //   ->all();
                 $top = 0;
                 //$votes = \app\models\MQingshiVote::find()->select('*, count(*) as c')->groupBy(['author_openid'])->orderBy('c DESC')->limit(50)->all(); 
-                $votes = \app\models\MQingshiScore::find()->orderBy(['score' => SORT_DESC, 'create_time' => SORT_ASC])->limit(50)->all(); 
+                //至少获得10票 才能上榜
+                $votes = \app\models\MQingshiScore::find()
+                    ->where(['>' , 'score' , 9]) 
+                    ->orderBy(['score' => SORT_DESC, 'create_time' => SORT_ASC])
+                    ->limit(50)
+                    ->all(); 
             ?>
-
-
 
             <ul class="table-view">
 
@@ -232,6 +235,8 @@ $signPackage = $jssdk->GetSignPackage();
              
             <?php } ?>
             </ul>
+
+            <span style="color:red">榜单长度有限，得票10票以上才能上榜哟~</span>
 
             <br>
             <p align="center">
