@@ -44,7 +44,7 @@ $employees = $dataProvider->getModels();
         location.href = '<?= Url::to(['client-employee/index']) ?>' + '&ClientEmployeeSearch[search_keyword]=' + keyword;
     }
 </script>
-<div class="page-bar">
+<div class="page-bar" style="background-color: #f1f3fa;">
 <div class="input-group input-medium pull-right">
         <input type="text" id='search-key' class="form-control" placeholder="请输入姓名或电话进行查找">
         <span class="input-group-btn">
@@ -145,7 +145,7 @@ $employees = $dataProvider->getModels();
 <?php
 $this->registerCssFile( '@web/metronic/theme/assets/global/plugins/jstree/dist/themes/default/style.min.css' );
 $this->registerCssFile( '@web/php-emoji/emoji.css' );
-$this->registerJsFile( '@web/metronic/theme/assets/global/plugins/jstree/dist/jstree.min.js' );
+$this->registerJsFile( '@web/metronic/theme/assets/global/plugins/jstree/dist/jstree.js' );
 $this->registerJsFile( '@web/js/yjhu/client-employee-index.js' );
 
 $this->registerCss('

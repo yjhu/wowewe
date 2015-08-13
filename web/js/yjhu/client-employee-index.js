@@ -16,7 +16,7 @@ $(document).ready( function () {
                 "icon" : "fa fa-file icon-state-warning icon-lg"
             }
         },
-        "plugins": [ "contextmenu", "dnd", "types"],
+        "plugins": [ "contextmenu", "types"],
         'contextmenu': {
             'select_node': false,
             'items' : { 
@@ -42,9 +42,10 @@ $(document).ready( function () {
                             data:       "args=" + JSON.stringify(args),
                             success:    function(ret) { 
                                 if (0 === ret['ret_code']) {
-                                    inst.create_node(obj, {}, "first", function (new_node) {
+                                    inst.create_node(obj, {'text': '新建部门'}, "last", function (new_node) {
                                         new_node.text = '新建部门';
                                         new_node.li_attr = {'organization_id': ret['organization_id']};
+//                                        inst.refresh_node(new_node);
                                         //setTimeout(function () { inst.edit(new_node); },0);
                                     });
                                 }
@@ -60,7 +61,7 @@ $(document).ready( function () {
                     "action"            : function (data) {
                         var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
-                        inst.edit(obj);
+                        inst.edit(obj); 
                     }
                 },
                 "remove" : {
@@ -69,6 +70,7 @@ $(document).ready( function () {
                         var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
                         if (obj.parent == '#') {
+                            alert('根部门，不能删除！');
                             return;
                         }
                         var args = {
@@ -92,6 +94,8 @@ $(document).ready( function () {
                                     else {
                                         inst.delete_node(obj);
                                     }
+                                } else {
+                                    alert('该部门有下属部门，或员工，或门店，不能删除！');
                                 }
                             },                        
                             error:      function(){
@@ -108,6 +112,34 @@ $(document).ready( function () {
         //        alert(data.node.li_attr.organization_id); 
         target_organization = data.node.li_attr.organization_id;
         redirectTo();
+    });
+    
+    $('#organization_tree').on("rename_node.jstree", function (event, data) {
+//        alert('organization_id='+data.node.li_attr.organization_id + ',text='+data.text+',old='+data.old);
+        if (data.text == data.old)
+            return;
+        var args = {
+            'classname':    '\\app\\models\\ClientOrganization',
+            'funcname':     'renameAjax',
+            'params':       {
+                'organization_id': data.node.li_attr.organization_id,
+                'organization_title': data.text,
+            } 
+        };
+        $.ajax({
+            url:        ajax_url,
+            type:       "GET",
+            cache:      false,
+            dataType:   "json",
+            data:       "args=" + JSON.stringify(args),
+            success:    function(ret) { 
+                if (0 === ret['ret_code']) {                                    
+                }
+            },                        
+            error:      function(){
+                alert('发送失败。');
+            }
+        });
     });
     
     $('#search').click( function () {

@@ -70,8 +70,13 @@ class ClientEmployeeSearch extends ClientEmployee
 
         $query->andFilterWhere(['like', 'name', $this->name]);
         
+        $root_org = ClientOrganization::findOne(['organization_id' => $this->organization_id]);
+        if (empty($root_org)) {
+            $this->organization_id = 1;
+            $root_org = ClientOrganization::findOne(['organization_id' => 1]);
+        }
         $query->andFilterWhere([
-            'client_organization.organization_id' => ClientOrganization::findOne(['organization_id' => $this->organization_id])->getSubordinateIdArray(),
+            'client_organization.organization_id' => $root_org->getSubordinateIdArray(),
         ]);
         
         if (!empty($this->search_keyword)) {
