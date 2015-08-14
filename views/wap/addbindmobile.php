@@ -57,13 +57,7 @@ use yii\helpers\Url;
 </div>
 
 
-
-
-
-
 <div class="mp-openidbindmobile-create">
-
-    <br />
 
 	<?php if (Yii::$app->session->hasFlash('success')): ?>
 		<div class="alert alert-success flash-success">
@@ -94,17 +88,17 @@ use yii\helpers\Url;
 */
 		]); ?>
 
-		<?= $form->field($model, 'mobile')->input('tel', ['maxlength' => 11, 'placeholder'=>'输入手机号码'])->label('') ?>
+		<?= $form->field($model, 'mobile')->input('tel', ['maxlength' => 11, 'placeholder'=>''])->label('您的手机号码') ?>
 
     <span class="row">
-		<?php echo $form->field($model, 'verifyCode')->label('')->widget(SmCaptcha::className(), [
+		<?php echo $form->field($model, 'verifyCode')->label('验证码')->widget(SmCaptcha::className(), [
 			'template' => '{input}<label></label>{button}',	
 			'buttonLabel' => '免费获取验证码',
 		]) ?>
     </span>
 
         <div class="form-group">
-            <?= Html::submitButton('添加绑定手机号，尊享会员特权', ['class' => 'btn btn-lg btn-success btn-block']) ?>
+            <?= Html::submitButton('注册会员, 尊享会员特权!', ['class' => 'btn btn-lg btn-success btn-block']) ?>
         </div>
     <?php ActiveForm::end(); ?>
 
@@ -122,32 +116,34 @@ use yii\helpers\Url;
       <tbody>
         <tr class="info">
           <th scope="row">1</th>
-          <td>每月享受手机免费贴膜一次;</td>
+          <td>每月享受手机免费贴膜一次。</td>
         </tr>
-        <tr>
+        <tr class="info">
           <th scope="row">2</th>
-          <td>购全场配件享七折优惠;</td>
+          <td>购全场配件享七折优惠。</td>
         </tr>
-        <tr class="success">
+        <tr  class="info">
           <th scope="row">3</th>
-          <td>每月均有会员日,会员可参与线上线下各种活动;</td>
+          <td>每月会员日可参与线上线下各种活动。</td>
         </tr>
-        <tr>
+        <tr  class="info">
           <th scope="row">4</th>
-          <td>享受自营厅免费充电、饮水、下载手机软件等服务;</td>
+          <td>享受自营厅免费充/电饮水/下载手机软件等服务。</td>
         </tr>
         <tr class="info">
           <th scope="row">5</th>
-          <td>享受免费停车位,购机免费送货上门【仅限市区】服务;</td>
+          <td>享受免费停车位,购机免费送货上门【仅限市区】服务。</td>
         </tr>
-        <tr class="success">
+        <tr  class="info">
           <th scope="row">6</th>
-          <td>微信平台每周会推出微信会员特价机;</td>
+          <td>微信平台每周会推出微信会员特价机。</td>
         </tr>
+        <!--
         <tr>
           <th scope="row">7</th>
           <td>尊享一对一人工客服;</td>
         </tr>
+        -->
 </table>
 <?php
 /*

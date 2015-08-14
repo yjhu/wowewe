@@ -1648,6 +1648,27 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->title = '6G年卡';
                 $order->attr = "{$_GET['cardType']}";
                 break;
+                
+            case MItem::ITEM_CAT_CARD_4GQGSJTC6GBNB:
+                $order->title = '4G全国数据套餐6G半年包';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_CARD_4GQGSJTC12GBNB:
+                $order->title = '4G全国数据套餐12G半年包';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_CARD_4GQGSJTC17GBNB:
+                $order->title = '4G省内数据套餐17G半年包';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_CARD_45GBNLLTC:
+                $order->title = '45G包年流量套餐';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_CARD_600YSCNK:
+                $order->title = '600元时长年卡';
+                $order->attr = "{$_GET['cardType']}";
+                break;                                          
 
             case MItem::ITEM_CAT_DD_IPHONE4S:
                 $order->title = '苹果 iPhone4S';

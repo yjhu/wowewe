@@ -122,6 +122,20 @@ class MItem extends ActiveRecord {
 
     const ITEM_CAT_CARD_60YUANBAO5G_SHANGWANGKA = 720;
 
+    /*
+    4G全国数据套餐6G半年包
+    4G全国数据套餐12G半年包
+    4G省内数据套餐17G半年包
+    45G包年流量套餐
+    600元时长年卡
+    */
+    const ITEM_CAT_CARD_4GQGSJTC6GBNB = 7000;
+    const ITEM_CAT_CARD_4GQGSJTC12GBNB = 7001;
+    const ITEM_CAT_CARD_4GQGSJTC17GBNB = 7002;
+    const ITEM_CAT_CARD_45GBNLLTC = 7003;
+    const ITEM_CAT_CARD_600YSCNK = 7004;
+
+
     //数信业务
     const ITEM_CAT_SXYW_WKHB = 800;
     const ITEM_CAT_SXYW_AIQIYI10 = 801;
@@ -325,6 +339,13 @@ class MItem extends ActiveRecord {
             self::ITEM_CAT_CARD_240GLIULIANG => '240G流量上网卡',
 
             self::ITEM_CAT_CARD_60YUANBAO5G_SHANGWANGKA => '60元包5G上网卡',
+
+            self::ITEM_CAT_CARD_4GQGSJTC6GBNB => '4G全国数据套餐6G半年包',
+            self::ITEM_CAT_CARD_4GQGSJTC12GBNB => '4G全国数据套餐12G半年包',
+            self::ITEM_CAT_CARD_4GQGSJTC17GBNB => '4G省内数据套餐17G半年包',
+            self::ITEM_CAT_CARD_45GBNLLTC => '45G包年流量套餐',
+            self::ITEM_CAT_CARD_600YSCNK => '600元时长年卡',
+            
 
             self::ITEM_CAT_4GTAOCAN => '4G套餐',
 

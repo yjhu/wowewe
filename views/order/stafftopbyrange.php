@@ -154,6 +154,12 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
 
 			[
+				'label' => 'mobile',
+				'attribute' => 'staff.mobile',
+				'headerOptions' => array('style'=>'width:15%;'),	
+			],
+
+			[
 				'label' => '推广人数',
 				'attribute' => 'sum_score',
 				'headerOptions' => array('style'=>'width:15%;'),	

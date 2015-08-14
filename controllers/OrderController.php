@@ -338,7 +338,7 @@ class OrderController extends Controller
                 ]
             ],
             'pagination' => [
-                'pageSize' => 20,
+                'pageSize' => 400,
             ],            
         ]);
 
@@ -369,7 +369,22 @@ class OrderController extends Controller
         }
 //      $query->andWhere(['cat' => 0]);
 
-        
+
+        if (isset($_GET['download']))
+        {
+            $data = $dataProvider->getModels();;
+            \yii\helpers\ArrayHelper::multisort($data, 'sum_score', SORT_DESC);                        
+            $date = date('Y-m-d-His');
+            $filename = Yii::$app->getRuntimePath()."/Stafftopbyrange-{$date}.csv";
+            $csv = new \app\models\ECSVExport($data);            
+            $attributes = ['staff.name', 'staff.mobile', 'sum_score'];        
+            $csv->setInclude($attributes);
+            $csv->setHeaders(['staff.name'=>'推广者', 'staff.mobile'=>'手机号码', 'Sum Score'=>'推广成绩']);
+            $csv->toCSV($filename); 
+            Yii::$app->response->sendFile($filename);
+            return;        
+        }
+
         return $this->render('stafftopbyrange', [
             'dataProvider' => $dataProvider,
 //            'searchModel' => $searchModel,
@@ -404,6 +419,7 @@ class OrderController extends Controller
 
     public function actionOfficetop()
     {
+
         $rows = MOffice::getOfficeScoreTop(Yii::$app->user->getGhid());
 
         $filter = new \app\models\FiltersForm;
