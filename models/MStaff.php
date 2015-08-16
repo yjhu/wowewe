@@ -167,6 +167,34 @@ class MStaff extends ActiveRecord
         return $count;    
     }
     
+
+    public function getMemberScoreByRange($date = null)
+    {
+        if ($date == null) {
+            $date = date('Y-m-d');
+        }
+        
+        $lastmonth_start    = date('Y-m-01', strtotime('-1 month', strtotime($date)))." 00:00:00";
+        $lastmonth_end      = date('Y-m-d', strtotime('-1 month', strtotime($date)))." 23:59:59";
+        $thismonth_start    = date('Y-m-01', strtotime($date))." 00:00:00";
+        $thismonth_end      = date('Y-m-d', strtotime($date))." 23:59:59";
+
+        if (empty($this->scene_id))
+            $count = 0;
+        else {                    
+            $count = MUser::find()
+                    ->andWhere(['>=', 'create_time', $thismonth_start])
+                    ->andWhere(['<=', 'create_time', $thismonth_end])
+                    ->joinWith('openidBindMobiles')
+                    ->where(['wx_user.gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])
+                    ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                    ->groupBy(['wx_user.gh_id', 'wx_user.openid'])
+                    ->count();
+        }
+        return $count;    
+    }
+
+
     public function getPromotees()
     {
         if (empty($this->scene_id))

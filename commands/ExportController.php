@@ -620,6 +620,32 @@ class ExportController extends \yii\console\Controller {
 
 
 
+
+
+    //导出所有员工推广成绩
+    public function actionStaffScoreTop($date = null)
+    {
+        $gh_id = 'gh_03a74ac96138';
+        $total_count = \app\models\MStaff::find()->where(['gh_id' => $gh_id])->count();
+        $step = 300;
+        $start = 0;
+
+        while ($start < $total_count) {
+            $staffs = \app\models\MStaff::find()->where(['gh_id' => $gh_id, 'cat' => 0])->offset($start)->limit($step)->all();
+        
+            foreach ($staffs as $staff) {
+                //$office->getQrImageUrl2();
+
+                echo $staff->name."\t".$staff->mobile."\t".$staff->getMemberScoreByRange($date)."\n";
+            }
+
+            $start += $step;
+        }
+
+        echo "ok.";
+    }
+
+
     
 }
 
