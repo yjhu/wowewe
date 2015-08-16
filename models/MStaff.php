@@ -179,15 +179,16 @@ class MStaff extends ActiveRecord
         $thismonth_start    = date('Y-m-01', strtotime($date))." 00:00:00";
         $thismonth_end      = date('Y-m-d', strtotime($date))." 23:59:59";
 
+        //echo "thismonth_start\t".$thismonth_start."\tthismonth_end\t".$thismonth_end."\t";
         if (empty($this->scene_id))
             $count = 0;
         else {                    
             $count = MUser::find()
-                    ->andWhere(['>=', 'create_time', $thismonth_start])
-                    ->andWhere(['<=', 'create_time', $thismonth_end])
                     ->joinWith('openidBindMobiles')
                     ->where(['wx_user.gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])
                     ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                    ->andWhere(['>=', 'wx_user.create_time', $thismonth_start])
+                    ->andWhere(['<=', 'wx_user.create_time', $thismonth_end])
                     ->groupBy(['wx_user.gh_id', 'wx_user.openid'])
                     ->count();
         }

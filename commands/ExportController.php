@@ -642,6 +642,7 @@ class ExportController extends \yii\console\Controller {
             $start += $step;
         }
 
+
         echo "ok.";
     }
 
