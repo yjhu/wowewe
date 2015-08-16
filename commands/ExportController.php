@@ -623,12 +623,28 @@ class ExportController extends \yii\console\Controller {
 
 
     //导出所有员工推广成绩
-    public function actionStaffScoreTop($date = null)
+    public function actionStaffScoreTop($date1 = null, $date2 = null)
     {
         $gh_id = 'gh_03a74ac96138';
         $total_count = \app\models\MStaff::find()->where(['gh_id' => $gh_id])->count();
         $step = 300;
         $start = 0;
+
+        if(($date1 == null) || ($date2 == null))
+        {
+            echo "\n例子: php yii export/staff-score-range 2015-7-1 2015-7-31\n";
+            echo("需要输入起始和结束日期！\n\n");
+            exit;
+        }
+
+        $date_start    = date('Y-m-d', strtotime($date1))." 00:00:00";
+        $date_end      = date('Y-m-d', strtotime($date2))." 23:59:59";
+
+        echo "-----------------------------------------------------\n";
+        echo "            STAFF SCORE BY RANGE               \n";
+        echo "    ".$date_start." 至 ".$date_end."\n";      
+        echo "-----------------------------------------------------\n";
+
 
         while ($start < $total_count) {
             $staffs = \app\models\MStaff::find()->where(['gh_id' => $gh_id, 'cat' => 0])->offset($start)->limit($step)->all();
@@ -636,14 +652,16 @@ class ExportController extends \yii\console\Controller {
             foreach ($staffs as $staff) {
                 //$office->getQrImageUrl2();
 
-                echo $staff->name."\t".$staff->mobile."\t".$staff->getMemberScoreByRange($date)."\n";
+                if($staff->getMemberScoreByRange($date1, $date2) == 0) continue;
+
+                echo $staff->name."\t".$staff->mobile."\t".$staff->getMemberScoreByRange($date1, $date2)."\n";
             }
 
             $start += $step;
         }
 
 
-        echo "ok.";
+        echo "-----------------------------------------------\nok.\n";
     }
 
 

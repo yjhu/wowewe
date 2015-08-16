@@ -168,18 +168,11 @@ class MStaff extends ActiveRecord
     }
     
 
-    public function getMemberScoreByRange($date = null)
+    public function getMemberScoreByRange($date1, $date2)
     {
-        if ($date == null) {
-            $date = date('Y-m-d');
-        }
-        
-        $lastmonth_start    = date('Y-m-01', strtotime('-1 month', strtotime($date)))." 00:00:00";
-        $lastmonth_end      = date('Y-m-d', strtotime('-1 month', strtotime($date)))." 23:59:59";
-        $thismonth_start    = date('Y-m-01', strtotime($date))." 00:00:00";
-        $thismonth_end      = date('Y-m-d', strtotime($date))." 23:59:59";
+        $date_start    = date('Y-m-d', strtotime($date1))." 00:00:00";
+        $date_end      = date('Y-m-d', strtotime($date2))." 23:59:59";
 
-        //echo "thismonth_start\t".$thismonth_start."\tthismonth_end\t".$thismonth_end."\t";
         if (empty($this->scene_id))
             $count = 0;
         else {                    
@@ -187,8 +180,8 @@ class MStaff extends ActiveRecord
                     ->joinWith('openidBindMobiles')
                     ->where(['wx_user.gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])
                     ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
-                    ->andWhere(['>=', 'wx_user.create_time', $thismonth_start])
-                    ->andWhere(['<=', 'wx_user.create_time', $thismonth_end])
+                    ->andWhere(['>=', 'wx_user.create_time', $date_start])
+                    ->andWhere(['<=', 'wx_user.create_time', $date_end])
                     ->groupBy(['wx_user.gh_id', 'wx_user.openid'])
                     ->count();
         }
