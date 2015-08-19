@@ -1018,10 +1018,48 @@ class CmdController extends Controller
             if ($i % 1000 == 1)
                 U::W($i);
         }
-    
-        
 
     }
+
+
+
+
+    //刷新粉丝昵称和头像
+    public function actionShowFanHead()
+    {        
+        $gh_id = MGh::GH_XIANGYANGUNICOM;
+       
+        $total_count = MUser::find()->where(['gh_id' => $gh_id, 'subscribe' => 1])->count();
+
+        $step = 500;
+        $start = 0;
+
+        while ($start < $total_count) {
+
+            $users = MUser::find()->offset($start)->limit($step)->where(['gh_id' => $gh_id, 'subscribe' => 1])->orderBy(['id' => SORT_ASC])->all();
+
+            foreach ($users as $user)
+            {
+                    if (empty($user->headimgurl)) continue;
+        
+                    //if($user->id < 6143)  continue;
+
+                    $arr = Yii::$app->wx->WxGetUserInfo($user->openid); 
+
+                    if(empty($arr['headimgurl']))
+                        continue;
+
+                    echo "Fan #ID\t".$user->id."\t".$arr['headimgurl']."\n";
+
+                    $user->nickname = $arr['nickname'];
+                    $user->headimgurl = $arr['headimgurl'];
+                    $user->save(false);
+            }
+
+            $start += $step;
+        }
+
+    } 
 
 
     //http://www.juhe.cn/my/info

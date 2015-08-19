@@ -646,6 +646,7 @@ class ExportController extends \yii\console\Controller {
         echo "-----------------------------------------------------\n";
 
 
+        echo "推广者,手机号码,推广成绩\n";
         while ($start < $total_count) {
             $staffs = \app\models\MStaff::find()->where(['gh_id' => $gh_id, 'cat' => 0])->offset($start)->limit($step)->all();
         
@@ -654,15 +655,54 @@ class ExportController extends \yii\console\Controller {
 
                 if($staff->getMemberScoreByRange($date1, $date2) == 0) continue;
 
-                echo $staff->name."\t".$staff->mobile."\t".$staff->getMemberScoreByRange($date1, $date2)."\n";
+                echo $staff->name.",".$staff->mobile.",".$staff->getMemberScoreByRange($date1, $date2)."\n";
             }
 
             $start += $step;
         }
 
 
-        echo "-----------------------------------------------\nok.\n";
+        echo "-----------------------------------------------\nok.\n\n";
     }
+
+
+    //在用户明细表中增加是否会员的标志
+    //php yii export/add-member-tag >data11.csv
+    public function actionAddMemberTag($filename = 'data20150819.csv') {
+
+        $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($file, "r");
+        $i = 0;
+        while (!feof($fh)) {
+            $line = fgets($fh);
+            $i++;
+            if (empty($line))
+                continue;
+            $fields = explode(",", $line);  
+    
+            $manager = trim($fields[0]);
+            $manager_utf8 = iconv('GBK', 'UTF-8//IGNORE', $manager);
+
+            $mobile = trim($fields[1]);
+
+            $custom = \app\models\OpenidBindMobile::findOne(['mobile'=>$mobile]);
+            if (!empty($custom)) 
+            {
+                 echo $manager_utf8.",".$mobile.",是"."\n";
+            }
+            else 
+            {
+                 echo $manager_utf8.",".$mobile.",否"."\n";
+          
+            }
+        }
+        
+        fclose($fh);
+       
+    }
+
+
+
 
 
     
