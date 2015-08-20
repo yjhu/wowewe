@@ -1061,6 +1061,56 @@ class CmdController extends Controller
 
     } 
 
+    //更新18家自营厅员工信息
+    //php yii export/selfop-staff-update 
+    public function actionSelfopStaffUpdate($filename = 'staff_20150819.csv') {
+
+        $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($file, "r");
+        $i = 1;
+        while (!feof($fh)) {
+            $line = fgets($fh);
+            $i++;
+            if (empty($line))
+                continue;
+            $fields = explode(",", $line);  
+    
+            $office_title = trim($fields[3]);
+            $office_title_utf8 = iconv('GBK', 'UTF-8//IGNORE', $office_title);
+
+            $staff_name = trim($fields[4]);
+            $staff_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $staff_name);
+
+            $staff_role = trim($fields[5]);
+            $staff_role_utf8 = iconv('GBK', 'UTF-8//IGNORE', $staff_role);
+            if($staff_role_utf8 == '营业厅经理')
+                $is_manager = 1;
+            else
+                $is_manager = 0;
+
+            $office = MOffice::findOne(['title'=>$office_title_utf8]);
+            
+            echo $office->office_id.",".$office->title.",".$office_title_utf8.",".$staff_name_utf8.",".$staff_role_utf8.",".$is_manager."\n";           
+            
+            $staff = MStaff::findOne(['name'=>$staff_name_utf8]);
+            if(!empty($staff))
+            {
+                $staff->office_id = $office->office_id;
+                $staff->is_manager = $is_manager;
+                $staff->cat = 0;
+                $staff->save(false); 
+            }
+        }
+        
+        fclose($fh);
+       
+       echo "staff data(20150819) update ok\n";
+    }
+
+
+
+
+
 
     //http://www.juhe.cn/my/info
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/show-mobile-info
