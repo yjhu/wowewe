@@ -138,7 +138,7 @@ $(document).ready(function () {
                 memberFlotDraw(ret);
             },                        
             error:      function(){
-                alert('发送失败。');
+                //alert('发送失败。');
             }
         });
         
@@ -203,7 +203,7 @@ $(document).ready(function () {
                 memberCarrierPieDraw(ret);
             },                        
             error:      function(){
-                alert('发送失败。');
+                //alert('发送失败。');
             }
         });        
     }
@@ -267,7 +267,7 @@ $(document).ready(function () {
                 memberRegionPieDraw(ret);
             },                        
             error:      function(){
-                alert('发送失败。');
+                //alert('发送失败。');
             }
         });        
     }

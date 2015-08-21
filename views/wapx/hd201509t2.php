@@ -157,8 +157,8 @@ $signPackage = $jssdk->GetSignPackage();
             //alert('wx ready');
 
             var share2friendTitle = '<?= $observer->nickname ?> 正在参加充话费送话费活动';
-            var share2friendDesc = '襄阳联通充话费送话费，真是实惠！看看你能参加吗？';
-            var share2timelineTitle = '阳联通充话费送话费，真是实惠！看看你能参加吗？';
+            var share2friendDesc = '襄阳联通充话费送话费真是实惠！看看你能参加吗？';
+            var share2timelineTitle = '阳联通充话费送话费真是实惠！看看你能参加吗？';
             var shareImgUrl = '<?= Url::to($observer->headimgurl, true); ?>';
        
             wx.onMenuShareAppMessage({
