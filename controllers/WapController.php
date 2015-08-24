@@ -1922,6 +1922,18 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->title = '荣耀4X（标配版）';
                 $order->attr = "{$_GET['cardType']}";
                 break; 
+
+            case MItem::ITEM_CAT_MOBILE_LYH_IPHONE4S_8GB:
+                $order->title = 'iPhone4S 8GB';
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+                
+            case MItem::ITEM_CAT_MOBILE_LYH_IPHONE5S_16GB:
+                $order->title = 'iPhone5S 16GB';
+                $order->attr = "{$_GET['cardType']}";
+                break;                 
+                
+
             //6.30 end
 
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI:

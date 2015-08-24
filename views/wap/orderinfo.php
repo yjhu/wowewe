@@ -124,32 +124,45 @@
 
 
  			<?= $form->field($model, 'memo')->textinput(['id'=>'memo', 'maxlength' => '256', 'placeholder'=>'给卖家留言'])->label(false); ?>
-			<!--
-			<fieldset id="paykind-field" data-role="controlgroup" data-type="horizontal" data-mini="false" data-theme="c">
-				<legend>支付方式</legend>
-				<?//= $form->field($model, 'pay_kind')->radioList($model->getItemPayKindOption(), ['id'=>'pay_kind_id', 'itemOptions'=>['name'=>'yyy', 'class'=>'radioItem']])->label(false); ?>
-			</fieldset>
-			-->
 
 			<div>
 			<fieldset data-role="controlgroup" data-type="horizontal" id="paykind-field">
 			<legend>支付方式</legend>
-				<?php foreach($itemPayKindOption as $value => $text) { ?>
-					
-					<?php if($value == 2) { ?>
-						<input type="radio" name="paykind" id="paykind_<?= $value ?>" value="<?= $value ?>" checked />
-					<?php } else { ?>
-						<input type="radio" name="paykind" id="paykind_<?= $value ?>" value="<?= $value ?>" />
-					<?php } ?>
-		
-						<label for="paykind_<?= $value ?>"><?= $text ?></label>
-				<?php } ?>	
+				<select onchange="showButton()" id="sel_paykind">
+					<option value="0" selected>线下支付</option>
+					<option value="2">微信支付</option>
+				</select>
 			</fieldset>						
 			</div>
 
 			<script>
+				var btn_paykind = 0;
 				url = localStorage.getItem("url");
                 var jsApiParameters = JSON.parse(url);
+
+                function showButton()
+                {
+	                if($("#sel_paykind").val() == 0) /*线下支付*/
+			        {
+			            $("#btn-pay-weixin").hide();
+			            $("#btn-pay").show();
+			        }
+			        else if($("#sel_paykind").val() == 1) /*支付宝支付，已废除*/
+			        {
+			        	alert('alipay?!!');
+			        }
+			        else if($("#sel_paykind").val() == 2)/*微信支付*/
+			        {
+			        	//alert(url);
+			        	$("#btn-pay-weixin").show();
+			        	$("#btn-pay").hide();
+			        }
+			        else/*线下支付*/
+			        {
+			            $("#btn-pay-weixin").hide();
+			            $("#btn-pay").show();
+			        }
+                }
 
                 function jsApiCall()
                 {
@@ -203,60 +216,18 @@
                     }
                 }
 
-$(function(){
-				if($("#memo").val() != "")
-				{
-					$("#memo").attr("readonly","readonly");
-				}
-
-				var supportpay_count = <?php echo $supportpay_count; ?>;
-					if(supportpay_count == 1)
-    					$("#paykind-field").hide();
-
-					$("#btn-pay-weixin").hide();
-
-			
-					<?php if($item->ctrl_supportpay == 0) {?>
-						$("#btn-pay").html("我知道了");
-					<?php } else {?>
-						$("#btn-pay").html("立即支付");
-					<?php } ?>
-
-					if($("#paykind_2").is(':checked') == true)
-					{		        	
-						$("#btn-pay-weixin").show();
-						$("#btn-pay").hide();
+				$(function(){
+					if($("#memo").val() != "")
+					{
+						$("#memo").attr("readonly","readonly");
 					}
 
-
-				    $("[name=paykind]").click(function(){
-			
-						if($(this).val() == 0)
-				        {
-				            $("#btn-pay").html("我知道了");
-				            $("#btn-pay-weixin").hide();
-				            $("#btn-pay").show();
-				        }
-				        else if($(this).val() == 1)
-				        {
-				        	$("#btn-pay").html("立即支付");
-				        	$("#btn-pay-weixin").hide();
-				        	$("#btn-pay").show();
-				        }
-				        else
-				        {
-				        	$("#btn-pay-weixin").show();
-				        	//alert(url);
-				        	$("#btn-pay").hide();
-				        }
-				    });
-
-
-});
+					showButton();
+				});
 
 			</script>
 
-	        <?= Html::submitButton('立即支付', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
+	        <?= Html::submitButton('确定', ['class' => 'ui-shadow ui-btn ui-corner-all', 'id' => 'btn-pay', 'name' => 'contact-button', 'style' => 'background-color: #44B549']) ?>
 
 			<a href="#" class="ui-shadow ui-btn ui-corner-all" id="btn-pay-weixin" style="background-color: #44B549" onclick="callpayout()" >立即支付</a>
 
@@ -271,10 +242,6 @@ $(function(){
 	<?php echo $this->render('menu', ['menuId'=>'menu3','gh_id'=>$gh_id, 'openid'=>$openid]); ?>
 </div>	
 
-<script>
-	$("#btn-pay").html("我知道了");
-
-</script>
 
 <?php
 /*
