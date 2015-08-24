@@ -187,13 +187,14 @@
                                         ['label' => '多图文','url' => ['/articlemult/index'],'linkOptions' => ['data-method' => 'post']],
                                     ],
                                 ],  
-                                /*投票活动需要，临时入口*/
+                                /*活动，临时入口*/
                                 [
-                                    'label' => '<i class="fa fa-signal"></i><span class="title">活动投票</span><span class="arrow "></span>',
+                                    'label' => '<i class="fa fa-signal"></i><span class="title">活动</span><span class="arrow "></span>',
                                     'url' => '',
                                     'items' => [
-                                        ['label' => '情诗审核','url' => ['/qingshi-author/index'],'linkOptions' => ['data-method' => 'post']],
+                                        //['label' => '情诗审核','url' => ['/qingshi-author/index'],'linkOptions' => ['data-method' => 'post']],
                                         ['label' => '投票排行','url' => ['/qingshi-score/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '充话费送话费','url' => ['/hd201509t2/index'],'linkOptions' => ['data-method' => 'post']],
                                     ],
                                 ],  
 

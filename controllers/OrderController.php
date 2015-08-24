@@ -74,6 +74,7 @@ class OrderController extends Controller
 
     public function actionIndex()
     {
+        $this->layout = 'metronic';
         $searchModel = new MOrderSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->get());
         

@@ -566,11 +566,74 @@ class WapxController extends Controller {
             'observer' => $wx_user,
             'hd201509t2' => $hd201509t2,
         ]);
-
-
     }
 
 
+    //201509 捐献积分献爱心活动
+    //http://wosotech.com/wx/web/index.php?r=wapx/hd201509t3&gh_id=gh_03a74ac96138
+    // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/hd201509t3:gh_03a74ac96138#wechat_redirect
+    public function actionHd201509t3() {
+        $this->layout = false;
+        
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        $wx_user = \app\models\MUser::findOne([
+            'gh_id' => $gh_id,
+            'openid' => $openid,
+        ]);
+        if (empty($wx_user) || $wx_user->subscribe === 0) {
+            return $this->render('need_subscribe');
+        }
+        //是否会员
+        $bindMobiles = \app\models\OpenidBindMobile::findOne([
+                'gh_id' => $gh_id,
+                'openid' => $openid,
+            ]);
+        if (empty($bindMobiles)) 
+        {
+            $url = \yii\helpers\Url::to();
+            \Yii::$app->getSession()->set('RETURN_URL', $url);
+            return $this->redirect(['wap/addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        } 
+
+        //是否在可捐献积分名单中
+        $hd201509t3 = \app\models\MHd201509t3::findOne([
+                'mobile' => $bindMobiles->mobile,
+            ]);
+        if (empty($hd201509t3)) 
+        {
+            return $this->render('hd201509t3_1', [
+                'observer' => $wx_user,
+                ]);
+        } 
+
+        //用户捐献积分状态 ...t4表中有初始状态的记录就直接用，不用再new一个
+        $hd201509t4 = \app\models\MHd201509t4::findOne([
+                'mobile' => $bindMobiles->mobile,
+                'score' => 0,
+            ]);
+
+        if(empty($hd201509t4))
+        {
+            $hd201509t4 = new \app\models\MHd201509t4;
+            $hd201509t4->gh_id = $gh_id;
+            $hd201509t4->openid = $openid;
+            $hd201509t4->mobile = $bindMobiles->mobile;
+            $hd201509t4->score = 0;
+            $hd201509t4->status = 0; //初始状态，未提交
+            $hd201509t4->save(false);
+        }
+
+        $hd201509t4 = \app\models\MHd201509t4::findOne([
+                'mobile' => $bindMobiles->mobile,
+            ]);
+
+        return $this->render('hd201509t3', [
+            'observer' => $wx_user,
+            'hd201509t4' => $hd201509t4,
+        ]);
+
+    }
 
 
 
