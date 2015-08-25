@@ -189,7 +189,7 @@
                                 ],  
                                 /*活动，临时入口*/
                                 [
-                                    'label' => '<i class="fa fa-signal"></i><span class="title">活动</span><span class="arrow "></span>',
+                                    'label' => '<i class="fa fa-flask"></i><span class="title">活动</span><span class="arrow "></span>',
                                     'url' => '',
                                     'items' => [
                                         //['label' => '情诗审核','url' => ['/qingshi-author/index'],'linkOptions' => ['data-method' => 'post']],

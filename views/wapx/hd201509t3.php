@@ -20,7 +20,7 @@ $lists = \app\models\MHd201509t4::find()
 <html>
   <head>
     <meta charset="utf-8">
-    <title>捐献积分献爱心活动</title>
+    <title>小积分大爱心活动</title>
 
     <!-- Sets initial viewport load and disables zooming  -->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -49,7 +49,15 @@ $lists = \app\models\MHd201509t4::find()
     <!--<div class="content" style="background-color: #401080">-->
     <div class="content">
 
-        <br><br><br>
+    <img width=100%  src="/wx/web/images/hd201509t3-head.jpg?v2">
+
+        <p align="center">
+            <a href="#hdgz"><i class="fa fa-list fa-2x" style="color:green"></i>&nbsp;活动说明</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#history"><i class="fa fa-heart fa-2x" style="color:red"></i>&nbsp;爱心历史</a>
+        </p>
+
+        <br>
         <?php if($flag == 1) { ?>
 
             <?php
@@ -73,9 +81,9 @@ $lists = \app\models\MHd201509t4::find()
                         恭喜，您符合捐献积分献爱心活动条件。
                     </h4>
                     <br>
-                     <a class="btn btn-positive btn-block" style="width: 300px" id="queding1">捐献100积分</a>
+                     <a class="btn btn-positive btn-block" style="width: 300px" id="queding1">捐献99积分</a>
                         <br>
-                     <a class="btn  btn-block btn-negative" style="width: 300px" id="queding2">捐献200积分</a>
+                     <a class="btn  btn-block btn-negative" style="width: 300px" id="queding2">捐献199积分</a>
 
                 </center>
             <?php } ?>
@@ -89,11 +97,18 @@ $lists = \app\models\MHd201509t4::find()
             </center>
         <?php } ?>
        
+            <!--
             <center>
                 <br>
                 <a class="btn btn-primary btn-block" style="width: 300px" href="#history">爱心历史</a>
             </center>
+            -->
 
+      <nav class="bar bar-tab">
+            <a class="tab-item" href="#">
+           襄阳联通&copy;2105
+            </a>
+      </nav>
     </div>
 
     <div id='history'  class='modal'>
@@ -135,6 +150,49 @@ $lists = \app\models\MHd201509t4::find()
     </div>
 
 
+    <div id='hdgz'  class='modal'>
+        <header class="bar bar-nav">
+            <a class="icon icon-close pull-right" href="#hdgz"></a>
+            <h1 class='title'>活动说明</h1>
+        </header>
+        <div class="content">
+            <p><b>“小积分、大爱心”活动</b></p>
+            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
+            小积分、大爱心”是襄阳联通组织开展的一次公益捐赠活动，用户可通过消费积分兑换指定物品参与公益捐赠事业，共同关爱山区贫困儿童。
+            </p>
+            </p>
+            <br><hr>
+            <p><b>活动时间</b></p>
+            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
+            2015年9月1日至11月30日
+            </p>
+            <br><hr>
+            <p><b>捐赠地点</b></p>
+            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
+            湖北省襄阳市保康县寺坪镇龙凤村小学
+            </p>
+            <br><hr>
+            <p><b>活动兑换产品</b></p>
+            <p class='p1'>铅笔/支  消减99积分</p>
+            <p class='p1'>软皮本/本  消减199积分</p>
+
+            <br><hr>
+            <p><b>如何查询参与信息</b></p>
+            <p class='p1'>全市各实体渠道通过BSS系统查询客户积分兑换记录；</p>
+            <p class='p1'>关注襄阳联通公众微信、官方微博，在活动公布信息中查询；</p>
+            <p class='p1'>留意襄阳日报、晚报相关报道。</p>
+            <br><hr>
+            <p><b>兑换成功后是否可以取消、所兑物品是否给用户？</b></p>
+            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;积分一经兑换不可取消，礼品不直接配送至客户，由襄阳联通统一派送至保康县寺坪镇龙凤村小学；</p>
+            <br>
+            
+            <p align="center">
+            <a class="btn btn-block" href="#hdgz" style="width: 300px" >返回</a>
+            </p>
+        </div>
+    </div>
+
+
     <script type="text/javascript">
 
     $(document).ready(function() {
@@ -148,7 +206,7 @@ $lists = \app\models\MHd201509t4::find()
                     'funcname':     'confirmAjax',
                     'params':       { 
                         'mobile': '<?= empty($hd201509t3)?"":$hd201509t3->mobile ?>',
-                        'score': 100,
+                        'score': 99,
                     } 
                 };
                 $.ajax({
@@ -183,7 +241,7 @@ $lists = \app\models\MHd201509t4::find()
                     'funcname':     'confirmAjax',
                     'params':       {
                         'mobile': '<?= empty($hd201509t3)?"":$hd201509t3->mobile ?>',   
-                        'score': 200, 
+                        'score': 199, 
                     } 
                 };
                 $.ajax({

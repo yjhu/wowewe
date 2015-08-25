@@ -391,15 +391,9 @@ class ExportController extends \yii\console\Controller {
                 	$office = \app\models\MOffice::findOne(['office_id' => $user->belongto]);
             	}
 
-    			if ($user->bindMobileIsInside('wx_t1')) {
-    				$customerFlag = '老';
-    				//$flag1 = 1;
-    			} elseif ($user->bindMobileIsInside('wx_t2')) {
-    				$customerFlag = '老';
-    			}elseif ($user->bindMobileIsInside('wx_t3')) {
+    			if ($user->bindMobileIsInside('wx_vip')) {
     				$customerFlag = '老';
     			} else {
-    				//$flag1 = 0;
     				$customerFlag = '新';
     			}
 

@@ -133,18 +133,8 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) {  
 					if(!empty($model->user))
 					{
-						if($model->user->bindMobileIsInside('wx_t1'))
-						{
+						if($model->user->bindMobileIsInside('wx_vip'))
 							return '老';
-						}
-						else if($model->user->bindMobileIsInside('wx_t2'))
-						{
-							return '老';
-						}
-						else if($model->user->bindMobileIsInside('wx_t3'))
-						{
-							return '老';
-						}
 						else
 							return '新';
 					}
