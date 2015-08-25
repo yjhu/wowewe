@@ -3024,10 +3024,11 @@ $url2 = $result["code_url"];
         $openid = U::getSessionParam('openid');
         $model = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
         $models = MItem::find()->where(['kind' => MItem::ITEM_KIND_MOBILE])->orderBy(['price' => SORT_ASC])->all();
-        if (empty($model->openidBindMobiles)) {
-            Yii::$app->getSession()->set('RETURN_URL', Url::to());
-            return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
-        }
+        
+        //if (empty($model->openidBindMobiles)) {
+        //    Yii::$app->getSession()->set('RETURN_URL', Url::to());
+        //    return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        //}
         Yii::$app->wx->setGhId($gh_id);
 
         $flag1 = 0;

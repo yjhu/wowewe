@@ -55,18 +55,21 @@ class MHd201509t4 extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function confirmAjax($openid,$score)
+    public static function confirmAjax($mobile,$score)
     {
-        $hd201509t4 = self::findOne(['openid' => $openid]);
+        $hd201509t3 = \app\models\MHd201509t3::findOne(['mobile' => $mobile]);
+        $hd201509t3->status = 1; //提交状态
+        $hd201509t3->score = $score;
+        $hd201509t3->create_time = date('y-m-d h:i:s',time());
+        $hd201509t3->save(false);
 
-        if(empty($hd201509t4))
-        {
-            U::W("----------hd201509t4 is null--------");
-             return \yii\helpers\Json::encode(['code' => 1]);
-        }
-
-        $hd201509t4->status = 1; //提交状态
+        $hd201509t4 = new \app\models\MHd201509t4;
+        $bm = \app\models\OpenidBindMobile::findOne(['mobile' => $mobile]);
+        $hd201509t4->gh_id = $bm->gh_id;
+        $hd201509t4->openid = $bm->openid;
+        $hd201509t4->mobile = $mobile;
         $hd201509t4->score = $score;
+        $hd201509t4->status = 1; 
         $hd201509t4->create_time = date('y-m-d h:i:s',time());
         $hd201509t4->save(false);
 
@@ -83,7 +86,7 @@ class MHd201509t4 extends \yii\db\ActiveRecord
     static function gethd201509t4StatusOption($key=null)
     {
         $arr = array(
-            0 => '未提交',
+            //0 => '未提交',
             1 => '已提交',
             2 => '捐献成功',
         );        

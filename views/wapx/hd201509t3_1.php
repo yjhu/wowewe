@@ -56,7 +56,7 @@ $lists = \app\models\MHd201509t4::find()
         </h4>
 
         <br>
-        <a class="btn btn-positive btn-block" style="width: 300px" href="#history">爱心历史</a>
+        <a class="btn btn-primary btn-block" style="width: 300px" href="#history">爱心历史</a>
         </center>
     </div>
 
@@ -86,5 +86,102 @@ $lists = \app\models\MHd201509t4::find()
             </p>
         </div>
     </div>
+
+
+    <script type="text/javascript">
+
+    $(document).ready(function() {
+        'use strict'; 
+    
+        wx.config({
+            debug: false,
+            appId: '<?php echo $signPackage["appId"];?>',
+            timestamp: <?php echo $signPackage["timestamp"];?>,
+            nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+            signature: '<?php echo $signPackage["signature"];?>',
+            jsApiList: [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo',
+                'hideMenuItems',
+                'showMenuItems',
+                'hideAllNonBaseMenuItem',
+                'showAllNonBaseMenuItem',
+                'translateVoice',
+                'startRecord',
+                'stopRecord',
+                'onRecordEnd',
+                'playVoice',
+                'pauseVoice',
+                'stopVoice',
+                'uploadVoice',
+                'downloadVoice',
+                'chooseImage',
+                'previewImage',
+                'uploadImage',
+                'downloadImage',
+                'getNetworkType',
+                'openLocation',
+                'getLocation',
+                'hideOptionMenu',
+                'showOptionMenu',
+                'closeWindow',
+                'scanQRCode',
+                'chooseWXPay',
+                'openProductSpecificView',
+                'addCard',
+                'chooseCard',
+                'openCard'
+            ]
+        });
+        
+        wx.ready(function () {
+            //alert('wx ready');
+
+            var share2friendTitle = '<?= $observer->nickname ?> 正在参加捐小积分大爱心活动';
+            var share2friendDesc = '襄阳联通小积分大爱心正在进行中！看看你能参加吗？';
+            var share2timelineTitle = '襄阳联通小积分大爱心正在进行中！看看你能参加吗？';
+            var shareImgUrl = '<?= Url::to($observer->headimgurl, true); ?>';
+       
+            wx.onMenuShareAppMessage({
+                title: share2friendTitle, // 分享标题
+                desc: share2friendDesc, // 分享描述
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/hd201509t4:gh_03a74ac96138#wechat_redirect', // 分享链接
+                imgUrl: shareImgUrl, // 分享图标
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () { 
+                    shareSuccessCallback(
+                    );
+                },
+                cancel: function () { 
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+            
+            wx.onMenuShareTimeline({
+                title: share2timelineTitle, // 分享标题
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/hd201509t4:gh_03a74ac96138#wechat_redirect', // 分享链接
+                imgUrl: shareImgUrl, // 分享图标
+                type: '', // 分享类型,music、video或link，不填默认为link
+                dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+                success: function () { 
+                    shareSuccessCallback(
+                    );
+                },
+                cancel: function () { 
+                    // 用户取消分享后执行的回调函数
+                }
+            });
+
+
+
+        });//end of wx  ready
+
+
+    });
+    </script>
 
 </html>

@@ -602,36 +602,26 @@ class WapxController extends Controller {
             ]);
         if (empty($hd201509t3)) 
         {
-            return $this->render('hd201509t3_1', [
+            //return $this->render('hd201509t3_1', [
+            //    'observer' => $wx_user,
+            //    ]);
+            //flag 0 不在名单中，不符合捐献活动条件； 1 符合
+            return $this->render('hd201509t3', [
                 'observer' => $wx_user,
-                ]);
-        } 
-
-        //用户捐献积分状态 ...t4表中有初始状态的记录就直接用，不用再new一个
-        $hd201509t4 = \app\models\MHd201509t4::findOne([
-                'mobile' => $bindMobiles->mobile,
-                'score' => 0,
+                'hd201509t3' => $hd201509t3,
+                'flag' => 0,
             ]);
-
-        if(empty($hd201509t4))
+        }
+        else
         {
-            $hd201509t4 = new \app\models\MHd201509t4;
-            $hd201509t4->gh_id = $gh_id;
-            $hd201509t4->openid = $openid;
-            $hd201509t4->mobile = $bindMobiles->mobile;
-            $hd201509t4->score = 0;
-            $hd201509t4->status = 0; //初始状态，未提交
-            $hd201509t4->save(false);
+            return $this->render('hd201509t3', [
+                'observer' => $wx_user,
+                'hd201509t3' => $hd201509t3,
+                'flag' => 1,
+            ]);
         }
 
-        $hd201509t4 = \app\models\MHd201509t4::findOne([
-                'mobile' => $bindMobiles->mobile,
-            ]);
 
-        return $this->render('hd201509t3', [
-            'observer' => $wx_user,
-            'hd201509t4' => $hd201509t4,
-        ]);
 
     }
 

@@ -12,7 +12,7 @@ $signPackage = $jssdk->GetSignPackage();
 
 $lists = \app\models\MHd201509t4::find()
         ->where(['openid' => $observer->openid, 'status' => 2])
-        ->orderBy(['create_time' => SORT_ASC])
+        ->orderBy(['create_time' => SORT_DESC])
         ->all();
 ?>
 
@@ -50,49 +50,48 @@ $lists = \app\models\MHd201509t4::find()
     <div class="content">
 
         <br><br><br>
-        <?php
-            if($hd201509t4->status == 1)
-            {
-        ?>
-            <center>
-                <h3 style="color:red">
-                捐献<?= $hd201509t4->score;?>积分
-                </h3>
+        <?php if($flag == 1) { ?>
 
-                <h4>
-                爱心正在传递中...
-                </h4>
-                <br>
-                <p>参加时间: <?= $hd201509t4->create_time; ?></p>
-            </center>
-        <?php } elseif($hd201509t4->status == 2) { ?>
-            <center>
-                <h3 style="color:red">
-                已捐献<?= $hd201509t4->score;?>积分
-                </h3>
+            <?php
+                if($hd201509t3->status == 1)
+                {
+            ?>
+                <center>
+                    <h3 style="color:red">
+                    捐献<?= $hd201509t3->score;?>积分
+                    </h3>
 
-                <h4>
-                您已经参加过捐献积分献爱心活动。
-                </h4>
-                <br>
-                <p>参加时间: <?= $hd201509t4->create_time; ?></p>
-            </center>
+                    <h4>
+                    爱心正在传递中...
+                    </h4>
+                    <br>
+                    <p>参加时间: <?= $hd201509t3->create_time; ?></p>
+                </center>
+            <?php } else { ?>
+                <center>
+                    <h4 style="color:red">
+                        恭喜，您符合捐献积分献爱心活动条件。
+                    </h4>
+                    <br>
+                     <a class="btn btn-positive btn-block" style="width: 300px" id="queding1">捐献100积分</a>
+                        <br>
+                     <a class="btn  btn-block btn-negative" style="width: 300px" id="queding2">捐献200积分</a>
+
+                </center>
+            <?php } ?>
+
         <?php } else { ?>
             <center>
-                <h4 style="color:red">
-                    恭喜，您符合捐献积分献爱心活动条件。
-                </h4>
-                <br>
-                 <a class="btn btn-positive btn-block" style="width: 300px" id="queding1">捐献100积分</a>
-                    <br>
-                 <a class="btn  btn-block btn-negative" style="width: 300px" id="queding2">捐献200积分</a>
-
+            <h4>
+                对不起 :(<br><br>
+                暂时不符合此活动条件，感谢您的参与。
+            </h4>
             </center>
         <?php } ?>
        
             <center>
                 <br>
-                <a class="btn btn-positive btn-block" style="width: 300px" href="#history">爱心历史</a>
+                <a class="btn btn-primary btn-block" style="width: 300px" href="#history">爱心历史</a>
             </center>
 
     </div>
@@ -106,12 +105,24 @@ $lists = \app\models\MHd201509t4::find()
 
             <ul class="table-view">
 
+              <li class="table-view-cell media">
+                    <div class="media-body">
+                     <span class="badge" style="font-size: 12pt">
+                        捐献时间
+                    </span>
+                    </div>
+
+                    <span class="badge" style="font-size: 12pt">
+                        积分
+                    </span>
+              </li>
+
             <?php 
                 foreach ($lists as $list) 
                 {
             ?>
                 <li class="table-view-cell"><?= $list->create_time ?> 
-                <span class="badge badge-primary" style="font-size: 12pt"><?= $list->score ?></span>
+                <span class="badge badge-negative" style="font-size: 12pt"><?= $list->score ?></span>
                 </li>
             <?php } ?>
             </ul>
@@ -135,8 +146,8 @@ $lists = \app\models\MHd201509t4::find()
                 var args = {
                     'classname':    '\\app\\models\\MHd201509t4',
                     'funcname':     'confirmAjax',
-                    'params':       {
-                        'openid': '<?= $hd201509t4->openid ?>',   
+                    'params':       { 
+                        'mobile': '<?= empty($hd201509t3)?"":$hd201509t3->mobile ?>',
                         'score': 100,
                     } 
                 };
@@ -171,7 +182,7 @@ $lists = \app\models\MHd201509t4::find()
                     'classname':    '\\app\\models\\MHd201509t4',
                     'funcname':     'confirmAjax',
                     'params':       {
-                        'openid': '<?= $hd201509t4->openid ?>',   
+                        'mobile': '<?= empty($hd201509t3)?"":$hd201509t3->mobile ?>',   
                         'score': 200, 
                     } 
                 };
@@ -245,15 +256,15 @@ $lists = \app\models\MHd201509t4::find()
         wx.ready(function () {
             //alert('wx ready');
 
-            var share2friendTitle = '<?= $observer->nickname ?> 正在参加捐献积分献爱心活动';
-            var share2friendDesc = '襄阳联通捐献积分献爱心真是实惠！看看你能参加吗？';
-            var share2timelineTitle = '阳联通捐献积分献爱心真是实惠！看看你能参加吗？';
+            var share2friendTitle = '<?= $observer->nickname ?> 正在参加捐小积分大爱心活动';
+            var share2friendDesc = '襄阳联通小积分大爱心正在进行中！看看你能参加吗？';
+            var share2timelineTitle = '襄阳联通小积分大爱心正在进行中！看看你能参加吗？';
             var shareImgUrl = '<?= Url::to($observer->headimgurl, true); ?>';
        
             wx.onMenuShareAppMessage({
                 title: share2friendTitle, // 分享标题
                 desc: share2friendDesc, // 分享描述
-                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/hd201509t4:gh_03a74ac96138#wechat_redirect', // 分享链接
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/hd201509t3:gh_03a74ac96138#wechat_redirect', // 分享链接
                 imgUrl: shareImgUrl, // 分享图标
                 type: '', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -268,7 +279,7 @@ $lists = \app\models\MHd201509t4::find()
             
             wx.onMenuShareTimeline({
                 title: share2timelineTitle, // 分享标题
-                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/hd201509t4:gh_03a74ac96138#wechat_redirect', // 分享链接
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/hd201509t3:gh_03a74ac96138#wechat_redirect', // 分享链接
                 imgUrl: shareImgUrl, // 分享图标
                 type: '', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
