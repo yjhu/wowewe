@@ -46,7 +46,7 @@ $signPackage = $jssdk->GetSignPackage();
     <img width=100%  src="/wx/web/images/hd201509t2-head.jpg?v2">
 
         <p align="center">
-            <a href="#hdgz"><i class="fa fa-list fa-2x" style="color:green"></i>&nbsp;活动说明</a>
+            <a href="#hdgz"><i class="fa fa-list" style="color:green"></i>&nbsp;活动说明</a>
         </p>
 
         <br>
