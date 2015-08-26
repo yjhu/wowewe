@@ -173,8 +173,12 @@ class MStaff extends ActiveRecord
             return NULL;
         else {                    
             return MUser::find()
-                    ->where(['gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])
-                    ->orderBy('create_time DESC')
+                    ->joinWith('openidBindMobiles')
+                    ->where(['wx_user.gh_id'=>$this->gh_id, 'scene_pid' => $this->scene_id, 'subscribe' => 1])
+                    ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]])
+                    ->groupBy(['wx_user.gh_id', 'wx_user.openid'])
+                    ->orderBy('wx_user.create_time DESC')
+//                    ->limit(50)
                     ->all();
         }
     }

@@ -94,6 +94,7 @@ $employee = $model;
                                     <?php
                                         $promotees = $employee->wechat->getPromotees();
                                         foreach ($promotees as $promotee) {
+                                            if (!empty($promotee->openidBindMobiles)) {
                                     ?>
                                     <li>
                                             <div class="col1">
@@ -120,7 +121,7 @@ $employee = $model;
                                                     </div>
                                             </div>
                                     </li>
-                                    <?php } ?>
+                                    <?php }} ?>
                                 </ul>
                         </div>
                     </div>

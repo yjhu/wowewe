@@ -57,27 +57,72 @@ $employees = $dataProvider->getModels();
 </div>
 <div class="row">
     <div class="col-md-3">
-        <div class="portlet light">
-            <div class="portlet-title">
-                <div class="caption">
-                    <span class="caption-subject">
-                        <i class="fa fa-sitemap"></i>
-                        部门
-                    </span>
-                    <span class="caption-helper">
-                        选择部门进行过滤
-                    </span>
+        <div class="row">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <span class="caption-subject">
+                            <i class="fa fa-sitemap"></i>
+                            部门
+                        </span>
+                        <span class="caption-helper">
+                            选择部门进行过滤
+                        </span>
+                    </div>
+                    <div class="actions"></div>
                 </div>
-                <div class="actions"></div>
+                <div class="portlet-body">
+                    <div id="organization_tree">
+                            <ul>
+                                <?php 
+                                    $root = \app\models\ClientOrganization::findOne(['organization_id' => 1]);                                
+                                    echoJsTreeNode($searchModel, $root);                               
+                                ?>
+                            </ul>
+                    </div>
+                </div>
             </div>
-            <div class="portlet-body">
-                <div id="organization_tree">
-                        <ul>
-                            <?php 
-                                $root = \app\models\ClientOrganization::findOne(['organization_id' => 1]);                                
-                                echoJsTreeNode($searchModel, $root);                               
-                            ?>
-                        </ul>
+             <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <span class="caption-subject">
+                            <i class="fa fa-sitemap"></i>
+                            员工会员推广排行榜
+                        </span>
+                        <span class="caption-helper">                            
+                        </span>
+                    </div>
+                    <div class="actions"></div>
+                </div>
+                <div class="portlet-body">
+                     <ul class="feeds">
+                        <?php
+                            $rows = \app\models\MUser::getMemberPromotionTopList(0, 20);
+                            foreach ($rows as $row) {
+                        ?>
+                        <li>
+                                <div class="col1">
+                                        <div class="cont">
+                                                <div class="cont-col1">
+                                                        <div>
+                                                              
+                                                        </div>
+                                                </div>
+                                                <div class="cont-col2">
+                                                        <div class="desc">
+                                                       <?= $row['scene_pid']; ?>
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </div>
+                                <div class="col2">
+                                        <div class="date" style='padding:0px;'>
+                                                 <?= $row['members']; ?>
+                                        </div>
+                                </div>
+                        </li>
+                        <?php } ?>
+                    </ul>
                 </div>
             </div>
         </div>

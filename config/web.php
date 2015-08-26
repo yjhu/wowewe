@@ -152,7 +152,7 @@ $config = [
 			// other module settings
 		],
 	],
-    
+           
     'params' => $params,
 ];
 
