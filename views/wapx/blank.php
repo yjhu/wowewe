@@ -1,6 +1,10 @@
-
 <div class="page-bar">
     <div class="pull-right">
+        <?php if (NULL !== $target_office) { ?>
+        <a href="#qrcode-target-office" data-toggle="modal">
+            <i style='font-size:20px;' class="fa fa-qrcode"></i>
+        </a>&nbsp;&nbsp;&nbsp;
+        <?php } ?>
         <label>渠道选择：</label>
         <?php if (\Yii::$app->user->isAdmin) { ?>
         <select id='outlet-selection' class='form-control input-large' style="display:inline;">
@@ -22,7 +26,7 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+    <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
             <a class="dashboard-stat dashboard-stat-light blue-soft" href="javascript:;">
                     <div class="visual">
                             <i class="fa fa-users"></i>
@@ -37,7 +41,7 @@
                     </div>
             </a>
     </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+    <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
             <a class="dashboard-stat dashboard-stat-light red-soft" href="javascript:;">
                     <div class="visual">
                             <i class="fa fa-users"></i>
@@ -52,14 +56,18 @@
                     </div>
             </a>
     </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+    <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
             <a class="dashboard-stat dashboard-stat-light green-soft" href="javascript:;">
                     <div class="visual">
                             <i class="fa fa-trophy"></i>
                     </div>
                     <div class="details">
                             <div class="number">
-                                     <?= \app\models\MOrder::getTotalSucceedOrderSum($target_office); ?>元
+                                     <?= \Yii::$app->formatter->asCurrency(intval(\app\models\MOrder::getTotalSucceedOrderSum($target_office)), NULL, 
+                                         [
+                                            NumberFormatter::MIN_FRACTION_DIGITS => 0,
+                                            NumberFormatter::MAX_FRACTION_DIGITS => 0,
+                                         ]); ?>
                             </div>
                             <div class="desc">
                                      成交金额
@@ -67,7 +75,7 @@
                     </div>
             </a>
     </div>
-    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+    <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
             <a class="dashboard-stat dashboard-stat-light purple-soft" href="javascript:;">
                     <div class="visual">
                             <i class="fa fa-shopping-cart"></i>
@@ -82,6 +90,23 @@
                     </div>
             </a>        
     </div>
+    <?php if (NULL !== $target_office) { ?>
+    <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+            <a class="dashboard-stat dashboard-stat-light yellow-gold" href="javascript:;">
+                    <div class="visual">
+                            <i class="fa fa-money"></i>
+                    </div>
+                    <div class="details">
+                            <div class="number">
+                                     <?= $target_office->score; ?>分
+                            </div>
+                            <div class="desc">
+                                     渠道积分
+                            </div>
+                    </div>
+            </a>        
+    </div>
+    <?php } ?>
 </div>
 <div class="clearfix"></div>
 <script>
@@ -177,6 +202,26 @@
         </div>
     </div>
 </div>
+<?php if (NULL !== $target_office) { ?>
+<div class="modal fade in" id="qrcode-target-office"  style="display: none;">
+        <div class="modal-dialog">
+                <div class="modal-content">
+                        <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                <h4 class="modal-title"><?= $target_office->title ?>的二维码</h4>
+                        </div>
+                        <div class="modal-body">
+                                 <?php echo \yii\helpers\Html::img($target_office->getQrImageUrl(), ['class'=>'img-responsive center-block']); ?>
+                        </div>
+                        <div class="modal-footer">
+                                <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+                        </div>
+                </div>
+                <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+</div>
+<?php } ?>
 <?php
 $this->registerCssFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css' ); 
 $this->registerJsFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/moment.min.js' );
