@@ -25,6 +25,9 @@ use app\models\MAccessLog;
 use app\models\MUserAccount;
 use app\models\sm\ESms;
 use app\models\sm\ESmsGuodu;
+use app\models\MOfficeScoreEvent;
+use app\models\MOffice;
+
 
 class NightController extends Controller {
     public function init()
@@ -126,6 +129,37 @@ class NightController extends Controller {
         
         $n = Yii::$app->db->createCommand()->update($tableName, ['status' => MOrder::STATUS_SYSTEM_SUCCEEDED], 'status=:status AND create_time < DATE_SUB(NOW(), INTERVAL 2 day)', [':status' => MOrder::STATUS_FULFILLED])->execute();
         U::W("UPDATE $tableName, $n --- 系统自动确认超时2天的已办理订单。");
+
+        //找到超时2天的成功订单， 将其归属的渠道 +积分100
+        $orders = MOrder::find()->where(['status' => MOrder::STATUS_FULFILLED])
+                                ->andWhere(['<', 'create_time', DATE_SUB(NOW(), INTERVAL 2 day)])
+                                ->all();
+
+        foreach($orders as $order)
+        {
+            $user = MUser::findOne(['openid' => $order->openid]);
+            $office = MOffice::findOne(['office_id' => $user->belongto]);
+
+            if($office->is_selfOperated == 0)
+            {
+                //wx_office_score_event 增加一条记录
+                $offce_score_event = new MOfficeScoreEvent;
+                $offce_score_event->gh_id = $order->gh_id;
+                $offce_score_event->openid = $order->openid;
+                $offce_score_event->office_id = $user->belongto;
+                $offce_score_event->cat = MOfficeScoreEvent::CAT_ADD_ORDER;
+                $offce_score_event->create_time = date('y-m-d h:i:s',time());
+                $offce_score_event->score = MOfficeScoreEvent::CAT_ADD_ORDER_SCORE;
+                $offce_score_event->memo = '会员订单';
+                $offce_score_event->save(false);
+
+                //wx_office表中对应渠道score 加100分
+                $office->score = $office->score + 100;
+                $office->save(false);
+            }
+        }
+
+    
 
         /* 		
           //move the unsuccessful orders exceed 90 days to bak table

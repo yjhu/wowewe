@@ -18,6 +18,15 @@ use Yii;
  */
 class MOfficeScoreEvent extends \yii\db\ActiveRecord
 {
+
+    const CAT_ADD_NEW_MEMBER = 0;
+    const CAT_ADD_ORDER = 1;
+
+    
+    const CAT_ADD_NEW_MEMBER_SCORE = 100;
+    const CAT_ADD_ORDER_SCORE = 100;
+
+
     /**
      * @inheritdoc
      */

@@ -27,6 +27,9 @@ use app\models\MWinMobileFee;
 use app\models\MWinMobileNum;
 use app\models\OpenidBindMobile;
 use app\models\search\OpenidBindMobileSearch;
+use app\models\MOfficeScoreEvent;
+
+
 use app\models\U;
 use app\models\Wechat;
 use app\models\wxpay\NativePay;
@@ -4203,6 +4206,29 @@ $url2 = $result["code_url"];
         $model->openid = $openid;
         $model->setScenario('bind_mobile');
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            //非自营厅渠道新增会员时，+积分100
+            $user = MUser::findOne(['openid' => $openid]);
+            $office = MOffice::findOne(['office_id' => $user->belongto]);
+
+            if($office->is_selfOperated == 0)
+            {
+                //wx_office_score_event 增加一条记录
+                $offce_score_event = new MOfficeScoreEvent;
+                $offce_score_event->gh_id = $gh_id;
+                $offce_score_event->openid = $openid;
+                $offce_score_event->office_id = $user->belongto;
+                $offce_score_event->cat = MOfficeScoreEvent::CAT_ADD_NEW_MEMBER;
+                $offce_score_event->create_time = date('y-m-d h:i:s',time());
+                $offce_score_event->score = MOfficeScoreEvent::CAT_ADD_NEW_MEMBER_SCORE;
+                $offce_score_event->memo = '新增会员';
+                $offce_score_event->save(false);
+
+                //wx_office表中对应渠道score 加100分
+                $office->score = $office->score + 100;
+                $office->save(false);
+            }
+
             Yii::$app->wx->setGhId($gh_id);
             $url = Url::to(['hyzx1', 'gh_id' => $gh_id, 'openid' => $openid], true);
             Yii::$app->wx->WxTemplateSend(Wechat::getTemplateBindSuccessNotify($openid, $url, "{$model->user->nickname}，您的手机号码已成功绑定襄阳联通官方微信营业厅", "您已成为襄阳联通的会员，可随时查询话费余额，办理业务，参与更多专享优惠！", $model->mobile, date('Y-m-d')));
