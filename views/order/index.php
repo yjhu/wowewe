@@ -45,11 +45,12 @@ $this->params['breadcrumbs'][] = $this->title;
 				'headerOptions' => array('style'=>'width:100px;'),			
 			],
 
-			[
-				'attribute' => 'cid',
-				'value'=>function ($model, $key, $index, $column) { return MItem::getItemCatName($model->cid); },
-				'filter'=> MItem::getItemCatName(),
-			],
+			//[
+			//	'attribute' => 'cid',
+			//	'value'=>function ($model, $key, $index, $column) { return MItem::getItemCatName($model->cid); },
+			//	'filter'=> MItem::getItemCatName(),
+			//],
+
 			[
 				'attribute' => 'feesum',
 				'value'=>function ($model, $key, $index, $column) { return "￥".sprintf("%0.2f",$model->feesum/100); },
@@ -102,10 +103,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { return "{$model->username}, {$model->userid}, {$model->usermobile}"; },
 				'headerOptions' => array('style'=>'width:120px;'),			
 			],
-			[
-				'label' => '留言',
-				'attribute' => 'memo',		
-			],
+			//[
+			//	'label' => '留言',
+			//	'attribute' => 'memo',		
+			//],
 			[
 				'label' => '备注',
 				'attribute' => 'memo_reply',		
@@ -122,28 +123,18 @@ $this->params['breadcrumbs'][] = $this->title;
 				'filter'=> MOrder::getOrderPayKindOption(),
 				'headerOptions' => array('style'=>'width:60px;'),			
 			],
-			[
-				'label' => '开通',
-				'attribute' => 'kaitong',	
-			],
+			//[
+			//	'label' => '开通',
+			//	'attribute' => 'kaitong',	
+			//],
 
 			[
-				'label' => '新/老用户',
+				'label' => '用户',
 				'value'=>function ($model, $key, $index, $column) {  
 					if(!empty($model->user))
 					{
-						if($model->user->bindMobileIsInside('wx_t1'))
-						{
+						if($model->user->bindMobileIsInside('wx_vip'))
 							return '老';
-						}
-						else if($model->user->bindMobileIsInside('wx_t2'))
-						{
-							return '老';
-						}
-						else if($model->user->bindMobileIsInside('wx_t3'))
-						{
-							return '老';
-						}
 						else
 							return '新';
 					}
@@ -176,8 +167,9 @@ $this->params['breadcrumbs'][] = $this->title;
 				'template' => '{view} {update} {chat}',
 				'buttons' => [
 					'chat' => function ($url, $model) {
-						return Html::a('<span class="glyphicon glyphicon-send"></span>', $url, [
-							'title' => Yii::t('yii', 'Chat'),
+						return Html::a('<span class="glyphicon glyphicon-comment"></span>', $url, [
+							//'title' => Yii::t('yii', 'Chat'),
+							'title' => Yii::t('yii', '发送消息给用户'),
 							'data-method' => 'post',
 							'data-pjax' => '0',
 							//'data-pjax' => '1',

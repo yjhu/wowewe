@@ -8,7 +8,9 @@
 <!-- BEGIN HEAD -->
 <head>
 <meta charset="<?= \Yii::$app->charset; ?>"/>
-<title><?= \yii\helpers\Html::encode($this->title); ?></title>
+<title>
+襄阳联通微信运营平台V2.0
+</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -185,13 +187,15 @@
                                         ['label' => '多图文','url' => ['/articlemult/index'],'linkOptions' => ['data-method' => 'post']],
                                     ],
                                 ],  
-                                /*投票活动需要，临时入口*/
+                                /*活动，临时入口*/
                                 [
-                                    'label' => '<i class="fa fa-signal"></i><span class="title">活动投票</span><span class="arrow "></span>',
+                                    'label' => '<i class="fa fa-flask"></i><span class="title">活动</span><span class="arrow "></span>',
                                     'url' => '',
                                     'items' => [
-                                        ['label' => '情诗审核','url' => ['/qingshi-author/index'],'linkOptions' => ['data-method' => 'post']],
+                                        //['label' => '情诗审核','url' => ['/qingshi-author/index'],'linkOptions' => ['data-method' => 'post']],
                                         ['label' => '投票排行','url' => ['/qingshi-score/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '充话费送话费','url' => ['/hd201509t2/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '小积分大爱心活动','url' => ['/hd201509t4/index'],'linkOptions' => ['data-method' => 'post']],
                                     ],
                                 ],  
 

@@ -391,15 +391,9 @@ class ExportController extends \yii\console\Controller {
                 	$office = \app\models\MOffice::findOne(['office_id' => $user->belongto]);
             	}
 
-    			if ($user->bindMobileIsInside('wx_t1')) {
-    				$customerFlag = '老';
-    				//$flag1 = 1;
-    			} elseif ($user->bindMobileIsInside('wx_t2')) {
-    				$customerFlag = '老';
-    			}elseif ($user->bindMobileIsInside('wx_t3')) {
+    			if ($user->bindMobileIsInside('wx_vip')) {
     				$customerFlag = '老';
     			} else {
-    				//$flag1 = 0;
     				$customerFlag = '新';
     			}
 
@@ -616,6 +610,91 @@ class ExportController extends \yii\console\Controller {
 
         echo "导出所有渠道二维码,ok.";
     }
+
+
+
+
+
+
+    //导出所有员工推广成绩
+    public function actionStaffScoreTop($date1 = null, $date2 = null)
+    {
+        $gh_id = 'gh_03a74ac96138';
+        $total_count = \app\models\MStaff::find()->where(['gh_id' => $gh_id])->count();
+        $step = 300;
+        $start = 0;
+
+        if(($date1 == null) || ($date2 == null))
+        {
+            echo "\n例子: php yii export/staff-score-range 2015-7-1 2015-7-31\n";
+            echo("需要输入起始和结束日期！\n\n");
+            exit;
+        }
+
+        $date_start    = date('Y-m-d', strtotime($date1))." 00:00:00";
+        $date_end      = date('Y-m-d', strtotime($date2))." 23:59:59";
+
+        echo "-----------------------------------------------------\n";
+        echo "            STAFF SCORE BY RANGE               \n";
+        echo "    ".$date_start." 至 ".$date_end."\n";      
+        echo "-----------------------------------------------------\n";
+
+
+        echo "推广者,手机号码,推广成绩\n";
+        while ($start < $total_count) {
+            $staffs = \app\models\MStaff::find()->where(['gh_id' => $gh_id, 'cat' => 0])->offset($start)->limit($step)->all();
+        
+            foreach ($staffs as $staff) {
+                //$office->getQrImageUrl2();
+
+                if($staff->getMemberScoreByRange($date1, $date2) == 0) continue;
+
+                echo $staff->name.",".$staff->mobile.",".$staff->getMemberScoreByRange($date1, $date2)."\n";
+            }
+
+            $start += $step;
+        }
+
+
+        echo "-----------------------------------------------\nok.\n\n";
+    }
+
+
+    //在用户明细表中增加是否会员的标志
+    //php yii export/add-member-tag >data11.csv
+    public function actionAddMemberTag($filename = 'data20150819.csv') {
+
+        $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($file, "r");
+        $i = 0;
+        while (!feof($fh)) {
+            $line = fgets($fh);
+            $i++;
+            if (empty($line))
+                continue;
+            $fields = explode(",", $line);  
+    
+            $manager = trim($fields[0]);
+            $manager_utf8 = iconv('GBK', 'UTF-8//IGNORE', $manager);
+
+            $mobile = trim($fields[1]);
+
+            $custom = \app\models\OpenidBindMobile::findOne(['mobile'=>$mobile]);
+            if (!empty($custom)) 
+            {
+                 echo $manager_utf8.",".$mobile.",是"."\n";
+            }
+            else 
+            {
+                 echo $manager_utf8.",".$mobile.",否"."\n";
+          
+            }
+        }
+        
+        fclose($fh);
+       
+    }
+
 
 
 

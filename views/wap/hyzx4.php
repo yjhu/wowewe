@@ -100,7 +100,11 @@
                 </span>
                
                 <div class="media-body">
+                  <!--
                   绑定管理
+                  -->
+
+                  会员注册
                 </div>
               </a>
             </li>

@@ -75,8 +75,14 @@
                         <h2><?= $model->title ?></h2>
                         <p><?= $model->title_hint ?></p>
           
-                        <?php if(($model->cid != 718) || ($model->cid != 719)) { ?>  
-                        <p class='line'>原价: ￥<?= $model->old_price/100 ?></p>
+                        <!--
+                        <//?php if(($model->cid != 718) || ($model->cid != 719)) { ?>  
+                        <p class='line'>原价: ￥<//?= $model->old_price/100 ?></p>
+                        <//?php } ?>
+                        -->
+
+                        <?php if($model->old_price != 0){ ?>
+                            <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
                         <?php } ?>
 
                         <!--

@@ -31,6 +31,9 @@ use app\models\Custom;
 use app\models\Manager;
 use app\models\CustomManager;
 use app\models\VipLevel;
+use app\models\MVip;
+use app\models\MHd201509t1;
+
 
 use app\models\sm\ESms;
 use app\models\sm\ESmsGuodu;
@@ -969,6 +972,98 @@ class CmdController extends Controller
 
     }    
 
+    //导入vip 20150815数据到wx_vip表 
+    public function actionImportvip20150825()
+    {
+        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'vip-20150825.csv';
+        $fh = fopen($file, "r");
+        $i=0;
+        while (!feof($fh)) 
+        {
+            $line = fgets($fh);
+            if (empty($line))
+                continue;
+            $arr = explode(",", $line);     
+
+            $arr[0] = iconv('GBK','UTF-8//IGNORE', $arr[0]);
+            $arr[1] = iconv('GBK','UTF-8//IGNORE', $arr[1]);
+            $arr[2] = iconv('GBK','UTF-8//IGNORE', $arr[2]);
+            $arr[3] = iconv('GBK','UTF-8//IGNORE', $arr[3]);
+
+            $mobile = trim($arr[0]);
+            $manager = trim($arr[1]);
+            $manager_mobile = trim($arr[2]);
+            $vip_level = trim($arr[3]);
+
+             echo $mobile."\t".$manager."\t".$manager_mobile."\t".$vip_level."\n";
+
+            $vip = MVip::findOne(['mobile'=>$mobile]);
+            if (!empty($vip)) {
+                //U::W("mobile=$mobile already exists");                
+                //U::W($arr);
+            } else {
+                $vip = new MVip;
+            }
+
+            $vip->mobile = $mobile;
+            $vip->manager = $manager;            
+            $vip->manager_mobile = $manager_mobile;   
+            $vip->vip_level = $vip_level;                   
+            $vip->save(false);
+
+            $i++;
+            if ($i % 1000 == 1)
+                U::W($i);
+        }
+        fclose($fh);    
+
+    }    
+
+
+    //导入23g-user.csv 和 4g-user.csv (20150815)数据到wx_hd201509t1表 
+    //wx_hd201509t1 中存放2015 1-7月满足充话费送话费活动条件的用户
+    public function actionImporthd201509t1()
+    {
+        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'4g-user.csv';
+        $fh = fopen($file, "r");
+        $i=0;
+        while (!feof($fh)) 
+        {
+            $line = fgets($fh);
+            if (empty($line))
+                continue;
+            $arr = explode(",", $line);     
+
+            $arr[1] = iconv('GBK','UTF-8//IGNORE', $arr[1]);
+            $mobile = trim($arr[1]);
+
+            echo $mobile."\n";
+   
+            $hd201509t1 = MHd201509t1::findOne(['mobile'=>$mobile]);
+            if (!empty($hd201509t1)) {
+                //U::W("mobile=$mobile already exists");                
+                //U::W($arr);
+            } else {
+                $hd201509t1 = new MHd201509t1;
+            }
+
+            $hd201509t1->mobile = $mobile;                
+            $hd201509t1->save(false);
+
+
+            $i++;
+            if ($i % 1000 == 1)
+                U::W($i);
+        }
+        fclose($fh);    
+
+    }    
+
+
+
+
+
+
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/refresh-fan-headimgurl 10000
     public function actionRefreshFanHeadimgurl($id = null)
     {        
@@ -1018,10 +1113,98 @@ class CmdController extends Controller
             if ($i % 1000 == 1)
                 U::W($i);
         }
-    
-        
 
     }
+
+
+
+
+    //刷新粉丝昵称和头像
+    public function actionShowFanHead()
+    {        
+        $gh_id = MGh::GH_XIANGYANGUNICOM;
+       
+        $total_count = MUser::find()->where(['gh_id' => $gh_id, 'subscribe' => 1])->count();
+
+        $step = 500;
+        $start = 0;
+
+        while ($start < $total_count) {
+
+            $users = MUser::find()->offset($start)->limit($step)->where(['gh_id' => $gh_id, 'subscribe' => 1])->orderBy(['id' => SORT_ASC])->all();
+
+            foreach ($users as $user)
+            {
+                    if (empty($user->headimgurl)) continue;
+        
+                    //if($user->id < 6143)  continue;
+
+                    $arr = Yii::$app->wx->WxGetUserInfo($user->openid); 
+
+                    if(empty($arr['headimgurl']))
+                        continue;
+
+                    echo "Fan #ID\t".$user->id."\t".$arr['headimgurl']."\n";
+
+                    $user->nickname = $arr['nickname'];
+                    $user->headimgurl = $arr['headimgurl'];
+                    $user->save(false);
+            }
+
+            $start += $step;
+        }
+
+    } 
+
+    //更新18家自营厅员工信息
+    //php yii export/selfop-staff-update 
+    public function actionSelfopStaffUpdate($filename = 'staff_20150819.csv') {
+
+        $file = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($file, "r");
+        $i = 1;
+        while (!feof($fh)) {
+            $line = fgets($fh);
+            $i++;
+            if (empty($line))
+                continue;
+            $fields = explode(",", $line);  
+    
+            $office_title = trim($fields[3]);
+            $office_title_utf8 = iconv('GBK', 'UTF-8//IGNORE', $office_title);
+
+            $staff_name = trim($fields[4]);
+            $staff_name_utf8 = iconv('GBK', 'UTF-8//IGNORE', $staff_name);
+
+            $staff_role = trim($fields[5]);
+            $staff_role_utf8 = iconv('GBK', 'UTF-8//IGNORE', $staff_role);
+            if($staff_role_utf8 == '营业厅经理')
+                $is_manager = 1;
+            else
+                $is_manager = 0;
+
+            $office = MOffice::findOne(['title'=>$office_title_utf8]);
+            
+            echo $office->office_id.",".$office->title.",".$office_title_utf8.",".$staff_name_utf8.",".$staff_role_utf8.",".$is_manager."\n";           
+            
+            $staff = MStaff::findOne(['name'=>$staff_name_utf8]);
+            if(!empty($staff))
+            {
+                $staff->office_id = $office->office_id;
+                $staff->is_manager = $is_manager;
+                $staff->cat = 0;
+                $staff->save(false); 
+            }
+        }
+        
+        fclose($fh);
+       
+       echo "staff data(20150819) update ok\n";
+    }
+
+
+
+
 
 
     //http://www.juhe.cn/my/info

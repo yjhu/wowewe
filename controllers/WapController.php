@@ -1648,6 +1648,27 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->title = '6G年卡';
                 $order->attr = "{$_GET['cardType']}";
                 break;
+                
+            case MItem::ITEM_CAT_CARD_4GQGSJTC6GBNB:
+                $order->title = '4G全国数据套餐6G半年包';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_CARD_4GQGSJTC12GBNB:
+                $order->title = '4G全国数据套餐12G半年包';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_CARD_4GQGSJTC17GBNB:
+                $order->title = '4G省内数据套餐17G半年包';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_CARD_45GBNLLTC:
+                $order->title = '45G包年流量套餐';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_CARD_600YSCNK:
+                $order->title = '600元时长年卡';
+                $order->attr = "{$_GET['cardType']}";
+                break;                                          
 
             case MItem::ITEM_CAT_DD_IPHONE4S:
                 $order->title = '苹果 iPhone4S';
@@ -1901,6 +1922,18 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->title = '荣耀4X（标配版）';
                 $order->attr = "{$_GET['cardType']}";
                 break; 
+
+            case MItem::ITEM_CAT_MOBILE_LYH_IPHONE4S_8GB:
+                $order->title = 'iPhone4S 8GB';
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+                
+            case MItem::ITEM_CAT_MOBILE_LYH_IPHONE5S_16GB:
+                $order->title = 'iPhone5S 16GB';
+                $order->attr = "{$_GET['cardType']}";
+                break;                 
+                
+
             //6.30 end
 
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI:
@@ -2991,10 +3024,11 @@ $url2 = $result["code_url"];
         $openid = U::getSessionParam('openid');
         $model = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
         $models = MItem::find()->where(['kind' => MItem::ITEM_KIND_MOBILE])->orderBy(['price' => SORT_ASC])->all();
-        if (empty($model->openidBindMobiles)) {
-            Yii::$app->getSession()->set('RETURN_URL', Url::to());
-            return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
-        }
+        
+        //if (empty($model->openidBindMobiles)) {
+        //    Yii::$app->getSession()->set('RETURN_URL', Url::to());
+        //    return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        //}
         Yii::$app->wx->setGhId($gh_id);
 
         $flag1 = 0;
