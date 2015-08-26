@@ -152,7 +152,7 @@ $(document).ready(function () {
                             show: true,
                             radius: 1,
                             label: {
-                                show: true,
+                                show: false,
                                 radius: 3/4,
                                 formatter: function(label, series) {
                                     return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '</div>';
@@ -216,7 +216,7 @@ $(document).ready(function () {
                         show: true,  
                         radius: 1,
                         label: {
-                            show: true,
+                            show: false,
                             radius: 3/4,
                             formatter: function(label, series) {
                                 return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '</div>';
