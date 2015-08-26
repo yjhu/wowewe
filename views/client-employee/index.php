@@ -37,6 +37,7 @@ $employees = $dataProvider->getModels();
 <script>
     var target_organization = <?= $searchModel->organization_id ?>;
     var ajax_url = "<?= \yii\helpers\Url::to(['wapx/wapxajax'], true) ; ?>";
+    var download_url = "<?= \yii\helpers\Url::to(['client-employee/index', 'download' => 1]) ; ?>"
     function redirectTo() {
         location.href = '<?= Url::to(['client-employee/index']) ?>' + '&ClientEmployeeSearch[organization_id]=' + target_organization;
     }
@@ -83,34 +84,53 @@ $employees = $dataProvider->getModels();
                 </div>
             </div>
              <div class="portlet light">
+                 <div class="row">
+                     <div id="member-promotion-daterange" class='pull-left' style="display:inline; margin-right: 30px;background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                        <span><?= date('Y年m月d日', strtotime('-1 month')) . ' 至 ' . date('Y年m月d日') ?></span> <b class="caret"></b>
+                    </div>
+                 </div>
                 <div class="portlet-title">
                     <div class="caption">
                         <span class="caption-subject">
                             <i class="fa fa-sitemap"></i>
-                            员工会员推广排行榜
+                            排行榜
                         </span>
-                        <span class="caption-helper">                            
+                        
+                        <span class="caption-helper">
+                            员工会员推广
                         </span>
                     </div>
-                    <div class="actions"></div>
+                    <div class="actions">
+                        <a href="javascript:;" class="btn btn-sm btn-circle btn-default" id="member-promotion-download">
+                        <i class="fa fa-download"></i> 下载 </a>
+                    </div>
                 </div>
                 <div class="portlet-body">
-                     <ul class="feeds">
+                     <ul class="feeds" id="member-promotion-top-list">
                         <?php
                             $rows = \app\models\MUser::getMemberPromotionTopList(0, 20);
                             foreach ($rows as $row) {
+                                $staff = \app\models\MStaff::findOne(['scene_id' => $row['scene_pid']]);
+                                $employee = $staff->clientEmployee;
                         ?>
                         <li>
                                 <div class="col1">
                                         <div class="cont">
                                                 <div class="cont-col1">
                                                         <div>
-                                                              
+                                                            <img style="width:32px;height:32px" src="<?= $staff->user->headImgUrl; ?>" />          
                                                         </div>
                                                 </div>
                                                 <div class="cont-col2">
                                                         <div class="desc">
-                                                       <?= $row['scene_pid']; ?>
+                                                            <?php if (!empty($employee)) { ?>
+                                                            <a href="<?= Url::to(['client-employee/view', 'id' => $employee->employee_id]);?>">
+                                                            <?= $staff->name . '(' . $staff->office->title .')'; ?>
+                                                            </a>
+                                                            <?php } else { ?>
+                                                       <?= $staff->name . '(' . $staff->office->title .')'; ?>
+                                                            <?php }  ?>
                                                         </div>
                                                 </div>
                                         </div>
@@ -191,6 +211,9 @@ $employees = $dataProvider->getModels();
     </div>
 </div>
 <?php
+$this->registerCssFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css' ); 
+$this->registerJsFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/moment.min.js' );
+$this->registerJsFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js' );
 $this->registerCssFile( '@web/metronic/theme/assets/global/plugins/jstree/dist/themes/default/style.min.css' );
 $this->registerCssFile( '@web/php-emoji/emoji.css' );
 $this->registerJsFile( '@web/metronic/theme/assets/global/plugins/jstree/dist/jstree.js' );

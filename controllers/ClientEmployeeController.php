@@ -36,6 +36,32 @@ class ClientEmployeeController extends Controller
     {
         $searchModel = new ClientEmployeeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+        if (isset($_GET['download'])){
+            $datetime_start = str_replace('\'', '', $_GET['datetime_start']);
+            $datetime_end = str_replace('\'', '', $_GET['datetime_end']);
+                       
+            $filename = Yii::$app->getRuntimePath().
+                    "/员工会员推广排行榜-".
+                    $datetime_start .'到'. $datetime_end.
+                    '.csv';
+            $fh = fopen($filename, 'w');
+            fprintf($fh, "排名,会员推广数量,员工姓名,电话,营业厅".PHP_EOL);
+            $i = 1;
+            \Yii::warning('yjhu:' . $datetime_start);
+            $rows = \app\models\MUser::getMemberPromotionTopList(0, 5000, $datetime_start . ' 00:00:00', $datetime_end. ' 23:59:59');
+            foreach ($rows as $row) {
+                $staff = \app\models\MStaff::findOne(['scene_id' => $row['scene_pid']]);
+                fprintf($fh, $i++ . ',');
+                fprintf($fh, $row['members'] . ',');
+                fprintf($fh, $staff->name . ',');
+                fprintf($fh, $staff->mobile . ',');
+                fprintf($fh, (empty($staff->office) ? '' : $staff->office->title) . PHP_EOL);
+            }
+            fclose($fh);
+            Yii::$app->response->sendFile($filename);
+            return;        
+        }
 
         return $this->render('index', [
             'searchModel' => $searchModel,

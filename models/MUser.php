@@ -604,6 +604,48 @@ class MUser extends ActiveRecord implements IdentityInterface
         return $rows;
     }
     
+    public static function getMemberPromotionTopListAjax($cat, $limit, $datetime_start = null, $datetime_end = null) {
+        $subquery = (new Query())
+                ->select('wx_user.gh_id, wx_user.openid, wx_user.scene_pid')
+                ->from('wx_user')
+                ->leftJoin(
+                        'wx_openid_bind_mobile', 
+                        'wx_openid_bind_mobile.gh_id = wx_user.gh_id and wx_openid_bind_mobile.openid = wx_user.openid'
+                        )
+                ->where(['wx_user.subscribe' => 1])
+                ->andWhere(['not', ['wx_openid_bind_mobile.mobile' => null]]);
+        if (null !== $datetime_start) {
+            $subquery = $subquery->andWhere(['>', 'wx_user.create_time', $datetime_start]);
+        }
+        if (null !== $datetime_end) {
+            $subquery = $subquery->andWhere(['<', 'wx_user.create_time', $datetime_end]);
+        }
+        $subquery = $subquery->groupBy('wx_user.gh_id, wx_user.openid');
+
+        $query = (new Query())
+                ->select('scene_pid, count(*) as members')
+                ->from(['t' => $subquery])
+                ->innerJoin('wx_staff', 'wx_staff.scene_id = scene_pid')
+                ->where(['wx_staff.cat' => $cat])
+                ->andWhere(['not', ['scene_pid' => 0]])
+                ->groupBy('scene_pid')
+                ->orderBy('members desc');
+        
+        
+        $rows = $query->limit($limit)->all();
+        $results = [];
+        foreach ($rows as $row) {
+            $staff = MStaff::findOne(['scene_id' => $row['scene_pid']]);
+            $results[] = [
+                'imgurl' => $staff->user->headImgUrl,
+                'name' => $staff->name . '(' . $staff->office->title . ')',
+                'members' => $row['members'],
+                'href' => empty($staff->clientEmployee) ? 'javascript:;' : Url::to(['client-employee/view', 'id' => $staff->clientEmployee->employee_id])
+            ];
+        }
+        return \yii\helpers\Json::encode($results);
+    }
+    
     public static function getTotalOffices() 
     {
         $office_ids = (new \yii\db\Query())->select('belongto')->distinct()->from('wx_user')->where('subscribe=1')->column();

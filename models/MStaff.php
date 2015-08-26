@@ -39,6 +39,7 @@ use yii\db\ActiveRecord;
 use yii\helpers\Security;
 use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Query;
 
 use app\models\U;
 use app\models\MOffice;
@@ -136,6 +137,25 @@ class MStaff extends ActiveRecord
     public function getUser()
     {
         return $this->hasOne(MUser::className(), ['gh_id' => 'gh_id', 'openid' => 'openid']);
+    }
+    
+    public function getClientEmployee() {
+        $subquery = (new Query())
+                ->select('client_employee.employee_id, name, mobile')
+                ->from('client_employee')
+                ->leftJoin('client_employee_mobile', 'client_employee.employee_id = client_employee_mobile.employee_id');
+        $row = (new Query())
+                ->select('*')
+                ->from(['t' => $subquery])
+                ->where([
+                    'name' => $this->name,
+                    'mobile' => $this->mobile,
+                ])->one();
+        if (empty($row)) {
+            return NULL;
+        } else {
+            return ClientEmployee::findOne(['employee_id' => $row['employee_id']]);
+        }
     }
 
     public static function getLianTongStaffs()
