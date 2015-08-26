@@ -43,8 +43,13 @@ $signPackage = $jssdk->GetSignPackage();
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <!--<div class="content" style="background-color: #401080">-->
     <div class="content">
+    <img width=100%  src="/wx/web/images/hd201509t2-head.jpg?v2">
 
-        <br><br><br>
+        <p align="center">
+            <a href="#hdgz"><i class="fa fa-list" style="color:green"></i>&nbsp;活动说明</a>
+        </p>
+
+        <br>
         <?php
             if($hd201509t2->status == 1)
             {
@@ -61,10 +66,53 @@ $signPackage = $jssdk->GetSignPackage();
                     恭喜，您符合充话费送话费活动条件。
                 </h4>
                 <br>
-                 <a class="btn btn-positive btn-block" style="width: 300px" id="queding">确定</a>
+                 <a class="btn btn-negative btn-block" style="width: 300px" id="queding">确认已领取</a>
+                 <p><b>注意</b> <br>‘确认已领取’按钮由联通工作人员点击。<br>用户请勿点击!</p>
             </center>
         <?php } ?>
        
+
+        <nav class="bar bar-tab">
+            <a class="tab-item" href="#">
+           襄阳联通&copy;2105
+            </a>
+        </nav>
+    </div>
+
+
+    <div id='hdgz'  class='modal'>
+        <header class="bar bar-nav">
+            <a class="icon icon-close pull-right" href="#hdgz"></a>
+            <h1 class='title'>活动说明</h1>
+        </header>
+        <div class="content">
+
+            <p><b>活动规则</b></p>
+            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
+            （一）但凡2015年1-7月入网的用户，使用本机号码关注襄阳联通微信号并绑定手机，即可参与活动。
+            </p>
+
+            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
+            （二）用户可享受存100元送20元、存200元送40元话费优惠。上限为200元，且每个用户只能参与一次。
+            </p>
+
+            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
+            （三）符合条件的用户在渠道或营业厅当场充值100/200元话费，由各渠道当场发放20元面值充值卡。
+            </p>
+
+            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
+            （四）渠道通过20元充值卡给用户充值，用户领取卡后必须由联通营业员点击微信活动页面的“确认已领取”按钮，便于微信后台统计数据，防止用户重复参与活动。
+            </p>
+
+            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
+            （五）校园用户不可参与本次活动。
+            </p>
+            <br><hr>
+            
+            <p align="center">
+            <a class="btn btn-block" href="#hdgz" style="width: 300px" >返回</a>
+            </p>
+        </div>
     </div>
 
     <script type="text/javascript">

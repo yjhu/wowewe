@@ -38,6 +38,8 @@ use app\models\MaterialDataProvider;
 
 use app\models\Custom;
 
+use app\models\MOfficeScoreEvent;
+
 class OrderController extends Controller
 {
     public $layout = 'metronic';
@@ -153,6 +155,32 @@ class OrderController extends Controller
                         $mobnum->status = MMobnum::STATUS_UNUSED;                        
                     $mobnum->save(false);                
                 }
+
+                //会员(非自营厅渠道的)下单成功 STATUS_SUCCEEDED/STATUS_SYSTEM_SUCCEEDED时，非自营厅渠道要 +积分100
+                $user = MUser::findOne(['openid' => $model->openid]);
+                $office = MOffice::findOne(['office_id' => $user->belongto]);
+
+                if($office->is_selfOperated == 0)
+                {
+                    if($model->status == MOrder::STATUS_SUCCEEDED)
+                    {
+                        //wx_office_score_event 增加一条记录
+                        $offce_score_event = new MOfficeScoreEvent;
+                        $offce_score_event->gh_id = $model->gh_id;
+                        $offce_score_event->openid = $model->openid;
+                        $offce_score_event->office_id = $user->belongto;
+                        $offce_score_event->cat = MOfficeScoreEvent::CAT_ADD_ORDER;
+                        $offce_score_event->create_time = date('y-m-d h:i:s',time());
+                        $offce_score_event->score = MOfficeScoreEvent::CAT_ADD_ORDER_SCORE;
+                        $offce_score_event->memo = '会员订单';
+                        $offce_score_event->save(false);
+
+                        //wx_office表中对应渠道score 加100分
+                        $office->score = $office->score + 100;
+                        $office->save(false);
+                    }
+                }
+
                 return $this->redirect(['index']);            
             }
         }

@@ -33,6 +33,8 @@ use app\models\CustomManager;
 use app\models\VipLevel;
 use app\models\MVip;
 use app\models\MHd201509t1;
+use app\models\OpenidBindMobile;
+
 
 
 use app\models\sm\ESms;
@@ -1153,8 +1155,46 @@ class CmdController extends Controller
 
             $start += $step;
         }
-
     } 
+
+
+    //设置会员标志，如果是会员将wx_user 表中的is_member 置为1 否则 0
+    public function actionSetMemberFlag()
+    {        
+        $gh_id = MGh::GH_XIANGYANGUNICOM;
+        $total_count = MUser::find()->where(['gh_id' => $gh_id, 'subscribe' => 1])->count();
+
+        $step = 500;
+        $start = 0;
+
+        while ($start < $total_count) {
+
+            $users = MUser::find()->offset($start)->limit($step)->where(['gh_id' => $gh_id, 'subscribe' => 1])->orderBy(['id' => SORT_ASC])->all();
+
+            foreach ($users as $user)
+            {
+
+                    //if($user->id < 41674)  continue;
+
+                    $member = OpenidBindMobile::findOne(['openid' => $user->openid ]);
+
+                    if(!empty($member))
+                    {
+                        echo "User #ID\t".$user->id."\t"."会员\n";
+                        $user->is_member = 1;
+                        $user->save(false);
+                    }
+                    else
+                    {
+                        echo "User #ID\t".$user->id."\t"."非会员\n";
+                    }
+
+            }
+
+            $start += $step;
+        }
+    } 
+
 
     //更新18家自营厅员工信息
     //php yii export/selfop-staff-update 
