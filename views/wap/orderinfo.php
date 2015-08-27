@@ -122,18 +122,36 @@
 				U::W($itemPayKindOption);
 			?>
 
+			<?php
+				//当产品为 惠购流量包产品时，不需要用户选择支付方式，直接订购，营业厅扣除用户话费，办理相应业务 
+				if( $model->cid == 90000 ||
+					$model->cid == 90001 ||
+					$model->cid == 90002 ||
+					$model->cid == 90003 ||
+					$model->cid == 90004 ||
+					$model->cid == 90005 ||
+					$model->cid == 90006 ||
+					$model->cid == 90007 ||
+					$model->cid == 90008 ||
+					$model->cid == 90009) {
+			?>
+				<!-- nothing -->
+					选择用户类型
+   					<?= $form->field($model, 'memo')->label(false)->dropDownList(MItem::getUserTypeOption()) ?>
 
- 			<?= $form->field($model, 'memo')->textinput(['id'=>'memo', 'maxlength' => '256', 'placeholder'=>'给卖家留言'])->label(false); ?>
+			<?php } else { ?>
+			 	<?= $form->field($model, 'memo')->textinput(['id'=>'memo', 'maxlength' => '256', 'placeholder'=>'给卖家留言'])->label(false); ?>
+				<div>
+				<fieldset data-role="controlgroup" data-type="horizontal" id="paykind-field">
+				<legend>支付方式</legend>
+					<select onchange="showButton()" id="sel_paykind">
+						<option value="0" selected>线下支付</option>
+						<option value="2">微信支付</option>
+					</select>
+				</fieldset>						
+				</div>
+			<?php } ?>
 
-			<div>
-			<fieldset data-role="controlgroup" data-type="horizontal" id="paykind-field">
-			<legend>支付方式</legend>
-				<select onchange="showButton()" id="sel_paykind">
-					<option value="0" selected>线下支付</option>
-					<option value="2">微信支付</option>
-				</select>
-			</fieldset>						
-			</div>
 
 			<script>
 				var btn_paykind = 0;

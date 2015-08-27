@@ -103,10 +103,10 @@ $this->params['breadcrumbs'][] = $this->title;
 				'value'=>function ($model, $key, $index, $column) { return "{$model->username}, {$model->userid}, {$model->usermobile}"; },
 				'headerOptions' => array('style'=>'width:120px;'),			
 			],
-			//[
-			//	'label' => '留言',
-			//	'attribute' => 'memo',		
-			//],
+			[
+				'label' => '留言',
+				'attribute' => 'memo',		
+			],
 			[
 				'label' => '备注',
 				'attribute' => 'memo_reply',		

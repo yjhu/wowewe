@@ -1954,6 +1954,51 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->attr = "{$_GET['cardType']}";
                 break;
 
+            //惠购流量包 begin
+            case MItem::ITEM_CAT_HGLLB_3G_GN_10Y100M:
+                $order->title = '3G国内流量 10元 100M';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_HGLLB_3G_GN_20Y300M:
+                $order->title = '3G国内流量 20元 300M';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_HGLLB_3G_GN_30Y500M:
+                $order->title = '3G国内流量 30元 500M';
+                $order->attr = "{$_GET['cardType']}";
+                break;                
+            case MItem::ITEM_CAT_HGLLB_3G_SN_10Y100M:
+                $order->title = '3G省内流量 10元 100M';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_HGLLB_3G_SN_20Y300M:
+                $order->title = '3G省内流量 20元 300M';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            case MItem::ITEM_CAT_HGLLB_3G_SN_30Y500M:
+                $order->title = '3G省内流量 30元 500M';
+                $order->attr = "{$_GET['cardType']}";
+                break;             
+
+            case MItem::ITEM_CAT_HGLLB_WO_PPTV:
+                $order->title = 'Wo+视频 PPTV定向流量包月';
+                $order->attr = "{$_GET['cardType']}";
+                break;      
+            case MItem::ITEM_CAT_HGLLB_KG:
+                $order->title = '酷狗';
+                $order->attr = "{$_GET['cardType']}";
+                break;    
+            case MItem::ITEM_CAT_HGLLB_LHTX:
+                $order->title = '漏话提醒';
+                $order->attr = "{$_GET['cardType']}";
+                break;    
+            case MItem::ITEM_CAT_HGLLB_KJTX:
+                $order->title = '开机提醒';
+                $order->attr = "{$_GET['cardType']}";
+                break;    
+            //惠购流量包 end
+
+
             case MItem::ITEM_KIND_ZZYW:
                 $order->title = '增值业务';
                 $order->attr = "{$_GET['cardType']}";
@@ -2447,6 +2492,30 @@ $arr = $order->sendTemplateNoticeToCustom();
         return $this->render('card', ['cid' => $_GET['cid'], 'gh_id' => $gh_id, 'openid' => $openid]);
     }
 
+    //惠购流量包20150827
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/hgllblist:gh_03a74ac96138
+    public function actionHgllblist() {
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        $kind = $_GET['kind'];
+        $models = MItem::find()->where(['kind' => $kind])->orderBy(['cid' => SORT_ASC])->all();
+        return $this->render('hgllblist', ['gh_id' => $gh_id, 'openid' => $openid, 'models' => $models, 'kind' => $kind]);
+    }
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/hgllb:gh_03a74ac96138
+    public function actionHgllb() {
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('hgllb', ['cid' => $_GET['cid'], 'gh_id' => $gh_id, 'openid' => $openid]);
+    }
+
+
+
+
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/disk:gh_03a74ac96138
     public function actionDisk() {
         $this->layout = 'wapy';
@@ -2811,7 +2880,9 @@ $arr = $order->sendTemplateNoticeToCustom();
             if ($model->pay_kind == MOrder::PAY_KIND_CASH) {
                 $model->status = MOrder::STATUS_SUBMITTED;
                 $model->save(false);
-                return $this->redirect(['wap/order']);
+                //return $this->redirect(['wap/order']);
+                //去新的订单页面
+                return $this->redirect(['wap/myorder']);
             }
 
             if ($model->pay_kind == MOrder::PAY_KIND_ALIWAP) {
