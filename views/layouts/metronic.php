@@ -153,8 +153,8 @@
                                     'url' => '',
                                     'items' => [
                                         ['label' => '员工管理','url' => ['/client-employee/index'],'linkOptions' => ['data-method' => 'post']],
-                                        ['label' => '员工推广成绩排行','url' => ['/order/stafftop'],'linkOptions' => ['data-method' => 'post']],
-                                        ['label' => '推广查询','url' => ['/accesslog/index'],'linkOptions' => ['data-method' => 'post']],
+                                        //['label' => '员工推广成绩排行','url' => ['/order/stafftop'],'linkOptions' => ['data-method' => 'post']],
+                                        //['label' => '推广查询','url' => ['/accesslog/index'],'linkOptions' => ['data-method' => 'post']],
                                     ],
                                 ],
                                 [
