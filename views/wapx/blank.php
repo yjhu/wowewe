@@ -92,7 +92,8 @@
     </div>
     <?php if (NULL !== $target_office) { ?>
     <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
-            <a class="dashboard-stat dashboard-stat-light yellow-gold" href="javascript:;">
+
+            <a class="dashboard-stat dashboard-stat-light yellow-gold" href="#office-score-event-modal" data-toggle="modal">
                     <div class="visual">
                             <i class="fa fa-money"></i>
                     </div>
@@ -222,8 +223,90 @@
         <!-- /.modal-dialog -->
 </div>
 <?php } ?>
+
+
+<div class="modal fade in" id="office-score-event-modal"  style="display: none;">
 <?php
-$this->registerCssFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css' ); 
+
+    if(null === $target_office)
+        $office_id = 0;
+    else 
+        $office_id = $target_office->office_id;
+
+    $office_sore_events =  \app\models\MOfficeScoreEvent::find()->where(['office_id' => $office_id])->orderBy(['create_time' => SORT_DESC])->all();
+?>
+        <div class="modal-dialog">
+            <div class="modal-content" style="width:680px">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">渠道积分明细</h4>
+                    </div>
+                    <div class="modal-body">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                            <ul class="timeline">
+                                <?php
+                                    foreach ($office_sore_events as $office_sore_event) {
+                                        if (!empty($office_sore_events)) {
+                                ?>
+
+                                <li class="timeline-yellow">
+                                    <div class="timeline-time">
+                                    <?php
+                                            $time_str = explode(' ', $office_sore_event->create_time);
+                                    ?>
+                                        <span class="date">
+                                            <?= $time_str[0]; ?>
+                                        </span>
+                                        <span class="time" style="font-size: 16pt">
+                                           <?= $time_str[1]; ?>
+                                        </span>
+                                    </div>
+                                    <div class="timeline-icon">
+                                        <?php if($office_sore_event->cat ==0) { ?>
+                                                <i class="fa fa-group"></i>
+                                        <?php } else if($office_sore_event->cat ==1) { ?>
+                                            <i class="fa fa-list"></i>
+                                        <?php } else { ?>
+                                                <i class="fa fa-trophy"></i>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="timeline-body" style="width:400px">
+                                        <h2>
+                                            <?= $office_sore_event->memo; ?>
+                                        </h2>
+                                        <div class="timeline-content">
+                    
+                                        <?php 
+                                            $user = \app\models\MUser::findOne(['openid' => $office_sore_event->openid]);
+                                        ?>
+
+                                        <img class="timeline-img pull-left" src="<?= $user->headImgUrl ?>" alt="">
+                                        <span style="font-size: 26pt">
+                                        <?= $office_sore_event->score; ?>
+                                        <span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <?php }} ?>
+                            </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                            <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+                    </div>
+            </div>
+                <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+</div>
+
+<?php
+$this->registerCssFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css' );
+$this->registerCssFile( '@web/metronic/theme/assets/admin/pages/css/timeline-old.css' ); 
 $this->registerJsFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/moment.min.js' );
 $this->registerJsFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js' );
 $this->registerJsFile( '@web/metronic/theme/assets/global/plugins/flot/jquery.flot.min.js' );
