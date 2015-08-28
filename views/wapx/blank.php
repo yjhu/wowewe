@@ -2,7 +2,7 @@
     <div class="pull-right">
         <?php if (NULL !== $target_office) { ?>
         <a href="#qrcode-target-office" data-toggle="modal">
-            <i style='font-size:20px;' class="fa fa-qrcode"></i>
+            <i style='font-size:2em;' class="fa fa-qrcode"></i>
         </a>&nbsp;&nbsp;&nbsp;
         <?php } ?>
         <label>渠道选择：</label>
