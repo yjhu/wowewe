@@ -315,6 +315,24 @@ class MOffice extends ActiveRecord implements IdentityInterface {
         return $json ? json_encode($listData) : $listData;
     }
 
+
+    //校园活动中(20150827)，指定的5家 校园营业定 office_id 2642~2646
+    public static function getSchoolOfficeNameOption($gh_id, $json = true, $need_prompt = true) {
+        //$offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id' => $gh_id, ':visable' => 1])->asArray()->all();
+        $offices = MOffice::find()
+                  ->where('gh_id = :gh_id AND office_id > :office_id1 AND office_id < :office_id2', [':gh_id' => $gh_id, ':office_id1' => 2641, ':office_id2' => 2647])
+                  ->asArray()
+                  ->all();
+
+        $listData = $need_prompt ? ['0' => '请选择营业厅'] : [];
+        foreach ($offices as $office) {
+            $value = $office['office_id'];
+            $listData[$value] = "{$office['title']}({$office['address']})";
+        }
+        return $json ? json_encode($listData) : $listData;
+    }
+
+
     public static function getOfficeNameOptionSimple($gh_id, $json = true, $need_prompt = true) {
         $offices = MOffice::find()->where("gh_id = :gh_id AND visable = :visable", [':gh_id' => $gh_id, ':visable' => 1])->asArray()->all();
         $listData = $need_prompt ? ['0' => '请选择营业厅'] : [];

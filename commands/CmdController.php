@@ -33,6 +33,7 @@ use app\models\CustomManager;
 use app\models\VipLevel;
 use app\models\MVip;
 use app\models\MHd201509t1;
+use app\models\MHd201509t3;
 use app\models\OpenidBindMobile;
 
 
@@ -1062,8 +1063,43 @@ class CmdController extends Controller
     }    
 
 
+    //导入xjfdax-20150828.csv(20150815)数据到wx_hd201509t3表 
+    //wx_hd201509t3 中存放满足小积分大爱心活动用户名单
+    public function actionImporthd201509t3()
+    {
+        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'xjfdax-20150828.csv';
+        $fh = fopen($file, "r");
+        $i=0;
+        while (!feof($fh)) 
+        {
+            $line = fgets($fh);
+            if (empty($line))
+                continue;
+            $arr = explode(",", $line);     
 
+            $arr[0] = iconv('GBK','UTF-8//IGNORE', $arr[0]);
+            $mobile = trim($arr[0]);
 
+            echo $mobile."\n";
+   
+            $hd201509t3 = MHd201509t3::findOne(['mobile'=>$mobile]);
+            if (!empty($hd201509t3)) {
+                //U::W("mobile=$mobile already exists");                
+                //U::W($arr);
+            } else {
+                $hd201509t3 = new MHd201509t3;
+            }
+
+            $hd201509t3->mobile = $mobile;                
+            $hd201509t3->save(false);
+
+            $i++;
+            if ($i % 1000 == 1)
+                U::W($i);
+        }
+        fclose($fh);    
+
+    }    
 
 
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd/refresh-fan-headimgurl 10000
