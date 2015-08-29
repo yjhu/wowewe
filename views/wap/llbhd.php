@@ -44,7 +44,7 @@
 			<input type="text" name="username" id="username" placeholder="姓名" data-mini=false value="">
 			<input type="tel" name="usermobile" id="usermobile" placeholder="手机号码" value="">
 
-			<?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption('$gh_id', false),["id"=>"office"]); ?>
+			<?php echo Html::dropDownList('office', 0, MOffice::getOfficeNameOption($gh_id, false),["id"=>"office"]); ?>
 		</div>
 		
 		<a href="#" id="submitBtn" class="ui-btn" style="background-color: #44B549">我要办理</a>
