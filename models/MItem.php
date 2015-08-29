@@ -253,6 +253,10 @@ class MItem extends ActiveRecord {
     const ITEM_CAT_HGLLB_LHTX = 90008;
     const ITEM_CAT_HGLLB_KJTX = 90009;
 
+    //(活动)校园优惠季 + 流量宝
+    const ITEM_CAT_HD_XYYHJ = 80000;
+    const ITEM_CAT_HD_LLB = 80001;
+
     //增值业务
     const ITEM_KIND_ZZYW = 1000;
 
@@ -444,12 +448,14 @@ class MItem extends ActiveRecord {
             self::ITEM_CAT_HGLLB_3G_SN_10Y100M => '3G省内流量 10元 100M',
             self::ITEM_CAT_HGLLB_3G_SN_20Y300M => '3G省内流量 20元 300M',
             self::ITEM_CAT_HGLLB_3G_SN_30Y500M => '3G省内流量 30元 500M',
-
             self::ITEM_CAT_HGLLB_WO_PPTV => 'Wo+视频 PPTV定向流量包月',
             self::ITEM_CAT_HGLLB_KG => '酷狗',
             self::ITEM_CAT_HGLLB_LHTX => '漏话提醒',
             self::ITEM_CAT_HGLLB_KJTX => '开机提醒',
 
+            //(活动)校园优惠季 + 流量包
+            self::ITEM_CAT_HD_XYYHJ  => '校园优惠季',
+            self::ITEM_CAT_HD_LLB  => '流量宝',
 
             //增值业务
             self::ITEM_KIND_ZZYW => '增值业务',

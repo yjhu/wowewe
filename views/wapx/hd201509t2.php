@@ -89,7 +89,7 @@ $signPackage = $jssdk->GetSignPackage();
 
             <p><b>活动规则</b></p>
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
-            （一）但凡2015年1-7月入网的用户，使用本机号码关注襄阳联通微信号并绑定手机，即可参与活动。
+            （一）但凡2015年8月前入网的用户，使用本机号码关注襄阳联通微信号并绑定手机，即可参与活动。
             </p>
 
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;

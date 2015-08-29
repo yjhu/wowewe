@@ -56,6 +56,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => array('style'=>'width:90px;'),           
             ],
             'mobile',
+            'yfzx',
+            'fsc',
             'create_time',
             //'status',
             [

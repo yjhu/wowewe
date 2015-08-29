@@ -291,7 +291,7 @@
 
                                         <span style="font-size: 26pt; font-weight: 900">
                                             +<?= $office_sore_event->score; ?>
-                                        </span>
+                                        </span>分
                                         <br>
                                         <span>
                                             微信昵称&nbsp;&nbsp;<?= emoji_unified_to_html(emoji_softbank_to_unified($user->nickname)); ?>

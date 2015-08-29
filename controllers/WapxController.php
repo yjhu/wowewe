@@ -551,6 +551,8 @@ class WapxController extends Controller {
                     $hd201509t2->openid = $openid;
                     $hd201509t2->mobile = $bindMobiles->mobile;
                     $hd201509t2->status = 0;
+                    $hd201509t2->yfzx = $hd201509t1->yfzx;
+                    $hd201509t2->fsc = $hd201509t1->fsc;
                     $hd201509t2->save(false);
                 }
                 else

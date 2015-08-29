@@ -1997,7 +1997,15 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->attr = "{$_GET['cardType']}";
                 break;    
             //惠购流量包 end
+            case MItem::ITEM_CAT_HD_XYYHJ:
+                $order->title = '校园优惠季';
+                $order->attr = "{$_GET['cardType']}";
+                break;   
 
+            case MItem::ITEM_CAT_HD_LLB:
+                $order->title = '流量宝';
+                $order->attr = "{$_GET['cardType']}";
+                break;
 
             case MItem::ITEM_KIND_ZZYW:
                 $order->title = '增值业务';
@@ -3090,6 +3098,44 @@ $url2 = $result["code_url"];
         Yii::$app->wx->setGhId($gh_id);
         return $this->render('order4gtaocan', ['gh_id' => $gh_id, 'openid' => $openid]);
     }
+
+    //校园优惠季 20150829
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/showxyyhjinfo:gh_03a74ac96138
+    public function actionShowxyyhjinfo() {
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('showxyyhjinfo', ['gh_id' => $gh_id, 'openid' => $openid]);
+    }
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/xyyhj:gh_03a74ac96138
+    public function actionXyyhj() {
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('xyyhj', ['gh_id' => $gh_id, 'openid' => $openid]);
+    }
+
+    //流量宝活动 20150829
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/showllbhdinfo:gh_03a74ac96138
+    public function actionShowllbhdinfo() {
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('showllbhdinfo', ['gh_id' => $gh_id, 'openid' => $openid]);
+    }
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/llbhd:gh_03a74ac96138
+    public function actionLlbhd() {
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('llbhd', ['gh_id' => $gh_id, 'openid' => $openid]);
+    }
+
+
 
     // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/lyhzxyh:gh_03a74ac96138
     public function actionLyhzxyh() {

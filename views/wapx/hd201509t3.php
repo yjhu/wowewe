@@ -53,6 +53,8 @@ $lists = \app\models\MHd201509t4::find()
     <hr width="100%" color="green">
 
         <p align="center">
+            <a href="http://jf.10010.com"><i class="fa fa-gift fa-3x" style="color:#FC8301"></i>&nbsp;积分兑换</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#hdgz"><i class="fa fa-list fa-2x" style="color:green"></i>&nbsp;活动说明</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#history"><i class="fa fa-heart fa-2x" style="color:red"></i>&nbsp;爱心历史</a>
