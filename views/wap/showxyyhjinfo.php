@@ -50,7 +50,7 @@
       <div class="swiper-wrapper">
             <div class="swiper-slide rel swiper-slide-visible swiper-slide-active">
             <div class="main">
-            <img src="./show_res/xyyhj-01.jpg" >
+            <img src="./show_res/xyyhj-01.jpg?v1" >
             </div>
             <!--
             <div class="bg rel" >
@@ -69,7 +69,7 @@
 				<a href="sms:13545296480?body=hello">
         -->
 				<a href="javascript:jump2order('xyyhj')">
-				<img class="lazy" data-original="./show_res/xyyhj-02.jpg" src="./show_res/xyyhj-02.jpg" >
+				<img class="lazy" data-original="./show_res/xyyhj-02.jpg?v1" src="./show_res/xyyhj-02.jpg?v1" >
 				</a>
 				<!--
         </a>

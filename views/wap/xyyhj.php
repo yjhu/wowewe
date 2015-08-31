@@ -36,7 +36,7 @@
 
 	<div data-role="content">
 
-			<img src="../web/show_res/xyyhj-head.jpg" width="100%">
+			<img src="../web/show_res/xyyhj-head.jpg?v2" width="100%">
 			<p>【学生季】校园优惠季来袭！</p>
 
 		<div class="ui-field-contain">

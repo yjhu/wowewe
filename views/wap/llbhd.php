@@ -36,7 +36,7 @@
 
 	<div data-role="content">
 
-			<img src="../web/show_res/llb-head.jpg" width="100%">
+			<img src="../web/show_res/llb-head.jpg?v3" width="100%">
 			<p>流量宝 流量套餐</p>
 
 

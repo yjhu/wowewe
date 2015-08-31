@@ -15,7 +15,7 @@ $signPackage = $jssdk->GetSignPackage();
 <html>
   <head>
     <meta charset="utf-8">
-    <title>充话费送话费活动</title>
+    <title>9月特惠3天</title>
 
     <!-- Sets initial viewport load and disables zooming  -->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -43,7 +43,7 @@ $signPackage = $jssdk->GetSignPackage();
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <!--<div class="content" style="background-color: #401080">-->
     <div class="content">
-    <img width=100%  src="/wx/web/images/hd201509t2-head.jpg?v2">
+    <img width=100%  src="/wx/web/images/hd201509t2-head.jpg?v3">
 
         <p align="center">
             <a href="#hdgz"><i class="fa fa-list" style="color:green"></i>&nbsp;活动说明</a>
@@ -62,12 +62,15 @@ $signPackage = $jssdk->GetSignPackage();
             </center>
         <?php } else { ?>
             <center>
-                <h4>
-                    恭喜，您符合充话费送话费活动条件。
+                <h2 style="color: red">
+                    恭喜！
+                </h2>
+                <h4 style="color: red">
+                    凭此画面可到营业厅充费送费，<br><br>了解详情请看'活动说明'。
                 </h4>
                 <br>
-                 <a class="btn btn-negative btn-block" style="width: 300px" id="queding">确认已领取</a>
-                 <p><b>注意</b> <br>‘确认已领取’按钮由联通工作人员点击。<br>用户请勿点击!</p>
+                 <a class="btn btn-negative btn-block" style="width: 300px" id="queding">确认已参与</a>
+                 <p><b>注意</b> <br>‘确认已参与’按钮由联通工作人员点击。<br>用户请勿点击!</p>
             </center>
         <?php } ?>
        
@@ -101,7 +104,7 @@ $signPackage = $jssdk->GetSignPackage();
             </p>
 
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
-            （四）渠道通过20元充值卡给用户充值，用户领取卡后必须由联通营业员点击微信活动页面的“确认已领取”按钮，便于微信后台统计数据，防止用户重复参与活动。
+            （四）渠道通过20元充值卡给用户充值，用户领取卡后必须由联通营业员点击微信活动页面的“确认已参与”按钮，便于微信后台统计数据，防止用户重复参与活动。
             </p>
 
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;

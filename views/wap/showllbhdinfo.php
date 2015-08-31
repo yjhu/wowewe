@@ -50,7 +50,7 @@
       <div class="swiper-wrapper">
             <div class="swiper-slide rel swiper-slide-visible swiper-slide-active">
             <div class="main">
-            <img src="./show_res/llbinfo-01.jpg" >
+            <img src="./show_res/llbinfo-01.jpg?v3" >
             </div>
             <!--
             <div class="bg rel" >
@@ -65,7 +65,7 @@
              <div class="swiper-slide rel" >
             <div class="main" >
               <a href="javascript:jump2order('llbhd')">
-              <img class="lazy" data-original="./show_res/llbinfo-02.jpg" src="./show_res/llbinfo-02.jpg" >
+              <img class="lazy" data-original="./show_res/llbinfo-02.jpg?v3" src="./show_res/llbinfo-02.jpg?v3" >
               </a>
             </div>
 				<!--
@@ -83,7 +83,7 @@
 				<a href="sms:13545296480?body=hello">
         -->
 				<a href="javascript:jump2order('llbhd')">
-				<img class="lazy" data-original="./show_res/llbinfo-03.jpg" src="./show_res/llbinfo-03.jpg" >
+				<img class="lazy" data-original="./show_res/llbinfo-03.jpg?v3" src="./show_res/llbinfo-03.jpg?v3" >
 				</a>
 				<!--
         </a>
@@ -100,12 +100,12 @@
 
 <script type="text/javascript" src="./show_res/stylee.js"></script>
 <script type="text/javascript" src="./show_res/jquery.jplayer.min.js"></script> 
-<script src="./show_res/main.js?v11" type="text/javascript"></script>
+<script src="./show_res/main.js?v31" type="text/javascript"></script>
 <script src="./js/wechat.js" type="text/javascript"></script>
 
 <?php 
   $appid = Yii::$app->wx->gh['appid'];
-  $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/show4ginfo:'.Yii::$app->wx->getGhid());
+  $url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/showllbhdinfo:'.Yii::$app->wx->getGhid());
   //$this->registerJsFile(Yii::$app->getRequest()->baseUrl.'/js/wechat.js');
   $assetsPath = Yii::$app->getRequest()->baseUrl.'/show_res';
   $myImg = Url::to("$assetsPath/llbinfo-01.jpg", true);

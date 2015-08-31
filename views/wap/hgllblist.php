@@ -41,8 +41,6 @@
                     $model->cid==90003 || 
                     $model->cid==90004 || 
                     $model->cid==90005 ||
-                    $model->cid==90006 ||
-                    $model->cid==90007 ||
                     $model->cid==90008 ||
                     $model->cid==90009 
                     ) {
@@ -65,7 +63,7 @@
                         <!--
                         <p>双11活动价: ￥<//?= $model->price/100 ?></p>
                         -->
-                        <p>惊爆价: ￥<?= $model->price/100 ?></p>
+                        <p>价格: ￥<?= $model->price/100 ?></p>
                     </a>
                 </li>
             <?php   
