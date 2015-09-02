@@ -1995,7 +1995,12 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
             case MItem::ITEM_CAT_HGLLB_KJTX:
                 $order->title = '开机提醒';
                 $order->attr = "{$_GET['cardType']}";
-                break;    
+                break;   
+            case MItem::ITEM_CAT_HGLLB_4G_SN_BNB:
+                $order->title = '4G 省内半年包';
+                $order->attr = "{$_GET['cardType']}";
+                break;   
+
             //惠购流量包 end
             case MItem::ITEM_CAT_HD_XYYHJ:
                 $order->title = '校园优惠季';

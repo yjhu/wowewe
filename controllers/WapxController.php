@@ -525,21 +525,20 @@ class WapxController extends Controller {
             'openid' => $openid,
         ]);
 
+        $bindMobiles = \app\models\OpenidBindMobile::findOne([
+                'gh_id' => $gh_id,
+                'openid' => $openid,
+            ]);
+
+        if (empty($bindMobiles)) 
+        {
+            $url = \yii\helpers\Url::to();
+            \Yii::$app->getSession()->set('RETURN_URL', $url);
+            return $this->redirect(['wap/addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        } 
+
         if (empty($hd201509t2)) {
 
-            $bindMobiles = \app\models\OpenidBindMobile::findOne([
-                    'gh_id' => $gh_id,
-                    'openid' => $openid,
-                ]);
-
-            if (empty($bindMobiles)) 
-            {
-                $url = \yii\helpers\Url::to();
-                \Yii::$app->getSession()->set('RETURN_URL', $url);
-                return $this->redirect(['wap/addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
-            } 
-            else 
-            {
                 $hd201509t1 = \app\models\MHd201509t1::findOne([
                         'mobile' => $bindMobiles->mobile,
                     ]);
@@ -560,8 +559,7 @@ class WapxController extends Controller {
                     //不在能充值的用户表中， 不符合充值条件，显示对不起页面
                     return $this->render('hd201509t2_1');
                 }
-
-            }
+                
         }
 
         return $this->render('hd201509t2', [
