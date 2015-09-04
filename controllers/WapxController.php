@@ -520,10 +520,12 @@ class WapxController extends Controller {
             return $this->render('need_subscribe');
         }
 
+        /*
         $hd201509t2 = \app\models\MHd201509t2::findOne([
             'gh_id' => $gh_id,
             'openid' => $openid,
         ]);
+        */
 
         $bindMobiles = \app\models\OpenidBindMobile::findOne([
                 'gh_id' => $gh_id,
@@ -537,6 +539,33 @@ class WapxController extends Controller {
             return $this->redirect(['wap/addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
         } 
 
+        $hd201509t1 = \app\models\MHd201509t1::findOne([
+            'mobile' => $bindMobiles->mobile,
+        ]);
+
+        if(empty($hd201509t1))
+        {
+            //不在能充值的用户表中， 不符合充值条件，显示对不起页面
+            return $this->render('hd201509t2_1');
+        }    
+
+        $hd201509t2 = \app\models\MHd201509t2::findOne([
+            'mobile' => $hd201509t1->mobile,
+        ]);
+
+        if(empty($hd201509t2))
+        {
+            $hd201509t2 = new \app\models\MHd201509t2;
+            $hd201509t2->gh_id = $gh_id;
+            $hd201509t2->openid = $openid;
+            $hd201509t2->mobile = $bindMobiles->mobile;
+            $hd201509t2->status = 0;
+            $hd201509t2->yfzx = $hd201509t1->yfzx;
+            $hd201509t2->fsc = $hd201509t1->fsc;
+            $hd201509t2->save(false);
+        }
+
+        /*
         if (empty($hd201509t2)) {
 
                 $hd201509t1 = \app\models\MHd201509t1::findOne([
@@ -559,8 +588,8 @@ class WapxController extends Controller {
                     //不在能充值的用户表中， 不符合充值条件，显示对不起页面
                     return $this->render('hd201509t2_1');
                 }
-                
         }
+        */
 
         return $this->render('hd201509t2', [
             'observer' => $wx_user,
