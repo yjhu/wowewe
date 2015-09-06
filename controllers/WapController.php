@@ -4333,23 +4333,27 @@ $url2 = $result["code_url"];
             $user = MUser::findOne(['openid' => $openid]);
             $office = MOffice::findOne(['office_id' => $user->belongto]);
 
-            if($office->is_selfOperated == 0)
+            if(!empty($office))
             {
-                //wx_office_score_event 增加一条记录
-                $offce_score_event = new MOfficeScoreEvent;
-                $offce_score_event->gh_id = $gh_id;
-                $offce_score_event->openid = $openid;
-                $offce_score_event->office_id = $user->belongto;
-                $offce_score_event->cat = MOfficeScoreEvent::CAT_ADD_NEW_MEMBER;
-                $offce_score_event->create_time = date('y-m-d h:i:s',time());
-                $offce_score_event->score = MOfficeScoreEvent::CAT_ADD_NEW_MEMBER_SCORE;
-                $offce_score_event->memo = '新增会员';
-                $offce_score_event->save(false);
+                if($office->is_selfOperated == 0)
+                {
+                    //wx_office_score_event 增加一条记录
+                    $offce_score_event = new MOfficeScoreEvent;
+                    $offce_score_event->gh_id = $gh_id;
+                    $offce_score_event->openid = $openid;
+                    $offce_score_event->office_id = $user->belongto;
+                    $offce_score_event->cat = MOfficeScoreEvent::CAT_ADD_NEW_MEMBER;
+                    $offce_score_event->create_time = date('y-m-d h:i:s',time());
+                    $offce_score_event->score = MOfficeScoreEvent::CAT_ADD_NEW_MEMBER_SCORE;
+                    $offce_score_event->memo = '新增会员';
+                    $offce_score_event->save(false);
 
-                //wx_office表中对应渠道score 加100分
-                $office->score = $office->score + 100;
-                $office->save(false);
+                    //wx_office表中对应渠道score 加100分
+                    $office->score = $office->score + 100;
+                    $office->save(false);
+                }   
             }
+
 
             Yii::$app->wx->setGhId($gh_id);
             $url = Url::to(['hyzx1', 'gh_id' => $gh_id, 'openid' => $openid], true);
