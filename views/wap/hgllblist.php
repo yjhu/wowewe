@@ -87,7 +87,7 @@
                         <!--
                         <p>双11活动价: ￥<//?= $model->price/100 ?></p>
                         -->
-                        <p>价格: ￥<?= $model->price/100 ?></p>
+                        <p>价格: ￥<?= $model->price/100 ?> &nbsp;&nbsp;<?= $model->price_hint; ?></p>
                     </a>
                 </li>
             <?php   

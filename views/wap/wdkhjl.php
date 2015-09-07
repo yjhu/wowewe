@@ -97,11 +97,13 @@
                 <div class="perImg_bgxxx">
                     <div class="perImgxxx">
               
-                        <img id="myphoto" src="../web/images/woke/man2.png" width="64">
-          
-                    <!--
-                    <img id="myphoto" src="<?php echo $user->headimgurl; ?>" width="56">
-                    -->
+
+                        <img id="myphoto" src="../web/images/woke/kf1.jpg" width="64">
+   
+                        <!--
+                        <img id="myphoto" src="<//?php echo $user->headimgurl; ?>" width="64">
+                        -->
+
                     </div>
                 </div>
                 <p class="f9 marT7">
@@ -112,7 +114,7 @@
             </dt>
 
             <dd>
-                <p><span style="font-size:22px;font-weight: border">
+                <p><span style="font-size:19px;font-weight: border">
                 <!--
                 杨念念
                 -->
@@ -124,9 +126,12 @@
 
                 </p>
 
-                <p class="f13">手机号码：  
+                <p class="f13">
+                <!--
+                <a href="#" style="color:#00CC00" class="ui-btn ui-shadow ui-corner-all ui-icon-phone ui-btn-icon-notext ui-btn-inline"></a>
+                -->
 
-                <a style="color:#aaa" href="tel:<?= $myManager->mobile ?>">
+                <a style="color:#aaa;font-size: 22pt" href="tel:<?= $myManager->mobile ?>">
                  <?= $myManager->mobile ?>
                 </a>
 

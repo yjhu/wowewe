@@ -1935,9 +1935,24 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->title = 'iPhone5S 16GB';
                 $order->attr = "{$_GET['cardType']}";
                 break;                 
-                
-
             //6.30 end
+            case MItem::ITEM_CAT_MOBILE_LYH_HTC_8160:
+                $order->title = 'HTC 8160';
+                $order->attr = "{$_GET['cardType']}";
+                break;  
+            case MItem::ITEM_CAT_MOBILE_LYH_SAMSUNG_N9006:
+                $order->title = '三星SM-N9006';
+                $order->attr = "{$_GET['cardType']}";
+                break;  
+            case MItem::ITEM_CAT_MOBILE_LYH_KUPAI_7296:
+                $order->title = '酷派 7296';
+                $order->attr = "{$_GET['cardType']}";
+                break;                  
+            case MItem::ITEM_CAT_MOBILE_LYH_IPHONE_64G:
+                $order->title = 'iPhone6 64G 灰色';
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+                
 
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI:
                 $order->title = '10元包100M 3G国内流量包';
