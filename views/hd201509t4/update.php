@@ -8,7 +8,7 @@ use yii\helpers\Html;
 //$this->title = 'Update Mhd201509t4: ' . ' ' . $model->hd201509t4_id;
 $this->title = '捐献积分献爱心活动';
 $this->params['breadcrumbs'][] = ['label' => '捐献积分献爱心活动', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->hd201509t4_id, 'url' => ['view', 'id' => $model->hd201509t4_id]];
+//$this->params['breadcrumbs'][] = ['label' => $model->hd201509t4_id, 'url' => ['view', 'id' => $model->hd201509t4_id]];
 $this->params['breadcrumbs'][] = '修改';
 ?>
 <div class="mhd201509t4-update">

@@ -1,5 +1,5 @@
 <?php
-
+use app\models\U;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -31,6 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
     -->
 
+    <p>
+    <?php echo Html::a('下载 <i class="glyphicon glyphicon-arrow-down"></i>', U::current(['download' => 1]), ['class' => 'btn btn-success', 'data-pjax' => '0',]); ?>
+    </p>
+
+    
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
