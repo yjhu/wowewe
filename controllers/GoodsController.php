@@ -99,9 +99,7 @@ class GoodsController extends Controller
 
 
             $model->save();
-
             return $this->redirect(['index']);
-
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -127,9 +125,7 @@ class GoodsController extends Controller
             {
                 $targetFileId = date("YmdHis").'-'.uniqid();
                 $ext = pathinfo($model->file->name, PATHINFO_EXTENSION);
-
                 $targetFileName = "{$targetFileId}.{$ext}";
-
                 $targetFile = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . MGoods::PHOTO_PATH . DIRECTORY_SEPARATOR . $targetFileName;
 
                 $model->file->saveAs($targetFile);
@@ -148,7 +144,6 @@ class GoodsController extends Controller
                     $targetFileId = date("YmdHis").'-'.uniqid();
                     $ext = pathinfo($file->name, PATHINFO_EXTENSION);
                     $targetFileName = "{$targetFileId}.{$ext}";
-
                     $targetFile = Yii::getAlias('@webroot') . DIRECTORY_SEPARATOR . MGoods::PHOTO_PATH . DIRECTORY_SEPARATOR . $targetFileName;
                     $file->saveAs($targetFile);
 
