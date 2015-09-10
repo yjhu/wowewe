@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\MGoods */
 
-$this->title = '修改产品: ' . ' ' . $model->title;
-$this->params['breadcrumbs'][] = ['label' => '产品', 'url' => ['index']];
+$this->title = '修改商品: ' . ' ' . $model->title;
+$this->params['breadcrumbs'][] = ['label' => '商品', 'url' => ['index']];
 //$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->goods_id]];
 $this->params['breadcrumbs'][] = '修改';
 ?>

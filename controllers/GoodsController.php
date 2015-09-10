@@ -20,6 +20,24 @@ use  yii\web\UploadedFile;
  */
 class GoodsController extends Controller
 {
+
+    public function actions()
+    {
+        return [
+            'imagesget' => [
+                'class' => 'vova07\imperavi\actions\GetAction',
+                'url' => Yii::$app->request->getHostInfo(). Yii::getAlias('@web/wysiwyg/'),                
+                'path' => '@webroot/wysiwyg',
+                'type' => \vova07\imperavi\actions\GetAction::TYPE_IMAGES,
+            ],
+            'imageupload' => [
+                'class' => 'vova07\imperavi\actions\UploadAction',
+                'url' => Yii::$app->request->getHostInfo(). Yii::getAlias('@web/wysiwyg/'),
+                'path' => '@webroot/wysiwyg',
+            ],            
+        ];
+    }
+
     public function behaviors()
     {
         return [

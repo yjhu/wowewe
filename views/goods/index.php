@@ -12,7 +12,7 @@ use app\models\MGoodsSearch;
 use app\models\U;
 
 
-$this->title = '产品';
+$this->title = '商品';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('新增产品', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('新增商品', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'goods_id',
             [
                 'attribute' => 'goods_id',
-                'label' => '产品编号',
+                'label' => '商品编号',
                 'headerOptions' => array('style'=>'width:50px;'),
             ],
 

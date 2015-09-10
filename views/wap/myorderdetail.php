@@ -51,7 +51,15 @@ use app\models\MOrder;
       
     </p>
 
-      <img width=100% height=240 class="media-object pull-left" src="<?= $order->item->pic_url ?>">
+      <?php if($order->attr == 'goods') { ?>
+          <?php
+                $imgs = $order->goods->body_img_url;
+                $imgUrls = explode(";",$imgs);
+          ?>
+         <img width=100% height=240 class="media-object pull-left" src="<?= $imgUrls[0] ?>">
+      <?php } else { ?>
+         <img width=100% height=240 class="media-object pull-left" src="<?= $order->item->pic_url ?>">
+      <?php } ?>
 
 
         <span>

@@ -1,8 +1,12 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 use app\models\MGoods;
+
+
+use vova07\imperavi\Widget;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\MGoods */
@@ -27,17 +31,47 @@ use app\models\MGoods;
 
     <?= $form->field($model, 'price_old_hint')->textInput(['maxlength' => 512]) ?>
 
-    <?= $form->field($model, 'detail')->textarea(['rows' => 6]) ?>
+    <!--
+    <//?= $form->field($model, 'detail')->textarea(['rows' => 6]) ?>
+    -->
+
+    <?php echo $form->field($model, 'detail')->widget(Widget::className(), [
+        'settings' => [
+            'lang' => 'zh_cn',
+            'minHeight'=>200,
+            'maxHeight'=>400,
+            'buttonSource'=>true,
+            'convertDivs'=>false,
+            'removeEmptyTags'=>false,
+            'plugins' => [
+                'clips',
+                'fullscreen',
+                'fontcolor',
+                'fontfamily',
+                'fontsize',
+                'limiter',
+                'table',
+                'textexpander',
+                'textdirection',
+                'video',
+                'definedlinks',
+                'filemanager',
+                'imagemanager',
+            ],
+            'imageManagerJson' => Url::to(['/goods/imagesget']),
+            'imageUpload' => Url::to(['/goods/imageupload']),
+        ]
+    ]); ?>
     
     <!--
     <//?= $form->field($model, 'list_img_url')->textInput(['maxlength' => 256]) ?>
     -->
-    <?= $form->field($model, 'file')->fileInput()->hint('1张产品列表小图，图片建议尺寸：120像素 * 120像素')  ?>
+    <?= $form->field($model, 'file')->fileInput()->hint('1张商品列表小图，图片建议尺寸：120像素 * 120像素')  ?>
 
     <!--
     <//?= $form->field($model, 'body_img_url')->textInput(['maxlength' => 512]) ?>
     -->
-     <?= $form->field($model, 'files[]')->fileInput(['multiple' => true, 'accept' => 'image/*'])->hint('最多3张产品展示大图，图片建议尺寸：700像素 * 500像素')  ?>
+     <?= $form->field($model, 'files[]')->fileInput(['multiple' => true, 'accept' => 'image/*'])->hint('最多3张商品展示大图，图片建议尺寸：700像素 * 500像素')  ?>
 
 
     <?= $form->field($model, 'quantity')->textInput() ?>

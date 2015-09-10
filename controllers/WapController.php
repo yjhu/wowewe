@@ -2449,6 +2449,14 @@ $arr = $order->sendTemplateNoticeToCustom();
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
+
+        //若非会员先跳到会员注册页面，先注册
+        $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        if (empty($user->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        }
+
         $models = MItem::find()->where(['kind' => MItem::ITEM_KIND_MOBILE])->orderBy(['price' => SORT_ASC])->all();
         $query = new \yii\db\Query();
         $query->select('*')->from(\app\models\MActivity::tableName())->where(['status' => 1])->orderBy(['id' => SORT_DESC])->all();
@@ -2506,6 +2514,14 @@ $arr = $order->sendTemplateNoticeToCustom();
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
+
+        //若非会员先跳到会员注册页面，先注册
+        $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        if (empty($user->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        }
+        
         $kind = $_GET['kind'];
         $models = MItem::find()->where(['kind' => $kind])->orderBy(['price' => SORT_ASC])->all();
         return $this->render('cardlist', ['gh_id' => $gh_id, 'openid' => $openid, 'models' => $models, 'kind' => $kind]);
@@ -2527,6 +2543,14 @@ $arr = $order->sendTemplateNoticeToCustom();
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
+
+        //若非会员先跳到会员注册页面，先注册
+        $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        if (empty($user->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        }
+
         $kind = $_GET['kind'];
         $models = MItem::find()->where(['kind' => $kind])->orderBy(['cid' => SORT_ASC])->all();
         return $this->render('hgllblist', ['gh_id' => $gh_id, 'openid' => $openid, 'models' => $models, 'kind' => $kind]);
@@ -3164,11 +3188,12 @@ $url2 = $result["code_url"];
         $openid = U::getSessionParam('openid');
         $model = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
         $models = MItem::find()->where(['kind' => MItem::ITEM_KIND_MOBILE])->orderBy(['price' => SORT_ASC])->all();
-        
-        //if (empty($model->openidBindMobiles)) {
-        //    Yii::$app->getSession()->set('RETURN_URL', Url::to());
-        //    return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
-        //}
+    
+        //若非会员先跳到会员注册页面，先注册
+        if (empty($model->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        }
         Yii::$app->wx->setGhId($gh_id);
 
         $flag1 = 0;

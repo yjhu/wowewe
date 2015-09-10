@@ -66,7 +66,8 @@
                     $model->cid==90004 || 
                     $model->cid==90005 ||
                     $model->cid==90008 ||
-                    $model->cid==90009
+                    $model->cid==90009 ||
+                    $model->cid==90010
                     ) {
             ?>
                 <li><a data-ajax="false" href="<?php echo  Url::to(['wap/hgllb', 'cid'=>$model->cid],true) ?>">

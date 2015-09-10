@@ -32,7 +32,7 @@ class MGoods extends \yii\db\ActiveRecord
     const CTRL_NO = 0;
     const CTRL_YES = 1;
 
-    //goods_kind 字段为产品分类，如：特价手机，流量包，老用户专享，活动海报宣传产品（办理）
+    //goods_kind 字段为商品分类，如：特价手机，流量包，老用户专享，活动海报宣传商品（办理）
     const GOODS_KIND_NONE = 0;
     const GOODS_KIND_TJSJ = 1;
     const GOODS_KIND_LYHZX = 2;
@@ -74,16 +74,16 @@ class MGoods extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'goods_id' => '产品编号',
-            'title' => '产品名',
+            'goods_id' => '商品编号',
+            'title' => '商品名',
             'descript' => '描述',
             'price' => '现价',
             'price_hint' => '现价提示语',
             'price_old' => '原价',
             'price_old_hint' => '原价提示语',
-            'detail' => '产品详情',
-            'list_img_url' => '产品小图',
-            'body_img_url' => '产品图',
+            'detail' => '商品详情',
+            'list_img_url' => '商品小图',
+            'body_img_url' => '商品图',
             'quantity' => '数量',
             'office_ctrl' => '显示营业厅',
             'package_ctrl' => '显示套餐',
@@ -91,6 +91,7 @@ class MGoods extends \yii\db\ActiveRecord
             'pics_ctrl' => '显示轮播图',
             'file' => '小图',
             'files' => '大图',
+            'goods_kind' => '分类',
         ];
     }
 
@@ -101,7 +102,7 @@ class MGoods extends \yii\db\ActiveRecord
             self::GOODS_KIND_TJSJ => '特价手机',
             self::GOODS_KIND_LYHZX => '老用户专享',
             self::GOODS_KIND_LLB => '流量包',
-            self::GOODS_KIND_HDHB => '活动宣传产品',
+            self::GOODS_KIND_HDHB => '活动宣传商品',
         );        
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     } 
@@ -141,5 +142,19 @@ class MGoods extends \yii\db\ActiveRecord
         );        
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
+
+    static function getViewGoodsPics($model)
+    {
+        $len = 0;
+        $imgHtml = "";
+        $imgs = explode(";",$model->body_img_url);
+        foreach ($imgs as $img) {
+            $len++;
+            if(sizeof($imgs) == $len) break; //分号分割后，数组最后一项为空，剔除
+            $imgHtml = $imgHtml . '<img src=' . $img . ' width=160> &nbsp;&nbsp;&nbsp;&nbsp;';
+        }
+        return $imgHtml;
+    }
+    
 
 }

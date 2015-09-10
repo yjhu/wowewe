@@ -57,8 +57,15 @@
 		<h2>订单详情</h2>
 
 			<p id="oid">订单号: <?= $model->oid; ?></p>
-	        <p id="title">商品名称: <?= MItem::getItemCatName($model->cid); ?>&nbsp;&nbsp;
-				<?php if($item->ctrl_package == 0 ) 
+	        <p id="title">商品名称: 
+	        <!--
+	        <//?= MItem::getItemCatName($model->cid); ?>
+	        -->
+			<?= MItem::getItemTitle($model->oid); ?>
+	        
+	        &nbsp;&nbsp;
+	        	<!--
+				<//?php if($item->ctrl_package == 0 ) 
 						echo '';
 					else if($model->val_pkg_3g4g == '3g')
 						echo '3G普通套餐'; 
@@ -67,6 +74,7 @@
 					else
 						echo '';
 				?>
+				-->
 	        </p>
 
 			<?php if($model->select_mobnum!=''){?>
@@ -199,7 +207,7 @@
                             else
                             {
                             }
-                            window.location.href = "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/myorder' ; ?>";
+                            window.location.href = "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/myorder'.'&gh_id='.$gh_id.'&openid='.$openid ; ?>";
                         }
                     );
                 }

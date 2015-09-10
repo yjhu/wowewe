@@ -277,6 +277,12 @@ class MItem extends ActiveRecord {
         return 'wx_item';
     }
 
+    static function getItemTitle($oid) {
+        $order = MOrder::findOne(['oid' => $oid]);
+        return $order->title;
+    }
+
+
     static function getItemCatName($key = null) {
         $arr = array(
             self::ITEM_CAT_DIY => '自由组合套餐',

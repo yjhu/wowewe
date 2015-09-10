@@ -91,6 +91,7 @@ use yii\behaviors\TimestampBehavior;
 use app\models\U;
 use app\models\MUser;
 use app\models\MItem;
+use app\models\MGoods;
 use app\models\MOffice;
 use app\models\MSceneDetail;
 use app\models\Wechat;
@@ -378,6 +379,13 @@ class MOrder extends ActiveRecord
         $model = MItem::findOne(['gh_id'=>$this->gh_id, 'cid'=>$this->cid]);
         return $model;
     }
+
+    public function getGoods()
+    {
+        $model = MGoods::findOne(['goods_id'=>$this->cid]);
+        return $model;
+    }
+
 
     public function getOffice()
     {
