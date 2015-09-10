@@ -718,25 +718,24 @@ class WapxController extends Controller {
 
         if ($order->save(false)) {
 
-            /*
             //send wx message and sm
             $manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
             if ($manager !== null && !empty($manager->openid))
             {
-            //U::W('sendWxm');
-            //$manager->sendWxm($order->getWxNoticeToManager());
-            //U::W('sendSm');
-            //$manager->sendSm($order->getSmNoticeToManager());
+                //U::W('sendWxm');
+                $manager->sendWxm($order->getWxNoticeToManager());
+                //U::W('sendSm');
+                //$manager->sendSm($order->getSmNoticeToManager());
             try {
-            $arr = $order->sendTemplateNoticeToManager($manager);
+                $arr = $order->sendTemplateNoticeToManager($manager);
             } catch(\Exception $e) {
-            U::W($e->getMessage());
+                U::W($e->getMessage());
             }
 
             } else {
             U::W(['Have no manager or the manager has not binded openid', $order]);
             }
-
+            /*
             // send wx message to user
             //$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);
             $arr = $order->sendTemplateNoticeToCustom();

@@ -774,8 +774,8 @@ function load_data2(i, n)
 
 $(document).on("pageinit", "#office-select", function(){
 
-	if (navigator.geolocation)
-	    navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionError, {enableHighAccuracy: true, maximumAge: 60000, timeout: 20000});
+	//if (navigator.geolocation)
+	//    navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionError, {enableHighAccuracy: true, maximumAge: 60000, timeout: 20000});
 
 	function getPositionSuccess( position ){
 	        var lat = position.coords.latitude;

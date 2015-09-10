@@ -2012,7 +2012,7 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->attr = "{$_GET['cardType']}";
                 break;   
             case MItem::ITEM_CAT_HGLLB_4G_SN_BNB:
-                $order->title = '4G 省内半年包';
+                $order->title = '4G省内半年包(100元包1.5G)';
                 $order->attr = "{$_GET['cardType']}";
                 break;   
 
@@ -2098,13 +2098,13 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $model->save(false);
             }
 
-/*
+
 //send wx message and sm
 $manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
 if ($manager !== null && !empty($manager->openid))
 {
 //U::W('sendWxm');
-//$manager->sendWxm($order->getWxNoticeToManager());
+$manager->sendWxm($order->getWxNoticeToManager());
 //U::W('sendSm');
 //$manager->sendSm($order->getSmNoticeToManager());
 try {
@@ -2116,6 +2116,8 @@ U::W($e->getMessage());
 } else {
 U::W(['Have no manager or the manager has not binded openid', $order]);
 }
+
+/*
 
 // send wx message to user
 //$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);

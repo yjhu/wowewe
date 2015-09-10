@@ -527,8 +527,12 @@ EOD;
         $office = MOffice::findOne($this->office_id);
         $detail = $this->detail;
         $feesum = sprintf("%0.2f",$this->feesum/100);
+        $select_mobnum = empty($this->select_mobnum)?"":"卡号".$this->select_mobnum.",";
+        $username = empty($this->username)?"":$this->username.",";
+        $userid = empty($this->userid)?"":"身份证".$this->userid.",";
+
         $str = <<<EOD
-{$office->title}: {$model->nickname}于{$this->create_time}已订购【{$detail}】, 卡号{$this->select_mobnum}, 订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}, 身份证{$this->userid}, 联系电话{$this->usermobile}】。 【{$gh->nickname}】
+{$office->title}: {$model->nickname}于{$this->create_time}已订购【{$detail}】, {$this->select_mobnum}订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}{$this->userid}联系电话{$this->usermobile}】。 【{$gh->nickname}】
 EOD;
         return $str;
     }    

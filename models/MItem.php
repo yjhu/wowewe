@@ -470,7 +470,7 @@ class MItem extends ActiveRecord {
             self::ITEM_CAT_HGLLB_KG => '酷狗',
             self::ITEM_CAT_HGLLB_LHTX => '漏话提醒',
             self::ITEM_CAT_HGLLB_KJTX => '开机提醒',
-            self::ITEM_CAT_HGLLB_4G_SN_BNB => '4G 省内半年包',
+            self::ITEM_CAT_HGLLB_4G_SN_BNB => '4G省内半年包(100元包1.5G)',
 
             //(活动)校园优惠季 + 流量包
             self::ITEM_CAT_HD_XYYHJ  => '校园优惠季',
