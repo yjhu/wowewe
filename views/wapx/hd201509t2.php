@@ -15,7 +15,7 @@ $signPackage = $jssdk->GetSignPackage();
 <html>
   <head>
     <meta charset="utf-8">
-    <title>充话费送话费活动</title>
+    <title>9月特惠3天</title>
 
     <!-- Sets initial viewport load and disables zooming  -->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -43,7 +43,7 @@ $signPackage = $jssdk->GetSignPackage();
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <!--<div class="content" style="background-color: #401080">-->
     <div class="content">
-    <img width=100%  src="/wx/web/images/hd201509t2-head.jpg?v2">
+    <img width=100%  src="/wx/web/images/hd201509t2-head.jpg?v3">
 
         <p align="center">
             <a href="#hdgz"><i class="fa fa-list" style="color:green"></i>&nbsp;活动说明</a>
@@ -62,12 +62,15 @@ $signPackage = $jssdk->GetSignPackage();
             </center>
         <?php } else { ?>
             <center>
-                <h4>
-                    恭喜，您符合充话费送话费活动条件。
+                <h2 style="color: red">
+                    恭喜！
+                </h2>
+                <h4 style="color: red">
+                    凭此画面可到营业厅充费送费，<br><br>了解详情请看'活动说明'。
                 </h4>
                 <br>
-                 <a class="btn btn-negative btn-block" style="width: 300px" id="queding">确认已领取</a>
-                 <p><b>注意</b> <br>‘确认已领取’按钮由联通工作人员点击。<br>用户请勿点击!</p>
+                 <a class="btn btn-block" style="width: 120px" id="queding">确认已参与</a>
+                 <p><b style="font-size: 14pt;color:red">注意!</b> <br>‘确认已参与’按钮由联通工作人员点击。<br>用户请勿点击!</p>
             </center>
         <?php } ?>
        
@@ -89,23 +92,64 @@ $signPackage = $jssdk->GetSignPackage();
 
             <p><b>活动规则</b></p>
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
-            （一）但凡2015年1-7月入网的用户，使用本机号码关注襄阳联通微信号并绑定手机，即可参与活动。
+            （一）用户在充值后请点击微信活动界面的“确认已参与”按钮，便于系统话费到账；
             </p>
 
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
-            （二）用户可享受存100元送20元、存200元送40元话费优惠。上限为200元，且每个用户只能参与一次。
+            （二）用户可享受充100元送20元，充200元送40元话费优惠，上限为200元，且每个用户只能参加一次。赠送的话费在两天内由系统自动到账。
             </p>
 
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
-            （三）符合条件的用户在渠道或营业厅当场充值100/200元话费，由各渠道当场发放20元面值充值卡。
+            （三）用户在营业厅出示微信参与资格，即可参与活动。所充手机号码必须与襄阳联通微信绑定的会员号码一致。
             </p>
 
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
-            （四）渠道通过20元充值卡给用户充值，用户领取卡后必须由联通营业员点击微信活动页面的“确认已领取”按钮，便于微信后台统计数据，防止用户重复参与活动。
-            </p>
+            （四）所预存的话费到账方式如下：
+            <center>
+            <table width="95%" border="1" style="font-size: 12pt;color:#aaa">
+                <tr>  
+                    <th>
+                    用户网别
+                    </th>
+                    <th>
+                    预存100元
+                    </th>
+                    <th>
+                    预存200元
+                    </th>
+                    <th>
+                    赠送的话费
+                    </th>
+                </tr>
 
-            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
-            （五）校园用户不可参与本次活动。
+                <tr>  
+                    <td>
+                    2G/3G用户
+                    </td>
+                    <td>
+                    60元一次性到账，40元话费分4个月每月到账10元 
+                    </td>
+                    <td>
+                    120元一次性到账，80元话费分4个月每月到账20元
+                    </td>
+                    <td>
+                      两天内系统自动到账
+                    </td>
+                </tr>
+
+                <tr>  
+                    <td>
+                    4G用户/首次续费用户
+                    </td>
+                    <td colspan="2">
+                    一次性到账 
+                    </td>
+                    <td>
+                      两天内系统自动到账
+                    </td>
+                </tr>
+            </table>
+            </center>
             </p>
             <br><hr>
             

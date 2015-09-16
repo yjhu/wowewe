@@ -58,7 +58,7 @@ use yii\helpers\Url;
             -->
 
             <?php foreach ($models as $model) {
-        if ($model->cid == 875 || $model->cid == 876) {
+        if ($model->cid == 876) {
             ?>
                 <li><a data-ajax="false" href="<?php echo Url::to(['wap/mobile', 'cid' => $model->cid], true)?>">
                         <img style='padding-top:20px' src="<?php echo $model->pic_url . '-120x120.jpg?v5'?>">
@@ -99,7 +99,12 @@ use yii\helpers\Url;
             $model->cid == 887 ||
             $model->cid == 888 ||
             $model->cid == 889 ||
-            $model->cid == 890) {
+            $model->cid == 890 ||
+            $model->cid == 70000 ||
+            $model->cid == 70001 ||
+            $model->cid == 70002 ||
+            $model->cid == 70003
+            ) {
             ?>
             <li><a data-ajax="false" href="<?php echo Url::to(['wap/mobile', 'cid' => $model->cid], true)?>">
                     <img style='padding-top:20px' src="<?php echo $model->pic_url . '-120x120.jpg?v5'?>">

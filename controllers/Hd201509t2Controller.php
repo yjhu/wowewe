@@ -35,6 +35,21 @@ class Hd201509t2Controller extends Controller
         $searchModel = new MHd201509t2Search();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        if (isset($_GET['download'])) {
+            $dataProvider->setPagination(false);
+            $data = $dataProvider->getModels();
+            $date = date('Y-m-d-His');
+            $filename = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'chfshf'."-{$date}.csv";
+            $csv = new \app\models\ECSVExport($data);
+            $attributes = ['mobile', 'yfzx', 'fsc', 'create_time','status'];
+            $csv->setInclude($attributes);                
+            //$csv->setHeaders(['Score'=>'成绩']);
+            $csv->toCSV($filename);
+            Yii::$app->response->sendFile($filename);
+            return;
+        }
+
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

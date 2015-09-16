@@ -1935,9 +1935,24 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->title = 'iPhone5S 16GB';
                 $order->attr = "{$_GET['cardType']}";
                 break;                 
-                
-
             //6.30 end
+            case MItem::ITEM_CAT_MOBILE_LYH_HTC_8160:
+                $order->title = 'HTC 8160';
+                $order->attr = "{$_GET['cardType']}";
+                break;  
+            case MItem::ITEM_CAT_MOBILE_LYH_SAMSUNG_N9006:
+                $order->title = '三星SM-N9006';
+                $order->attr = "{$_GET['cardType']}";
+                break;  
+            case MItem::ITEM_CAT_MOBILE_LYH_KUPAI_7296:
+                $order->title = '酷派 7296';
+                $order->attr = "{$_GET['cardType']}";
+                break;                  
+            case MItem::ITEM_CAT_MOBILE_LYH_IPHONE_64G:
+                $order->title = 'iPhone6 64G 灰色';
+                $order->attr = "{$_GET['cardType']}";
+                break; 
+                
 
             case MItem::ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI:
                 $order->title = '10元包100M 3G国内流量包';
@@ -1995,9 +2010,22 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
             case MItem::ITEM_CAT_HGLLB_KJTX:
                 $order->title = '开机提醒';
                 $order->attr = "{$_GET['cardType']}";
-                break;    
-            //惠购流量包 end
+                break;   
+            case MItem::ITEM_CAT_HGLLB_4G_SN_BNB:
+                $order->title = '4G省内半年包(100元包1.5G)';
+                $order->attr = "{$_GET['cardType']}";
+                break;   
 
+            //惠购流量包 end
+            case MItem::ITEM_CAT_HD_XYYHJ:
+                $order->title = '校园优惠季';
+                $order->attr = "{$_GET['cardType']}";
+                break;   
+
+            case MItem::ITEM_CAT_HD_LLB:
+                $order->title = '流量宝';
+                $order->attr = "{$_GET['cardType']}";
+                break;
 
             case MItem::ITEM_KIND_ZZYW:
                 $order->title = '增值业务';
@@ -2070,13 +2098,13 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $model->save(false);
             }
 
-/*
+
 //send wx message and sm
 $manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
 if ($manager !== null && !empty($manager->openid))
 {
 //U::W('sendWxm');
-//$manager->sendWxm($order->getWxNoticeToManager());
+$manager->sendWxm($order->getWxNoticeToManager());
 //U::W('sendSm');
 //$manager->sendSm($order->getSmNoticeToManager());
 try {
@@ -2088,6 +2116,8 @@ U::W($e->getMessage());
 } else {
 U::W(['Have no manager or the manager has not binded openid', $order]);
 }
+
+/*
 
 // send wx message to user
 //$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);
@@ -2421,6 +2451,14 @@ $arr = $order->sendTemplateNoticeToCustom();
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
+
+        //若非会员先跳到会员注册页面，先注册
+        $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        if (empty($user->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        }
+
         $models = MItem::find()->where(['kind' => MItem::ITEM_KIND_MOBILE])->orderBy(['price' => SORT_ASC])->all();
         $query = new \yii\db\Query();
         $query->select('*')->from(\app\models\MActivity::tableName())->where(['status' => 1])->orderBy(['id' => SORT_DESC])->all();
@@ -2478,6 +2516,14 @@ $arr = $order->sendTemplateNoticeToCustom();
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
+
+        //若非会员先跳到会员注册页面，先注册
+        $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        if (empty($user->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        }
+        
         $kind = $_GET['kind'];
         $models = MItem::find()->where(['kind' => $kind])->orderBy(['price' => SORT_ASC])->all();
         return $this->render('cardlist', ['gh_id' => $gh_id, 'openid' => $openid, 'models' => $models, 'kind' => $kind]);
@@ -2499,6 +2545,14 @@ $arr = $order->sendTemplateNoticeToCustom();
         $gh_id = U::getSessionParam('gh_id');
         $openid = U::getSessionParam('openid');
         Yii::$app->wx->setGhId($gh_id);
+
+        //若非会员先跳到会员注册页面，先注册
+        $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        if (empty($user->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        }
+
         $kind = $_GET['kind'];
         $models = MItem::find()->where(['kind' => $kind])->orderBy(['cid' => SORT_ASC])->all();
         return $this->render('hgllblist', ['gh_id' => $gh_id, 'openid' => $openid, 'models' => $models, 'kind' => $kind]);
@@ -3091,6 +3145,44 @@ $url2 = $result["code_url"];
         return $this->render('order4gtaocan', ['gh_id' => $gh_id, 'openid' => $openid]);
     }
 
+    //校园优惠季 20150829
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/showxyyhjinfo:gh_03a74ac96138
+    public function actionShowxyyhjinfo() {
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('showxyyhjinfo', ['gh_id' => $gh_id, 'openid' => $openid]);
+    }
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/xyyhj:gh_03a74ac96138
+    public function actionXyyhj() {
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('xyyhj', ['gh_id' => $gh_id, 'openid' => $openid]);
+    }
+
+    //流量宝活动 20150829
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/showllbhdinfo:gh_03a74ac96138
+    public function actionShowllbhdinfo() {
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('showllbhdinfo', ['gh_id' => $gh_id, 'openid' => $openid]);
+    }
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/llbhd:gh_03a74ac96138
+    public function actionLlbhd() {
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('llbhd', ['gh_id' => $gh_id, 'openid' => $openid]);
+    }
+
+
+
     // http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/lyhzxyh:gh_03a74ac96138
     public function actionLyhzxyh() {
         $this->layout = 'wapy';
@@ -3098,11 +3190,12 @@ $url2 = $result["code_url"];
         $openid = U::getSessionParam('openid');
         $model = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
         $models = MItem::find()->where(['kind' => MItem::ITEM_KIND_MOBILE])->orderBy(['price' => SORT_ASC])->all();
-        
-        //if (empty($model->openidBindMobiles)) {
-        //    Yii::$app->getSession()->set('RETURN_URL', Url::to());
-        //    return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
-        //}
+    
+        //若非会员先跳到会员注册页面，先注册
+        if (empty($model->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        }
         Yii::$app->wx->setGhId($gh_id);
 
         $flag1 = 0;
@@ -4282,23 +4375,27 @@ $url2 = $result["code_url"];
             $user = MUser::findOne(['openid' => $openid]);
             $office = MOffice::findOne(['office_id' => $user->belongto]);
 
-            if($office->is_selfOperated == 0)
+            if(!empty($office))
             {
-                //wx_office_score_event 增加一条记录
-                $offce_score_event = new MOfficeScoreEvent;
-                $offce_score_event->gh_id = $gh_id;
-                $offce_score_event->openid = $openid;
-                $offce_score_event->office_id = $user->belongto;
-                $offce_score_event->cat = MOfficeScoreEvent::CAT_ADD_NEW_MEMBER;
-                $offce_score_event->create_time = date('y-m-d h:i:s',time());
-                $offce_score_event->score = MOfficeScoreEvent::CAT_ADD_NEW_MEMBER_SCORE;
-                $offce_score_event->memo = '新增会员';
-                $offce_score_event->save(false);
+                if($office->is_selfOperated == 0)
+                {
+                    //wx_office_score_event 增加一条记录
+                    $offce_score_event = new MOfficeScoreEvent;
+                    $offce_score_event->gh_id = $gh_id;
+                    $offce_score_event->openid = $openid;
+                    $offce_score_event->office_id = $user->belongto;
+                    $offce_score_event->cat = MOfficeScoreEvent::CAT_ADD_NEW_MEMBER;
+                    $offce_score_event->create_time = date('y-m-d h:i:s',time());
+                    $offce_score_event->score = MOfficeScoreEvent::CAT_ADD_NEW_MEMBER_SCORE;
+                    $offce_score_event->memo = '新增会员';
+                    $offce_score_event->save(false);
 
-                //wx_office表中对应渠道score 加100分
-                $office->score = $office->score + 100;
-                $office->save(false);
+                    //wx_office表中对应渠道score 加100分
+                    $office->score = $office->score + 100;
+                    $office->save(false);
+                }   
             }
+
 
             Yii::$app->wx->setGhId($gh_id);
             $url = Url::to(['hyzx1', 'gh_id' => $gh_id, 'openid' => $openid], true);
@@ -4307,7 +4404,7 @@ $url2 = $result["code_url"];
             if (!empty($url)) {
                 return $this->redirect($url);
             } else {
-                Yii::$app->session->setFlash('success', '绑定成功');
+                Yii::$app->session->setFlash('success', '恭喜您，会员注册成功！');
                 return $this->refresh();
             }
         }

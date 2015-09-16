@@ -92,8 +92,12 @@
             <li class="table-view-cell media">
               <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['myorderdetail', 'oid'=>$order->oid],true) ?>">
 
-                <img class="media-object pull-left" src="<?php echo $order->item->pic_url.'-120x120.jpg' ?>" width="80" height="80">
-               
+                <?php if($order->attr == 'goods') { ?>
+                  <img class="media-object pull-left" src="<?php echo $order->goods->list_img_url ?>" width="80" height="80">
+                <?php } else { ?>
+                  <img class="media-object pull-left" src="<?php echo $order->item->pic_url.'-120x120.jpg' ?>" width="80" height="80">
+                <?php } ?>
+
                 <div class="media-body">
                   <p><span class="orderitem">订单编号</span>&nbsp;&nbsp;<?= $order->oid ?></p>
                   <p><span class="orderitem">下单时间</span>&nbsp;&nbsp;<?= $order->create_time ?></p>

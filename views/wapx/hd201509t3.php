@@ -49,10 +49,12 @@ $lists = \app\models\MHd201509t4::find()
     <!--<div class="content" style="background-color: #401080">-->
     <div class="content">
 
-    <img width=100%  src="/wx/web/images/hd201509t3-head.jpg?v3">
+    <img width=100%  src="/wx/web/images/hd201509t3-head.jpg?v4">
     <hr width="100%" color="green">
 
         <p align="center">
+            <a href="http://jf.10010.com"><i class="fa fa-gift fa-3x" style="color:#FC8301"></i>&nbsp;积分兑换</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#hdgz"><i class="fa fa-list fa-2x" style="color:green"></i>&nbsp;活动说明</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#history"><i class="fa fa-heart fa-2x" style="color:red"></i>&nbsp;爱心历史</a>
@@ -170,7 +172,7 @@ $lists = \app\models\MHd201509t4::find()
             <br><hr>
             <p><b>捐赠地点</b></p>
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
-            湖北省襄阳市保康县寺坪镇板庙小学
+            湖北省襄阳市保康县寺坪村板庙小学
             </p>
             <br><hr>
             <p><b>活动兑换产品</b></p>
@@ -190,7 +192,7 @@ $lists = \app\models\MHd201509t4::find()
             <p class='p1'>留意襄阳日报、晚报相关报道。</p>
             <br><hr>
             <p><b>兑换成功后是否可以取消、所兑物品是否给用户？</b></p>
-            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;积分一经兑换不可取消，礼品不直接配送至客户，由襄阳联通统一派送至保康县寺坪镇龙凤村小学；</p>
+            <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;积分一经兑换不可取消，礼品不直接配送至客户，由襄阳联通统一派送至湖北省襄阳市保康县寺坪村板庙小学；</p>
             <br>
             
             <p align="center">

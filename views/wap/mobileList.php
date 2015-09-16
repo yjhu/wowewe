@@ -71,7 +71,9 @@
 
                     <?php if( ($model->old_price != 0) && ($model->old_price > $model->price) ){ ?>
                         <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
-                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?></p>
+                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?> 
+                        &nbsp;&nbsp;微信会员专享优惠！
+                        </p>
                     <?php } ?>
 
                     <p>价格: ￥<?= round($model->price/100) ?></p>
@@ -101,7 +103,9 @@
                     -->
                     <?php if( ($model->old_price != 0) && ($model->old_price > $model->price) ){ ?>
                         <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
-                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?></p>
+                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?>
+                            &nbsp;&nbsp;微信会员专享优惠！
+                        </p>
                     <?php } ?>
 
                     <p>价格: ￥<?= round($model->price/100) ?></p>
@@ -133,7 +137,9 @@
 
                     <?php if( ($model->old_price != 0) && ($model->old_price > $model->price) ){ ?>
                         <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
-                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?></p>
+                        <p class='jiang'>直降&#8595;: ￥<?= round($model->old_price / 100)-round($model->price / 100)  ?>
+                          &nbsp;&nbsp;微信会员专享优惠！
+                        </p>
                     <?php } ?>
 
                     <p>价格: ￥<?= round($model->price/100) ?></p>

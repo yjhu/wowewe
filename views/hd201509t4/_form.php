@@ -24,9 +24,16 @@ use app\models\MHd201509t4;
 
 
     <?php
-        echo "<img width=48 src=".$model->user->headimgurl.">";
-        echo emoji_unified_to_html(emoji_softbank_to_unified($model->user->nickname))."<br>";
-        echo $model->create_time;
+        echo "<img width=81 src=".$model->user->headimgurl.">";
+        echo "<h3>".emoji_unified_to_html(emoji_softbank_to_unified($model->user->nickname))."</h3><br>";
+       
+    ?>
+
+
+    <?php
+        echo "<h3>捐献积分: ".$model->score."</h3>";
+        echo "<h3>手机号码: ".$model->mobile."</h3>";
+        echo "<h3>捐献时间: ".$model->create_time."</h3>";
     ?>
 
 
@@ -44,11 +51,6 @@ use app\models\MHd201509t4;
     <//?= $form->field($model, 'status')->textInput() ?>
     -->
 
-
-    <?php
-        echo "<h2>手机号码: ".$model->mobile."</h2>";
-        echo "<h2>捐献积分: ".$model->score."</h2>";
-    ?>
 
 
     <br> <br>

@@ -194,15 +194,30 @@ class WechatXiangYangUnicom extends Wechat
         $search = $xs->search;
 //        \Yii::warning(__METHOD__);
 //        \Yii::warning(date('Y-m-d H:i:s'));
+
         $docs = $search->setQuery($content)->setLimit(5)->search();
 //        \Yii::warning(date('Y-m-d H:i:s'));
         if (empty($docs)) return false;
         $respText = '';
+
+        //完全匹配问题的话，就给出精准回答一条。 zengkai add 20150910
+        foreach ($docs as $doc) {
+            if($doc->question === $content)
+            {
+                $respText .= '问题：'.$doc->question . PHP_EOL;
+                $respText .= '回答：'.$doc->answer . PHP_EOL;
+                $respText .= PHP_EOL;
+                goto jumphere;
+            }
+        }
+
         foreach ($docs as $doc) {
             $respText .= '问题：'.$doc->question . PHP_EOL;
             $respText .= '回答：'.$doc->answer . PHP_EOL;
             $respText .= PHP_EOL;
         }
+
+        jumphere:
         \Yii::warning($respText);
         return $this->responseText($respText);
     }

@@ -327,7 +327,7 @@
           ?>
           <input type="tel" id="czhm" placeholder="手机号码" value="<?=  empty($openidBindMobile)? "" : $openidBindMobile->mobile ?>">
           
-          <input type="tel" id='czje' placeholder="请输入5的倍数，最多可充金额 <?= $user->user_account_balance/100 ?>">
+          <input type="tel" id='czje' placeholder="5的倍数,每月额度100,余额<?= $user->user_account_balance/100 ?>">
 
           <br>
           <button class="btn btn-positive btn-block" id='qdchf'>确定充话费</button>
@@ -490,6 +490,12 @@
           {
             alert("充值金额超出了您的帐户余额，\n请重新填写。");
             return  false;
+          }
+
+          if((parseInt(ye) > 100) && (czje > 100))
+          {
+              alert("充值金额超过了每月最高额度100元，\n请重新填写。");
+              return  false;
           }
 
           if(czje%5 != 0)

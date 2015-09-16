@@ -1,3 +1,7 @@
+<?php
+    include('../models/utils/emoji.php');
+?>
+
 <div class="page-bar">
     <div class="pull-right">
         <?php if (NULL !== $target_office) { ?>
@@ -282,10 +286,21 @@
                                             $user = \app\models\MUser::findOne(['openid' => $office_sore_event->openid]);
                                         ?>
 
-                                        <img class="timeline-img pull-left" src="<?= $user->headImgUrl ?>" alt="">
-                                        <span style="font-size: 26pt">
-                                        <?= $office_sore_event->score; ?>
+                                        <img class="timeline-img pull-left" src="<?= empty($user->headImgUrl)?"http://placehold.it/75x75":$user->headImgUrl ?>" alt="">
+                                        
+
+                                        <span style="font-size: 26pt; font-weight: 900">
+                                            +<?= $office_sore_event->score; ?>
+                                        </span>分
+                                        <br>
                                         <span>
+                                            微信昵称&nbsp;&nbsp;<?= emoji_unified_to_html(emoji_softbank_to_unified($user->nickname)); ?>
+                                        </span>
+                                        <br>
+                                        <span>
+                                            注册手机&nbsp;&nbsp;<?= $user->getBindMobileNumbersStr(); ?>
+                                        </span>
+
                                         </div>
                                     </div>
                                 </li>
@@ -307,6 +322,7 @@
 <?php
 $this->registerCssFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css' );
 $this->registerCssFile( '@web/metronic/theme/assets/admin/pages/css/timeline-old.css' ); 
+$this->registerCssFile( '@web/php-emoji/emoji.css' );
 $this->registerJsFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/moment.min.js' );
 $this->registerJsFile( '@web/metronic/theme/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js' );
 $this->registerJsFile( '@web/metronic/theme/assets/global/plugins/flot/jquery.flot.min.js' );

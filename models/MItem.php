@@ -206,18 +206,18 @@ class MItem extends ActiveRecord {
 
 
 
-    //老用户户专享 参与机型及优惠合约
+    //老用户专享 参与机型及优惠合约
     const ITEM_CAT_MOBILE_SANXIN_SM_G9006VW = 870;
     const ITEM_CAT_MOBILE_HTC_ONE = 871;
     const ITEM_CAT_MOBILE_ZHONGXING_Q801U = 872;
     const ITEM_CAT_MOBILE_LIANXIANG_A606 = 873;
     const ITEM_CAT_MOBILE_ZHONGXINGV5S_1 = 874;
-    //老用户户专享 5.1
+    //老用户专享 5.1
     const ITEM_CAT_MOBILE_LYH_IPHONE4S_8GB = 875;
     const ITEM_CAT_MOBILE_LYH_IPHONE5S_16GB = 876;
     const ITEM_CAT_MOBILE_SANXING_N9106W = 877;
 
-    //老用户户专享 6.18
+    //老用户专享 6.18
     const ITEM_CAT_MOBILE_LYH_IPHONE6PLUS_128GB = 878;
     const ITEM_CAT_MOBILE_LYH_KUPAI_Y76 = 879;
     const ITEM_CAT_MOBILE_LYH_XIAOMI4_4G = 880;
@@ -234,6 +234,13 @@ class MItem extends ActiveRecord {
      const ITEM_CAT_MOBILE_LYH_RONGYAO_4X_HI = 889;
      const ITEM_CAT_MOBILE_LYH_RONGYAO_4X_ST = 890;
 
+     const ITEM_CAT_MOBILE_LYH_HTC_8160 = 70000;
+     const ITEM_CAT_MOBILE_LYH_SAMSUNG_N9006 = 70001;
+     const ITEM_CAT_MOBILE_LYH_KUPAI_7296 = 70002;
+     const ITEM_CAT_MOBILE_LYH_IPHONE_64G = 70003;
+
+
+     //老用户专享 end
 
 
     //流量包 国内
@@ -252,6 +259,11 @@ class MItem extends ActiveRecord {
     const ITEM_CAT_HGLLB_KG = 90007;
     const ITEM_CAT_HGLLB_LHTX = 90008;
     const ITEM_CAT_HGLLB_KJTX = 90009;
+    const ITEM_CAT_HGLLB_4G_SN_BNB = 90010;
+
+    //(活动)校园优惠季 + 流量宝
+    const ITEM_CAT_HD_XYYHJ = 80000;
+    const ITEM_CAT_HD_LLB = 80001;
 
     //增值业务
     const ITEM_KIND_ZZYW = 1000;
@@ -264,6 +276,12 @@ class MItem extends ActiveRecord {
     public static function tableName() {
         return 'wx_item';
     }
+
+    static function getItemTitle($oid) {
+        $order = MOrder::findOne(['oid' => $oid]);
+        return $order->title;
+    }
+
 
     static function getItemCatName($key = null) {
         $arr = array(
@@ -430,7 +448,11 @@ class MItem extends ActiveRecord {
              self::ITEM_CAT_MOBILE_LYH_LESHI1 => '乐视乐1',
              self::ITEM_CAT_MOBILE_LYH_RONGYAO_4X_HI => '荣耀4X（高配版）',
              self::ITEM_CAT_MOBILE_LYH_RONGYAO_4X_ST => '荣耀4X（标配版）',
-
+             self::ITEM_CAT_MOBILE_LYH_HTC_8160 => 'HTC 8160',
+             self::ITEM_CAT_MOBILE_LYH_SAMSUNG_N9006 => '三星SM-N9006',
+             self::ITEM_CAT_MOBILE_LYH_KUPAI_7296 => '酷派 7296',
+             self::ITEM_CAT_MOBILE_LYH_IPHONE_64G => 'iPhone6 64G 灰色',
+             
 
             //流量包 国内
             self::ITEM_KIND_INTERNET_CARD_FLOW100MB_GUONEI => '10元包100M 3G国内流量包',
@@ -444,12 +466,15 @@ class MItem extends ActiveRecord {
             self::ITEM_CAT_HGLLB_3G_SN_10Y100M => '3G省内流量 10元 100M',
             self::ITEM_CAT_HGLLB_3G_SN_20Y300M => '3G省内流量 20元 300M',
             self::ITEM_CAT_HGLLB_3G_SN_30Y500M => '3G省内流量 30元 500M',
-
             self::ITEM_CAT_HGLLB_WO_PPTV => 'Wo+视频 PPTV定向流量包月',
             self::ITEM_CAT_HGLLB_KG => '酷狗',
             self::ITEM_CAT_HGLLB_LHTX => '漏话提醒',
             self::ITEM_CAT_HGLLB_KJTX => '开机提醒',
+            self::ITEM_CAT_HGLLB_4G_SN_BNB => '4G省内半年包(100元包1.5G)',
 
+            //(活动)校园优惠季 + 流量包
+            self::ITEM_CAT_HD_XYYHJ  => '校园优惠季',
+            self::ITEM_CAT_HD_LLB  => '流量宝',
 
             //增值业务
             self::ITEM_KIND_ZZYW => '增值业务',

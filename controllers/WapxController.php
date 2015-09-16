@@ -7,6 +7,9 @@ use app\models\MOrder;
 use app\models\MStaff;
 use app\models\MUser;
 use app\models\Messagebox;
+use app\models\MGoods;
+use app\models\MMobnum;
+
 
 
 use app\models\U;
@@ -520,46 +523,42 @@ class WapxController extends Controller {
             return $this->render('need_subscribe');
         }
 
-        $hd201509t2 = \app\models\MHd201509t2::findOne([
-            'gh_id' => $gh_id,
-            'openid' => $openid,
+        $bindMobiles = \app\models\OpenidBindMobile::findOne([
+                'gh_id' => $gh_id,
+                'openid' => $openid,
+            ]);
+
+        if (empty($bindMobiles)) 
+        {
+            $url = \yii\helpers\Url::to();
+            \Yii::$app->getSession()->set('RETURN_URL', $url);
+            return $this->redirect(['wap/addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        } 
+
+        $hd201509t1 = \app\models\MHd201509t1::findOne([
+            'mobile' => $bindMobiles->mobile,
         ]);
 
-        if (empty($hd201509t2)) {
+        if(empty($hd201509t1))
+        {
+            //不在能充值的用户表中， 不符合充值条件，显示对不起页面
+            return $this->render('hd201509t2_1');
+        }    
 
-            $bindMobiles = \app\models\OpenidBindMobile::findOne([
-                    'gh_id' => $gh_id,
-                    'openid' => $openid,
-                ]);
+        $hd201509t2 = \app\models\MHd201509t2::findOne([
+            'mobile' => $hd201509t1->mobile,
+        ]);
 
-            if (empty($bindMobiles)) 
-            {
-                $url = \yii\helpers\Url::to();
-                \Yii::$app->getSession()->set('RETURN_URL', $url);
-                return $this->redirect(['wap/addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
-            } 
-            else 
-            {
-                $hd201509t1 = \app\models\MHd201509t1::findOne([
-                        'mobile' => $bindMobiles->mobile,
-                    ]);
-
-                if(!empty($hd201509t1))
-                {
-                    $hd201509t2 = new \app\models\MHd201509t2;
-                    $hd201509t2->gh_id = $gh_id;
-                    $hd201509t2->openid = $openid;
-                    $hd201509t2->mobile = $bindMobiles->mobile;
-                    $hd201509t2->status = 0;
-                    $hd201509t2->save(false);
-                }
-                else
-                {
-                    //不在能充值的用户表中， 不符合充值条件，显示对不起页面
-                    return $this->render('hd201509t2_1');
-                }
-
-            }
+        if(empty($hd201509t2))
+        {
+            $hd201509t2 = new \app\models\MHd201509t2;
+            $hd201509t2->gh_id = $gh_id;
+            $hd201509t2->openid = $openid;
+            $hd201509t2->mobile = $bindMobiles->mobile;
+            $hd201509t2->status = 0;
+            $hd201509t2->yfzx = $hd201509t1->yfzx;
+            $hd201509t2->fsc = $hd201509t1->fsc;
+            $hd201509t2->save(false);
         }
 
         return $this->render('hd201509t2', [
@@ -621,10 +620,142 @@ class WapxController extends Controller {
             ]);
         }
 
+    }
+    
 
-
+    //201509 捐献积分兑换列表页 
+    //http://wosotech.com/wx/web/index.php?r=wapx/jfdhlist&gh_id=gh_03a74ac96138
+    // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/jfdhlist:gh_03a74ac96138#wechat_redirect
+    public function actionJfdhlist() {
+        $this->layout = false;
+        return $this->render('jfdhlist');
     }
 
+    //新商品列表20150909
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wapx/goodslist:gh_03a74ac96138
+    //https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/goodslist:gh_03a74ac96138:goods_kind=1#wechat_redirect
+    public function actionGoodslist() {
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+
+        $goods_kind = $_GET['goods_kind'];
+        $goods = MGoods::find()->where(['goods_kind' => $goods_kind])->all();
+
+        return $this->render('goodslist', ['gh_id' => $gh_id, 'openid' => $openid, 'goods' => $goods, 'goods_kind' => $goods_kind]);
+    }
+
+    public function actionGoods() {
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+
+        //$user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        $goods_id = $_GET['goods_id'];
+        $good = MGoods::findOne(['goods_id' => $goods_id]);
+
+        $goods_kind = $_GET['goods_kind'];
+
+        return $this->render('goods', ['gh_id' => $gh_id, 'openid' => $openid, 'good' => $good, 'goods_kind' => $goods_kind]);
+    }
+
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wapx/goodssave:gh_1ad98f5481f3
+    public function actionGoodssave() {
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        $order = new MOrder;
+        $order->oid = MOrder::generateOid();
+        $order->gh_id = $gh_id;
+        $order->openid = $openid;
+        $order->cid = $_GET["cid"];
+
+        $good = MGoods::findOne(['goods_id' => $order->cid]);
+
+        $order->title =  $good->title;
+        //利用该字段做一个标记，在myorder 页面中兼容老的商品表item。
+        $order->attr = 'goods';
+
+        $order->val_pkg_3g4g = isset($_GET['pkg3g4g']) ? $_GET['pkg3g4g'] : '';
+        $order->val_pkg_period = isset($_GET['pkgPeriod']) ? $_GET['pkgPeriod'] : 0;
+        $order->val_pkg_monthprice = isset($_GET['pkgMonthprice']) ? $_GET['pkgMonthprice'] : 0;
+        $order->val_pkg_plan = isset($_GET['pkgPlan']) ? $_GET['pkgPlan'] : '';
+        //$order->feesum = $_GET['feeSum'] * 100;
+        $order->feesum = $_GET['feeSum'] * 100;
+        $order->office_id = (isset($_GET['office']) && $_GET['office'] != MOrder::NO_CHOICE) ? $_GET['office'] : 0;
+  
+        $order->userid = (isset($_GET['userid']) && $_GET['userid'] != MOrder::NO_CHOICE) ? $_GET['userid'] : '';
+        $order->username = (isset($_GET['username']) && $_GET['username'] != MOrder::NO_CHOICE) ? $_GET['username'] : '';
+        $order->usermobile = (isset($_GET['usermobile']) && $_GET['usermobile'] != MOrder::NO_CHOICE) ? $_GET['usermobile'] : '';
+        //$order->pay_kind = isset($_GET['pay_kind']) ? $_GET['pay_kind'] : MOrder::PAY_KIND_CASH;
+        $order->address = (isset($_GET['address']) && $_GET['address'] != MOrder::NO_CHOICE) ? $_GET['address'] : '';
+        $order->kaitong = (isset($_GET['kaitong']) && $_GET['kaitong'] != MOrder::NO_CHOICE) ? $_GET['kaitong'] : '';
+
+        $order->memo = (isset($_GET['memo']) && $_GET['memo'] != MOrder::NO_CHOICE) ? $_GET['memo'] : '';
+
+        $order->detail = $order->getDetailStr();
+
+        /*
+        if ($_GET['selectNum'] != MOrder::NO_CHOICE) {
+            $order->select_mobnum = $_GET['selectNum'];
+            $mobnum = MMobnum::findOne($_GET['selectNum']);
+            if ($mobnum === null || $mobnum->status != MMobnum::STATUS_UNUSED) {
+                return json_encode(['status' => 1, 'errmsg' => $mobnum === null ? "mobile doest not exist" : "mobile locked!"]);
+            }
+        } else {
+            $order->select_mobnum = '';
+        }
+        */
+        $order->select_mobnum = '';
+
+        /*
+        $wid = Yii::$app->request->get('wid', '');
+        if (!empty($wid)) {
+            list($scene_id, $scene_src_id) = explode('_', $wid);
+            $order->scene_id = $scene_id;
+            $order->scene_src_id = $scene_src_id;
+            if (empty($order->item)) {
+                U::W("@@@@@@@@@@@@@@@@@@@NULL@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            }
+
+            $order->scene_amt = $order->feesum * $order->item->scene_percent / 100;
+        }
+        */
+
+        if ($order->save(false)) {
+
+            //send wx message and sm
+            $manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
+            if ($manager !== null && !empty($manager->openid))
+            {
+                //U::W('sendWxm');
+                $manager->sendWxm($order->getWxNoticeToManager());
+                //U::W('sendSm');
+                //$manager->sendSm($order->getSmNoticeToManager());
+            try {
+                $arr = $order->sendTemplateNoticeToManager($manager);
+            } catch(\Exception $e) {
+                U::W($e->getMessage());
+            }
+
+            } else {
+            U::W(['Have no manager or the manager has not binded openid', $order]);
+            }
+            /*
+            // send wx message to user
+            //$arr = Yii::$app->wx->WxMessageCustomSend(['touser'=>$openid, 'msgtype'=>'text', 'text'=>['content'=>$order->getWxNotice()]]);
+            $arr = $order->sendTemplateNoticeToCustom();
+             */
+
+        } else {
+            U::W([__METHOD__, $order->getErrors()]);
+        }
+
+        $jsApiParameters = $order->GetOrderJsApiParameters();
+        return json_encode(['oid' => $order->oid, 'status' => 0, 'pay_url' => $jsApiParameters]);
+    }
 
 
 

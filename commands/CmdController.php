@@ -1023,11 +1023,12 @@ class CmdController extends Controller
     }    
 
 
-    //导入23g-user.csv 和 4g-user.csv (20150815)数据到wx_hd201509t1表 
+    //导入23g-user.csv 和 4g-user.csv (20150815)数据到wx_hd201509t1表  (作废)
+    //导入all-users-20150828.csv(20150828)数据到wx_hd201509t1表
     //wx_hd201509t1 中存放2015 1-7月满足充话费送话费活动条件的用户
     public function actionImporthd201509t1()
     {
-        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'4g-user.csv';
+        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'all-users-20150828.csv';
         $fh = fopen($file, "r");
         $i=0;
         while (!feof($fh)) 
@@ -1037,11 +1038,18 @@ class CmdController extends Controller
                 continue;
             $arr = explode(",", $line);     
 
-            $arr[1] = iconv('GBK','UTF-8//IGNORE', $arr[1]);
-            $mobile = trim($arr[1]);
+            $arr[0] = iconv('GBK','UTF-8//IGNORE', $arr[0]);
+            $mobile = trim($arr[0]);
 
-            echo $mobile."\n";
+            $arr[1] = iconv('GBK','UTF-8//IGNORE', $arr[1]);
+            $yfzx = trim($arr[1]);
+
+            $arr[2] = iconv('GBK','UTF-8//IGNORE', $arr[2]);
+            $fsc = trim($arr[2]);
+
+            echo $mobile."\t".$yfzx."\t".$fsc."\n";
    
+ 
             $hd201509t1 = MHd201509t1::findOne(['mobile'=>$mobile]);
             if (!empty($hd201509t1)) {
                 //U::W("mobile=$mobile already exists");                
@@ -1050,9 +1058,10 @@ class CmdController extends Controller
                 $hd201509t1 = new MHd201509t1;
             }
 
-            $hd201509t1->mobile = $mobile;                
+            $hd201509t1->mobile = $mobile;  
+            $hd201509t1->yfzx = $yfzx;  
+            $hd201509t1->fsc = $fsc;                
             $hd201509t1->save(false);
-
 
             $i++;
             if ($i % 1000 == 1)
@@ -1318,6 +1327,44 @@ class CmdController extends Controller
     }
 
 
+    //把集团发展（groupmember.csv 表中）的会员拎出来
+    public function actionGroupmember($filename = 'groupmember.csv') {
+        
+        //$xyunicom = \app\models\WosoClient::findOne(['title_abbrev' => '襄阳联通']);
+        //if (empty($xyunicom)) die('不能找到襄阳联通。');
+        
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, "r");
+        while (!feof($fh)) {
+            $line = trim(fgets($fh));
+            if (empty($line) || strlen($line) == 0) continue;
+            $fields = explode(",", $line);
+            $mobile = trim($fields[0]);
+            $mobile_utf8 = iconv('GBK', 'UTF-8//IGNORE', $mobile);
+
+            $office_title = trim($fields[1]);
+            $office_title_utf8 = iconv('GBK', 'UTF-8//IGNORE', $office_title);
+
+            $bind = OpenidBindMobile::findOne(['mobile' => $mobile]);
+
+            $office_old = "--";
+            if(!empty($bind))
+            {
+                $user = MUser::findOne(['openid' => $bind->openid]);
+                if(!empty($user))
+                {
+                    $office = MOffice::findOne(['office_id' => $user->belongto]);
+                    if(!empty($office))
+                        $office_old = $office->title;
+                }
+            }
+           
+            echo $mobile_utf8."\t".$office_old."\t".$office_title_utf8."\n";
+        
+        }
+        fclose($fh);
+    }
+    
 
 
 

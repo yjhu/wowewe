@@ -57,8 +57,15 @@
 		<h2>订单详情</h2>
 
 			<p id="oid">订单号: <?= $model->oid; ?></p>
-	        <p id="title">商品名称: <?= MItem::getItemCatName($model->cid); ?>&nbsp;&nbsp;
-				<?php if($item->ctrl_package == 0 ) 
+	        <p id="title">商品名称: 
+	        <!--
+	        <//?= MItem::getItemCatName($model->cid); ?>
+	        -->
+			<?= MItem::getItemTitle($model->oid); ?>
+	        
+	        &nbsp;&nbsp;
+	        	<!--
+				<//?php if($item->ctrl_package == 0 ) 
 						echo '';
 					else if($model->val_pkg_3g4g == '3g')
 						echo '3G普通套餐'; 
@@ -67,6 +74,7 @@
 					else
 						echo '';
 				?>
+				-->
 	        </p>
 
 			<?php if($model->select_mobnum!=''){?>
@@ -124,6 +132,7 @@
 
 			<?php
 				//当产品为 惠购流量包产品时，不需要用户选择支付方式，直接订购，营业厅扣除用户话费，办理相应业务 
+				//校园优惠季 + 流量宝 活动 直接订购，办理相应业务 
 				if( $model->cid == 90000 ||
 					$model->cid == 90001 ||
 					$model->cid == 90002 ||
@@ -133,7 +142,10 @@
 					$model->cid == 90006 ||
 					$model->cid == 90007 ||
 					$model->cid == 90008 ||
-					$model->cid == 90009) {
+					$model->cid == 90009 ||
+					$model->cid == 90010 ||
+					$model->cid == 80000 ||
+					$model->cid == 80001 ) {
 			?>
 				<!-- nothing -->
 					选择用户类型
@@ -196,7 +208,7 @@
                             else
                             {
                             }
-                            window.location.href = "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/myorder' ; ?>";
+                            window.location.href = "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/myorder'.'&gh_id='.$gh_id.'&openid='.$openid ; ?>";
                         }
                     );
                 }

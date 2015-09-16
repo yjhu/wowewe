@@ -34,6 +34,8 @@ class MHd201509t2 extends \yii\db\ActiveRecord
             [['create_time'], 'safe'],
             [['status'], 'integer'],
             [['gh_id', 'openid'], 'string', 'max' => 255],
+            [['yfzx'], 'string', 'max' => 128],
+            [['fsc'], 'string', 'max' => 128],
             [['mobile'], 'string', 'max' => 16]
         ];
     }
@@ -48,6 +50,8 @@ class MHd201509t2 extends \yii\db\ActiveRecord
             'gh_id' => 'Gh ID',
             'openid' => 'Openid',
             'mobile' => '手机号码',
+            'yfzx' => '营服中心',
+            'fsc' => '分市场',
             'create_time' => '时间',
             'status' => '充值状态',
         ];
