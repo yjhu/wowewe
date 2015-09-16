@@ -143,6 +143,7 @@
 					$model->cid == 90007 ||
 					$model->cid == 90008 ||
 					$model->cid == 90009 ||
+					$model->cid == 90010 ||
 					$model->cid == 80000 ||
 					$model->cid == 80001 ) {
 			?>

@@ -5,6 +5,8 @@ use yii\grid\GridView;
 
 use app\models\MItem;
 use app\models\MOrder;
+use app\models\MOffice;
+
 
 /**
  * @var yii\web\View $this
@@ -50,6 +52,11 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'attribute' => 'user_id',
 			],
+
+			[
+				'attribute' => 'office_id',
+			],
+
 			[
 				'attribute' => 'create_time',
 			],

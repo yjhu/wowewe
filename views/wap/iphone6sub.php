@@ -34,6 +34,24 @@ $this->title = \app\models\MIphone6Sub::getCatName($model->cat).' 预订';
 			<?= $form->field($model, 'user_name')->textInput(['maxlength' => 10, 'placeholder'=>'输入姓名', 'class'=>'form-control input-lg'])->label(false); ?>
 			<?= $form->field($model, 'user_contact')->textInput(['maxlength' => 128, 'placeholder'=>'输入联系地址及手机号码', 'class'=>'form-control input-lg'])->label(false); ?>
 			<?= $form->field($model, 'user_id')->textInput(['maxlength' => 18, 'placeholder'=>'输入身份证号码', 'class'=>'form-control input-lg'])->label(false); ?>
+			
+	        <select id="office_id" class="form-control input-lg" name="MIphone6Sub[office_id]">
+	            <option value='--'>选择为营业厅</option>
+
+	            <?php 
+	                $offices = \app\models\MOffice::find()->where(['is_selfOperated' => 1])->all();
+	                foreach ($offices as $office) 
+	                {
+	            ?>
+	            	<option value='<?= $office->title ?>'><?= $office->title ?></option>
+	         
+	            <?php 
+	            	} 
+	            ?>
+	        </select>
+
+	        <br><br>
+
 			<div class="form-group">
 				<?= Html::submitButton('我要预订', ['class' => 'btn btn-success btn-block btn-lg', 'name' => 'contact-button']) ?>
 			</div>

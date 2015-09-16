@@ -4404,7 +4404,7 @@ $url2 = $result["code_url"];
             if (!empty($url)) {
                 return $this->redirect($url);
             } else {
-                Yii::$app->session->setFlash('success', '绑定成功');
+                Yii::$app->session->setFlash('success', '恭喜您，会员注册成功！');
                 return $this->refresh();
             }
         }

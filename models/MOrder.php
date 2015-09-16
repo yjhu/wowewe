@@ -254,8 +254,8 @@ class MOrder extends ActiveRecord
             self::STATUS_PAID => '已支付',
             self::STATUS_FULFILLED => '已办理',
             self::STATUS_SUCCEEDED => '交易成功',
-            self::STATUS_BUYER_REFUND_CLOSED => '退款成功,交易关闭',
-            self::STATUS_SELLER_REFUND_CLOSED => '退款成功,交易关闭',
+            self::STATUS_BUYER_REFUND_CLOSED => '买家退款成功,交易关闭',
+            self::STATUS_SELLER_REFUND_CLOSED => '卖家退款成功,交易关闭',
             self::STATUS_SELLER_ROLLBACK_CLOSED => '订单撤销,交易关闭',
             self::STATUS_BUYER_CLOSED => '用户取消订单',
             self::STATUS_SELLER_CLOSED => '营业厅取消订单',
@@ -530,9 +530,10 @@ EOD;
         $select_mobnum = empty($this->select_mobnum)?"":"卡号".$this->select_mobnum.",";
         $username = empty($this->username)?"":$this->username.",";
         $userid = empty($this->userid)?"":"身份证".$this->userid.",";
+        $create_time = empty($this->create_time)?"":"于".$this->create_time;
 
         $str = <<<EOD
-{$office->title}: {$model->nickname}于{$this->create_time}已订购【{$detail}】, {$this->select_mobnum}订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}{$this->userid}联系电话{$this->usermobile}】。 【{$gh->nickname}】
+{$office->title}: {$model->nickname}{$create_time}已订购【{$detail}】, {$this->select_mobnum}订单号【{$this->oid}】, 金额{$feesum}元, 用户信息【{$this->username}{$this->userid}联系电话{$this->usermobile}】。 【{$gh->nickname}】
 EOD;
         return $str;
     }    

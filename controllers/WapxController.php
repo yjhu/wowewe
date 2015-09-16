@@ -621,7 +621,15 @@ class WapxController extends Controller {
         }
 
     }
+    
 
+    //201509 捐献积分兑换列表页 
+    //http://wosotech.com/wx/web/index.php?r=wapx/jfdhlist&gh_id=gh_03a74ac96138
+    // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/jfdhlist:gh_03a74ac96138#wechat_redirect
+    public function actionJfdhlist() {
+        $this->layout = false;
+        return $this->render('jfdhlist');
+    }
 
     //新商品列表20150909
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wapx/goodslist:gh_03a74ac96138

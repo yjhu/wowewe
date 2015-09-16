@@ -33,28 +33,27 @@
 
         <ul data-role="listview" data-inset="false" class="ui-nodisc-icon ui-alt-icon">
 
-            <!--
-            <//?php 
+            <?php 
                 foreach($models as $model) { 
                 if($model->cid==90010) {
             ?>
-                <li><a data-ajax="false" href="<//?php echo  Url::to(['wap/hgllb', 'cid'=>$model->cid],true) ?>">
-                        <img style='padding-top:10px' src="<//?php echo $model->pic_url.'-120x120.jpg?v2' ?>">
-                        <h2><//?= $model->title ?></h2>
-                        <p><//?= $model->title_hint ?></p>
+                <li><a data-ajax="false" href="<?php echo  Url::to(['wap/hgllb', 'cid'=>$model->cid],true) ?>">
+                        <img style='padding-top:10px' src="<?php echo $model->pic_url.'-120x120.jpg?v2' ?>">
+                        <h2><?= $model->title ?></h2>
+                        <p><?= $model->title_hint ?></p>
           
-                        <//?php if($model->old_price != 0){ ?>
-                            <p class='line'>原价: ￥<//?=round($model->old_price / 100)?></p>
-                        <//?php } ?>
+                        <?php if($model->old_price != 0){ ?>
+                            <p class='line'>原价: ￥<?=round($model->old_price / 100)?></p>
+                        <?php } ?>
 
-                        <p>价格: ￥<//?= $model->price/100 ?></p>
+                          <p>价格: ￥<?= $model->price/100 ?> &nbsp;&nbsp;<?= $model->price_hint; ?></p>
                     </a>
                 </li>
-            <//?php   
+            <?php   
                     }
                 }
              ?>
-             -->
+
 
 
              <?php 
@@ -66,8 +65,7 @@
                     $model->cid==90004 || 
                     $model->cid==90005 ||
                     $model->cid==90008 ||
-                    $model->cid==90009 ||
-                    $model->cid==90010
+                    $model->cid==90009
                     ) {
             ?>
                 <li><a data-ajax="false" href="<?php echo  Url::to(['wap/hgllb', 'cid'=>$model->cid],true) ?>">

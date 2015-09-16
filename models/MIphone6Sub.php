@@ -38,6 +38,8 @@ class MIphone6Sub extends ActiveRecord
             ['user_id', 'string', 'min' => 18, 'max' => 18],
             ['user_id', 'unique', 'message' => '此身份证号码已存在'],
             ['cat', 'number'],
+            ['office_id', 'string', 'min' => 1, 'max' => 256],
+
         ];
     }
 
@@ -49,6 +51,7 @@ class MIphone6Sub extends ActiveRecord
             'user_name'=>'姓名',
             'user_contact'=>'联系方式',
             'user_id'=>'身份证号码',
+            'office_id'=>'营业厅',
             'create_time'=>'提交时间',
         ];
     }

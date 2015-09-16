@@ -1327,6 +1327,44 @@ class CmdController extends Controller
     }
 
 
+    //把集团发展（groupmember.csv 表中）的会员拎出来
+    public function actionGroupmember($filename = 'groupmember.csv') {
+        
+        //$xyunicom = \app\models\WosoClient::findOne(['title_abbrev' => '襄阳联通']);
+        //if (empty($xyunicom)) die('不能找到襄阳联通。');
+        
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, "r");
+        while (!feof($fh)) {
+            $line = trim(fgets($fh));
+            if (empty($line) || strlen($line) == 0) continue;
+            $fields = explode(",", $line);
+            $mobile = trim($fields[0]);
+            $mobile_utf8 = iconv('GBK', 'UTF-8//IGNORE', $mobile);
+
+            $office_title = trim($fields[1]);
+            $office_title_utf8 = iconv('GBK', 'UTF-8//IGNORE', $office_title);
+
+            $bind = OpenidBindMobile::findOne(['mobile' => $mobile]);
+
+            $office_old = "--";
+            if(!empty($bind))
+            {
+                $user = MUser::findOne(['openid' => $bind->openid]);
+                if(!empty($user))
+                {
+                    $office = MOffice::findOne(['office_id' => $user->belongto]);
+                    if(!empty($office))
+                        $office_old = $office->title;
+                }
+            }
+           
+            echo $mobile_utf8."\t".$office_old."\t".$office_title_utf8."\n";
+        
+        }
+        fclose($fh);
+    }
+    
 
 
 
