@@ -758,6 +758,84 @@ class WapxController extends Controller {
     }
 
 
+    //2015-9-18 中秋抢ipone6s活动 类似投票，积攒 活动， 基于七夕投票活动代码修改而成
+ // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/zhongqiu-vote:gh_03a74ac96138#wechat_redirect
+    public function actionZhongqiuVote() {
+
+        /*
+      $this->layout = false;
+        $id = $_GET["id"];
+
+        //$gh_id = U::getSessionParam('gh_id');
+        $gh_id = 'gh_03a74ac96138';
+        $openid = U::getSessionParam('openid');
+        $wx_user = \app\models\MUser::findOne([
+            'gh_id' => $gh_id,
+            'openid' => $openid,
+        ]);
+        if (empty($wx_user) || $wx_user->subscribe === 0) {
+            return $this->render('need_subscribe');
+        }
+
+        $qingshi_author = \app\models\MQingshiAuthor::findOne([
+            'id' => $id,
+        ]);
+
+        return $this->render('qingshi-vote', [
+            'observer' => $wx_user,
+            'qingshi_author' => $qingshi_author,
+        ]);
+
+        */
+        $this->layout = false;
+      
+        //$gh_id = U::getSessionParam('gh_id');
+        $gh_id = 'gh_03a74ac96138';
+        $openid = U::getSessionParam('openid');
+
+        $wx_user = \app\models\MUser::findOne([
+            'gh_id' => $gh_id,
+            'openid' => $openid,
+        ]);
+        if (empty($wx_user) || $wx_user->subscribe === 0) {
+            return $this->render('need_subscribe');
+        }
+
+
+        if (empty($wx_user->openidBindMobiles)) {
+            $url = \yii\helpers\Url::to();
+            \Yii::$app->getSession()->set('RETURN_URL', $url);
+            return $this->redirect(['wap/addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        }
+
+        if(isset($_GET["id"]))
+        {
+            $id = $_GET["id"];
+            $zhongqiu_score = \app\models\MZhongqiuScore::findOne([
+                'author_openid' => $id,
+            ]);
+        }
+        else
+        {
+            $zhongqiu_score = \app\models\MZhongqiuScore::findOne([
+                'author_openid' => $openid,
+            ]);
+        }
+
+
+        if (empty($zhongqiu_score)) {
+            $zhongqiu_score = new \app\models\MZhongqiuScore;
+            $zhongqiu_score->author_openid = $openid;
+            $zhongqiu_score->score = 0;
+            $zhongqiu_score->save(false);
+        }
+
+        return $this->render('zhongqiu-vote', [
+            'observer' => $wx_user,
+            'zhongqiu_score' => $zhongqiu_score,
+        ]);
+    }
+
 
     //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&outlet_id=777
     public function actionClientemployeelist($gh_id, $openid, $outlet_id) {

@@ -192,8 +192,8 @@
                                     'label' => '<i class="fa fa-flask"></i><span class="title">活动</span><span class="arrow "></span>',
                                     'url' => '',
                                     'items' => [
-                                        //['label' => '情诗审核','url' => ['/qingshi-author/index'],'linkOptions' => ['data-method' => 'post']],
-                                        //['label' => '投票排行','url' => ['/qingshi-score/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '情诗审核','url' => ['/qingshi-author/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '投票排行','url' => ['/qingshi-score/index'],'linkOptions' => ['data-method' => 'post']],
                                         ['label' => '充话费送话费','url' => ['/hd201509t2/index'],'linkOptions' => ['data-method' => 'post']],
                                         ['label' => '小积分大爱心活动','url' => ['/hd201509t4/index'],'linkOptions' => ['data-method' => 'post']],
                                         ['label' => '产品预定','url' => ['/order/iphone6sub'],'linkOptions' => ['data-method' => 'post']],

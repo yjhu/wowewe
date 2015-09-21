@@ -284,7 +284,7 @@ class MStaff extends ActiveRecord
         $office_title = $office->title;
 
         //$log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
-        $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr-all-offices'.DIRECTORY_SEPARATOR."{$office_title}_{$scene_id}.jpg";
+        $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr-all-offices'.DIRECTORY_SEPARATOR."{$scene_id}_{$office_title}.jpg";
         if ((!file_exists($log_file_path)) || filesize($log_file_path) == 0)
         {
             Yii::$app->wx->setGhId($gh_id);    
