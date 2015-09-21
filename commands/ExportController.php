@@ -399,7 +399,7 @@ class ExportController extends \yii\console\Controller {
 
     			//微信昵称	绑定手机号	关注时间	姓名	营业厅名称	新/老用户	客户经理	
                 fprintf($fh, "%s, %s, %s, %s, %s, %s, %s",
-    				$mobile->user->nickname, 
+    				str_replace(",", "", $mobile->user->nickname),
     				$mobile->mobile, 
     				$mobile->create_time, 
     				'', 
@@ -598,7 +598,7 @@ class ExportController extends \yii\console\Controller {
 
         $total_count = \app\models\MOffice::find()->where(['gh_id' => $gh_id])->count();
 
-        $step = 300;
+        $step = 100;
         $start = 0;
 
         while ($start < $total_count) {
@@ -624,6 +624,41 @@ class ExportController extends \yii\console\Controller {
         echo "导出所有渠道二维码,ok.";
     }
 
+
+    //导出宽带渠道 二维码
+    public function actionQrBwOffices()
+    {
+        $gh_id = 'gh_03a74ac96138';
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . 'office-wb.csv';
+        $fh = fopen($filepathname, "r");
+
+        while (!feof($fh)) {
+
+            $line = trim(fgets($fh));
+            if (empty($line) || strlen($line) == 0) continue;
+            //襄阳,樊城,襄阳市城区家客樊东网格逐日电子,李孔恒,13177226622
+
+            $fields = explode(",", $line);
+
+            $title = trim($fields[2]);
+            $title_utf8 = iconv('GBK', 'UTF-8//IGNORE', $title);
+
+            $office = \app\models\MOffice::findOne(['title' => $title_utf8]);
+
+            if(empty($office))
+            {
+                ;
+            }
+            else
+            {   
+                 echo $office->title."\n";
+                 $office->getQrImageUrl2();
+            }
+        }
+        fclose($fh);
+
+        echo "导出渠道二维码,ok.\n";
+    }
 
 
 

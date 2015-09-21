@@ -837,6 +837,94 @@ class WapxController extends Controller {
     }
 
 
+
+
+    //201509 中秋送话费活动
+    //http://wosotech.com/wx/web/index.php?r=wapx/hd201509t6&gh_id=gh_03a74ac96138
+    // https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/hd201509t6:gh_03a74ac96138#wechat_redirect
+    public function actionHd201509t6() {
+        $this->layout = false;
+        
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        $wx_user = \app\models\MUser::findOne([
+            'gh_id' => $gh_id,
+            'openid' => $openid,
+        ]);
+        if (empty($wx_user) || $wx_user->subscribe === 0) {
+            return $this->render('need_subscribe');
+        }
+
+        $bindMobiles = \app\models\OpenidBindMobile::findOne([
+                'gh_id' => $gh_id,
+                'openid' => $openid,
+            ]);
+
+        if (empty($bindMobiles)) 
+        {
+            $url = \yii\helpers\Url::to();
+            \Yii::$app->getSession()->set('RETURN_URL', $url);
+            return $this->redirect(['wap/addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        } 
+
+        $hd201509t5 = \app\models\MHd201509t5::findOne([
+            'mobile' => $bindMobiles->mobile,
+        ]);
+
+        if(empty($hd201509t5))
+        {
+            //不在能充值的用户表中，表明是新用户
+            $tcnx_flag = 0;
+            $yfzx = "";
+            $fsc = "";
+        }
+        else
+        {
+            if($hd201509t5->tcnx == 1)//76元套餐以下
+                $tcnx_flag = 1;
+            else
+                $tcnx_flag = 2;
+
+            $yfzx = $hd201509t5->yfzx;
+            $fsc = $hd201509t5->fsc;
+        }
+
+        $hd201509t6 = \app\models\MHd201509t6::findOne([
+            'mobile' => $bindMobiles->mobile,
+        ]);
+
+        if(empty($hd201509t6))
+        {
+            $hd201509t6 = new \app\models\MHd201509t6;
+            $hd201509t6->gh_id = $gh_id;
+            $hd201509t6->openid = $openid;
+            $hd201509t6->mobile = $bindMobiles->mobile;
+            $hd201509t6->status = 0;
+            $hd201509t6->yfzx = $yfzx;
+            $hd201509t6->fsc = $fsc;
+            $hd201509t6->tcnx = $tcnx_flag;
+            $hd201509t6->hbme = 0;
+            $hd201509t6->save(false);
+        }
+
+        return $this->render('hd201509t6', [
+            'observer' => $wx_user,
+            'hd201509t6' => $hd201509t6,
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     //http://localhost/wx/web/index.php?r=wapx/clientemployeelist&gh_id=gh_03a74ac96138&openid=oKgUduJJFo9ocN8qO9k2N5xrKoGE&outlet_id=777
     public function actionClientemployeelist($gh_id, $openid, $outlet_id) {
         $this->layout = false;
