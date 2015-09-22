@@ -743,6 +743,48 @@ class ExportController extends \yii\console\Controller {
        
     }
 
+    //导出订单 ，可按时间段
+    public function actionOrder($filename = 'order.csv', $date = null) {
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'exported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, 'w');
+        if (null === $date) {
+            $date = \app\models\U::getFirstDate(date('Y'), date('m'));
+        }
+
+        $total_count = \app\models\MOrder::find()->where(['>', 'create_time', $date])->count();
+
+        //$total_count = \app\models\MUser::find()->count();
+        $step = 300;
+        $start = 0;
+
+        while ($start < $total_count) {
+            $orders = \app\models\MOrder::find()->offset($start)->limit($step)->where([
+                '>', 'create_time', $date
+            ])->orderBy([
+                'create_time' => SORT_ASC,
+            ])->all();
+
+            foreach ($orders as $order) {
+
+                $office = \app\models\MOffice::findOne(['office_id' => $order->office_id]);
+                if(!empty($office))
+                    $office_title = $office->title;
+                else
+                    $office_title = "";
+
+                //fprintf($fh, "%s, %s, %s, %s, %s, %s\n", $fan->nickname, $fan->country, $fan->province, $fan->city, implode(';', $fan->bindMobileNumbers), date('Y-m-d H:i:s', $fan->subscribe_time));
+                $price = ($order->feesum)/100;
+
+                echo $office_title."\t".$order->oid."\t".$order->title."\t".$price."\t".$order->create_time."\t".$order->userid."\t".$order->username."\t".$order->usermobile."\t".$order->pay_kind."\t".$order->memo."\t\n";
+            }
+
+            $start += $step;
+        }
+
+        
+        fclose($fh);
+    }
+
 
 
 
