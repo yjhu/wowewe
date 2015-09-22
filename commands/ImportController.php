@@ -625,9 +625,7 @@ class ImportController extends Controller {
         $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
         $fh = fopen($filepathname, "r");
         while (!feof($fh)) {
-            $line = trim(fgets($fh));
-            if (empty($line) || strlen($line) == 0) continue;
-            $fields = explode(",", $line);
+    
             $contact_person = trim($fields[0]);
             $contact_person_utf8 = iconv('GBK', 'UTF-8//IGNORE', $contact_person);
             $msc_brev_name = trim($fields[1]);
@@ -829,6 +827,74 @@ class ImportController extends Controller {
             $start += $step;
         }
     }
+
+
+
+    //把宽带渠道数据（office-wb.csv 表中）导入到office表中， 重复的更新，新增的添加
+    public function actionOfficewb($filename = 'office-wb.csv') {
+        
+        //$xyunicom = \app\models\WosoClient::findOne(['title_abbrev' => '襄阳联通']);
+        //if (empty($xyunicom)) die('不能找到襄阳联通。');
+        
+        //gh_id,branch,region,title,address,manager,member_cnt,mobile
+        //$filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . $filename;
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, "r");
+
+        while (!feof($fh)) {
+
+            $line = trim(fgets($fh));
+            if (empty($line) || strlen($line) == 0) continue;
+            //襄阳,樊城,襄阳市城区家客樊东网格逐日电子,李孔恒,13177226622
+
+            $fields = explode(",", $line);
+            $branch = trim($fields[0]);
+            $branch_utf8 = iconv('GBK', 'UTF-8//IGNORE', $branch);
+
+            $region = trim($fields[1]);
+            $region_utf8 = iconv('GBK', 'UTF-8//IGNORE', $region);
+
+            $title = trim($fields[2]);
+            $title_utf8 = iconv('GBK', 'UTF-8//IGNORE', $title);
+
+            $manager = trim($fields[3]);
+            $manager_utf8 = iconv('GBK', 'UTF-8//IGNORE', $manager);
+       
+            $mobile = trim($fields[4]);
+            $mobile_utf8 = iconv('GBK', 'UTF-8//IGNORE', $mobile);
+
+            $office = MOffice::findOne(['title' => $title_utf8]);
+            if(empty($office))
+            {
+                echo $title_utf8."\t\t"."insert ... \n";
+                $office = new MOffice;
+                $office->gh_id = \app\models\MGh::GH_XIANGYANGUNICOM; // 襄阳联通公共ID
+                $office->branch = $branch_utf8;
+                $office->region = $region_utf8;
+                $office->title = $title_utf8;
+                $office->manager = $manager_utf8;
+                $office->mobile = $mobile_utf8;
+                $office->save(false);
+            }
+            else
+            {   
+                echo $title_utf8."\t\t"."update ...\n";
+                $office->branch = $branch_utf8;
+                $office->region = $region_utf8;
+                $office->title = $title_utf8;
+                $office->manager = $manager_utf8;
+                $office->mobile = $mobile_utf8;
+                $office->save(false);
+            }
+
+            //echo $branch_utf8."\t".$region_utf8."\t".$title_utf8."\t".$manager_utf8."\t".$mobile_utf8."\n";       
+        }
+        fclose($fh);
+
+        echo "done\n";
+    }
+
+
 
 
 }

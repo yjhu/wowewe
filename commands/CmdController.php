@@ -1346,20 +1346,21 @@ class CmdController extends Controller
             $office_title_utf8 = iconv('GBK', 'UTF-8//IGNORE', $office_title);
 
             $bind = OpenidBindMobile::findOne(['mobile' => $mobile]);
-
-            $office_old = "--";
             if(!empty($bind))
             {
                 $user = MUser::findOne(['openid' => $bind->openid]);
                 if(!empty($user))
                 {
-                    $office = MOffice::findOne(['office_id' => $user->belongto]);
+                    $office = MOffice::findOne(['title' => $office_title_utf8]);
                     if(!empty($office))
-                        $office_old = $office->title;
+                    {
+                        $user->belongto = $office->office_id;
+                        $user->save(false);
+                    }
                 }
             }
            
-            echo $mobile_utf8."\t".$office_old."\t".$office_title_utf8."\n";
+            echo "done\n";
         
         }
         fclose($fh);

@@ -23,7 +23,7 @@ $votes = \app\models\MQingshiVote::find()->select('*, count(*) as c')
 foreach ($votes as $vote) {
     $top_num ++;
 
-    if($vote->author_openid == $qingshi_author->author_openid)
+    if($vote->author_openid == $zhongqiu_score->author_openid)
         break;
 }
 */
@@ -31,8 +31,8 @@ foreach ($votes as $vote) {
     $top = 0;
 
     //至少获得10票 才能上榜
-    $votes = \app\models\MQingshiScore::find()
-        ->where(['>' , 'score' , 9])
+    $votes = \app\models\MZhongqiuScore::find()
+        ->where(['>' , 'score' , 499])
         ->orderBy(['score' => SORT_DESC, 'create_time' => SORT_ASC])
         ->limit(50)
         ->all(); 
@@ -40,8 +40,8 @@ foreach ($votes as $vote) {
     foreach ($votes as $vote) {
         $top_num ++;
 
-        if($vote->author_openid == $qingshi_author->author_openid)
-            break;
+        if($vote->author_openid == $zhongqiu_score->author_openid)
+           break;
     }
 
 ?>
@@ -51,7 +51,7 @@ foreach ($votes as $vote) {
 <html>
   <head>
     <meta charset="utf-8">
-    <title>襄阳联通七夕活动投票</title>
+    <title>襄阳联通中秋抢iPhone6s活动</title>
 
     <!-- Sets initial viewport load and disables zooming  -->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -98,6 +98,10 @@ foreach ($votes as $vote) {
             font-size: 10pt;
         }
 
+        /*#round_photo{ margin:10px auto} */
+        /*#round_photo img{ border-radius:50%}*/
+
+        /*
         .content {
           position: absolute;
           top: 0;
@@ -110,6 +114,7 @@ foreach ($votes as $vote) {
           background-position: center top;
           z-index: 1
         }
+        */
     </style>
 
   </head>
@@ -123,7 +128,7 @@ foreach ($votes as $vote) {
         <img border='0' src='/wx/web/images/beijing2.jpg'>
         -->
         <p align="center">
-            <a href="#tppm"><i class="fa fa-trophy fa-2x" style="color:#ed6d00"></i>&nbsp;投票排名</a>
+            <a href="#tppm"><i class="fa fa-trophy fa-2x" style="color:#ed6d00"></i>&nbsp;排名</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <a href="#hdgz"><i class="fa fa-list"></i>&nbsp;活动说明</a>
             &nbsp;&nbsp;&nbsp;&nbsp;
@@ -131,79 +136,60 @@ foreach ($votes as $vote) {
         </p>
         
         <p align="center">
-            <?php if(!empty($qingshi_author->user->headimgurl)) { ?>
-                <img width="128" src='<?= $qingshi_author->user->headimgurl ?>' ><br>
-                <?= emoji_unified_to_html(emoji_softbank_to_unified($qingshi_author->user->nickname)) ?>
+            <?php if(!empty($zhongqiu_score->user->headimgurl)) { ?>
+                <img width="42" src='<?= $zhongqiu_score->user->headimgurl ?>'><br>
+                <?= emoji_unified_to_html(emoji_softbank_to_unified($zhongqiu_score->user->nickname)) ?>
             <?php } else { ?>
-                <img width="128" src='/wx/web/images/wxmpres/headimg-blank.png' ><br>
-                <?= emoji_unified_to_html(emoji_softbank_to_unified($qingshi_author->user->nickname)) ?>
+                <img width="42" src='/wx/web/images/wxmpres/headimg-blank.png'><br>
+                <?= emoji_unified_to_html(emoji_softbank_to_unified($zhongqiu_score->user->nickname)) ?>
             <?php } ?>
         </p>
 
         <center>
-
             <?php
-                $vote_count = \app\models\MQingshiScore::findOne(['author_openid' => $qingshi_author->author_openid]);
+                $vote_count = \app\models\MZhongqiuScore::findOne(['author_openid' => $zhongqiu_score->author_openid]);
                 if(empty($vote_count))
                 {
             ?>
-                <span class="vt">得</span>
-                <span class="badge" style="color:#bbb6d4; font-size: 14pt">
-                    0
-                </span>
-                <span class="vt">票</span>
+                <img width=65% height=40% src="/wx/web/images/hongbao.png?v2" id="toupiao">
             <?php } else { ?>
+
+                <?php 
+                    $zs = \app\models\MZhongqiuScore::findOne(['author_openid' => $zhongqiu_score->author_openid]);
+                    if($zs->score == 0)
+                    {
+                ?>
+                    <img width=65% height=40% src="/wx/web/images/hongbao.png?v2" id="toupiao"><br>
+                <?php } else { ?>
+                    <img width=65% height=40% src="/wx/web/images/hongbao-open.png?v2"><br>
+                <?php } ?>
+          
                 <span class="vt">得</span>
-                <span class="badge" style="font-size: 14pt">
+                <span  style="color:red; font-size: 18pt; font-weight: bolder">
                     <?= $vote_count->score; ?>
                 </span>
-                <span class="vt">票&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;第</span>
-                <sapn class="badge" style="font-size: 24pt"><?= $top_num ?></sapn>
+                <span class="vt">联通币 &nbsp;&nbsp;&nbsp;&nbsp; 第</span>
+                <sapn style="color:red; font-size: 18pt; font-weight: bolder"><?= $top_num ?></sapn>
                 <span class="vt">名</span>
             <?php } ?>
 
-           <br> <br> 
-
-            <span class="ht">参赛情诗</span>
-            <br><br>
-
-            <p class="pc">
-            <?= $qingshi_author->p1 ?>
-            </p>
-            <p class="pc">
-            <?= $qingshi_author->p2 ?>
-            </p>
-            <p class="pc">
-            <?= $qingshi_author->p3 ?>
-            </p>
         </center>
-
         <br>
         <p align="center">
-            <a class="btn btn-positive btn-block" style="width: 300px" id="toupiao">投票</a>
-          
-            <a class="btn btn-positive btn-block" style="width: 300px"  id="kankan">
-            我也来抢七夕礼品
+            <!--
+            <a class="btn btn-negative btn-block" style="width: 300px" id="toupiao">拆红包</a>
+            -->
+
+            <a class="btn btn-negative btn-block" style="width: 300px"  id="kankan">
+            我也来抢红包
             </a>
 
             <a class="btn btn-block btn-primary" style="width: 300px"  href="#lapiao">
-            怎么拉票？
+            怎么抢红包赢iPhone6s？
             </a>
         </p>
         <br>
         &nbsp;
-        <br>
-        &nbsp;
-        <br>
-        &nbsp;
-        <br>
-        &nbsp;
-        <br>
-        &nbsp;
-        <br>
-        &nbsp;
-        <br>
-
     </div>
 
 
@@ -244,7 +230,7 @@ foreach ($votes as $vote) {
     <div id='lapiao'  class='modal'>
 
         <div class="content">
-            <img width=100% src="/wx/web/images/toupiao.jpg?v1">
+            <img width=100% src="/wx/web/images/toupiao.jpg?v2">
 
             <br>
             <p align="center">
@@ -257,7 +243,7 @@ foreach ($votes as $vote) {
     <div id='tppm'  class='modal'>
         <header class="bar bar-nav">
             <a class="icon icon-close pull-right" href="#tppm"></a>
-            <h1 class='title'>投票排名</h1>
+            <h1 class='title'>红包排名</h1>
         </header>
         <div class="content">
 
@@ -268,22 +254,17 @@ foreach ($votes as $vote) {
                 </div>
 
                 <span class="badge" style="font-size: 12pt">
-                    所得票数
+                    所得红包
                 </span>
             </li>
-
 
             <?php foreach ($votes as $vote) 
                 {
                     $top ++ ;
-                    $author = \app\models\MQingshiAuthor::findOne(['author_openid' => $vote->author_openid]);
+                    //$author = \app\models\MQingshiAuthor::findOne(['author_openid' => $vote->author_openid]);
             ?>
               <li class="table-view-cell media">
 
-                <a  data-ignore="push" class="navigate-right" href="<?= \yii\helpers\Url::to([
-                    'qingshi-vote', 
-                    'id' => $author->id,
-                ]) ?>">
 
                 <sapn class="pull-left" style="font-size: 18pt; font-weight: bolder;color:green;">
                     <?= $top ?>.
@@ -303,17 +284,17 @@ foreach ($votes as $vote) {
 
                 <span class="badge badge-primary" style="font-size: 12pt">
                    <?php
-                        echo \app\models\MQingshiVote::find()->where(['author_openid' => $vote->author_openid])->count();
-                        //echo $vote->c;
+                        $zhongqiu_score = \app\models\MZhongqiuScore::findOne(['author_openid' => $vote->author_openid]);
+                        echo $zhongqiu_score->score;
                    ?>
                 </span>
-                </a>
 
               </li>
             <?php } ?>
             </ul>
+    
+            <span style="color:red">有999个沃币方可获得兑奖资格哟~</span>
 
-            <span style="color:red">榜单长度有限，得票10票以上才能上榜哟~</span>
             <br>
             <p align="center">
             <a class="btn btn-block" href="#tppm" style="width: 300px" >返回</a>
@@ -325,13 +306,13 @@ foreach ($votes as $vote) {
     <div id='tp_friends'  class='modal'>
         <header class="bar bar-nav">
             <a class="icon icon-close pull-right" href="#tp_friends"></a>
-            <h1 class='title'>帮忙投票的小伙伴们</h1>
+            <h1 class='title'>帮忙拆红包的好友</h1>
         </header>
         <div class="content">
             <?php
 
-               $tp_friends = \app\models\MQingshiVote::find()
-                ->where(['author_openid' => $qingshi_author->author_openid])
+               $tp_friends = \app\models\MZhongqiuVote::find()
+                ->where(['author_openid' => $zhongqiu_score->author_openid])
                 ->orderBy(['vote_time' => SORT_DESC])
                 ->all();
 
@@ -360,7 +341,7 @@ foreach ($votes as $vote) {
                       <!--粉丝昵称--> 
                       <?= emoji_unified_to_html(emoji_softbank_to_unified($friend->nickname)) ?>
                       <p>
-                          投票时间：<?= $tp_friend->vote_time ?>
+                          拆红包时间：<?= $tp_friend->vote_time ?>
                       </p>
                     </div>
                         
@@ -370,24 +351,6 @@ foreach ($votes as $vote) {
                     ?>
                 </ul>
             
-
-            <?php 
-                if(!empty($vote_count->score))
-                {
-                    if($vote_count->score > 20) 
-                    { 
-            ?>
-                    <span style="color:black">小伙伴们太给力了,名单太长加载会很慢,忍痛只显示最近20个！见谅, 多谢大家的帮忙！</span>
-            <?php   
-                    } 
-                }
-                else
-                {
-            ?>
-                    <span style="color:black">暂时还没人为你投票。<br>没关系，赶快分享转发给你的小伙伴为你投票吧！</span>
-            <?php
-                }
-            ?>
 
             <br><br>
             <p align="center">
@@ -402,8 +365,7 @@ foreach ($votes as $vote) {
     $(document).ready(function() {
         'use strict'; 
         //$("#toupiao").hide();
-        //$("#kankan").hide();
-
+ 
         wx.config({
             debug: false,
             appId: '<?php echo $signPackage["appId"];?>',
@@ -449,30 +411,42 @@ foreach ($votes as $vote) {
         });
         
 
-
-
-
         wx.ready(function () {
             //alert('wx ready');
             //$("#toupiao").show();
-            //$("#kankan").show();
+
 
             $('#kankan').click (function () {
-                location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/qingshi-author:gh_03a74ac96138#wechat_redirect";
+                location.href = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/zhongqiu-vote:gh_03a74ac96138#wechat_redirect";
 
             })
 
-
             $('#toupiao').click (function () {
-
                 //alert('toupiaoAjax');
+                var author_openid = '<?= $zhongqiu_score->author_openid ?>';  
+                var vote_openid = '<?= $observer->openid ?>';
+
+                //alert('author_openid:'+author_openid);
+                //alert('vote_openid:'+vote_openid);
+
+                if(author_openid === vote_openid)/*自己*/
+                {
+                    var score = 500;
+                    alert("拆到大红包，获得500联通币！");
+                }
+                else
+                {
+                    var score = Math.floor(Math.random()*10+1);
+                    alert("为好友拆到"+score+"联通币");
+                }
 
                 var args = {
-                    'classname':    '\\app\\models\\MQingshiVote',
+                    'classname':    '\\app\\models\\MZhongqiuVote',
                     'funcname':     'toupiaoAjax',
                     'params':       {
-                        'author_openid': '<?= $qingshi_author->author_openid ?>',    
+                        'author_openid': '<?= $zhongqiu_score->author_openid ?>',    
                         'vote_openid':   '<?= $observer->openid ?>',
+                        'score': score,
                     } 
                 };
                 $.ajax({
@@ -483,12 +457,12 @@ foreach ($votes as $vote) {
                     data:       "args=" + JSON.stringify(args),
                     success:    function(ret) { 
                         if (0 === ret['code']) {
-                            alert("投票成功！");
+                            //alert("成功！");
                             location.href = '<?= Url::to() ?>';
                         }
                         else if(11 === ret['code'])
                         {
-                            alert("您已投过一次票了，每人一票哟。可分享到朋友圈帮你拉票 ~~");
+                            alert("只有一次机会哟！ 可分享到朋友圈帮你拉票 ~~");
                             //location.href = '<?= Url::to() ?>';
                         }
                     },                        
@@ -498,15 +472,15 @@ foreach ($votes as $vote) {
                 });
             });
 
-            var share2friendTitle = '快来帮 <?= $observer->nickname ?> 赢情侣手机和电台浪漫告白！点击投票';
-            var share2friendDesc = '全城热恋·浪漫情话说出来，快来参与和投票，大奖等你拿！';
-            var share2timelineTitle = '全城热恋·浪漫情话说出来，快来参与和投票，大奖等你拿！';
+            var share2friendTitle = '快来帮 <?= $observer->nickname ?> 拆红包赢iPhoone6s！';
+            var share2friendDesc = '拆红包抢iPhoone6s，大奖等你拿！';
+            var share2timelineTitle = '拆红包抢iPhoone6s，大奖等你拿！';
             var shareImgUrl = '<?= Url::to($observer->headimgurl, true); ?>';
        
             wx.onMenuShareAppMessage({
                 title: share2friendTitle, // 分享标题
                 desc: share2friendDesc, // 分享描述
-                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/qingshi-vote:gh_03a74ac96138:id=<?= $qingshi_author->author_openid ?>#wechat_redirect', // 分享链接
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/zhongqiu-vote:gh_03a74ac96138:id=<?= $zhongqiu_score->author_openid ?>#wechat_redirect', // 分享链接
                 imgUrl: shareImgUrl, // 分享图标
                 type: '', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -521,7 +495,7 @@ foreach ($votes as $vote) {
             
             wx.onMenuShareTimeline({
                 title: share2timelineTitle, // 分享标题
-                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/qingshi-vote:gh_03a74ac96138:id=<?= $qingshi_author->author_openid ?>#wechat_redirect', // 分享链接
+                link: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/zhongqiu-vote:gh_03a74ac96138:id=<?= $zhongqiu_score->author_openid ?>#wechat_redirect', // 分享链接
                 imgUrl: shareImgUrl, // 分享图标
                 type: '', // 分享类型,music、video或link，不填默认为link
                 dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
@@ -533,8 +507,6 @@ foreach ($votes as $vote) {
                     // 用户取消分享后执行的回调函数
                 }
             });
-
-
 
 
         });//end of wx  ready
