@@ -203,7 +203,7 @@ class MItem extends ActiveRecord {
     const ITEM_CAT_MOBILE_4G_FEIXUN_E653 = 4003;
     const ITEM_CAT_MOBILE_4G_XIAOLAJIAO_LA2S = 4004;
     const ITEM_CAT_MOBILE_4G_IPHONE6PLUS_16G = 4005;
-
+    const ITEM_CAT_MOBILE_4G_IPHONE6S = 4006;
 
 
     //老用户专享 参与机型及优惠合约
@@ -416,6 +416,7 @@ class MItem extends ActiveRecord {
             self::ITEM_CAT_MOBILE_4G_FEIXUN_E653 => '斐讯 E653',
             self::ITEM_CAT_MOBILE_4G_XIAOLAJIAO_LA2S => '小辣椒 LA2S',
             self::ITEM_CAT_MOBILE_4G_IPHONE6PLUS_16G => 'iPhone6 Plus 16G',
+            self::ITEM_CAT_MOBILE_4G_IPHONE6S => 'iPhone6s',
 
             //老用户户专享 参与机型及优惠合约
             self::ITEM_CAT_MOBILE_SANXIN_SM_G9006VW => '三星SM-G9006V/W',

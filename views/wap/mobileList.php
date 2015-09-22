@@ -41,6 +41,32 @@
         <!--<ul data-role="listview" data-inset="true">-->
         <ul data-role="listview" data-inset="false" data-filter="true" data-filter-placeholder="搜索..." class="ui-nodisc-icon ui-alt-icon">
         
+        <?php foreach($models as $model) { 
+            if($model->cid==4006 )  
+        { ?>
+            <li><a data-ajax="false" href="<?php echo  Url::to(['wap/mobile', 'cid'=>$model->cid],true) ?>">
+                    <img style='padding-top:10px' src="<?php echo $model->pic_url.'-120x120.jpg' ?>">
+                    <h2><?= $model->title ?></h2>
+                    <p><?= $model->title_hint ?></p>
+                    
+                    <!--
+                    <//?php if( ($model->old_price != 0) && ($model->old_price > $model->price) ){ ?>
+                  
+                        <p class='line'>原价: ￥<//?=round($model->old_price / 100)?></p>
+                        <p class='jiang'>直降&#8595;: ￥<//?= round($model->old_price / 100)-round($model->price / 100)  ?> 
+                        &nbsp;&nbsp;微信会员专享优惠！
+                        </p>
+                    
+                    <//?php } ?>
+
+                    <p>价格: ￥<//?= round($model->price/100) ?></p>
+                    -->
+                    <p>&nbsp;</p>
+                </a>
+            </li>
+        <?php } } ?>
+
+
         <!--  /*5.1 手机直降*/ -->
         <?php foreach($models as $model) { 
             if(

@@ -1835,6 +1835,10 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->title = 'iPhone6 Plus 16G';
                 $order->attr = "{$_GET['cardType']}";
                 break;
+            case MItem::ITEM_CAT_MOBILE_4G_IPHONE6S:
+                $order->title = 'iPhone6s';
+                $order->attr = "{$_GET['cardType']}";
+                break;
 
 
             //老用户户专享 参与机型及优惠合约

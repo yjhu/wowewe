@@ -243,16 +243,20 @@ text-decoration: line-through;
                 <span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
             </p>
         <?php } else { ?>
-            <p id="price" class="title_comm">
-                <?php if($item->old_price != 0){ ?>
-                    <span class="line"><small>原价￥<?php echo  ($item->old_price)/100; ?></small></span><br>
-                    <span class='jiang'>直降&#8595;: ￥<?= round($item->old_price / 100)-round($item->price / 100)  ?></span>
+            <!-- iphone6s 预定不显示价格 -->
+            <?php if($item->cid != 4006) { ?>
+                <p id="price" class="title_comm">
+                    <?php if($item->old_price != 0){ ?>
+                        <span class="line"><small>原价￥<?php echo  ($item->old_price)/100; ?></small></span><br>
+                        <span class='jiang'>直降&#8595;: ￥<?= round($item->old_price / 100)-round($item->price / 100)  ?></span>
+                    <?php } ?>
+                    <br>
+                    老用户专享价  <!--<span class="fee">￥<//?php echo  ($item->price)/100; ?></span>-->
+                    <span class="fee">￥<?php echo round($item->price/100); ?></span>
+                    <span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
+                </p>
                 <?php } ?>
-                <br>
-                老用户专享价  <!--<span class="fee">￥<//?php echo  ($item->price)/100; ?></span>-->
-                <span class="fee">￥<?php echo round($item->price/100); ?></span>
-                <span id="priceHint" class="productPkgHint"><!--含预存款50元--> <?php echo  $item->price_hint; ?></span>
-            </p>
+
         <?php } ?>
 
         <!--

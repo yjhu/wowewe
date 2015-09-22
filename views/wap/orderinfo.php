@@ -50,7 +50,7 @@
 
 <div data-role="page" id="page1" data-theme="c">
 
-	<?php echo $this->render('header1', ['menuId'=>'menu3','title' => '订单支付']); ?>
+	<?php echo $this->render('header1', ['menuId'=>'menu3','title' => '商品订单']); ?>
 	
 	<div data-role="content">
 
@@ -150,18 +150,22 @@
 				<!-- nothing -->
 					选择用户类型
    					<?= $form->field($model, 'memo')->label(false)->dropDownList(MItem::getUserTypeOption()) ?>
-
 			<?php } else { ?>
-			 	<?= $form->field($model, 'memo')->textinput(['id'=>'memo', 'maxlength' => '256', 'placeholder'=>'给卖家留言'])->label(false); ?>
-				<div>
-				<fieldset data-role="controlgroup" data-type="horizontal" id="paykind-field">
-				<legend>支付方式</legend>
-					<select onchange="showButton()" id="sel_paykind">
-						<option value="0" selected>线下支付</option>
-						<option value="2">微信支付</option>
-					</select>
-				</fieldset>						
-				</div>
+
+			 		<?= $form->field($model, 'memo')->textinput(['id'=>'memo', 'maxlength' => '256', 'placeholder'=>'给卖家留言'])->label(false); ?>
+				
+					<!-- iphone6s 只是预订不用支付 -->
+					<?php if($model->cid != 4006) { ?>
+					<div>
+					<fieldset data-role="controlgroup" data-type="horizontal" id="paykind-field">
+					<legend>支付方式</legend>
+						<select onchange="showButton()" id="sel_paykind">
+							<option value="0" selected>线下支付</option>
+							<option value="2">微信支付</option>
+						</select>
+					</fieldset>						
+					</div>
+					<?php } ?>
 			<?php } ?>
 
 

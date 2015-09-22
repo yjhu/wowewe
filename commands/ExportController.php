@@ -520,7 +520,7 @@ class ExportController extends \yii\console\Controller {
         ])->andWhere([
             'MsgType' =>    'event',
             'Event'   =>    'VIEW',
-            'EventKey'  =>  'http://jf.10010.com',
+            'EventKey'  =>  'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/jfdhlist:gh_03a74ac96138#wechat_redirect',
         ])->orderBy([
             'create_time' => SORT_ASC,
         ])->all();
@@ -530,7 +530,7 @@ class ExportController extends \yii\console\Controller {
                 'gh_id'     => $log->ToUserName,
                 'openid'    => $log->FromUserName,
             ]);
-            fprintf($fh, "%s, %s, %s\n", $fan->nickname, implode(';', $fan->bindMobileNumbers), $log->create_time);
+            fprintf($fh, "%s, %s, %s\n", str_replace(",", "", $fan->nickname), implode(';', $fan->bindMobileNumbers), $log->create_time);
         }
         fclose($fh);
     }
