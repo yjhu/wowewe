@@ -33,7 +33,7 @@
 <div data-role="page" id="page1" data-theme="c">
 
 	<div data-role="header">
-    	<h1>双4G双百兆手机</h1>
+    	<h1>特价购机</h1>
     </div>
 
     <div data-role="content">
@@ -165,7 +165,7 @@
 	//$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid());
 	$url = Yii::$app->wx->WxGetOauth2Url('snsapi_base', 'wap/mobilelist:'.Yii::$app->wx->getGhid().":wid={$wid}");
 	$myImg = Url::to("$assetsPath/share-icon.jpg", true);
-	$title = '双4G双百兆手机';
+	$title = '特价购机';
 	$desc = '多款热销机型，优惠大放送，快来瞄瞄吧~~ 心动不如行动！';
 ?>
 
