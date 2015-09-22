@@ -20,6 +20,13 @@ class WebUserOffice extends \yii\web\User
 			return false;
 		return $this->identity->role >= \app\models\MOffice::ROLE_ADMIN ? true : false;
     }
+    
+    public function getIsAdminGuest($checkSession = true)
+    {
+		if ($this->isGuest)
+			return false;
+		return $this->identity->role >= \app\models\MOffice::ROLE_ADMINGUEST ? true : false;
+    }
 
     public function getIsRoot($checkSession = true)
     {

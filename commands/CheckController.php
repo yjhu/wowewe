@@ -3,6 +3,8 @@
 namespace app\commands;
 
 use Yii;
+use app\models\MStaff;
+use app\models\MUser;
 
 class CheckController extends \yii\console\Controller {
 
@@ -168,5 +170,91 @@ class CheckController extends \yii\console\Controller {
         echo \app\models\MUser::getMemberTimeline($startDate, $endDate, 0) . PHP_EOL;
         echo "accumulated:\n";
         echo \app\models\MUser::getMemberTimeline($startDate, $endDate, 1) . PHP_EOL;
+    }
+    
+    public function actionSceneId() {
+        $sql = 'select scene_id, count(*) as c from wx_staff where scene_id != 0 group by scene_id having c > 1 order by c desc';
+        $rows = \Yii::$app->db->createCommand($sql)->queryAll();
+        foreach ($rows as $row) {
+//            echo $row['scene_id'] . ': ' . $row['c'] . PHP_EOL;
+            $staffs = MStaff::findAll(['scene_id' => $row['scene_id']]);
+            $cat_staffs = [];
+            foreach ($staffs as $staff) {
+                $cat_staffs[$staff->cat][] = $staff;
+            }
+            $cat_staffs['individual'] = [];
+            if (!empty($cat_staffs[MStaff::SCENE_CAT_IN])) 
+                $cat_staffs['individual'] = array_merge($cat_staffs['individual'], $cat_staffs[MStaff::SCENE_CAT_IN]);
+            if (!empty($cat_staffs[MStaff::SCENE_CAT_OUT])) 
+                $cat_staffs['individual'] = array_merge($cat_staffs['individual'], $cat_staffs[MStaff::SCENE_CAT_OUT]);
+            if (!empty($cat_staffs[MStaff::SCENE_CAT_FAN])) 
+                $cat_staffs['individual'] = array_merge($cat_staffs['individual'], $cat_staffs[MStaff::SCENE_CAT_FAN]);
+            
+            $first = null;
+            foreach($cat_staffs['individual'] as $individual_staff) {
+                if (null === $first) {
+                    $first = $individual_staff; continue;
+                }
+                if ($individual_staff->openid == $first->openid) {
+                    echo "duplicate staff! " . $individual_staff->openid .' '. $individual_staff->name . PHP_EOL;
+                    $individual_staff->delete();
+                }
+            }
+            
+            if (empty($cat_staffs[MStaff::SCENE_CAT_OFFICE])) {
+                
+            } else {                               
+                if (count($cat_staffs[MStaff::SCENE_CAT_OFFICE]) > 1) {
+                    $all_offices = [];
+                    $first = null;
+                    foreach ($cat_staffs[MStaff::SCENE_CAT_OFFICE] as $cat_staff) {
+                        echo $cat_staff->scene_id . $cat_staff->name . PHP_EOL;
+                        if (null === $first) {
+                            $first = $cat_staff; 
+                            $all_offices[] = $first;
+                            continue;
+                        }
+                        if ($cat_staff->office_id == $first->office_id) {
+                            echo "duplicate staff! " . $cat_staff->office_id .' '. $cat_staff->name . PHP_EOL;
+                            $cat_staff->delete();
+                        } else {
+                            $cat_staff->scene_id = MStaff::newSceneId($cat_staff->gh_id);
+                            $cat_staff->save(false);
+                            echo 'change OFFICE sceneid: '. $cat_staff->name . ' ' . $first->scene_id . ' -> ' . $cat_staff->scene_id .PHP_EOL;
+                            $all_offices[] = $cat_staff;
+                        }
+                    }
+                    
+                    $musers = MUser::findAll(['scene_pid' => $first->scene_id]);
+                    foreach ($musers as $muser) {
+                        $cnt = count($all_offices);
+                        $index = rand(0, $cnt - 1);
+                        echo 'change USER belongto: '. $muser->nickname . ' ' . $muser->belongto . ' -> ' . $all_offices[$index]->office_id .PHP_EOL;
+                        $muser->belongto = $all_offices[$index]->office_id;
+                        $muser->scene_pid = $all_offices[$index]->scene_id;
+                        $muser->save(false);
+                    }
+                    
+                } else {
+                    $cat_staff = $cat_staffs[MStaff::SCENE_CAT_OFFICE][0];
+                    echo $cat_staff->scene_id . $cat_staff->name . PHP_EOL;
+                    
+                    $musers = MUser::findAll(['scene_pid' => $cat_staff->scene_id]);
+                    foreach ($musers as $muser) {
+                        echo 'change USER belongto: '. $muser->nickname . ' ' . $muser->belongto . ' -> ' . $cat_staff->office_id .PHP_EOL;
+                        $muser->belongto = $cat_staff->office_id;
+                        $muser->save(false);
+                    }
+                    
+                    
+                }
+            
+                foreach ($cat_staffs['individual'] as $individual_staff) {                       
+                    $individual_staff->scene_id = MStaff::newSceneId($individual_staff->gh_id);
+                    $individual_staff->save(false);
+                    echo 'change INDIVIDUAL sceneid: '. $individual_staff->name . ' ' . $cat_staff->scene_id . ' -> ' . $individual_staff->scene_id .PHP_EOL;
+                }
+            }
+        }
     }
 }

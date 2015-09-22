@@ -219,6 +219,7 @@ class MOffice extends ActiveRecord implements IdentityInterface {
     const ROLE_NONE = 0;
     const ROLE_OFFICE = 1;
     const ROLE_ADMIN = 2;
+    const ROLE_ADMINGUEST = 3;
     const ROLE_ROOT = 9;
 
     public static function findIdentity($id) {
