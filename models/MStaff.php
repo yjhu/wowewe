@@ -327,18 +327,18 @@ class MStaff extends ActiveRecord
         if (empty($staffs))
             return 1;        
         $scene_ids = \yii\helpers\ArrayHelper::getColumn($staffs, 'scene_id');
-        $i = 1;
+        if (count($scene_ids) >= 100000) {
+            U::W([__METHOD__, 'not find avail scene_id']);                    
+            return false;
+        }
         while(true)
         {
+            $i = rand(1, 100000);
             if (!in_array($i, $scene_ids)) {
                 return $i;
-            }
-            $i++;
-            if ($i > 100000)
-                break;
+            }            
         }
-        U::W([__METHOD__, 'not find avail scene_id']);                    
-        return false;
+        
     }
 
 

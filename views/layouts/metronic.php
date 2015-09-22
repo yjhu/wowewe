@@ -127,7 +127,65 @@
                     <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
                     <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
                     <?php 
-                    if (\Yii::$app->user->isAdmin) {
+                    if (\Yii::$app->user->isAdminGuest) {
+                        echo \yii\widgets\Menu::widget([
+                            'firstItemCssClass' => 'start',
+                            'encodeLabels' => false,
+                            'activateParents' => true,
+                            'items' => [ 
+                                [
+                                    'label' => '<i class="fa fa-home"></i><span class="title">首页</span><span class="arrow "></span>', 
+                                    'url' => ['/wapx/metronic']
+                                ],
+                                [
+                                    'label' => '<i class="fa fa-users"></i><span class="title">客户</span><span class="arrow "></span>',
+                                    'url' => '',
+                                    'items' => [
+                                        ['label' => '客户管理','url' => ['/custom/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '客户常见问题','url' => ['/unicom-faq/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '客户统计','url' => ['/order/officecustomstat'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '粉丝管理','url' => ['/admin/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '用户账户管理','url' => ['/useraccount/index'],'linkOptions' => ['data-method' => 'post']],
+                                    ],
+                                ],
+                                [
+                                    'label' => '<i class="fa fa-users"></i><span class="title">员工</span><span class="arrow "></span>',
+                                    'url' => '',
+                                    'items' => [
+                                        ['label' => '员工管理','url' => ['/client-employee/index'],'linkOptions' => ['data-method' => 'post']],
+                                        //['label' => '员工推广成绩排行','url' => ['/order/stafftop'],'linkOptions' => ['data-method' => 'post']],
+                                        //['label' => '推广查询','url' => ['/accesslog/index'],'linkOptions' => ['data-method' => 'post']],
+                                    ],
+                                ],
+                                [
+                                    'label' => '<i class="fa fa-home"></i><span class="title">渠道</span><span class="arrow "></span>',
+                                    'url' => '',
+                                    'items' => [
+                                        ['label' => '渠道管理','url' => ['/client-outlet/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '营业厅推广成绩排行','url' => ['/order/officetop'],'linkOptions' => ['data-method' => 'post']],
+                                    ],
+                                ],
+                                [
+                                    'label' => '<i class="fa fa-shopping-cart"></i><span class="title">商品与订单</span><span class="arrow "></span>',
+                                    'url' => '',
+                                    'items' => [
+                                        ['label' => '订单管理','url' => ['/order/index'],'linkOptions' => ['data-method' => 'post']],                                                               
+                                        ['label' => '消息中心','url' => ['/messagebox/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '促销活动管理','url' => ['/activity/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '商品管理','url' => ['/admin/itemlist'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '商品套餐管理','url' => ['/admin/pkglist'],'linkOptions' => ['data-method' => 'post']],
+                                    ],
+                                ],
+                            ],
+                            'options' => [
+                                'class' => 'page-sidebar-menu',
+                                'data-keep-expanded' => "false", 
+                                'data-auto-scroll' => "true",
+                                'data-slide-speed' => "200",
+                            ],
+                            'submenuTemplate' => "\n<ul class='sub-menu'>\n{items}\n</ul>\n",
+                        ]);
+                    } else if (\Yii::$app->user->isAdmin) {
                         echo \yii\widgets\Menu::widget([
                             'firstItemCssClass' => 'start',
                             'encodeLabels' => false,
