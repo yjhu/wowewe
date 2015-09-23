@@ -53,7 +53,7 @@ $signPackage = $jssdk->GetSignPackage();
         ?>
             <?= emoji_unified_to_html(emoji_softbank_to_unified($hd_user->user->nickname)) ?> &nbsp;
             手机<?= '*******'.substr($hd_user->mobile,7,4) ?> &nbsp;
-            红包<?= $hd_user->hbme ?>元&nbsp;&nbsp;
+            已抢到红包<?= $hd_user->hbme ?>元&nbsp;&nbsp;
 
         <?php 
             } 
@@ -89,7 +89,11 @@ $signPackage = $jssdk->GetSignPackage();
 
                 <?php if($hd201509t6->hbme == 0) { ?>
                 <center>
+                <!--
                     <a class="btn btn-block btn-negative" style="width: 200px" id="hongbao">点击拆红包</a>
+                -->
+                    <img width=90% src="/wx/web/images/hongbao1.png?v7" id="hongbao">
+
                     <br>&nbsp;
                     <br>&nbsp;
                     <br>&nbsp;
@@ -105,7 +109,7 @@ $signPackage = $jssdk->GetSignPackage();
                         <br>
                          <input type="text" placeholder="请输入渠道编码" id="qdbm" style="width:200px">
                          <a class="btn btn-block" style="width: 200px" id="queding">确认已当场兑换</a>
-                         <p><b style="font-size: 14pt;color:red">注意!</b> <br>‘确认已当场兑换’按钮由联通工作人员点击。<br>用户请勿点击!</p>
+                         <p><b style="font-size: 14pt;color:red">注意!</b> <br>'确认已当场兑换' 按钮由联通工作人员点击。<br>用户请勿点击!</p>
                         <br>&nbsp;
                         <br>&nbsp;
                         <br>&nbsp;
@@ -142,15 +146,15 @@ $signPackage = $jssdk->GetSignPackage();
 
             <p><b>活动规则</b></p>
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
-            （一）用户在充值后请点击微信活动界面的“确认已当场兑换”按钮，便于系统话费到账；
+            （1）用户缴纳100元话费或者在联通办理入网即可兑换红包，以话费形式充入用户号码。
             </p>
 
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
-            （二）用户入网即可领取话费红包。根据抢到红包面额20/50/100赠送话费，且每个用户只能参加一次。赠送的话费在两天内由系统自动到账。
+            （2）用户在缴费后由联通营业人员输入信息并点击用户手机界面的“确认已当场兑换”按钮，随后由营业人员为用户当场兑换话费红包。
             </p>
 
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
-            （三）用户在营业厅出示微信参与资格，即可参与活动。所充手机号码必须与襄阳联通微信绑定的会员号码一致。
+            （3）每位用户只能参加一次，所充手机号码必须与襄阳联通微信绑定的会员号码一致。
             </p>
 
             <br><hr>
@@ -176,7 +180,7 @@ $signPackage = $jssdk->GetSignPackage();
                     return false;
                 }
 
-                if (!confirm("如果您不是联通工作人员，请点'取消' ！"))
+                if (!confirm("如果您不是联通工作人员，请点'取消' 或 '关闭网页'！"))
                     return;
 
                 var args = {

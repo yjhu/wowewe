@@ -391,11 +391,18 @@ class ExportController extends \yii\console\Controller {
                 	$office = \app\models\MOffice::findOne(['office_id' => $user->belongto]);
             	}
 
+                /*
     			if ($user->bindMobileIsInside('wx_vip')) {
     				$customerFlag = '老';
     			} else {
     				$customerFlag = '新';
     			}
+                */
+                if ($user->bindMobileIsInside('wx_oldcustomer')) {
+                    $customerFlag = '老';
+                } else {
+                    $customerFlag = '新';
+                }
 
     			//微信昵称	绑定手机号	关注时间	姓名	营业厅名称	新/老用户	客户经理	
                 fprintf($fh, "%s, %s, %s, %s, %s, %s, %s",
@@ -775,11 +782,18 @@ class ExportController extends \yii\console\Controller {
 
                 $user = \app\models\MUser::findOne(['openid'=>$order->openid]);
                 $customerFlag = '--';
+                /*
                 if ($user->bindMobileIsInside('wx_t1')) {
                     $customerFlag = '老';
                 } elseif ($user->bindMobileIsInside('wx_t2')) {
                     $customerFlag = '老';
                 }elseif ($user->bindMobileIsInside('wx_t3')) {
+                    $customerFlag = '老';
+                } else {
+                    $customerFlag = '新';
+                }
+                */
+                if ($user->bindMobileIsInside('wx_oldcustomer')) {
                     $customerFlag = '老';
                 } else {
                     $customerFlag = '新';
