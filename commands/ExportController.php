@@ -764,6 +764,7 @@ class ExportController extends \yii\console\Controller {
                 'create_time' => SORT_ASC,
             ])->all();
 
+            fprintf($fh, "营业厅, 订单号, 商品, 价格, 订单时间, 身份证, 用户姓名, 联系电话, 支付方式, 备注, 用户类型\n");
             foreach ($orders as $order) {
 
                 $office = \app\models\MOffice::findOne(['office_id' => $order->office_id]);
@@ -772,10 +773,24 @@ class ExportController extends \yii\console\Controller {
                 else
                     $office_title = "";
 
-                //fprintf($fh, "%s, %s, %s, %s, %s, %s\n", $fan->nickname, $fan->country, $fan->province, $fan->city, implode(';', $fan->bindMobileNumbers), date('Y-m-d H:i:s', $fan->subscribe_time));
+                $user = \app\models\MUser::findOne(['openid'=>$order->openid]);
+                $customerFlag = '--';
+                if ($user->bindMobileIsInside('wx_t1')) {
+                    $customerFlag = '老';
+                } elseif ($user->bindMobileIsInside('wx_t2')) {
+                    $customerFlag = '老';
+                }elseif ($user->bindMobileIsInside('wx_t3')) {
+                    $customerFlag = '老';
+                } else {
+                    $customerFlag = '新';
+                }
+
+                $pay_kind = \app\models\MOrder::getOrderPayKindOption($order->pay_kind);
+
                 $price = ($order->feesum)/100;
 
-                echo $office_title."\t".$order->oid."\t".$order->title."\t".$price."\t".$order->create_time."\t".$order->userid."\t".$order->username."\t".$order->usermobile."\t".$order->pay_kind."\t".$order->memo."\t\n";
+                //echo $office_title."\t".$order->oid."\t".$order->title."\t".$price."\t".$order->create_time."\t".$order->userid."\t".$order->username."\t".$order->usermobile."\t".$pay_kind."\t".$order->memo."\t".$order->customerFlag."\t\n";
+                fprintf($fh, "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s\n", $office_title, $order->oid, $order->title, $price, $order->create_time, $order->userid, $order->username, $order->usermobile, $pay_kind, $order->memo, $order->customerFlag);
             }
 
             $start += $step;

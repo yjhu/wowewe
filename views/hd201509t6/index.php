@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 use app\models\MHd201509t6;
+use app\models\MQdbm;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\MHd201509t6Search */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -78,6 +80,35 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerOptions' => array('style'=>'width:120px;'),           
             ],
             'qdbm',
+            [
+                'label' => '归属营服',
+                'value'=>function ($model, $key, $index, $column) { 
+
+                    $qdbm = strtolower(trim($model->qdbm));
+                    $qd = MQdbm::findOne(['qdbm' => $qdbm]);
+
+                    if(empty($qd))
+                        return "--";
+                    else
+                        return $qd->gsyf;
+                },
+                'headerOptions' => array('style'=>'width:120px;'),           
+            ],  
+
+            [
+                'label' => '渠道名称',
+                'value'=>function ($model, $key, $index, $column) { 
+
+                    $qdbm = strtolower(trim($model->qdbm));
+                    $qd = MQdbm::findOne(['qdbm' => $qdbm]);
+
+                    if(empty($qd))
+                        return "--";
+                    else
+                        return $qd->qdmc;
+                },
+                'headerOptions' => array('style'=>'width:120px;'),           
+            ],            
 
             //['class' => 'yii\grid\ActionColumn'],
         ],

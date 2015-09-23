@@ -89,7 +89,7 @@ $signPackage = $jssdk->GetSignPackage();
 
                 <?php if($hd201509t6->hbme == 0) { ?>
                 <center>
-                     <a class="btn btn-block btn-negative" style="width: 120px" id="hongbao">点击拆红包</a>
+                    <a class="btn btn-block btn-negative" style="width: 200px" id="hongbao">点击拆红包</a>
                     <br>&nbsp;
                     <br>&nbsp;
                     <br>&nbsp;
@@ -100,12 +100,12 @@ $signPackage = $jssdk->GetSignPackage();
                             恭喜, 已得红包 <?= $hd201509t6->hbme ?> 元！
                         </h2>
                         <h4 style="color: red">
-                            凭此画面可到营业厅充费送费，<br><br>了解详情请看'活动说明'。
+                            凭此画面可到营业厅领取，<br><br>详情见&#8593; '活动说明'。
                         </h4>
                         <br>
-                         <input type="text" placeholder="渠道编码" id="qdbm" >
-                         <a class="btn btn-block" style="width: 120px" id="queding">确认已参与</a>
-                         <p><b style="font-size: 14pt;color:red">注意!</b> <br>‘确认已参与’按钮由联通工作人员点击。<br>用户请勿点击!</p>
+                         <input type="text" placeholder="请输入渠道编码" id="qdbm" style="width:200px">
+                         <a class="btn btn-block" style="width: 200px" id="queding">确认已当场兑换</a>
+                         <p><b style="font-size: 14pt;color:red">注意!</b> <br>‘确认已当场兑换’按钮由联通工作人员点击。<br>用户请勿点击!</p>
                         <br>&nbsp;
                         <br>&nbsp;
                         <br>&nbsp;
@@ -142,11 +142,11 @@ $signPackage = $jssdk->GetSignPackage();
 
             <p><b>活动规则</b></p>
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
-            （一）用户在充值后请点击微信活动界面的“确认已参与”按钮，便于系统话费到账；
+            （一）用户在充值后请点击微信活动界面的“确认已当场兑换”按钮，便于系统话费到账；
             </p>
 
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
-            （二）用户可享受充100元,根据抢到红包面额20/50/100赠送，且每个用户只能参加一次。赠送的话费在两天内由系统自动到账。
+            （二）用户入网即可领取话费红包。根据抢到红包面额20/50/100赠送话费，且每个用户只能参加一次。赠送的话费在两天内由系统自动到账。
             </p>
 
             <p class='p1'>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -169,11 +169,15 @@ $signPackage = $jssdk->GetSignPackage();
             $('#queding').click (function () {
 
                 //alert('confirmAjax');
+                var qdbm = $("#qdbm").val();
+                if(qdbm == "")
+                {
+                    alert("请输入渠道编码");
+                    return false;
+                }
 
                 if (!confirm("如果您不是联通工作人员，请点'取消' ！"))
                     return;
-
-                var qdbm = $("#qdbm").val();
 
                 var args = {
                     'classname':    '\\app\\models\\MHd201509t6',
@@ -193,7 +197,7 @@ $signPackage = $jssdk->GetSignPackage();
                     success:    function(ret) { 
                         if (0 === ret['code']) 
                         {
-                            alert("我已充值完成！");
+                            alert("已成功参与本次活动！");
                             location.href = '<?= Url::to() ?>';
                         }
                         else
