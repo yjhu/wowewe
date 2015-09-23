@@ -53,6 +53,9 @@ class MStaff extends ActiveRecord
     const SCENE_CAT_OFFICE = 2;
     const SCENE_CAT_FAN = 3;    
 
+    const SCENE_LOCK = 'LOCK#1';
+    const SCENE_LOCK_WAIT_TIME_SECOND = 10;
+    
     static function getStaffCatOptionName( $key = null )
     {
         $arr = array(
@@ -253,8 +256,14 @@ class MStaff extends ActiveRecord
     {
         $gh_id = $this->gh_id;
         if (empty($this->scene_id)) {
-            $this->scene_id = MStaff::newSceneId($this->gh_id);
-            $this->save(false);
+            // hbhe
+            if (yii::$app->mutex->acquire(MStaff::SCENE_LOCK, MStaff::SCENE_LOCK_WAIT_TIME_SECOND)) {
+                $this->scene_id = MStaff::newSceneId($this->gh_id);
+                $this->save(false);                
+                yii::$app->mutex->release($lock);
+            } else {
+                yii::error('acquire lock error');
+            }                                        
         }        
         $scene_id = $this->scene_id;
         $log_file_path = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$scene_id}.jpg";
@@ -274,8 +283,14 @@ class MStaff extends ActiveRecord
     {
         $gh_id = $this->gh_id;
         if (empty($this->scene_id)) {
-            $this->scene_id = MStaff::newSceneId($this->gh_id);
-            $this->save(false);
+            // hbhe
+            if (yii::$app->mutex->acquire(MStaff::SCENE_LOCK, MStaff::SCENE_LOCK_WAIT_TIME_SECOND)) {
+                $this->scene_id = MStaff::newSceneId($this->gh_id);
+                $this->save(false);                
+                yii::$app->mutex->release($lock);
+            } else {
+                yii::error('acquire lock error');
+            }                                        
         }        
         $scene_id = $this->scene_id;
         $office_id = $this->office_id;
@@ -331,6 +346,7 @@ class MStaff extends ActiveRecord
             U::W([__METHOD__, 'not find avail scene_id']);                    
             return false;
         }
+/*        
         while(true)
         {
             $i = rand(1, 100000);
@@ -338,7 +354,14 @@ class MStaff extends ActiveRecord
                 return $i;
             }            
         }
-        
+*/       
+        // just for test, hbhe
+        for ($i=1; $i<10000; $i++)
+        {
+            if (!in_array($i, $scene_ids)) {
+                return $i;
+            }            
+        }
     }
 
 

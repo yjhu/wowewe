@@ -32,6 +32,10 @@ return [
 //			],
 		],		
 
+            'mutex'=> [
+                //'class' => 'yii\mutex\FileMutex',
+                'class' => 'yii\mutex\MysqlMutex',
+            ],
 
 
 /*
