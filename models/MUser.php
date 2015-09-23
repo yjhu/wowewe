@@ -462,10 +462,16 @@ class MUser extends ActiveRecord implements IdentityInterface
 
     public function getQrImageUrl()
     {
-        $staff = MStaff::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
-        if (empty($staff)) {
-            $staff = $this->newSceneIdForOpenid();
-        }
+        // hbhe
+        if (yii::$app->mutex->acquire(MStaff::SCENE_LOCK, MStaff::SCENE_LOCK_WAIT_TIME_SECOND)) {
+            $staff = MStaff::findOne(['gh_id'=>$this->gh_id, 'openid'=>$this->openid]);
+            if (empty($staff)) {
+                $staff = $this->newSceneIdForOpenid();
+            }        
+            yii::$app->mutex->release($lock);
+        } else {
+            yii::error('acquire lock error');
+        }                                
         return $staff->getQrImageUrl();
     }
 

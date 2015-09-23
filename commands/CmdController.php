@@ -60,6 +60,106 @@ class CmdController extends Controller
         Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
     }
 
+    public function newSceneIdForOpenid($gh_id, $openid)
+    {
+        $staff = new MStaff;
+        $staff->gh_id = $gh_id;
+        $staff->openid = $openid;        
+        $staff->scene_id = MStaff::newSceneId($gh_id);
+        $staff->name = $openid;
+        $staff->cat = MStaff::SCENE_CAT_FAN;                
+        if (!$staff->save(false)) {
+            U::W(['error', __METHOD__, $staff]);
+        }                    
+        return $staff;        
+    }
+
+    public function tryGetQrImageUrl()
+    {
+        $gh_id = 'G';
+        $openid = 'openid-'. rand(1, 1000);
+        $staff = MStaff::findOne(['gh_id'=>$gh_id, 'openid'=>$openid]);
+        if (empty($staff)) {
+            $staff = $this->newSceneIdForOpenid($gh_id, $openid);
+        }
+        //return $staff->getQrImageUrl();
+    }
+
+    //C:\xampp\php\php.exe D:\htdocs\wx\yii cmd/disturb
+    public function actionDisturb()
+    {        
+        for ($i=0;$i<100000;$i++) {
+            $row = Yii::$app->db->createCommand("SELECT * FROM wx_staff ORDER BY RAND() LIMIT 1")->queryOne();
+        }
+    }
+
+    //C:\xampp\php\php.exe D:\htdocs\wx\yii cmd/h1
+    public function actionH1()
+    {        
+        for ($i=0;$i<10000;$i++) {
+            $this->tryGetQrImageUrl();
+        }
+    }
+    
+
+    //C:\xampp\php\php.exe D:\htdocs\wx\yii cmd/h2
+    public function actionH2()
+    {        
+        $gh_id = 'G';
+        $office_id = rand(1, 100000);
+        for ($i=0;$i<10000;$i++) {
+                $staff = new MStaff;
+                $staff->gh_id = $gh_id;
+                $staff->office_id = $office_id;
+                $staff->scene_id = MStaff::newSceneId($gh_id);
+                $staff->name = 'office-'.$office_id;
+                $staff->cat = MStaff::SCENE_CAT_OFFICE;
+                if (!$staff->save(false)) {
+                    U::W(['error', __METHOD__, $staff]);
+                }
+        }
+    }
+
+    //C:\xampp\php\php.exe D:\htdocs\wx\yii cmd/r1
+    public function actionR1()
+    {        
+        $lock = 'LOCK#1';
+        for ($i=0;$i<10000;$i++) {
+            if (yii::$app->mutex->acquire($lock, 10)) {
+                $this->tryGetQrImageUrl();
+                yii::$app->mutex->release($lock);
+            } else {
+                yii::error('acquire lock error in R1');
+            }                
+        }
+    }
+    
+
+    //C:\xampp\php\php.exe D:\htdocs\wx\yii cmd/r2
+    public function actionR2()
+    {        
+        $lock = 'LOCK#1';    
+        $gh_id = 'G';
+        $office_id = rand(1, 100000);
+        for ($i=0;$i<10000;$i++) {
+            if (yii::$app->mutex->acquire($lock, 10)) {
+                $staff = new MStaff;
+                $staff->gh_id = $gh_id;
+                $staff->office_id = $office_id;
+                $staff->scene_id = MStaff::newSceneId($gh_id);
+                $staff->name = 'office-'.$office_id;
+                $staff->cat = MStaff::SCENE_CAT_OFFICE;
+                if (!$staff->save(false)) {
+                    U::W(['error', __METHOD__, $staff]);
+                }
+                yii::$app->mutex->release($lock);
+            } else {
+                yii::error('acquire lock error in R2');
+            }                
+        
+        }
+    }
+
     //C:\xampp\php\php.exe C:\htdocs\wx\yii cmd
     public function actionIndex()
     {        

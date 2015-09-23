@@ -382,15 +382,21 @@ class MOffice extends ActiveRecord implements IdentityInterface {
     public function afterSave($insert, $changedAttributes) {
         if ($insert) {
             if ($this->need_scene_id) {
-                $staff = new MStaff;
-                $staff->gh_id = $this->gh_id;
-                $staff->office_id = $this->office_id;
-                $staff->scene_id = MStaff::newSceneId($this->gh_id);
-                $staff->name = $this->title;
-                $staff->cat = MStaff::SCENE_CAT_OFFICE;
-                if (!$staff->save(false)) {
-                    U::W(['error', __METHOD__, $staff]);
-                }
+                //hbhe
+                if (yii::$app->mutex->acquire(MStaff::SCENE_LOCK, MStaff::SCENE_LOCK_WAIT_TIME_SECOND)) {
+                    $staff = new MStaff;
+                    $staff->gh_id = $this->gh_id;
+                    $staff->office_id = $this->office_id;
+                    $staff->scene_id = MStaff::newSceneId($this->gh_id);
+                    $staff->name = $this->title;
+                    $staff->cat = MStaff::SCENE_CAT_OFFICE;
+                    if (!$staff->save(false)) {
+                        U::W(['error', __METHOD__, $staff]);
+                    }
+                    yii::$app->mutex->release($lock);
+                } else {
+                    yii::error('acquire lock error');
+                }                            
             }
         }
     }
