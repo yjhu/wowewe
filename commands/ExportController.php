@@ -612,7 +612,15 @@ class ExportController extends \yii\console\Controller {
             $offices = \app\models\MOffice::find()->where(['gh_id' => $gh_id])->offset($start)->limit($step)->all();
         
             foreach ($offices as $office) {
-                $office->getQrImageUrl2();
+                try {
+                    $office->getQrImageUrl2();                
+                }
+                catch(\Exception $e)
+                {                     
+                     U::W([$arr, $e->getMessage()]);
+                     sleep(3);
+                     //throw new \Exception('error');
+                }                                    
             }
 
             $start += $step;
