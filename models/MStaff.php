@@ -303,16 +303,8 @@ class MStaff extends ActiveRecord
         if ((!file_exists($log_file_path)) || filesize($log_file_path) == 0)
         {
             Yii::$app->wx->setGhId($gh_id);    
-            try
-            {
-                $arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
-                $url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
-            }
-            catch(\Exception $e)
-            {
-                 U::W([$arr, $e->getMessage()]);
-                 throw new \Exception('error');
-            }                        
+            $arr = Yii::$app->wx->WxgetQRCode($scene_id, true);
+            $url = Yii::$app->wx->WxGetQRUrl($arr['ticket']);
             Wechat::downloadFile($url, $log_file_path);
         }         
         //$url = Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$scene_id}.jpg";
