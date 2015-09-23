@@ -5,6 +5,7 @@ namespace app\controllers;
 use Yii;
 use app\models\MHd201509t6;
 use app\models\MHd201509t6Search;
+use app\models\MQdbm;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -40,10 +41,46 @@ class Hd201509t6Controller extends Controller
             $data = $dataProvider->getModels();
             $date = date('Y-m-d-His');
             $filename = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'zqshfhd'."-{$date}.csv";
-            $csv = new \app\models\ECSVExport($data);
-            $attributes = ['mobile', 'yfzx', 'fsc', 'hbme', 'create_time', 'status', 'qdbm'];
+
+            $rowsx = [];
+
+            foreach ($data as $row) {
+                $rows = [];
+                $rows["mobile"] = $row->mobile;
+                $rows["yfzx"] = $row->yfzx;
+                $rows["fsc"] = $row->fsc;
+                $rows["create_time"] = $row->create_time;
+
+                //$rows["status"] = $row->status;
+                if($row->status == 0)
+                    $rows["status"] = "未领";
+                else
+                    $rows["status"] = "已领";
+
+                $rows["qdbm"] = $row->qdbm;
+
+                $qd = MQdbm::findOne(["qdbm" => $row->qdbm]);
+                if(empty($qd))
+                {
+                   $rows["gsyf"] = "--"; 
+                   $rows["qdmc"] = "--"; 
+                }
+                else
+                {
+                   $rows["gsyf"] = $qd->gsyf; 
+                   $rows["qdmc"] = $qd->qdmc; 
+                }
+
+                $rowsx[] = $rows;
+            }
+            //$csv = new \app\models\ECSVExport($data);
+            $csv = new \app\models\ECSVExport($rowsx);
+            $attributes = ['mobile', 'yfzx', 'fsc', 'hbme', 'create_time', 'status', 'qdbm', 'gsyf', 'qdmc'];
             $csv->setInclude($attributes);                
             //$csv->setHeaders(['Score'=>'成绩']);
+            //mobile  yfzx    fsc create_time status  qdbm    gsyf    qdmc
+
+              $csv->setHeaders(['mobile'=>'手机', 'yfzx'=>'营服中心', 'fsc'=>'分市场', 'create_time'=>'时间', 'status'=>'领取状态', 'qdbm'=>'渠道编码', 'gsyf'=>'归属营服', 'qdmc'=>'渠道名称']);
             $csv->toCSV($filename);
             Yii::$app->response->sendFile($filename);
             return;

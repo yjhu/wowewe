@@ -34,6 +34,9 @@ use app\models\VipLevel;
 use app\models\MVip;
 use app\models\MHd201509t1;
 use app\models\MHd201509t3;
+use app\models\MHd201509t5;
+
+
 use app\models\OpenidBindMobile;
 
 
@@ -1208,6 +1211,52 @@ class CmdController extends Controller
         }
         fclose($fh);    
 
+    }    
+
+
+
+    //导入all-76.csv 数据到wx_hd201509t5表 
+    //中秋送话费活动用户表
+    public function actionImporthd201509t5()
+    {
+        $file = Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'all-76.csv';
+        $fh = fopen($file, "r");
+        $i=0;
+        while (!feof($fh)) 
+        {
+            $line = fgets($fh);
+            if (empty($line))
+                continue;
+            $arr = explode(",", $line);     
+
+            //18671071245,7南漳漳南营服中心,个客,2
+            $mobile = trim($arr[0]);
+            $yfzx = trim($arr[1]);
+            $fsc = trim($arr[2]);
+            $tcnx = trim($arr[3]);
+
+            //echo $mobile."\t".$yfzx."\t".$fsc."\t".$tcnx."\n";
+   
+            $hd201509t5 = MHd201509t5::findOne(['mobile'=>$mobile]);
+            if (!empty($hd201509t5)) {
+                //U::W("mobile=$mobile already exists");                
+                //U::W($arr);
+            } else {
+                $hd201509t5 = new MHd201509t5;
+            }
+
+            $hd201509t5->mobile = $mobile;
+            $hd201509t5->yfzx = $yfzx;  
+            $hd201509t5->fsc = $fsc;
+            $hd201509t5->tcnx = $tcnx;              
+            $hd201509t5->save(false);
+
+            $i++;
+            if ($i % 1000 == 1)
+                echo $i."\n";
+
+        }
+        fclose($fh);    
     }    
 
 
