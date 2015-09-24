@@ -260,6 +260,7 @@ class MStaff extends ActiveRecord
             if (yii::$app->mutex->acquire(MStaff::SCENE_LOCK, MStaff::SCENE_LOCK_WAIT_TIME_SECOND)) {
                 $this->scene_id = MStaff::newSceneId($this->gh_id);
                 $this->save(false);                
+                //yii::$app->mutex->release($lock);
                 yii::$app->mutex->release(MStaff::SCENE_LOCK);
             } else {
                 yii::error('acquire lock error');
@@ -287,6 +288,7 @@ class MStaff extends ActiveRecord
             if (yii::$app->mutex->acquire(MStaff::SCENE_LOCK, MStaff::SCENE_LOCK_WAIT_TIME_SECOND)) {
                 $this->scene_id = MStaff::newSceneId($this->gh_id);
                 $this->save(false);                
+                //yii::$app->mutex->release($lock);
                 yii::$app->mutex->release(MStaff::SCENE_LOCK);
             } else {
                 yii::error('acquire lock error');
