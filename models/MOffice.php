@@ -177,6 +177,7 @@ use yii\web\IdentityInterface;
 use yii\behaviors\TimestampBehavior;
 use app\models\MGh;
 use app\models\U;
+use app\models\MStaff;
 
 class MOffice extends ActiveRecord implements IdentityInterface {
 
@@ -393,7 +394,8 @@ class MOffice extends ActiveRecord implements IdentityInterface {
                     if (!$staff->save(false)) {
                         U::W(['error', __METHOD__, $staff]);
                     }
-                    yii::$app->mutex->release($lock);
+                    //yii::$app->mutex->release($lock);
+                    yii::$app->mutex->release(MStaff::SCENE_LOCK);
                 } else {
                     yii::error('acquire lock error');
                 }                            

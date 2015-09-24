@@ -468,7 +468,8 @@ class MUser extends ActiveRecord implements IdentityInterface
             if (empty($staff)) {
                 $staff = $this->newSceneIdForOpenid();
             }        
-            yii::$app->mutex->release($lock);
+            //yii::$app->mutex->release($lock);
+            yii::$app->mutex->release(MStaff::SCENE_LOCK);
         } else {
             yii::error('acquire lock error');
         }                                
