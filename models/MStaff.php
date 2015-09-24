@@ -260,7 +260,7 @@ class MStaff extends ActiveRecord
             if (yii::$app->mutex->acquire(MStaff::SCENE_LOCK, MStaff::SCENE_LOCK_WAIT_TIME_SECOND)) {
                 $this->scene_id = MStaff::newSceneId($this->gh_id);
                 $this->save(false);                
-                yii::$app->mutex->release($lock);
+                yii::$app->mutex->release(MStaff::SCENE_LOCK);
             } else {
                 yii::error('acquire lock error');
             }                                        
@@ -287,7 +287,7 @@ class MStaff extends ActiveRecord
             if (yii::$app->mutex->acquire(MStaff::SCENE_LOCK, MStaff::SCENE_LOCK_WAIT_TIME_SECOND)) {
                 $this->scene_id = MStaff::newSceneId($this->gh_id);
                 $this->save(false);                
-                yii::$app->mutex->release($lock);
+                yii::$app->mutex->release(MStaff::SCENE_LOCK);
             } else {
                 yii::error('acquire lock error');
             }                                        
@@ -346,7 +346,7 @@ class MStaff extends ActiveRecord
             U::W([__METHOD__, 'not find avail scene_id']);                    
             return false;
         }
-/*        
+        
         while(true)
         {
             $i = rand(1, 100000);
@@ -354,14 +354,14 @@ class MStaff extends ActiveRecord
                 return $i;
             }            
         }
-*/       
+       
         // just for test, hbhe
-        for ($i=1; $i<10000; $i++)
-        {
-            if (!in_array($i, $scene_ids)) {
-                return $i;
-            }            
-        }
+//        for ($i=1; $i<10000; $i++)
+//        {
+//            if (!in_array($i, $scene_ids)) {
+//                return $i;
+//            }            
+//        }
     }
 
 
