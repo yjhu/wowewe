@@ -56,8 +56,8 @@ class MGoods extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'file', 'files'], 'required'],
-            [['office_ctrl', 'list_img_url', 'body_img_url', 'package_ctrl', 'detail_ctrl', 'pics_ctrl'], 'safe'],
+            [['title'], 'required'],
+            [['office_ctrl', 'list_img_url', 'body_img_url', 'package_ctrl', 'detail_ctrl', 'pics_ctrl', 'file', 'files'], 'safe'],
             [['goods_kind', 'quantity', 'price', 'price_old'], 'integer'],
             [['detail'], 'string'],
             [['title'], 'string', 'max' => 64],
