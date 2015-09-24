@@ -15,18 +15,11 @@ use Yii;
  * @property string $create_time
  * @property integer $score
  * @property string $memo
+ * @property string $code
+ * @property integer $status
  */
 class MOfficeScoreEvent extends \yii\db\ActiveRecord
 {
-
-    const CAT_ADD_NEW_MEMBER = 0;
-    const CAT_ADD_ORDER = 1;
-
-    
-    const CAT_ADD_NEW_MEMBER_SCORE = 100;
-    const CAT_ADD_ORDER_SCORE = 100;
-
-
     /**
      * @inheritdoc
      */
@@ -41,10 +34,10 @@ class MOfficeScoreEvent extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gh_id', 'openid', 'office_id', 'cat', 'score', 'memo'], 'required'],
-            [['office_id', 'cat', 'score'], 'integer'],
+            [['gh_id', 'openid', 'office_id', 'cat', 'score', 'memo', 'code', 'status'], 'required'],
+            [['office_id', 'cat', 'score', 'status'], 'integer'],
             [['create_time'], 'safe'],
-            [['gh_id', 'openid'], 'string', 'max' => 64],
+            [['gh_id', 'openid', 'code'], 'string', 'max' => 64],
             [['memo'], 'string', 'max' => 128]
         ];
     }
@@ -63,6 +56,8 @@ class MOfficeScoreEvent extends \yii\db\ActiveRecord
             'create_time' => 'Create Time',
             'score' => 'Score',
             'memo' => 'Memo',
+            'code' => '兑换码',
+            'status' => '审核状态',
         ];
     }
 }
