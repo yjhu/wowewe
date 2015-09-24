@@ -176,6 +176,18 @@
                                         ['label' => '商品套餐管理','url' => ['/admin/pkglist'],'linkOptions' => ['data-method' => 'post']],
                                     ],
                                 ],
+
+                                /*活动，临时入口*/
+                                [
+                                    'label' => '<i class="fa fa-flask"></i><span class="title">活动</span><span class="arrow "></span>',
+                                    'url' => '',
+                                    'items' => [
+                                        ['label' => '中秋送话费活动','url' => ['/hd201509t6/index'],'linkOptions' => ['data-method' => 'post']],
+                                    ],
+                                ],  
+
+
+                                
                             ],
                             'options' => [
                                 'class' => 'page-sidebar-menu',

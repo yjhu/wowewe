@@ -118,6 +118,9 @@ use yii\helpers\Url;
 </div><!-- mp-openidbindmobile-create -->
 
 <button  class="btn btn-lg btn-primary btn-block glyphicon glyphicon-eye-open" id="v1DetailBtn">&nbsp;查看会员特权</button>
+<br>
+<a class="btn btn-lg btn-default btn-block glyphicon glyphicon-user" href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wap/hyzx1:gh_03a74ac96138#wechat_redirect">&nbsp;会员中心</a>
+
 
   <?php 
     $show = false;
@@ -157,7 +160,7 @@ use yii\helpers\Url;
             </tr>
             <tr  class="info">
               <th scope="row">4</th>
-              <td>享受自营厅免费充/电饮水/下载手机软件等服务。</td>
+              <td>享受自营厅免费充电/饮水/下载手机软件等服务。</td>
             </tr>
             <tr class="info">
               <th scope="row">5</th>
