@@ -84,7 +84,7 @@
                 $model->cid==868 ||
                 $model->cid==869 ||
                 $model->cid==877 ||
-
+                $model->cid==878 ||
                 $model->cid==876 ||
                 $model->cid==317 
                 )  

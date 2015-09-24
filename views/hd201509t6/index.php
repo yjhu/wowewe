@@ -77,7 +77,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => '状态',
                 'value'=>function ($model, $key, $index, $column) { return MHd201509t6::gethd201509t6StatusOption($model->status); },
                 'filter'=> MHd201509t6::gethd201509t6StatusOption(),
-                'headerOptions' => array('style'=>'width:120px;'),           
+                'headerOptions' => array('style'=>'width:80px;'),           
             ],
             'qdbm',
             [

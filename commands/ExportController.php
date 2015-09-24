@@ -5,6 +5,7 @@
  */
 
 namespace app\commands;
+use app\models\U;
 
 use Yii;
 
