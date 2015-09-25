@@ -20,6 +20,24 @@ use Yii;
  */
 class MOfficeScoreEvent extends \yii\db\ActiveRecord
 {
+    const CAT_ADD_NEW_MEMBER = 0;
+    const CAT_ADD_ORDER = 1;
+    /*
+    *
+    *
+    */
+    /*10元和100元代金卷*/
+    const CAT_30YUAN_DAIJINJUAN = 101;
+    const CAT_100YUAN_DAIJINJUAN = 102;
+
+    
+
+    const CAT_ADD_NEW_MEMBER_SCORE = 100;
+    const CAT_ADD_ORDER_SCORE = 100;
+    /*10元和100元代金卷 消减积分数*/
+    const CAT_30YUAN_DAIJINJUAN_SCORE = 2000;
+    const CAT_100YUAN_DAIJINJUAN_SCORE = 10000;
+
     /**
      * @inheritdoc
      */
@@ -60,4 +78,16 @@ class MOfficeScoreEvent extends \yii\db\ActiveRecord
             'status' => '审核状态',
         ];
     }
+
+    static function getOseStatusOption($key=null)
+    {
+        $arr = array(
+            0 => '未审核',
+            1 => '审核成功',
+            2 => '审核失败',
+        );        
+        return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+    }
+
+
 }

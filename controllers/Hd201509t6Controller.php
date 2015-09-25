@@ -50,6 +50,7 @@ class Hd201509t6Controller extends Controller
                 $rows["yfzx"] = $row->yfzx;
                 $rows["fsc"] = $row->fsc;
                 $rows["create_time"] = $row->create_time;
+                $rows["hbme"] = $row->hbme;
 
                 //$rows["status"] = $row->status;
                 if($row->status == 0)
@@ -75,12 +76,12 @@ class Hd201509t6Controller extends Controller
             }
             //$csv = new \app\models\ECSVExport($data);
             $csv = new \app\models\ECSVExport($rowsx);
-            $attributes = ['mobile', 'yfzx', 'fsc', 'hbme', 'create_time', 'status', 'qdbm', 'gsyf', 'qdmc'];
+            $attributes = ['mobile', 'yfzx', 'fsc', 'hbme', 'create_time', 'hbme', 'status', 'qdbm', 'gsyf', 'qdmc'];
             $csv->setInclude($attributes);                
             //$csv->setHeaders(['Score'=>'成绩']);
             //mobile  yfzx    fsc create_time status  qdbm    gsyf    qdmc
 
-              $csv->setHeaders(['mobile'=>'手机', 'yfzx'=>'营服中心', 'fsc'=>'分市场', 'create_time'=>'时间', 'status'=>'领取状态', 'qdbm'=>'渠道编码', 'gsyf'=>'归属营服', 'qdmc'=>'渠道名称']);
+            $csv->setHeaders(['mobile'=>'手机', 'yfzx'=>'营服中心', 'fsc'=>'分市场', 'create_time'=>'时间', 'hbme'=>'红包(元)', 'status'=>'领取状态', 'qdbm'=>'渠道编码', 'gsyf'=>'归属营服', 'qdmc'=>'渠道名称']);
             $csv->toCSV($filename);
             Yii::$app->response->sendFile($filename);
             return;

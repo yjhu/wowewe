@@ -22,6 +22,7 @@ use app\models\MGh;
 class WxmenuController extends Controller
 {
     public $layout = 'metronic';
+    public $enableCsrfValidation = false;
     public function behaviors()
     {
         return [

@@ -41,7 +41,7 @@ class MOfficeScoreEventSearch extends MOfficeScoreEvent
      */
     public function search($params)
     {
-        $query = MOfficeScoreEvent::find();
+        $query = MOfficeScoreEvent::find()->where(['>', "cat" , 100]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

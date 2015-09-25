@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
+use app\models\MOfficeScoreEvent;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\MOfficeScoreEventSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -23,18 +25,43 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            //['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'gh_id',
-            'openid',
-            'office_id',
-            'cat',
-            // 'create_time',
-            // 'score',
-            // 'memo',
-            // 'code',
-            // 'status',
+            //'id',
+            //'gh_id',
+            //'openid',
+            //'office_id',
+            [
+                //'attribute' => 'office_id',
+                'label' => '渠道名称',
+                'value'=>function ($model, $key, $index, $column) {
+                    //return MHd201509t6::gethd201509t6StatusOption($model->status); 
+                    $office = app\models\MOffice::findOne(["office_id" => $model->office_id]);
+
+                    if(empty($office))
+                        return "--";
+                    else
+                        return $office->title;
+
+                },
+                //'filter'=> MHd201509t6::gethd201509t6StatusOption(),
+                'headerOptions' => array('style'=>'width:220px;'),           
+            ],
+
+            //'cat',
+            'create_time',
+            'score',
+            'memo',
+            'code',
+            //'status',
+            [
+                'attribute' => 'status',
+                'label' => '审核状态',
+                'value'=>function ($model, $key, $index, $column) { 
+                    return MOfficeScoreEvent::getOseStatusOption($model->status); },
+                'filter'=> MOfficeScoreEvent::getOseStatusOption(),
+                'headerOptions' => array('style'=>'width:120px;'),           
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
