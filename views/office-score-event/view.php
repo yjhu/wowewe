@@ -6,38 +6,52 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\MOfficeScoreEvent */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Moffice Score Events', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = "渠道优惠券兑换管理";
+$this->params['breadcrumbs'][] = ['label' => '渠道优惠券兑换管理', 'url' => ['index']];
+$this->params['breadcrumbs'][] = "渠道优惠券兑换管理";
 ?>
 <div class="moffice-score-event-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1>渠道优惠券兑换管理</h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+
+        <!--
+        <//?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
                 'method' => 'post',
             ],
         ]) ?>
+        -->
     </p>
+
 
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'gh_id',
-            'openid',
-            'office_id',
-            'cat',
+            //'id',
+            //'gh_id',
+            //'openid',
+            //'office_id',
+            [
+                'label' => '渠道名称',
+                'value' => $model->getOfficeName($model),
+                'format'=> 'html',
+            ],
+            //'cat',
             'create_time',
             'score',
             'memo',
             'code',
-            'status',
+            //'status',
+            [
+                'label' => '审核状态',
+                'value' => $model->getStatusName($model),
+                'format'=> 'html',
+            ],
         ],
     ]) ?>
 

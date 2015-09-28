@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 use app\models\MOfficeScoreEvent;
+use app\models\MOffice;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\MOfficeScoreEvent */
@@ -41,17 +42,30 @@ use app\models\MOfficeScoreEvent;
     <//?= $form->field($model, 'status')->textInput() ?>
     -->
 
+    <br><br>
+
     <?php
-        echo "<h3>捐献积分: ".$model->score."</h3>";
-        echo "<h3>捐献时间: ".$model->create_time."</h3>";
+       $office = MOffice::findOne(["office_id" => $model->office_id]);
+       if(empty($office))
+            $title = "--";
+        else
+            $title = $office->title;
+
+
+        echo "<h1>渠道名称: ".$title."</h1>";
+
+        echo "<h3>代金卷: ".MOfficeScoreEvent::getCatNameOption($model->cat)."</h3>";
+
+        echo "<h3>减积分: ".$model->score."</h3>";
+        echo "<h3>时间: ".$model->create_time."</h3>";
     ?>
 
-
+    <br>
 
     <?= $form->field($model, 'status')->dropDownList(MOfficeScoreEvent::getOseStatusOption()) ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? '新增' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

@@ -67,4 +67,36 @@ class MOfficeScoreEventSearch extends MOfficeScoreEvent
 
         return $dataProvider;
     }
+
+    public function searchOffice($params, $office_id)
+    {
+        $query = MOfficeScoreEvent::find()
+                ->where(["office_id" => $office_id])
+                ->where(['>', "cat" , 100]);
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        if (!($this->load($params) && $this->validate())) {
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'office_id' => $this->office_id,
+            'cat' => $this->cat,
+            'create_time' => $this->create_time,
+            'score' => $this->score,
+            'status' => $this->status,
+        ]);
+
+        $query->andFilterWhere(['like', 'gh_id', $this->gh_id])
+            ->andFilterWhere(['like', 'openid', $this->openid])
+            ->andFilterWhere(['like', 'memo', $this->memo])
+            ->andFilterWhere(['like', 'code', $this->code]);
+
+        return $dataProvider;
+    }
+
 }

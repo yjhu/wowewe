@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
+
+use app\models\MOffice;
 /**
  * OfficeScoreEventController implements the CRUD actions for MOfficeScoreEvent model.
  */
@@ -36,6 +38,17 @@ class OfficeScoreEventController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionOfficeIndex($office_id)
+    {
+        $searchModel = new MOfficeScoreEventSearch();
+        $dataProvider = $searchModel->searchOffice(Yii::$app->request->queryParams, $office_id);
+
+        return $this->render('office_index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -81,7 +94,9 @@ class OfficeScoreEventController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+
+            $model->save(false);
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [

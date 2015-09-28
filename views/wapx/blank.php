@@ -237,13 +237,15 @@
     else 
         $office_id = $target_office->office_id;
 
-    $office_sore_events =  \app\models\MOfficeScoreEvent::find()->where(['office_id' => $office_id])->orderBy(['create_time' => SORT_DESC])->all();
+    $office_sore_events =  \app\models\MOfficeScoreEvent::find()->where(['office_id' => $office_id])->orderBy(['create_time' => SORT_DESC])->limit(20)->all();
 ?>
         <div class="modal-dialog">
             <div class="modal-content" style="width:680px">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                        <h4 class="modal-title">渠道积分明细</h4>
+                        <h4 class="modal-title">渠道积分明细 (最近20条)</h4>
+                      
+                        <a href='<?= \yii\helpers\Url::to(['office-score-event/office-index', 'office_id' => $office_id]) ?>'>优惠券兑换</a>
                     </div>
                     <div class="modal-body">
 

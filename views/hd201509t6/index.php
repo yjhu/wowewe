@@ -111,6 +111,31 @@ $this->params['breadcrumbs'][] = $this->title;
             ],            
 
             //['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                //'template' => '{update} {delete}',
+                'template' => '{update}',
+                'buttons' => [
+                    'update' => function ($url, $model) {
+
+                        if (\Yii::$app->user->identity->username == "admin")
+                        {
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+                            'title' => Yii::t('yii', 'Update'),
+                            'data-pjax' => '0',
+                            ]); 
+                        }
+                        else
+                            return "";
+
+                    },
+            
+                ],
+            ],
+
+            
+
+
         ],
     ]); ?>
 

@@ -186,4 +186,16 @@ class MHd201509t6 extends \yii\db\ActiveRecord
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
 
+
+    static function getTcnxName($model)
+    {
+        return self::gethd201509t6TcnxOption($model->tcnx);
+    }
+
+    static function getStatusName($model)
+    {
+        return self::gethd201509t6StatusOption($model->status);
+    }
+
+
 }

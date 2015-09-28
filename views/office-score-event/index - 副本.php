@@ -9,14 +9,14 @@ use app\models\MOfficeScoreEvent;
 /* @var $searchModel app\models\MOfficeScoreEventSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '渠道优惠券兑换管理';
+$this->title = 'Moffice Score Events';
 //$this->params['breadcrumbs'][] = $this->title;
 $this->params['breadcrumbs'][] = "渠道优惠券兑换管理";
 ?>
 <div class="moffice-score-event-index">
 
     <h1>渠道优惠券兑换管理</h1>
-
+    
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <!--
@@ -53,28 +53,16 @@ $this->params['breadcrumbs'][] = "渠道优惠券兑换管理";
             ],
 
             //'cat',
-            'memo',
-            'score',
             'create_time',
+            'score',
+            'memo',
             'code',
             //'status',
             [
                 'attribute' => 'status',
                 'label' => '审核状态',
-                'format' => 'html',
-                'value'=>function ($model, $key, $index, $column) 
-                { 
-                    $flag ="";
-                    if($model->status == 1) /**/
-                    {
-                        $flag = "<span class='glyphicon glyphicon-ok' style='color:green'></span>";
-                    }
-                    else if($model->status == 2)//failed
-                    {
-                        $flag = "<span class='glyphicon glyphicon-remove' style='color:red'></span>";
-                    }
-                    return MOfficeScoreEvent::getOseStatusOption($model->status)." ".$flag; 
-                },
+                'value'=>function ($model, $key, $index, $column) { 
+                    return MOfficeScoreEvent::getOseStatusOption($model->status); },
                 'filter'=> MOfficeScoreEvent::getOseStatusOption(),
                 'headerOptions' => array('style'=>'width:120px;'),           
             ],
@@ -90,7 +78,6 @@ $this->params['breadcrumbs'][] = "渠道优惠券兑换管理";
                             'title' => Yii::t('yii', 'Update'),
                             'data-pjax' => '0',
                         ]);
-
                     },
             
                 ],

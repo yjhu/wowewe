@@ -52,7 +52,7 @@ class MOfficeScoreEvent extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gh_id', 'openid', 'office_id', 'cat', 'score', 'memo', 'code', 'status'], 'required'],
+            [['gh_id', 'openid', 'office_id', 'cat', 'score', 'memo',  'status'], 'required'],
             [['office_id', 'cat', 'score', 'status'], 'integer'],
             [['create_time'], 'safe'],
             [['gh_id', 'openid', 'code'], 'string', 'max' => 64],
@@ -71,9 +71,9 @@ class MOfficeScoreEvent extends \yii\db\ActiveRecord
             'openid' => 'Openid',
             'office_id' => 'Office ID',
             'cat' => '事件类型',
-            'create_time' => 'Create Time',
-            'score' => 'Score',
-            'memo' => 'Memo',
+            'create_time' => '时间',
+            'score' => '积分',
+            'memo' => '备注',
             'code' => '兑换码',
             'status' => '审核状态',
         ];
@@ -88,6 +88,106 @@ class MOfficeScoreEvent extends \yii\db\ActiveRecord
         );        
         return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
     }
+
+
+    static function getCatNameOption($key=null)
+    {
+        $arr = array(
+            self::CAT_ADD_NEW_MEMBER => '新增会员',
+            self::CAT_ADD_ORDER => '会员订单',
+            self::CAT_30YUAN_DAIJINJUAN => '30元终端合约优惠券',
+            self::CAT_100YUAN_DAIJINJUAN => '100元4G业务代金券',
+        );        
+        return $key === null ? $arr : (isset($arr[$key]) ? $arr[$key] : '');
+    }
+
+
+    static function getOfficeName($model)
+    {
+        $office = MOffice::findOne(["office_id" => $model->office_id]);
+        if(empty($office))
+            $title = "--";
+        else
+            $title = $office->title;
+
+        return $title;
+    }
+    
+    static function getStatusName($model)
+    {
+        $status = $model->status;
+        return self::getOseStatusOption($status);
+    }
+
+
+    public function afterSave($insert, $changedAttributes)
+    {
+            if($this->status == 1)/*审核失败， 发兑换码 */
+            {
+                $code = uniqid();
+                $this->updateAttributes(['code' => $code]);
+            }
+            else if ($this->status == 2) /*如果审核失败 ，退还渠道消减的积分*/
+            { 
+                $office = MOffice::findOne(['office_id' => $this->office_id]);
+                if(!empty($office))
+                {
+                    $office->score = $office->score + $this->score;
+                    $office->save();
+                }
+            }
+            else{
+                $this->updateAttributes(['code' => ""]);
+            }
+   
+
+    }
+
+
+
+    public static function confirmAjax($office_id, $cat)
+    {
+        $office = MOffice::findOne(['office_id' => $office_id]);
+        if(empty($office))
+            $score = 0;
+        else
+            $score = $office->score;
+
+        if($cat == self::CAT_30YUAN_DAIJINJUAN)
+            $dh_score = self::CAT_30YUAN_DAIJINJUAN_SCORE;
+        else if($cat == self::CAT_100YUAN_DAIJINJUAN)
+            $dh_score = self::CAT_100YUAN_DAIJINJUAN_SCORE;
+        else 
+            $dh_score =  self::CAT_30YUAN_DAIJINJUAN_SCORE;
+
+
+        if($score < $dh_score)
+        {
+             U::W("----------score not enough--------");
+             return \yii\helpers\Json::encode(['code' => 1]);
+        }
+        else
+        {
+            $office_score_event = new MOfficeScoreEvent;
+            $office_score_event->gh_id = 'gh_03a74ac96138';
+            $office_score_event->openid = '';
+            $office_score_event->office_id = $office_id;
+            $office_score_event->cat = $cat;
+            $office_score_event->score = $dh_score;
+            $office_score_event->memo = self::getCatNameOption($cat);
+            $office_score_event->status = 0;
+            $office_score_event->code = '';
+            $office_score_event->create_time = date('y-m-d h:i:s',time());
+            $office_score_event->save(false);
+
+            $office = MOffice::findOne(['office_id' => $office_id]);
+            $office->score = $office->score - $dh_score;
+            $office->save(false);
+        }
+
+        return \yii\helpers\Json::encode(['code' => 0]);
+    }
+
 
 
 }

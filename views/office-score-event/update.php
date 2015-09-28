@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\MOfficeScoreEvent */
 
-$this->title = 'Update Moffice Score Event: ' . ' ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Moffice Score Events', 'url' => ['index']];
+$this->title = '渠道优惠券兑换管理 ' ;
+$this->params['breadcrumbs'][] = ['label' => '渠道优惠券兑换管理', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->params['breadcrumbs'][] = '修改';
 ?>
 <div class="moffice-score-event-update">
 
