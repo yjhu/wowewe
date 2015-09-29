@@ -165,6 +165,7 @@
                                         ['label' => '营业厅推广成绩排行','url' => ['/order/officetop'],'linkOptions' => ['data-method' => 'post']],
                                     ],
                                 ],
+                                /*
                                 [
                                     'label' => '<i class="fa fa-shopping-cart"></i><span class="title">商品与订单</span><span class="arrow "></span>',
                                     'url' => '',
@@ -176,6 +177,7 @@
                                         ['label' => '商品套餐管理','url' => ['/admin/pkglist'],'linkOptions' => ['data-method' => 'post']],
                                     ],
                                 ],
+                                */
 
                                 /*活动，临时入口*/
                                 [

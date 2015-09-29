@@ -7,8 +7,8 @@ include('../models/utils/emoji.php');
 
 \Yii::$app->wx->setGhId($observer->gh_id);
 $gh = \Yii::$app->wx->getGh();
-$jssdk = new \app\models\JSSDK($gh['appid'], $gh['appsecret']);
-$signPackage = $jssdk->GetSignPackage();
+//$jssdk = new \app\models\JSSDK($gh['appid'], $gh['appsecret']);
+//$signPackage = $jssdk->GetSignPackage();
 ?>
 
 <!DOCTYPE html>
@@ -79,7 +79,7 @@ $signPackage = $jssdk->GetSignPackage();
                 您已经参加过中秋送话费活动。
                 </h4>
                 <p>红包收入: <span style="font-weight: bolder;color:red;font-size: 20pt"><?= $hd201509t6->hbme; ?></span> 元</p>
-                <p>参加时间: <?= $hd201509t6->create_time; ?></p>
+                <p>兑奖时间: <?= $hd201509t6->create_time; ?></p>
                 <p>渠道编码: <?= $hd201509t6->qdbm; ?></p>
                 <br>&nbsp;
                 <br>&nbsp;
@@ -249,13 +249,13 @@ $signPackage = $jssdk->GetSignPackage();
                 });
             });
 
-
+/*
         wx.config({
             debug: false,
-            appId: '<?php echo $signPackage["appId"];?>',
-            timestamp: <?php echo $signPackage["timestamp"];?>,
-            nonceStr: '<?php echo $signPackage["nonceStr"];?>',
-            signature: '<?php echo $signPackage["signature"];?>',
+            appId: '<//?php echo $signPackage["appId"];?>',
+            timestamp: <//?php echo $signPackage["timestamp"];?>,
+            nonceStr: '<//?php echo $signPackage["nonceStr"];?>',
+            signature: '<//?php echo $signPackage["signature"];?>',
             jsApiList: [
                 'checkJsApi',
                 'onMenuShareTimeline',
@@ -300,11 +300,11 @@ $signPackage = $jssdk->GetSignPackage();
            
             var share2friendDesc = '襄阳联通中秋送话费活动火热进行中 ... ...';
             var share2timelineTitle = '襄阳联通中秋送话费活动火热进行中 ... ...';
-            var shareImgUrl = '<?= Url::to($observer->headimgurl, true); ?>';
+            var shareImgUrl = '<//?= Url::to($observer->headimgurl, true); ?>';
 
-            //var hbme = ',已抢到 '+'<?= $hd201509t6->hbme ?>'+' 元红包！';
+            //var hbme = ',已抢到 '+'<//?= $hd201509t6->hbme ?>'+' 元红包！';
             var hbme = "<?= ($hd201509t6->hbme)?',已抢到'.$hd201509t6->hbme.' 元红包!':'' ?>";
-            var share2friendTitle = '<?= $observer->nickname ?> 正在参加中秋送话费活动'+hbme;
+            var share2friendTitle = '<//?= $observer->nickname ?> 正在参加中秋送话费活动'+hbme;
 
             wx.onMenuShareAppMessage({
                 title: share2friendTitle, // 分享标题
@@ -340,7 +340,7 @@ $signPackage = $jssdk->GetSignPackage();
 
 
         });//end of wx  ready
-
+*/
 
     });
     </script>

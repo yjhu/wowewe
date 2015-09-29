@@ -35,7 +35,7 @@ class MHd201509t6 extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gh_id', 'openid', 'mobile', 'yfzx', 'fsc', 'tcnx', 'hbme', 'status', 'qdbm'], 'required'],
+            [['gh_id', 'openid', 'mobile', 'yfzx', 'fsc', 'tcnx', 'hbme', 'status'], 'required'],
             [['tcnx', 'hbme', 'status'], 'integer'],
             [['create_time'], 'safe'],
             [['gh_id', 'openid'], 'string', 'max' => 255],

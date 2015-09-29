@@ -29,7 +29,7 @@ class MQdbm extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['gsyf', 'qdmc', 'qdbm', 'blank'], 'required'],
+            [['gsyf', 'qdmc', 'qdbm'], 'required'],
             [['gsyf', 'qdmc'], 'string', 'max' => 128],
             [['qdbm', 'blank'], 'string', 'max' => 64]
         ];
@@ -41,7 +41,7 @@ class MQdbm extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'qdbm_id' => 'Qdbm ID',
+            'qdbm_id' => '序号',
             'gsyf' => '归属营服',
             'qdmc' => '渠道名称',
             'qdbm' => '渠道编码',

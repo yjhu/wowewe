@@ -115,6 +115,7 @@ class Hd201509t6Controller extends Controller
         $model = new MHd201509t6();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+           
             return $this->redirect(['view', 'id' => $model->hd201509t6_id]);
         } else {
             return $this->render('create', [
@@ -133,7 +134,8 @@ class Hd201509t6Controller extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->save(false);
             return $this->redirect(['view', 'id' => $model->hd201509t6_id]);
         } else {
             return $this->render('update', [

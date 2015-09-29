@@ -61,6 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'yfzx',
             'fsc',
             //'tcnx',
+   
             [
                 'attribute' => 'tcnx',
                 'label' => '套餐类型',
@@ -68,6 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter'=> MHd201509t6::gethd201509t6TcnxOption(),
                 'headerOptions' => array('style'=>'width:120px;'),           
             ],
+     
             
             'hbme',
             'create_time',
@@ -133,7 +135,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
             ],
 
-            
+
 
 
         ],

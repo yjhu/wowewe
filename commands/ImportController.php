@@ -13,6 +13,7 @@ use app\models\MStaff;
 use app\models\MMarketingRegion;
 use app\models\MMarketingServiceCenter;
 use app\models\MOfficeCampaignPicCategory;
+use app\models\MHd201509t6;
 
 class ImportController extends Controller {
     public function init()
@@ -894,6 +895,43 @@ class ImportController extends Controller {
         echo "done\n";
     }
 
+
+    //修改渠道 有误的编码
+    public function actionUpdateHd201509t6($filename = 'errinfo.csv') {
+
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, "r");
+
+        while (!feof($fh)) {
+
+            $line = trim(fgets($fh));
+            if (empty($line) || strlen($line) == 0) continue;
+
+            $fields = explode(",", $line);
+
+            $qdbm_bad = trim($fields[0]);
+            $qdbm_bad_utf8 = iconv('GBK', 'UTF-8//IGNORE', $qdbm_bad);
+
+            $qdbm_ok = trim($fields[1]);
+            $qdbm_ok_utf8 = iconv('GBK', 'UTF-8//IGNORE', $qdbm_ok);
+
+            $hd201509t6 = MHd201509t6::findOne(['qdbm' => $qdbm_bad_utf8]);
+            if(empty($hd201509t6))
+            {
+                echo $qdbm_bad_utf8."\t\t"."not found ... \n";
+            }
+            else
+            {   
+                echo $qdbm_bad_utf8."\t\t"."update to ->\t".$qdbm_ok_utf8."\n";
+                //$hd201509t6->qdbm = $qdbm_ok_utf8;
+                //$hd201509t6->save(false);
+            }
+
+        }
+        fclose($fh);
+
+        echo "done\n";
+    }
 
 
 

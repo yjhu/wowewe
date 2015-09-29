@@ -1333,7 +1333,7 @@ class CmdController extends Controller
             {
                     if (empty($user->headimgurl)) continue;
         
-                    //if($user->id < 6143)  continue;
+                    if($user->id < 8586)  continue;
 
                     $arr = Yii::$app->wx->WxGetUserInfo($user->openid); 
 
