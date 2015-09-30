@@ -7,12 +7,12 @@ use yii\widgets\DetailView;
 /* @var $model app\models\MHd201509t6 */
 
 $this->title = $model->hd201509t6_id;
-$this->params['breadcrumbs'][] = ['label' => '中秋送话费活动', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '中秋国庆送话费活动', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mhd201509t6-view">
 
-    <h1>中秋送话费活动</h1>
+    <h1>中秋国庆送话费活动</h1>
 
     <p>
         <?= Html::a('修改', ['update', 'id' => $model->hd201509t6_id], ['class' => 'btn btn-primary']) ?>

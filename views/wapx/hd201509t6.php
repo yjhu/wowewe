@@ -15,7 +15,7 @@ $gh = \Yii::$app->wx->getGh();
 <html>
   <head>
     <meta charset="utf-8">
-    <title>中秋送话费活动</title>
+    <title>国庆七天乐送话费活动</title>
 
     <!-- Sets initial viewport load and disables zooming  -->
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
@@ -43,7 +43,7 @@ $gh = \Yii::$app->wx->getGh();
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <!--<div class="content" style="background-color: #401080">-->
     <div class="content">
-    <img width=100%  src="/wx/web/images/hd201509t6-head.jpg?v3">
+    <img width=100%  src="/wx/web/images/hd201509t6-head1.jpg?v3">
         <marquee direction=left style="color:red" scrollamount=3>
         <span>
         <?php
@@ -76,7 +76,7 @@ $gh = \Yii::$app->wx->getGh();
         ?>
             <center>
                 <h4>
-                您已经参加过中秋送话费活动。
+                您已经参加过国庆送话费活动。
                 </h4>
                 <p>红包收入: <span style="font-weight: bolder;color:red;font-size: 20pt"><?= $hd201509t6->hbme; ?></span> 元</p>
                 <p>兑奖时间: <?= $hd201509t6->create_time; ?></p>
@@ -92,7 +92,7 @@ $gh = \Yii::$app->wx->getGh();
                 <!--
                     <a class="btn btn-block btn-negative" style="width: 200px" id="hongbao">点击拆红包</a>
                 -->
-                    <img width=90% src="/wx/web/images/hongbao1.png?v7" id="hongbao">
+                    <img width=90% src="/wx/web/images/hongbao1.png?v8" id="hongbao">
 
                     <br>&nbsp;
                     <br>&nbsp;
@@ -298,13 +298,13 @@ $gh = \Yii::$app->wx->getGh();
             //alert('wx ready');
 
            
-            var share2friendDesc = '襄阳联通中秋送话费活动火热进行中 ... ...';
-            var share2timelineTitle = '襄阳联通中秋送话费活动火热进行中 ... ...';
+            var share2friendDesc = '襄阳联通国庆送话费活动火热进行中 ... ...';
+            var share2timelineTitle = '襄阳联通国庆送话费活动火热进行中 ... ...';
             var shareImgUrl = '<//?= Url::to($observer->headimgurl, true); ?>';
 
             //var hbme = ',已抢到 '+'<//?= $hd201509t6->hbme ?>'+' 元红包！';
             var hbme = "<?= ($hd201509t6->hbme)?',已抢到'.$hd201509t6->hbme.' 元红包!':'' ?>";
-            var share2friendTitle = '<//?= $observer->nickname ?> 正在参加中秋送话费活动'+hbme;
+            var share2friendTitle = '<//?= $observer->nickname ?> 正在参加国庆送话费活动'+hbme;
 
             wx.onMenuShareAppMessage({
                 title: share2friendTitle, // 分享标题

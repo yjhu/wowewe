@@ -83,7 +83,15 @@
     <div class="content">
         <br>
         <p>
-          
+          <div class="card">
+            <ul class="table-view">
+              <li class="table-view-cell">Item 1</li>
+              <li class="table-view-cell">Item 2</li>
+              <li class="table-view-cell table-view-divider">Divider</li>
+              <li class="table-view-cell">Item 3</li>
+              <li class="table-view-cell">Item 4</li>
+            </ul>
+          </div>
         </p>
 
        <ul class="table-view">

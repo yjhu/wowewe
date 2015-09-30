@@ -10,7 +10,7 @@ use app\models\MQdbm;
 /* @var $searchModel app\models\MHd201509t6Search */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '中秋送话费活动';
+$this->title = '中秋国庆送话费活动';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -58,10 +58,10 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             'mobile',
-            'yfzx',
-            'fsc',
+            //'yfzx',
+            //'fsc',
             //'tcnx',
-   
+            /*
             [
                 'attribute' => 'tcnx',
                 'label' => '套餐类型',
@@ -69,6 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter'=> MHd201509t6::gethd201509t6TcnxOption(),
                 'headerOptions' => array('style'=>'width:120px;'),           
             ],
+            */
      
             
             'hbme',
