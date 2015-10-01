@@ -923,8 +923,8 @@ class ImportController extends Controller {
             else
             {   
                 echo $qdbm_bad_utf8."\t\t"."update to ->\t".$qdbm_ok_utf8."\n";
-                //$hd201509t6->qdbm = $qdbm_ok_utf8;
-                //$hd201509t6->save(false);
+                $hd201509t6->qdbm = $qdbm_ok_utf8;
+                $hd201509t6->save(false);
             }
 
         }

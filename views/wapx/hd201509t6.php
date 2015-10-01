@@ -47,7 +47,7 @@ $gh = \Yii::$app->wx->getGh();
         <marquee direction=left style="color:red" scrollamount=3>
         <span>
         <?php
-            $hd_users = app\models\MHd201509t6::find()->where(["status" => 1])->orderBy(['hbme' => SORT_DESC])->all();
+            $hd_users = app\models\MHd201509t6::find()->where(["status" => 1])->orderBy(['create_time' => SORT_DESC])->limit(20)->all();
             foreach ($hd_users as $hd_user) 
             {
         ?>
@@ -303,7 +303,7 @@ $gh = \Yii::$app->wx->getGh();
             var shareImgUrl = '<//?= Url::to($observer->headimgurl, true); ?>';
 
             //var hbme = ',已抢到 '+'<//?= $hd201509t6->hbme ?>'+' 元红包！';
-            var hbme = "<?= ($hd201509t6->hbme)?',已抢到'.$hd201509t6->hbme.' 元红包!':'' ?>";
+            var hbme = "<//?= ($hd201509t6->hbme)?',已抢到'.$hd201509t6->hbme.' 元红包!':'' ?>";
             var share2friendTitle = '<//?= $observer->nickname ?> 正在参加国庆送话费活动'+hbme;
 
             wx.onMenuShareAppMessage({

@@ -78,7 +78,7 @@ class MHd201509t6 extends \yii\db\ActiveRecord
 
         $hd201509t6->status = 1;
         $hd201509t6->qdbm = $qdbm;
-        $hd201509t6->create_time = date('y-m-d h:i:s',time());
+        //$hd201509t6->create_time = date('y-m-d h:i:s',time());
         $hd201509t6->save(false);
 
         return \yii\helpers\Json::encode(['code' => 0]);
@@ -154,7 +154,7 @@ class MHd201509t6 extends \yii\db\ActiveRecord
 
         $hd201509t6->status = 0;
         $hd201509t6->hbme = $hbme;
-        $hd201509t6->create_time = date('y-m-d h:i:s',time());
+        //$hd201509t6->create_time = date('y-m-d h:i:s',time());
         $hd201509t6->save(false);
 
         return \yii\helpers\Json::encode(['code' => 0]);
