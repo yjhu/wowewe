@@ -9,7 +9,7 @@ use app\models\MUser;
 use app\models\Messagebox;
 use app\models\MGoods;
 use app\models\MMobnum;
-
+use app\models\MHelpdoc;
 
 
 use app\models\U;
@@ -658,6 +658,35 @@ class WapxController extends Controller {
 
         return $this->render('goods', ['gh_id' => $gh_id, 'openid' => $openid, 'good' => $good, 'goods_kind' => $goods_kind]);
     }
+
+
+    //帮助中心列表20151006
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wapx/helpdoclist:gh_03a74ac96138
+    //https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1b122a21f985ea18&redirect_uri=http%3A%2F%2Fwosotech.com%2Fwx%2Fweb%2Findex.php%3Fr%3Dwap%2Foauth2cb&response_type=code&scope=snsapi_base&state=wapx/helpdoclist:gh_03a74ac96138#wechat_redirect
+    public function actionHelpdoclist() {
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+
+        $helpdocs = MHelpdoc::find()->where(['visual' => 1])->orderBy(['sort' => SORT_DESC])->all();
+
+        return $this->render('helpdoclist', ['gh_id' => $gh_id, 'openid' => $openid, 'helpdocs' => $helpdocs ]);
+    }
+
+    public function actionHelpdoc() {
+        $this->layout = false;
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+
+        $helpdoc_id = $_GET['helpdoc_id'];
+        $helpdoc = MHelpdoc::findOne(['helpdoc_id' => $helpdoc_id]);
+        $helpdoc->sort = $helpdoc->sort + 1;
+        $helpdoc->save(false);
+
+        return $this->render('helpdoc', ['gh_id' => $gh_id, 'openid' => $openid, 'helpdoc' => $helpdoc ]);
+    }
+
+
 
 
     //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wapx/goodssave:gh_1ad98f5481f3

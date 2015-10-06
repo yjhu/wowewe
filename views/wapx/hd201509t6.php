@@ -47,7 +47,7 @@ $gh = \Yii::$app->wx->getGh();
         <marquee direction=left style="color:red" scrollamount=3>
         <span>
         <?php
-            $hd_users = app\models\MHd201509t6::find()->where(["status" => 1])->orderBy(['create_time' => SORT_DESC])->limit(20)->all();
+            $hd_users = app\models\MHd201509t6::find()->where(["status" => 1])->orderBy(['create_time' => SORT_DESC])->limit(10)->all();
             foreach ($hd_users as $hd_user) 
             {
         ?>

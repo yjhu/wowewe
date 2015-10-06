@@ -54,7 +54,7 @@
     <div class="content">
       <p class="content-padded">
          <span style="float:left">
-            <img id="myphoto" src="<?php echo $user->headimgurl; ?>" width="64" height="64">
+            <img id="myphoto" src="<?= empty($user->headimgurl)?'../web/images/wxmpres/headimg-blank.png':$user->headimgurl ?>" width="64" height="64">
           </span>
 
           <span style="float:left">
