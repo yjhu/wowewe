@@ -15,7 +15,7 @@ use vova07\imperavi\Widget;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => 128]) ?>
+    <?= $form->field($model, 'title')->textInput(['maxlength' => 128])->hint("为了在手机上显示美观，建议不超过20个字") ?>
 
     <!--
     <//?= $form->field($model, 'content')->textarea(['rows' => 6]) ?>
@@ -47,7 +47,7 @@ use vova07\imperavi\Widget;
             'imageManagerJson' => Url::to(['/helpdoc/imagesget']),
             'imageUpload' => Url::to(['/helpdoc/imageupload']),
         ]
-    ]); ?>
+    ])->hint("为了在手机上显示美观，建议使用字体18px"); ?>
 
 
     <!--
@@ -60,7 +60,7 @@ use vova07\imperavi\Widget;
 
     <?= $form->field($model, 'visual')->dropDownList(MHelpdoc::getVisualOption()) ?>
 
-    <?= $form->field($model, 'relate')->textInput(['maxlength' => 256]) ?>
+    <?= $form->field($model, 'relate')->textInput(['maxlength' => 256])->hint("英文逗号分隔相关帮助文档编号，如：1,2,3,5,9 不要包含空格") ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '新增' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

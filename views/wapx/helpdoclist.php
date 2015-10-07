@@ -24,34 +24,12 @@
     <link href="/wx/web/ratchet/dist/css/ratchet.css" rel="stylesheet">
 
     <style type="text/css">
-      .goodsitem{
-          color:#aaaaaa;
-          font-size: 11pt;
-      }
-
-      .goodprice
-      {
-          font-size: 14px;
-          color:#000;
-          font-weight:  bolder;
-      }
-      .goodrmb
-      {
-          font-size: 12px;
-          color:#000;
-      }
-
-      .goodpriceold {
-        color: #aaaaaa;
-        font-size: 12px;
-        text-decoration: line-through;
+    
+      li {
+        color: #aaa;
+        font-size: 14px;
       }
               
-      .jiang {
-          color: #aaaaaa;
-          font-size: 12px;
-          font-weight: bolder;
-      }
     </style>
   
     <script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js"></script>
@@ -85,9 +63,6 @@
             
             <li class="table-view-cell">
               <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['helpdoc', 'helpdoc_id'=>$helpdoc->helpdoc_id],true) ?>">
-                &nbsp;&nbsp;
-                <?= $idx ?>.
-                &nbsp;&nbsp;
                 <?= $helpdoc->title ?>
 
                 <?php if($idx<5) {?>

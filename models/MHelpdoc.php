@@ -47,7 +47,7 @@ class MHelpdoc extends \yii\db\ActiveRecord
             'helpdoc_id' => '文档编号',
             'title' => '标题',
             'content' => '内容',
-            'sort' => '排序',
+            'sort' => '阅读', //记录该主题阅读次数
             'visual' => '可见',
             'relate' => '关联主题',
         ];

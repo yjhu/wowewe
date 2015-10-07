@@ -27,13 +27,18 @@ use app\models\MHelpdoc;
   
     <style type="text/css">
 
+        li {
+          color: #aaa;
+          font-size: 14px;
+        }
+
         img {
           width:100%;
           display:block;
         }
 
         .yuedu {
-          color: #ccc;
+          color: #aaa;
           text-align: right;
         }
 
@@ -64,26 +69,27 @@ use app\models\MHelpdoc;
       -->
 
       <div class="content-padded">
-              <h5><?= $helpdoc->title ?></h5>
-
+              <h4><?= $helpdoc->title ?></h4>
+              <br>
               <p class="helpdoc_content"><?= $helpdoc->content ?></p>
 
               <p class="yuedu">阅读 <?= $helpdoc->sort ?></p>
 
-              <h5>相关主题</h5> 
               <ul class="table-view">
               <?php 
                 if(!empty($helpdoc->relate))
                 {
+              ?>
+                 <h5>查看相关问题</h5> 
+              <?php
                   $relates = explode(",",$helpdoc->relate);
                   foreach ($relates as $relate) 
                   {
                     $hd = MHelpdoc::findOne(['visual' => 1, 'helpdoc_id' => $relate]);
               ?>
-                
+               
                 <li class="table-view-cell">
                   <a data-ignore="push" class="navigate-right" href="<?php echo  Url::to(['helpdoc', 'helpdoc_id'=> $relate],true) ?>">
-                    &nbsp;&nbsp;
                     <?= $hd->title ?>
                   </a>
                 </li>

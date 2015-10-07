@@ -28,8 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'helpdoc_id',
             'title',
             //'content:ntext',
-            //'sort',
-            //'visual',
+            'relate',
+            'sort',
             [
                 'attribute' => 'visual',
                 'label' => '是否显示',
@@ -39,10 +39,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter'=> MHelpdoc::getVisualOption(),
                 'headerOptions' => array('style'=>'width:90px;'),
             ],
-
-            
-            // 'relate',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
