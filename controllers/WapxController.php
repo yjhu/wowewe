@@ -942,8 +942,19 @@ class WapxController extends Controller {
         ]);
     }
 
+    //微平台活动结束 提示页面
+    public function actionGameover() {
+        $this->layout = false;
+        return $this->render('gameover');
+    }
 
 
+    //短信注册页面
+    //http://wosotech.com/wx/web/index.php?r=wapx/sm-qr
+    public function actionSmQr($mobile) {
+        $this->layout = false;
+        return $this->render('sm-qr',["mobile" => $mobile]);
+    }
 
 
 

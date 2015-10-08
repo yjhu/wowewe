@@ -9,6 +9,9 @@ include('../models/utils/emoji.php');
 $gh = \Yii::$app->wx->getGh();
 //$jssdk = new \app\models\JSSDK($gh['appid'], $gh['appsecret']);
 //$signPackage = $jssdk->GetSignPackage();
+
+header("location: http://wosotech.com/wx/web/index.php?r=wapx/gameover");
+exit;
 ?>
 
 <!DOCTYPE html>

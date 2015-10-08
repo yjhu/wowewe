@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model app\models\MHelpdoc */
 
 $this->title = '新增帮助文档';
-$this->params['breadcrumbs'][] = ['label' => '文档中心', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '帮助中心', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="mhelpdoc-create">
