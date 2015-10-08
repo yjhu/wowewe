@@ -21,14 +21,16 @@
             <br>
             <img width=65%  src="<?= $qr_url ?>">
         </section>
+
         <center>
+        <br><br>
         <span style="color:#aaa"><?= $mobile ?> 专享二维码</span>
         </center>
         <br>
         <ul class="ui-list ui-list-text ui-border-tb">
             <li class="ui-border-t">
                     <i class="ui-icon-info" style="color:#18B4ED"></i>
-                    <h4 class="ui-nowrap">长按二维码，保存到手机。</h4>
+                    <h4 class="ui-nowrap">长按二维码，保存图片。</h4>
             </li>
             <li class="ui-border-t">
                     <i class="ui-icon-info" style="color:#18B4ED"></i>
@@ -39,8 +41,10 @@
                     <h4 class="ui-nowrap">关注公众号，完成。</h4>
             </li>
         </ul>
-        
-        
+        &nbsp;
+        <br>
+        &nbsp;
+        <br>
         <script src="/wx/web/frozen/lib/zepto.min.js"></script>
         <script src="/wx/web/frozen/js/frozen.js"></script>
         <script>
