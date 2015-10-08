@@ -29,7 +29,13 @@ class U
         $date =date("Y-m-d H:i:s");
         $log_str = sprintf("%s,%s\n",$date,$str);
         error_log($log_str, 3, $log_file);
-    }    
+    }
+    
+    public static function yjhu_W($obj="", $log_file='') {
+        if (empty($log_file))
+            $log_file = \Yii::$app->getRuntimePath().'/yjhu_errors.log';
+        self::W($obj, $log_file);
+    }
 
     public static function parseQuery($str, $and=';', $eq=':') 
     {

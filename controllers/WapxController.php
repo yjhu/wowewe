@@ -953,14 +953,8 @@ class WapxController extends Controller {
     //http://wosotech.com/wx/web/index.php?r=wapx/sm-qr
     public function actionSmQr($mobile) {
         $this->layout = false;
-        $gh_id = \app\models\MGh::GH_XIANGYANGUNICOM;
-        \Yii::$app->wx->setGhId($gh_id);
-        $arr = \Yii::$app->wx->WxgetQRCode($mobile);
-        $qr_url = \Yii::$app->wx->WxGetQRUrl($arr['ticket']);
-        $log_file_path = \Yii::$app->getRuntimePath().DIRECTORY_SEPARATOR.'qr'.DIRECTORY_SEPARATOR."{$gh_id}_{$mobile}.jpg";
-        \app\models\Wechat::downloadFile($qr_url, $log_file_path);
-        $qr_url = \Yii::$app->getRequest()->baseUrl."/../runtime/qr/{$gh_id}_{$mobile}.jpg";
-        return $this->render('sm-qr',['qr_url' => $qr_url, "mobile" => $mobile]);
+        $model = \app\models\SceneidMobile::getModelByMobile($mobile);
+        return $this->render('sm-qr',['qr_url' => $model->qr_url, "mobile" => $mobile]);
     }
 
 
