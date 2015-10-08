@@ -984,6 +984,17 @@ EOD;
     {
         self::downloadFile($this->WxMediaGetUrl($media_id), $localFileName);
     }
+    
+    public function WxGetShortUrl($long_url) {
+        $post = [
+            'action' => 'long2short',
+            'long_url' => $long_url,
+        ];
+        $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/shorturl", ['access_token'=>$this->accessToken], self::json_encode($post));
+        $this->checkWxApiResp($arr, [__METHOD__, $long_url]);
+        return $arr['short_url'];  
+    }
+            
 
     public function WxgetQRCode($scene_id, $forever=0)
     {    

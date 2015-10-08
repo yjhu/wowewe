@@ -257,4 +257,21 @@ class CheckController extends \yii\console\Controller {
             }
         }
     }
+    
+    public function actionXS() {
+        $xs_unicom = new \XS('unicom');
+        $search = $xs_unicom->search;
+        $xs_index = $xs_unicom->index;
+        $docs = $search->setQuery('')->setLimit(50)->search();
+        foreach ($docs as $doc) {
+//            $xs_index->del($doc->id);
+            echo \yii\helpers\Json::encode($doc) . PHP_EOL;
+        }
+    }
+    
+    public function actionSmsMember() {
+        \Yii::$app->wx->setGhId(\app\models\MGh::GH_XIANGYANGUNICOM); 
+        $short_url = \Yii::$app->wx->WxGetShortUrl('http://wosotech.com');
+        \app\models\sm\ESmsGuodu::yjhu_test('18971288549', $short_url);
+    }
 }

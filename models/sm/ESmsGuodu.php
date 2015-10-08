@@ -150,6 +150,21 @@ class ESmsGuodu extends ESms
 		U::W($s->resp);
 		U::W('after='.self::B());
 	}
+        
+        public static function yjhu_test($mobile, $message)
+	{
+		$s = new ESmsGuodu;	
+		$s->mobiles_str = $mobile;
+		$s->message = $message;
+		$s->sendtime = ESmsGuodu::getNewSendTime(date("Y-m-d H:i:s"));		
+		$s->send();
+		if ($s->isSendOk())
+			U::W('Send OK');
+		else 
+			U::W('Send ERR');
+		U::W($s->resp);
+		U::W('after='.self::B());
+	}
 
 	public static function S_test3()
 	{
