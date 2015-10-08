@@ -66,6 +66,27 @@ class WechatXiangYangUnicom extends Wechat
             $Ticket = $this->getRequest('Ticket');    
             $scene_pid = substr($EventKey, 8);    
             U::W("EventKey=$EventKey, scene_pid=$scene_pid");
+            if ($scene_pid > 100000) {
+                U::yjhu_W("EventKey=$EventKey, scene_pid=$scene_pid");
+                $real_sceneid = $scene_pid - 100000;
+                $sceneid_mobile = SceneidMobile::getModelBySceneId($real_sceneid);
+                if (!empty($sceneid_mobile)) {
+                    U::yjhu_W($sceneid_mobile);
+                    $openid_bind_mobile = OpenidBindMobile::findOne([
+                        'gh_id' => $gh_id,
+                        'openid' => $openid,
+                        'mobile' => $sceneid_mobile->mobile,
+                    ]);
+                    if (empty($openid_bind_mobile)) {
+                        $openid_bind_mobile = new OpenidBindMobile;
+                        $openid_bind_mobile->gh_id = $gh_id;
+                        $openid_bind_mobile->openid = $openid;
+                        $openid_bind_mobile->mobile = $sceneid_mobile->mobile;
+                        $openid_bind_mobile->save(false);
+                        U::yjhu_W($openid_bind_mobile);
+                    }
+                }
+            }
             
             if ($isNewFan || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_KZENG || $FromUserName==MGh::GH_XIANGYANGUNICOM_OPENID_HBHE) {                 
                 $user->scene_pid = $scene_pid;
@@ -360,7 +381,36 @@ class WechatXiangYangUnicom extends Wechat
 
     protected function onScan() 
     {
-        $this->saveAccessLogAll();    
+        $this->saveAccessLogAll(); 
+        $openid = $this->getRequest('FromUserName');        
+        $gh_id = $this->getRequest('ToUserName');                
+        $Event = $this->getRequest('Event');    
+        $EventKey = $this->getRequest('EventKey');
+        if (!empty($EventKey)){              
+            $Ticket = $this->getRequest('Ticket');    
+            $scene_pid = $EventKey;    
+            U::yjhu_W("EventKey=$EventKey, scene_pid=$scene_pid");
+            if ($scene_pid > 100000) {
+                $real_sceneid = $scene_pid - 100000;
+                $sceneid_mobile = SceneidMobile::getModelBySceneId($real_sceneid);
+                if (!empty($sceneid_mobile)) {
+                    U::yjhu_W($sceneid_mobile);
+                    $openid_bind_mobile = OpenidBindMobile::findOne([
+                        'gh_id' => $gh_id,
+                        'openid' => $openid,
+                        'mobile' => $sceneid_mobile->mobile,
+                    ]);
+                    if (empty($openid_bind_mobile)) {
+                        $openid_bind_mobile = new OpenidBindMobile;
+                        $openid_bind_mobile->gh_id = $gh_id;
+                        $openid_bind_mobile->openid = $openid;
+                        $openid_bind_mobile->mobile = $sceneid_mobile->mobile;
+                        $openid_bind_mobile->save(false);
+                        U::yjhu_W($openid_bind_mobile);
+                    }
+                }
+            }
+        }
         return Wechat::NO_RESP;        
     }
 

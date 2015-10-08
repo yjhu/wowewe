@@ -953,7 +953,8 @@ class WapxController extends Controller {
     //http://wosotech.com/wx/web/index.php?r=wapx/sm-qr
     public function actionSmQr($mobile) {
         $this->layout = false;
-        return $this->render('sm-qr',["mobile" => $mobile]);
+        $model = \app\models\SceneidMobile::getModelByMobile($mobile);
+        return $this->render('sm-qr',['qr_url' => $model->qr_url, "mobile" => $mobile]);
     }
 
 

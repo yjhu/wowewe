@@ -19,11 +19,10 @@
 
         <section class="ui-container ui-center">
             <br>
-            <img width=65%  src="/wx/web/images/woke/qr-demo.jpg">
+            <img width=65%  src="<?= $qr_url ?>">
         </section>
         <center>
-        <br><br>
-        <span style="color:#aaa">您的专享二维码</span>
+        <span style="color:#aaa"><?= $mobile ?> 专享二维码</span>
         </center>
         <br>
         <ul class="ui-list ui-list-text ui-border-tb">
