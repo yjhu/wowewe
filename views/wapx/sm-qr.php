@@ -22,27 +22,23 @@
             <img width=65%  src="/wx/web/images/woke/qr-demo.jpg">
         </section>
         <center>
-        <span style="color:#aaa">13545296480 专享二维码</span>
+        <br><br>
+        <span style="color:#aaa">您的专享二维码</span>
         </center>
-
-         <br><br><br>
+        <br>
         <ul class="ui-list ui-list-text ui-border-tb">
-
-        <li class="ui-border-t">
-            <div class="ui-list-info">
-                <h4 class="ui-nowrap">长按二维码，保存到手机。</h4>
-            </div>
-        </li>
-        <li class="ui-border-t">
-            <div class="ui-list-info">
-                <h4 class="ui-nowrap">微信扫一扫，从相册选取二维码。</h4>
-            </div>
-        </li>
-        <li class="ui-border-t">
-            <div class="ui-list-info">
-                <h4 class="ui-nowrap">关注公众号，完成。</h4>
-            </div>
-        </li>
+            <li class="ui-border-t">
+                    <i class="ui-icon-info" style="color:#18B4ED"></i>
+                    <h4 class="ui-nowrap">长按二维码，保存到手机。</h4>
+            </li>
+            <li class="ui-border-t">
+                    <i class="ui-icon-info" style="color:#18B4ED"></i>
+                    <h4 class="ui-nowrap">微信扫一扫，从相册选取二维码。</h4>
+            </li>
+            <li class="ui-border-t">
+                    <i class="ui-icon-success" style="color:#5FB336"></i>
+                    <h4 class="ui-nowrap">关注公众号，完成。</h4>
+            </li>
         </ul>
         
         
