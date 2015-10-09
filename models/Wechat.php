@@ -996,13 +996,13 @@ EOD;
     }
             
 
-    public function WxgetQRCode($scene_id, $forever=0)
+    public function WxgetQRCode($scene_id, $forever=0, $expire_seconds = 1800)
     {    
         if ($forever) {
             $post = ['action_name'=>'QR_LIMIT_SCENE', 'action_info'=>['scene'=>['scene_id'=>$scene_id]]];
         }
         else {
-            $post = ['expire_seconds'=>1800, 'action_name'=>'QR_SCENE', 'action_info'=>['scene'=>['scene_id'=>$scene_id]]];
+            $post = ['expire_seconds'=>$expire_seconds, 'action_name'=>'QR_SCENE', 'action_info'=>['scene'=>['scene_id'=>$scene_id]]];
         }
         $arr = self::WxApi("https://api.weixin.qq.com/cgi-bin/qrcode/create", ['access_token'=>$this->accessToken], self::json_encode($post));
         $this->checkWxApiResp($arr, [__METHOD__, $scene_id, $forever]);

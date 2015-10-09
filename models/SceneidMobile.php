@@ -59,7 +59,7 @@ class SceneidMobile extends \yii\db\ActiveRecord
     }
     
     public static function getModelBySceneId($sceneid) {
-        return self::findOne(['sceneid' => $sceneid]);
+        return self::findOne(['scene_id' => $sceneid]);
     } 
     
     public static function getModelByMobile($mobile) {
@@ -77,7 +77,7 @@ class SceneidMobile extends \yii\db\ActiveRecord
                 $gh_id = MGh::GH_XIANGYANGUNICOM;
                 \Yii::$app->wx->setGhId($gh_id); 
                 $scene_id = $model->scene_id + 100000;
-                $arr = \Yii::$app->wx->WxgetQRCode($scene_id);
+                $arr = \Yii::$app->wx->WxgetQRCode($scene_id, 0, 300);
                 $model->updated_at = time();
                 $model->ticket = $arr['ticket'];
                 $model->expire_seconds = $arr['expire_seconds'];

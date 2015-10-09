@@ -271,7 +271,7 @@ class CheckController extends \yii\console\Controller {
     
     public function actionSmsMember() {
         \Yii::$app->wx->setGhId(\app\models\MGh::GH_XIANGYANGUNICOM);
-        $mobile = '18971288549';
+        $mobile = '13545296480';
         $long_url = 'http://wosotech.com/wx/web/index.php?r=wapx/sm-qr'.'&mobile='.$mobile;
         $short_url = \Yii::$app->wx->WxGetShortUrl($long_url);
         \app\models\sm\ESmsGuodu::yjhu_test($mobile, $short_url);
