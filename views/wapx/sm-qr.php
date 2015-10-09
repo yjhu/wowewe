@@ -20,7 +20,7 @@
 
         <section class="ui-container ui-center">
             <br>
-            <img width=168 height=168 src="<?= $qr_url ?>">
+            <img width=168 height=168 src="<?= $qr_url.'?v='.mt_rand(); ?>">
             <br>
             <span style="color:#aaa"><?= $mobile ?> 专享二维码</span>
         </section>

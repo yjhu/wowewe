@@ -253,9 +253,9 @@ class WechatXiangYangUnicom extends Wechat
         if (($resp = $this->handleKeyword($Content)) !== false) {
             return $resp;
         }
-        if (($resp = $this->enterAAM($Content)) !== false) {
-            return $resp;
-        } 
+        //if (($resp = $this->enterAAM($Content)) !== false) {
+        //    return $resp;
+        //} 
         if (($resp = $this->handleKeyword('.default')) !== false) {
             return $resp;
         }        
