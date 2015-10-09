@@ -71,7 +71,7 @@ class WechatXiangYangUnicom extends Wechat
                 $real_sceneid = $scene_pid - 100000;
                 $sceneid_mobile = SceneidMobile::getModelBySceneId($real_sceneid);
                 if (!empty($sceneid_mobile)) {
-                    U::yjhu_W($sceneid_mobile);
+//                    U::yjhu_W($sceneid_mobile);
                     $openid_bind_mobile = OpenidBindMobile::findOne([
                         'gh_id' => $gh_id,
 //                        'openid' => $openid,
@@ -83,7 +83,9 @@ class WechatXiangYangUnicom extends Wechat
                         $openid_bind_mobile->openid = $openid;
                         $openid_bind_mobile->mobile = $sceneid_mobile->mobile;
                         $openid_bind_mobile->save(false);
-                        U::yjhu_W($openid_bind_mobile);
+//                        U::yjhu_W($openid_bind_mobile);
+                        U::yjhu_W($sceneid_mobile->mobile . '关注并绑定至'. $gh_id .' '.$openid);
+                        SmsMarketingLog::member($sceneid_mobile->mobile);
 //                        $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
                         $url = \yii\helpers\Url::to(['wap/hyzx1', 'gh_id' => $gh_id, 'openid' => $openid], true);
                         $respText = $user->nickname . ', 您已成功绑定手机号码'. $sceneid_mobile->mobile . ', 成为襄阳联通微信平台会员，直接点击进入<a href="'.$url.'">会员中心</a>！';
@@ -393,12 +395,12 @@ class WechatXiangYangUnicom extends Wechat
         if (!empty($EventKey)){              
             $Ticket = $this->getRequest('Ticket');    
             $scene_pid = $EventKey;    
-            U::yjhu_W("EventKey=$EventKey, scene_pid=$scene_pid");
+//            U::yjhu_W("EventKey=$EventKey, scene_pid=$scene_pid");
             if ($scene_pid > 100000) {
                 $real_sceneid = $scene_pid - 100000;
                 $sceneid_mobile = SceneidMobile::getModelBySceneId($real_sceneid);
                 if (!empty($sceneid_mobile)) {
-                    U::yjhu_W($sceneid_mobile);
+//                    U::yjhu_W($sceneid_mobile);
                     $openid_bind_mobile = OpenidBindMobile::findOne([
                         'gh_id' => $gh_id,
 //                        'openid' => $openid,
@@ -410,7 +412,9 @@ class WechatXiangYangUnicom extends Wechat
                         $openid_bind_mobile->openid = $openid;
                         $openid_bind_mobile->mobile = $sceneid_mobile->mobile;
                         $openid_bind_mobile->save(false);
-                        U::yjhu_W($openid_bind_mobile);
+//                        U::yjhu_W($openid_bind_mobile);
+                        U::yjhu_W($sceneid_mobile->mobile . '扫码绑定至'. $gh_id .' '.$openid);
+                        SmsMarketingLog::member($sceneid_mobile->mobile);
                         $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
                         $url = \yii\helpers\Url::to(['wap/hyzx1', 'gh_id' => $gh_id, 'openid' => $openid], true);
                         $respText = $user->nickname . ', 您已成功绑定手机号码'. $sceneid_mobile->mobile . ', 成为襄阳联通微信平台会员，直接点击进入<a href="'.$url.'">会员中心</a>！';
