@@ -94,7 +94,10 @@
                     </div>
             </a>        
     </div>
-    <?php if (NULL !== $target_office) { ?>
+    <?php if (NULL !== $target_office) { 
+        if($target_office->is_selfOperated != 1)
+        {
+    ?>
     <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
 
             <a class="dashboard-stat dashboard-stat-light yellow-gold" href="#office-score-event-modal" data-toggle="modal">
@@ -111,7 +114,10 @@
                     </div>
             </a>        
     </div>
-    <?php } ?>
+    <?php 
+        }
+    } 
+    ?>
 </div>
 <div class="clearfix"></div>
 <script>
