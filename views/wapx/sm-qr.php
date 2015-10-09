@@ -6,12 +6,13 @@
         <meta name="format-detection" content="telephone=no">
         <title></title>
         <link rel="stylesheet" href="/wx/web/frozen/css/frozen.css">
+
     </head>
     <body ontouchstart="">
         <header class="ui-header ui-header-positive ui-border-b" style="background-color: #ED6D00">
             <h1>邀您关注</h1>
         </header>
-        <footer class="ui-footer ui-footer-btn" style="background-color: #ED6D00; color: #fff">
+        <footer class="ui-footer ui-footer-btn" style="background-color: #ED6D00; color: #fff; height:45px">
             <ul class="ui-tiled ui-border-t" style="background-color: #ED6D00; color: #fff">
                 <li data-href="#" class="ui-border-r"><div>襄阳联通 &copy; 2015</div></li>
             </ul>
@@ -19,13 +20,11 @@
 
         <section class="ui-container ui-center">
             <br>
-            <img width=65%  src="<?= $qr_url ?>">
+            <img width=168 height=168 src="<?= $qr_url ?>">
+            <br>
+            <span style="color:#aaa"><?= $mobile ?> 专享二维码</span>
         </section>
 
-        <center>
-        <br><br>
-        <span style="color:#aaa"><?= $mobile ?> 专享二维码</span>
-        </center>
         <br>
         <ul class="ui-list ui-list-text ui-border-tb">
             <li class="ui-border-t">
