@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
+use  app\models\MHd201509t6;
 /* @var $this yii\web\View */
 /* @var $model app\models\MHd201509t6 */
 /* @var $form yii\widgets\ActiveForm */
@@ -36,6 +37,8 @@ use yii\widgets\ActiveForm;
 
 
     <?= $form->field($model, 'qdbm')->textInput(['maxlength' => 32]) ?>
+
+    <?= $form->field($model, 'status')->dropDownList(MHd201509t6::gethd201509t6StatusOption()) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? '新增' : '修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

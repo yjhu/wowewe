@@ -933,6 +933,44 @@ class ImportController extends Controller {
         echo "done\n";
     }
 
+    //修改渠道 有误的编码 修改用户错误输入
+    public function actionUpdateHd201509t6m2($filename = 'errcode1010.csv') {
+
+        $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+        $fh = fopen($filepathname, "r");
+
+        while (!feof($fh)) {
+
+            $line = trim(fgets($fh));
+            if (empty($line) || strlen($line) == 0) continue;
+
+            $fields = explode(",", $line);
+
+            $mobile = trim($fields[0]);
+            $mobile_utf8 = iconv('GBK', 'UTF-8//IGNORE', $mobile);
+
+            $qdbm_ok = trim($fields[1]);
+            $qdbm_ok_utf8 = iconv('GBK', 'UTF-8//IGNORE', $qdbm_ok);
+
+            $hd201509t6 = MHd201509t6::findOne(['mobile' => $mobile_utf8]);
+
+            if(empty($hd201509t6))
+            {
+                echo $mobile_utf8."\t\t"."not found ... \n";
+            }
+            else
+            {   
+                echo $mobile_utf8."\t\t"."update to ->\t".$qdbm_ok_utf8."\n";
+                $hd201509t6->qdbm = $qdbm_ok_utf8;
+                $hd201509t6->save(false);
+            }
+
+        }
+        fclose($fh);
+
+        echo "done\n";
+    }
+
 
 
 }
