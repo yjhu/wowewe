@@ -29,9 +29,16 @@ class HourController extends Controller
 		U::W("###########".__CLASS__." BEGIN");		
 		
 		self::refreshAccessToken();
+                if (date('H') == 10) {
+                    self::smsMarketing();
+                }
 
 		U::W("###########".__CLASS__." END, (time: ".sprintf('%.3f', microtime(true)-$time)."s)");			
 	}
+        
+        public static function smsMarketing() {
+            \app\models\SmsMarketingConfig::run();
+        }
 
 	public static function refreshAccessToken() 
 	{

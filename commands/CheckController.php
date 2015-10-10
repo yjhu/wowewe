@@ -269,11 +269,21 @@ class CheckController extends \yii\console\Controller {
         }
     }
     
-    public function actionSmsMember() {
-        \Yii::$app->wx->setGhId(\app\models\MGh::GH_XIANGYANGUNICOM);
-        $mobile = '13545296480';
-        $long_url = 'http://wosotech.com/wx/web/index.php?r=wapx/sm-qr'.'&mobile='.$mobile;
-        $short_url = \Yii::$app->wx->WxGetShortUrl($long_url);
-        \app\models\sm\ESmsGuodu::yjhu_test($mobile, $short_url);
+    public function actionSmsMember($mobile='18971288549') {
+//        \Yii::$app->wx->setGhId(\app\models\MGh::GH_XIANGYANGUNICOM);
+//        $long_url = 'http://wosotech.com/wx/web/index.php?r=wapx/sm-qr'.'&mobile='.$mobile;
+//        $short_url = \Yii::$app->wx->WxGetShortUrl($long_url);
+//        $content = '【襄阳联通】诚邀您关注襄阳联通官方微信号，点击下面链接直接成为会员，专享特权！'.$short_url;
+////        $content = '【沃手科技】'.substr($short_url, 7);
+//        \app\models\sm\ESmsGuodu::yjhu_test($mobile, $content);
+        \app\models\SmsMarketingConfig::run();
+    }
+    
+    public function actionDwz() {  
+        for ($i=1; $i <= 1000; $i++) {
+            $long_url = 'http://wosotech.com/wx/web/index.php?r=wapx/sm-qr'.'&mobile='. $i;
+            $short_url = \app\models\BaiduDwz::dwz($long_url);
+            echo $short_url . PHP_EOL;
+        }
     }
 }

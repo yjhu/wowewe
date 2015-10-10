@@ -732,7 +732,7 @@ EOD;
     {
         if (!empty($resp['errcode']))
         {
-            U::W([$resp, $params]);
+            U::yjhu_W([$resp, $params]);
             if ($resp['errcode'] == 40001)
             {
                 U::W('checkWxApiResp, refresh token.');

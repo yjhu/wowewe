@@ -132,7 +132,7 @@ class NightController extends Controller {
 
         //找到超时2天的成功订单， 将其归属的渠道 +积分100
         $orders = MOrder::find()->where(['status' => MOrder::STATUS_FULFILLED])
-                                ->andWhere(['<', 'create_time', DATE_SUB(NOW(), INTERVAL 2 day)])
+                                ->andWhere(['<', 'create_time', 'DATE_SUB(NOW(), INTERVAL 2 day)'])
                                 ->all();
 
         foreach($orders as $order)
