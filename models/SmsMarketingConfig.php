@@ -75,7 +75,7 @@ class SmsMarketingConfig extends \yii\db\ActiveRecord
 //        $short_url = \Yii::$app->wx->WxGetShortUrl($long_url);
         $short_url = BaiduDwz::dwz($long_url);
         $content = '【襄阳联通】尊敬的'.$mobile.'用户，诚邀您关注襄阳联通官方微信号，点击下面链接直接成为会员，专享特权！'.$short_url;
-        \app\models\sm\ESmsGuodu::yjhu_test($mobile, $content);
+        return \app\models\sm\ESmsGuodu::yjhu_test($mobile, $content);
     }
     
     public static function run() 
@@ -204,6 +204,15 @@ class SmsMarketingConfig extends \yii\db\ActiveRecord
                 }                
                 $offset += $limit;
             }
+        }
+    }
+    
+    public static function smsAjax($mobile) {
+        $ret = self::sms($mobile);
+        if ($ret) {
+            return \yii\helpers\Json::encode(['err_code' => 0, 'err_msg' => '']);
+        } else {
+            return \yii\helpers\Json::encode(['err_code' => -1, 'err_msg' => '短信网关发送失败。']);
         }
     }
 }

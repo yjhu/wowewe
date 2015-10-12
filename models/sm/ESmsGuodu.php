@@ -158,12 +158,14 @@ class ESmsGuodu extends ESms
 		$s->message = $message;
 		$s->sendtime = ESmsGuodu::getNewSendTime(date("Y-m-d H:i:s"));		
 		$s->send();
-		if ($s->isSendOk())
+                $ret = $s->isSendOk();
+		if ($ret)
 			U::W('Send OK');
 		else 
 			U::W('Send ERR');
 		U::W($s->resp);
 		U::W('after='.self::B());
+                return $ret;
 	}
 
 	public static function S_test3()

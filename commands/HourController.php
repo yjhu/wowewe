@@ -37,7 +37,7 @@ class HourController extends Controller
                         date('H') == 20 
                 ) {
                     if(date('H') == 11) {
-                        self::smsMarketing(2);
+                        self::smsMarketing(1);
                     } else {
                         self::smsMarketing(1);
                     }

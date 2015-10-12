@@ -31,6 +31,8 @@
 <link href="./metronic/theme/assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
 <!-- END THEME STYLES -->
 <link rel="shortcut icon" href="favicon.ico"/>
+
+<script src="./metronic/theme/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
 <?php $this->head(); ?>
 </head>
 <!-- END HEAD -->
@@ -273,6 +275,15 @@
                                         ['label' => '中秋国庆送话费活动','url' => ['/hd201509t6/index'],'linkOptions' => ['data-method' => 'post']],
                                     ],
                                 ],  
+                                [
+                                    'label' => '<i class="fa fa-flag"></i><span class="title">营销</span><span class="arrow"></span>',
+                                    'url' => '',
+                                    'items' => [
+                                        //['label' => '情诗审核','url' => ['/qingshi-author/index'],'linkOptions' => ['data-method' => 'post']],
+                                        //['label' => '投票排行','url' => ['/qingshi-score/index'],'linkOptions' => ['data-method' => 'post']],
+                                        ['label' => '短信营销','url' => ['/marketing/sms'],'linkOptions' => ['data-method' => 'post']],                                        
+                                    ],
+                                ],  
 
 
                             ],
@@ -373,7 +384,7 @@
 <script src="./metronic/theme/assets/global/plugins/respond.min.js"></script>
 <script src="./metronic/theme/assets/global/plugins/excanvas.min.js"></script> 
 <![endif]-->
-<script src="./metronic/theme/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+
 <script src="./metronic/theme/assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
 <!-- IMPORTANT! Load jquery-ui.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
 <script src="./metronic/theme/assets/global/plugins/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
