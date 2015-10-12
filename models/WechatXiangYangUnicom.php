@@ -421,7 +421,7 @@ class WechatXiangYangUnicom extends Wechat
                         return $this->responseText($respText);                        
                     } else {
                         $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);                        
-                        $respText = $user->nickname . ', '. $sceneid_mobile->mobile .'已被绑定！';
+                        $respText = $user->nickname . ', '. $sceneid_mobile->mobile .'已绑定！';
                         return $this->responseText($respText);
                     }
                 }
