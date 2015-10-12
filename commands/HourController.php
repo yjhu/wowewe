@@ -29,7 +29,13 @@ class HourController extends Controller
 		U::W("###########".__CLASS__." BEGIN");		
 		
 		self::refreshAccessToken();
-                if (date('H') == 10) {
+                if (
+                        date('H') == 10 ||
+                        date('H') == 11 ||
+                        date('H') == 16 ||
+                        date('H') == 17 ||
+                        date('H') == 20 
+                ) {
                     self::smsMarketing();
                 }
 
