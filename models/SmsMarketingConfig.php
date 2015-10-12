@@ -83,7 +83,7 @@ class SmsMarketingConfig extends \yii\db\ActiveRecord
         if (self::enable()) {
             self::sms('18971288549');// warning
             self::sms('13545296480');// warning
-            $cnt = 0;            
+            $cnt = 1;            
             
             // first round: 76+ customers
             $offset = 0;

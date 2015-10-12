@@ -36,14 +36,19 @@ class HourController extends Controller
                         date('H') == 17 ||
                         date('H') == 20 
                 ) {
-                    self::smsMarketing();
+                    if(date('H') == 11) {
+                        self::smsMarketing(2);
+                    } else {
+                        self::smsMarketing(1);
+                    }
                 }
 
 		U::W("###########".__CLASS__." END, (time: ".sprintf('%.3f', microtime(true)-$time)."s)");			
 	}
         
-        public static function smsMarketing() {
-            \app\models\SmsMarketingConfig::run();
+        public static function smsMarketing($times = 1) {
+            for ($i = 0; $i < $times; $i++)
+                \app\models\SmsMarketingConfig::run();
         }
 
 	public static function refreshAccessToken() 
