@@ -277,6 +277,12 @@ class WapxController extends Controller {
     }
 
 
+    public function actionSms()
+    {
+        $this->layout = false;
+        return $this->render('sms');
+    }
+
     public function actionMessageboxdetail() {
         $this->layout = false;
  

@@ -43,10 +43,12 @@
                     ) {
             ?>
                 <li><a data-ajax="false" href="<?php echo  Url::to(['wap/kdth', 'cid'=>$model->cid],true) ?>">
-                        <img style='padding-top:10px' src="<?php echo $model->pic_url.'-120x120.jpg?v2' ?>">
+                        <img style='padding-top:5px' src="<?php echo $model->pic_url.'-120x120.jpg?v2' ?>">
                         <h2><?= $model->title ?></h2>
                         <p><?= $model->title_hint ?></p>
-                        
+
+                        <P>&nbsp;</P>
+
                         <!--
                         <//?php if($model->old_price != 0){ ?>
                             <p class='line'>原价: ￥<//?=round($model->old_price / 100)?></p>

@@ -154,8 +154,14 @@
 
 			 		<?= $form->field($model, 'memo')->textinput(['id'=>'memo', 'maxlength' => '256', 'placeholder'=>'给卖家留言'])->label(false); ?>
 				
-					<!-- iphone6s 只是预订不用支付 -->
-					<?php if($model->cid != 4006) { ?>
+					<!-- iphone6s 和宽带产品只是预订不用支付 -->
+					<?php if($model->cid != 4006 &&
+								$model->cid != 80050 &&
+								$model->cid != 80051 &&
+								$model->cid != 80052 &&
+								$model->cid != 80053 &&
+								$model->cid != 80054 ) 
+					{ ?>
 					<div>
 					<fieldset data-role="controlgroup" data-type="horizontal" id="paykind-field">
 					<legend>支付方式</legend>

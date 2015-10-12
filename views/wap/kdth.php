@@ -596,7 +596,8 @@ $(document).on("pageinit", "#page2", function(){
 
 
  		/* realFee = 0.01 */
-
+ 		office = 25; /*指定office为其他 */
+ 		realFee = 0; /* 仅仅下订单 */
 		localStorage.setItem("item",$("form#productForm").serialize());
 		$.ajax({
 			url: "<?php echo Yii::$app->getRequest()->baseUrl.'/index.php?r=wap/prodsave' ; ?>",

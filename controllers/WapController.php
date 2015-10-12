@@ -2060,7 +2060,7 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->title = '智慧沃家 100M套餐B';
                 $order->attr = "{$_GET['cardType']}";
                 break;
-                
+
 
             default:
                 U::W(['invalid data cat', $_GET["cid"], __METHOD__, $_GET]);
@@ -2130,7 +2130,23 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
 
 
 //send wx message and sm
-$manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
+//kzeng openid for test, 
+//oKgUduJJFo9ocN8qO9k2N5xrKoGE
+//洪爱武 (宽带板块负责人)
+//oKgUduCGD_sGNYK3W02W8xutXvmo
+//办理宽带业务只向kzeng 发订单模板消息
+if($order->cid == 80050 ||
+    $order->cid == 80051 ||
+    $order->cid == 80052 ||
+    $order->cid == 80053 ||
+    $order->cid == 80054 )
+{
+    $manager = MStaff::findOne(['openid'=>'oKgUduCGD_sGNYK3W02W8xutXvmo']);
+}
+else
+    $manager = MStaff::findOne(['office_id'=>$order->office_id, 'is_manager'=>1]);
+
+
 if ($manager !== null && !empty($manager->openid))
 {
 //U::W('sendWxm');
@@ -2597,6 +2613,35 @@ $arr = $order->sendTemplateNoticeToCustom();
         return $this->render('hgllb', ['cid' => $_GET['cid'], 'gh_id' => $gh_id, 'openid' => $openid]);
     }
 
+
+    //宽带特惠20151012
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/kdthlist:gh_03a74ac96138
+    public function actionKdthlist() {
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+
+        //若非会员先跳到会员注册页面，先注册
+        $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
+        if (empty($user->openidBindMobiles)) {
+            Yii::$app->getSession()->set('RETURN_URL', Url::to());
+            return $this->redirect(['addbindmobile', 'gh_id' => $gh_id, 'openid' => $openid]);
+        }
+
+        $kind = $_GET['kind'];
+        $models = MItem::find()->where(['kind' => $kind])->orderBy(['cid' => SORT_ASC])->all();
+        return $this->render('kdthlist', ['gh_id' => $gh_id, 'openid' => $openid, 'models' => $models, 'kind' => $kind]);
+    }
+
+    //http://127.0.0.1/wx/web/index.php?r=wap/oauth2cb&state=wap/kdth:gh_03a74ac96138
+    public function actionKdth() {
+        $this->layout = 'wapy';
+        $gh_id = U::getSessionParam('gh_id');
+        $openid = U::getSessionParam('openid');
+        Yii::$app->wx->setGhId($gh_id);
+        return $this->render('kdth', ['cid' => $_GET['cid'], 'gh_id' => $gh_id, 'openid' => $openid]);
+    }
 
 
 
