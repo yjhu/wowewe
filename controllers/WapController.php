@@ -2036,6 +2036,32 @@ return json_encode(['oid'=>$order->oid, 'status'=>0, 'pay_url'=>$url]);
                 $order->attr = "{$_GET['cardType']}";
                 break;
 
+            case MItem::ITEM_CAT_KDTH_10MTC:
+                $order->title = '智慧沃家 10M套餐';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_KDTH_20MTC:
+                $order->title = '智慧沃家 20M套餐';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+
+            case MItem::ITEM_CAT_KDTH_50MTC:
+                $order->title = '智慧沃家 50M套餐';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            
+            case MItem::ITEM_CAT_KDTH_100MTCA:
+                $order->title = '智慧沃家 100M套餐A';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+            
+            case MItem::ITEM_CAT_KDTH_100MTCB:
+                $order->title = '智慧沃家 100M套餐B';
+                $order->attr = "{$_GET['cardType']}";
+                break;
+                
+
             default:
                 U::W(['invalid data cat', $_GET["cid"], __METHOD__, $_GET]);
                 return;
