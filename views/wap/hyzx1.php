@@ -4,6 +4,7 @@
     use app\models\U;
     use app\models\MUser;
     use app\models\MUserAccount;
+    use app\models\MGh;
     
 
     //use app\models\utils;
@@ -180,13 +181,39 @@
               <a data-ignore="push"  class="navigate-right" href="<?php echo Url::to(['wapx/messagebox', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'backwards' => false]) ?>">
       
                 <span class="media-object pull-left">
-                  <i class="fa fa fa-inbox" style="color:#56abe4"></i>
+                  <i class="fa fa-inbox" style="color:#56abe4"></i>
                 </span>
                 <div class="media-body">
                   消息中心
                 </div>
               </a>
             </li>
+
+
+
+            <?php
+              if($user->openid == MGh::GH_XIANGYANGUNICOM_OPENID_KZENG ||
+                 $user->openid == MGh::GH_XIANGYANGUNICOM_OPENID_YJHU  ||
+                 $user->openid == "oKgUduPubo28aLfiigqc7bp7T1L4"  ||
+                 $user->openid == "oKgUduA4LGHA1E-W-wOnqy6egGJQ"
+                )
+              {
+            ?>
+            <li class="table-view-cell media">
+              <a data-ignore="push"  class="navigate-right" href="<?php echo Url::to(['wapx/sms', 'gh_id'=>$user->gh_id, 'openid'=>$user->openid, 'backwards' => false]) ?>">
+      
+                <span class="media-object pull-left">
+                  <i class="fa fa-flag" style="color:#56abe4"></i>
+                </span>
+                <div class="media-body">
+                  短信营销
+                </div>
+              </a>
+            </li>
+            <?php
+              }
+            ?>
+
 
             <?php if (!empty($user->outlet)) { ?>
             <li class="table-view-cell media">

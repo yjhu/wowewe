@@ -14,6 +14,8 @@ use app\models\MMarketingRegion;
 use app\models\MMarketingServiceCenter;
 use app\models\MOfficeCampaignPicCategory;
 use app\models\MHd201509t6;
+use app\models\MHd201509t3;
+
 
 class ImportController extends Controller {
     public function init()
@@ -934,7 +936,7 @@ class ImportController extends Controller {
     }
 
     //修改渠道 有误的编码 修改用户错误输入
-    public function actionUpdateHd201509t6m2($filename = 'errcode1010.csv') {
+    public function actionUpdateHd201509t6m2($filename = 'errcode1012.csv') {
 
         $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
         $fh = fopen($filepathname, "r");
@@ -971,6 +973,44 @@ class ImportController extends Controller {
         echo "done\n";
     }
 
+    //更新小积分大爱心 数据20151012
+    public function actionUpdateHd201509t3m2($filename = 'xjfdax1012.csv') {
+    $filepathname = Yii::$app->getRuntimePath() . DIRECTORY_SEPARATOR . 'imported_data' . DIRECTORY_SEPARATOR . $filename;
+    $fh = fopen($filepathname, "r");
+
+    while (!feof($fh)) {
+
+        $line = trim(fgets($fh));
+        if (empty($line) || strlen($line) == 0) continue;
+
+        $fields = explode(",", $line);
+
+        $mobile = trim($fields[0]);
+        $mobile_utf8 = iconv('GBK', 'UTF-8//IGNORE', $mobile);
+
+        $hd201509t3 = MHd201509t3::findOne(['mobile' => $mobile_utf8]);
+
+        if(empty($hd201509t3))
+        {
+            echo $mobile_utf8."\t\t"."not found, add!\n";
+            $hd201509t3 = new MHd201509t3;
+            $hd201509t3->mobile = $mobile_utf8;
+            $hd201509t3->status = 0;
+            $hd201509t3->score = 0;
+            $hd201509t3->save(false);
+        }
+        else
+        {   
+            echo $mobile_utf8."\t\t"."found!\t\t"."\n";
+            //$hd201509t6->qdbm = $qdbm_ok_utf8;
+            //$hd201509t6->save(false);
+        }
+
+    }
+    fclose($fh);
+
+    echo "done\n";
+}
 
 
 }

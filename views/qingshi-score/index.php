@@ -9,7 +9,7 @@ use app\models\MQingshiScore;
 /* @var $searchModel app\models\MQingshiScoreSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '三行情诗投票情况';
+$this->title = '三行情诗排名情况';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 

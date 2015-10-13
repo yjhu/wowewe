@@ -264,6 +264,12 @@ class MItem extends ActiveRecord {
     //(活动)校园优惠季 + 流量宝
     const ITEM_CAT_HD_XYYHJ = 80000;
     const ITEM_CAT_HD_LLB = 80001;
+    //宽带特惠套餐 20151012
+    const ITEM_CAT_KDTH_10MTC = 80050;
+    const ITEM_CAT_KDTH_20MTC = 80051;
+    const ITEM_CAT_KDTH_50MTC = 80052;
+    const ITEM_CAT_KDTH_100MTCA = 80053;
+    const ITEM_CAT_KDTH_100MTCB = 80054;
 
     //增值业务
     const ITEM_KIND_ZZYW = 1000;
@@ -476,6 +482,12 @@ class MItem extends ActiveRecord {
             //(活动)校园优惠季 + 流量包
             self::ITEM_CAT_HD_XYYHJ  => '校园优惠季',
             self::ITEM_CAT_HD_LLB  => '流量宝',
+            //宽带特惠套餐 20151012
+            self::ITEM_CAT_KDTH_10MTC  => '智慧沃家 10M套餐',
+            self::ITEM_CAT_KDTH_20MTC  => '智慧沃家 20M套餐',
+            self::ITEM_CAT_KDTH_50MTC  => '智慧沃家 50M套餐',
+            self::ITEM_CAT_KDTH_100MTCA  => '智慧沃家 100M套餐A',
+            self::ITEM_CAT_KDTH_100MTCB  => '智慧沃家 100M套餐B',
 
             //增值业务
             self::ITEM_KIND_ZZYW => '增值业务',
