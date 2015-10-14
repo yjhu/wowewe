@@ -74,8 +74,32 @@ class SmsMarketingConfig extends \yii\db\ActiveRecord
         $long_url = 'http://wosotech.com/wx/web/index.php?r=wapx/sm-qr'.'&mobile='.$mobile;
 //        $short_url = \Yii::$app->wx->WxGetShortUrl($long_url);
         $short_url = BaiduDwz::dwz($long_url);
-        $content = '【襄阳联通】尊敬的'.$mobile.'用户，诚邀您关注襄阳联通官方微信号，点击下面链接直接成为会员，专享特权！'.$short_url;
-        return \app\models\sm\ESmsGuodu::yjhu_test($mobile, $content);
+        if (false == $short_url) {
+            \Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
+            $short_url = \Yii::$app->wx->WxGetShortUrl($long_url);
+        }
+        $content = '【襄阳联通】诚邀您关注官方微信号，成为会员专享特权，猛戳'.$short_url;
+//        $content = mb_substr($content, 0, 67);
+//        $content = $mobile . ' ' . $short_url;
+        $s = \Yii::$app->sm->S($mobile,  $content, '', null, true);
+//        $ret = \app\models\sm\ESmsGuodu::yjhu_test($mobile, $content);
+        $ret = $s->isSendOk();
+        if ($ret) {
+            $smslog = SmsMarketingLog::findOne(['mobile' => $mobile]);
+            if (empty($smslog)) {
+                $smslog = new SmsMarketingLog;
+                $smslog->mobile = $mobile;
+                $smslog->first_sendtime = time();
+                $smslog->last_sendtime = time();
+                $smslog->send_count = 1;
+                $smslog->save(false);
+            } else {
+                $smslog->send_count++;
+                $smslog->last_sendtime = time();
+                $smslog->save(false);
+            }
+        }
+        return $ret;
     }
     
     public static function run() 
@@ -101,12 +125,12 @@ class SmsMarketingConfig extends \yii\db\ActiveRecord
                         $smslog = SmsMarketingLog::findOne(['mobile' => $mobile->mobile]);
                         if (empty($smslog)) {
                             self::sms($mobile->mobile);
-                            $smslog = new SmsMarketingLog;
-                            $smslog->mobile = $mobile->mobile;
-                            $smslog->first_sendtime = time();
-                            $smslog->last_sendtime = time();
-                            $smslog->send_count = 1;
-                            $smslog->save(false);
+//                            $smslog = new SmsMarketingLog;
+//                            $smslog->mobile = $mobile->mobile;
+//                            $smslog->first_sendtime = time();
+//                            $smslog->last_sendtime = time();
+//                            $smslog->send_count = 1;
+//                            $smslog->save(false);
                             
                             $cnt++;
                             if ($cnt > self::dailyLimit()) return;
@@ -132,12 +156,12 @@ class SmsMarketingConfig extends \yii\db\ActiveRecord
                         $smslog = SmsMarketingLog::findOne(['mobile' => $mobile->mobile]);
                         if (empty($smslog)) {
                             self::sms($mobile->mobile);
-                            $smslog = new SmsMarketingLog;
-                            $smslog->mobile = $mobile->mobile;
-                            $smslog->first_sendtime = time();
-                            $smslog->last_sendtime = time();
-                            $smslog->send_count = 1;
-                            $smslog->save(false);
+//                            $smslog = new SmsMarketingLog;
+//                            $smslog->mobile = $mobile->mobile;
+//                            $smslog->first_sendtime = time();
+//                            $smslog->last_sendtime = time();
+//                            $smslog->send_count = 1;
+//                            $smslog->save(false);
                             
                             $cnt++;
                             if ($cnt > self::dailyLimit()) return;
@@ -164,9 +188,9 @@ class SmsMarketingConfig extends \yii\db\ActiveRecord
                         $smslog = SmsMarketingLog::findOne(['mobile' => $mobile->mobile]);
                         if (!empty($smslog) && ($smslog->send_count < $max_send_count)) {                            
                             self::sms($mobile->mobile);   
-                            $smslog->send_count++;
-                            $smslog->last_sendtime = time();
-                            $smslog->save(false);
+//                            $smslog->send_count++;
+//                            $smslog->last_sendtime = time();
+//                            $smslog->save(false);
                             
                             $cnt++;
                             if ($cnt > self::dailyLimit()) return;
@@ -193,9 +217,9 @@ class SmsMarketingConfig extends \yii\db\ActiveRecord
                         $smslog = SmsMarketingLog::findOne(['mobile' => $mobile->mobile]);
                         if (!empty($smslog) && ($smslog->send_count < $max_send_count)) {                            
                             self::sms($mobile->mobile);   
-                            $smslog->send_count++;
-                            $smslog->last_sendtime = time();
-                            $smslog->save(false);
+//                            $smslog->send_count++;
+//                            $smslog->last_sendtime = time();
+//                            $smslog->save(false);
                             
                             $cnt++;
                             if ($cnt > self::dailyLimit()) return;

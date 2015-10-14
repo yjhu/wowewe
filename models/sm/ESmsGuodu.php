@@ -153,6 +153,7 @@ class ESmsGuodu extends ESms
         
         public static function yjhu_test($mobile, $message)
 	{
+                U::yjhu_W('before='.self::B());
 		$s = new ESmsGuodu;	
 		$s->mobiles_str = $mobile;
 		$s->message = $message;
@@ -164,7 +165,7 @@ class ESmsGuodu extends ESms
 		else 
 			U::W('Send ERR');
 		U::W($s->resp);
-		U::W('after='.self::B());
+		U::yjhu_W('after='.self::B());
                 return $ret;
 	}
 
