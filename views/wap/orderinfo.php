@@ -167,7 +167,10 @@
 					<legend>支付方式</legend>
 						<select onchange="showButton()" id="sel_paykind">
 							<option value="0" selected>线下支付</option>
+							<!-- 暂时屏蔽 该支付项 -->
+							<!--
 							<option value="2">微信支付</option>
+							-->
 						</select>
 					</fieldset>						
 					</div>

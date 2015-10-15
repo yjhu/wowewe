@@ -33,7 +33,7 @@
             </li>
             <li class="ui-border-t">
                     <i class="ui-icon-info" style="color:#18B4ED"></i>
-                    <h4 class="ui-nowrap" style="font-size: 12px">微信扫码->右上角菜单->相册选取二维码。</h4>
+                    <h4 class="ui-nowrap" style="font-size: 12px">微信扫一扫->右上角菜单->相册选取二维码。</h4>
             </li>
             <li class="ui-border-t">
                     <i class="ui-icon-success" style="color:#5FB336"></i>

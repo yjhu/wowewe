@@ -596,7 +596,7 @@ $(document).on("pageinit", "#page2", function(){
 
 
  		/* realFee = 0.01 */
- 		office = 25; /*指定office为其他 */
+ 		office = 37; /*指定office为 宽带服务中心 */
  		realFee = 0; /* 仅仅下订单 */
 		localStorage.setItem("item",$("form#productForm").serialize());
 		$.ajax({
