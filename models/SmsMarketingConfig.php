@@ -84,8 +84,8 @@ class SmsMarketingConfig extends \yii\db\ActiveRecord
                 }
             }            
         }
-        $content = "【襄阳联通】诚邀您({$mobile})关注官方微信号，成为会员专享特权，猛戳".$short_url;
-//        U::yjhu_W($mobile . ' '.$content);
+        $content = "【襄阳联通】诚邀您({$mobile})关注官方微信号，猛戳".$short_url .'！最高50元红包即送！';
+        U::yjhu_W(mb_strlen($content));
 //        $content = mb_substr($content, 0, 67);
 //        $content = $mobile . ' ' . $short_url;
         $s = \Yii::$app->sm->S($mobile,  $content, '', null, true);

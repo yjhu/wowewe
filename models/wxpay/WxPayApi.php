@@ -1,6 +1,8 @@
 <?php
 namespace app\models\wxpay;
 
+use app\models\U;
+
 require_once "WxPayException.php";
 require_once "WxPayConfig.php";
 require_once "WxPayData.php";
@@ -442,6 +444,7 @@ class WxPayApi
             $result = WxPayResults::Init($response);
             self::reportCostTime($url, $startTimeStamp, $result);//上报请求花费时间
 
+//            U::yjhu_w($result);
             return $result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS';
 	}        
         

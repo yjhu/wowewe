@@ -89,6 +89,7 @@ class WechatXiangYangUnicom extends Wechat
 //                        $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
                         $url = \yii\helpers\Url::to(['wap/hyzx1', 'gh_id' => $gh_id, 'openid' => $openid], true);
                         $respText = $user->nickname . ', 您已成功绑定手机号码'. $sceneid_mobile->mobile . ', 成为襄阳联通微信平台会员，直接点击进入<a href="'.$url.'">会员中心</a>！';
+                        RedpackLog::sendRedpack($gh_id, $openid, $sceneid_mobile->mobile);
                         return $this->responseText($respText);  
                     }
                 }
@@ -418,6 +419,7 @@ class WechatXiangYangUnicom extends Wechat
                         $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);
                         $url = \yii\helpers\Url::to(['wap/hyzx1', 'gh_id' => $gh_id, 'openid' => $openid], true);
                         $respText = $user->nickname . ', 您已成功绑定手机号码'. $sceneid_mobile->mobile . ', 成为襄阳联通微信平台会员，直接点击进入<a href="'.$url.'">会员中心</a>！';
+                        RedpackLog::sendRedpack($gh_id, $openid, $sceneid_mobile->mobile);
                         return $this->responseText($respText);                        
                     } else {
                         $user = MUser::findOne(['gh_id' => $gh_id, 'openid' => $openid]);                        
