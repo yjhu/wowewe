@@ -73,12 +73,19 @@ class SmsMarketingConfig extends \yii\db\ActiveRecord
 //        \Yii::$app->wx->setGhId(\app\models\MGh::GH_XIANGYANGUNICOM);
         $long_url = 'http://wosotech.com/wx/web/index.php?r=wapx/sm-qr'.'&mobile='.$mobile;
 //        $short_url = \Yii::$app->wx->WxGetShortUrl($long_url);
-        $short_url = BaiduDwz::dwz($long_url);
+        $short_url = DwzService::baidu($long_url);
         if (false == $short_url) {
-            \Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
-            $short_url = \Yii::$app->wx->WxGetShortUrl($long_url);
+            $short_url = DwzService::qqurl($long_url);
+            if (false == $short_url) {
+                $short_url = DwzService::so985($long_url);
+                if (false == $short_url) {
+                    \Yii::$app->wx->setGhId(MGh::GH_XIANGYANGUNICOM);
+                    $short_url = \Yii::$app->wx->WxGetShortUrl($long_url);
+                }
+            }            
         }
-        $content = '【襄阳联通】诚邀您关注官方微信号，成为会员专享特权，猛戳'.$short_url;
+        $content = "【襄阳联通】诚邀您({$mobile})关注官方微信号，成为会员专享特权，猛戳".$short_url;
+//        U::yjhu_W($mobile . ' '.$content);
 //        $content = mb_substr($content, 0, 67);
 //        $content = $mobile . ' ' . $short_url;
         $s = \Yii::$app->sm->S($mobile,  $content, '', null, true);

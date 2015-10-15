@@ -401,7 +401,88 @@ class WxPayApi
 		
 		return $result;
 	}
-	
+	    
+        public static function getWxPayObj() {
+            return new WxPayDataBase;
+        }
+        
+        /**
+	 * 
+	 * 发送现金红包
+	 * 用于企业向微信用户个人发现金红包 
+         * 目前支持向指定微信用户的openid发放指定金额红包。
+	 * @param WxPayDataBase $inputObj
+	 * @param int $timeOut
+	 * @throws WxPayException
+	 * @return 成功时返回，其他抛异常
+	 */
+        public static function sendRedPack($openid, $amount, $wishing) {
+            $url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack";
+        
+            $inputObj = self::getWxPayObj(); $timeOut = 6;
+            
+            $inputObj->setValues('nonce_str', self::getNonceStr());
+            $mch_billno = WxPayConfig::MCHID . date('Ymd') . rand(1000000000, 9999999999);
+            $inputObj->setValues('mch_billno', $mch_billno);
+            $inputObj->setValues('mch_id', WxPayConfig::MCHID);
+            $inputObj->setValues('wxappid', WxPayConfig::APPID);
+            $inputObj->setValues('send_name', '襄阳联通');
+            $inputObj->setValues('re_openid', $openid);
+            $inputObj->setValues('total_amount', $amount);
+            $inputObj->setValues('total_num', 1);
+            $inputObj->setValues('wishing', $wishing);
+            $inputObj->setValues('client_ip', '114.215.178.32');
+            $inputObj->setValues('act_name', '关注襄阳联通');
+            $inputObj->setValues('remark', '谢谢参与！');	
+            $inputObj->SetSign();//签名
+            $xml = $inputObj->ToXml();
+		
+            $startTimeStamp = self::getMillisecond();//请求开始时间
+            $response = self::postXmlCurl($xml, $url, true, $timeOut);
+            $result = WxPayResults::Init($response);
+            self::reportCostTime($url, $startTimeStamp, $result);//上报请求花费时间
+
+            return $result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS';
+	}        
+        
+        /**
+	 * 发送企业现金
+	 * 企业付款业务是基于微信支付商户平台的资金管理能力，
+         * 为了协助商户方便地实现企业向个人付款，
+         * 针对部分有开发能力的商户，
+         * 提供通过API完成企业付款的功能。 
+	 * @param WxPayDataBase $inputObj
+	 * @param int $timeOut
+	 * @throws WxPayException
+	 * @return 成功时返回，其他抛异常
+	 */
+	public static function sendCash($openid, $amount, $desc) {
+            $url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+        
+            $inputObj = self::getWxPayObj(); $timeOut = 6;
+            
+            $inputObj->setValues('mch_appid', WxPayConfig::APPID);
+            $inputObj->setValues('mchid', WxPayConfig::MCHID);            
+            $inputObj->setValues('nonce_str', self::getNonceStr());
+            $partner_trade_no = WxPayConfig::MCHID . date('Ymd') . rand(1000000000, 9999999999);
+            $inputObj->setValues('partner_trade_no', $partner_trade_no);
+            $inputObj->setValues('openid', $openid);
+            $inputObj->setValues('check_name', 'NO_CHECK');
+            $inputObj->setValues('amount', $amount);          
+            $inputObj->setValues('desc', $desc);
+            $inputObj->setValues('spbill_create_ip', '114.215.178.32');
+            
+            $inputObj->SetSign();//签名
+            $xml = $inputObj->ToXml();
+		
+            $startTimeStamp = self::getMillisecond();//请求开始时间
+            $response = self::postXmlCurl($xml, $url, true, $timeOut);
+            $result = WxPayResults::Init($response);
+            self::reportCostTime($url, $startTimeStamp, $result);//上报请求花费时间
+
+            return $result['return_code'] === 'SUCCESS' && $result['result_code'] === 'SUCCESS';
+	}
+        
  	/**
  	 * 
  	 * 支付结果通用通知
@@ -559,8 +640,8 @@ class WxPayApi
 			curl_setopt($ch,CURLOPT_PROXYPORT, WxPayConfig::CURL_PROXY_PORT);
 		}
 		curl_setopt($ch,CURLOPT_URL, $url);
-		curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,FALSE);
-		curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,FALSE);
+		curl_setopt($ch,CURLOPT_SSL_VERIFYPEER,TRUE);
+		curl_setopt($ch,CURLOPT_SSL_VERIFYHOST,2);
 		//设置header
 		curl_setopt($ch, CURLOPT_HEADER, FALSE);
 		//要求结果为字符串且输出到屏幕上
@@ -570,9 +651,10 @@ class WxPayApi
 			//设置证书
 			//使用证书：cert 与 key 分别属于两个.pem文件
 			curl_setopt($ch,CURLOPT_SSLCERTTYPE,'PEM');
-			curl_setopt($ch,CURLOPT_SSLCERT, WxPayConfig::SSLCERT_PATH);
+			curl_setopt($ch,CURLOPT_SSLCERT, '/mnt/wwwroot/wx/models/wxpay/cert/xiangyangunicom/apiclient_cert.pem');
 			curl_setopt($ch,CURLOPT_SSLKEYTYPE,'PEM');
-			curl_setopt($ch,CURLOPT_SSLKEY, WxPayConfig::SSLKEY_PATH);
+			curl_setopt($ch,CURLOPT_SSLKEY, '/mnt/wwwroot/wx/models/wxpay/cert/xiangyangunicom/apiclient_key.pem');
+//                        curl_setopt($ch,CURLOPT_CAINFO, '/mnt/wwwroot/wx/models/wxpay/cert/xiangyangunicom/rootca.pem');
 		}
 		//post提交方式
 		curl_setopt($ch, CURLOPT_POST, TRUE);
