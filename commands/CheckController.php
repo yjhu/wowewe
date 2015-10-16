@@ -280,10 +280,24 @@ class CheckController extends \yii\console\Controller {
     }
     
     public function actionDwz() {  
-        for ($i=1; $i <= 1000; $i++) {
-            $long_url = 'http://wosotech.com/wx/web/index.php?r=wapx/sm-qr'.'&mobile='. $i;
-            $short_url = \app\models\BaiduDwz::dwz($long_url);
-            echo $short_url . PHP_EOL;
-        }
+        $long_url = 'http://wosotech.com/wx/web/index.php?r=wapx/sm-qr'.'&mobile=18971288549';
+        $short_url = \app\models\DwzService::baidu($long_url);
+        echo "Baidu\t".mb_strlen($short_url).': '.$short_url . PHP_EOL;
+        $short_url = \app\models\DwzService::so985($long_url);
+        echo "985so\t".mb_strlen($short_url).': '.$short_url . PHP_EOL;
+//        $short_url = \app\models\DwzService::sina($long_url);
+//        echo "Sina\t".mb_strlen($short_url).': '.$short_url . PHP_EOL;
+        $short_url = \app\models\DwzService::qqurl($long_url);
+        echo "QQURL\t".mb_strlen($short_url).': '.$short_url . PHP_EOL;
+    }
+    
+    public function actionRedpack($openid, $amount) {  
+        $result = \app\models\wxpay\WxPayApi::sendRedPack($openid, $amount, '会员首次关注红包');
+        var_dump($result);
+    }
+    
+    public function actionCash($openid, $amount) {  
+        $result = \app\models\wxpay\WxPayApi::sendCash($openid, $amount, '发展会员奖金');
+        var_dump($result);
     }
 }
