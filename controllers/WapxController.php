@@ -965,6 +965,12 @@ class WapxController extends Controller {
 
 
 
+    //老虎机游戏 
+    //http://wosotech.com/wx/web/index.php?r=wapx/game-slot
+    public function actionGameSlot() {
+        $this->layout = false;
+        return $this->render('game-slot');
+    }
 
 
 
